@@ -26,5 +26,9 @@ public abstract record class Citation
         Messages::BetaCitationsWebSearchResultLocation value
     ) => new(value);
 
+    public static CitationVariants::BetaSearchResultLocationCitation Create(
+        Messages::BetaSearchResultLocationCitation value
+    ) => new(value);
+
     public abstract void Validate();
 }

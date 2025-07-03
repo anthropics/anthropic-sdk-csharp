@@ -22,27 +22,6 @@ public sealed record class BetaTool(Messages::BetaTool Value)
 }
 
 [Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaToolComputerUse20241022,
-        Messages::BetaToolComputerUse20241022
-    >)
-)]
-public sealed record class BetaToolComputerUse20241022(Messages::BetaToolComputerUse20241022 Value)
-    : MessageCountTokensParamsProperties::Tool,
-        Anthropic::IVariant<BetaToolComputerUse20241022, Messages::BetaToolComputerUse20241022>
-{
-    public static BetaToolComputerUse20241022 From(Messages::BetaToolComputerUse20241022 value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[Serialization::JsonConverter(
     typeof(Anthropic::VariantConverter<BetaToolBash20241022, Messages::BetaToolBash20241022>)
 )]
 public sealed record class BetaToolBash20241022(Messages::BetaToolBash20241022 Value)
@@ -61,16 +40,57 @@ public sealed record class BetaToolBash20241022(Messages::BetaToolBash20241022 V
 }
 
 [Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<BetaToolBash20250124, Messages::BetaToolBash20250124>)
+)]
+public sealed record class BetaToolBash20250124(Messages::BetaToolBash20250124 Value)
+    : MessageCountTokensParamsProperties::Tool,
+        Anthropic::IVariant<BetaToolBash20250124, Messages::BetaToolBash20250124>
+{
+    public static BetaToolBash20250124 From(Messages::BetaToolBash20250124 value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+[Serialization::JsonConverter(
     typeof(Anthropic::VariantConverter<
-        BetaToolTextEditor20241022,
-        Messages::BetaToolTextEditor20241022
+        BetaCodeExecutionTool20250522,
+        Messages::BetaCodeExecutionTool20250522
     >)
 )]
-public sealed record class BetaToolTextEditor20241022(Messages::BetaToolTextEditor20241022 Value)
+public sealed record class BetaCodeExecutionTool20250522(
+    Messages::BetaCodeExecutionTool20250522 Value
+)
     : MessageCountTokensParamsProperties::Tool,
-        Anthropic::IVariant<BetaToolTextEditor20241022, Messages::BetaToolTextEditor20241022>
+        Anthropic::IVariant<BetaCodeExecutionTool20250522, Messages::BetaCodeExecutionTool20250522>
 {
-    public static BetaToolTextEditor20241022 From(Messages::BetaToolTextEditor20241022 value)
+    public static BetaCodeExecutionTool20250522 From(Messages::BetaCodeExecutionTool20250522 value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+[Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<
+        BetaToolComputerUse20241022,
+        Messages::BetaToolComputerUse20241022
+    >)
+)]
+public sealed record class BetaToolComputerUse20241022(Messages::BetaToolComputerUse20241022 Value)
+    : MessageCountTokensParamsProperties::Tool,
+        Anthropic::IVariant<BetaToolComputerUse20241022, Messages::BetaToolComputerUse20241022>
+{
+    public static BetaToolComputerUse20241022 From(Messages::BetaToolComputerUse20241022 value)
     {
         return new(value);
     }
@@ -103,13 +123,16 @@ public sealed record class BetaToolComputerUse20250124(Messages::BetaToolCompute
 }
 
 [Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaToolBash20250124, Messages::BetaToolBash20250124>)
+    typeof(Anthropic::VariantConverter<
+        BetaToolTextEditor20241022,
+        Messages::BetaToolTextEditor20241022
+    >)
 )]
-public sealed record class BetaToolBash20250124(Messages::BetaToolBash20250124 Value)
+public sealed record class BetaToolTextEditor20241022(Messages::BetaToolTextEditor20241022 Value)
     : MessageCountTokensParamsProperties::Tool,
-        Anthropic::IVariant<BetaToolBash20250124, Messages::BetaToolBash20250124>
+        Anthropic::IVariant<BetaToolTextEditor20241022, Messages::BetaToolTextEditor20241022>
 {
-    public static BetaToolBash20250124 From(Messages::BetaToolBash20250124 value)
+    public static BetaToolTextEditor20241022 From(Messages::BetaToolTextEditor20241022 value)
     {
         return new(value);
     }
@@ -173,29 +196,6 @@ public sealed record class BetaWebSearchTool20250305(Messages::BetaWebSearchTool
         Anthropic::IVariant<BetaWebSearchTool20250305, Messages::BetaWebSearchTool20250305>
 {
     public static BetaWebSearchTool20250305 From(Messages::BetaWebSearchTool20250305 value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCodeExecutionTool20250522,
-        Messages::BetaCodeExecutionTool20250522
-    >)
-)]
-public sealed record class BetaCodeExecutionTool20250522(
-    Messages::BetaCodeExecutionTool20250522 Value
-)
-    : MessageCountTokensParamsProperties::Tool,
-        Anthropic::IVariant<BetaCodeExecutionTool20250522, Messages::BetaCodeExecutionTool20250522>
-{
-    public static BetaCodeExecutionTool20250522 From(Messages::BetaCodeExecutionTool20250522 value)
     {
         return new(value);
     }

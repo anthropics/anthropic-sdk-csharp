@@ -40,3 +40,24 @@ public sealed record class BetaImageBlockParam(Messages::BetaImageBlockParam Val
         this.Value.Validate();
     }
 }
+
+[Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<
+        BetaSearchResultBlockParam,
+        Messages::BetaSearchResultBlockParam
+    >)
+)]
+public sealed record class BetaSearchResultBlockParam(Messages::BetaSearchResultBlockParam Value)
+    : ContentProperties::Block,
+        Anthropic::IVariant<BetaSearchResultBlockParam, Messages::BetaSearchResultBlockParam>
+{
+    public static BetaSearchResultBlockParam From(Messages::BetaSearchResultBlockParam value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}

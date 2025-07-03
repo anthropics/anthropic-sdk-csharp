@@ -12,23 +12,27 @@ public abstract record class Tool
 
     public static ToolVariants::BetaTool Create(Messages::BetaTool value) => new(value);
 
-    public static ToolVariants::BetaToolComputerUse20241022 Create(
-        Messages::BetaToolComputerUse20241022 value
-    ) => new(value);
-
     public static ToolVariants::BetaToolBash20241022 Create(Messages::BetaToolBash20241022 value) =>
         new(value);
 
-    public static ToolVariants::BetaToolTextEditor20241022 Create(
-        Messages::BetaToolTextEditor20241022 value
+    public static ToolVariants::BetaToolBash20250124 Create(Messages::BetaToolBash20250124 value) =>
+        new(value);
+
+    public static ToolVariants::BetaCodeExecutionTool20250522 Create(
+        Messages::BetaCodeExecutionTool20250522 value
+    ) => new(value);
+
+    public static ToolVariants::BetaToolComputerUse20241022 Create(
+        Messages::BetaToolComputerUse20241022 value
     ) => new(value);
 
     public static ToolVariants::BetaToolComputerUse20250124 Create(
         Messages::BetaToolComputerUse20250124 value
     ) => new(value);
 
-    public static ToolVariants::BetaToolBash20250124 Create(Messages::BetaToolBash20250124 value) =>
-        new(value);
+    public static ToolVariants::BetaToolTextEditor20241022 Create(
+        Messages::BetaToolTextEditor20241022 value
+    ) => new(value);
 
     public static ToolVariants::BetaToolTextEditor20250124 Create(
         Messages::BetaToolTextEditor20250124 value
@@ -40,10 +44,6 @@ public abstract record class Tool
 
     public static ToolVariants::BetaWebSearchTool20250305 Create(
         Messages::BetaWebSearchTool20250305 value
-    ) => new(value);
-
-    public static ToolVariants::BetaCodeExecutionTool20250522 Create(
-        Messages::BetaCodeExecutionTool20250522 value
     ) => new(value);
 
     public abstract void Validate();

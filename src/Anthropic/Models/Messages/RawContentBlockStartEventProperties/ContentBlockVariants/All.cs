@@ -22,6 +22,42 @@ public sealed record class TextBlock(Messages::TextBlock Value)
 }
 
 [Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<ThinkingBlock, Messages::ThinkingBlock>)
+)]
+public sealed record class ThinkingBlock(Messages::ThinkingBlock Value)
+    : RawContentBlockStartEventProperties::ContentBlock,
+        Anthropic::IVariant<ThinkingBlock, Messages::ThinkingBlock>
+{
+    public static ThinkingBlock From(Messages::ThinkingBlock value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+[Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<RedactedThinkingBlock, Messages::RedactedThinkingBlock>)
+)]
+public sealed record class RedactedThinkingBlock(Messages::RedactedThinkingBlock Value)
+    : RawContentBlockStartEventProperties::ContentBlock,
+        Anthropic::IVariant<RedactedThinkingBlock, Messages::RedactedThinkingBlock>
+{
+    public static RedactedThinkingBlock From(Messages::RedactedThinkingBlock value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+[Serialization::JsonConverter(
     typeof(Anthropic::VariantConverter<ToolUseBlock, Messages::ToolUseBlock>)
 )]
 public sealed record class ToolUseBlock(Messages::ToolUseBlock Value)
@@ -68,42 +104,6 @@ public sealed record class WebSearchToolResultBlock(Messages::WebSearchToolResul
         Anthropic::IVariant<WebSearchToolResultBlock, Messages::WebSearchToolResultBlock>
 {
     public static WebSearchToolResultBlock From(Messages::WebSearchToolResultBlock value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ThinkingBlock, Messages::ThinkingBlock>)
-)]
-public sealed record class ThinkingBlock(Messages::ThinkingBlock Value)
-    : RawContentBlockStartEventProperties::ContentBlock,
-        Anthropic::IVariant<ThinkingBlock, Messages::ThinkingBlock>
-{
-    public static ThinkingBlock From(Messages::ThinkingBlock value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<RedactedThinkingBlock, Messages::RedactedThinkingBlock>)
-)]
-public sealed record class RedactedThinkingBlock(Messages::RedactedThinkingBlock Value)
-    : RawContentBlockStartEventProperties::ContentBlock,
-        Anthropic::IVariant<RedactedThinkingBlock, Messages::RedactedThinkingBlock>
-{
-    public static RedactedThinkingBlock From(Messages::RedactedThinkingBlock value)
     {
         return new(value);
     }

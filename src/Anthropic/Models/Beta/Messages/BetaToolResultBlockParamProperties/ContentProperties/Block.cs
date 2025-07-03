@@ -16,5 +16,9 @@ public abstract record class Block
     public static BlockVariants::BetaImageBlockParam Create(Messages::BetaImageBlockParam value) =>
         new(value);
 
+    public static BlockVariants::BetaSearchResultBlockParam Create(
+        Messages::BetaSearchResultBlockParam value
+    ) => new(value);
+
     public abstract void Validate();
 }

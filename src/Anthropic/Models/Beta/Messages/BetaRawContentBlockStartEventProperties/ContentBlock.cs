@@ -16,6 +16,14 @@ public abstract record class ContentBlock
     public static ContentBlockVariants::BetaTextBlock Create(Messages::BetaTextBlock value) =>
         new(value);
 
+    public static ContentBlockVariants::BetaThinkingBlock Create(
+        Messages::BetaThinkingBlock value
+    ) => new(value);
+
+    public static ContentBlockVariants::BetaRedactedThinkingBlock Create(
+        Messages::BetaRedactedThinkingBlock value
+    ) => new(value);
+
     public static ContentBlockVariants::BetaToolUseBlock Create(Messages::BetaToolUseBlock value) =>
         new(value);
 
@@ -41,14 +49,6 @@ public abstract record class ContentBlock
 
     public static ContentBlockVariants::BetaContainerUploadBlock Create(
         Messages::BetaContainerUploadBlock value
-    ) => new(value);
-
-    public static ContentBlockVariants::BetaThinkingBlock Create(
-        Messages::BetaThinkingBlock value
-    ) => new(value);
-
-    public static ContentBlockVariants::BetaRedactedThinkingBlock Create(
-        Messages::BetaRedactedThinkingBlock value
     ) => new(value);
 
     public abstract void Validate();

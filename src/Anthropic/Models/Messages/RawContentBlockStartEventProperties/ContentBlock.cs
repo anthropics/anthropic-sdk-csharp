@@ -12,6 +12,13 @@ public abstract record class ContentBlock
 
     public static ContentBlockVariants::TextBlock Create(Messages::TextBlock value) => new(value);
 
+    public static ContentBlockVariants::ThinkingBlock Create(Messages::ThinkingBlock value) =>
+        new(value);
+
+    public static ContentBlockVariants::RedactedThinkingBlock Create(
+        Messages::RedactedThinkingBlock value
+    ) => new(value);
+
     public static ContentBlockVariants::ToolUseBlock Create(Messages::ToolUseBlock value) =>
         new(value);
 
@@ -21,13 +28,6 @@ public abstract record class ContentBlock
 
     public static ContentBlockVariants::WebSearchToolResultBlock Create(
         Messages::WebSearchToolResultBlock value
-    ) => new(value);
-
-    public static ContentBlockVariants::ThinkingBlock Create(Messages::ThinkingBlock value) =>
-        new(value);
-
-    public static ContentBlockVariants::RedactedThinkingBlock Create(
-        Messages::RedactedThinkingBlock value
     ) => new(value);
 
     public abstract void Validate();

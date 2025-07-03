@@ -24,6 +24,45 @@ public sealed record class BetaTextBlock(Messages::BetaTextBlock Value)
 }
 
 [Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<BetaThinkingBlock, Messages::BetaThinkingBlock>)
+)]
+public sealed record class BetaThinkingBlock(Messages::BetaThinkingBlock Value)
+    : BetaRawContentBlockStartEventProperties::ContentBlock,
+        Anthropic::IVariant<BetaThinkingBlock, Messages::BetaThinkingBlock>
+{
+    public static BetaThinkingBlock From(Messages::BetaThinkingBlock value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+[Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<
+        BetaRedactedThinkingBlock,
+        Messages::BetaRedactedThinkingBlock
+    >)
+)]
+public sealed record class BetaRedactedThinkingBlock(Messages::BetaRedactedThinkingBlock Value)
+    : BetaRawContentBlockStartEventProperties::ContentBlock,
+        Anthropic::IVariant<BetaRedactedThinkingBlock, Messages::BetaRedactedThinkingBlock>
+{
+    public static BetaRedactedThinkingBlock From(Messages::BetaRedactedThinkingBlock value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+[Serialization::JsonConverter(
     typeof(Anthropic::VariantConverter<BetaToolUseBlock, Messages::BetaToolUseBlock>)
 )]
 public sealed record class BetaToolUseBlock(Messages::BetaToolUseBlock Value)
@@ -160,45 +199,6 @@ public sealed record class BetaContainerUploadBlock(Messages::BetaContainerUploa
         Anthropic::IVariant<BetaContainerUploadBlock, Messages::BetaContainerUploadBlock>
 {
     public static BetaContainerUploadBlock From(Messages::BetaContainerUploadBlock value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaThinkingBlock, Messages::BetaThinkingBlock>)
-)]
-public sealed record class BetaThinkingBlock(Messages::BetaThinkingBlock Value)
-    : BetaRawContentBlockStartEventProperties::ContentBlock,
-        Anthropic::IVariant<BetaThinkingBlock, Messages::BetaThinkingBlock>
-{
-    public static BetaThinkingBlock From(Messages::BetaThinkingBlock value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaRedactedThinkingBlock,
-        Messages::BetaRedactedThinkingBlock
-    >)
-)]
-public sealed record class BetaRedactedThinkingBlock(Messages::BetaRedactedThinkingBlock Value)
-    : BetaRawContentBlockStartEventProperties::ContentBlock,
-        Anthropic::IVariant<BetaRedactedThinkingBlock, Messages::BetaRedactedThinkingBlock>
-{
-    public static BetaRedactedThinkingBlock From(Messages::BetaRedactedThinkingBlock value)
     {
         return new(value);
     }

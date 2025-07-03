@@ -14,6 +14,13 @@ public abstract record class BetaContentBlock
 
     public static BetaContentBlockVariants::BetaTextBlock Create(BetaTextBlock value) => new(value);
 
+    public static BetaContentBlockVariants::BetaThinkingBlock Create(BetaThinkingBlock value) =>
+        new(value);
+
+    public static BetaContentBlockVariants::BetaRedactedThinkingBlock Create(
+        BetaRedactedThinkingBlock value
+    ) => new(value);
+
     public static BetaContentBlockVariants::BetaToolUseBlock Create(BetaToolUseBlock value) =>
         new(value);
 
@@ -38,13 +45,6 @@ public abstract record class BetaContentBlock
 
     public static BetaContentBlockVariants::BetaContainerUploadBlock Create(
         BetaContainerUploadBlock value
-    ) => new(value);
-
-    public static BetaContentBlockVariants::BetaThinkingBlock Create(BetaThinkingBlock value) =>
-        new(value);
-
-    public static BetaContentBlockVariants::BetaRedactedThinkingBlock Create(
-        BetaRedactedThinkingBlock value
     ) => new(value);
 
     public abstract void Validate();

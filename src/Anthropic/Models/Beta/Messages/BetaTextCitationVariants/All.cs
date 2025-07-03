@@ -101,3 +101,31 @@ public sealed record class BetaCitationsWebSearchResultLocation(
         this.Value.Validate();
     }
 }
+
+[Serialization::JsonConverter(
+    typeof(Anthropic::VariantConverter<
+        BetaSearchResultLocationCitation,
+        Messages::BetaSearchResultLocationCitation
+    >)
+)]
+public sealed record class BetaSearchResultLocationCitation(
+    Messages::BetaSearchResultLocationCitation Value
+)
+    : Messages::BetaTextCitation,
+        Anthropic::IVariant<
+            BetaSearchResultLocationCitation,
+            Messages::BetaSearchResultLocationCitation
+        >
+{
+    public static BetaSearchResultLocationCitation From(
+        Messages::BetaSearchResultLocationCitation value
+    )
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
