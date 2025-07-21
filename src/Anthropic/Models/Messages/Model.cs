@@ -84,18 +84,9 @@ public sealed record class Model(string value) : Anthropic::IEnum<Model, string>
     public static readonly Model Claude_3_Opus_20240229 = new("claude-3-opus-20240229");
 
     /// <summary>
-    /// Balance of speed and intelligence
-    /// </summary>
-    public static readonly Model Claude_3_Sonnet_20240229 = new("claude-3-sonnet-20240229");
-
-    /// <summary>
     /// Our previous most fast and cost-effective
     /// </summary>
     public static readonly Model Claude_3_Haiku_20240307 = new("claude-3-haiku-20240307");
-
-    public static readonly Model Claude_2_1 = new("claude-2.1");
-
-    public static readonly Model Claude_2_0 = new("claude-2.0");
 
     readonly string _value = value;
 
@@ -173,16 +164,9 @@ public sealed record class Model(string value) : Anthropic::IEnum<Model, string>
         Claude_3_Opus_20240229,
 
         /// <summary>
-        /// Balance of speed and intelligence
-        /// </summary>
-        Claude_3_Sonnet_20240229,
-
-        /// <summary>
         /// Our previous most fast and cost-effective
         /// </summary>
         Claude_3_Haiku_20240307,
-        Claude_2_1,
-        Claude_2_0,
     }
 
     public Value Known() =>
@@ -203,10 +187,7 @@ public sealed record class Model(string value) : Anthropic::IEnum<Model, string>
             "claude-4-opus-20250514" => Value.Claude4Opus20250514,
             "claude-3-opus-latest" => Value.Claude3OpusLatest,
             "claude-3-opus-20240229" => Value.Claude_3_Opus_20240229,
-            "claude-3-sonnet-20240229" => Value.Claude_3_Sonnet_20240229,
             "claude-3-haiku-20240307" => Value.Claude_3_Haiku_20240307,
-            "claude-2.1" => Value.Claude_2_1,
-            "claude-2.0" => Value.Claude_2_0,
             _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
         };
 
