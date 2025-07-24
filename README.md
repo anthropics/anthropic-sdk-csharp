@@ -1,5 +1,10 @@
 # Anthropic C# API Library
 
+> [!NOTE]
+> The Anthropic C# API Library is currently in alpha.
+>
+> There may be frequent breaking changes.
+
 The Anthropic C# SDK provides convenient access to the [Anthropic REST API](https://docs.anthropic.com/claude/reference/) from applications written in C#.
 
 The REST API documentation can be found on [docs.anthropic.com](https://docs.anthropic.com/claude/reference/).
