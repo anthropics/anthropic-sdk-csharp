@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaToolUseBlockProperties = Anthropic.Models.Beta.Messages.BetaToolUseBlockProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -51,15 +50,14 @@ public sealed record class BetaToolUseBlock
         set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaToolUseBlockProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaToolUseBlockProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -69,10 +67,16 @@ public sealed record class BetaToolUseBlock
         _ = this.ID;
         _ = this.Input;
         _ = this.Name;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_use\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaToolUseBlock() { }
+    public BetaToolUseBlock()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_use\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

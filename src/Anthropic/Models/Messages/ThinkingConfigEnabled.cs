@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using ThinkingConfigEnabledProperties = Anthropic.Models.Messages.ThinkingConfigEnabledProperties;
 
 namespace Anthropic.Models.Messages;
 
@@ -38,15 +37,14 @@ public sealed record class ThinkingConfigEnabled
         set { this.Properties["budget_tokens"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required ThinkingConfigEnabledProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ThinkingConfigEnabledProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -54,10 +52,16 @@ public sealed record class ThinkingConfigEnabled
     public override void Validate()
     {
         _ = this.BudgetTokens;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"enabled\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public ThinkingConfigEnabled() { }
+    public ThinkingConfigEnabled()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"enabled\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

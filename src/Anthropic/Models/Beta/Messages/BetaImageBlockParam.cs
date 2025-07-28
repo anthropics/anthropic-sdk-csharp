@@ -29,15 +29,14 @@ public sealed record class BetaImageBlockParam
         set { this.Properties["source"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaImageBlockParamProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaImageBlockParamProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -60,11 +59,17 @@ public sealed record class BetaImageBlockParam
     public override void Validate()
     {
         this.Source.Validate();
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"image\"")))
+        {
+            throw new System::Exception();
+        }
         this.CacheControl?.Validate();
     }
 
-    public BetaImageBlockParam() { }
+    public BetaImageBlockParam()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"image\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

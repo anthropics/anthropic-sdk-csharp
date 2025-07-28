@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaMessageProperties = Anthropic.Models.Beta.Messages.BetaMessageProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -108,15 +107,14 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     ///
     /// This will always be `"assistant"`.
     /// </summary>
-    public required BetaMessageProperties::Role Role
+    public Json::JsonElement Role
     {
         get
         {
             if (!this.Properties.TryGetValue("role", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("role", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaMessageProperties::Role>(element)
-                ?? throw new System::ArgumentNullException("role");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["role"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -175,15 +173,14 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     ///
     /// For Messages, this is always `"message"`.
     /// </summary>
-    public required BetaMessageProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaMessageProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -227,14 +224,24 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
             item.Validate();
         }
         this.Model.Validate();
-        this.Role.Validate();
+        if (!this.Role.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"assistant\"")))
+        {
+            throw new System::Exception();
+        }
         this.StopReason?.Validate();
         _ = this.StopSequence;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message\"")))
+        {
+            throw new System::Exception();
+        }
         this.Usage.Validate();
     }
 
-    public BetaMessage() { }
+    public BetaMessage()
+    {
+        this.Role = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"assistant\"");
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

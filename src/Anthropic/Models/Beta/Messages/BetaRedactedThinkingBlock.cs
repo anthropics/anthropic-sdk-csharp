@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaRedactedThinkingBlockProperties = Anthropic.Models.Beta.Messages.BetaRedactedThinkingBlockProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -26,16 +25,14 @@ public sealed record class BetaRedactedThinkingBlock
         set { this.Properties["data"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaRedactedThinkingBlockProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaRedactedThinkingBlockProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -43,10 +40,20 @@ public sealed record class BetaRedactedThinkingBlock
     public override void Validate()
     {
         _ = this.Data;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"redacted_thinking\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaRedactedThinkingBlock() { }
+    public BetaRedactedThinkingBlock()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"redacted_thinking\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

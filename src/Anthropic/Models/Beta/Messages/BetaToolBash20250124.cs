@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaToolBash20250124Properties = Anthropic.Models.Beta.Messages.BetaToolBash20250124Properties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -18,28 +17,26 @@ public sealed record class BetaToolBash20250124
     ///
     /// This is how the tool will be called by the model and in `tool_use` blocks.
     /// </summary>
-    public required BetaToolBash20250124Properties::Name Name
+    public Json::JsonElement Name
     {
         get
         {
             if (!this.Properties.TryGetValue("name", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("name", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaToolBash20250124Properties::Name>(element)
-                ?? throw new System::ArgumentNullException("name");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaToolBash20250124Properties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaToolBash20250124Properties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -61,12 +58,26 @@ public sealed record class BetaToolBash20250124
 
     public override void Validate()
     {
-        this.Name.Validate();
-        this.Type.Validate();
+        if (!this.Name.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"bash\"")))
+        {
+            throw new System::Exception();
+        }
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"bash_20250124\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         this.CacheControl?.Validate();
     }
 
-    public BetaToolBash20250124() { }
+    public BetaToolBash20250124()
+    {
+        this.Name = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"bash\"");
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"bash_20250124\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

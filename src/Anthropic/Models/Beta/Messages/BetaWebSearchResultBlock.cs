@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaWebSearchResultBlockProperties = Anthropic.Models.Beta.Messages.BetaWebSearchResultBlockProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -60,16 +59,14 @@ public sealed record class BetaWebSearchResultBlock
         set { this.Properties["title"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaWebSearchResultBlockProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaWebSearchResultBlockProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -92,11 +89,21 @@ public sealed record class BetaWebSearchResultBlock
         _ = this.EncryptedContent;
         _ = this.PageAge;
         _ = this.Title;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_result\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         _ = this.URL;
     }
 
-    public BetaWebSearchResultBlock() { }
+    public BetaWebSearchResultBlock()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_result\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

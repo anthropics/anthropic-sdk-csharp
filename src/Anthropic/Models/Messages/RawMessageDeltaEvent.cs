@@ -26,15 +26,14 @@ public sealed record class RawMessageDeltaEvent
         set { this.Properties["delta"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required RawMessageDeltaEventProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<RawMessageDeltaEventProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -72,11 +71,21 @@ public sealed record class RawMessageDeltaEvent
     public override void Validate()
     {
         this.Delta.Validate();
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_delta\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         this.Usage.Validate();
     }
 
-    public RawMessageDeltaEvent() { }
+    public RawMessageDeltaEvent()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_delta\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

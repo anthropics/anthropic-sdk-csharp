@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaURLPDFSourceProperties = Anthropic.Models.Beta.Messages.BetaURLPDFSourceProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -13,15 +12,14 @@ public sealed record class BetaURLPDFSource
     : Anthropic::ModelBase,
         Anthropic::IFromRaw<BetaURLPDFSource>
 {
-    public required BetaURLPDFSourceProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaURLPDFSourceProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -41,11 +39,17 @@ public sealed record class BetaURLPDFSource
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"url\"")))
+        {
+            throw new System::Exception();
+        }
         _ = this.URL;
     }
 
-    public BetaURLPDFSource() { }
+    public BetaURLPDFSource()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"url\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

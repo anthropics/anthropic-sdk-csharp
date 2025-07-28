@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using WebSearchToolResultBlockProperties = Anthropic.Models.Messages.WebSearchToolResultBlockProperties;
 
 namespace Anthropic.Models.Messages;
 
@@ -45,16 +44,14 @@ public sealed record class WebSearchToolResultBlock
         set { this.Properties["tool_use_id"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required WebSearchToolResultBlockProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<WebSearchToolResultBlockProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -63,10 +60,22 @@ public sealed record class WebSearchToolResultBlock
     {
         this.Content.Validate();
         _ = this.ToolUseID;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_tool_result\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public WebSearchToolResultBlock() { }
+    public WebSearchToolResultBlock()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"web_search_tool_result\""
+        );
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaPlainTextSourceProperties = Anthropic.Models.Beta.Messages.BetaPlainTextSourceProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -26,7 +25,7 @@ public sealed record class BetaPlainTextSource
         set { this.Properties["data"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaPlainTextSourceProperties::MediaType MediaType
+    public Json::JsonElement MediaType
     {
         get
         {
@@ -36,22 +35,19 @@ public sealed record class BetaPlainTextSource
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaPlainTextSourceProperties::MediaType>(
-                    element
-                ) ?? throw new System::ArgumentNullException("media_type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["media_type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaPlainTextSourceProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaPlainTextSourceProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -59,11 +55,25 @@ public sealed record class BetaPlainTextSource
     public override void Validate()
     {
         _ = this.Data;
-        this.MediaType.Validate();
-        this.Type.Validate();
+        if (
+            !this.MediaType.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text/plain\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaPlainTextSource() { }
+    public BetaPlainTextSource()
+    {
+        this.MediaType = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text/plain\"");
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

@@ -18,30 +18,26 @@ public sealed record class BetaWebSearchTool20250305
     ///
     /// This is how the tool will be called by the model and in `tool_use` blocks.
     /// </summary>
-    public required BetaWebSearchTool20250305Properties::Name Name
+    public Json::JsonElement Name
     {
         get
         {
             if (!this.Properties.TryGetValue("name", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("name", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaWebSearchTool20250305Properties::Name>(
-                    element
-                ) ?? throw new System::ArgumentNullException("name");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaWebSearchTool20250305Properties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaWebSearchTool20250305Properties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -126,8 +122,20 @@ public sealed record class BetaWebSearchTool20250305
 
     public override void Validate()
     {
-        this.Name.Validate();
-        this.Type.Validate();
+        if (
+            !this.Name.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search\""))
+        )
+        {
+            throw new System::Exception();
+        }
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_20250305\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         foreach (var item in this.AllowedDomains ?? [])
         {
             _ = item;
@@ -141,7 +149,11 @@ public sealed record class BetaWebSearchTool20250305
         this.UserLocation?.Validate();
     }
 
-    public BetaWebSearchTool20250305() { }
+    public BetaWebSearchTool20250305()
+    {
+        this.Name = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search\"");
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_20250305\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

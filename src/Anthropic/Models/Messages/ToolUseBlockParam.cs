@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using ToolUseBlockParamProperties = Anthropic.Models.Messages.ToolUseBlockParamProperties;
 
 namespace Anthropic.Models.Messages;
 
@@ -51,15 +50,14 @@ public sealed record class ToolUseBlockParam
         set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required ToolUseBlockParamProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ToolUseBlockParamProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -84,11 +82,17 @@ public sealed record class ToolUseBlockParam
         _ = this.ID;
         _ = this.Input;
         _ = this.Name;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_use\"")))
+        {
+            throw new System::Exception();
+        }
         this.CacheControl?.Validate();
     }
 
-    public ToolUseBlockParam() { }
+    public ToolUseBlockParam()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_use\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

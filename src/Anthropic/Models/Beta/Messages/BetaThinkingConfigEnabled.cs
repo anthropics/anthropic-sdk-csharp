@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaThinkingConfigEnabledProperties = Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabledProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -38,16 +37,14 @@ public sealed record class BetaThinkingConfigEnabled
         set { this.Properties["budget_tokens"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaThinkingConfigEnabledProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaThinkingConfigEnabledProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -55,10 +52,16 @@ public sealed record class BetaThinkingConfigEnabled
     public override void Validate()
     {
         _ = this.BudgetTokens;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"enabled\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaThinkingConfigEnabled() { }
+    public BetaThinkingConfigEnabled()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"enabled\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

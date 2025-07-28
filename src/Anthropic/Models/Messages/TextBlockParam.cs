@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using TextBlockParamProperties = Anthropic.Models.Messages.TextBlockParamProperties;
 
 namespace Anthropic.Models.Messages;
 
@@ -26,15 +25,14 @@ public sealed record class TextBlockParam
         set { this.Properties["text"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required TextBlockParamProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<TextBlockParamProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -69,7 +67,10 @@ public sealed record class TextBlockParam
     public override void Validate()
     {
         _ = this.Text;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"")))
+        {
+            throw new System::Exception();
+        }
         this.CacheControl?.Validate();
         foreach (var item in this.Citations ?? [])
         {
@@ -77,7 +78,10 @@ public sealed record class TextBlockParam
         }
     }
 
-    public TextBlockParam() { }
+    public TextBlockParam()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

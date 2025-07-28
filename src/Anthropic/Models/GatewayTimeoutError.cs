@@ -1,6 +1,5 @@
 using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using GatewayTimeoutErrorProperties = Anthropic.Models.GatewayTimeoutErrorProperties;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
@@ -29,15 +28,14 @@ public sealed record class GatewayTimeoutError
         set { this.Properties["message"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required GatewayTimeoutErrorProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<GatewayTimeoutErrorProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -45,10 +43,20 @@ public sealed record class GatewayTimeoutError
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"timeout_error\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public GatewayTimeoutError() { }
+    public GatewayTimeoutError()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"timeout_error\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

@@ -2,7 +2,6 @@ using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
-using ModelInfoProperties = Anthropic.Models.Models.ModelInfoProperties;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
 
@@ -70,15 +69,14 @@ public sealed record class ModelInfo : Anthropic::ModelBase, Anthropic::IFromRaw
     ///
     /// For Models, this is always `"model"`.
     /// </summary>
-    public required ModelInfoProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ModelInfoProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -88,10 +86,16 @@ public sealed record class ModelInfo : Anthropic::ModelBase, Anthropic::IFromRaw
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"model\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public ModelInfo() { }
+    public ModelInfo()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"model\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

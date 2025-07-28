@@ -1,8 +1,5 @@
 using BatchCreateParamsProperties = Anthropic.Models.Messages.Batches.BatchCreateParamsProperties;
 using Batches = Anthropic.Models.Messages.Batches;
-using CacheControlEphemeralProperties = Anthropic.Models.Messages.CacheControlEphemeralProperties;
-using CitationCharLocationParamProperties = Anthropic.Models.Messages.CitationCharLocationParamProperties;
-using InputSchemaProperties = Anthropic.Models.Messages.ToolProperties.InputSchemaProperties;
 using Json = System.Text.Json;
 using MessageParamProperties = Anthropic.Models.Messages.MessageParamProperties;
 using Messages = Anthropic.Models.Messages;
@@ -10,9 +7,6 @@ using ParamsProperties = Anthropic.Models.Messages.Batches.BatchCreateParamsProp
 using RequestProperties = Anthropic.Models.Messages.Batches.BatchCreateParamsProperties.RequestProperties;
 using Tasks = System.Threading.Tasks;
 using Tests = Anthropic.Tests;
-using TextBlockParamProperties = Anthropic.Models.Messages.TextBlockParamProperties;
-using ThinkingConfigEnabledProperties = Anthropic.Models.Messages.ThinkingConfigEnabledProperties;
-using ToolChoiceAutoProperties = Anthropic.Models.Messages.ToolChoiceAutoProperties;
 using ToolProperties = Anthropic.Models.Messages.ToolProperties;
 
 namespace Anthropic.Tests.Service.Messages.Batches;
@@ -56,11 +50,7 @@ public class BatchServiceTest : Tests::TestBase
                                     new Messages::TextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
-                                        Type = TextBlockParamProperties::Type.Text,
-                                        CacheControl = new Messages::CacheControlEphemeral()
-                                        {
-                                            Type = CacheControlEphemeralProperties::Type.Ephemeral,
-                                        },
+                                        CacheControl = new Messages::CacheControlEphemeral() { },
                                         Citations =
                                         [
                                             Messages::TextCitationParam.Create(
@@ -71,8 +61,6 @@ public class BatchServiceTest : Tests::TestBase
                                                     DocumentTitle = "x",
                                                     EndCharIndex = 0,
                                                     StartCharIndex = 0,
-                                                    Type =
-                                                        CitationCharLocationParamProperties::Type.CharLocation,
                                                 }
                                             ),
                                         ],
@@ -81,18 +69,10 @@ public class BatchServiceTest : Tests::TestBase
                             ),
                             Temperature = 1,
                             Thinking = Messages::ThinkingConfigParam.Create(
-                                new Messages::ThinkingConfigEnabled()
-                                {
-                                    BudgetTokens = 1024,
-                                    Type = ThinkingConfigEnabledProperties::Type.Enabled,
-                                }
+                                new Messages::ThinkingConfigEnabled() { BudgetTokens = 1024 }
                             ),
                             ToolChoice = Messages::ToolChoice.Create(
-                                new Messages::ToolChoiceAuto()
-                                {
-                                    Type = ToolChoiceAutoProperties::Type.Auto,
-                                    DisableParallelToolUse = true,
-                                }
+                                new Messages::ToolChoiceAuto() { DisableParallelToolUse = true }
                             ),
                             Tools =
                             [
@@ -101,7 +81,6 @@ public class BatchServiceTest : Tests::TestBase
                                     {
                                         InputSchema = new ToolProperties::InputSchema()
                                         {
-                                            Type = InputSchemaProperties::Type.Object,
                                             Properties1 =
                                                 Json::JsonSerializer.Deserialize<Json::JsonElement>(
                                                     "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
@@ -109,10 +88,7 @@ public class BatchServiceTest : Tests::TestBase
                                             Required = ["location"],
                                         },
                                         Name = "name",
-                                        CacheControl = new Messages::CacheControlEphemeral()
-                                        {
-                                            Type = CacheControlEphemeralProperties::Type.Ephemeral,
-                                        },
+                                        CacheControl = new Messages::CacheControlEphemeral() { },
                                         Description = "Get the current weather in a given location",
                                         Type = ToolProperties::Type.Custom,
                                     }

@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using ThinkingDeltaProperties = Anthropic.Models.Messages.ThinkingDeltaProperties;
 
 namespace Anthropic.Models.Messages;
 
@@ -27,15 +26,14 @@ public sealed record class ThinkingDelta : Anthropic::ModelBase, Anthropic::IFro
         set { this.Properties["thinking"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required ThinkingDeltaProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ThinkingDeltaProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -43,10 +41,20 @@ public sealed record class ThinkingDelta : Anthropic::ModelBase, Anthropic::IFro
     public override void Validate()
     {
         _ = this.Thinking;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"thinking_delta\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public ThinkingDelta() { }
+    public ThinkingDelta()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"thinking_delta\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

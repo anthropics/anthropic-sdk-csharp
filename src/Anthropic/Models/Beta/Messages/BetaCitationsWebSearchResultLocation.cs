@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaCitationsWebSearchResultLocationProperties = Anthropic.Models.Beta.Messages.BetaCitationsWebSearchResultLocationProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -59,16 +58,14 @@ public sealed record class BetaCitationsWebSearchResultLocation
         set { this.Properties["title"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaCitationsWebSearchResultLocationProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaCitationsWebSearchResultLocationProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -91,11 +88,25 @@ public sealed record class BetaCitationsWebSearchResultLocation
         _ = this.CitedText;
         _ = this.EncryptedIndex;
         _ = this.Title;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>(
+                    "\"web_search_result_location\""
+                )
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         _ = this.URL;
     }
 
-    public BetaCitationsWebSearchResultLocation() { }
+    public BetaCitationsWebSearchResultLocation()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"web_search_result_location\""
+        );
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

@@ -4,22 +4,20 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using URLPDFSourceProperties = Anthropic.Models.Messages.URLPDFSourceProperties;
 
 namespace Anthropic.Models.Messages;
 
 [Serialization::JsonConverter(typeof(Anthropic::ModelConverter<URLPDFSource>))]
 public sealed record class URLPDFSource : Anthropic::ModelBase, Anthropic::IFromRaw<URLPDFSource>
 {
-    public required URLPDFSourceProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<URLPDFSourceProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -39,11 +37,17 @@ public sealed record class URLPDFSource : Anthropic::ModelBase, Anthropic::IFrom
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"url\"")))
+        {
+            throw new System::Exception();
+        }
         _ = this.URL;
     }
 
-    public URLPDFSource() { }
+    public URLPDFSource()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"url\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

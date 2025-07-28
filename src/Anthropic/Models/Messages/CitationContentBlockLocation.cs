@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using CitationContentBlockLocationProperties = Anthropic.Models.Messages.CitationContentBlockLocationProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -92,16 +91,14 @@ public sealed record class CitationContentBlockLocation
         }
     }
 
-    public required CitationContentBlockLocationProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<CitationContentBlockLocationProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -113,10 +110,22 @@ public sealed record class CitationContentBlockLocation
         _ = this.DocumentTitle;
         _ = this.EndBlockIndex;
         _ = this.StartBlockIndex;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_location\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public CitationContentBlockLocation() { }
+    public CitationContentBlockLocation()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"content_block_location\""
+        );
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

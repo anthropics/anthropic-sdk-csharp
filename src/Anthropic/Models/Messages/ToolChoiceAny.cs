@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using ToolChoiceAnyProperties = Anthropic.Models.Messages.ToolChoiceAnyProperties;
 
 namespace Anthropic.Models.Messages;
 
@@ -14,15 +13,14 @@ namespace Anthropic.Models.Messages;
 [Serialization::JsonConverter(typeof(Anthropic::ModelConverter<ToolChoiceAny>))]
 public sealed record class ToolChoiceAny : Anthropic::ModelBase, Anthropic::IFromRaw<ToolChoiceAny>
 {
-    public required ToolChoiceAnyProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ToolChoiceAnyProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -56,11 +54,17 @@ public sealed record class ToolChoiceAny : Anthropic::ModelBase, Anthropic::IFro
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"any\"")))
+        {
+            throw new System::Exception();
+        }
         _ = this.DisableParallelToolUse;
     }
 
-    public ToolChoiceAny() { }
+    public ToolChoiceAny()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"any\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

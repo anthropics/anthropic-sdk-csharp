@@ -2,7 +2,6 @@ using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
-using RawMessageStartEventProperties = Anthropic.Models.Messages.RawMessageStartEventProperties;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
 
@@ -29,15 +28,14 @@ public sealed record class RawMessageStartEvent
         set { this.Properties["message"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required RawMessageStartEventProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<RawMessageStartEventProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -45,10 +43,20 @@ public sealed record class RawMessageStartEvent
     public override void Validate()
     {
         this.Message.Validate();
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_start\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public RawMessageStartEvent() { }
+    public RawMessageStartEvent()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_start\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

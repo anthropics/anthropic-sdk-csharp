@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaAPIErrorProperties = Anthropic.Models.Beta.BetaAPIErrorProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -27,15 +26,14 @@ public sealed record class BetaAPIError : Anthropic::ModelBase, Anthropic::IFrom
         set { this.Properties["message"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaAPIErrorProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaAPIErrorProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -43,10 +41,16 @@ public sealed record class BetaAPIError : Anthropic::ModelBase, Anthropic::IFrom
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"api_error\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaAPIError() { }
+    public BetaAPIError()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"api_error\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

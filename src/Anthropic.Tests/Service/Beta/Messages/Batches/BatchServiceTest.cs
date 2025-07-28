@@ -2,14 +2,8 @@ using BatchCreateParamsProperties = Anthropic.Models.Beta.Messages.Batches.Batch
 using Batches = Anthropic.Models.Beta.Messages.Batches;
 using Beta = Anthropic.Models.Beta;
 using BetaCacheControlEphemeralProperties = Anthropic.Models.Beta.Messages.BetaCacheControlEphemeralProperties;
-using BetaCitationCharLocationParamProperties = Anthropic.Models.Beta.Messages.BetaCitationCharLocationParamProperties;
 using BetaMessageParamProperties = Anthropic.Models.Beta.Messages.BetaMessageParamProperties;
-using BetaRequestMCPServerURLDefinitionProperties = Anthropic.Models.Beta.Messages.BetaRequestMCPServerURLDefinitionProperties;
-using BetaTextBlockParamProperties = Anthropic.Models.Beta.Messages.BetaTextBlockParamProperties;
-using BetaThinkingConfigEnabledProperties = Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabledProperties;
-using BetaToolChoiceAutoProperties = Anthropic.Models.Beta.Messages.BetaToolChoiceAutoProperties;
 using BetaToolProperties = Anthropic.Models.Beta.Messages.BetaToolProperties;
-using InputSchemaProperties = Anthropic.Models.Beta.Messages.BetaToolProperties.InputSchemaProperties;
 using Json = System.Text.Json;
 using Messages = Anthropic.Models.Beta.Messages;
 using Messages1 = Anthropic.Models.Messages;
@@ -53,7 +47,6 @@ public class BatchServiceTest : Tests::TestBase
                                 new Messages::BetaRequestMCPServerURLDefinition()
                                 {
                                     Name = "name",
-                                    Type = BetaRequestMCPServerURLDefinitionProperties::Type.URL,
                                     URL = "url",
                                     AuthorizationToken = "authorization_token",
                                     ToolConfiguration =
@@ -76,11 +69,8 @@ public class BatchServiceTest : Tests::TestBase
                                     new Messages::BetaTextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
-                                        Type = BetaTextBlockParamProperties::Type.Text,
                                         CacheControl = new Messages::BetaCacheControlEphemeral()
                                         {
-                                            Type =
-                                                BetaCacheControlEphemeralProperties::Type.Ephemeral,
                                             TTL = BetaCacheControlEphemeralProperties::TTL.TTL5m,
                                         },
                                         Citations =
@@ -93,8 +83,6 @@ public class BatchServiceTest : Tests::TestBase
                                                     DocumentTitle = "x",
                                                     EndCharIndex = 0,
                                                     StartCharIndex = 0,
-                                                    Type =
-                                                        BetaCitationCharLocationParamProperties::Type.CharLocation,
                                                 }
                                             ),
                                         ],
@@ -103,18 +91,10 @@ public class BatchServiceTest : Tests::TestBase
                             ),
                             Temperature = 1,
                             Thinking = Messages::BetaThinkingConfigParam.Create(
-                                new Messages::BetaThinkingConfigEnabled()
-                                {
-                                    BudgetTokens = 1024,
-                                    Type = BetaThinkingConfigEnabledProperties::Type.Enabled,
-                                }
+                                new Messages::BetaThinkingConfigEnabled() { BudgetTokens = 1024 }
                             ),
                             ToolChoice = Messages::BetaToolChoice.Create(
-                                new Messages::BetaToolChoiceAuto()
-                                {
-                                    Type = BetaToolChoiceAutoProperties::Type.Auto,
-                                    DisableParallelToolUse = true,
-                                }
+                                new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true }
                             ),
                             Tools =
                             [
@@ -123,7 +103,6 @@ public class BatchServiceTest : Tests::TestBase
                                     {
                                         InputSchema = new BetaToolProperties::InputSchema()
                                         {
-                                            Type = InputSchemaProperties::Type.Object,
                                             Properties1 =
                                                 Json::JsonSerializer.Deserialize<Json::JsonElement>(
                                                     "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
@@ -133,8 +112,6 @@ public class BatchServiceTest : Tests::TestBase
                                         Name = "name",
                                         CacheControl = new Messages::BetaCacheControlEphemeral()
                                         {
-                                            Type =
-                                                BetaCacheControlEphemeralProperties::Type.Ephemeral,
                                             TTL = BetaCacheControlEphemeralProperties::TTL.TTL5m,
                                         },
                                         Description = "Get the current weather in a given location",

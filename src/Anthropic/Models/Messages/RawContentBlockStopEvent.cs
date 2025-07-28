@@ -2,7 +2,6 @@ using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
-using RawContentBlockStopEventProperties = Anthropic.Models.Messages.RawContentBlockStopEventProperties;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
 
@@ -25,16 +24,14 @@ public sealed record class RawContentBlockStopEvent
         set { this.Properties["index"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required RawContentBlockStopEventProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<RawContentBlockStopEventProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -42,10 +39,20 @@ public sealed record class RawContentBlockStopEvent
     public override void Validate()
     {
         _ = this.Index;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_stop\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public RawContentBlockStopEvent() { }
+    public RawContentBlockStopEvent()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_stop\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

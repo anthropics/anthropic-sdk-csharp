@@ -30,16 +30,14 @@ public sealed record class WebSearchToolRequestError
         set { this.Properties["error_code"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required WebSearchToolRequestErrorProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<WebSearchToolRequestErrorProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -47,10 +45,24 @@ public sealed record class WebSearchToolRequestError
     public override void Validate()
     {
         this.ErrorCode.Validate();
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>(
+                    "\"web_search_tool_result_error\""
+                )
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public WebSearchToolRequestError() { }
+    public WebSearchToolRequestError()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"web_search_tool_result_error\""
+        );
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

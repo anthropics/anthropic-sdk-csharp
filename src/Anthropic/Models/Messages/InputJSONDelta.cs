@@ -1,7 +1,6 @@
 using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
-using InputJSONDeltaProperties = Anthropic.Models.Messages.InputJSONDeltaProperties;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
@@ -29,15 +28,14 @@ public sealed record class InputJSONDelta
         set { this.Properties["partial_json"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required InputJSONDeltaProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<InputJSONDeltaProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -45,10 +43,20 @@ public sealed record class InputJSONDelta
     public override void Validate()
     {
         _ = this.PartialJSON;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"input_json_delta\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public InputJSONDelta() { }
+    public InputJSONDelta()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"input_json_delta\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

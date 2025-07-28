@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaToolChoiceAnyProperties = Anthropic.Models.Beta.Messages.BetaToolChoiceAnyProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -16,15 +15,14 @@ public sealed record class BetaToolChoiceAny
     : Anthropic::ModelBase,
         Anthropic::IFromRaw<BetaToolChoiceAny>
 {
-    public required BetaToolChoiceAnyProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaToolChoiceAnyProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -58,11 +56,17 @@ public sealed record class BetaToolChoiceAny
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"any\"")))
+        {
+            throw new System::Exception();
+        }
         _ = this.DisableParallelToolUse;
     }
 
-    public BetaToolChoiceAny() { }
+    public BetaToolChoiceAny()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"any\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

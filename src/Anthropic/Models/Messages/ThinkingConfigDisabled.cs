@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using ThinkingConfigDisabledProperties = Anthropic.Models.Messages.ThinkingConfigDisabledProperties;
 
 namespace Anthropic.Models.Messages;
 
@@ -13,25 +12,30 @@ public sealed record class ThinkingConfigDisabled
     : Anthropic::ModelBase,
         Anthropic::IFromRaw<ThinkingConfigDisabled>
 {
-    public required ThinkingConfigDisabledProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ThinkingConfigDisabledProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"disabled\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public ThinkingConfigDisabled() { }
+    public ThinkingConfigDisabled()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"disabled\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

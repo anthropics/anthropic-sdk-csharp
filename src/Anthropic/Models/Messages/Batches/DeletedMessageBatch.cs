@@ -1,6 +1,5 @@
 using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using DeletedMessageBatchProperties = Anthropic.Models.Messages.Batches.DeletedMessageBatchProperties;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
@@ -34,15 +33,14 @@ public sealed record class DeletedMessageBatch
     ///
     /// For Message Batches, this is always `"message_batch_deleted"`.
     /// </summary>
-    public required DeletedMessageBatchProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<DeletedMessageBatchProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -50,10 +48,22 @@ public sealed record class DeletedMessageBatch
     public override void Validate()
     {
         _ = this.ID;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_batch_deleted\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public DeletedMessageBatch() { }
+    public DeletedMessageBatch()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"message_batch_deleted\""
+        );
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

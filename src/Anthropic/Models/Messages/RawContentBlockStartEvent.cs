@@ -42,16 +42,14 @@ public sealed record class RawContentBlockStartEvent
         set { this.Properties["index"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required RawContentBlockStartEventProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<RawContentBlockStartEventProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -60,10 +58,20 @@ public sealed record class RawContentBlockStartEvent
     {
         this.ContentBlock.Validate();
         _ = this.Index;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_start\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public RawContentBlockStartEvent() { }
+    public RawContentBlockStartEvent()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_start\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

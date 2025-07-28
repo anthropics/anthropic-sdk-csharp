@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using AuthenticationErrorProperties = Anthropic.Models.AuthenticationErrorProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -29,15 +28,14 @@ public sealed record class AuthenticationError
         set { this.Properties["message"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required AuthenticationErrorProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<AuthenticationErrorProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -45,10 +43,20 @@ public sealed record class AuthenticationError
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"authentication_error\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public AuthenticationError() { }
+    public AuthenticationError()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"authentication_error\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

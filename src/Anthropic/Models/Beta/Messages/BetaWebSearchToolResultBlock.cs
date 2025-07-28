@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaWebSearchToolResultBlockProperties = Anthropic.Models.Beta.Messages.BetaWebSearchToolResultBlockProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -45,16 +44,14 @@ public sealed record class BetaWebSearchToolResultBlock
         set { this.Properties["tool_use_id"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaWebSearchToolResultBlockProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaWebSearchToolResultBlockProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -63,10 +60,22 @@ public sealed record class BetaWebSearchToolResultBlock
     {
         this.Content.Validate();
         _ = this.ToolUseID;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_tool_result\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaWebSearchToolResultBlock() { }
+    public BetaWebSearchToolResultBlock()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"web_search_tool_result\""
+        );
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

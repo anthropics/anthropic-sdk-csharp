@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using UserLocationProperties = Anthropic.Models.Beta.Messages.BetaWebSearchTool20250305Properties.UserLocationProperties;
 
 namespace Anthropic.Models.Beta.Messages.BetaWebSearchTool20250305Properties;
 
@@ -14,15 +13,14 @@ namespace Anthropic.Models.Beta.Messages.BetaWebSearchTool20250305Properties;
 [Serialization::JsonConverter(typeof(Anthropic::ModelConverter<UserLocation>))]
 public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFromRaw<UserLocation>
 {
-    public required UserLocationProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<UserLocationProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -90,14 +88,24 @@ public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFrom
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"approximate\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         _ = this.City;
         _ = this.Country;
         _ = this.Region;
         _ = this.Timezone;
     }
 
-    public UserLocation() { }
+    public UserLocation()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"approximate\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

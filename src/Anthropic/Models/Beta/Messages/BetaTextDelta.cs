@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaTextDeltaProperties = Anthropic.Models.Beta.Messages.BetaTextDeltaProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -24,15 +23,14 @@ public sealed record class BetaTextDelta : Anthropic::ModelBase, Anthropic::IFro
         set { this.Properties["text"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaTextDeltaProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaTextDeltaProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -40,10 +38,18 @@ public sealed record class BetaTextDelta : Anthropic::ModelBase, Anthropic::IFro
     public override void Validate()
     {
         _ = this.Text;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text_delta\""))
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaTextDelta() { }
+    public BetaTextDelta()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text_delta\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

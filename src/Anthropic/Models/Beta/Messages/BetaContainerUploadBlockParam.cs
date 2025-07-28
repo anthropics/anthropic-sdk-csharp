@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaContainerUploadBlockParamProperties = Anthropic.Models.Beta.Messages.BetaContainerUploadBlockParamProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -33,16 +32,14 @@ public sealed record class BetaContainerUploadBlockParam
         set { this.Properties["file_id"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaContainerUploadBlockParamProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaContainerUploadBlockParamProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -65,11 +62,21 @@ public sealed record class BetaContainerUploadBlockParam
     public override void Validate()
     {
         _ = this.FileID;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"container_upload\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         this.CacheControl?.Validate();
     }
 
-    public BetaContainerUploadBlockParam() { }
+    public BetaContainerUploadBlockParam()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"container_upload\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

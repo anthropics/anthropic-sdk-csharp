@@ -1,6 +1,3 @@
-using CacheControlEphemeralProperties = Anthropic.Models.Messages.CacheControlEphemeralProperties;
-using CitationCharLocationParamProperties = Anthropic.Models.Messages.CitationCharLocationParamProperties;
-using InputSchemaProperties = Anthropic.Models.Messages.ToolProperties.InputSchemaProperties;
 using Json = System.Text.Json;
 using MessageCountTokensParamsProperties = Anthropic.Models.Messages.MessageCountTokensParamsProperties;
 using MessageCreateParamsProperties = Anthropic.Models.Messages.MessageCreateParamsProperties;
@@ -8,9 +5,6 @@ using MessageParamProperties = Anthropic.Models.Messages.MessageParamProperties;
 using Messages = Anthropic.Models.Messages;
 using Tasks = System.Threading.Tasks;
 using Tests = Anthropic.Tests;
-using TextBlockParamProperties = Anthropic.Models.Messages.TextBlockParamProperties;
-using ThinkingConfigEnabledProperties = Anthropic.Models.Messages.ThinkingConfigEnabledProperties;
-using ToolChoiceAutoProperties = Anthropic.Models.Messages.ToolChoiceAutoProperties;
 using ToolProperties = Anthropic.Models.Messages.ToolProperties;
 
 namespace Anthropic.Tests.Service.Messages;
@@ -45,11 +39,7 @@ public class MessageServiceTest : Tests::TestBase
                         new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            Type = TextBlockParamProperties::Type.Text,
-                            CacheControl = new Messages::CacheControlEphemeral()
-                            {
-                                Type = CacheControlEphemeralProperties::Type.Ephemeral,
-                            },
+                            CacheControl = new Messages::CacheControlEphemeral() { },
                             Citations =
                             [
                                 Messages::TextCitationParam.Create(
@@ -60,8 +50,6 @@ public class MessageServiceTest : Tests::TestBase
                                         DocumentTitle = "x",
                                         EndCharIndex = 0,
                                         StartCharIndex = 0,
-                                        Type =
-                                            CitationCharLocationParamProperties::Type.CharLocation,
                                     }
                                 ),
                             ],
@@ -70,18 +58,10 @@ public class MessageServiceTest : Tests::TestBase
                 ),
                 Temperature = 1,
                 Thinking = Messages::ThinkingConfigParam.Create(
-                    new Messages::ThinkingConfigEnabled()
-                    {
-                        BudgetTokens = 1024,
-                        Type = ThinkingConfigEnabledProperties::Type.Enabled,
-                    }
+                    new Messages::ThinkingConfigEnabled() { BudgetTokens = 1024 }
                 ),
                 ToolChoice = Messages::ToolChoice.Create(
-                    new Messages::ToolChoiceAuto()
-                    {
-                        Type = ToolChoiceAutoProperties::Type.Auto,
-                        DisableParallelToolUse = true,
-                    }
+                    new Messages::ToolChoiceAuto() { DisableParallelToolUse = true }
                 ),
                 Tools =
                 [
@@ -90,17 +70,13 @@ public class MessageServiceTest : Tests::TestBase
                         {
                             InputSchema = new ToolProperties::InputSchema()
                             {
-                                Type = InputSchemaProperties::Type.Object,
                                 Properties1 = Json::JsonSerializer.Deserialize<Json::JsonElement>(
                                     "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
                                 ),
                                 Required = ["location"],
                             },
                             Name = "name",
-                            CacheControl = new Messages::CacheControlEphemeral()
-                            {
-                                Type = CacheControlEphemeralProperties::Type.Ephemeral,
-                            },
+                            CacheControl = new Messages::CacheControlEphemeral() { },
                             Description = "Get the current weather in a given location",
                             Type = ToolProperties::Type.Custom,
                         }
@@ -133,11 +109,7 @@ public class MessageServiceTest : Tests::TestBase
                         new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            Type = TextBlockParamProperties::Type.Text,
-                            CacheControl = new Messages::CacheControlEphemeral()
-                            {
-                                Type = CacheControlEphemeralProperties::Type.Ephemeral,
-                            },
+                            CacheControl = new Messages::CacheControlEphemeral() { },
                             Citations =
                             [
                                 Messages::TextCitationParam.Create(
@@ -148,8 +120,6 @@ public class MessageServiceTest : Tests::TestBase
                                         DocumentTitle = "x",
                                         EndCharIndex = 0,
                                         StartCharIndex = 0,
-                                        Type =
-                                            CitationCharLocationParamProperties::Type.CharLocation,
                                     }
                                 ),
                             ],
@@ -157,18 +127,10 @@ public class MessageServiceTest : Tests::TestBase
                     ]
                 ),
                 Thinking = Messages::ThinkingConfigParam.Create(
-                    new Messages::ThinkingConfigEnabled()
-                    {
-                        BudgetTokens = 1024,
-                        Type = ThinkingConfigEnabledProperties::Type.Enabled,
-                    }
+                    new Messages::ThinkingConfigEnabled() { BudgetTokens = 1024 }
                 ),
                 ToolChoice = Messages::ToolChoice.Create(
-                    new Messages::ToolChoiceAuto()
-                    {
-                        Type = ToolChoiceAutoProperties::Type.Auto,
-                        DisableParallelToolUse = true,
-                    }
+                    new Messages::ToolChoiceAuto() { DisableParallelToolUse = true }
                 ),
                 Tools =
                 [
@@ -177,17 +139,13 @@ public class MessageServiceTest : Tests::TestBase
                         {
                             InputSchema = new ToolProperties::InputSchema()
                             {
-                                Type = InputSchemaProperties::Type.Object,
                                 Properties1 = Json::JsonSerializer.Deserialize<Json::JsonElement>(
                                     "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
                                 ),
                                 Required = ["location"],
                             },
                             Name = "name",
-                            CacheControl = new Messages::CacheControlEphemeral()
-                            {
-                                Type = CacheControlEphemeralProperties::Type.Ephemeral,
-                            },
+                            CacheControl = new Messages::CacheControlEphemeral() { },
                             Description = "Get the current weather in a given location",
                             Type = ToolProperties::Type.Custom,
                         }

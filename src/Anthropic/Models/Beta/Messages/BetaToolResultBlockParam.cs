@@ -29,16 +29,14 @@ public sealed record class BetaToolResultBlockParam
         set { this.Properties["tool_use_id"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaToolResultBlockParamProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaToolResultBlockParamProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -87,13 +85,23 @@ public sealed record class BetaToolResultBlockParam
     public override void Validate()
     {
         _ = this.ToolUseID;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_result\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         this.CacheControl?.Validate();
         this.Content?.Validate();
         _ = this.IsError;
     }
 
-    public BetaToolResultBlockParam() { }
+    public BetaToolResultBlockParam()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_result\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

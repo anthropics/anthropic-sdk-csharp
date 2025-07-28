@@ -1,6 +1,5 @@
 using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using FileMetadataProperties = Anthropic.Models.Beta.Files.FileMetadataProperties;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
@@ -108,15 +107,14 @@ public sealed record class FileMetadata : Anthropic::ModelBase, Anthropic::IFrom
     ///
     /// For files, this is always `"file"`.
     /// </summary>
-    public required FileMetadataProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<FileMetadataProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -143,11 +141,17 @@ public sealed record class FileMetadata : Anthropic::ModelBase, Anthropic::IFrom
         _ = this.Filename;
         _ = this.MimeType;
         _ = this.SizeBytes;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"file\"")))
+        {
+            throw new System::Exception();
+        }
         _ = this.Downloadable;
     }
 
-    public FileMetadata() { }
+    public FileMetadata()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"file\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

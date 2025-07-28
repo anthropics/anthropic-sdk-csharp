@@ -5,7 +5,6 @@ using Json = System.Text.Json;
 using Messages = Anthropic.Models.Messages;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using TextEditor20250429Properties = Anthropic.Models.Messages.ToolUnionProperties.TextEditor20250429Properties;
 
 namespace Anthropic.Models.Messages.ToolUnionProperties;
 
@@ -19,28 +18,26 @@ public sealed record class TextEditor20250429
     ///
     /// This is how the tool will be called by the model and in `tool_use` blocks.
     /// </summary>
-    public required TextEditor20250429Properties::Name Name
+    public Json::JsonElement Name
     {
         get
         {
             if (!this.Properties.TryGetValue("name", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("name", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<TextEditor20250429Properties::Name>(element)
-                ?? throw new System::ArgumentNullException("name");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required TextEditor20250429Properties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<TextEditor20250429Properties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -62,12 +59,34 @@ public sealed record class TextEditor20250429
 
     public override void Validate()
     {
-        this.Name.Validate();
-        this.Type.Validate();
+        if (
+            !this.Name.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>(
+                    "\"str_replace_based_edit_tool\""
+                )
+            )
+        )
+        {
+            throw new System::Exception();
+        }
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text_editor_20250429\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
         this.CacheControl?.Validate();
     }
 
-    public TextEditor20250429() { }
+    public TextEditor20250429()
+    {
+        this.Name = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"str_replace_based_edit_tool\""
+        );
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text_editor_20250429\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

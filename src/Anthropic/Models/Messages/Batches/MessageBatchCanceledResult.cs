@@ -2,7 +2,6 @@ using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
-using MessageBatchCanceledResultProperties = Anthropic.Models.Messages.Batches.MessageBatchCanceledResultProperties;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
 
@@ -13,26 +12,30 @@ public sealed record class MessageBatchCanceledResult
     : Anthropic::ModelBase,
         Anthropic::IFromRaw<MessageBatchCanceledResult>
 {
-    public required MessageBatchCanceledResultProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<MessageBatchCanceledResultProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"canceled\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public MessageBatchCanceledResult() { }
+    public MessageBatchCanceledResult()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"canceled\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

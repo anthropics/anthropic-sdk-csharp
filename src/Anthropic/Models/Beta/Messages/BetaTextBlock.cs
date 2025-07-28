@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaTextBlockProperties = Anthropic.Models.Beta.Messages.BetaTextBlockProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -46,15 +45,14 @@ public sealed record class BetaTextBlock : Anthropic::ModelBase, Anthropic::IFro
         set { this.Properties["text"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaTextBlockProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaTextBlockProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -66,10 +64,16 @@ public sealed record class BetaTextBlock : Anthropic::ModelBase, Anthropic::IFro
             item.Validate();
         }
         _ = this.Text;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaTextBlock() { }
+    public BetaTextBlock()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

@@ -2,7 +2,6 @@ using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
-using MessageProperties = Anthropic.Models.Messages.MessageProperties;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
 
@@ -89,15 +88,14 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     ///
     /// This will always be `"assistant"`.
     /// </summary>
-    public required MessageProperties::Role Role
+    public Json::JsonElement Role
     {
         get
         {
             if (!this.Properties.TryGetValue("role", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("role", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<MessageProperties::Role>(element)
-                ?? throw new System::ArgumentNullException("role");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["role"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -156,15 +154,14 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     ///
     /// For Messages, this is always `"message"`.
     /// </summary>
-    public required MessageProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<MessageProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -207,14 +204,24 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
             item.Validate();
         }
         this.Model.Validate();
-        this.Role.Validate();
+        if (!this.Role.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"assistant\"")))
+        {
+            throw new System::Exception();
+        }
         this.StopReason?.Validate();
         _ = this.StopSequence;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message\"")))
+        {
+            throw new System::Exception();
+        }
         this.Usage.Validate();
     }
 
-    public Message() { }
+    public Message()
+    {
+        this.Role = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"assistant\"");
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

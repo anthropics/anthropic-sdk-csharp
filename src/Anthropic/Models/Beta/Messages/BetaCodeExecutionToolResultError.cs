@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaCodeExecutionToolResultErrorProperties = Anthropic.Models.Beta.Messages.BetaCodeExecutionToolResultErrorProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -29,16 +28,14 @@ public sealed record class BetaCodeExecutionToolResultError
         set { this.Properties["error_code"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaCodeExecutionToolResultErrorProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -46,10 +43,24 @@ public sealed record class BetaCodeExecutionToolResultError
     public override void Validate()
     {
         this.ErrorCode.Validate();
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>(
+                    "\"code_execution_tool_result_error\""
+                )
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaCodeExecutionToolResultError() { }
+    public BetaCodeExecutionToolResultError()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"code_execution_tool_result_error\""
+        );
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

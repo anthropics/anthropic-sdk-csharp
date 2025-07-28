@@ -3,7 +3,6 @@ using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
-using ServerToolUseBlockProperties = Anthropic.Models.Messages.ServerToolUseBlockProperties;
 using System = System;
 
 namespace Anthropic.Models.Messages;
@@ -38,28 +37,26 @@ public sealed record class ServerToolUseBlock
         set { this.Properties["input"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required ServerToolUseBlockProperties::Name Name
+    public Json::JsonElement Name
     {
         get
         {
             if (!this.Properties.TryGetValue("name", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("name", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ServerToolUseBlockProperties::Name>(element)
-                ?? throw new System::ArgumentNullException("name");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required ServerToolUseBlockProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ServerToolUseBlockProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -68,11 +65,27 @@ public sealed record class ServerToolUseBlock
     {
         _ = this.ID;
         _ = this.Input;
-        this.Name.Validate();
-        this.Type.Validate();
+        if (
+            !this.Name.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search\""))
+        )
+        {
+            throw new System::Exception();
+        }
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"server_tool_use\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public ServerToolUseBlock() { }
+    public ServerToolUseBlock()
+    {
+        this.Name = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search\"");
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"server_tool_use\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

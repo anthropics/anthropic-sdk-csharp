@@ -4,7 +4,6 @@ using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
-using ToolChoiceToolProperties = Anthropic.Models.Messages.ToolChoiceToolProperties;
 
 namespace Anthropic.Models.Messages;
 
@@ -32,15 +31,14 @@ public sealed record class ToolChoiceTool
         set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required ToolChoiceToolProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<ToolChoiceToolProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -75,11 +73,17 @@ public sealed record class ToolChoiceTool
     public override void Validate()
     {
         _ = this.Name;
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool\"")))
+        {
+            throw new System::Exception();
+        }
         _ = this.DisableParallelToolUse;
     }
 
-    public ToolChoiceTool() { }
+    public ToolChoiceTool()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

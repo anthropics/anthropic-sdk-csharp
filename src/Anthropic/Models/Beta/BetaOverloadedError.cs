@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaOverloadedErrorProperties = Anthropic.Models.Beta.BetaOverloadedErrorProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -29,15 +28,14 @@ public sealed record class BetaOverloadedError
         set { this.Properties["message"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaOverloadedErrorProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaOverloadedErrorProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -45,10 +43,20 @@ public sealed record class BetaOverloadedError
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"overloaded_error\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaOverloadedError() { }
+    public BetaOverloadedError()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"overloaded_error\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaRawMessageStartEventProperties = Anthropic.Models.Beta.Messages.BetaRawMessageStartEventProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -29,16 +28,14 @@ public sealed record class BetaRawMessageStartEvent
         set { this.Properties["message"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaRawMessageStartEventProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaRawMessageStartEventProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -46,10 +43,20 @@ public sealed record class BetaRawMessageStartEvent
     public override void Validate()
     {
         this.Message.Validate();
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_start\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaRawMessageStartEvent() { }
+    public BetaRawMessageStartEvent()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_start\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

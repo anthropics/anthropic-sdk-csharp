@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaCitationPageLocationParamProperties = Anthropic.Models.Beta.Messages.BetaCitationPageLocationParamProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -92,16 +91,14 @@ public sealed record class BetaCitationPageLocationParam
         }
     }
 
-    public required BetaCitationPageLocationParamProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaCitationPageLocationParamProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -113,10 +110,20 @@ public sealed record class BetaCitationPageLocationParam
         _ = this.DocumentTitle;
         _ = this.EndPageNumber;
         _ = this.StartPageNumber;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"page_location\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaCitationPageLocationParam() { }
+    public BetaCitationPageLocationParam()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"page_location\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

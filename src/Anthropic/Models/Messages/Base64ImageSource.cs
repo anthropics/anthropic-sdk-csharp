@@ -42,15 +42,14 @@ public sealed record class Base64ImageSource
         set { this.Properties["media_type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required Base64ImageSourceProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<Base64ImageSourceProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -59,10 +58,16 @@ public sealed record class Base64ImageSource
     {
         _ = this.Data;
         this.MediaType.Validate();
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"base64\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public Base64ImageSource() { }
+    public Base64ImageSource()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"base64\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

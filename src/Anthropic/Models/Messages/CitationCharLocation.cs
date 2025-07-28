@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using CitationCharLocationProperties = Anthropic.Models.Messages.CitationCharLocationProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -92,15 +91,14 @@ public sealed record class CitationCharLocation
         }
     }
 
-    public required CitationCharLocationProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<CitationCharLocationProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -112,10 +110,20 @@ public sealed record class CitationCharLocation
         _ = this.DocumentTitle;
         _ = this.EndCharIndex;
         _ = this.StartCharIndex;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"char_location\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public CitationCharLocation() { }
+    public CitationCharLocation()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"char_location\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

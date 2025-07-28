@@ -1,7 +1,6 @@
 using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
-using InputSchemaProperties = Anthropic.Models.Messages.ToolProperties.InputSchemaProperties;
 using Json = System.Text.Json;
 using Serialization = System.Text.Json.Serialization;
 using System = System;
@@ -17,15 +16,14 @@ namespace Anthropic.Models.Messages.ToolProperties;
 [Serialization::JsonConverter(typeof(Anthropic::ModelConverter<InputSchema>))]
 public sealed record class InputSchema : Anthropic::ModelBase, Anthropic::IFromRaw<InputSchema>
 {
-    public required InputSchemaProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<InputSchemaProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -56,7 +54,10 @@ public sealed record class InputSchema : Anthropic::ModelBase, Anthropic::IFromR
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"object\"")))
+        {
+            throw new System::Exception();
+        }
         _ = this.Properties1;
         foreach (var item in this.Required ?? [])
         {
@@ -64,7 +65,10 @@ public sealed record class InputSchema : Anthropic::ModelBase, Anthropic::IFromR
         }
     }
 
-    public InputSchema() { }
+    public InputSchema()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"object\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

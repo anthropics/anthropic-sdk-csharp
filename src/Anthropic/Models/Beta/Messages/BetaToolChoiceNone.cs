@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaToolChoiceNoneProperties = Anthropic.Models.Beta.Messages.BetaToolChoiceNoneProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -16,25 +15,30 @@ public sealed record class BetaToolChoiceNone
     : Anthropic::ModelBase,
         Anthropic::IFromRaw<BetaToolChoiceNone>
 {
-    public required BetaToolChoiceNoneProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaToolChoiceNoneProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"none\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaToolChoiceNone() { }
+    public BetaToolChoiceNone()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"none\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

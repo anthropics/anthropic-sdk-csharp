@@ -1,6 +1,5 @@
 using Anthropic = Anthropic;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using CompletionProperties = Anthropic.Models.Completions.CompletionProperties;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
 using Messages = Anthropic.Models.Messages;
@@ -94,15 +93,14 @@ public sealed record class Completion : Anthropic::ModelBase, Anthropic::IFromRa
     ///
     /// For Text Completions, this is always `"completion"`.
     /// </summary>
-    public required CompletionProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<CompletionProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -113,10 +111,18 @@ public sealed record class Completion : Anthropic::ModelBase, Anthropic::IFromRa
         _ = this.Completion1;
         this.Model.Validate();
         _ = this.StopReason;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"completion\""))
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public Completion() { }
+    public Completion()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"completion\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

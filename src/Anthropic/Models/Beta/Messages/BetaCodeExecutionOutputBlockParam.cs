@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaCodeExecutionOutputBlockParamProperties = Anthropic.Models.Beta.Messages.BetaCodeExecutionOutputBlockParamProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -29,16 +28,14 @@ public sealed record class BetaCodeExecutionOutputBlockParam
         set { this.Properties["file_id"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaCodeExecutionOutputBlockParamProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaCodeExecutionOutputBlockParamProperties::Type>(
-                    element
-                ) ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -46,10 +43,22 @@ public sealed record class BetaCodeExecutionOutputBlockParam
     public override void Validate()
     {
         _ = this.FileID;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"code_execution_output\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaCodeExecutionOutputBlockParam() { }
+    public BetaCodeExecutionOutputBlockParam()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+            "\"code_execution_output\""
+        );
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

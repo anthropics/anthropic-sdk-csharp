@@ -29,15 +29,14 @@ public sealed record class BetaCitationsDelta
         set { this.Properties["citation"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaCitationsDeltaProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaCitationsDeltaProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -45,10 +44,20 @@ public sealed record class BetaCitationsDelta
     public override void Validate()
     {
         this.Citation.Validate();
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"citations_delta\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaCitationsDelta() { }
+    public BetaCitationsDelta()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"citations_delta\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

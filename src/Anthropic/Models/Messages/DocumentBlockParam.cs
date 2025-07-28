@@ -29,15 +29,14 @@ public sealed record class DocumentBlockParam
         set { this.Properties["source"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required DocumentBlockParamProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<DocumentBlockParamProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -96,14 +95,20 @@ public sealed record class DocumentBlockParam
     public override void Validate()
     {
         this.Source.Validate();
-        this.Type.Validate();
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"document\"")))
+        {
+            throw new System::Exception();
+        }
         this.CacheControl?.Validate();
         this.Citations?.Validate();
         _ = this.Context;
         _ = this.Title;
     }
 
-    public DocumentBlockParam() { }
+    public DocumentBlockParam()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"document\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

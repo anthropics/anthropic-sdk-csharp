@@ -204,15 +204,14 @@ public sealed record class BetaMessageBatch
     ///
     /// For Message Batches, this is always `"message_batch"`.
     /// </summary>
-    public required BetaMessageBatchProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaMessageBatchProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -228,10 +227,20 @@ public sealed record class BetaMessageBatch
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
         _ = this.ResultsURL;
-        this.Type.Validate();
+        if (
+            !this.Type.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_batch\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaMessageBatch() { }
+    public BetaMessageBatch()
+    {
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_batch\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]

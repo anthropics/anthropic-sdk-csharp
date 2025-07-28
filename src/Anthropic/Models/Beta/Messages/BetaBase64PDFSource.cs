@@ -1,5 +1,4 @@
 using Anthropic = Anthropic;
-using BetaBase64PDFSourceProperties = Anthropic.Models.Beta.Messages.BetaBase64PDFSourceProperties;
 using CodeAnalysis = System.Diagnostics.CodeAnalysis;
 using Generic = System.Collections.Generic;
 using Json = System.Text.Json;
@@ -26,7 +25,7 @@ public sealed record class BetaBase64PDFSource
         set { this.Properties["data"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaBase64PDFSourceProperties::MediaType MediaType
+    public Json::JsonElement MediaType
     {
         get
         {
@@ -36,22 +35,19 @@ public sealed record class BetaBase64PDFSource
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaBase64PDFSourceProperties::MediaType>(
-                    element
-                ) ?? throw new System::ArgumentNullException("media_type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["media_type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public required BetaBase64PDFSourceProperties::Type Type
+    public Json::JsonElement Type
     {
         get
         {
             if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<BetaBase64PDFSourceProperties::Type>(element)
-                ?? throw new System::ArgumentNullException("type");
+            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
         }
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
@@ -59,11 +55,25 @@ public sealed record class BetaBase64PDFSource
     public override void Validate()
     {
         _ = this.Data;
-        this.MediaType.Validate();
-        this.Type.Validate();
+        if (
+            !this.MediaType.Equals(
+                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"application/pdf\"")
+            )
+        )
+        {
+            throw new System::Exception();
+        }
+        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"base64\"")))
+        {
+            throw new System::Exception();
+        }
     }
 
-    public BetaBase64PDFSource() { }
+    public BetaBase64PDFSource()
+    {
+        this.MediaType = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"application/pdf\"");
+        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"base64\"");
+    }
 
 #pragma warning disable CS8618
     [CodeAnalysis::SetsRequiredMembers]
