@@ -43,14 +43,6 @@ public sealed record class AuthenticationError
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"authentication_error\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public AuthenticationError()

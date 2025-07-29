@@ -9,29 +9,25 @@ public abstract record class BetaRawMessageStreamEvent
 {
     internal BetaRawMessageStreamEvent() { }
 
-    public static BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent Create(
-        BetaRawMessageStartEvent value
-    ) => new(value);
+    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageStartEvent value) =>
+        new BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent(value);
 
-    public static BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent Create(
-        BetaRawMessageDeltaEvent value
-    ) => new(value);
+    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value) =>
+        new BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent(value);
 
-    public static BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent Create(
-        BetaRawMessageStopEvent value
-    ) => new(value);
+    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageStopEvent value) =>
+        new BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent(value);
 
-    public static BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent Create(
+    public static implicit operator BetaRawMessageStreamEvent(
         BetaRawContentBlockStartEvent value
-    ) => new(value);
+    ) => new BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent(value);
 
-    public static BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent Create(
+    public static implicit operator BetaRawMessageStreamEvent(
         BetaRawContentBlockDeltaEvent value
-    ) => new(value);
+    ) => new BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent(value);
 
-    public static BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent Create(
-        BetaRawContentBlockStopEvent value
-    ) => new(value);
+    public static implicit operator BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value) =>
+        new BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(value);
 
     public abstract void Validate();
 }

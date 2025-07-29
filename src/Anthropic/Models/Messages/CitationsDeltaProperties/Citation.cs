@@ -10,21 +10,17 @@ public abstract record class Citation
 {
     internal Citation() { }
 
-    public static CitationVariants::CitationCharLocation Create(
-        Messages::CitationCharLocation value
-    ) => new(value);
+    public static implicit operator Citation(Messages::CitationCharLocation value) =>
+        new CitationVariants::CitationCharLocation(value);
 
-    public static CitationVariants::CitationPageLocation Create(
-        Messages::CitationPageLocation value
-    ) => new(value);
+    public static implicit operator Citation(Messages::CitationPageLocation value) =>
+        new CitationVariants::CitationPageLocation(value);
 
-    public static CitationVariants::CitationContentBlockLocation Create(
-        Messages::CitationContentBlockLocation value
-    ) => new(value);
+    public static implicit operator Citation(Messages::CitationContentBlockLocation value) =>
+        new CitationVariants::CitationContentBlockLocation(value);
 
-    public static CitationVariants::CitationsWebSearchResultLocation Create(
-        Messages::CitationsWebSearchResultLocation value
-    ) => new(value);
+    public static implicit operator Citation(Messages::CitationsWebSearchResultLocation value) =>
+        new CitationVariants::CitationsWebSearchResultLocation(value);
 
     public abstract void Validate();
 }

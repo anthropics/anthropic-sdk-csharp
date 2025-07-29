@@ -45,16 +45,6 @@ public sealed record class BetaCodeExecutionToolResultErrorParam
     public override void Validate()
     {
         this.ErrorCode.Validate();
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                    "\"code_execution_tool_result_error\""
-                )
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaCodeExecutionToolResultErrorParam()

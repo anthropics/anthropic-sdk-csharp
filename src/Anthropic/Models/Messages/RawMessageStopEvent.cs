@@ -24,17 +24,7 @@ public sealed record class RawMessageStopEvent
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public override void Validate()
-    {
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_stop\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
-    }
+    public override void Validate() { }
 
     public RawMessageStopEvent()
     {

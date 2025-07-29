@@ -10,22 +10,20 @@ public abstract record class Source
 {
     internal Source() { }
 
-    public static SourceVariants::BetaBase64PDFSource Create(Messages::BetaBase64PDFSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::BetaBase64PDFSource value) =>
+        new SourceVariants::BetaBase64PDFSource(value);
 
-    public static SourceVariants::BetaPlainTextSource Create(Messages::BetaPlainTextSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::BetaPlainTextSource value) =>
+        new SourceVariants::BetaPlainTextSource(value);
 
-    public static SourceVariants::BetaContentBlockSource Create(
-        Messages::BetaContentBlockSource value
-    ) => new(value);
+    public static implicit operator Source(Messages::BetaContentBlockSource value) =>
+        new SourceVariants::BetaContentBlockSource(value);
 
-    public static SourceVariants::BetaURLPDFSource Create(Messages::BetaURLPDFSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::BetaURLPDFSource value) =>
+        new SourceVariants::BetaURLPDFSource(value);
 
-    public static SourceVariants::BetaFileDocumentSource Create(
-        Messages::BetaFileDocumentSource value
-    ) => new(value);
+    public static implicit operator Source(Messages::BetaFileDocumentSource value) =>
+        new SourceVariants::BetaFileDocumentSource(value);
 
     public abstract void Validate();
 }

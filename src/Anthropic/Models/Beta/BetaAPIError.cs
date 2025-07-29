@@ -41,10 +41,6 @@ public sealed record class BetaAPIError : Anthropic::ModelBase, Anthropic::IFrom
     public override void Validate()
     {
         _ = this.Message;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"api_error\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaAPIError()

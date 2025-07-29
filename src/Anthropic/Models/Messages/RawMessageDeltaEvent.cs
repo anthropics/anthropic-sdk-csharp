@@ -71,14 +71,6 @@ public sealed record class RawMessageDeltaEvent
     public override void Validate()
     {
         this.Delta.Validate();
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_delta\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.Usage.Validate();
     }
 

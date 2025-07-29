@@ -43,14 +43,6 @@ public sealed record class BetaNotFoundError
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"not_found_error\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaNotFoundError()

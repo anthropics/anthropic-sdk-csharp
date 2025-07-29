@@ -48,14 +48,6 @@ public sealed record class BetaDeletedMessageBatch
     public override void Validate()
     {
         _ = this.ID;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_batch_deleted\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaDeletedMessageBatch()

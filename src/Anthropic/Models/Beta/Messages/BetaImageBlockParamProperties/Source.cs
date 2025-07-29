@@ -10,15 +10,14 @@ public abstract record class Source
 {
     internal Source() { }
 
-    public static SourceVariants::BetaBase64ImageSource Create(
-        Messages::BetaBase64ImageSource value
-    ) => new(value);
+    public static implicit operator Source(Messages::BetaBase64ImageSource value) =>
+        new SourceVariants::BetaBase64ImageSource(value);
 
-    public static SourceVariants::BetaURLImageSource Create(Messages::BetaURLImageSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::BetaURLImageSource value) =>
+        new SourceVariants::BetaURLImageSource(value);
 
-    public static SourceVariants::BetaFileImageSource Create(Messages::BetaFileImageSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::BetaFileImageSource value) =>
+        new SourceVariants::BetaFileImageSource(value);
 
     public abstract void Validate();
 }

@@ -37,7 +37,7 @@ var param = new Messages::MessageCreateParams()
     new Messages::MessageParam()
     {
       Role = MessageParamProperties::Role.User,
-      Content = MessageParamProperties::Content.Create("Hello, Claude"),
+      Content = "Hello, Claude",
     }
   ],
   Model = Messages::Model.Claude3_7SonnetLatest

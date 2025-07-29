@@ -41,10 +41,6 @@ public sealed record class MessageBatchErroredResult
     public override void Validate()
     {
         this.Error.Validate();
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"errored\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public MessageBatchErroredResult()

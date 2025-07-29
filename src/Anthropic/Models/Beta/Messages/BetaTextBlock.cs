@@ -64,10 +64,6 @@ public sealed record class BetaTextBlock : Anthropic::ModelBase, Anthropic::IFro
             item.Validate();
         }
         _ = this.Text;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaTextBlock()

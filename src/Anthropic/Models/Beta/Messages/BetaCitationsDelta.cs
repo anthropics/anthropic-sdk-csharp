@@ -44,14 +44,6 @@ public sealed record class BetaCitationsDelta
     public override void Validate()
     {
         this.Citation.Validate();
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"citations_delta\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaCitationsDelta()

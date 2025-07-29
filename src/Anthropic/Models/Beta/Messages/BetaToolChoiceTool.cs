@@ -73,10 +73,6 @@ public sealed record class BetaToolChoiceTool
     public override void Validate()
     {
         _ = this.Name;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool\"")))
-        {
-            throw new System::Exception();
-        }
         _ = this.DisableParallelToolUse;
     }
 

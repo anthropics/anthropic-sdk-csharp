@@ -58,24 +58,6 @@ public sealed record class BetaToolTextEditor20250429
 
     public override void Validate()
     {
-        if (
-            !this.Name.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                    "\"str_replace_based_edit_tool\""
-                )
-            )
-        )
-        {
-            throw new System::Exception();
-        }
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text_editor_20250429\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
     }
 

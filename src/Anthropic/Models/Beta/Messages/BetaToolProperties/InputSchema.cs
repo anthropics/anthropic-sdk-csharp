@@ -54,10 +54,6 @@ public sealed record class InputSchema : Anthropic::ModelBase, Anthropic::IFromR
 
     public override void Validate()
     {
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"object\"")))
-        {
-            throw new System::Exception();
-        }
         _ = this.Properties1;
         foreach (var item in this.Required ?? [])
         {

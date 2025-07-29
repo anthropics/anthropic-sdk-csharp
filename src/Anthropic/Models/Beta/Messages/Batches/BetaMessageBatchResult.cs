@@ -16,21 +16,17 @@ public abstract record class BetaMessageBatchResult
 {
     internal BetaMessageBatchResult() { }
 
-    public static BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult Create(
-        BetaMessageBatchSucceededResult value
-    ) => new(value);
+    public static implicit operator BetaMessageBatchResult(BetaMessageBatchSucceededResult value) =>
+        new BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult(value);
 
-    public static BetaMessageBatchResultVariants::BetaMessageBatchErroredResult Create(
-        BetaMessageBatchErroredResult value
-    ) => new(value);
+    public static implicit operator BetaMessageBatchResult(BetaMessageBatchErroredResult value) =>
+        new BetaMessageBatchResultVariants::BetaMessageBatchErroredResult(value);
 
-    public static BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult Create(
-        BetaMessageBatchCanceledResult value
-    ) => new(value);
+    public static implicit operator BetaMessageBatchResult(BetaMessageBatchCanceledResult value) =>
+        new BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult(value);
 
-    public static BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult Create(
-        BetaMessageBatchExpiredResult value
-    ) => new(value);
+    public static implicit operator BetaMessageBatchResult(BetaMessageBatchExpiredResult value) =>
+        new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(value);
 
     public abstract void Validate();
 }

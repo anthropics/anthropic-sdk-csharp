@@ -9,25 +9,23 @@ public abstract record class BetaTextCitationParam
 {
     internal BetaTextCitationParam() { }
 
-    public static BetaTextCitationParamVariants::BetaCitationCharLocationParam Create(
-        BetaCitationCharLocationParam value
-    ) => new(value);
+    public static implicit operator BetaTextCitationParam(BetaCitationCharLocationParam value) =>
+        new BetaTextCitationParamVariants::BetaCitationCharLocationParam(value);
 
-    public static BetaTextCitationParamVariants::BetaCitationPageLocationParam Create(
-        BetaCitationPageLocationParam value
-    ) => new(value);
+    public static implicit operator BetaTextCitationParam(BetaCitationPageLocationParam value) =>
+        new BetaTextCitationParamVariants::BetaCitationPageLocationParam(value);
 
-    public static BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam Create(
+    public static implicit operator BetaTextCitationParam(
         BetaCitationContentBlockLocationParam value
-    ) => new(value);
+    ) => new BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam(value);
 
-    public static BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam Create(
+    public static implicit operator BetaTextCitationParam(
         BetaCitationWebSearchResultLocationParam value
-    ) => new(value);
+    ) => new BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam(value);
 
-    public static BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam Create(
+    public static implicit operator BetaTextCitationParam(
         BetaCitationSearchResultLocationParam value
-    ) => new(value);
+    ) => new BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam(value);
 
     public abstract void Validate();
 }

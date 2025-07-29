@@ -13,13 +13,17 @@ public abstract record class ToolChoice
 {
     internal ToolChoice() { }
 
-    public static ToolChoiceVariants::ToolChoiceAuto Create(ToolChoiceAuto value) => new(value);
+    public static implicit operator ToolChoice(ToolChoiceAuto value) =>
+        new ToolChoiceVariants::ToolChoiceAuto(value);
 
-    public static ToolChoiceVariants::ToolChoiceAny Create(ToolChoiceAny value) => new(value);
+    public static implicit operator ToolChoice(ToolChoiceAny value) =>
+        new ToolChoiceVariants::ToolChoiceAny(value);
 
-    public static ToolChoiceVariants::ToolChoiceTool Create(ToolChoiceTool value) => new(value);
+    public static implicit operator ToolChoice(ToolChoiceTool value) =>
+        new ToolChoiceVariants::ToolChoiceTool(value);
 
-    public static ToolChoiceVariants::ToolChoiceNone Create(ToolChoiceNone value) => new(value);
+    public static implicit operator ToolChoice(ToolChoiceNone value) =>
+        new ToolChoiceVariants::ToolChoiceNone(value);
 
     public abstract void Validate();
 }

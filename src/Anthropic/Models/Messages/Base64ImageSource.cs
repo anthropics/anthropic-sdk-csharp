@@ -58,10 +58,6 @@ public sealed record class Base64ImageSource
     {
         _ = this.Data;
         this.MediaType.Validate();
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"base64\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public Base64ImageSource()

@@ -43,14 +43,6 @@ public sealed record class RawMessageStartEvent
     public override void Validate()
     {
         this.Message.Validate();
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_start\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public RawMessageStartEvent()

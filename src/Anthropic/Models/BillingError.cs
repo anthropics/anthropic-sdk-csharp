@@ -41,14 +41,6 @@ public sealed record class BillingError : Anthropic::ModelBase, Anthropic::IFrom
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"billing_error\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BillingError()

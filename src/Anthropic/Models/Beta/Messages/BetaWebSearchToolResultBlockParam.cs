@@ -76,14 +76,6 @@ public sealed record class BetaWebSearchToolResultBlockParam
     {
         this.Content.Validate();
         _ = this.ToolUseID;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_tool_result\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
     }
 

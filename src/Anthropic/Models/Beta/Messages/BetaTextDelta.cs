@@ -38,12 +38,6 @@ public sealed record class BetaTextDelta : Anthropic::ModelBase, Anthropic::IFro
     public override void Validate()
     {
         _ = this.Text;
-        if (
-            !this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text_delta\""))
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaTextDelta()

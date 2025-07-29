@@ -13,43 +13,36 @@ public abstract record class ContentBlock
 {
     internal ContentBlock() { }
 
-    public static ContentBlockVariants::BetaTextBlock Create(Messages::BetaTextBlock value) =>
-        new(value);
+    public static implicit operator ContentBlock(Messages::BetaTextBlock value) =>
+        new ContentBlockVariants::BetaTextBlock(value);
 
-    public static ContentBlockVariants::BetaThinkingBlock Create(
-        Messages::BetaThinkingBlock value
-    ) => new(value);
+    public static implicit operator ContentBlock(Messages::BetaThinkingBlock value) =>
+        new ContentBlockVariants::BetaThinkingBlock(value);
 
-    public static ContentBlockVariants::BetaRedactedThinkingBlock Create(
-        Messages::BetaRedactedThinkingBlock value
-    ) => new(value);
+    public static implicit operator ContentBlock(Messages::BetaRedactedThinkingBlock value) =>
+        new ContentBlockVariants::BetaRedactedThinkingBlock(value);
 
-    public static ContentBlockVariants::BetaToolUseBlock Create(Messages::BetaToolUseBlock value) =>
-        new(value);
+    public static implicit operator ContentBlock(Messages::BetaToolUseBlock value) =>
+        new ContentBlockVariants::BetaToolUseBlock(value);
 
-    public static ContentBlockVariants::BetaServerToolUseBlock Create(
-        Messages::BetaServerToolUseBlock value
-    ) => new(value);
+    public static implicit operator ContentBlock(Messages::BetaServerToolUseBlock value) =>
+        new ContentBlockVariants::BetaServerToolUseBlock(value);
 
-    public static ContentBlockVariants::BetaWebSearchToolResultBlock Create(
-        Messages::BetaWebSearchToolResultBlock value
-    ) => new(value);
+    public static implicit operator ContentBlock(Messages::BetaWebSearchToolResultBlock value) =>
+        new ContentBlockVariants::BetaWebSearchToolResultBlock(value);
 
-    public static ContentBlockVariants::BetaCodeExecutionToolResultBlock Create(
+    public static implicit operator ContentBlock(
         Messages::BetaCodeExecutionToolResultBlock value
-    ) => new(value);
+    ) => new ContentBlockVariants::BetaCodeExecutionToolResultBlock(value);
 
-    public static ContentBlockVariants::BetaMCPToolUseBlock Create(
-        Messages::BetaMCPToolUseBlock value
-    ) => new(value);
+    public static implicit operator ContentBlock(Messages::BetaMCPToolUseBlock value) =>
+        new ContentBlockVariants::BetaMCPToolUseBlock(value);
 
-    public static ContentBlockVariants::BetaMCPToolResultBlock Create(
-        Messages::BetaMCPToolResultBlock value
-    ) => new(value);
+    public static implicit operator ContentBlock(Messages::BetaMCPToolResultBlock value) =>
+        new ContentBlockVariants::BetaMCPToolResultBlock(value);
 
-    public static ContentBlockVariants::BetaContainerUploadBlock Create(
-        Messages::BetaContainerUploadBlock value
-    ) => new(value);
+    public static implicit operator ContentBlock(Messages::BetaContainerUploadBlock value) =>
+        new ContentBlockVariants::BetaContainerUploadBlock(value);
 
     public abstract void Validate();
 }

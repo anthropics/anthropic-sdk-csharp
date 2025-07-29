@@ -88,14 +88,6 @@ public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFrom
 
     public override void Validate()
     {
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"approximate\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         _ = this.City;
         _ = this.Country;
         _ = this.Region;

@@ -89,14 +89,6 @@ public sealed record class BetaWebSearchResultBlock
         _ = this.EncryptedContent;
         _ = this.PageAge;
         _ = this.Title;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_result\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         _ = this.URL;
     }
 

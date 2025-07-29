@@ -68,14 +68,6 @@ public sealed record class BetaServerToolUseBlock
         _ = this.ID;
         _ = this.Input;
         this.Name.Validate();
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"server_tool_use\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaServerToolUseBlock()

@@ -40,10 +40,6 @@ public sealed record class BetaErrorResponse
     public override void Validate()
     {
         this.Error.Validate();
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"error\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaErrorResponse()

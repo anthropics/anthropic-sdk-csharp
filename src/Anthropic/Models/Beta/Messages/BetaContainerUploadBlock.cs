@@ -46,14 +46,6 @@ public sealed record class BetaContainerUploadBlock
     public override void Validate()
     {
         _ = this.FileID;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"container_upload\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaContainerUploadBlock()

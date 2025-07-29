@@ -225,14 +225,6 @@ public sealed record class MessageBatch : Anthropic::ModelBase, Anthropic::IFrom
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
         _ = this.ResultsURL;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_batch\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public MessageBatch()

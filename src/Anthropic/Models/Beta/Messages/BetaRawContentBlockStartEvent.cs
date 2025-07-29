@@ -61,14 +61,6 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         this.ContentBlock.Validate();
         _ = this.Index;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_start\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaRawContentBlockStartEvent()

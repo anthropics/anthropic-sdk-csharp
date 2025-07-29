@@ -10,16 +10,17 @@ public abstract record class Source
 {
     internal Source() { }
 
-    public static SourceVariants::Base64PDFSource Create(Messages::Base64PDFSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::Base64PDFSource value) =>
+        new SourceVariants::Base64PDFSource(value);
 
-    public static SourceVariants::PlainTextSource Create(Messages::PlainTextSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::PlainTextSource value) =>
+        new SourceVariants::PlainTextSource(value);
 
-    public static SourceVariants::ContentBlockSource Create(Messages::ContentBlockSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::ContentBlockSource value) =>
+        new SourceVariants::ContentBlockSource(value);
 
-    public static SourceVariants::URLPDFSource Create(Messages::URLPDFSource value) => new(value);
+    public static implicit operator Source(Messages::URLPDFSource value) =>
+        new SourceVariants::URLPDFSource(value);
 
     public abstract void Validate();
 }

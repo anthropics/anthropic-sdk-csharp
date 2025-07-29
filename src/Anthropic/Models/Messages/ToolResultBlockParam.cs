@@ -85,14 +85,6 @@ public sealed record class ToolResultBlockParam
     public override void Validate()
     {
         _ = this.ToolUseID;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_result\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
         this.Content?.Validate();
         _ = this.IsError;

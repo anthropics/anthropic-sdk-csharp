@@ -90,14 +90,6 @@ public sealed record class BetaMCPToolUseBlock
         _ = this.Input;
         _ = this.Name;
         _ = this.ServerName;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"mcp_tool_use\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaMCPToolUseBlock()

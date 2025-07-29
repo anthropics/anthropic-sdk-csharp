@@ -110,14 +110,6 @@ public sealed record class CitationContentBlockLocationParam
         _ = this.DocumentTitle;
         _ = this.EndBlockIndex;
         _ = this.StartBlockIndex;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_location\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public CitationContentBlockLocationParam()

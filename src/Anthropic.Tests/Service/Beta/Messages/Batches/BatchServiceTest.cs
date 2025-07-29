@@ -34,9 +34,7 @@ public class BatchServiceTest : Tests::TestBase
                             [
                                 new Messages::BetaMessageParam()
                                 {
-                                    Content = BetaMessageParamProperties::Content.Create(
-                                        "Hello, world"
-                                    ),
+                                    Content = "Hello, world",
                                     Role = BetaMessageParamProperties::Role.User,
                                 },
                             ],
@@ -64,60 +62,57 @@ public class BatchServiceTest : Tests::TestBase
                             ServiceTier = ParamsProperties::ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
-                            System = ParamsProperties::System.Create(
-                                [
-                                    new Messages::BetaTextBlockParam()
+                            System =
+                            [
+                                new Messages::BetaTextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new Messages::BetaCacheControlEphemeral()
                                     {
-                                        Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new Messages::BetaCacheControlEphemeral()
-                                        {
-                                            TTL = BetaCacheControlEphemeralProperties::TTL.TTL5m,
-                                        },
-                                        Citations =
-                                        [
-                                            Messages::BetaTextCitationParam.Create(
-                                                new Messages::BetaCitationCharLocationParam()
-                                                {
-                                                    CitedText = "cited_text",
-                                                    DocumentIndex = 0,
-                                                    DocumentTitle = "x",
-                                                    EndCharIndex = 0,
-                                                    StartCharIndex = 0,
-                                                }
-                                            ),
-                                        ],
+                                        TTL = BetaCacheControlEphemeralProperties::TTL.TTL5m,
                                     },
-                                ]
-                            ),
+                                    Citations =
+                                    [
+                                        new Messages::BetaCitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ],
                             Temperature = 1,
-                            Thinking = Messages::BetaThinkingConfigParam.Create(
-                                new Messages::BetaThinkingConfigEnabled() { BudgetTokens = 1024 }
-                            ),
-                            ToolChoice = Messages::BetaToolChoice.Create(
-                                new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true }
-                            ),
+                            Thinking = new Messages::BetaThinkingConfigEnabled()
+                            {
+                                BudgetTokens = 1024,
+                            },
+                            ToolChoice = new Messages::BetaToolChoiceAuto()
+                            {
+                                DisableParallelToolUse = true,
+                            },
                             Tools =
                             [
-                                Messages::BetaToolUnion.Create(
-                                    new Messages::BetaTool()
+                                new Messages::BetaTool()
+                                {
+                                    InputSchema = new BetaToolProperties::InputSchema()
                                     {
-                                        InputSchema = new BetaToolProperties::InputSchema()
-                                        {
-                                            Properties1 =
-                                                Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                                                    "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
-                                                ),
-                                            Required = ["location"],
-                                        },
-                                        Name = "name",
-                                        CacheControl = new Messages::BetaCacheControlEphemeral()
-                                        {
-                                            TTL = BetaCacheControlEphemeralProperties::TTL.TTL5m,
-                                        },
-                                        Description = "Get the current weather in a given location",
-                                        Type = BetaToolProperties::Type.Custom,
-                                    }
-                                ),
+                                        Properties1 =
+                                            Json::JsonSerializer.Deserialize<Json::JsonElement>(
+                                                "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
+                                            ),
+                                        Required = ["location"],
+                                    },
+                                    Name = "name",
+                                    CacheControl = new Messages::BetaCacheControlEphemeral()
+                                    {
+                                        TTL = BetaCacheControlEphemeralProperties::TTL.TTL5m,
+                                    },
+                                    Description = "Get the current weather in a given location",
+                                    Type = BetaToolProperties::Type.Custom,
+                                },
                             ],
                             TopK = 5,
                             TopP = 0.7,

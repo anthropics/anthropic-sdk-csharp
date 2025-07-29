@@ -45,16 +45,6 @@ public sealed record class WebSearchToolRequestError
     public override void Validate()
     {
         this.ErrorCode.Validate();
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                    "\"web_search_tool_result_error\""
-                )
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public WebSearchToolRequestError()

@@ -110,14 +110,6 @@ public sealed record class CitationCharLocationParam
         _ = this.DocumentTitle;
         _ = this.EndCharIndex;
         _ = this.StartCharIndex;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"char_location\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public CitationCharLocationParam()

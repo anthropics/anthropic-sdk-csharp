@@ -86,10 +86,6 @@ public sealed record class ModelInfo : Anthropic::ModelBase, Anthropic::IFromRaw
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"model\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public ModelInfo()

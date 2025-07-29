@@ -12,40 +12,35 @@ public abstract record class BetaContentBlock
 {
     internal BetaContentBlock() { }
 
-    public static BetaContentBlockVariants::BetaTextBlock Create(BetaTextBlock value) => new(value);
+    public static implicit operator BetaContentBlock(BetaTextBlock value) =>
+        new BetaContentBlockVariants::BetaTextBlock(value);
 
-    public static BetaContentBlockVariants::BetaThinkingBlock Create(BetaThinkingBlock value) =>
-        new(value);
+    public static implicit operator BetaContentBlock(BetaThinkingBlock value) =>
+        new BetaContentBlockVariants::BetaThinkingBlock(value);
 
-    public static BetaContentBlockVariants::BetaRedactedThinkingBlock Create(
-        BetaRedactedThinkingBlock value
-    ) => new(value);
+    public static implicit operator BetaContentBlock(BetaRedactedThinkingBlock value) =>
+        new BetaContentBlockVariants::BetaRedactedThinkingBlock(value);
 
-    public static BetaContentBlockVariants::BetaToolUseBlock Create(BetaToolUseBlock value) =>
-        new(value);
+    public static implicit operator BetaContentBlock(BetaToolUseBlock value) =>
+        new BetaContentBlockVariants::BetaToolUseBlock(value);
 
-    public static BetaContentBlockVariants::BetaServerToolUseBlock Create(
-        BetaServerToolUseBlock value
-    ) => new(value);
+    public static implicit operator BetaContentBlock(BetaServerToolUseBlock value) =>
+        new BetaContentBlockVariants::BetaServerToolUseBlock(value);
 
-    public static BetaContentBlockVariants::BetaWebSearchToolResultBlock Create(
-        BetaWebSearchToolResultBlock value
-    ) => new(value);
+    public static implicit operator BetaContentBlock(BetaWebSearchToolResultBlock value) =>
+        new BetaContentBlockVariants::BetaWebSearchToolResultBlock(value);
 
-    public static BetaContentBlockVariants::BetaCodeExecutionToolResultBlock Create(
-        BetaCodeExecutionToolResultBlock value
-    ) => new(value);
+    public static implicit operator BetaContentBlock(BetaCodeExecutionToolResultBlock value) =>
+        new BetaContentBlockVariants::BetaCodeExecutionToolResultBlock(value);
 
-    public static BetaContentBlockVariants::BetaMCPToolUseBlock Create(BetaMCPToolUseBlock value) =>
-        new(value);
+    public static implicit operator BetaContentBlock(BetaMCPToolUseBlock value) =>
+        new BetaContentBlockVariants::BetaMCPToolUseBlock(value);
 
-    public static BetaContentBlockVariants::BetaMCPToolResultBlock Create(
-        BetaMCPToolResultBlock value
-    ) => new(value);
+    public static implicit operator BetaContentBlock(BetaMCPToolResultBlock value) =>
+        new BetaContentBlockVariants::BetaMCPToolResultBlock(value);
 
-    public static BetaContentBlockVariants::BetaContainerUploadBlock Create(
-        BetaContainerUploadBlock value
-    ) => new(value);
+    public static implicit operator BetaContentBlock(BetaContainerUploadBlock value) =>
+        new BetaContentBlockVariants::BetaContainerUploadBlock(value);
 
     public abstract void Validate();
 }

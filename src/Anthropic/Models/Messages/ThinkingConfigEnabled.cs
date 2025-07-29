@@ -52,10 +52,6 @@ public sealed record class ThinkingConfigEnabled
     public override void Validate()
     {
         _ = this.BudgetTokens;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"enabled\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public ThinkingConfigEnabled()

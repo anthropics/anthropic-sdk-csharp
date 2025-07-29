@@ -85,10 +85,6 @@ public sealed record class BetaRequestMCPServerURLDefinition
     public override void Validate()
     {
         _ = this.Name;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"url\"")))
-        {
-            throw new System::Exception();
-        }
         _ = this.URL;
         _ = this.AuthorizationToken;
         this.ToolConfiguration?.Validate();

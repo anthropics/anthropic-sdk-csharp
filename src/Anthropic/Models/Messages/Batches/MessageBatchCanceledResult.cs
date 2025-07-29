@@ -24,13 +24,7 @@ public sealed record class MessageBatchCanceledResult
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public override void Validate()
-    {
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"canceled\"")))
-        {
-            throw new System::Exception();
-        }
-    }
+    public override void Validate() { }
 
     public MessageBatchCanceledResult()
     {

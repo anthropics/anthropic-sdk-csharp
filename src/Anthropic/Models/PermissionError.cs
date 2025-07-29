@@ -43,14 +43,6 @@ public sealed record class PermissionError
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"permission_error\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public PermissionError()

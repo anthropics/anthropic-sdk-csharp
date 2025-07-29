@@ -43,14 +43,6 @@ public sealed record class BetaInvalidRequestError
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"invalid_request_error\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaInvalidRequestError()

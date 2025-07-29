@@ -40,14 +40,6 @@ public sealed record class RedactedThinkingBlockParam
     public override void Validate()
     {
         _ = this.Data;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"redacted_thinking\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public RedactedThinkingBlockParam()

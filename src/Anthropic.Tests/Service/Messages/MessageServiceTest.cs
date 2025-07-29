@@ -1,5 +1,4 @@
 using Json = System.Text.Json;
-using MessageCountTokensParamsProperties = Anthropic.Models.Messages.MessageCountTokensParamsProperties;
 using MessageCreateParamsProperties = Anthropic.Models.Messages.MessageCreateParamsProperties;
 using MessageParamProperties = Anthropic.Models.Messages.MessageParamProperties;
 using Messages = Anthropic.Models.Messages;
@@ -22,7 +21,7 @@ public class MessageServiceTest : Tests::TestBase
                 [
                     new Messages::MessageParam()
                     {
-                        Content = MessageParamProperties::Content.Create("string"),
+                        Content = "string",
                         Role = MessageParamProperties::Role.User,
                     },
                 ],
@@ -34,53 +33,44 @@ public class MessageServiceTest : Tests::TestBase
                 ServiceTier = MessageCreateParamsProperties::ServiceTier.Auto,
                 StopSequences = ["string"],
                 Stream = true,
-                System = MessageCreateParamsProperties::System.Create(
-                    [
-                        new Messages::TextBlockParam()
-                        {
-                            Text = "Today's date is 2024-06-01.",
-                            CacheControl = new Messages::CacheControlEphemeral() { },
-                            Citations =
-                            [
-                                Messages::TextCitationParam.Create(
-                                    new Messages::CitationCharLocationParam()
-                                    {
-                                        CitedText = "cited_text",
-                                        DocumentIndex = 0,
-                                        DocumentTitle = "x",
-                                        EndCharIndex = 0,
-                                        StartCharIndex = 0,
-                                    }
-                                ),
-                            ],
-                        },
-                    ]
-                ),
+                System =
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new Messages::CacheControlEphemeral() { },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ],
                 Temperature = 1,
-                Thinking = Messages::ThinkingConfigParam.Create(
-                    new Messages::ThinkingConfigEnabled() { BudgetTokens = 1024 }
-                ),
-                ToolChoice = Messages::ToolChoice.Create(
-                    new Messages::ToolChoiceAuto() { DisableParallelToolUse = true }
-                ),
+                Thinking = new Messages::ThinkingConfigEnabled() { BudgetTokens = 1024 },
+                ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
-                    Messages::ToolUnion.Create(
-                        new Messages::Tool()
+                    new Messages::Tool()
+                    {
+                        InputSchema = new ToolProperties::InputSchema()
                         {
-                            InputSchema = new ToolProperties::InputSchema()
-                            {
-                                Properties1 = Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                                    "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
-                                ),
-                                Required = ["location"],
-                            },
-                            Name = "name",
-                            CacheControl = new Messages::CacheControlEphemeral() { },
-                            Description = "Get the current weather in a given location",
-                            Type = ToolProperties::Type.Custom,
-                        }
-                    ),
+                            Properties1 = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+                                "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
+                            ),
+                            Required = ["location"],
+                        },
+                        Name = "name",
+                        CacheControl = new Messages::CacheControlEphemeral() { },
+                        Description = "Get the current weather in a given location",
+                        Type = ToolProperties::Type.Custom,
+                    },
                 ],
                 TopK = 5,
                 TopP = 0.7,
@@ -99,57 +89,48 @@ public class MessageServiceTest : Tests::TestBase
                 [
                     new Messages::MessageParam()
                     {
-                        Content = MessageParamProperties::Content.Create("string"),
+                        Content = "string",
                         Role = MessageParamProperties::Role.User,
                     },
                 ],
                 Model = Messages::Model.Claude3_7SonnetLatest,
-                System = MessageCountTokensParamsProperties::System.Create(
-                    [
-                        new Messages::TextBlockParam()
-                        {
-                            Text = "Today's date is 2024-06-01.",
-                            CacheControl = new Messages::CacheControlEphemeral() { },
-                            Citations =
-                            [
-                                Messages::TextCitationParam.Create(
-                                    new Messages::CitationCharLocationParam()
-                                    {
-                                        CitedText = "cited_text",
-                                        DocumentIndex = 0,
-                                        DocumentTitle = "x",
-                                        EndCharIndex = 0,
-                                        StartCharIndex = 0,
-                                    }
-                                ),
-                            ],
-                        },
-                    ]
-                ),
-                Thinking = Messages::ThinkingConfigParam.Create(
-                    new Messages::ThinkingConfigEnabled() { BudgetTokens = 1024 }
-                ),
-                ToolChoice = Messages::ToolChoice.Create(
-                    new Messages::ToolChoiceAuto() { DisableParallelToolUse = true }
-                ),
+                System =
+                [
+                    new Messages::TextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new Messages::CacheControlEphemeral() { },
+                        Citations =
+                        [
+                            new Messages::CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ],
+                Thinking = new Messages::ThinkingConfigEnabled() { BudgetTokens = 1024 },
+                ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
-                    Messages::MessageCountTokensTool.Create(
-                        new Messages::Tool()
+                    new Messages::Tool()
+                    {
+                        InputSchema = new ToolProperties::InputSchema()
                         {
-                            InputSchema = new ToolProperties::InputSchema()
-                            {
-                                Properties1 = Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                                    "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
-                                ),
-                                Required = ["location"],
-                            },
-                            Name = "name",
-                            CacheControl = new Messages::CacheControlEphemeral() { },
-                            Description = "Get the current weather in a given location",
-                            Type = ToolProperties::Type.Custom,
-                        }
-                    ),
+                            Properties1 = Json::JsonSerializer.Deserialize<Json::JsonElement>(
+                                "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
+                            ),
+                            Required = ["location"],
+                        },
+                        Name = "name",
+                        CacheControl = new Messages::CacheControlEphemeral() { },
+                        Description = "Get the current weather in a given location",
+                        Type = ToolProperties::Type.Custom,
+                    },
                 ],
             }
         );

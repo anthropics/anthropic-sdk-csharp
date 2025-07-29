@@ -43,14 +43,6 @@ public sealed record class SignatureDelta
     public override void Validate()
     {
         _ = this.Signature;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"signature_delta\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public SignatureDelta()

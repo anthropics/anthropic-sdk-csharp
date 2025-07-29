@@ -227,14 +227,6 @@ public sealed record class BetaMessageBatch
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
         _ = this.ResultsURL;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_batch\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaMessageBatch()

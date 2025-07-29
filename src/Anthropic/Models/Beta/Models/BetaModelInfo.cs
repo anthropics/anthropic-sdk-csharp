@@ -86,10 +86,6 @@ public sealed record class BetaModelInfo : Anthropic::ModelBase, Anthropic::IFro
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"model\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaModelInfo()

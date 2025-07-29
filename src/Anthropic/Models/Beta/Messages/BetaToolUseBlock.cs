@@ -67,10 +67,6 @@ public sealed record class BetaToolUseBlock
         _ = this.ID;
         _ = this.Input;
         _ = this.Name;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_use\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaToolUseBlock()

@@ -54,10 +54,6 @@ public sealed record class ToolChoiceAny : Anthropic::ModelBase, Anthropic::IFro
 
     public override void Validate()
     {
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"any\"")))
-        {
-            throw new System::Exception();
-        }
         _ = this.DisableParallelToolUse;
     }
 

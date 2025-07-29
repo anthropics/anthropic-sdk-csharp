@@ -58,22 +58,6 @@ public sealed record class BetaCodeExecutionTool20250522
 
     public override void Validate()
     {
-        if (
-            !this.Name.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"code_execution\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"code_execution_20250522\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
     }
 

@@ -82,10 +82,6 @@ public sealed record class ToolUseBlockParam
         _ = this.ID;
         _ = this.Input;
         _ = this.Name;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_use\"")))
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
     }
 

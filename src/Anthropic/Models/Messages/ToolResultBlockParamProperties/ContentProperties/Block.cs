@@ -10,11 +10,11 @@ public abstract record class Block
 {
     internal Block() { }
 
-    public static BlockVariants::TextBlockParam Create(Messages::TextBlockParam value) =>
-        new(value);
+    public static implicit operator Block(Messages::TextBlockParam value) =>
+        new BlockVariants::TextBlockParam(value);
 
-    public static BlockVariants::ImageBlockParam Create(Messages::ImageBlockParam value) =>
-        new(value);
+    public static implicit operator Block(Messages::ImageBlockParam value) =>
+        new BlockVariants::ImageBlockParam(value);
 
     public abstract void Validate();
 }

@@ -58,10 +58,6 @@ public sealed record class ThinkingBlock : Anthropic::ModelBase, Anthropic::IFro
     {
         _ = this.Signature;
         _ = this.Thinking;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"thinking\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public ThinkingBlock()

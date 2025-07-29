@@ -9,21 +9,23 @@ public abstract record class ContentBlock
 {
     internal ContentBlock() { }
 
-    public static ContentBlockVariants::TextBlock Create(TextBlock value) => new(value);
+    public static implicit operator ContentBlock(TextBlock value) =>
+        new ContentBlockVariants::TextBlock(value);
 
-    public static ContentBlockVariants::ThinkingBlock Create(ThinkingBlock value) => new(value);
+    public static implicit operator ContentBlock(ThinkingBlock value) =>
+        new ContentBlockVariants::ThinkingBlock(value);
 
-    public static ContentBlockVariants::RedactedThinkingBlock Create(RedactedThinkingBlock value) =>
-        new(value);
+    public static implicit operator ContentBlock(RedactedThinkingBlock value) =>
+        new ContentBlockVariants::RedactedThinkingBlock(value);
 
-    public static ContentBlockVariants::ToolUseBlock Create(ToolUseBlock value) => new(value);
+    public static implicit operator ContentBlock(ToolUseBlock value) =>
+        new ContentBlockVariants::ToolUseBlock(value);
 
-    public static ContentBlockVariants::ServerToolUseBlock Create(ServerToolUseBlock value) =>
-        new(value);
+    public static implicit operator ContentBlock(ServerToolUseBlock value) =>
+        new ContentBlockVariants::ServerToolUseBlock(value);
 
-    public static ContentBlockVariants::WebSearchToolResultBlock Create(
-        WebSearchToolResultBlock value
-    ) => new(value);
+    public static implicit operator ContentBlock(WebSearchToolResultBlock value) =>
+        new ContentBlockVariants::WebSearchToolResultBlock(value);
 
     public abstract void Validate();
 }

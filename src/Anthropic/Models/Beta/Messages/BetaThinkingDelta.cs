@@ -43,14 +43,6 @@ public sealed record class BetaThinkingDelta
     public override void Validate()
     {
         _ = this.Thinking;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"thinking_delta\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaThinkingDelta()

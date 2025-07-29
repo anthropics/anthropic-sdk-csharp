@@ -53,14 +53,6 @@ public sealed record class RawContentBlockDeltaEvent
     {
         this.Delta.Validate();
         _ = this.Index;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_delta\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public RawContentBlockDeltaEvent()

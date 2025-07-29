@@ -44,10 +44,6 @@ public sealed record class MessageBatchSucceededResult
     public override void Validate()
     {
         this.Message.Validate();
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"succeeded\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public MessageBatchSucceededResult()

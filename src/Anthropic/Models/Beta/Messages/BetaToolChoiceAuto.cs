@@ -56,10 +56,6 @@ public sealed record class BetaToolChoiceAuto
 
     public override void Validate()
     {
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"auto\"")))
-        {
-            throw new System::Exception();
-        }
         _ = this.DisableParallelToolUse;
     }
 

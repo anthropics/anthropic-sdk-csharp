@@ -9,26 +9,32 @@ public abstract record class ErrorObject
 {
     internal ErrorObject() { }
 
-    public static ErrorObjectVariants::InvalidRequestError Create(InvalidRequestError value) =>
-        new(value);
+    public static implicit operator ErrorObject(InvalidRequestError value) =>
+        new ErrorObjectVariants::InvalidRequestError(value);
 
-    public static ErrorObjectVariants::AuthenticationError Create(AuthenticationError value) =>
-        new(value);
+    public static implicit operator ErrorObject(AuthenticationError value) =>
+        new ErrorObjectVariants::AuthenticationError(value);
 
-    public static ErrorObjectVariants::BillingError Create(BillingError value) => new(value);
+    public static implicit operator ErrorObject(BillingError value) =>
+        new ErrorObjectVariants::BillingError(value);
 
-    public static ErrorObjectVariants::PermissionError Create(PermissionError value) => new(value);
+    public static implicit operator ErrorObject(PermissionError value) =>
+        new ErrorObjectVariants::PermissionError(value);
 
-    public static ErrorObjectVariants::NotFoundError Create(NotFoundError value) => new(value);
+    public static implicit operator ErrorObject(NotFoundError value) =>
+        new ErrorObjectVariants::NotFoundError(value);
 
-    public static ErrorObjectVariants::RateLimitError Create(RateLimitError value) => new(value);
+    public static implicit operator ErrorObject(RateLimitError value) =>
+        new ErrorObjectVariants::RateLimitError(value);
 
-    public static ErrorObjectVariants::GatewayTimeoutError Create(GatewayTimeoutError value) =>
-        new(value);
+    public static implicit operator ErrorObject(GatewayTimeoutError value) =>
+        new ErrorObjectVariants::GatewayTimeoutError(value);
 
-    public static ErrorObjectVariants::APIErrorObject Create(APIErrorObject value) => new(value);
+    public static implicit operator ErrorObject(APIErrorObject value) =>
+        new ErrorObjectVariants::APIErrorObject(value);
 
-    public static ErrorObjectVariants::OverloadedError Create(OverloadedError value) => new(value);
+    public static implicit operator ErrorObject(OverloadedError value) =>
+        new ErrorObjectVariants::OverloadedError(value);
 
     public abstract void Validate();
 }

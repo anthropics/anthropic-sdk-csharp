@@ -31,9 +31,7 @@ public class BatchServiceTest : Tests::TestBase
                             [
                                 new Messages::MessageParam()
                                 {
-                                    Content = MessageParamProperties::Content.Create(
-                                        "Hello, world"
-                                    ),
+                                    Content = "Hello, world",
                                     Role = MessageParamProperties::Role.User,
                                 },
                             ],
@@ -45,54 +43,51 @@ public class BatchServiceTest : Tests::TestBase
                             ServiceTier = ParamsProperties::ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
-                            System = ParamsProperties::System.Create(
-                                [
-                                    new Messages::TextBlockParam()
-                                    {
-                                        Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new Messages::CacheControlEphemeral() { },
-                                        Citations =
-                                        [
-                                            Messages::TextCitationParam.Create(
-                                                new Messages::CitationCharLocationParam()
-                                                {
-                                                    CitedText = "cited_text",
-                                                    DocumentIndex = 0,
-                                                    DocumentTitle = "x",
-                                                    EndCharIndex = 0,
-                                                    StartCharIndex = 0,
-                                                }
-                                            ),
-                                        ],
-                                    },
-                                ]
-                            ),
+                            System =
+                            [
+                                new Messages::TextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new Messages::CacheControlEphemeral() { },
+                                    Citations =
+                                    [
+                                        new Messages::CitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ],
                             Temperature = 1,
-                            Thinking = Messages::ThinkingConfigParam.Create(
-                                new Messages::ThinkingConfigEnabled() { BudgetTokens = 1024 }
-                            ),
-                            ToolChoice = Messages::ToolChoice.Create(
-                                new Messages::ToolChoiceAuto() { DisableParallelToolUse = true }
-                            ),
+                            Thinking = new Messages::ThinkingConfigEnabled()
+                            {
+                                BudgetTokens = 1024,
+                            },
+                            ToolChoice = new Messages::ToolChoiceAuto()
+                            {
+                                DisableParallelToolUse = true,
+                            },
                             Tools =
                             [
-                                Messages::ToolUnion.Create(
-                                    new Messages::Tool()
+                                new Messages::Tool()
+                                {
+                                    InputSchema = new ToolProperties::InputSchema()
                                     {
-                                        InputSchema = new ToolProperties::InputSchema()
-                                        {
-                                            Properties1 =
-                                                Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                                                    "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
-                                                ),
-                                            Required = ["location"],
-                                        },
-                                        Name = "name",
-                                        CacheControl = new Messages::CacheControlEphemeral() { },
-                                        Description = "Get the current weather in a given location",
-                                        Type = ToolProperties::Type.Custom,
-                                    }
-                                ),
+                                        Properties1 =
+                                            Json::JsonSerializer.Deserialize<Json::JsonElement>(
+                                                "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
+                                            ),
+                                        Required = ["location"],
+                                    },
+                                    Name = "name",
+                                    CacheControl = new Messages::CacheControlEphemeral() { },
+                                    Description = "Get the current weather in a given location",
+                                    Type = ToolProperties::Type.Custom,
+                                },
                             ],
                             TopK = 5,
                             TopP = 0.7,

@@ -38,12 +38,6 @@ public sealed record class TextDelta : Anthropic::ModelBase, Anthropic::IFromRaw
     public override void Validate()
     {
         _ = this.Text;
-        if (
-            !this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text_delta\""))
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public TextDelta()

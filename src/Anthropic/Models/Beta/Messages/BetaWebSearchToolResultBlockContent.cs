@@ -12,13 +12,13 @@ public abstract record class BetaWebSearchToolResultBlockContent
 {
     internal BetaWebSearchToolResultBlockContent() { }
 
-    public static BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError Create(
+    public static implicit operator BetaWebSearchToolResultBlockContent(
         BetaWebSearchToolResultError value
-    ) => new(value);
+    ) => new BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError(value);
 
-    public static BetaWebSearchToolResultBlockContentVariants::UnionMember1 Create(
+    public static implicit operator BetaWebSearchToolResultBlockContent(
         Generic::List<BetaWebSearchResultBlock> value
-    ) => new(value);
+    ) => new BetaWebSearchToolResultBlockContentVariants::UnionMember1(value);
 
     public abstract void Validate();
 }

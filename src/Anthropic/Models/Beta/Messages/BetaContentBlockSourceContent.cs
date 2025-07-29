@@ -9,13 +9,11 @@ public abstract record class BetaContentBlockSourceContent
 {
     internal BetaContentBlockSourceContent() { }
 
-    public static BetaContentBlockSourceContentVariants::BetaTextBlockParam Create(
-        BetaTextBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockSourceContent(BetaTextBlockParam value) =>
+        new BetaContentBlockSourceContentVariants::BetaTextBlockParam(value);
 
-    public static BetaContentBlockSourceContentVariants::BetaImageBlockParam Create(
-        BetaImageBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockSourceContent(BetaImageBlockParam value) =>
+        new BetaContentBlockSourceContentVariants::BetaImageBlockParam(value);
 
     public abstract void Validate();
 }

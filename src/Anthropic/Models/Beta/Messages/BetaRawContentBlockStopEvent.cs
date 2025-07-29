@@ -39,14 +39,6 @@ public sealed record class BetaRawContentBlockStopEvent
     public override void Validate()
     {
         _ = this.Index;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_stop\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaRawContentBlockStopEvent()

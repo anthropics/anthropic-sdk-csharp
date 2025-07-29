@@ -19,13 +19,11 @@ public abstract record class ThinkingConfigParam
 {
     internal ThinkingConfigParam() { }
 
-    public static ThinkingConfigParamVariants::ThinkingConfigEnabled Create(
-        ThinkingConfigEnabled value
-    ) => new(value);
+    public static implicit operator ThinkingConfigParam(ThinkingConfigEnabled value) =>
+        new ThinkingConfigParamVariants::ThinkingConfigEnabled(value);
 
-    public static ThinkingConfigParamVariants::ThinkingConfigDisabled Create(
-        ThinkingConfigDisabled value
-    ) => new(value);
+    public static implicit operator ThinkingConfigParam(ThinkingConfigDisabled value) =>
+        new ThinkingConfigParamVariants::ThinkingConfigDisabled(value);
 
     public abstract void Validate();
 }

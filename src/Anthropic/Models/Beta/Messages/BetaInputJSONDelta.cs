@@ -43,14 +43,6 @@ public sealed record class BetaInputJSONDelta
     public override void Validate()
     {
         _ = this.PartialJSON;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"input_json_delta\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaInputJSONDelta()

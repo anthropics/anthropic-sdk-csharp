@@ -43,10 +43,6 @@ public sealed record class BetaFileDocumentSource
     public override void Validate()
     {
         _ = this.FileID;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"file\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaFileDocumentSource()

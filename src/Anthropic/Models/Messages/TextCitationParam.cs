@@ -9,21 +9,17 @@ public abstract record class TextCitationParam
 {
     internal TextCitationParam() { }
 
-    public static TextCitationParamVariants::CitationCharLocationParam Create(
-        CitationCharLocationParam value
-    ) => new(value);
+    public static implicit operator TextCitationParam(CitationCharLocationParam value) =>
+        new TextCitationParamVariants::CitationCharLocationParam(value);
 
-    public static TextCitationParamVariants::CitationPageLocationParam Create(
-        CitationPageLocationParam value
-    ) => new(value);
+    public static implicit operator TextCitationParam(CitationPageLocationParam value) =>
+        new TextCitationParamVariants::CitationPageLocationParam(value);
 
-    public static TextCitationParamVariants::CitationContentBlockLocationParam Create(
-        CitationContentBlockLocationParam value
-    ) => new(value);
+    public static implicit operator TextCitationParam(CitationContentBlockLocationParam value) =>
+        new TextCitationParamVariants::CitationContentBlockLocationParam(value);
 
-    public static TextCitationParamVariants::CitationWebSearchResultLocationParam Create(
-        CitationWebSearchResultLocationParam value
-    ) => new(value);
+    public static implicit operator TextCitationParam(CitationWebSearchResultLocationParam value) =>
+        new TextCitationParamVariants::CitationWebSearchResultLocationParam(value);
 
     public abstract void Validate();
 }

@@ -9,33 +9,32 @@ public abstract record class BetaError
 {
     internal BetaError() { }
 
-    public static BetaErrorVariants::BetaInvalidRequestError Create(
-        BetaInvalidRequestError value
-    ) => new(value);
+    public static implicit operator BetaError(BetaInvalidRequestError value) =>
+        new BetaErrorVariants::BetaInvalidRequestError(value);
 
-    public static BetaErrorVariants::BetaAuthenticationError Create(
-        BetaAuthenticationError value
-    ) => new(value);
+    public static implicit operator BetaError(BetaAuthenticationError value) =>
+        new BetaErrorVariants::BetaAuthenticationError(value);
 
-    public static BetaErrorVariants::BetaBillingError Create(BetaBillingError value) => new(value);
+    public static implicit operator BetaError(BetaBillingError value) =>
+        new BetaErrorVariants::BetaBillingError(value);
 
-    public static BetaErrorVariants::BetaPermissionError Create(BetaPermissionError value) =>
-        new(value);
+    public static implicit operator BetaError(BetaPermissionError value) =>
+        new BetaErrorVariants::BetaPermissionError(value);
 
-    public static BetaErrorVariants::BetaNotFoundError Create(BetaNotFoundError value) =>
-        new(value);
+    public static implicit operator BetaError(BetaNotFoundError value) =>
+        new BetaErrorVariants::BetaNotFoundError(value);
 
-    public static BetaErrorVariants::BetaRateLimitError Create(BetaRateLimitError value) =>
-        new(value);
+    public static implicit operator BetaError(BetaRateLimitError value) =>
+        new BetaErrorVariants::BetaRateLimitError(value);
 
-    public static BetaErrorVariants::BetaGatewayTimeoutError Create(
-        BetaGatewayTimeoutError value
-    ) => new(value);
+    public static implicit operator BetaError(BetaGatewayTimeoutError value) =>
+        new BetaErrorVariants::BetaGatewayTimeoutError(value);
 
-    public static BetaErrorVariants::BetaAPIError Create(BetaAPIError value) => new(value);
+    public static implicit operator BetaError(BetaAPIError value) =>
+        new BetaErrorVariants::BetaAPIError(value);
 
-    public static BetaErrorVariants::BetaOverloadedError Create(BetaOverloadedError value) =>
-        new(value);
+    public static implicit operator BetaError(BetaOverloadedError value) =>
+        new BetaErrorVariants::BetaOverloadedError(value);
 
     public abstract void Validate();
 }

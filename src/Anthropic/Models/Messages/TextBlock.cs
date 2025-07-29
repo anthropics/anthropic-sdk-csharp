@@ -64,10 +64,6 @@ public sealed record class TextBlock : Anthropic::ModelBase, Anthropic::IFromRaw
             item.Validate();
         }
         _ = this.Text;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public TextBlock()

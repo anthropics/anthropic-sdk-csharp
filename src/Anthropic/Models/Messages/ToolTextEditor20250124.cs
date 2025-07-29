@@ -58,22 +58,6 @@ public sealed record class ToolTextEditor20250124
 
     public override void Validate()
     {
-        if (
-            !this.Name.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"str_replace_editor\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text_editor_20250124\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
     }
 

@@ -12,13 +12,13 @@ public abstract record class WebSearchToolResultBlockParamContent
 {
     internal WebSearchToolResultBlockParamContent() { }
 
-    public static WebSearchToolResultBlockParamContentVariants::WebSearchToolResultBlockItem Create(
+    public static implicit operator WebSearchToolResultBlockParamContent(
         Generic::List<WebSearchResultBlockParam> value
-    ) => new(value);
+    ) => new WebSearchToolResultBlockParamContentVariants::WebSearchToolResultBlockItem(value);
 
-    public static WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError Create(
+    public static implicit operator WebSearchToolResultBlockParamContent(
         WebSearchToolRequestError value
-    ) => new(value);
+    ) => new WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError(value);
 
     public abstract void Validate();
 }

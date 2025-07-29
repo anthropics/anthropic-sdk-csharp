@@ -97,14 +97,6 @@ public sealed record class BetaCodeExecutionResultBlockParam
         _ = this.ReturnCode;
         _ = this.Stderr;
         _ = this.Stdout;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"code_execution_result\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaCodeExecutionResultBlockParam()

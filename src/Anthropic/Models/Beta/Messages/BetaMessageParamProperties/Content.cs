@@ -11,11 +11,11 @@ public abstract record class Content
 {
     internal Content() { }
 
-    public static ContentVariants::UnionMember0 Create(string value) => new(value);
+    public static implicit operator Content(string value) =>
+        new ContentVariants::UnionMember0(value);
 
-    public static ContentVariants::UnionMember1 Create(
-        Generic::List<Messages::BetaContentBlockParam> value
-    ) => new(value);
+    public static implicit operator Content(Generic::List<Messages::BetaContentBlockParam> value) =>
+        new ContentVariants::UnionMember1(value);
 
     public abstract void Validate();
 }

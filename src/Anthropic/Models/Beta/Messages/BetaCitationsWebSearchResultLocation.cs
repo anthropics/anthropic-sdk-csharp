@@ -88,16 +88,6 @@ public sealed record class BetaCitationsWebSearchResultLocation
         _ = this.CitedText;
         _ = this.EncryptedIndex;
         _ = this.Title;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                    "\"web_search_result_location\""
-                )
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         _ = this.URL;
     }
 

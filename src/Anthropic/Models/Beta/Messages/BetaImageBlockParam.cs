@@ -59,10 +59,6 @@ public sealed record class BetaImageBlockParam
     public override void Validate()
     {
         this.Source.Validate();
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"image\"")))
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
     }
 

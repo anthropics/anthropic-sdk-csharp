@@ -55,18 +55,6 @@ public sealed record class Base64PDFSource
     public override void Validate()
     {
         _ = this.Data;
-        if (
-            !this.MediaType.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"application/pdf\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"base64\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public Base64PDFSource()

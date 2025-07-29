@@ -44,10 +44,6 @@ public sealed record class ContentBlockSource
     public override void Validate()
     {
         this.Content.Validate();
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public ContentBlockSource()

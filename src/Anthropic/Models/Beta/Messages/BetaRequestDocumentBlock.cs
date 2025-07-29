@@ -96,10 +96,6 @@ public sealed record class BetaRequestDocumentBlock
     public override void Validate()
     {
         this.Source.Validate();
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"document\"")))
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
         this.Citations?.Validate();
         _ = this.Context;

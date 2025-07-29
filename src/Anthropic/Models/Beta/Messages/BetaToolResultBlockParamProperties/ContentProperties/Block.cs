@@ -10,15 +10,14 @@ public abstract record class Block
 {
     internal Block() { }
 
-    public static BlockVariants::BetaTextBlockParam Create(Messages::BetaTextBlockParam value) =>
-        new(value);
+    public static implicit operator Block(Messages::BetaTextBlockParam value) =>
+        new BlockVariants::BetaTextBlockParam(value);
 
-    public static BlockVariants::BetaImageBlockParam Create(Messages::BetaImageBlockParam value) =>
-        new(value);
+    public static implicit operator Block(Messages::BetaImageBlockParam value) =>
+        new BlockVariants::BetaImageBlockParam(value);
 
-    public static BlockVariants::BetaSearchResultBlockParam Create(
-        Messages::BetaSearchResultBlockParam value
-    ) => new(value);
+    public static implicit operator Block(Messages::BetaSearchResultBlockParam value) =>
+        new BlockVariants::BetaSearchResultBlockParam(value);
 
     public abstract void Validate();
 }

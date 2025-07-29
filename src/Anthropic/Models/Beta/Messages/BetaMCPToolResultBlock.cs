@@ -78,14 +78,6 @@ public sealed record class BetaMCPToolResultBlock
         this.Content.Validate();
         _ = this.IsError;
         _ = this.ToolUseID;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"mcp_tool_result\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaMCPToolResultBlock()

@@ -111,12 +111,6 @@ public sealed record class Completion : Anthropic::ModelBase, Anthropic::IFromRa
         _ = this.Completion1;
         this.Model.Validate();
         _ = this.StopReason;
-        if (
-            !this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"completion\""))
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public Completion()

@@ -104,14 +104,6 @@ public sealed record class BetaSearchResultBlockParam
         }
         _ = this.Source;
         _ = this.Title;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"search_result\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
         this.Citations?.Validate();
     }

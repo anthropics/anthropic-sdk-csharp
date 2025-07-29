@@ -122,20 +122,6 @@ public sealed record class WebSearchTool20250305
 
     public override void Validate()
     {
-        if (
-            !this.Name.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search\""))
-        )
-        {
-            throw new System::Exception();
-        }
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_20250305\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         foreach (var item in this.AllowedDomains ?? [])
         {
             _ = item;

@@ -16,21 +16,17 @@ public abstract record class MessageBatchResult
 {
     internal MessageBatchResult() { }
 
-    public static MessageBatchResultVariants::MessageBatchSucceededResult Create(
-        MessageBatchSucceededResult value
-    ) => new(value);
+    public static implicit operator MessageBatchResult(MessageBatchSucceededResult value) =>
+        new MessageBatchResultVariants::MessageBatchSucceededResult(value);
 
-    public static MessageBatchResultVariants::MessageBatchErroredResult Create(
-        MessageBatchErroredResult value
-    ) => new(value);
+    public static implicit operator MessageBatchResult(MessageBatchErroredResult value) =>
+        new MessageBatchResultVariants::MessageBatchErroredResult(value);
 
-    public static MessageBatchResultVariants::MessageBatchCanceledResult Create(
-        MessageBatchCanceledResult value
-    ) => new(value);
+    public static implicit operator MessageBatchResult(MessageBatchCanceledResult value) =>
+        new MessageBatchResultVariants::MessageBatchCanceledResult(value);
 
-    public static MessageBatchResultVariants::MessageBatchExpiredResult Create(
-        MessageBatchExpiredResult value
-    ) => new(value);
+    public static implicit operator MessageBatchResult(MessageBatchExpiredResult value) =>
+        new MessageBatchResultVariants::MessageBatchExpiredResult(value);
 
     public abstract void Validate();
 }

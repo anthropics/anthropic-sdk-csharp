@@ -43,14 +43,6 @@ public sealed record class BetaOverloadedError
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"overloaded_error\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaOverloadedError()

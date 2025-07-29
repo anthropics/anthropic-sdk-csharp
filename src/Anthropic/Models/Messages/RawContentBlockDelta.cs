@@ -9,19 +9,20 @@ public abstract record class RawContentBlockDelta
 {
     internal RawContentBlockDelta() { }
 
-    public static RawContentBlockDeltaVariants::TextDelta Create(TextDelta value) => new(value);
+    public static implicit operator RawContentBlockDelta(TextDelta value) =>
+        new RawContentBlockDeltaVariants::TextDelta(value);
 
-    public static RawContentBlockDeltaVariants::InputJSONDelta Create(InputJSONDelta value) =>
-        new(value);
+    public static implicit operator RawContentBlockDelta(InputJSONDelta value) =>
+        new RawContentBlockDeltaVariants::InputJSONDelta(value);
 
-    public static RawContentBlockDeltaVariants::CitationsDelta Create(CitationsDelta value) =>
-        new(value);
+    public static implicit operator RawContentBlockDelta(CitationsDelta value) =>
+        new RawContentBlockDeltaVariants::CitationsDelta(value);
 
-    public static RawContentBlockDeltaVariants::ThinkingDelta Create(ThinkingDelta value) =>
-        new(value);
+    public static implicit operator RawContentBlockDelta(ThinkingDelta value) =>
+        new RawContentBlockDeltaVariants::ThinkingDelta(value);
 
-    public static RawContentBlockDeltaVariants::SignatureDelta Create(SignatureDelta value) =>
-        new(value);
+    public static implicit operator RawContentBlockDelta(SignatureDelta value) =>
+        new RawContentBlockDeltaVariants::SignatureDelta(value);
 
     public abstract void Validate();
 }

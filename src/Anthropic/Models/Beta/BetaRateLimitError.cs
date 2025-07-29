@@ -43,14 +43,6 @@ public sealed record class BetaRateLimitError
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"rate_limit_error\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaRateLimitError()

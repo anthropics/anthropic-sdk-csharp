@@ -58,14 +58,6 @@ public sealed record class RawContentBlockStartEvent
     {
         this.ContentBlock.Validate();
         _ = this.Index;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_start\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public RawContentBlockStartEvent()

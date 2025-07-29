@@ -24,13 +24,7 @@ public sealed record class BetaThinkingConfigDisabled
         set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
     }
 
-    public override void Validate()
-    {
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"disabled\"")))
-        {
-            throw new System::Exception();
-        }
-    }
+    public override void Validate() { }
 
     public BetaThinkingConfigDisabled()
     {

@@ -48,10 +48,6 @@ public sealed record class BetaCacheControlEphemeral
 
     public override void Validate()
     {
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"ephemeral\"")))
-        {
-            throw new System::Exception();
-        }
         this.TTL?.Validate();
     }
 

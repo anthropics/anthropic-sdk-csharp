@@ -117,18 +117,6 @@ public sealed record class BetaToolComputerUse20241022
     {
         _ = this.DisplayHeightPx;
         _ = this.DisplayWidthPx;
-        if (!this.Name.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"computer\"")))
-        {
-            throw new System::Exception();
-        }
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"computer_20241022\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
         _ = this.DisplayNumber;
     }

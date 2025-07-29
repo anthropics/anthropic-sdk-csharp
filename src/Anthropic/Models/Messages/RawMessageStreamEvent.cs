@@ -9,29 +9,23 @@ public abstract record class RawMessageStreamEvent
 {
     internal RawMessageStreamEvent() { }
 
-    public static RawMessageStreamEventVariants::RawMessageStartEvent Create(
-        RawMessageStartEvent value
-    ) => new(value);
+    public static implicit operator RawMessageStreamEvent(RawMessageStartEvent value) =>
+        new RawMessageStreamEventVariants::RawMessageStartEvent(value);
 
-    public static RawMessageStreamEventVariants::RawMessageDeltaEvent Create(
-        RawMessageDeltaEvent value
-    ) => new(value);
+    public static implicit operator RawMessageStreamEvent(RawMessageDeltaEvent value) =>
+        new RawMessageStreamEventVariants::RawMessageDeltaEvent(value);
 
-    public static RawMessageStreamEventVariants::RawMessageStopEvent Create(
-        RawMessageStopEvent value
-    ) => new(value);
+    public static implicit operator RawMessageStreamEvent(RawMessageStopEvent value) =>
+        new RawMessageStreamEventVariants::RawMessageStopEvent(value);
 
-    public static RawMessageStreamEventVariants::RawContentBlockStartEvent Create(
-        RawContentBlockStartEvent value
-    ) => new(value);
+    public static implicit operator RawMessageStreamEvent(RawContentBlockStartEvent value) =>
+        new RawMessageStreamEventVariants::RawContentBlockStartEvent(value);
 
-    public static RawMessageStreamEventVariants::RawContentBlockDeltaEvent Create(
-        RawContentBlockDeltaEvent value
-    ) => new(value);
+    public static implicit operator RawMessageStreamEvent(RawContentBlockDeltaEvent value) =>
+        new RawMessageStreamEventVariants::RawContentBlockDeltaEvent(value);
 
-    public static RawMessageStreamEventVariants::RawContentBlockStopEvent Create(
-        RawContentBlockStopEvent value
-    ) => new(value);
+    public static implicit operator RawMessageStreamEvent(RawContentBlockStopEvent value) =>
+        new RawMessageStreamEventVariants::RawContentBlockStopEvent(value);
 
     public abstract void Validate();
 }

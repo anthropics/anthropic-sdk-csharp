@@ -39,10 +39,6 @@ public sealed record class BetaURLImageSource
 
     public override void Validate()
     {
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"url\"")))
-        {
-            throw new System::Exception();
-        }
         _ = this.URL;
     }
 

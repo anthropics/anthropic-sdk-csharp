@@ -13,17 +13,17 @@ public abstract record class BetaToolChoice
 {
     internal BetaToolChoice() { }
 
-    public static BetaToolChoiceVariants::BetaToolChoiceAuto Create(BetaToolChoiceAuto value) =>
-        new(value);
+    public static implicit operator BetaToolChoice(BetaToolChoiceAuto value) =>
+        new BetaToolChoiceVariants::BetaToolChoiceAuto(value);
 
-    public static BetaToolChoiceVariants::BetaToolChoiceAny Create(BetaToolChoiceAny value) =>
-        new(value);
+    public static implicit operator BetaToolChoice(BetaToolChoiceAny value) =>
+        new BetaToolChoiceVariants::BetaToolChoiceAny(value);
 
-    public static BetaToolChoiceVariants::BetaToolChoiceTool Create(BetaToolChoiceTool value) =>
-        new(value);
+    public static implicit operator BetaToolChoice(BetaToolChoiceTool value) =>
+        new BetaToolChoiceVariants::BetaToolChoiceTool(value);
 
-    public static BetaToolChoiceVariants::BetaToolChoiceNone Create(BetaToolChoiceNone value) =>
-        new(value);
+    public static implicit operator BetaToolChoice(BetaToolChoiceNone value) =>
+        new BetaToolChoiceVariants::BetaToolChoiceNone(value);
 
     public abstract void Validate();
 }

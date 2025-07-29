@@ -43,14 +43,6 @@ public sealed record class InvalidRequestError
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"invalid_request_error\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public InvalidRequestError()

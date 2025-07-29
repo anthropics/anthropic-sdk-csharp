@@ -110,14 +110,6 @@ public sealed record class BetaCitationPageLocationParam
         _ = this.DocumentTitle;
         _ = this.EndPageNumber;
         _ = this.StartPageNumber;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"page_location\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaCitationPageLocationParam()

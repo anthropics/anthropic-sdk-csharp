@@ -10,25 +10,21 @@ public abstract record class Citation
 {
     internal Citation() { }
 
-    public static CitationVariants::BetaCitationCharLocation Create(
-        Messages::BetaCitationCharLocation value
-    ) => new(value);
+    public static implicit operator Citation(Messages::BetaCitationCharLocation value) =>
+        new CitationVariants::BetaCitationCharLocation(value);
 
-    public static CitationVariants::BetaCitationPageLocation Create(
-        Messages::BetaCitationPageLocation value
-    ) => new(value);
+    public static implicit operator Citation(Messages::BetaCitationPageLocation value) =>
+        new CitationVariants::BetaCitationPageLocation(value);
 
-    public static CitationVariants::BetaCitationContentBlockLocation Create(
-        Messages::BetaCitationContentBlockLocation value
-    ) => new(value);
+    public static implicit operator Citation(Messages::BetaCitationContentBlockLocation value) =>
+        new CitationVariants::BetaCitationContentBlockLocation(value);
 
-    public static CitationVariants::BetaCitationsWebSearchResultLocation Create(
+    public static implicit operator Citation(
         Messages::BetaCitationsWebSearchResultLocation value
-    ) => new(value);
+    ) => new CitationVariants::BetaCitationsWebSearchResultLocation(value);
 
-    public static CitationVariants::BetaCitationSearchResultLocation Create(
-        Messages::BetaCitationSearchResultLocation value
-    ) => new(value);
+    public static implicit operator Citation(Messages::BetaCitationSearchResultLocation value) =>
+        new CitationVariants::BetaCitationSearchResultLocation(value);
 
     public abstract void Validate();
 }

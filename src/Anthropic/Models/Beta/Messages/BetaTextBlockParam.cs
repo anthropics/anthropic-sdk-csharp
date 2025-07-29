@@ -67,10 +67,6 @@ public sealed record class BetaTextBlockParam
     public override void Validate()
     {
         _ = this.Text;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"")))
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
         foreach (var item in this.Citations ?? [])
         {

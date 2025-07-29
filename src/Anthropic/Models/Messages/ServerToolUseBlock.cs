@@ -65,20 +65,6 @@ public sealed record class ServerToolUseBlock
     {
         _ = this.ID;
         _ = this.Input;
-        if (
-            !this.Name.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search\""))
-        )
-        {
-            throw new System::Exception();
-        }
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"server_tool_use\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public ServerToolUseBlock()

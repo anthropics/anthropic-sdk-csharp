@@ -61,16 +61,6 @@ public sealed record class BetaCodeExecutionToolResultBlock
     {
         this.Content.Validate();
         _ = this.ToolUseID;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>(
-                    "\"code_execution_tool_result\""
-                )
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaCodeExecutionToolResultBlock()

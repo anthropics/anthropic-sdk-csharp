@@ -60,10 +60,6 @@ public sealed record class ThinkingBlockParam
     {
         _ = this.Signature;
         _ = this.Thinking;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"thinking\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public ThinkingBlockParam()

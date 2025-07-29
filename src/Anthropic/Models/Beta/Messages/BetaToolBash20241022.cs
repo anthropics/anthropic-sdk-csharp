@@ -58,18 +58,6 @@ public sealed record class BetaToolBash20241022
 
     public override void Validate()
     {
-        if (!this.Name.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"bash\"")))
-        {
-            throw new System::Exception();
-        }
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"bash_20241022\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
         this.CacheControl?.Validate();
     }
 

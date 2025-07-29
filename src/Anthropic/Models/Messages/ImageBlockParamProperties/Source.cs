@@ -10,11 +10,11 @@ public abstract record class Source
 {
     internal Source() { }
 
-    public static SourceVariants::Base64ImageSource Create(Messages::Base64ImageSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::Base64ImageSource value) =>
+        new SourceVariants::Base64ImageSource(value);
 
-    public static SourceVariants::URLImageSource Create(Messages::URLImageSource value) =>
-        new(value);
+    public static implicit operator Source(Messages::URLImageSource value) =>
+        new SourceVariants::URLImageSource(value);
 
     public abstract void Validate();
 }

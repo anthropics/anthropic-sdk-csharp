@@ -127,14 +127,6 @@ public sealed record class BetaCitationSearchResultLocation
         _ = this.Source;
         _ = this.StartBlockIndex;
         _ = this.Title;
-        if (
-            !this.Type.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"search_result_location\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaCitationSearchResultLocation()

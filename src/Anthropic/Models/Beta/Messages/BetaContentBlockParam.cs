@@ -12,61 +12,50 @@ public abstract record class BetaContentBlockParam
 {
     internal BetaContentBlockParam() { }
 
-    public static BetaContentBlockParamVariants::BetaTextBlockParam Create(
-        BetaTextBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaTextBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaTextBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaImageBlockParam Create(
-        BetaImageBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaImageBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaImageBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaRequestDocumentBlock Create(
-        BetaRequestDocumentBlock value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaRequestDocumentBlock value) =>
+        new BetaContentBlockParamVariants::BetaRequestDocumentBlock(value);
 
-    public static BetaContentBlockParamVariants::BetaSearchResultBlockParam Create(
-        BetaSearchResultBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaSearchResultBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaSearchResultBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaThinkingBlockParam Create(
-        BetaThinkingBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaThinkingBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaThinkingBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam Create(
-        BetaRedactedThinkingBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaRedactedThinkingBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaToolUseBlockParam Create(
-        BetaToolUseBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaToolUseBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaToolUseBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaToolResultBlockParam Create(
-        BetaToolResultBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaToolResultBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaToolResultBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaServerToolUseBlockParam Create(
-        BetaServerToolUseBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaServerToolUseBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaServerToolUseBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam Create(
+    public static implicit operator BetaContentBlockParam(
         BetaWebSearchToolResultBlockParam value
-    ) => new(value);
+    ) => new BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam Create(
+    public static implicit operator BetaContentBlockParam(
         BetaCodeExecutionToolResultBlockParam value
-    ) => new(value);
+    ) => new BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaMCPToolUseBlockParam Create(
-        BetaMCPToolUseBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaMCPToolUseBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaMCPToolUseBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam Create(
+    public static implicit operator BetaContentBlockParam(
         BetaRequestMCPToolResultBlockParam value
-    ) => new(value);
+    ) => new BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam(value);
 
-    public static BetaContentBlockParamVariants::BetaContainerUploadBlockParam Create(
-        BetaContainerUploadBlockParam value
-    ) => new(value);
+    public static implicit operator BetaContentBlockParam(BetaContainerUploadBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaContainerUploadBlockParam(value);
 
     public abstract void Validate();
 }

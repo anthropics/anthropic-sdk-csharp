@@ -10,13 +10,13 @@ public abstract record class WebSearchToolResultBlockContent
 {
     internal WebSearchToolResultBlockContent() { }
 
-    public static WebSearchToolResultBlockContentVariants::WebSearchToolResultError Create(
+    public static implicit operator WebSearchToolResultBlockContent(
         WebSearchToolResultError value
-    ) => new(value);
+    ) => new WebSearchToolResultBlockContentVariants::WebSearchToolResultError(value);
 
-    public static WebSearchToolResultBlockContentVariants::UnionMember1 Create(
+    public static implicit operator WebSearchToolResultBlockContent(
         Generic::List<WebSearchResultBlock> value
-    ) => new(value);
+    ) => new WebSearchToolResultBlockContentVariants::UnionMember1(value);
 
     public abstract void Validate();
 }

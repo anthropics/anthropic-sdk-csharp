@@ -9,24 +9,20 @@ public abstract record class BetaRawContentBlockDelta
 {
     internal BetaRawContentBlockDelta() { }
 
-    public static BetaRawContentBlockDeltaVariants::BetaTextDelta Create(BetaTextDelta value) =>
-        new(value);
+    public static implicit operator BetaRawContentBlockDelta(BetaTextDelta value) =>
+        new BetaRawContentBlockDeltaVariants::BetaTextDelta(value);
 
-    public static BetaRawContentBlockDeltaVariants::BetaInputJSONDelta Create(
-        BetaInputJSONDelta value
-    ) => new(value);
+    public static implicit operator BetaRawContentBlockDelta(BetaInputJSONDelta value) =>
+        new BetaRawContentBlockDeltaVariants::BetaInputJSONDelta(value);
 
-    public static BetaRawContentBlockDeltaVariants::BetaCitationsDelta Create(
-        BetaCitationsDelta value
-    ) => new(value);
+    public static implicit operator BetaRawContentBlockDelta(BetaCitationsDelta value) =>
+        new BetaRawContentBlockDeltaVariants::BetaCitationsDelta(value);
 
-    public static BetaRawContentBlockDeltaVariants::BetaThinkingDelta Create(
-        BetaThinkingDelta value
-    ) => new(value);
+    public static implicit operator BetaRawContentBlockDelta(BetaThinkingDelta value) =>
+        new BetaRawContentBlockDeltaVariants::BetaThinkingDelta(value);
 
-    public static BetaRawContentBlockDeltaVariants::BetaSignatureDelta Create(
-        BetaSignatureDelta value
-    ) => new(value);
+    public static implicit operator BetaRawContentBlockDelta(BetaSignatureDelta value) =>
+        new BetaRawContentBlockDeltaVariants::BetaSignatureDelta(value);
 
     public abstract void Validate();
 }

@@ -10,22 +10,21 @@ public abstract record class MessageCountTokensTool
 {
     internal MessageCountTokensTool() { }
 
-    public static MessageCountTokensToolVariants::Tool Create(Tool value) => new(value);
+    public static implicit operator MessageCountTokensTool(Tool value) =>
+        new MessageCountTokensToolVariants::Tool(value);
 
-    public static MessageCountTokensToolVariants::ToolBash20250124 Create(ToolBash20250124 value) =>
-        new(value);
+    public static implicit operator MessageCountTokensTool(ToolBash20250124 value) =>
+        new MessageCountTokensToolVariants::ToolBash20250124(value);
 
-    public static MessageCountTokensToolVariants::ToolTextEditor20250124 Create(
-        ToolTextEditor20250124 value
-    ) => new(value);
+    public static implicit operator MessageCountTokensTool(ToolTextEditor20250124 value) =>
+        new MessageCountTokensToolVariants::ToolTextEditor20250124(value);
 
-    public static MessageCountTokensToolVariants::TextEditor20250429 Create(
+    public static implicit operator MessageCountTokensTool(
         MessageCountTokensToolProperties::TextEditor20250429 value
-    ) => new(value);
+    ) => new MessageCountTokensToolVariants::TextEditor20250429(value);
 
-    public static MessageCountTokensToolVariants::WebSearchTool20250305 Create(
-        WebSearchTool20250305 value
-    ) => new(value);
+    public static implicit operator MessageCountTokensTool(WebSearchTool20250305 value) =>
+        new MessageCountTokensToolVariants::WebSearchTool20250305(value);
 
     public abstract void Validate();
 }

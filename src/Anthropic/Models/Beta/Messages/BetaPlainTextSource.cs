@@ -55,18 +55,6 @@ public sealed record class BetaPlainTextSource
     public override void Validate()
     {
         _ = this.Data;
-        if (
-            !this.MediaType.Equals(
-                Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text/plain\"")
-            )
-        )
-        {
-            throw new System::Exception();
-        }
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"")))
-        {
-            throw new System::Exception();
-        }
     }
 
     public BetaPlainTextSource()

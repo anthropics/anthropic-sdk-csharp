@@ -19,13 +19,11 @@ public abstract record class BetaThinkingConfigParam
 {
     internal BetaThinkingConfigParam() { }
 
-    public static BetaThinkingConfigParamVariants::BetaThinkingConfigEnabled Create(
-        BetaThinkingConfigEnabled value
-    ) => new(value);
+    public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigEnabled value) =>
+        new BetaThinkingConfigParamVariants::BetaThinkingConfigEnabled(value);
 
-    public static BetaThinkingConfigParamVariants::BetaThinkingConfigDisabled Create(
-        BetaThinkingConfigDisabled value
-    ) => new(value);
+    public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigDisabled value) =>
+        new BetaThinkingConfigParamVariants::BetaThinkingConfigDisabled(value);
 
     public abstract void Validate();
 }

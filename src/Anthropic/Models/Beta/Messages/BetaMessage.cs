@@ -224,16 +224,8 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
             item.Validate();
         }
         this.Model.Validate();
-        if (!this.Role.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"assistant\"")))
-        {
-            throw new System::Exception();
-        }
         this.StopReason?.Validate();
         _ = this.StopSequence;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message\"")))
-        {
-            throw new System::Exception();
-        }
         this.Usage.Validate();
     }
 

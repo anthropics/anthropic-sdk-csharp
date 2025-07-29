@@ -9,12 +9,11 @@ public abstract record class ContentBlockSourceContent
 {
     internal ContentBlockSourceContent() { }
 
-    public static ContentBlockSourceContentVariants::TextBlockParam Create(TextBlockParam value) =>
-        new(value);
+    public static implicit operator ContentBlockSourceContent(TextBlockParam value) =>
+        new ContentBlockSourceContentVariants::TextBlockParam(value);
 
-    public static ContentBlockSourceContentVariants::ImageBlockParam Create(
-        ImageBlockParam value
-    ) => new(value);
+    public static implicit operator ContentBlockSourceContent(ImageBlockParam value) =>
+        new ContentBlockSourceContentVariants::ImageBlockParam(value);
 
     public abstract void Validate();
 }

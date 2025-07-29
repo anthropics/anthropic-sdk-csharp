@@ -11,13 +11,16 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
 {
     internal BetaCodeExecutionToolResultBlockContent() { }
 
-    public static BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError Create(
+    public static implicit operator BetaCodeExecutionToolResultBlockContent(
         BetaCodeExecutionToolResultError value
-    ) => new(value);
+    ) =>
+        new BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError(
+            value
+        );
 
-    public static BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock Create(
+    public static implicit operator BetaCodeExecutionToolResultBlockContent(
         BetaCodeExecutionResultBlock value
-    ) => new(value);
+    ) => new BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock(value);
 
     public abstract void Validate();
 }

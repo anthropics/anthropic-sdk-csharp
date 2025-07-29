@@ -141,10 +141,6 @@ public sealed record class FileMetadata : Anthropic::ModelBase, Anthropic::IFrom
         _ = this.Filename;
         _ = this.MimeType;
         _ = this.SizeBytes;
-        if (!this.Type.Equals(Json::JsonSerializer.Deserialize<Json::JsonElement>("\"file\"")))
-        {
-            throw new System::Exception();
-        }
         _ = this.Downloadable;
     }
 
