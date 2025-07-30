@@ -1,40 +1,42 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaURLPDFSource>))]
-public sealed record class BetaURLPDFSource
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaURLPDFSource>
+[JsonConverter(typeof(ModelConverter<BetaURLPDFSource>))]
+public sealed record class BetaURLPDFSource : ModelBase, IFromRaw<BetaURLPDFSource>
 {
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string URL
     {
         get
         {
-            if (!this.Properties.TryGetValue("url", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("url", "Missing required argument");
+            if (!this.Properties.TryGetValue("url", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "url",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("url");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("url");
         }
-        set { this.Properties["url"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["url"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -44,20 +46,18 @@ public sealed record class BetaURLPDFSource
 
     public BetaURLPDFSource()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"url\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaURLPDFSource(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaURLPDFSource(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaURLPDFSource FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaURLPDFSource FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

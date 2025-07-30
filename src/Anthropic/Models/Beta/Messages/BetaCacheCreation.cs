@@ -1,16 +1,12 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaCacheCreation>))]
-public sealed record class BetaCacheCreation
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaCacheCreation>
+[JsonConverter(typeof(ModelConverter<BetaCacheCreation>))]
+public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCreation>
 {
     /// <summary>
     /// The number of input tokens used to create the 1 hour cache entry.
@@ -19,24 +15,17 @@ public sealed record class BetaCacheCreation
     {
         get
         {
-            if (
-                !this.Properties.TryGetValue(
-                    "ephemeral_1h_input_tokens",
-                    out Json::JsonElement element
-                )
-            )
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("ephemeral_1h_input_tokens", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "ephemeral_1h_input_tokens",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
         set
         {
-            this.Properties["ephemeral_1h_input_tokens"] = Json::JsonSerializer.SerializeToElement(
-                value
-            );
+            this.Properties["ephemeral_1h_input_tokens"] = JsonSerializer.SerializeToElement(value);
         }
     }
 
@@ -47,24 +36,17 @@ public sealed record class BetaCacheCreation
     {
         get
         {
-            if (
-                !this.Properties.TryGetValue(
-                    "ephemeral_5m_input_tokens",
-                    out Json::JsonElement element
-                )
-            )
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("ephemeral_5m_input_tokens", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "ephemeral_5m_input_tokens",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
         set
         {
-            this.Properties["ephemeral_5m_input_tokens"] = Json::JsonSerializer.SerializeToElement(
-                value
-            );
+            this.Properties["ephemeral_5m_input_tokens"] = JsonSerializer.SerializeToElement(value);
         }
     }
 
@@ -77,16 +59,14 @@ public sealed record class BetaCacheCreation
     public BetaCacheCreation() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaCacheCreation(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaCacheCreation(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaCacheCreation FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaCacheCreation FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

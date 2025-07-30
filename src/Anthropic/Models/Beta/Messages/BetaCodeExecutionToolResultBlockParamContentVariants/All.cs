@@ -1,26 +1,24 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaCodeExecutionToolResultBlockParamContentVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCodeExecutionToolResultErrorParam,
-        Messages::BetaCodeExecutionToolResultErrorParam
+[JsonConverter(
+    typeof(VariantConverter<
+        BetaCodeExecutionToolResultErrorParamVariant,
+        BetaCodeExecutionToolResultErrorParam
     >)
 )]
-public sealed record class BetaCodeExecutionToolResultErrorParam(
-    Messages::BetaCodeExecutionToolResultErrorParam Value
+public sealed record class BetaCodeExecutionToolResultErrorParamVariant(
+    BetaCodeExecutionToolResultErrorParam Value
 )
-    : Messages::BetaCodeExecutionToolResultBlockParamContent,
-        Anthropic::IVariant<
-            BetaCodeExecutionToolResultErrorParam,
-            Messages::BetaCodeExecutionToolResultErrorParam
+    : BetaCodeExecutionToolResultBlockParamContent,
+        IVariant<
+            BetaCodeExecutionToolResultErrorParamVariant,
+            BetaCodeExecutionToolResultErrorParam
         >
 {
-    public static BetaCodeExecutionToolResultErrorParam From(
-        Messages::BetaCodeExecutionToolResultErrorParam value
+    public static BetaCodeExecutionToolResultErrorParamVariant From(
+        BetaCodeExecutionToolResultErrorParam value
     )
     {
         return new(value);
@@ -32,23 +30,20 @@ public sealed record class BetaCodeExecutionToolResultErrorParam(
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCodeExecutionResultBlockParam,
-        Messages::BetaCodeExecutionResultBlockParam
+[JsonConverter(
+    typeof(VariantConverter<
+        BetaCodeExecutionResultBlockParamVariant,
+        BetaCodeExecutionResultBlockParam
     >)
 )]
-public sealed record class BetaCodeExecutionResultBlockParam(
-    Messages::BetaCodeExecutionResultBlockParam Value
+public sealed record class BetaCodeExecutionResultBlockParamVariant(
+    BetaCodeExecutionResultBlockParam Value
 )
-    : Messages::BetaCodeExecutionToolResultBlockParamContent,
-        Anthropic::IVariant<
-            BetaCodeExecutionResultBlockParam,
-            Messages::BetaCodeExecutionResultBlockParam
-        >
+    : BetaCodeExecutionToolResultBlockParamContent,
+        IVariant<BetaCodeExecutionResultBlockParamVariant, BetaCodeExecutionResultBlockParam>
 {
-    public static BetaCodeExecutionResultBlockParam From(
-        Messages::BetaCodeExecutionResultBlockParam value
+    public static BetaCodeExecutionResultBlockParamVariant From(
+        BetaCodeExecutionResultBlockParam value
     )
     {
         return new(value);

@@ -1,39 +1,41 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<RawContentBlockStopEvent>))]
-public sealed record class RawContentBlockStopEvent
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<RawContentBlockStopEvent>
+[JsonConverter(typeof(ModelConverter<RawContentBlockStopEvent>))]
+public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawContentBlockStopEvent>
 {
     public required long Index
     {
         get
         {
-            if (!this.Properties.TryGetValue("index", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("index", "Missing required argument");
+            if (!this.Properties.TryGetValue("index", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "index",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["index"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["index"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -43,19 +45,19 @@ public sealed record class RawContentBlockStopEvent
 
     public RawContentBlockStopEvent()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_stop\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    RawContentBlockStopEvent(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    RawContentBlockStopEvent(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static RawContentBlockStopEvent FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

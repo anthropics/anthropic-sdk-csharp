@@ -1,9 +1,7 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
@@ -11,12 +9,10 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// This is a single line in the response `.jsonl` file and does not represent the
 /// response as a whole.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::ModelConverter<BetaMessageBatchIndividualResponse>)
-)]
+[JsonConverter(typeof(ModelConverter<BetaMessageBatchIndividualResponse>))]
 public sealed record class BetaMessageBatchIndividualResponse
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaMessageBatchIndividualResponse>
+    : ModelBase,
+        IFromRaw<BetaMessageBatchIndividualResponse>
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful for
@@ -28,16 +24,16 @@ public sealed record class BetaMessageBatchIndividualResponse
     {
         get
         {
-            if (!this.Properties.TryGetValue("custom_id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("custom_id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "custom_id",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("custom_id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("custom_id");
         }
-        set { this.Properties["custom_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["custom_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -51,16 +47,16 @@ public sealed record class BetaMessageBatchIndividualResponse
     {
         get
         {
-            if (!this.Properties.TryGetValue("result", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("result", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "result",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaMessageBatchResult>(element)
-                ?? throw new System::ArgumentNullException("result");
+            return JsonSerializer.Deserialize<BetaMessageBatchResult>(element)
+                ?? throw new global::System.ArgumentNullException("result");
         }
-        set { this.Properties["result"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["result"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -72,15 +68,15 @@ public sealed record class BetaMessageBatchIndividualResponse
     public BetaMessageBatchIndividualResponse() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaMessageBatchIndividualResponse(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaMessageBatchIndividualResponse(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaMessageBatchIndividualResponse FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

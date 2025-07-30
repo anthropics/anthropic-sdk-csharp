@@ -1,14 +1,13 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.UsageProperties;
 
 /// <summary>
 /// If the request used the priority, standard, or batch tier.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::EnumConverter<ServiceTier, string>))]
-public sealed record class ServiceTier(string value) : Anthropic::IEnum<ServiceTier, string>
+[JsonConverter(typeof(EnumConverter<ServiceTier, string>))]
+public sealed record class ServiceTier(string value) : IEnum<ServiceTier, string>
 {
     public static readonly ServiceTier Standard = new("standard");
 
@@ -31,7 +30,7 @@ public sealed record class ServiceTier(string value) : Anthropic::IEnum<ServiceT
             "standard" => Value.Standard,
             "priority" => Value.Priority,
             "batch" => Value.Batch,
-            _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
+            _ => throw new ArgumentOutOfRangeException(nameof(_value)),
         };
 
     public string Raw()

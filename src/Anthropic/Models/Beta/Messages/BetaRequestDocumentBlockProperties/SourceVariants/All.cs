@@ -1,18 +1,13 @@
-using Anthropic = Anthropic;
-using BetaRequestDocumentBlockProperties = Anthropic.Models.Beta.Messages.BetaRequestDocumentBlockProperties;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaRequestDocumentBlockProperties.SourceVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaBase64PDFSource, Messages::BetaBase64PDFSource>)
-)]
-public sealed record class BetaBase64PDFSource(Messages::BetaBase64PDFSource Value)
-    : BetaRequestDocumentBlockProperties::Source,
-        Anthropic::IVariant<BetaBase64PDFSource, Messages::BetaBase64PDFSource>
+[JsonConverter(typeof(VariantConverter<BetaBase64PDFSourceVariant, BetaBase64PDFSource>))]
+public sealed record class BetaBase64PDFSourceVariant(BetaBase64PDFSource Value)
+    : Source,
+        IVariant<BetaBase64PDFSourceVariant, BetaBase64PDFSource>
 {
-    public static BetaBase64PDFSource From(Messages::BetaBase64PDFSource value)
+    public static BetaBase64PDFSourceVariant From(BetaBase64PDFSource value)
     {
         return new(value);
     }
@@ -23,14 +18,12 @@ public sealed record class BetaBase64PDFSource(Messages::BetaBase64PDFSource Val
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaPlainTextSource, Messages::BetaPlainTextSource>)
-)]
-public sealed record class BetaPlainTextSource(Messages::BetaPlainTextSource Value)
-    : BetaRequestDocumentBlockProperties::Source,
-        Anthropic::IVariant<BetaPlainTextSource, Messages::BetaPlainTextSource>
+[JsonConverter(typeof(VariantConverter<BetaPlainTextSourceVariant, BetaPlainTextSource>))]
+public sealed record class BetaPlainTextSourceVariant(BetaPlainTextSource Value)
+    : Source,
+        IVariant<BetaPlainTextSourceVariant, BetaPlainTextSource>
 {
-    public static BetaPlainTextSource From(Messages::BetaPlainTextSource value)
+    public static BetaPlainTextSourceVariant From(BetaPlainTextSource value)
     {
         return new(value);
     }
@@ -41,14 +34,12 @@ public sealed record class BetaPlainTextSource(Messages::BetaPlainTextSource Val
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaContentBlockSource, Messages::BetaContentBlockSource>)
-)]
-public sealed record class BetaContentBlockSource(Messages::BetaContentBlockSource Value)
-    : BetaRequestDocumentBlockProperties::Source,
-        Anthropic::IVariant<BetaContentBlockSource, Messages::BetaContentBlockSource>
+[JsonConverter(typeof(VariantConverter<BetaContentBlockSourceVariant, BetaContentBlockSource>))]
+public sealed record class BetaContentBlockSourceVariant(BetaContentBlockSource Value)
+    : Source,
+        IVariant<BetaContentBlockSourceVariant, BetaContentBlockSource>
 {
-    public static BetaContentBlockSource From(Messages::BetaContentBlockSource value)
+    public static BetaContentBlockSourceVariant From(BetaContentBlockSource value)
     {
         return new(value);
     }
@@ -59,14 +50,12 @@ public sealed record class BetaContentBlockSource(Messages::BetaContentBlockSour
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaURLPDFSource, Messages::BetaURLPDFSource>)
-)]
-public sealed record class BetaURLPDFSource(Messages::BetaURLPDFSource Value)
-    : BetaRequestDocumentBlockProperties::Source,
-        Anthropic::IVariant<BetaURLPDFSource, Messages::BetaURLPDFSource>
+[JsonConverter(typeof(VariantConverter<BetaURLPDFSourceVariant, BetaURLPDFSource>))]
+public sealed record class BetaURLPDFSourceVariant(BetaURLPDFSource Value)
+    : Source,
+        IVariant<BetaURLPDFSourceVariant, BetaURLPDFSource>
 {
-    public static BetaURLPDFSource From(Messages::BetaURLPDFSource value)
+    public static BetaURLPDFSourceVariant From(BetaURLPDFSource value)
     {
         return new(value);
     }
@@ -77,14 +66,12 @@ public sealed record class BetaURLPDFSource(Messages::BetaURLPDFSource Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaFileDocumentSource, Messages::BetaFileDocumentSource>)
-)]
-public sealed record class BetaFileDocumentSource(Messages::BetaFileDocumentSource Value)
-    : BetaRequestDocumentBlockProperties::Source,
-        Anthropic::IVariant<BetaFileDocumentSource, Messages::BetaFileDocumentSource>
+[JsonConverter(typeof(VariantConverter<BetaFileDocumentSourceVariant, BetaFileDocumentSource>))]
+public sealed record class BetaFileDocumentSourceVariant(BetaFileDocumentSource Value)
+    : Source,
+        IVariant<BetaFileDocumentSourceVariant, BetaFileDocumentSource>
 {
-    public static BetaFileDocumentSource From(Messages::BetaFileDocumentSource value)
+    public static BetaFileDocumentSourceVariant From(BetaFileDocumentSource value)
     {
         return new(value);
     }

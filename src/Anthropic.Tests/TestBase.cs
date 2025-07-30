@@ -1,19 +1,18 @@
-using Anthropic = Anthropic;
-using System = System;
+using System;
+using Anthropic;
 
 namespace Anthropic.Tests;
 
 public class TestBase
 {
-    protected Anthropic::IAnthropicClient client;
+    protected IAnthropicClient client;
 
     public TestBase()
     {
-        client = new Anthropic::AnthropicClient()
+        client = new AnthropicClient()
         {
-            BaseUrl = new System::Uri(
-                System::Environment.GetEnvironmentVariable("TEST_API_BASE_URL")
-                    ?? "http://localhost:4010"
+            BaseUrl = new Uri(
+                Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010"
             ),
             APIKey = "my-anthropic-api-key",
         };

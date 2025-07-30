@@ -1,12 +1,11 @@
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Net = System.Net;
-using System = System;
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
 
 namespace Anthropic;
 
-public sealed class HttpException : System::Exception
+public sealed class HttpException : global::System.Exception
 {
-    public required Net::HttpStatusCode? StatusCode { get; set; }
+    public required HttpStatusCode? StatusCode { get; set; }
     public required string ResponseBody { get; set; }
     public override string Message
     {
@@ -20,8 +19,8 @@ public sealed class HttpException : System::Exception
         }
     }
 
-    [CodeAnalysis::SetsRequiredMembers]
-    public HttpException(Net::HttpStatusCode? statusCode, string responseBody)
+    [SetsRequiredMembers]
+    public HttpException(HttpStatusCode? statusCode, string responseBody)
     {
         this.StatusCode = statusCode;
         this.ResponseBody = responseBody;

@@ -1,46 +1,45 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaRawMessageStopEvent>))]
-public sealed record class BetaRawMessageStopEvent
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaRawMessageStopEvent>
+[JsonConverter(typeof(ModelConverter<BetaRawMessageStopEvent>))]
+public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRawMessageStopEvent>
 {
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate() { }
 
     public BetaRawMessageStopEvent()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_stop\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaRawMessageStopEvent(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaRawMessageStopEvent(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaRawMessageStopEvent FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

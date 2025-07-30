@@ -1,28 +1,27 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using RawContentBlockDeltaVariants = Anthropic.Models.Messages.RawContentBlockDeltaVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<RawContentBlockDelta>))]
+[JsonConverter(typeof(UnionConverter<RawContentBlockDelta>))]
 public abstract record class RawContentBlockDelta
 {
     internal RawContentBlockDelta() { }
 
     public static implicit operator RawContentBlockDelta(TextDelta value) =>
-        new RawContentBlockDeltaVariants::TextDelta(value);
+        new RawContentBlockDeltaVariants::TextDeltaVariant(value);
 
     public static implicit operator RawContentBlockDelta(InputJSONDelta value) =>
-        new RawContentBlockDeltaVariants::InputJSONDelta(value);
+        new RawContentBlockDeltaVariants::InputJSONDeltaVariant(value);
 
     public static implicit operator RawContentBlockDelta(CitationsDelta value) =>
-        new RawContentBlockDeltaVariants::CitationsDelta(value);
+        new RawContentBlockDeltaVariants::CitationsDeltaVariant(value);
 
     public static implicit operator RawContentBlockDelta(ThinkingDelta value) =>
-        new RawContentBlockDeltaVariants::ThinkingDelta(value);
+        new RawContentBlockDeltaVariants::ThinkingDeltaVariant(value);
 
     public static implicit operator RawContentBlockDelta(SignatureDelta value) =>
-        new RawContentBlockDeltaVariants::SignatureDelta(value);
+        new RawContentBlockDeltaVariants::SignatureDeltaVariant(value);
 
     public abstract void Validate();
 }

@@ -1,46 +1,45 @@
-using Anthropic = Anthropic;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BetaRequestMCPToolResultBlockParamProperties = Anthropic.Models.Beta.Messages.BetaRequestMCPToolResultBlockParamProperties;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::ModelConverter<BetaRequestMCPToolResultBlockParam>)
-)]
+[JsonConverter(typeof(ModelConverter<BetaRequestMCPToolResultBlockParam>))]
 public sealed record class BetaRequestMCPToolResultBlockParam
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaRequestMCPToolResultBlockParam>
+    : ModelBase,
+        IFromRaw<BetaRequestMCPToolResultBlockParam>
 {
     public required string ToolUseID
     {
         get
         {
-            if (!this.Properties.TryGetValue("tool_use_id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("tool_use_id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "tool_use_id",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("tool_use_id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("tool_use_id");
         }
-        set { this.Properties["tool_use_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["tool_use_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -50,38 +49,38 @@ public sealed record class BetaRequestMCPToolResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
         }
-        set { this.Properties["cache_control"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public BetaRequestMCPToolResultBlockParamProperties::Content? Content
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("content", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamProperties::Content?>(
+            return JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamProperties::Content?>(
                 element
             );
         }
-        set { this.Properties["content"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public bool? IsError
     {
         get
         {
-            if (!this.Properties.TryGetValue("is_error", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("is_error", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element);
         }
-        set { this.Properties["is_error"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["is_error"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -94,19 +93,19 @@ public sealed record class BetaRequestMCPToolResultBlockParam
 
     public BetaRequestMCPToolResultBlockParam()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"mcp_tool_result\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaRequestMCPToolResultBlockParam(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaRequestMCPToolResultBlockParam(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaRequestMCPToolResultBlockParam FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

@@ -1,15 +1,14 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using DeletedFileProperties = Anthropic.Models.Beta.Files.DeletedFileProperties;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
 using System = System;
 
 namespace Anthropic.Models.Beta.Files;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<DeletedFile>))]
-public sealed record class DeletedFile : Anthropic::ModelBase, Anthropic::IFromRaw<DeletedFile>
+[JsonConverter(typeof(ModelConverter<DeletedFile>))]
+public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
 {
     /// <summary>
     /// ID of the deleted file.
@@ -18,13 +17,13 @@ public sealed record class DeletedFile : Anthropic::ModelBase, Anthropic::IFromR
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("id", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("id", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element)
                 ?? throw new System::ArgumentNullException("id");
         }
-        set { this.Properties["id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -36,12 +35,12 @@ public sealed record class DeletedFile : Anthropic::ModelBase, Anthropic::IFromR
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<DeletedFileProperties::Type?>(element);
+            return JsonSerializer.Deserialize<DeletedFileProperties::Type?>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -53,16 +52,14 @@ public sealed record class DeletedFile : Anthropic::ModelBase, Anthropic::IFromR
     public DeletedFile() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    DeletedFile(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    DeletedFile(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static DeletedFile FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static DeletedFile FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

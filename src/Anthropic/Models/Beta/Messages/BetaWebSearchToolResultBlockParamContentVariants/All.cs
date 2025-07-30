@@ -1,21 +1,14 @@
-using Anthropic = Anthropic;
-using Generic = System.Collections.Generic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaWebSearchToolResultBlockParamContentVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        ResultBlock,
-        Generic::List<Messages::BetaWebSearchResultBlockParam>
-    >)
-)]
-public sealed record class ResultBlock(Generic::List<Messages::BetaWebSearchResultBlockParam> Value)
-    : Messages::BetaWebSearchToolResultBlockParamContent,
-        Anthropic::IVariant<ResultBlock, Generic::List<Messages::BetaWebSearchResultBlockParam>>
+[JsonConverter(typeof(VariantConverter<ResultBlock, List<BetaWebSearchResultBlockParam>>))]
+public sealed record class ResultBlock(List<BetaWebSearchResultBlockParam> Value)
+    : BetaWebSearchToolResultBlockParamContent,
+        IVariant<ResultBlock, List<BetaWebSearchResultBlockParam>>
 {
-    public static ResultBlock From(Generic::List<Messages::BetaWebSearchResultBlockParam> value)
+    public static ResultBlock From(List<BetaWebSearchResultBlockParam> value)
     {
         return new(value);
     }
@@ -23,19 +16,14 @@ public sealed record class ResultBlock(Generic::List<Messages::BetaWebSearchResu
     public override void Validate() { }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaWebSearchToolRequestError,
-        Messages::BetaWebSearchToolRequestError
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaWebSearchToolRequestErrorVariant, BetaWebSearchToolRequestError>)
 )]
-public sealed record class BetaWebSearchToolRequestError(
-    Messages::BetaWebSearchToolRequestError Value
-)
-    : Messages::BetaWebSearchToolResultBlockParamContent,
-        Anthropic::IVariant<BetaWebSearchToolRequestError, Messages::BetaWebSearchToolRequestError>
+public sealed record class BetaWebSearchToolRequestErrorVariant(BetaWebSearchToolRequestError Value)
+    : BetaWebSearchToolResultBlockParamContent,
+        IVariant<BetaWebSearchToolRequestErrorVariant, BetaWebSearchToolRequestError>
 {
-    public static BetaWebSearchToolRequestError From(Messages::BetaWebSearchToolRequestError value)
+    public static BetaWebSearchToolRequestErrorVariant From(BetaWebSearchToolRequestError value)
     {
         return new(value);
     }

@@ -1,19 +1,17 @@
-using Anthropic = Anthropic;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using ContentVariants = Anthropic.Models.Beta.Messages.BetaMessageParamProperties.ContentVariants;
-using Generic = System.Collections.Generic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaMessageParamProperties;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<Content>))]
+[JsonConverter(typeof(UnionConverter<Content>))]
 public abstract record class Content
 {
     internal Content() { }
 
     public static implicit operator Content(string value) => new ContentVariants::String(value);
 
-    public static implicit operator Content(Generic::List<Messages::BetaContentBlockParam> value) =>
+    public static implicit operator Content(List<BetaContentBlockParam> value) =>
         new ContentVariants::BetaContentBlockParams(value);
 
     public abstract void Validate();

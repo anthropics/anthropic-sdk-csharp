@@ -1,126 +1,107 @@
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Linq = System.Linq;
-using Reflection = System.Reflection;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic;
 
-public sealed class ModelConverter<MB> : Serialization::JsonConverter<MB>
+public sealed class ModelConverter<MB> : JsonConverter<MB>
     where MB : ModelBase, IFromRaw<MB>
 {
     public override MB? Read(
-        ref Json::Utf8JsonReader reader,
-        System::Type _typeToConvert,
-        Json::JsonSerializerOptions options
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
     )
     {
-        Generic::Dictionary<string, Json::JsonElement>? properties =
-            Json::JsonSerializer.Deserialize<Generic::Dictionary<string, Json::JsonElement>>(
-                ref reader,
-                options
-            );
+        Dictionary<string, JsonElement>? properties = JsonSerializer.Deserialize<
+            Dictionary<string, JsonElement>
+        >(ref reader, options);
         if (properties == null)
             return null;
 
         return MB.FromRawUnchecked(properties);
     }
 
-    public override void Write(
-        Json::Utf8JsonWriter writer,
-        MB value,
-        Json::JsonSerializerOptions options
-    )
+    public override void Write(Utf8JsonWriter writer, MB value, JsonSerializerOptions options)
     {
-        Json::JsonSerializer.Serialize(writer, value.Properties, options);
+        JsonSerializer.Serialize(writer, value.Properties, options);
     }
 }
 
-public sealed class EnumConverter<IE, T> : Serialization::JsonConverter<IE>
+public sealed class EnumConverter<IE, T> : JsonConverter<IE>
     where IE : IEnum<IE, T>
 {
     public override IE Read(
-        ref Json::Utf8JsonReader reader,
-        System::Type _typeToConvert,
-        Json::JsonSerializerOptions options
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
     )
     {
-        return IE.FromRaw(Json::JsonSerializer.Deserialize<T>(ref reader, options)!);
+        return IE.FromRaw(JsonSerializer.Deserialize<T>(ref reader, options)!);
     }
 
-    public override void Write(
-        Json::Utf8JsonWriter writer,
-        IE value,
-        Json::JsonSerializerOptions options
-    )
+    public override void Write(Utf8JsonWriter writer, IE value, JsonSerializerOptions options)
     {
-        Json::JsonSerializer.Serialize(writer, value.Raw(), options);
+        JsonSerializer.Serialize(writer, value.Raw(), options);
     }
 }
 
-public sealed class UnionConverter<T> : Serialization::JsonConverter<T>
+public sealed class UnionConverter<T> : JsonConverter<T>
     where T : class
 {
-    readonly Generic::List<System::Type> _variantTypes = Linq::Enumerable.ToList(
-        Linq::Enumerable.Where(
-            Reflection::Assembly.GetExecutingAssembly().GetTypes(),
+    readonly List<global::System.Type> _variantTypes = Enumerable.ToList(
+        Enumerable.Where(
+            Assembly.GetExecutingAssembly().GetTypes(),
             type => type.BaseType == typeof(T)
         )
     );
 
     public override T? Read(
-        ref Json::Utf8JsonReader reader,
-        System::Type _typeToConvert,
-        Json::JsonSerializerOptions options
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
     )
     {
-        Generic::List<Json::JsonException> exceptions = [];
+        List<JsonException> exceptions = [];
         foreach (var variantType in _variantTypes)
         {
             try
             {
-                return Json::JsonSerializer.Deserialize(ref reader, variantType, options) as T;
+                return JsonSerializer.Deserialize(ref reader, variantType, options) as T;
             }
-            catch (Json::JsonException e)
+            catch (JsonException e)
             {
                 exceptions.Add(e);
             }
         }
-        throw new System::AggregateException(exceptions);
+        throw new global::System.AggregateException(exceptions);
     }
 
-    public override void Write(
-        Json::Utf8JsonWriter writer,
-        T value,
-        Json::JsonSerializerOptions options
-    )
+    public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
         var variantType =
             _variantTypes.Find(type => type == value.GetType())
-            ?? throw new System::ArgumentOutOfRangeException(value.GetType().Name);
-        Json::JsonSerializer.Serialize(writer, value, variantType, options);
+            ?? throw new global::System.ArgumentOutOfRangeException(value.GetType().Name);
+        JsonSerializer.Serialize(writer, value, variantType, options);
     }
 }
 
-public sealed class VariantConverter<IV, T> : Serialization::JsonConverter<IV>
+public sealed class VariantConverter<IV, T> : JsonConverter<IV>
     where IV : IVariant<IV, T>
 {
     public override IV Read(
-        ref Json::Utf8JsonReader reader,
-        System::Type _typeToConvert,
-        Json::JsonSerializerOptions options
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
     )
     {
-        return IV.From(Json::JsonSerializer.Deserialize<T>(ref reader, options)!);
+        return IV.From(JsonSerializer.Deserialize<T>(ref reader, options)!);
     }
 
-    public override void Write(
-        Json::Utf8JsonWriter writer,
-        IV value,
-        Json::JsonSerializerOptions options
-    )
+    public override void Write(Utf8JsonWriter writer, IV value, JsonSerializerOptions options)
     {
-        Json::JsonSerializer.Serialize(writer, value.Value, options);
+        JsonSerializer.Serialize(writer, value.Value, options);
     }
 }

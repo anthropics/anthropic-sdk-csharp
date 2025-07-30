@@ -1,40 +1,39 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using ErrorObjectVariants = Anthropic.Models.ErrorObjectVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<ErrorObject>))]
+[JsonConverter(typeof(UnionConverter<ErrorObject>))]
 public abstract record class ErrorObject
 {
     internal ErrorObject() { }
 
     public static implicit operator ErrorObject(InvalidRequestError value) =>
-        new ErrorObjectVariants::InvalidRequestError(value);
+        new ErrorObjectVariants::InvalidRequestErrorVariant(value);
 
     public static implicit operator ErrorObject(AuthenticationError value) =>
-        new ErrorObjectVariants::AuthenticationError(value);
+        new ErrorObjectVariants::AuthenticationErrorVariant(value);
 
     public static implicit operator ErrorObject(BillingError value) =>
-        new ErrorObjectVariants::BillingError(value);
+        new ErrorObjectVariants::BillingErrorVariant(value);
 
     public static implicit operator ErrorObject(PermissionError value) =>
-        new ErrorObjectVariants::PermissionError(value);
+        new ErrorObjectVariants::PermissionErrorVariant(value);
 
     public static implicit operator ErrorObject(NotFoundError value) =>
-        new ErrorObjectVariants::NotFoundError(value);
+        new ErrorObjectVariants::NotFoundErrorVariant(value);
 
     public static implicit operator ErrorObject(RateLimitError value) =>
-        new ErrorObjectVariants::RateLimitError(value);
+        new ErrorObjectVariants::RateLimitErrorVariant(value);
 
     public static implicit operator ErrorObject(GatewayTimeoutError value) =>
-        new ErrorObjectVariants::GatewayTimeoutError(value);
+        new ErrorObjectVariants::GatewayTimeoutErrorVariant(value);
 
     public static implicit operator ErrorObject(APIErrorObject value) =>
-        new ErrorObjectVariants::APIErrorObject(value);
+        new ErrorObjectVariants::APIErrorObjectVariant(value);
 
     public static implicit operator ErrorObject(OverloadedError value) =>
-        new ErrorObjectVariants::OverloadedError(value);
+        new ErrorObjectVariants::OverloadedErrorVariant(value);
 
     public abstract void Validate();
 }

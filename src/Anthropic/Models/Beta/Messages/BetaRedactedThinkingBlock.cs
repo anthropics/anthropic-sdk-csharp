@@ -1,40 +1,44 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaRedactedThinkingBlock>))]
+[JsonConverter(typeof(ModelConverter<BetaRedactedThinkingBlock>))]
 public sealed record class BetaRedactedThinkingBlock
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaRedactedThinkingBlock>
+    : ModelBase,
+        IFromRaw<BetaRedactedThinkingBlock>
 {
     public required string Data
     {
         get
         {
-            if (!this.Properties.TryGetValue("data", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("data", "Missing required argument");
+            if (!this.Properties.TryGetValue("data", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "data",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("data");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("data");
         }
-        set { this.Properties["data"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -44,19 +48,19 @@ public sealed record class BetaRedactedThinkingBlock
 
     public BetaRedactedThinkingBlock()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaRedactedThinkingBlock(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaRedactedThinkingBlock(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaRedactedThinkingBlock FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

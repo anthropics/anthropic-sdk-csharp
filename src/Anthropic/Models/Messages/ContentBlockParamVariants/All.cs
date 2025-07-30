@@ -1,20 +1,16 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.ContentBlockParamVariants;
 
 /// <summary>
 /// Regular text content.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<TextBlockParam, Messages::TextBlockParam>)
-)]
-public sealed record class TextBlockParam(Messages::TextBlockParam Value)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<TextBlockParam, Messages::TextBlockParam>
+[JsonConverter(typeof(VariantConverter<TextBlockParamVariant, TextBlockParam>))]
+public sealed record class TextBlockParamVariant(TextBlockParam Value)
+    : ContentBlockParam,
+        IVariant<TextBlockParamVariant, TextBlockParam>
 {
-    public static TextBlockParam From(Messages::TextBlockParam value)
+    public static TextBlockParamVariant From(TextBlockParam value)
     {
         return new(value);
     }
@@ -28,14 +24,12 @@ public sealed record class TextBlockParam(Messages::TextBlockParam Value)
 /// <summary>
 /// Image content specified directly as base64 data or as a reference via a URL.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ImageBlockParam, Messages::ImageBlockParam>)
-)]
-public sealed record class ImageBlockParam(Messages::ImageBlockParam Value)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<ImageBlockParam, Messages::ImageBlockParam>
+[JsonConverter(typeof(VariantConverter<ImageBlockParamVariant, ImageBlockParam>))]
+public sealed record class ImageBlockParamVariant(ImageBlockParam Value)
+    : ContentBlockParam,
+        IVariant<ImageBlockParamVariant, ImageBlockParam>
 {
-    public static ImageBlockParam From(Messages::ImageBlockParam value)
+    public static ImageBlockParamVariant From(ImageBlockParam value)
     {
         return new(value);
     }
@@ -50,14 +44,12 @@ public sealed record class ImageBlockParam(Messages::ImageBlockParam Value)
 /// Document content, either specified directly as base64 data, as text, or as a
 /// reference via a URL.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<DocumentBlockParam, Messages::DocumentBlockParam>)
-)]
-public sealed record class DocumentBlockParam(Messages::DocumentBlockParam Value)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<DocumentBlockParam, Messages::DocumentBlockParam>
+[JsonConverter(typeof(VariantConverter<DocumentBlockParamVariant, DocumentBlockParam>))]
+public sealed record class DocumentBlockParamVariant(DocumentBlockParam Value)
+    : ContentBlockParam,
+        IVariant<DocumentBlockParamVariant, DocumentBlockParam>
 {
-    public static DocumentBlockParam From(Messages::DocumentBlockParam value)
+    public static DocumentBlockParamVariant From(DocumentBlockParam value)
     {
         return new(value);
     }
@@ -71,14 +63,12 @@ public sealed record class DocumentBlockParam(Messages::DocumentBlockParam Value
 /// <summary>
 /// A block specifying internal thinking by the model.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ThinkingBlockParam, Messages::ThinkingBlockParam>)
-)]
-public sealed record class ThinkingBlockParam(Messages::ThinkingBlockParam Value)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<ThinkingBlockParam, Messages::ThinkingBlockParam>
+[JsonConverter(typeof(VariantConverter<ThinkingBlockParamVariant, ThinkingBlockParam>))]
+public sealed record class ThinkingBlockParamVariant(ThinkingBlockParam Value)
+    : ContentBlockParam,
+        IVariant<ThinkingBlockParamVariant, ThinkingBlockParam>
 {
-    public static ThinkingBlockParam From(Messages::ThinkingBlockParam value)
+    public static ThinkingBlockParamVariant From(ThinkingBlockParam value)
     {
         return new(value);
     }
@@ -92,17 +82,14 @@ public sealed record class ThinkingBlockParam(Messages::ThinkingBlockParam Value
 /// <summary>
 /// A block specifying internal, redacted thinking by the model.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        RedactedThinkingBlockParam,
-        Messages::RedactedThinkingBlockParam
-    >)
+[JsonConverter(
+    typeof(VariantConverter<RedactedThinkingBlockParamVariant, RedactedThinkingBlockParam>)
 )]
-public sealed record class RedactedThinkingBlockParam(Messages::RedactedThinkingBlockParam Value)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<RedactedThinkingBlockParam, Messages::RedactedThinkingBlockParam>
+public sealed record class RedactedThinkingBlockParamVariant(RedactedThinkingBlockParam Value)
+    : ContentBlockParam,
+        IVariant<RedactedThinkingBlockParamVariant, RedactedThinkingBlockParam>
 {
-    public static RedactedThinkingBlockParam From(Messages::RedactedThinkingBlockParam value)
+    public static RedactedThinkingBlockParamVariant From(RedactedThinkingBlockParam value)
     {
         return new(value);
     }
@@ -116,14 +103,12 @@ public sealed record class RedactedThinkingBlockParam(Messages::RedactedThinking
 /// <summary>
 /// A block indicating a tool use by the model.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ToolUseBlockParam, Messages::ToolUseBlockParam>)
-)]
-public sealed record class ToolUseBlockParam(Messages::ToolUseBlockParam Value)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<ToolUseBlockParam, Messages::ToolUseBlockParam>
+[JsonConverter(typeof(VariantConverter<ToolUseBlockParamVariant, ToolUseBlockParam>))]
+public sealed record class ToolUseBlockParamVariant(ToolUseBlockParam Value)
+    : ContentBlockParam,
+        IVariant<ToolUseBlockParamVariant, ToolUseBlockParam>
 {
-    public static ToolUseBlockParam From(Messages::ToolUseBlockParam value)
+    public static ToolUseBlockParamVariant From(ToolUseBlockParam value)
     {
         return new(value);
     }
@@ -137,14 +122,12 @@ public sealed record class ToolUseBlockParam(Messages::ToolUseBlockParam Value)
 /// <summary>
 /// A block specifying the results of a tool use by the model.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ToolResultBlockParam, Messages::ToolResultBlockParam>)
-)]
-public sealed record class ToolResultBlockParam(Messages::ToolResultBlockParam Value)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<ToolResultBlockParam, Messages::ToolResultBlockParam>
+[JsonConverter(typeof(VariantConverter<ToolResultBlockParamVariant, ToolResultBlockParam>))]
+public sealed record class ToolResultBlockParamVariant(ToolResultBlockParam Value)
+    : ContentBlockParam,
+        IVariant<ToolResultBlockParamVariant, ToolResultBlockParam>
 {
-    public static ToolResultBlockParam From(Messages::ToolResultBlockParam value)
+    public static ToolResultBlockParamVariant From(ToolResultBlockParam value)
     {
         return new(value);
     }
@@ -155,14 +138,12 @@ public sealed record class ToolResultBlockParam(Messages::ToolResultBlockParam V
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ServerToolUseBlockParam, Messages::ServerToolUseBlockParam>)
-)]
-public sealed record class ServerToolUseBlockParam(Messages::ServerToolUseBlockParam Value)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<ServerToolUseBlockParam, Messages::ServerToolUseBlockParam>
+[JsonConverter(typeof(VariantConverter<ServerToolUseBlockParamVariant, ServerToolUseBlockParam>))]
+public sealed record class ServerToolUseBlockParamVariant(ServerToolUseBlockParam Value)
+    : ContentBlockParam,
+        IVariant<ServerToolUseBlockParamVariant, ServerToolUseBlockParam>
 {
-    public static ServerToolUseBlockParam From(Messages::ServerToolUseBlockParam value)
+    public static ServerToolUseBlockParamVariant From(ServerToolUseBlockParam value)
     {
         return new(value);
     }
@@ -173,19 +154,14 @@ public sealed record class ServerToolUseBlockParam(Messages::ServerToolUseBlockP
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        WebSearchToolResultBlockParam,
-        Messages::WebSearchToolResultBlockParam
-    >)
+[JsonConverter(
+    typeof(VariantConverter<WebSearchToolResultBlockParamVariant, WebSearchToolResultBlockParam>)
 )]
-public sealed record class WebSearchToolResultBlockParam(
-    Messages::WebSearchToolResultBlockParam Value
-)
-    : Messages::ContentBlockParam,
-        Anthropic::IVariant<WebSearchToolResultBlockParam, Messages::WebSearchToolResultBlockParam>
+public sealed record class WebSearchToolResultBlockParamVariant(WebSearchToolResultBlockParam Value)
+    : ContentBlockParam,
+        IVariant<WebSearchToolResultBlockParamVariant, WebSearchToolResultBlockParam>
 {
-    public static WebSearchToolResultBlockParam From(Messages::WebSearchToolResultBlockParam value)
+    public static WebSearchToolResultBlockParamVariant From(WebSearchToolResultBlockParam value)
     {
         return new(value);
     }

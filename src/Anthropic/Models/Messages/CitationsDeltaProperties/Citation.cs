@@ -1,26 +1,24 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using CitationVariants = Anthropic.Models.Messages.CitationsDeltaProperties.CitationVariants;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.CitationsDeltaProperties;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<Citation>))]
+[JsonConverter(typeof(UnionConverter<Citation>))]
 public abstract record class Citation
 {
     internal Citation() { }
 
-    public static implicit operator Citation(Messages::CitationCharLocation value) =>
-        new CitationVariants::CitationCharLocation(value);
+    public static implicit operator Citation(CitationCharLocation value) =>
+        new CitationVariants::CitationCharLocationVariant(value);
 
-    public static implicit operator Citation(Messages::CitationPageLocation value) =>
-        new CitationVariants::CitationPageLocation(value);
+    public static implicit operator Citation(CitationPageLocation value) =>
+        new CitationVariants::CitationPageLocationVariant(value);
 
-    public static implicit operator Citation(Messages::CitationContentBlockLocation value) =>
-        new CitationVariants::CitationContentBlockLocation(value);
+    public static implicit operator Citation(CitationContentBlockLocation value) =>
+        new CitationVariants::CitationContentBlockLocationVariant(value);
 
-    public static implicit operator Citation(Messages::CitationsWebSearchResultLocation value) =>
-        new CitationVariants::CitationsWebSearchResultLocation(value);
+    public static implicit operator Citation(CitationsWebSearchResultLocation value) =>
+        new CitationVariants::CitationsWebSearchResultLocationVariant(value);
 
     public abstract void Validate();
 }

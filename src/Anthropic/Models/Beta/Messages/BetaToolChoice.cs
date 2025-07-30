@@ -1,6 +1,5 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using BetaToolChoiceVariants = Anthropic.Models.Beta.Messages.BetaToolChoiceVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -8,22 +7,22 @@ namespace Anthropic.Models.Beta.Messages;
 /// How the model should use the provided tools. The model can use a specific tool,
 /// any available tool, decide by itself, or not use tools at all.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<BetaToolChoice>))]
+[JsonConverter(typeof(UnionConverter<BetaToolChoice>))]
 public abstract record class BetaToolChoice
 {
     internal BetaToolChoice() { }
 
     public static implicit operator BetaToolChoice(BetaToolChoiceAuto value) =>
-        new BetaToolChoiceVariants::BetaToolChoiceAuto(value);
+        new BetaToolChoiceVariants::BetaToolChoiceAutoVariant(value);
 
     public static implicit operator BetaToolChoice(BetaToolChoiceAny value) =>
-        new BetaToolChoiceVariants::BetaToolChoiceAny(value);
+        new BetaToolChoiceVariants::BetaToolChoiceAnyVariant(value);
 
     public static implicit operator BetaToolChoice(BetaToolChoiceTool value) =>
-        new BetaToolChoiceVariants::BetaToolChoiceTool(value);
+        new BetaToolChoiceVariants::BetaToolChoiceToolVariant(value);
 
     public static implicit operator BetaToolChoice(BetaToolChoiceNone value) =>
-        new BetaToolChoiceVariants::BetaToolChoiceNone(value);
+        new BetaToolChoiceVariants::BetaToolChoiceNoneVariant(value);
 
     public abstract void Validate();
 }

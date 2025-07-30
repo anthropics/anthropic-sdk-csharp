@@ -1,12 +1,9 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using BetaCodeExecutionToolResultBlockParamContentVariants = Anthropic.Models.Beta.Messages.BetaCodeExecutionToolResultBlockParamContentVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::UnionConverter<BetaCodeExecutionToolResultBlockParamContent>)
-)]
+[JsonConverter(typeof(UnionConverter<BetaCodeExecutionToolResultBlockParamContent>))]
 public abstract record class BetaCodeExecutionToolResultBlockParamContent
 {
     internal BetaCodeExecutionToolResultBlockParamContent() { }
@@ -14,14 +11,14 @@ public abstract record class BetaCodeExecutionToolResultBlockParamContent
     public static implicit operator BetaCodeExecutionToolResultBlockParamContent(
         BetaCodeExecutionToolResultErrorParam value
     ) =>
-        new BetaCodeExecutionToolResultBlockParamContentVariants::BetaCodeExecutionToolResultErrorParam(
+        new BetaCodeExecutionToolResultBlockParamContentVariants::BetaCodeExecutionToolResultErrorParamVariant(
             value
         );
 
     public static implicit operator BetaCodeExecutionToolResultBlockParamContent(
         BetaCodeExecutionResultBlockParam value
     ) =>
-        new BetaCodeExecutionToolResultBlockParamContentVariants::BetaCodeExecutionResultBlockParam(
+        new BetaCodeExecutionToolResultBlockParamContentVariants::BetaCodeExecutionResultBlockParamVariant(
             value
         );
 

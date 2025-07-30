@@ -1,6 +1,6 @@
-using Files = Anthropic.Models.Beta.Files;
-using Json = System.Text.Json;
-using Tasks = System.Threading.Tasks;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Anthropic.Models.Beta.Files;
 
 namespace Anthropic.Service.Beta.Files;
 
@@ -9,25 +9,25 @@ public interface IFileService
     /// <summary>
     /// List Files
     /// </summary>
-    Tasks::Task<Files::FileListPageResponse> List(Files::FileListParams @params);
+    Task<FileListPageResponse> List(FileListParams @params);
 
     /// <summary>
     /// Delete File
     /// </summary>
-    Tasks::Task<Files::DeletedFile> Delete(Files::FileDeleteParams @params);
+    Task<DeletedFile> Delete(FileDeleteParams @params);
 
     /// <summary>
     /// Download File
     /// </summary>
-    Tasks::Task<Json::JsonElement> Download(Files::FileDownloadParams @params);
+    Task<JsonElement> Download(FileDownloadParams @params);
 
     /// <summary>
     /// Get File Metadata
     /// </summary>
-    Tasks::Task<Files::FileMetadata> RetrieveMetadata(Files::FileRetrieveMetadataParams @params);
+    Task<FileMetadata> RetrieveMetadata(FileRetrieveMetadataParams @params);
 
     /// <summary>
     /// Upload File
     /// </summary>
-    Tasks::Task<Files::FileMetadata> Upload(Files::FileUploadParams @params);
+    Task<FileMetadata> Upload(FileUploadParams @params);
 }

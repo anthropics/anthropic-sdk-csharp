@@ -1,15 +1,10 @@
-using Anthropic = Anthropic;
-using BetaRequestMCPToolResultBlockParamProperties = Anthropic.Models.Beta.Messages.BetaRequestMCPToolResultBlockParamProperties;
-using Generic = System.Collections.Generic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaRequestMCPToolResultBlockParamProperties.ContentVariants;
 
-[Serialization::JsonConverter(typeof(Anthropic::VariantConverter<String, string>))]
-public sealed record class String(string Value)
-    : BetaRequestMCPToolResultBlockParamProperties::Content,
-        Anthropic::IVariant<String, string>
+[JsonConverter(typeof(VariantConverter<String, string>))]
+public sealed record class String(string Value) : Content, IVariant<String, string>
 {
     public static String From(string value)
     {
@@ -19,24 +14,14 @@ public sealed record class String(string Value)
     public override void Validate() { }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaMCPToolResultBlockParamContent,
-        Generic::List<Messages::BetaTextBlockParam>
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaMCPToolResultBlockParamContent, List<BetaTextBlockParam>>)
 )]
-public sealed record class BetaMCPToolResultBlockParamContent(
-    Generic::List<Messages::BetaTextBlockParam> Value
-)
-    : BetaRequestMCPToolResultBlockParamProperties::Content,
-        Anthropic::IVariant<
-            BetaMCPToolResultBlockParamContent,
-            Generic::List<Messages::BetaTextBlockParam>
-        >
+public sealed record class BetaMCPToolResultBlockParamContent(List<BetaTextBlockParam> Value)
+    : Content,
+        IVariant<BetaMCPToolResultBlockParamContent, List<BetaTextBlockParam>>
 {
-    public static BetaMCPToolResultBlockParamContent From(
-        Generic::List<Messages::BetaTextBlockParam> value
-    )
+    public static BetaMCPToolResultBlockParamContent From(List<BetaTextBlockParam> value)
     {
         return new(value);
     }

@@ -1,17 +1,15 @@
-using Anthropic = Anthropic;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BetaRawContentBlockStartEventProperties = Anthropic.Models.Beta.Messages.BetaRawContentBlockStartEventProperties;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaRawContentBlockStartEvent>))]
+[JsonConverter(typeof(ModelConverter<BetaRawContentBlockStartEvent>))]
 public sealed record class BetaRawContentBlockStartEvent
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaRawContentBlockStartEvent>
+    : ModelBase,
+        IFromRaw<BetaRawContentBlockStartEvent>
 {
     /// <summary>
     /// Response model for a file uploaded to the container.
@@ -20,41 +18,47 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         get
         {
-            if (!this.Properties.TryGetValue("content_block", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("content_block", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "content_block",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaRawContentBlockStartEventProperties::ContentBlock>(
+            return JsonSerializer.Deserialize<BetaRawContentBlockStartEventProperties::ContentBlock>(
                     element
-                ) ?? throw new System::ArgumentNullException("content_block");
+                ) ?? throw new global::System.ArgumentNullException("content_block");
         }
-        set { this.Properties["content_block"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["content_block"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required long Index
     {
         get
         {
-            if (!this.Properties.TryGetValue("index", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("index", "Missing required argument");
+            if (!this.Properties.TryGetValue("index", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "index",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["index"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["index"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -65,19 +69,19 @@ public sealed record class BetaRawContentBlockStartEvent
 
     public BetaRawContentBlockStartEvent()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content_block_start\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaRawContentBlockStartEvent(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaRawContentBlockStartEvent(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaRawContentBlockStartEvent FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

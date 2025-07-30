@@ -1,18 +1,13 @@
-using Anthropic = Anthropic;
-using DocumentBlockParamProperties = Anthropic.Models.Messages.DocumentBlockParamProperties;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.DocumentBlockParamProperties.SourceVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<Base64PDFSource, Messages::Base64PDFSource>)
-)]
-public sealed record class Base64PDFSource(Messages::Base64PDFSource Value)
-    : DocumentBlockParamProperties::Source,
-        Anthropic::IVariant<Base64PDFSource, Messages::Base64PDFSource>
+[JsonConverter(typeof(VariantConverter<Base64PDFSourceVariant, Base64PDFSource>))]
+public sealed record class Base64PDFSourceVariant(Base64PDFSource Value)
+    : Source,
+        IVariant<Base64PDFSourceVariant, Base64PDFSource>
 {
-    public static Base64PDFSource From(Messages::Base64PDFSource value)
+    public static Base64PDFSourceVariant From(Base64PDFSource value)
     {
         return new(value);
     }
@@ -23,14 +18,12 @@ public sealed record class Base64PDFSource(Messages::Base64PDFSource Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<PlainTextSource, Messages::PlainTextSource>)
-)]
-public sealed record class PlainTextSource(Messages::PlainTextSource Value)
-    : DocumentBlockParamProperties::Source,
-        Anthropic::IVariant<PlainTextSource, Messages::PlainTextSource>
+[JsonConverter(typeof(VariantConverter<PlainTextSourceVariant, PlainTextSource>))]
+public sealed record class PlainTextSourceVariant(PlainTextSource Value)
+    : Source,
+        IVariant<PlainTextSourceVariant, PlainTextSource>
 {
-    public static PlainTextSource From(Messages::PlainTextSource value)
+    public static PlainTextSourceVariant From(PlainTextSource value)
     {
         return new(value);
     }
@@ -41,14 +34,12 @@ public sealed record class PlainTextSource(Messages::PlainTextSource Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ContentBlockSource, Messages::ContentBlockSource>)
-)]
-public sealed record class ContentBlockSource(Messages::ContentBlockSource Value)
-    : DocumentBlockParamProperties::Source,
-        Anthropic::IVariant<ContentBlockSource, Messages::ContentBlockSource>
+[JsonConverter(typeof(VariantConverter<ContentBlockSourceVariant, ContentBlockSource>))]
+public sealed record class ContentBlockSourceVariant(ContentBlockSource Value)
+    : Source,
+        IVariant<ContentBlockSourceVariant, ContentBlockSource>
 {
-    public static ContentBlockSource From(Messages::ContentBlockSource value)
+    public static ContentBlockSourceVariant From(ContentBlockSource value)
     {
         return new(value);
     }
@@ -59,14 +50,12 @@ public sealed record class ContentBlockSource(Messages::ContentBlockSource Value
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<URLPDFSource, Messages::URLPDFSource>)
-)]
-public sealed record class URLPDFSource(Messages::URLPDFSource Value)
-    : DocumentBlockParamProperties::Source,
-        Anthropic::IVariant<URLPDFSource, Messages::URLPDFSource>
+[JsonConverter(typeof(VariantConverter<URLPDFSourceVariant, URLPDFSource>))]
+public sealed record class URLPDFSourceVariant(URLPDFSource Value)
+    : Source,
+        IVariant<URLPDFSourceVariant, URLPDFSource>
 {
-    public static URLPDFSource From(Messages::URLPDFSource value)
+    public static URLPDFSourceVariant From(URLPDFSource value)
     {
         return new(value);
     }

@@ -1,20 +1,15 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.TextCitationParamVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        CitationCharLocationParam,
-        Messages::CitationCharLocationParam
-    >)
+[JsonConverter(
+    typeof(VariantConverter<CitationCharLocationParamVariant, CitationCharLocationParam>)
 )]
-public sealed record class CitationCharLocationParam(Messages::CitationCharLocationParam Value)
-    : Messages::TextCitationParam,
-        Anthropic::IVariant<CitationCharLocationParam, Messages::CitationCharLocationParam>
+public sealed record class CitationCharLocationParamVariant(CitationCharLocationParam Value)
+    : TextCitationParam,
+        IVariant<CitationCharLocationParamVariant, CitationCharLocationParam>
 {
-    public static CitationCharLocationParam From(Messages::CitationCharLocationParam value)
+    public static CitationCharLocationParamVariant From(CitationCharLocationParam value)
     {
         return new(value);
     }
@@ -25,17 +20,14 @@ public sealed record class CitationCharLocationParam(Messages::CitationCharLocat
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        CitationPageLocationParam,
-        Messages::CitationPageLocationParam
-    >)
+[JsonConverter(
+    typeof(VariantConverter<CitationPageLocationParamVariant, CitationPageLocationParam>)
 )]
-public sealed record class CitationPageLocationParam(Messages::CitationPageLocationParam Value)
-    : Messages::TextCitationParam,
-        Anthropic::IVariant<CitationPageLocationParam, Messages::CitationPageLocationParam>
+public sealed record class CitationPageLocationParamVariant(CitationPageLocationParam Value)
+    : TextCitationParam,
+        IVariant<CitationPageLocationParamVariant, CitationPageLocationParam>
 {
-    public static CitationPageLocationParam From(Messages::CitationPageLocationParam value)
+    public static CitationPageLocationParamVariant From(CitationPageLocationParam value)
     {
         return new(value);
     }
@@ -46,23 +38,20 @@ public sealed record class CitationPageLocationParam(Messages::CitationPageLocat
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        CitationContentBlockLocationParam,
-        Messages::CitationContentBlockLocationParam
+[JsonConverter(
+    typeof(VariantConverter<
+        CitationContentBlockLocationParamVariant,
+        CitationContentBlockLocationParam
     >)
 )]
-public sealed record class CitationContentBlockLocationParam(
-    Messages::CitationContentBlockLocationParam Value
+public sealed record class CitationContentBlockLocationParamVariant(
+    CitationContentBlockLocationParam Value
 )
-    : Messages::TextCitationParam,
-        Anthropic::IVariant<
-            CitationContentBlockLocationParam,
-            Messages::CitationContentBlockLocationParam
-        >
+    : TextCitationParam,
+        IVariant<CitationContentBlockLocationParamVariant, CitationContentBlockLocationParam>
 {
-    public static CitationContentBlockLocationParam From(
-        Messages::CitationContentBlockLocationParam value
+    public static CitationContentBlockLocationParamVariant From(
+        CitationContentBlockLocationParam value
     )
     {
         return new(value);
@@ -74,23 +63,20 @@ public sealed record class CitationContentBlockLocationParam(
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        CitationWebSearchResultLocationParam,
-        Messages::CitationWebSearchResultLocationParam
+[JsonConverter(
+    typeof(VariantConverter<
+        CitationWebSearchResultLocationParamVariant,
+        CitationWebSearchResultLocationParam
     >)
 )]
-public sealed record class CitationWebSearchResultLocationParam(
-    Messages::CitationWebSearchResultLocationParam Value
+public sealed record class CitationWebSearchResultLocationParamVariant(
+    CitationWebSearchResultLocationParam Value
 )
-    : Messages::TextCitationParam,
-        Anthropic::IVariant<
-            CitationWebSearchResultLocationParam,
-            Messages::CitationWebSearchResultLocationParam
-        >
+    : TextCitationParam,
+        IVariant<CitationWebSearchResultLocationParamVariant, CitationWebSearchResultLocationParam>
 {
-    public static CitationWebSearchResultLocationParam From(
-        Messages::CitationWebSearchResultLocationParam value
+    public static CitationWebSearchResultLocationParamVariant From(
+        CitationWebSearchResultLocationParam value
     )
     {
         return new(value);

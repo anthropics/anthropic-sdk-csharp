@@ -1,47 +1,44 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<CacheControlEphemeral>))]
-public sealed record class CacheControlEphemeral
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<CacheControlEphemeral>
+[JsonConverter(typeof(ModelConverter<CacheControlEphemeral>))]
+public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheControlEphemeral>
 {
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate() { }
 
     public CacheControlEphemeral()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"ephemeral\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    CacheControlEphemeral(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    CacheControlEphemeral(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static CacheControlEphemeral FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static CacheControlEphemeral FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

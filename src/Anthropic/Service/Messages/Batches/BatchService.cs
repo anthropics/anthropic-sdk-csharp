@@ -1,154 +1,125 @@
-using Anthropic = Anthropic;
-using Batches = Anthropic.Models.Messages.Batches;
-using Http = System.Net.Http;
-using Json = System.Text.Json;
-using System = System;
-using Tasks = System.Threading.Tasks;
+using System;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Anthropic.Models.Messages.Batches;
 
 namespace Anthropic.Service.Messages.Batches;
 
 public sealed class BatchService : IBatchService
 {
-    readonly Anthropic::IAnthropicClient _client;
+    readonly IAnthropicClient _client;
 
-    public BatchService(Anthropic::IAnthropicClient client)
+    public BatchService(IAnthropicClient client)
     {
         _client = client;
     }
 
-    public async Tasks::Task<Batches::MessageBatch> Create(Batches::BatchCreateParams @params)
+    public async Task<MessageBatch> Create(BatchCreateParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Post, @params.Url(this._client))
+        HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client))
         {
             Content = @params.BodyContent(),
         };
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Batches::MessageBatch>(
-                await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+        return JsonSerializer.Deserialize<MessageBatch>(await response.Content.ReadAsStringAsync())
+            ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Batches::MessageBatch> Retrieve(Batches::BatchRetrieveParams @params)
+    public async Task<MessageBatch> Retrieve(BatchRetrieveParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Get, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Batches::MessageBatch>(
-                await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+        return JsonSerializer.Deserialize<MessageBatch>(await response.Content.ReadAsStringAsync())
+            ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Batches::BatchListPageResponse> List(Batches::BatchListParams @params)
+    public async Task<BatchListPageResponse> List(BatchListParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Get, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Batches::BatchListPageResponse>(
+        return JsonSerializer.Deserialize<BatchListPageResponse>(
                 await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+            ) ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Batches::DeletedMessageBatch> Delete(
-        Batches::BatchDeleteParams @params
-    )
+    public async Task<DeletedMessageBatch> Delete(BatchDeleteParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(
-            Http::HttpMethod.Delete,
-            @params.Url(this._client)
-        );
+        HttpRequestMessage webRequest = new(HttpMethod.Delete, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Batches::DeletedMessageBatch>(
+        return JsonSerializer.Deserialize<DeletedMessageBatch>(
                 await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+            ) ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Batches::MessageBatch> Cancel(Batches::BatchCancelParams @params)
+    public async Task<MessageBatch> Cancel(BatchCancelParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Post, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Batches::MessageBatch>(
-                await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+        return JsonSerializer.Deserialize<MessageBatch>(await response.Content.ReadAsStringAsync())
+            ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Batches::MessageBatchIndividualResponse> Results(
-        Batches::BatchResultsParams @params
-    )
+    public async Task<MessageBatchIndividualResponse> Results(BatchResultsParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Get, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Batches::MessageBatchIndividualResponse>(
+        return JsonSerializer.Deserialize<MessageBatchIndividualResponse>(
                 await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+            ) ?? throw new NullReferenceException();
     }
 }

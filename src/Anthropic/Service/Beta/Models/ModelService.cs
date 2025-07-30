@@ -1,60 +1,52 @@
-using Anthropic = Anthropic;
-using Http = System.Net.Http;
-using Json = System.Text.Json;
-using Models = Anthropic.Models.Beta.Models;
-using System = System;
-using Tasks = System.Threading.Tasks;
+using System;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Anthropic.Models.Beta.Models;
 
 namespace Anthropic.Service.Beta.Models;
 
 public sealed class ModelService : IModelService
 {
-    readonly Anthropic::IAnthropicClient _client;
+    readonly IAnthropicClient _client;
 
-    public ModelService(Anthropic::IAnthropicClient client)
+    public ModelService(IAnthropicClient client)
     {
         _client = client;
     }
 
-    public async Tasks::Task<Models::BetaModelInfo> Retrieve(Models::ModelRetrieveParams @params)
+    public async Task<BetaModelInfo> Retrieve(ModelRetrieveParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Get, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Models::BetaModelInfo>(
-                await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+        return JsonSerializer.Deserialize<BetaModelInfo>(await response.Content.ReadAsStringAsync())
+            ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Models::ModelListPageResponse> List(Models::ModelListParams @params)
+    public async Task<ModelListPageResponse> List(ModelListParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Get, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Models::ModelListPageResponse>(
+        return JsonSerializer.Deserialize<ModelListPageResponse>(
                 await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+            ) ?? throw new NullReferenceException();
     }
 }

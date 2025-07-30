@@ -1,64 +1,72 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<ServerToolUseBlockParam>))]
-public sealed record class ServerToolUseBlockParam
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<ServerToolUseBlockParam>
+[JsonConverter(typeof(ModelConverter<ServerToolUseBlockParam>))]
+public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerToolUseBlockParam>
 {
     public required string ID
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("id", "Missing required argument");
+            if (!this.Properties.TryGetValue("id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "id",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("id");
         }
-        set { this.Properties["id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public required Json::JsonElement Input
+    public required JsonElement Input
     {
         get
         {
-            if (!this.Properties.TryGetValue("input", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("input", "Missing required argument");
+            if (!this.Properties.TryGetValue("input", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "input",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["input"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["input"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Name
+    public JsonElement Name
     {
         get
         {
-            if (!this.Properties.TryGetValue("name", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("name", "Missing required argument");
+            if (!this.Properties.TryGetValue("name", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "name",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -68,12 +76,12 @@ public sealed record class ServerToolUseBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<CacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<CacheControlEphemeral?>(element);
         }
-        set { this.Properties["cache_control"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -85,20 +93,20 @@ public sealed record class ServerToolUseBlockParam
 
     public ServerToolUseBlockParam()
     {
-        this.Name = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search\"");
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"server_tool_use\"");
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    ServerToolUseBlockParam(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    ServerToolUseBlockParam(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static ServerToolUseBlockParam FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

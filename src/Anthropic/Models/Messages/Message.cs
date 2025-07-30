@@ -1,14 +1,12 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<Message>))]
-public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<Message>
+[JsonConverter(typeof(ModelConverter<Message>))]
+public sealed record class Message : ModelBase, IFromRaw<Message>
 {
     /// <summary>
     /// Unique object identifier.
@@ -19,13 +17,16 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("id", "Missing required argument");
+            if (!this.Properties.TryGetValue("id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "id",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("id");
         }
-        set { this.Properties["id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -50,20 +51,20 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     ///
     /// ```json [{"type": "text", "text": "B)"}] ```
     /// </summary>
-    public required Generic::List<ContentBlock> Content
+    public required List<ContentBlock> Content
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("content", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "content",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<Generic::List<ContentBlock>>(element)
-                ?? throw new System::ArgumentNullException("content");
+            return JsonSerializer.Deserialize<List<ContentBlock>>(element)
+                ?? throw new global::System.ArgumentNullException("content");
         }
-        set { this.Properties["content"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -74,13 +75,16 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     {
         get
         {
-            if (!this.Properties.TryGetValue("model", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("model", "Missing required argument");
+            if (!this.Properties.TryGetValue("model", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "model",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Model>(element)
-                ?? throw new System::ArgumentNullException("model");
+            return JsonSerializer.Deserialize<Model>(element)
+                ?? throw new global::System.ArgumentNullException("model");
         }
-        set { this.Properties["model"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["model"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -88,16 +92,19 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     ///
     /// This will always be `"assistant"`.
     /// </summary>
-    public Json::JsonElement Role
+    public JsonElement Role
     {
         get
         {
-            if (!this.Properties.TryGetValue("role", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("role", "Missing required argument");
+            if (!this.Properties.TryGetValue("role", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "role",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["role"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["role"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -118,15 +125,15 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     {
         get
         {
-            if (!this.Properties.TryGetValue("stop_reason", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("stop_reason", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "stop_reason",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<StopReason?>(element);
+            return JsonSerializer.Deserialize<StopReason?>(element);
         }
-        set { this.Properties["stop_reason"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["stop_reason"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -138,15 +145,15 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     {
         get
         {
-            if (!this.Properties.TryGetValue("stop_sequence", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("stop_sequence", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "stop_sequence",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["stop_sequence"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["stop_sequence"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -154,16 +161,19 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     ///
     /// For Messages, this is always `"message"`.
     /// </summary>
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -187,13 +197,16 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
     {
         get
         {
-            if (!this.Properties.TryGetValue("usage", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("usage", "Missing required argument");
+            if (!this.Properties.TryGetValue("usage", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "usage",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Usage>(element)
-                ?? throw new System::ArgumentNullException("usage");
+            return JsonSerializer.Deserialize<Usage>(element)
+                ?? throw new global::System.ArgumentNullException("usage");
         }
-        set { this.Properties["usage"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["usage"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -211,21 +224,19 @@ public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<M
 
     public Message()
     {
-        this.Role = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"assistant\"");
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message\"");
+        this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    Message(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    Message(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static Message FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static Message FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

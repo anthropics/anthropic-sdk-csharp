@@ -1,20 +1,16 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.ToolChoiceVariants;
 
 /// <summary>
 /// The model will automatically decide whether to use tools.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ToolChoiceAuto, Messages::ToolChoiceAuto>)
-)]
-public sealed record class ToolChoiceAuto(Messages::ToolChoiceAuto Value)
-    : Messages::ToolChoice,
-        Anthropic::IVariant<ToolChoiceAuto, Messages::ToolChoiceAuto>
+[JsonConverter(typeof(VariantConverter<ToolChoiceAutoVariant, ToolChoiceAuto>))]
+public sealed record class ToolChoiceAutoVariant(ToolChoiceAuto Value)
+    : ToolChoice,
+        IVariant<ToolChoiceAutoVariant, ToolChoiceAuto>
 {
-    public static ToolChoiceAuto From(Messages::ToolChoiceAuto value)
+    public static ToolChoiceAutoVariant From(ToolChoiceAuto value)
     {
         return new(value);
     }
@@ -28,14 +24,12 @@ public sealed record class ToolChoiceAuto(Messages::ToolChoiceAuto Value)
 /// <summary>
 /// The model will use any available tools.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ToolChoiceAny, Messages::ToolChoiceAny>)
-)]
-public sealed record class ToolChoiceAny(Messages::ToolChoiceAny Value)
-    : Messages::ToolChoice,
-        Anthropic::IVariant<ToolChoiceAny, Messages::ToolChoiceAny>
+[JsonConverter(typeof(VariantConverter<ToolChoiceAnyVariant, ToolChoiceAny>))]
+public sealed record class ToolChoiceAnyVariant(ToolChoiceAny Value)
+    : ToolChoice,
+        IVariant<ToolChoiceAnyVariant, ToolChoiceAny>
 {
-    public static ToolChoiceAny From(Messages::ToolChoiceAny value)
+    public static ToolChoiceAnyVariant From(ToolChoiceAny value)
     {
         return new(value);
     }
@@ -49,14 +43,12 @@ public sealed record class ToolChoiceAny(Messages::ToolChoiceAny Value)
 /// <summary>
 /// The model will use the specified tool with `tool_choice.name`.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ToolChoiceTool, Messages::ToolChoiceTool>)
-)]
-public sealed record class ToolChoiceTool(Messages::ToolChoiceTool Value)
-    : Messages::ToolChoice,
-        Anthropic::IVariant<ToolChoiceTool, Messages::ToolChoiceTool>
+[JsonConverter(typeof(VariantConverter<ToolChoiceToolVariant, ToolChoiceTool>))]
+public sealed record class ToolChoiceToolVariant(ToolChoiceTool Value)
+    : ToolChoice,
+        IVariant<ToolChoiceToolVariant, ToolChoiceTool>
 {
-    public static ToolChoiceTool From(Messages::ToolChoiceTool value)
+    public static ToolChoiceToolVariant From(ToolChoiceTool value)
     {
         return new(value);
     }
@@ -70,14 +62,12 @@ public sealed record class ToolChoiceTool(Messages::ToolChoiceTool Value)
 /// <summary>
 /// The model will not be allowed to use tools.
 /// </summary>
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ToolChoiceNone, Messages::ToolChoiceNone>)
-)]
-public sealed record class ToolChoiceNone(Messages::ToolChoiceNone Value)
-    : Messages::ToolChoice,
-        Anthropic::IVariant<ToolChoiceNone, Messages::ToolChoiceNone>
+[JsonConverter(typeof(VariantConverter<ToolChoiceNoneVariant, ToolChoiceNone>))]
+public sealed record class ToolChoiceNoneVariant(ToolChoiceNone Value)
+    : ToolChoice,
+        IVariant<ToolChoiceNoneVariant, ToolChoiceNone>
 {
-    public static ToolChoiceNone From(Messages::ToolChoiceNone value)
+    public static ToolChoiceNoneVariant From(ToolChoiceNone value)
     {
         return new(value);
     }

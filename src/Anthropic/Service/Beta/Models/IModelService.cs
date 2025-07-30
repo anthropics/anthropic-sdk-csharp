@@ -1,5 +1,5 @@
-using Models = Anthropic.Models.Beta.Models;
-using Tasks = System.Threading.Tasks;
+using System.Threading.Tasks;
+using Anthropic.Models.Beta.Models;
 
 namespace Anthropic.Service.Beta.Models;
 
@@ -11,7 +11,7 @@ public interface IModelService
     /// The Models API response can be used to determine information about a specific
     /// model or resolve a model alias to a model ID.
     /// </summary>
-    Tasks::Task<Models::BetaModelInfo> Retrieve(Models::ModelRetrieveParams @params);
+    Task<BetaModelInfo> Retrieve(ModelRetrieveParams @params);
 
     /// <summary>
     /// List available models.
@@ -19,5 +19,5 @@ public interface IModelService
     /// The Models API response can be used to determine which models are available
     /// for use in the API. More recently released models are listed first.
     /// </summary>
-    Tasks::Task<Models::ModelListPageResponse> List(Models::ModelListParams @params);
+    Task<ModelListPageResponse> List(ModelListParams @params);
 }

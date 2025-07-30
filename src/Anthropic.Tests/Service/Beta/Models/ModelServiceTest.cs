@@ -1,22 +1,21 @@
-using Beta = Anthropic.Models.Beta;
-using Tasks = System.Threading.Tasks;
-using Tests = Anthropic.Tests;
+using System.Threading.Tasks;
+using Anthropic.Models.Beta;
 
 namespace Anthropic.Tests.Service.Beta.Models;
 
-public class ModelServiceTest : Tests::TestBase
+public class ModelServiceTest : TestBase
 {
     [Fact]
-    public async Tasks::Task Retrieve_Works()
+    public async Task Retrieve_Works()
     {
         var betaModelInfo = await this.client.Beta.Models.Retrieve(
-            new() { ModelID = "model_id", Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24] }
+            new() { ModelID = "model_id", Betas = [AnthropicBeta.MessageBatches2024_09_24] }
         );
         betaModelInfo.Validate();
     }
 
     [Fact]
-    public async Tasks::Task List_Works()
+    public async Task List_Works()
     {
         var page = await this.client.Beta.Models.List(
             new()
@@ -24,7 +23,7 @@ public class ModelServiceTest : Tests::TestBase
                 AfterID = "after_id",
                 BeforeID = "before_id",
                 Limit = 1,
-                Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24],
+                Betas = [AnthropicBeta.MessageBatches2024_09_24],
             }
         );
         page.Validate();

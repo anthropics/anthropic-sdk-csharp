@@ -1,40 +1,42 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaErrorResponse>))]
-public sealed record class BetaErrorResponse
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaErrorResponse>
+[JsonConverter(typeof(ModelConverter<BetaErrorResponse>))]
+public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResponse>
 {
     public required BetaError Error
     {
         get
         {
-            if (!this.Properties.TryGetValue("error", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("error", "Missing required argument");
+            if (!this.Properties.TryGetValue("error", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "error",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<BetaError>(element)
-                ?? throw new System::ArgumentNullException("error");
+            return JsonSerializer.Deserialize<BetaError>(element)
+                ?? throw new global::System.ArgumentNullException("error");
         }
-        set { this.Properties["error"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["error"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -44,20 +46,18 @@ public sealed record class BetaErrorResponse
 
     public BetaErrorResponse()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"error\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaErrorResponse(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaErrorResponse(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaErrorResponse FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaErrorResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

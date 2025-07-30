@@ -1,6 +1,5 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaCacheControlEphemeralProperties;
 
@@ -11,8 +10,8 @@ namespace Anthropic.Models.Beta.Messages.BetaCacheControlEphemeralProperties;
 ///
 /// Defaults to `5m`.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::EnumConverter<TTL, string>))]
-public sealed record class TTL(string value) : Anthropic::IEnum<TTL, string>
+[JsonConverter(typeof(EnumConverter<TTL, string>))]
+public sealed record class TTL(string value) : IEnum<TTL, string>
 {
     public static readonly TTL TTL5m = new("5m");
 
@@ -31,7 +30,7 @@ public sealed record class TTL(string value) : Anthropic::IEnum<TTL, string>
         {
             "5m" => Value.TTL5m,
             "1h" => Value.TTL1h,
-            _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
+            _ => throw new ArgumentOutOfRangeException(nameof(_value)),
         };
 
     public string Raw()

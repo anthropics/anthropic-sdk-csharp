@@ -1,63 +1,73 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<ToolUseBlock>))]
-public sealed record class ToolUseBlock : Anthropic::ModelBase, Anthropic::IFromRaw<ToolUseBlock>
+[JsonConverter(typeof(ModelConverter<ToolUseBlock>))]
+public sealed record class ToolUseBlock : ModelBase, IFromRaw<ToolUseBlock>
 {
     public required string ID
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("id", "Missing required argument");
+            if (!this.Properties.TryGetValue("id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "id",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("id");
         }
-        set { this.Properties["id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public required Json::JsonElement Input
+    public required JsonElement Input
     {
         get
         {
-            if (!this.Properties.TryGetValue("input", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("input", "Missing required argument");
+            if (!this.Properties.TryGetValue("input", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "input",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["input"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["input"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string Name
     {
         get
         {
-            if (!this.Properties.TryGetValue("name", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("name", "Missing required argument");
+            if (!this.Properties.TryGetValue("name", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "name",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("name");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("name");
         }
-        set { this.Properties["name"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -69,20 +79,18 @@ public sealed record class ToolUseBlock : Anthropic::ModelBase, Anthropic::IFrom
 
     public ToolUseBlock()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"tool_use\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    ToolUseBlock(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    ToolUseBlock(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static ToolUseBlock FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static ToolUseBlock FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

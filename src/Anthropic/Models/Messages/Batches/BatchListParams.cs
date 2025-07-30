@@ -1,7 +1,5 @@
-using Anthropic = Anthropic;
-using Http = System.Net.Http;
-using Json = System.Text.Json;
-using System = System;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace Anthropic.Models.Messages.Batches;
 
@@ -11,7 +9,7 @@ namespace Anthropic.Models.Messages.Batches;
 ///
 /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
 /// </summary>
-public sealed record class BatchListParams : Anthropic::ParamsBase
+public sealed record class BatchListParams : ParamsBase
 {
     /// <summary>
     /// ID of the object to use as a cursor for pagination. When provided, returns the
@@ -21,12 +19,12 @@ public sealed record class BatchListParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.QueryProperties.TryGetValue("after_id", out Json::JsonElement element))
+            if (!this.QueryProperties.TryGetValue("after_id", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.QueryProperties["after_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.QueryProperties["after_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -37,12 +35,12 @@ public sealed record class BatchListParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.QueryProperties.TryGetValue("before_id", out Json::JsonElement element))
+            if (!this.QueryProperties.TryGetValue("before_id", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.QueryProperties["before_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.QueryProperties["before_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -54,17 +52,17 @@ public sealed record class BatchListParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.QueryProperties.TryGetValue("limit", out Json::JsonElement element))
+            if (!this.QueryProperties.TryGetValue("limit", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element);
         }
-        set { this.QueryProperties["limit"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.QueryProperties["limit"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public override System::Uri Url(Anthropic::IAnthropicClient client)
+    public override global::System.Uri Url(IAnthropicClient client)
     {
-        return new System::UriBuilder(
+        return new global::System.UriBuilder(
             client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages/batches"
         )
         {
@@ -72,15 +70,12 @@ public sealed record class BatchListParams : Anthropic::ParamsBase
         }.Uri;
     }
 
-    public void AddHeadersToRequest(
-        Http::HttpRequestMessage request,
-        Anthropic::IAnthropicClient client
-    )
+    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
     {
-        Anthropic::ParamsBase.AddDefaultHeaders(request, client);
+        ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)
         {
-            Anthropic::ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
     }
 }

@@ -1,6 +1,4 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties;
 
@@ -11,8 +9,8 @@ namespace Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.Req
 /// Anthropic offers different levels of service for your API requests. See [service-tiers](https://docs.anthropic.com/en/api/service-tiers)
 /// for details.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::EnumConverter<ServiceTier, string>))]
-public sealed record class ServiceTier(string value) : Anthropic::IEnum<ServiceTier, string>
+[JsonConverter(typeof(EnumConverter<ServiceTier, string>))]
+public sealed record class ServiceTier(string value) : IEnum<ServiceTier, string>
 {
     public static readonly ServiceTier Auto = new("auto");
 
@@ -31,7 +29,7 @@ public sealed record class ServiceTier(string value) : Anthropic::IEnum<ServiceT
         {
             "auto" => Value.Auto,
             "standard_only" => Value.StandardOnly,
-            _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
+            _ => throw new global::System.ArgumentOutOfRangeException(nameof(_value)),
         };
 
     public string Raw()

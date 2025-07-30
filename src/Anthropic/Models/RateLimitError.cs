@@ -1,43 +1,42 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<RateLimitError>))]
-public sealed record class RateLimitError
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<RateLimitError>
+[JsonConverter(typeof(ModelConverter<RateLimitError>))]
+public sealed record class RateLimitError : ModelBase, IFromRaw<RateLimitError>
 {
     public required string Message
     {
         get
         {
-            if (!this.Properties.TryGetValue("message", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("message", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "message",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("message");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("message");
         }
-        set { this.Properties["message"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["message"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -47,20 +46,18 @@ public sealed record class RateLimitError
 
     public RateLimitError()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"rate_limit_error\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    RateLimitError(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    RateLimitError(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static RateLimitError FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static RateLimitError FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

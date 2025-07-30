@@ -1,15 +1,13 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.Batches.MessageBatchProperties;
 
 /// <summary>
 /// Processing status of the Message Batch.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::EnumConverter<ProcessingStatus, string>))]
-public sealed record class ProcessingStatus(string value)
-    : Anthropic::IEnum<ProcessingStatus, string>
+[JsonConverter(typeof(EnumConverter<ProcessingStatus, string>))]
+public sealed record class ProcessingStatus(string value) : IEnum<ProcessingStatus, string>
 {
     public static readonly ProcessingStatus InProgress = new("in_progress");
 
@@ -32,7 +30,7 @@ public sealed record class ProcessingStatus(string value)
             "in_progress" => Value.InProgress,
             "canceling" => Value.Canceling,
             "ended" => Value.Ended,
-            _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
+            _ => throw new ArgumentOutOfRangeException(nameof(_value)),
         };
 
     public string Raw()

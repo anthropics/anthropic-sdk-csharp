@@ -1,15 +1,13 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaToolUnionVariants;
 
-[Serialization::JsonConverter(typeof(Anthropic::VariantConverter<BetaTool, Messages::BetaTool>))]
-public sealed record class BetaTool(Messages::BetaTool Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaTool, Messages::BetaTool>
+[JsonConverter(typeof(VariantConverter<BetaToolVariant, BetaTool>))]
+public sealed record class BetaToolVariant(BetaTool Value)
+    : BetaToolUnion,
+        IVariant<BetaToolVariant, BetaTool>
 {
-    public static BetaTool From(Messages::BetaTool value)
+    public static BetaToolVariant From(BetaTool value)
     {
         return new(value);
     }
@@ -20,14 +18,12 @@ public sealed record class BetaTool(Messages::BetaTool Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaToolBash20241022, Messages::BetaToolBash20241022>)
-)]
-public sealed record class BetaToolBash20241022(Messages::BetaToolBash20241022 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaToolBash20241022, Messages::BetaToolBash20241022>
+[JsonConverter(typeof(VariantConverter<BetaToolBash20241022Variant, BetaToolBash20241022>))]
+public sealed record class BetaToolBash20241022Variant(BetaToolBash20241022 Value)
+    : BetaToolUnion,
+        IVariant<BetaToolBash20241022Variant, BetaToolBash20241022>
 {
-    public static BetaToolBash20241022 From(Messages::BetaToolBash20241022 value)
+    public static BetaToolBash20241022Variant From(BetaToolBash20241022 value)
     {
         return new(value);
     }
@@ -38,14 +34,12 @@ public sealed record class BetaToolBash20241022(Messages::BetaToolBash20241022 V
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaToolBash20250124, Messages::BetaToolBash20250124>)
-)]
-public sealed record class BetaToolBash20250124(Messages::BetaToolBash20250124 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaToolBash20250124, Messages::BetaToolBash20250124>
+[JsonConverter(typeof(VariantConverter<BetaToolBash20250124Variant, BetaToolBash20250124>))]
+public sealed record class BetaToolBash20250124Variant(BetaToolBash20250124 Value)
+    : BetaToolUnion,
+        IVariant<BetaToolBash20250124Variant, BetaToolBash20250124>
 {
-    public static BetaToolBash20250124 From(Messages::BetaToolBash20250124 value)
+    public static BetaToolBash20250124Variant From(BetaToolBash20250124 value)
     {
         return new(value);
     }
@@ -56,19 +50,14 @@ public sealed record class BetaToolBash20250124(Messages::BetaToolBash20250124 V
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCodeExecutionTool20250522,
-        Messages::BetaCodeExecutionTool20250522
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaCodeExecutionTool20250522Variant, BetaCodeExecutionTool20250522>)
 )]
-public sealed record class BetaCodeExecutionTool20250522(
-    Messages::BetaCodeExecutionTool20250522 Value
-)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaCodeExecutionTool20250522, Messages::BetaCodeExecutionTool20250522>
+public sealed record class BetaCodeExecutionTool20250522Variant(BetaCodeExecutionTool20250522 Value)
+    : BetaToolUnion,
+        IVariant<BetaCodeExecutionTool20250522Variant, BetaCodeExecutionTool20250522>
 {
-    public static BetaCodeExecutionTool20250522 From(Messages::BetaCodeExecutionTool20250522 value)
+    public static BetaCodeExecutionTool20250522Variant From(BetaCodeExecutionTool20250522 value)
     {
         return new(value);
     }
@@ -79,17 +68,14 @@ public sealed record class BetaCodeExecutionTool20250522(
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaToolComputerUse20241022,
-        Messages::BetaToolComputerUse20241022
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaToolComputerUse20241022Variant, BetaToolComputerUse20241022>)
 )]
-public sealed record class BetaToolComputerUse20241022(Messages::BetaToolComputerUse20241022 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaToolComputerUse20241022, Messages::BetaToolComputerUse20241022>
+public sealed record class BetaToolComputerUse20241022Variant(BetaToolComputerUse20241022 Value)
+    : BetaToolUnion,
+        IVariant<BetaToolComputerUse20241022Variant, BetaToolComputerUse20241022>
 {
-    public static BetaToolComputerUse20241022 From(Messages::BetaToolComputerUse20241022 value)
+    public static BetaToolComputerUse20241022Variant From(BetaToolComputerUse20241022 value)
     {
         return new(value);
     }
@@ -100,17 +86,14 @@ public sealed record class BetaToolComputerUse20241022(Messages::BetaToolCompute
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaToolComputerUse20250124,
-        Messages::BetaToolComputerUse20250124
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaToolComputerUse20250124Variant, BetaToolComputerUse20250124>)
 )]
-public sealed record class BetaToolComputerUse20250124(Messages::BetaToolComputerUse20250124 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaToolComputerUse20250124, Messages::BetaToolComputerUse20250124>
+public sealed record class BetaToolComputerUse20250124Variant(BetaToolComputerUse20250124 Value)
+    : BetaToolUnion,
+        IVariant<BetaToolComputerUse20250124Variant, BetaToolComputerUse20250124>
 {
-    public static BetaToolComputerUse20250124 From(Messages::BetaToolComputerUse20250124 value)
+    public static BetaToolComputerUse20250124Variant From(BetaToolComputerUse20250124 value)
     {
         return new(value);
     }
@@ -121,17 +104,14 @@ public sealed record class BetaToolComputerUse20250124(Messages::BetaToolCompute
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaToolTextEditor20241022,
-        Messages::BetaToolTextEditor20241022
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaToolTextEditor20241022Variant, BetaToolTextEditor20241022>)
 )]
-public sealed record class BetaToolTextEditor20241022(Messages::BetaToolTextEditor20241022 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaToolTextEditor20241022, Messages::BetaToolTextEditor20241022>
+public sealed record class BetaToolTextEditor20241022Variant(BetaToolTextEditor20241022 Value)
+    : BetaToolUnion,
+        IVariant<BetaToolTextEditor20241022Variant, BetaToolTextEditor20241022>
 {
-    public static BetaToolTextEditor20241022 From(Messages::BetaToolTextEditor20241022 value)
+    public static BetaToolTextEditor20241022Variant From(BetaToolTextEditor20241022 value)
     {
         return new(value);
     }
@@ -142,17 +122,14 @@ public sealed record class BetaToolTextEditor20241022(Messages::BetaToolTextEdit
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaToolTextEditor20250124,
-        Messages::BetaToolTextEditor20250124
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaToolTextEditor20250124Variant, BetaToolTextEditor20250124>)
 )]
-public sealed record class BetaToolTextEditor20250124(Messages::BetaToolTextEditor20250124 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaToolTextEditor20250124, Messages::BetaToolTextEditor20250124>
+public sealed record class BetaToolTextEditor20250124Variant(BetaToolTextEditor20250124 Value)
+    : BetaToolUnion,
+        IVariant<BetaToolTextEditor20250124Variant, BetaToolTextEditor20250124>
 {
-    public static BetaToolTextEditor20250124 From(Messages::BetaToolTextEditor20250124 value)
+    public static BetaToolTextEditor20250124Variant From(BetaToolTextEditor20250124 value)
     {
         return new(value);
     }
@@ -163,17 +140,14 @@ public sealed record class BetaToolTextEditor20250124(Messages::BetaToolTextEdit
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaToolTextEditor20250429,
-        Messages::BetaToolTextEditor20250429
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaToolTextEditor20250429Variant, BetaToolTextEditor20250429>)
 )]
-public sealed record class BetaToolTextEditor20250429(Messages::BetaToolTextEditor20250429 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaToolTextEditor20250429, Messages::BetaToolTextEditor20250429>
+public sealed record class BetaToolTextEditor20250429Variant(BetaToolTextEditor20250429 Value)
+    : BetaToolUnion,
+        IVariant<BetaToolTextEditor20250429Variant, BetaToolTextEditor20250429>
 {
-    public static BetaToolTextEditor20250429 From(Messages::BetaToolTextEditor20250429 value)
+    public static BetaToolTextEditor20250429Variant From(BetaToolTextEditor20250429 value)
     {
         return new(value);
     }
@@ -184,17 +158,14 @@ public sealed record class BetaToolTextEditor20250429(Messages::BetaToolTextEdit
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaToolTextEditor20250728,
-        Messages::BetaToolTextEditor20250728
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaToolTextEditor20250728Variant, BetaToolTextEditor20250728>)
 )]
-public sealed record class BetaToolTextEditor20250728(Messages::BetaToolTextEditor20250728 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaToolTextEditor20250728, Messages::BetaToolTextEditor20250728>
+public sealed record class BetaToolTextEditor20250728Variant(BetaToolTextEditor20250728 Value)
+    : BetaToolUnion,
+        IVariant<BetaToolTextEditor20250728Variant, BetaToolTextEditor20250728>
 {
-    public static BetaToolTextEditor20250728 From(Messages::BetaToolTextEditor20250728 value)
+    public static BetaToolTextEditor20250728Variant From(BetaToolTextEditor20250728 value)
     {
         return new(value);
     }
@@ -205,17 +176,14 @@ public sealed record class BetaToolTextEditor20250728(Messages::BetaToolTextEdit
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaWebSearchTool20250305,
-        Messages::BetaWebSearchTool20250305
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaWebSearchTool20250305Variant, BetaWebSearchTool20250305>)
 )]
-public sealed record class BetaWebSearchTool20250305(Messages::BetaWebSearchTool20250305 Value)
-    : Messages::BetaToolUnion,
-        Anthropic::IVariant<BetaWebSearchTool20250305, Messages::BetaWebSearchTool20250305>
+public sealed record class BetaWebSearchTool20250305Variant(BetaWebSearchTool20250305 Value)
+    : BetaToolUnion,
+        IVariant<BetaWebSearchTool20250305Variant, BetaWebSearchTool20250305>
 {
-    public static BetaWebSearchTool20250305 From(Messages::BetaWebSearchTool20250305 value)
+    public static BetaWebSearchTool20250305Variant From(BetaWebSearchTool20250305 value)
     {
         return new(value);
     }

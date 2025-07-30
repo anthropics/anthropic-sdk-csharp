@@ -1,24 +1,24 @@
-using Anthropic = Anthropic;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using BetaWebSearchToolResultBlockParamContentVariants = Anthropic.Models.Beta.Messages.BetaWebSearchToolResultBlockParamContentVariants;
-using Generic = System.Collections.Generic;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::UnionConverter<BetaWebSearchToolResultBlockParamContent>)
-)]
+[JsonConverter(typeof(UnionConverter<BetaWebSearchToolResultBlockParamContent>))]
 public abstract record class BetaWebSearchToolResultBlockParamContent
 {
     internal BetaWebSearchToolResultBlockParamContent() { }
 
     public static implicit operator BetaWebSearchToolResultBlockParamContent(
-        Generic::List<BetaWebSearchResultBlockParam> value
+        List<BetaWebSearchResultBlockParam> value
     ) => new BetaWebSearchToolResultBlockParamContentVariants::ResultBlock(value);
 
     public static implicit operator BetaWebSearchToolResultBlockParamContent(
         BetaWebSearchToolRequestError value
-    ) => new BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError(value);
+    ) =>
+        new BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestErrorVariant(
+            value
+        );
 
     public abstract void Validate();
 }

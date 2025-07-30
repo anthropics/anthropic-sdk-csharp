@@ -1,5 +1,5 @@
-using Completions = Anthropic.Models.Completions;
-using Tasks = System.Threading.Tasks;
+using System.Threading.Tasks;
+using Anthropic.Models.Completions;
 
 namespace Anthropic.Service.Completions;
 
@@ -15,5 +15,5 @@ public interface ICompletionService
     /// our [migration guide](https://docs.anthropic.com/en/api/migrating-from-text-completions-to-messages)
     /// for guidance in migrating from Text Completions to Messages.
     /// </summary>
-    Tasks::Task<Completions::Completion> Create(Completions::CompletionCreateParams @params);
+    Task<Completion> Create(CompletionCreateParams @params);
 }

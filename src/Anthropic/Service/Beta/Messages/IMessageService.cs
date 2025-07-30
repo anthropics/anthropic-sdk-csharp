@@ -1,6 +1,6 @@
+using System.Threading.Tasks;
+using Anthropic.Models.Beta.Messages;
 using Batches = Anthropic.Service.Beta.Messages.Batches;
-using Messages = Anthropic.Models.Beta.Messages;
-using Tasks = System.Threading.Tasks;
 
 namespace Anthropic.Service.Beta.Messages;
 
@@ -16,7 +16,7 @@ public interface IMessageService
     ///
     /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
     /// </summary>
-    Tasks::Task<Messages::BetaMessage> Create(Messages::MessageCreateParams @params);
+    Task<BetaMessage> Create(MessageCreateParams @params);
 
     /// <summary>
     /// Count the number of tokens in a Message.
@@ -26,7 +26,5 @@ public interface IMessageService
     ///
     /// Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)
     /// </summary>
-    Tasks::Task<Messages::BetaMessageTokensCount> CountTokens(
-        Messages::MessageCountTokensParams @params
-    );
+    Task<BetaMessageTokensCount> CountTokens(MessageCountTokensParams @params);
 }

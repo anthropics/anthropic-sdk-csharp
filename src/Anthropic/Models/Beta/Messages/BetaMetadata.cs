@@ -1,13 +1,12 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaMetadata>))]
-public sealed record class BetaMetadata : Anthropic::ModelBase, Anthropic::IFromRaw<BetaMetadata>
+[JsonConverter(typeof(ModelConverter<BetaMetadata>))]
+public sealed record class BetaMetadata : ModelBase, IFromRaw<BetaMetadata>
 {
     /// <summary>
     /// An external identifier for the user who is associated with the request.
@@ -20,12 +19,12 @@ public sealed record class BetaMetadata : Anthropic::ModelBase, Anthropic::IFrom
     {
         get
         {
-            if (!this.Properties.TryGetValue("user_id", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("user_id", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["user_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["user_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -36,16 +35,14 @@ public sealed record class BetaMetadata : Anthropic::ModelBase, Anthropic::IFrom
     public BetaMetadata() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaMetadata(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaMetadata(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaMetadata FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaMetadata FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

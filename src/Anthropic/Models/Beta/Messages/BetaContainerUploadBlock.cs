@@ -1,46 +1,45 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
 /// Response model for a file uploaded to the container.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaContainerUploadBlock>))]
-public sealed record class BetaContainerUploadBlock
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaContainerUploadBlock>
+[JsonConverter(typeof(ModelConverter<BetaContainerUploadBlock>))]
+public sealed record class BetaContainerUploadBlock : ModelBase, IFromRaw<BetaContainerUploadBlock>
 {
     public required string FileID
     {
         get
         {
-            if (!this.Properties.TryGetValue("file_id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("file_id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "file_id",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("file_id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("file_id");
         }
-        set { this.Properties["file_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["file_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -50,19 +49,19 @@ public sealed record class BetaContainerUploadBlock
 
     public BetaContainerUploadBlock()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"container_upload\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaContainerUploadBlock(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaContainerUploadBlock(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaContainerUploadBlock FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

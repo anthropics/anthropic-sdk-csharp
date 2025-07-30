@@ -1,11 +1,10 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.WebSearchToolResultErrorProperties;
 
-[Serialization::JsonConverter(typeof(Anthropic::EnumConverter<ErrorCode, string>))]
-public sealed record class ErrorCode(string value) : Anthropic::IEnum<ErrorCode, string>
+[JsonConverter(typeof(EnumConverter<ErrorCode, string>))]
+public sealed record class ErrorCode(string value) : IEnum<ErrorCode, string>
 {
     public static readonly ErrorCode InvalidToolInput = new("invalid_tool_input");
 
@@ -36,7 +35,7 @@ public sealed record class ErrorCode(string value) : Anthropic::IEnum<ErrorCode,
             "max_uses_exceeded" => Value.MaxUsesExceeded,
             "too_many_requests" => Value.TooManyRequests,
             "query_too_long" => Value.QueryTooLong,
-            _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
+            _ => throw new ArgumentOutOfRangeException(nameof(_value)),
         };
 
     public string Raw()

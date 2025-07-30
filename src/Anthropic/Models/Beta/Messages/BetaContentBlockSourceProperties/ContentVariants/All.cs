@@ -1,15 +1,10 @@
-using Anthropic = Anthropic;
-using BetaContentBlockSourceProperties = Anthropic.Models.Beta.Messages.BetaContentBlockSourceProperties;
-using Generic = System.Collections.Generic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaContentBlockSourceProperties.ContentVariants;
 
-[Serialization::JsonConverter(typeof(Anthropic::VariantConverter<String, string>))]
-public sealed record class String(string Value)
-    : BetaContentBlockSourceProperties::Content,
-        Anthropic::IVariant<String, string>
+[JsonConverter(typeof(VariantConverter<String, string>))]
+public sealed record class String(string Value) : Content, IVariant<String, string>
 {
     public static String From(string value)
     {
@@ -19,23 +14,18 @@ public sealed record class String(string Value)
     public override void Validate() { }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaContentBlockSourceContent,
-        Generic::List<Messages::BetaContentBlockSourceContent>
+[JsonConverter(
+    typeof(VariantConverter<
+        BetaContentBlockSourceContentVariant,
+        List<BetaContentBlockSourceContent>
     >)
 )]
-public sealed record class BetaContentBlockSourceContent(
-    Generic::List<Messages::BetaContentBlockSourceContent> Value
-)
-    : BetaContentBlockSourceProperties::Content,
-        Anthropic::IVariant<
-            BetaContentBlockSourceContent,
-            Generic::List<Messages::BetaContentBlockSourceContent>
-        >
+public sealed record class BetaContentBlockSourceContentVariant(
+    List<BetaContentBlockSourceContent> Value
+) : Content, IVariant<BetaContentBlockSourceContentVariant, List<BetaContentBlockSourceContent>>
 {
-    public static BetaContentBlockSourceContent From(
-        Generic::List<Messages::BetaContentBlockSourceContent> value
+    public static BetaContentBlockSourceContentVariant From(
+        List<BetaContentBlockSourceContent> value
     )
     {
         return new(value);

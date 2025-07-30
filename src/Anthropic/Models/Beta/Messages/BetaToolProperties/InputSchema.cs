@@ -1,8 +1,7 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages.BetaToolProperties;
@@ -13,43 +12,43 @@ namespace Anthropic.Models.Beta.Messages.BetaToolProperties;
 /// This defines the shape of the `input` that your tool accepts and that the model
 /// will produce.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<InputSchema>))]
-public sealed record class InputSchema : Anthropic::ModelBase, Anthropic::IFromRaw<InputSchema>
+[JsonConverter(typeof(ModelConverter<InputSchema>))]
+public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
 {
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement? Properties1
+    public JsonElement? Properties1
     {
         get
         {
-            if (!this.Properties.TryGetValue("properties", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("properties", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement?>(element);
+            return JsonSerializer.Deserialize<JsonElement?>(element);
         }
-        set { this.Properties["properties"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["properties"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Generic::List<string>? Required
+    public List<string>? Required
     {
         get
         {
-            if (!this.Properties.TryGetValue("required", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("required", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Generic::List<string>?>(element);
+            return JsonSerializer.Deserialize<List<string>?>(element);
         }
-        set { this.Properties["required"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["required"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -63,20 +62,18 @@ public sealed record class InputSchema : Anthropic::ModelBase, Anthropic::IFromR
 
     public InputSchema()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"object\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    InputSchema(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    InputSchema(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static InputSchema FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static InputSchema FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

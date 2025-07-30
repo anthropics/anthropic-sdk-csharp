@@ -1,19 +1,17 @@
-using Anthropic = Anthropic;
-using Beta = Anthropic.Models.Beta;
-using Generic = System.Collections.Generic;
-using Http = System.Net.Http;
-using Json = System.Text.Json;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System = System;
-using Text = System.Text;
 
 namespace Anthropic.Models.Beta.Files;
 
 /// <summary>
 /// Upload File
 /// </summary>
-public sealed record class FileUploadParams : Anthropic::ParamsBase
+public sealed record class FileUploadParams : ParamsBase
 {
-    public Generic::Dictionary<string, Json::JsonElement> BodyProperties { get; set; } = [];
+    public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
 
     /// <summary>
     /// The file to upload
@@ -22,31 +20,31 @@ public sealed record class FileUploadParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("file", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("file", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("file", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element)
                 ?? throw new System::ArgumentNullException("file");
         }
-        set { this.BodyProperties["file"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["file"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
-    public Generic::List<Beta::AnthropicBeta>? Betas
+    public List<AnthropicBeta>? Betas
     {
         get
         {
-            if (!this.HeaderProperties.TryGetValue("betas", out Json::JsonElement element))
+            if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Generic::List<Beta::AnthropicBeta>?>(element);
+            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(element);
         }
-        set { this.HeaderProperties["betas"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public override System::Uri Url(Anthropic::IAnthropicClient client)
+    public override System::Uri Url(IAnthropicClient client)
     {
         return new System::UriBuilder(
             client.BaseUrl.ToString().TrimEnd('/') + "/v1/files?beta=true"
@@ -56,24 +54,21 @@ public sealed record class FileUploadParams : Anthropic::ParamsBase
         }.Uri;
     }
 
-    public Http::StringContent BodyContent()
+    public StringContent BodyContent()
     {
         return new(
-            Json::JsonSerializer.Serialize(this.BodyProperties),
-            Text::Encoding.UTF8,
+            JsonSerializer.Serialize(this.BodyProperties),
+            Encoding.UTF8,
             "application/json"
         );
     }
 
-    public void AddHeadersToRequest(
-        Http::HttpRequestMessage request,
-        Anthropic::IAnthropicClient client
-    )
+    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
     {
-        Anthropic::ParamsBase.AddDefaultHeaders(request, client);
+        ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)
         {
-            Anthropic::ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
     }
 }

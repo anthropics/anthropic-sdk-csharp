@@ -1,11 +1,9 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::EnumConverter<StopReason, string>))]
-public sealed record class StopReason(string value) : Anthropic::IEnum<StopReason, string>
+[JsonConverter(typeof(EnumConverter<StopReason, string>))]
+public sealed record class StopReason(string value) : IEnum<StopReason, string>
 {
     public static readonly StopReason EndTurn = new("end_turn");
 
@@ -40,7 +38,7 @@ public sealed record class StopReason(string value) : Anthropic::IEnum<StopReaso
             "tool_use" => Value.ToolUse,
             "pause_turn" => Value.PauseTurn,
             "refusal" => Value.Refusal,
-            _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
+            _ => throw new global::System.ArgumentOutOfRangeException(nameof(_value)),
         };
 
     public string Raw()

@@ -1,17 +1,13 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.ContentBlockSourceContentVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<TextBlockParam, Messages::TextBlockParam>)
-)]
-public sealed record class TextBlockParam(Messages::TextBlockParam Value)
-    : Messages::ContentBlockSourceContent,
-        Anthropic::IVariant<TextBlockParam, Messages::TextBlockParam>
+[JsonConverter(typeof(VariantConverter<TextBlockParamVariant, TextBlockParam>))]
+public sealed record class TextBlockParamVariant(TextBlockParam Value)
+    : ContentBlockSourceContent,
+        IVariant<TextBlockParamVariant, TextBlockParam>
 {
-    public static TextBlockParam From(Messages::TextBlockParam value)
+    public static TextBlockParamVariant From(TextBlockParam value)
     {
         return new(value);
     }
@@ -22,14 +18,12 @@ public sealed record class TextBlockParam(Messages::TextBlockParam Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ImageBlockParam, Messages::ImageBlockParam>)
-)]
-public sealed record class ImageBlockParam(Messages::ImageBlockParam Value)
-    : Messages::ContentBlockSourceContent,
-        Anthropic::IVariant<ImageBlockParam, Messages::ImageBlockParam>
+[JsonConverter(typeof(VariantConverter<ImageBlockParamVariant, ImageBlockParam>))]
+public sealed record class ImageBlockParamVariant(ImageBlockParam Value)
+    : ContentBlockSourceContent,
+        IVariant<ImageBlockParamVariant, ImageBlockParam>
 {
-    public static ImageBlockParam From(Messages::ImageBlockParam value)
+    public static ImageBlockParamVariant From(ImageBlockParam value)
     {
         return new(value);
     }

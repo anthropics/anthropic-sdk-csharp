@@ -1,30 +1,29 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
 /// The model will use any available tools.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaToolChoiceAny>))]
-public sealed record class BetaToolChoiceAny
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaToolChoiceAny>
+[JsonConverter(typeof(ModelConverter<BetaToolChoiceAny>))]
+public sealed record class BetaToolChoiceAny : ModelBase, IFromRaw<BetaToolChoiceAny>
 {
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -36,21 +35,14 @@ public sealed record class BetaToolChoiceAny
     {
         get
         {
-            if (
-                !this.Properties.TryGetValue(
-                    "disable_parallel_tool_use",
-                    out Json::JsonElement element
-                )
-            )
+            if (!this.Properties.TryGetValue("disable_parallel_tool_use", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element);
         }
         set
         {
-            this.Properties["disable_parallel_tool_use"] = Json::JsonSerializer.SerializeToElement(
-                value
-            );
+            this.Properties["disable_parallel_tool_use"] = JsonSerializer.SerializeToElement(value);
         }
     }
 
@@ -61,20 +53,18 @@ public sealed record class BetaToolChoiceAny
 
     public BetaToolChoiceAny()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"any\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"any\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaToolChoiceAny(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaToolChoiceAny(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaToolChoiceAny FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaToolChoiceAny FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

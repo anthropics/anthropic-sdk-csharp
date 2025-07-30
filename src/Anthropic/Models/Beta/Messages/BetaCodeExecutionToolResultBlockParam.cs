@@ -1,62 +1,60 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::ModelConverter<BetaCodeExecutionToolResultBlockParam>)
-)]
+[JsonConverter(typeof(ModelConverter<BetaCodeExecutionToolResultBlockParam>))]
 public sealed record class BetaCodeExecutionToolResultBlockParam
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaCodeExecutionToolResultBlockParam>
+    : ModelBase,
+        IFromRaw<BetaCodeExecutionToolResultBlockParam>
 {
     public required BetaCodeExecutionToolResultBlockParamContent Content
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("content", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "content",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParamContent>(
-                    element
-                ) ?? throw new System::ArgumentNullException("content");
+            return JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParamContent>(element)
+                ?? throw new global::System.ArgumentNullException("content");
         }
-        set { this.Properties["content"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string ToolUseID
     {
         get
         {
-            if (!this.Properties.TryGetValue("tool_use_id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("tool_use_id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "tool_use_id",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("tool_use_id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("tool_use_id");
         }
-        set { this.Properties["tool_use_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["tool_use_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -66,12 +64,12 @@ public sealed record class BetaCodeExecutionToolResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
         }
-        set { this.Properties["cache_control"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -83,21 +81,19 @@ public sealed record class BetaCodeExecutionToolResultBlockParam
 
     public BetaCodeExecutionToolResultBlockParam()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
-            "\"code_execution_tool_result\""
-        );
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaCodeExecutionToolResultBlockParam(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaCodeExecutionToolResultBlockParam(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaCodeExecutionToolResultBlockParam FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

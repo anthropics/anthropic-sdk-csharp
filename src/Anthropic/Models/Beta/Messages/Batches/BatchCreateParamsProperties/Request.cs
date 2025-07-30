@@ -1,15 +1,13 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using RequestProperties = Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<Request>))]
-public sealed record class Request : Anthropic::ModelBase, Anthropic::IFromRaw<Request>
+[JsonConverter(typeof(ModelConverter<Request>))]
+public sealed record class Request : ModelBase, IFromRaw<Request>
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful for
@@ -21,16 +19,16 @@ public sealed record class Request : Anthropic::ModelBase, Anthropic::IFromRaw<R
     {
         get
         {
-            if (!this.Properties.TryGetValue("custom_id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("custom_id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "custom_id",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("custom_id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("custom_id");
         }
-        set { this.Properties["custom_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["custom_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -43,16 +41,16 @@ public sealed record class Request : Anthropic::ModelBase, Anthropic::IFromRaw<R
     {
         get
         {
-            if (!this.Properties.TryGetValue("params", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("params", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "params",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<RequestProperties::Params>(element)
-                ?? throw new System::ArgumentNullException("params");
+            return JsonSerializer.Deserialize<RequestProperties::Params>(element)
+                ?? throw new global::System.ArgumentNullException("params");
         }
-        set { this.Properties["params"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["params"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -64,16 +62,14 @@ public sealed record class Request : Anthropic::ModelBase, Anthropic::IFromRaw<R
     public Request() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    Request(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    Request(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static Request FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static Request FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

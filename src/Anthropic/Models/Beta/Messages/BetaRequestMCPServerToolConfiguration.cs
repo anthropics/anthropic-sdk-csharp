@@ -1,40 +1,37 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::ModelConverter<BetaRequestMCPServerToolConfiguration>)
-)]
+[JsonConverter(typeof(ModelConverter<BetaRequestMCPServerToolConfiguration>))]
 public sealed record class BetaRequestMCPServerToolConfiguration
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaRequestMCPServerToolConfiguration>
+    : ModelBase,
+        IFromRaw<BetaRequestMCPServerToolConfiguration>
 {
-    public Generic::List<string>? AllowedTools
+    public List<string>? AllowedTools
     {
         get
         {
-            if (!this.Properties.TryGetValue("allowed_tools", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("allowed_tools", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Generic::List<string>?>(element);
+            return JsonSerializer.Deserialize<List<string>?>(element);
         }
-        set { this.Properties["allowed_tools"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["allowed_tools"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public bool? Enabled
     {
         get
         {
-            if (!this.Properties.TryGetValue("enabled", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("enabled", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element);
         }
-        set { this.Properties["enabled"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["enabled"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -49,15 +46,15 @@ public sealed record class BetaRequestMCPServerToolConfiguration
     public BetaRequestMCPServerToolConfiguration() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaRequestMCPServerToolConfiguration(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaRequestMCPServerToolConfiguration(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaRequestMCPServerToolConfiguration FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

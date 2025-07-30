@@ -1,44 +1,43 @@
-using Anthropic = Anthropic;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BetaCitationsDeltaProperties = Anthropic.Models.Beta.Messages.BetaCitationsDeltaProperties;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaCitationsDelta>))]
-public sealed record class BetaCitationsDelta
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaCitationsDelta>
+[JsonConverter(typeof(ModelConverter<BetaCitationsDelta>))]
+public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitationsDelta>
 {
     public required BetaCitationsDeltaProperties::Citation Citation
     {
         get
         {
-            if (!this.Properties.TryGetValue("citation", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("citation", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "citation",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaCitationsDeltaProperties::Citation>(element)
-                ?? throw new System::ArgumentNullException("citation");
+            return JsonSerializer.Deserialize<BetaCitationsDeltaProperties::Citation>(element)
+                ?? throw new global::System.ArgumentNullException("citation");
         }
-        set { this.Properties["citation"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["citation"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -48,20 +47,18 @@ public sealed record class BetaCitationsDelta
 
     public BetaCitationsDelta()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"citations_delta\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaCitationsDelta(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaCitationsDelta(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaCitationsDelta FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaCitationsDelta FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

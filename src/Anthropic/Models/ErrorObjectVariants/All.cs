@@ -1,17 +1,13 @@
-using Anthropic = Anthropic;
-using Models = Anthropic.Models;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.ErrorObjectVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<InvalidRequestError, Models::InvalidRequestError>)
-)]
-public sealed record class InvalidRequestError(Models::InvalidRequestError Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<InvalidRequestError, Models::InvalidRequestError>
+[JsonConverter(typeof(VariantConverter<InvalidRequestErrorVariant, InvalidRequestError>))]
+public sealed record class InvalidRequestErrorVariant(InvalidRequestError Value)
+    : ErrorObject,
+        IVariant<InvalidRequestErrorVariant, InvalidRequestError>
 {
-    public static InvalidRequestError From(Models::InvalidRequestError value)
+    public static InvalidRequestErrorVariant From(InvalidRequestError value)
     {
         return new(value);
     }
@@ -22,14 +18,12 @@ public sealed record class InvalidRequestError(Models::InvalidRequestError Value
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<AuthenticationError, Models::AuthenticationError>)
-)]
-public sealed record class AuthenticationError(Models::AuthenticationError Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<AuthenticationError, Models::AuthenticationError>
+[JsonConverter(typeof(VariantConverter<AuthenticationErrorVariant, AuthenticationError>))]
+public sealed record class AuthenticationErrorVariant(AuthenticationError Value)
+    : ErrorObject,
+        IVariant<AuthenticationErrorVariant, AuthenticationError>
 {
-    public static AuthenticationError From(Models::AuthenticationError value)
+    public static AuthenticationErrorVariant From(AuthenticationError value)
     {
         return new(value);
     }
@@ -40,14 +34,12 @@ public sealed record class AuthenticationError(Models::AuthenticationError Value
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BillingError, Models::BillingError>)
-)]
-public sealed record class BillingError(Models::BillingError Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<BillingError, Models::BillingError>
+[JsonConverter(typeof(VariantConverter<BillingErrorVariant, BillingError>))]
+public sealed record class BillingErrorVariant(BillingError Value)
+    : ErrorObject,
+        IVariant<BillingErrorVariant, BillingError>
 {
-    public static BillingError From(Models::BillingError value)
+    public static BillingErrorVariant From(BillingError value)
     {
         return new(value);
     }
@@ -58,14 +50,12 @@ public sealed record class BillingError(Models::BillingError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<PermissionError, Models::PermissionError>)
-)]
-public sealed record class PermissionError(Models::PermissionError Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<PermissionError, Models::PermissionError>
+[JsonConverter(typeof(VariantConverter<PermissionErrorVariant, PermissionError>))]
+public sealed record class PermissionErrorVariant(PermissionError Value)
+    : ErrorObject,
+        IVariant<PermissionErrorVariant, PermissionError>
 {
-    public static PermissionError From(Models::PermissionError value)
+    public static PermissionErrorVariant From(PermissionError value)
     {
         return new(value);
     }
@@ -76,14 +66,12 @@ public sealed record class PermissionError(Models::PermissionError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<NotFoundError, Models::NotFoundError>)
-)]
-public sealed record class NotFoundError(Models::NotFoundError Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<NotFoundError, Models::NotFoundError>
+[JsonConverter(typeof(VariantConverter<NotFoundErrorVariant, NotFoundError>))]
+public sealed record class NotFoundErrorVariant(NotFoundError Value)
+    : ErrorObject,
+        IVariant<NotFoundErrorVariant, NotFoundError>
 {
-    public static NotFoundError From(Models::NotFoundError value)
+    public static NotFoundErrorVariant From(NotFoundError value)
     {
         return new(value);
     }
@@ -94,14 +82,12 @@ public sealed record class NotFoundError(Models::NotFoundError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<RateLimitError, Models::RateLimitError>)
-)]
-public sealed record class RateLimitError(Models::RateLimitError Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<RateLimitError, Models::RateLimitError>
+[JsonConverter(typeof(VariantConverter<RateLimitErrorVariant, RateLimitError>))]
+public sealed record class RateLimitErrorVariant(RateLimitError Value)
+    : ErrorObject,
+        IVariant<RateLimitErrorVariant, RateLimitError>
 {
-    public static RateLimitError From(Models::RateLimitError value)
+    public static RateLimitErrorVariant From(RateLimitError value)
     {
         return new(value);
     }
@@ -112,14 +98,12 @@ public sealed record class RateLimitError(Models::RateLimitError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<GatewayTimeoutError, Models::GatewayTimeoutError>)
-)]
-public sealed record class GatewayTimeoutError(Models::GatewayTimeoutError Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<GatewayTimeoutError, Models::GatewayTimeoutError>
+[JsonConverter(typeof(VariantConverter<GatewayTimeoutErrorVariant, GatewayTimeoutError>))]
+public sealed record class GatewayTimeoutErrorVariant(GatewayTimeoutError Value)
+    : ErrorObject,
+        IVariant<GatewayTimeoutErrorVariant, GatewayTimeoutError>
 {
-    public static GatewayTimeoutError From(Models::GatewayTimeoutError value)
+    public static GatewayTimeoutErrorVariant From(GatewayTimeoutError value)
     {
         return new(value);
     }
@@ -130,14 +114,12 @@ public sealed record class GatewayTimeoutError(Models::GatewayTimeoutError Value
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<APIErrorObject, Models::APIErrorObject>)
-)]
-public sealed record class APIErrorObject(Models::APIErrorObject Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<APIErrorObject, Models::APIErrorObject>
+[JsonConverter(typeof(VariantConverter<APIErrorObjectVariant, APIErrorObject>))]
+public sealed record class APIErrorObjectVariant(APIErrorObject Value)
+    : ErrorObject,
+        IVariant<APIErrorObjectVariant, APIErrorObject>
 {
-    public static APIErrorObject From(Models::APIErrorObject value)
+    public static APIErrorObjectVariant From(APIErrorObject value)
     {
         return new(value);
     }
@@ -148,14 +130,12 @@ public sealed record class APIErrorObject(Models::APIErrorObject Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<OverloadedError, Models::OverloadedError>)
-)]
-public sealed record class OverloadedError(Models::OverloadedError Value)
-    : Models::ErrorObject,
-        Anthropic::IVariant<OverloadedError, Models::OverloadedError>
+[JsonConverter(typeof(VariantConverter<OverloadedErrorVariant, OverloadedError>))]
+public sealed record class OverloadedErrorVariant(OverloadedError Value)
+    : ErrorObject,
+        IVariant<OverloadedErrorVariant, OverloadedError>
 {
-    public static OverloadedError From(Models::OverloadedError value)
+    public static OverloadedErrorVariant From(OverloadedError value)
     {
         return new(value);
     }

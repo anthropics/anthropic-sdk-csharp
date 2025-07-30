@@ -1,13 +1,12 @@
-using Beta = Anthropic.Models.Beta;
-using Tasks = System.Threading.Tasks;
-using Tests = Anthropic.Tests;
+using System.Threading.Tasks;
+using Anthropic.Models.Beta;
 
 namespace Anthropic.Tests.Service.Beta.Files;
 
-public class FileServiceTest : Tests::TestBase
+public class FileServiceTest : TestBase
 {
     [Fact]
-    public async Tasks::Task List_Works()
+    public async Task List_Works()
     {
         var page = await this.client.Beta.Files.List(
             new()
@@ -15,44 +14,44 @@ public class FileServiceTest : Tests::TestBase
                 AfterID = "after_id",
                 BeforeID = "before_id",
                 Limit = 1,
-                Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24],
+                Betas = [AnthropicBeta.MessageBatches2024_09_24],
             }
         );
         page.Validate();
     }
 
     [Fact]
-    public async Tasks::Task Delete_Works()
+    public async Task Delete_Works()
     {
         var deletedFile = await this.client.Beta.Files.Delete(
-            new() { FileID = "file_id", Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24] }
+            new() { FileID = "file_id", Betas = [AnthropicBeta.MessageBatches2024_09_24] }
         );
         deletedFile.Validate();
     }
 
     [Fact]
-    public async Tasks::Task Download_Works()
+    public async Task Download_Works()
     {
         var response = await this.client.Beta.Files.Download(
-            new() { FileID = "file_id", Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24] }
+            new() { FileID = "file_id", Betas = [AnthropicBeta.MessageBatches2024_09_24] }
         );
         _ = response;
     }
 
     [Fact]
-    public async Tasks::Task RetrieveMetadata_Works()
+    public async Task RetrieveMetadata_Works()
     {
         var fileMetadata = await this.client.Beta.Files.RetrieveMetadata(
-            new() { FileID = "file_id", Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24] }
+            new() { FileID = "file_id", Betas = [AnthropicBeta.MessageBatches2024_09_24] }
         );
         fileMetadata.Validate();
     }
 
     [Fact]
-    public async Tasks::Task Upload_Works()
+    public async Task Upload_Works()
     {
         var fileMetadata = await this.client.Beta.Files.Upload(
-            new() { File = "a value", Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24] }
+            new() { File = "a value", Betas = [AnthropicBeta.MessageBatches2024_09_24] }
         );
         fileMetadata.Validate();
     }

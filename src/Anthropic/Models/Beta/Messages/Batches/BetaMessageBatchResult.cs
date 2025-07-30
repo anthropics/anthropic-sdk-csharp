@@ -1,6 +1,5 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using BetaMessageBatchResultVariants = Anthropic.Models.Beta.Messages.Batches.BetaMessageBatchResultVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
@@ -11,22 +10,22 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// failed, or the reason why processing was not attempted, such as cancellation
 /// or expiration.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<BetaMessageBatchResult>))]
+[JsonConverter(typeof(UnionConverter<BetaMessageBatchResult>))]
 public abstract record class BetaMessageBatchResult
 {
     internal BetaMessageBatchResult() { }
 
     public static implicit operator BetaMessageBatchResult(BetaMessageBatchSucceededResult value) =>
-        new BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult(value);
+        new BetaMessageBatchResultVariants::BetaMessageBatchSucceededResultVariant(value);
 
     public static implicit operator BetaMessageBatchResult(BetaMessageBatchErroredResult value) =>
-        new BetaMessageBatchResultVariants::BetaMessageBatchErroredResult(value);
+        new BetaMessageBatchResultVariants::BetaMessageBatchErroredResultVariant(value);
 
     public static implicit operator BetaMessageBatchResult(BetaMessageBatchCanceledResult value) =>
-        new BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult(value);
+        new BetaMessageBatchResultVariants::BetaMessageBatchCanceledResultVariant(value);
 
     public static implicit operator BetaMessageBatchResult(BetaMessageBatchExpiredResult value) =>
-        new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(value);
+        new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResultVariant(value);
 
     public abstract void Validate();
 }

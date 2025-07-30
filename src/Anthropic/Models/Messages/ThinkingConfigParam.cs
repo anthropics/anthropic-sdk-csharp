@@ -1,5 +1,4 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using ThinkingConfigParamVariants = Anthropic.Models.Messages.ThinkingConfigParamVariants;
 
 namespace Anthropic.Models.Messages;
@@ -14,16 +13,16 @@ namespace Anthropic.Models.Messages;
 /// See [extended thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking)
 /// for details.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<ThinkingConfigParam>))]
+[JsonConverter(typeof(UnionConverter<ThinkingConfigParam>))]
 public abstract record class ThinkingConfigParam
 {
     internal ThinkingConfigParam() { }
 
     public static implicit operator ThinkingConfigParam(ThinkingConfigEnabled value) =>
-        new ThinkingConfigParamVariants::ThinkingConfigEnabled(value);
+        new ThinkingConfigParamVariants::ThinkingConfigEnabledVariant(value);
 
     public static implicit operator ThinkingConfigParam(ThinkingConfigDisabled value) =>
-        new ThinkingConfigParamVariants::ThinkingConfigDisabled(value);
+        new ThinkingConfigParamVariants::ThinkingConfigDisabledVariant(value);
 
     public abstract void Validate();
 }

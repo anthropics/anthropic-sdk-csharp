@@ -1,55 +1,57 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaPlainTextSource>))]
-public sealed record class BetaPlainTextSource
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaPlainTextSource>
+[JsonConverter(typeof(ModelConverter<BetaPlainTextSource>))]
+public sealed record class BetaPlainTextSource : ModelBase, IFromRaw<BetaPlainTextSource>
 {
     public required string Data
     {
         get
         {
-            if (!this.Properties.TryGetValue("data", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("data", "Missing required argument");
+            if (!this.Properties.TryGetValue("data", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "data",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("data");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("data");
         }
-        set { this.Properties["data"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement MediaType
+    public JsonElement MediaType
     {
         get
         {
-            if (!this.Properties.TryGetValue("media_type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("media_type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "media_type",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["media_type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["media_type"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -59,21 +61,19 @@ public sealed record class BetaPlainTextSource
 
     public BetaPlainTextSource()
     {
-        this.MediaType = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text/plain\"");
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"");
+        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaPlainTextSource(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaPlainTextSource(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaPlainTextSource FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaPlainTextSource FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

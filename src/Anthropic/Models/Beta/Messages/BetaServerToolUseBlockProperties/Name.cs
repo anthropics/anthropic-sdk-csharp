@@ -1,11 +1,10 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaServerToolUseBlockProperties;
 
-[Serialization::JsonConverter(typeof(Anthropic::EnumConverter<Name, string>))]
-public sealed record class Name(string value) : Anthropic::IEnum<Name, string>
+[JsonConverter(typeof(EnumConverter<Name, string>))]
+public sealed record class Name(string value) : IEnum<Name, string>
 {
     public static readonly Name WebSearch = new("web_search");
 
@@ -24,7 +23,7 @@ public sealed record class Name(string value) : Anthropic::IEnum<Name, string>
         {
             "web_search" => Value.WebSearch,
             "code_execution" => Value.CodeExecution,
-            _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
+            _ => throw new ArgumentOutOfRangeException(nameof(_value)),
         };
 
     public string Raw()

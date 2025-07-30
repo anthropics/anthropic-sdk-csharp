@@ -1,16 +1,14 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<MessageBatchRequestCounts>))]
+[JsonConverter(typeof(ModelConverter<MessageBatchRequestCounts>))]
 public sealed record class MessageBatchRequestCounts
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<MessageBatchRequestCounts>
+    : ModelBase,
+        IFromRaw<MessageBatchRequestCounts>
 {
     /// <summary>
     /// Number of requests in the Message Batch that have been canceled.
@@ -21,15 +19,15 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("canceled", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("canceled", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "canceled",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["canceled"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["canceled"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -41,15 +39,15 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("errored", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("errored", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "errored",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["errored"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["errored"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -61,15 +59,15 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("expired", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("expired", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "expired",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["expired"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["expired"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -79,15 +77,15 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("processing", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("processing", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "processing",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["processing"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["processing"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -99,15 +97,15 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("succeeded", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("succeeded", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "succeeded",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["succeeded"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["succeeded"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -122,15 +120,15 @@ public sealed record class MessageBatchRequestCounts
     public MessageBatchRequestCounts() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    MessageBatchRequestCounts(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    MessageBatchRequestCounts(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static MessageBatchRequestCounts FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

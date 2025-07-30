@@ -1,131 +1,105 @@
-using Anthropic = Anthropic;
-using Files = Anthropic.Models.Beta.Files;
-using Http = System.Net.Http;
-using Json = System.Text.Json;
-using System = System;
-using Tasks = System.Threading.Tasks;
+using System;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Anthropic.Models.Beta.Files;
 
 namespace Anthropic.Service.Beta.Files;
 
 public sealed class FileService : IFileService
 {
-    readonly Anthropic::IAnthropicClient _client;
+    readonly IAnthropicClient _client;
 
-    public FileService(Anthropic::IAnthropicClient client)
+    public FileService(IAnthropicClient client)
     {
         _client = client;
     }
 
-    public async Tasks::Task<Files::FileListPageResponse> List(Files::FileListParams @params)
+    public async Task<FileListPageResponse> List(FileListParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Get, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Files::FileListPageResponse>(
+        return JsonSerializer.Deserialize<FileListPageResponse>(
                 await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+            ) ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Files::DeletedFile> Delete(Files::FileDeleteParams @params)
+    public async Task<DeletedFile> Delete(FileDeleteParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(
-            Http::HttpMethod.Delete,
-            @params.Url(this._client)
-        );
+        HttpRequestMessage webRequest = new(HttpMethod.Delete, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Files::DeletedFile>(
-                await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+        return JsonSerializer.Deserialize<DeletedFile>(await response.Content.ReadAsStringAsync())
+            ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Json::JsonElement> Download(Files::FileDownloadParams @params)
+    public async Task<JsonElement> Download(FileDownloadParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Get, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Json::JsonElement>(
-            await response.Content.ReadAsStringAsync()
-        );
+        return JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync());
     }
 
-    public async Tasks::Task<Files::FileMetadata> RetrieveMetadata(
-        Files::FileRetrieveMetadataParams @params
-    )
+    public async Task<FileMetadata> RetrieveMetadata(FileRetrieveMetadataParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Get, @params.Url(this._client));
+        HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Files::FileMetadata>(
-                await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+        return JsonSerializer.Deserialize<FileMetadata>(await response.Content.ReadAsStringAsync())
+            ?? throw new NullReferenceException();
     }
 
-    public async Tasks::Task<Files::FileMetadata> Upload(Files::FileUploadParams @params)
+    public async Task<FileMetadata> Upload(FileUploadParams @params)
     {
-        Http::HttpRequestMessage webRequest = new(Http::HttpMethod.Post, @params.Url(this._client))
+        HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client))
         {
             Content = @params.BodyContent(),
         };
         @params.AddHeadersToRequest(webRequest, this._client);
-        using Http::HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
+        using HttpResponseMessage response = await _client.HttpClient.SendAsync(webRequest);
         try
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Http::HttpRequestException e)
+        catch (HttpRequestException e)
         {
-            throw new Anthropic::HttpException(
-                e.StatusCode,
-                await response.Content.ReadAsStringAsync()
-            );
+            throw new HttpException(e.StatusCode, await response.Content.ReadAsStringAsync());
         }
-        return Json::JsonSerializer.Deserialize<Files::FileMetadata>(
-                await response.Content.ReadAsStringAsync()
-            ) ?? throw new System::NullReferenceException();
+        return JsonSerializer.Deserialize<FileMetadata>(await response.Content.ReadAsStringAsync())
+            ?? throw new NullReferenceException();
     }
 }

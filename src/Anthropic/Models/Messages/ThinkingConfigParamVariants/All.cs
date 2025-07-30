@@ -1,17 +1,13 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.ThinkingConfigParamVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ThinkingConfigEnabled, Messages::ThinkingConfigEnabled>)
-)]
-public sealed record class ThinkingConfigEnabled(Messages::ThinkingConfigEnabled Value)
-    : Messages::ThinkingConfigParam,
-        Anthropic::IVariant<ThinkingConfigEnabled, Messages::ThinkingConfigEnabled>
+[JsonConverter(typeof(VariantConverter<ThinkingConfigEnabledVariant, ThinkingConfigEnabled>))]
+public sealed record class ThinkingConfigEnabledVariant(ThinkingConfigEnabled Value)
+    : ThinkingConfigParam,
+        IVariant<ThinkingConfigEnabledVariant, ThinkingConfigEnabled>
 {
-    public static ThinkingConfigEnabled From(Messages::ThinkingConfigEnabled value)
+    public static ThinkingConfigEnabledVariant From(ThinkingConfigEnabled value)
     {
         return new(value);
     }
@@ -22,14 +18,12 @@ public sealed record class ThinkingConfigEnabled(Messages::ThinkingConfigEnabled
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ThinkingConfigDisabled, Messages::ThinkingConfigDisabled>)
-)]
-public sealed record class ThinkingConfigDisabled(Messages::ThinkingConfigDisabled Value)
-    : Messages::ThinkingConfigParam,
-        Anthropic::IVariant<ThinkingConfigDisabled, Messages::ThinkingConfigDisabled>
+[JsonConverter(typeof(VariantConverter<ThinkingConfigDisabledVariant, ThinkingConfigDisabled>))]
+public sealed record class ThinkingConfigDisabledVariant(ThinkingConfigDisabled Value)
+    : ThinkingConfigParam,
+        IVariant<ThinkingConfigDisabledVariant, ThinkingConfigDisabled>
 {
-    public static ThinkingConfigDisabled From(Messages::ThinkingConfigDisabled value)
+    public static ThinkingConfigDisabledVariant From(ThinkingConfigDisabled value)
     {
         return new(value);
     }

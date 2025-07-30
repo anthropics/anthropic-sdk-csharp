@@ -1,42 +1,43 @@
-using Anthropic = Anthropic;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BetaRawMessageDeltaEventProperties = Anthropic.Models.Beta.Messages.BetaRawMessageDeltaEventProperties;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaRawMessageDeltaEvent>))]
-public sealed record class BetaRawMessageDeltaEvent
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaRawMessageDeltaEvent>
+[JsonConverter(typeof(ModelConverter<BetaRawMessageDeltaEvent>))]
+public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRawMessageDeltaEvent>
 {
     public required BetaRawMessageDeltaEventProperties::Delta Delta
     {
         get
         {
-            if (!this.Properties.TryGetValue("delta", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("delta", "Missing required argument");
+            if (!this.Properties.TryGetValue("delta", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "delta",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<BetaRawMessageDeltaEventProperties::Delta>(
-                    element
-                ) ?? throw new System::ArgumentNullException("delta");
+            return JsonSerializer.Deserialize<BetaRawMessageDeltaEventProperties::Delta>(element)
+                ?? throw new global::System.ArgumentNullException("delta");
         }
-        set { this.Properties["delta"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["delta"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -60,13 +61,16 @@ public sealed record class BetaRawMessageDeltaEvent
     {
         get
         {
-            if (!this.Properties.TryGetValue("usage", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("usage", "Missing required argument");
+            if (!this.Properties.TryGetValue("usage", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "usage",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<BetaMessageDeltaUsage>(element)
-                ?? throw new System::ArgumentNullException("usage");
+            return JsonSerializer.Deserialize<BetaMessageDeltaUsage>(element)
+                ?? throw new global::System.ArgumentNullException("usage");
         }
-        set { this.Properties["usage"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["usage"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -77,19 +81,19 @@ public sealed record class BetaRawMessageDeltaEvent
 
     public BetaRawMessageDeltaEvent()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message_delta\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaRawMessageDeltaEvent(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaRawMessageDeltaEvent(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaRawMessageDeltaEvent FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

@@ -1,33 +1,32 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using MessageCountTokensToolProperties = Anthropic.Models.Messages.MessageCountTokensToolProperties;
 using MessageCountTokensToolVariants = Anthropic.Models.Messages.MessageCountTokensToolVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<MessageCountTokensTool>))]
+[JsonConverter(typeof(UnionConverter<MessageCountTokensTool>))]
 public abstract record class MessageCountTokensTool
 {
     internal MessageCountTokensTool() { }
 
     public static implicit operator MessageCountTokensTool(Tool value) =>
-        new MessageCountTokensToolVariants::Tool(value);
+        new MessageCountTokensToolVariants::ToolVariant(value);
 
     public static implicit operator MessageCountTokensTool(ToolBash20250124 value) =>
-        new MessageCountTokensToolVariants::ToolBash20250124(value);
+        new MessageCountTokensToolVariants::ToolBash20250124Variant(value);
 
     public static implicit operator MessageCountTokensTool(ToolTextEditor20250124 value) =>
-        new MessageCountTokensToolVariants::ToolTextEditor20250124(value);
+        new MessageCountTokensToolVariants::ToolTextEditor20250124Variant(value);
 
     public static implicit operator MessageCountTokensTool(
         MessageCountTokensToolProperties::TextEditor20250429 value
     ) => new MessageCountTokensToolVariants::TextEditor20250429(value);
 
     public static implicit operator MessageCountTokensTool(ToolTextEditor20250728 value) =>
-        new MessageCountTokensToolVariants::ToolTextEditor20250728(value);
+        new MessageCountTokensToolVariants::ToolTextEditor20250728Variant(value);
 
     public static implicit operator MessageCountTokensTool(WebSearchTool20250305 value) =>
-        new MessageCountTokensToolVariants::WebSearchTool20250305(value);
+        new MessageCountTokensToolVariants::WebSearchTool20250305Variant(value);
 
     public abstract void Validate();
 }

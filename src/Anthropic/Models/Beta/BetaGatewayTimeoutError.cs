@@ -1,43 +1,42 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaGatewayTimeoutError>))]
-public sealed record class BetaGatewayTimeoutError
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaGatewayTimeoutError>
+[JsonConverter(typeof(ModelConverter<BetaGatewayTimeoutError>))]
+public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGatewayTimeoutError>
 {
     public required string Message
     {
         get
         {
-            if (!this.Properties.TryGetValue("message", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("message", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "message",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("message");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("message");
         }
-        set { this.Properties["message"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["message"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -47,19 +46,19 @@ public sealed record class BetaGatewayTimeoutError
 
     public BetaGatewayTimeoutError()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"timeout_error\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaGatewayTimeoutError(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaGatewayTimeoutError(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaGatewayTimeoutError FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

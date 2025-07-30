@@ -22,30 +22,30 @@ dotnet add reference /path/to/anthropic-csharp/src/Anthropic/
 See the [`examples`](examples) directory for complete and runnable examples.
 
 ```C#
-using Anthropic = Anthropic;
-using MessageParamProperties = Anthropic.Models.Messages.MessageParamProperties;
-using Messages = Anthropic.Models.Messages;
-using System = System;
+using Anthropic;
+using Anthropic.Models.Messages;
+using Anthropic.Models.Messages.MessageParamProperties;
+using System;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
-Anthropic::AnthropicClient client = new();
+AnthropicClient client = new();
 
-Messages::MessageCreateParams param = new()
+MessageCreateParams param = new()
 {
   MaxTokens = 1024,
   Messages = [
     new()
     {
-      Role = MessageParamProperties::Role.User,
+      Role = Role.User,
       Content = "Hello, Claude",
     }
   ],
-  Model = Messages::Model.Claude3_7SonnetLatest
+  Model = Model.Claude3_7SonnetLatest
 };
 
 var message = await client.Messages.Create(param);
 
-System::Console.WriteLine(message);
+Console.WriteLine(message);
 ```
 
 ## Client Configuration
@@ -53,18 +53,18 @@ System::Console.WriteLine(message);
 Configure the client using environment variables:
 
 ```C#
-using Anthropic = Anthropic;
+using Anthropic;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
-Anthropic::AnthropicClient client = new();
+AnthropicClient client = new();
 ```
 
 Or manually:
 
 ```C#
-using Anthropic = Anthropic;
+using Anthropic;
 
-Anthropic::AnthropicClient client = new()
+AnthropicClient client = new()
 {
   APIKey = "my-anthropic-api-key", AuthToken = "my-auth-token"
 };

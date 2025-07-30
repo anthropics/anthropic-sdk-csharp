@@ -1,121 +1,117 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<CitationCharLocation>))]
-public sealed record class CitationCharLocation
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<CitationCharLocation>
+[JsonConverter(typeof(ModelConverter<CitationCharLocation>))]
+public sealed record class CitationCharLocation : ModelBase, IFromRaw<CitationCharLocation>
 {
     public required string CitedText
     {
         get
         {
-            if (!this.Properties.TryGetValue("cited_text", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("cited_text", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "cited_text",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("cited_text");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("cited_text");
         }
-        set { this.Properties["cited_text"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["cited_text"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required long DocumentIndex
     {
         get
         {
-            if (!this.Properties.TryGetValue("document_index", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("document_index", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "document_index",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["document_index"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["document_index"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string? DocumentTitle
     {
         get
         {
-            if (!this.Properties.TryGetValue("document_title", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("document_title", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "document_title",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["document_title"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["document_title"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required long EndCharIndex
     {
         get
         {
-            if (!this.Properties.TryGetValue("end_char_index", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("end_char_index", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "end_char_index",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["end_char_index"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["end_char_index"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string? FileID
     {
         get
         {
-            if (!this.Properties.TryGetValue("file_id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("file_id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "file_id",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["file_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["file_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required long StartCharIndex
     {
         get
         {
-            if (!this.Properties.TryGetValue("start_char_index", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("start_char_index", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "start_char_index",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set
-        {
-            this.Properties["start_char_index"] = Json::JsonSerializer.SerializeToElement(value);
-        }
+        set { this.Properties["start_char_index"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -130,20 +126,18 @@ public sealed record class CitationCharLocation
 
     public CitationCharLocation()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"char_location\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    CitationCharLocation(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    CitationCharLocation(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static CitationCharLocation FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static CitationCharLocation FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

@@ -1,43 +1,42 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaFileImageSource>))]
-public sealed record class BetaFileImageSource
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaFileImageSource>
+[JsonConverter(typeof(ModelConverter<BetaFileImageSource>))]
+public sealed record class BetaFileImageSource : ModelBase, IFromRaw<BetaFileImageSource>
 {
     public required string FileID
     {
         get
         {
-            if (!this.Properties.TryGetValue("file_id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("file_id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "file_id",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("file_id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("file_id");
         }
-        set { this.Properties["file_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["file_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -47,20 +46,18 @@ public sealed record class BetaFileImageSource
 
     public BetaFileImageSource()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"file\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaFileImageSource(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaFileImageSource(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaFileImageSource FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaFileImageSource FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

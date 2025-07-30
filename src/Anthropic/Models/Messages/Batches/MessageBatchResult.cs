@@ -1,6 +1,5 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using MessageBatchResultVariants = Anthropic.Models.Messages.Batches.MessageBatchResultVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.Batches;
 
@@ -11,22 +10,22 @@ namespace Anthropic.Models.Messages.Batches;
 /// failed, or the reason why processing was not attempted, such as cancellation
 /// or expiration.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<MessageBatchResult>))]
+[JsonConverter(typeof(UnionConverter<MessageBatchResult>))]
 public abstract record class MessageBatchResult
 {
     internal MessageBatchResult() { }
 
     public static implicit operator MessageBatchResult(MessageBatchSucceededResult value) =>
-        new MessageBatchResultVariants::MessageBatchSucceededResult(value);
+        new MessageBatchResultVariants::MessageBatchSucceededResultVariant(value);
 
     public static implicit operator MessageBatchResult(MessageBatchErroredResult value) =>
-        new MessageBatchResultVariants::MessageBatchErroredResult(value);
+        new MessageBatchResultVariants::MessageBatchErroredResultVariant(value);
 
     public static implicit operator MessageBatchResult(MessageBatchCanceledResult value) =>
-        new MessageBatchResultVariants::MessageBatchCanceledResult(value);
+        new MessageBatchResultVariants::MessageBatchCanceledResultVariant(value);
 
     public static implicit operator MessageBatchResult(MessageBatchExpiredResult value) =>
-        new MessageBatchResultVariants::MessageBatchExpiredResult(value);
+        new MessageBatchResultVariants::MessageBatchExpiredResultVariant(value);
 
     public abstract void Validate();
 }

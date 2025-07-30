@@ -1,19 +1,18 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using ContentBlockSourceContentVariants = Anthropic.Models.Messages.ContentBlockSourceContentVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<ContentBlockSourceContent>))]
+[JsonConverter(typeof(UnionConverter<ContentBlockSourceContent>))]
 public abstract record class ContentBlockSourceContent
 {
     internal ContentBlockSourceContent() { }
 
     public static implicit operator ContentBlockSourceContent(TextBlockParam value) =>
-        new ContentBlockSourceContentVariants::TextBlockParam(value);
+        new ContentBlockSourceContentVariants::TextBlockParamVariant(value);
 
     public static implicit operator ContentBlockSourceContent(ImageBlockParam value) =>
-        new ContentBlockSourceContentVariants::ImageBlockParam(value);
+        new ContentBlockSourceContentVariants::ImageBlockParamVariant(value);
 
     public abstract void Validate();
 }

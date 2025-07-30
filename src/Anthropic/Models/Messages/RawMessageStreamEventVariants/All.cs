@@ -1,17 +1,13 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.RawMessageStreamEventVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<RawMessageStartEvent, Messages::RawMessageStartEvent>)
-)]
-public sealed record class RawMessageStartEvent(Messages::RawMessageStartEvent Value)
-    : Messages::RawMessageStreamEvent,
-        Anthropic::IVariant<RawMessageStartEvent, Messages::RawMessageStartEvent>
+[JsonConverter(typeof(VariantConverter<RawMessageStartEventVariant, RawMessageStartEvent>))]
+public sealed record class RawMessageStartEventVariant(RawMessageStartEvent Value)
+    : RawMessageStreamEvent,
+        IVariant<RawMessageStartEventVariant, RawMessageStartEvent>
 {
-    public static RawMessageStartEvent From(Messages::RawMessageStartEvent value)
+    public static RawMessageStartEventVariant From(RawMessageStartEvent value)
     {
         return new(value);
     }
@@ -22,14 +18,12 @@ public sealed record class RawMessageStartEvent(Messages::RawMessageStartEvent V
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<RawMessageDeltaEvent, Messages::RawMessageDeltaEvent>)
-)]
-public sealed record class RawMessageDeltaEvent(Messages::RawMessageDeltaEvent Value)
-    : Messages::RawMessageStreamEvent,
-        Anthropic::IVariant<RawMessageDeltaEvent, Messages::RawMessageDeltaEvent>
+[JsonConverter(typeof(VariantConverter<RawMessageDeltaEventVariant, RawMessageDeltaEvent>))]
+public sealed record class RawMessageDeltaEventVariant(RawMessageDeltaEvent Value)
+    : RawMessageStreamEvent,
+        IVariant<RawMessageDeltaEventVariant, RawMessageDeltaEvent>
 {
-    public static RawMessageDeltaEvent From(Messages::RawMessageDeltaEvent value)
+    public static RawMessageDeltaEventVariant From(RawMessageDeltaEvent value)
     {
         return new(value);
     }
@@ -40,14 +34,12 @@ public sealed record class RawMessageDeltaEvent(Messages::RawMessageDeltaEvent V
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<RawMessageStopEvent, Messages::RawMessageStopEvent>)
-)]
-public sealed record class RawMessageStopEvent(Messages::RawMessageStopEvent Value)
-    : Messages::RawMessageStreamEvent,
-        Anthropic::IVariant<RawMessageStopEvent, Messages::RawMessageStopEvent>
+[JsonConverter(typeof(VariantConverter<RawMessageStopEventVariant, RawMessageStopEvent>))]
+public sealed record class RawMessageStopEventVariant(RawMessageStopEvent Value)
+    : RawMessageStreamEvent,
+        IVariant<RawMessageStopEventVariant, RawMessageStopEvent>
 {
-    public static RawMessageStopEvent From(Messages::RawMessageStopEvent value)
+    public static RawMessageStopEventVariant From(RawMessageStopEvent value)
     {
         return new(value);
     }
@@ -58,17 +50,14 @@ public sealed record class RawMessageStopEvent(Messages::RawMessageStopEvent Val
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        RawContentBlockStartEvent,
-        Messages::RawContentBlockStartEvent
-    >)
+[JsonConverter(
+    typeof(VariantConverter<RawContentBlockStartEventVariant, RawContentBlockStartEvent>)
 )]
-public sealed record class RawContentBlockStartEvent(Messages::RawContentBlockStartEvent Value)
-    : Messages::RawMessageStreamEvent,
-        Anthropic::IVariant<RawContentBlockStartEvent, Messages::RawContentBlockStartEvent>
+public sealed record class RawContentBlockStartEventVariant(RawContentBlockStartEvent Value)
+    : RawMessageStreamEvent,
+        IVariant<RawContentBlockStartEventVariant, RawContentBlockStartEvent>
 {
-    public static RawContentBlockStartEvent From(Messages::RawContentBlockStartEvent value)
+    public static RawContentBlockStartEventVariant From(RawContentBlockStartEvent value)
     {
         return new(value);
     }
@@ -79,17 +68,14 @@ public sealed record class RawContentBlockStartEvent(Messages::RawContentBlockSt
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        RawContentBlockDeltaEvent,
-        Messages::RawContentBlockDeltaEvent
-    >)
+[JsonConverter(
+    typeof(VariantConverter<RawContentBlockDeltaEventVariant, RawContentBlockDeltaEvent>)
 )]
-public sealed record class RawContentBlockDeltaEvent(Messages::RawContentBlockDeltaEvent Value)
-    : Messages::RawMessageStreamEvent,
-        Anthropic::IVariant<RawContentBlockDeltaEvent, Messages::RawContentBlockDeltaEvent>
+public sealed record class RawContentBlockDeltaEventVariant(RawContentBlockDeltaEvent Value)
+    : RawMessageStreamEvent,
+        IVariant<RawContentBlockDeltaEventVariant, RawContentBlockDeltaEvent>
 {
-    public static RawContentBlockDeltaEvent From(Messages::RawContentBlockDeltaEvent value)
+    public static RawContentBlockDeltaEventVariant From(RawContentBlockDeltaEvent value)
     {
         return new(value);
     }
@@ -100,17 +86,12 @@ public sealed record class RawContentBlockDeltaEvent(Messages::RawContentBlockDe
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        RawContentBlockStopEvent,
-        Messages::RawContentBlockStopEvent
-    >)
-)]
-public sealed record class RawContentBlockStopEvent(Messages::RawContentBlockStopEvent Value)
-    : Messages::RawMessageStreamEvent,
-        Anthropic::IVariant<RawContentBlockStopEvent, Messages::RawContentBlockStopEvent>
+[JsonConverter(typeof(VariantConverter<RawContentBlockStopEventVariant, RawContentBlockStopEvent>))]
+public sealed record class RawContentBlockStopEventVariant(RawContentBlockStopEvent Value)
+    : RawMessageStreamEvent,
+        IVariant<RawContentBlockStopEventVariant, RawContentBlockStopEvent>
 {
-    public static RawContentBlockStopEvent From(Messages::RawContentBlockStopEvent value)
+    public static RawContentBlockStopEventVariant From(RawContentBlockStopEvent value)
     {
         return new(value);
     }

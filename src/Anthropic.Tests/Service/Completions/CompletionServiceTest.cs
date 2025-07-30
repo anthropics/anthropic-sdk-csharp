@@ -1,20 +1,19 @@
-using Beta = Anthropic.Models.Beta;
-using Messages = Anthropic.Models.Messages;
-using Tasks = System.Threading.Tasks;
-using Tests = Anthropic.Tests;
+using System.Threading.Tasks;
+using Anthropic.Models.Beta;
+using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Service.Completions;
 
-public class CompletionServiceTest : Tests::TestBase
+public class CompletionServiceTest : TestBase
 {
     [Fact]
-    public async Tasks::Task Create_Works()
+    public async Task Create_Works()
     {
         var completion = await this.client.Completions.Create(
             new()
             {
                 MaxTokensToSample = 256,
-                Model = Messages::Model.Claude3_7SonnetLatest,
+                Model = Model.Claude3_7SonnetLatest,
                 Prompt = "\n\nHuman: Hello, world!\n\nAssistant:",
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 StopSequences = ["string"],
@@ -22,7 +21,7 @@ public class CompletionServiceTest : Tests::TestBase
                 Temperature = 1,
                 TopK = 5,
                 TopP = 0.7,
-                Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24],
+                Betas = [AnthropicBeta.MessageBatches2024_09_24],
             }
         );
         completion.Validate();

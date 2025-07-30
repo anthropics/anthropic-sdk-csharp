@@ -1,87 +1,89 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<WebSearchResultBlock>))]
-public sealed record class WebSearchResultBlock
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<WebSearchResultBlock>
+[JsonConverter(typeof(ModelConverter<WebSearchResultBlock>))]
+public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchResultBlock>
 {
     public required string EncryptedContent
     {
         get
         {
-            if (!this.Properties.TryGetValue("encrypted_content", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("encrypted_content", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "encrypted_content",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("encrypted_content");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("encrypted_content");
         }
-        set
-        {
-            this.Properties["encrypted_content"] = Json::JsonSerializer.SerializeToElement(value);
-        }
+        set { this.Properties["encrypted_content"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string? PageAge
     {
         get
         {
-            if (!this.Properties.TryGetValue("page_age", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("page_age", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "page_age",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["page_age"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["page_age"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string Title
     {
         get
         {
-            if (!this.Properties.TryGetValue("title", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("title", "Missing required argument");
+            if (!this.Properties.TryGetValue("title", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "title",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("title");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("title");
         }
-        set { this.Properties["title"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string URL
     {
         get
         {
-            if (!this.Properties.TryGetValue("url", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("url", "Missing required argument");
+            if (!this.Properties.TryGetValue("url", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "url",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("url");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("url");
         }
-        set { this.Properties["url"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["url"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -94,20 +96,18 @@ public sealed record class WebSearchResultBlock
 
     public WebSearchResultBlock()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"web_search_result\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    WebSearchResultBlock(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    WebSearchResultBlock(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static WebSearchResultBlock FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static WebSearchResultBlock FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

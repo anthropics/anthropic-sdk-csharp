@@ -1,40 +1,42 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaTextBlockParam>))]
-public sealed record class BetaTextBlockParam
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaTextBlockParam>
+[JsonConverter(typeof(ModelConverter<BetaTextBlockParam>))]
+public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBlockParam>
 {
     public required string Text
     {
         get
         {
-            if (!this.Properties.TryGetValue("text", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("text", "Missing required argument");
+            if (!this.Properties.TryGetValue("text", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "text",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("text");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("text");
         }
-        set { this.Properties["text"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["text"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -44,24 +46,24 @@ public sealed record class BetaTextBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
         }
-        set { this.Properties["cache_control"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Generic::List<BetaTextCitationParam>? Citations
+    public List<BetaTextCitationParam>? Citations
     {
         get
         {
-            if (!this.Properties.TryGetValue("citations", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("citations", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Generic::List<BetaTextCitationParam>?>(element);
+            return JsonSerializer.Deserialize<List<BetaTextCitationParam>?>(element);
         }
-        set { this.Properties["citations"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -76,20 +78,18 @@ public sealed record class BetaTextBlockParam
 
     public BetaTextBlockParam()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"text\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaTextBlockParam(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaTextBlockParam(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaTextBlockParam FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaTextBlockParam FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

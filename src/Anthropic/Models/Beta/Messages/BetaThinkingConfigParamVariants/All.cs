@@ -1,20 +1,15 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaThinkingConfigParamVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaThinkingConfigEnabled,
-        Messages::BetaThinkingConfigEnabled
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaThinkingConfigEnabledVariant, BetaThinkingConfigEnabled>)
 )]
-public sealed record class BetaThinkingConfigEnabled(Messages::BetaThinkingConfigEnabled Value)
-    : Messages::BetaThinkingConfigParam,
-        Anthropic::IVariant<BetaThinkingConfigEnabled, Messages::BetaThinkingConfigEnabled>
+public sealed record class BetaThinkingConfigEnabledVariant(BetaThinkingConfigEnabled Value)
+    : BetaThinkingConfigParam,
+        IVariant<BetaThinkingConfigEnabledVariant, BetaThinkingConfigEnabled>
 {
-    public static BetaThinkingConfigEnabled From(Messages::BetaThinkingConfigEnabled value)
+    public static BetaThinkingConfigEnabledVariant From(BetaThinkingConfigEnabled value)
     {
         return new(value);
     }
@@ -25,17 +20,14 @@ public sealed record class BetaThinkingConfigEnabled(Messages::BetaThinkingConfi
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaThinkingConfigDisabled,
-        Messages::BetaThinkingConfigDisabled
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaThinkingConfigDisabledVariant, BetaThinkingConfigDisabled>)
 )]
-public sealed record class BetaThinkingConfigDisabled(Messages::BetaThinkingConfigDisabled Value)
-    : Messages::BetaThinkingConfigParam,
-        Anthropic::IVariant<BetaThinkingConfigDisabled, Messages::BetaThinkingConfigDisabled>
+public sealed record class BetaThinkingConfigDisabledVariant(BetaThinkingConfigDisabled Value)
+    : BetaThinkingConfigParam,
+        IVariant<BetaThinkingConfigDisabledVariant, BetaThinkingConfigDisabled>
 {
-    public static BetaThinkingConfigDisabled From(Messages::BetaThinkingConfigDisabled value)
+    public static BetaThinkingConfigDisabledVariant From(BetaThinkingConfigDisabled value)
     {
         return new(value);
     }

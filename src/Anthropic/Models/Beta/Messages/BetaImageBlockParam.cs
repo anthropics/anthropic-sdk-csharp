@@ -1,44 +1,43 @@
-using Anthropic = Anthropic;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BetaImageBlockParamProperties = Anthropic.Models.Beta.Messages.BetaImageBlockParamProperties;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaImageBlockParam>))]
-public sealed record class BetaImageBlockParam
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaImageBlockParam>
+[JsonConverter(typeof(ModelConverter<BetaImageBlockParam>))]
+public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBlockParam>
 {
     public required BetaImageBlockParamProperties::Source Source
     {
         get
         {
-            if (!this.Properties.TryGetValue("source", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("source", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "source",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaImageBlockParamProperties::Source>(element)
-                ?? throw new System::ArgumentNullException("source");
+            return JsonSerializer.Deserialize<BetaImageBlockParamProperties::Source>(element)
+                ?? throw new global::System.ArgumentNullException("source");
         }
-        set { this.Properties["source"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -48,12 +47,12 @@ public sealed record class BetaImageBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
         }
-        set { this.Properties["cache_control"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -64,20 +63,18 @@ public sealed record class BetaImageBlockParam
 
     public BetaImageBlockParam()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"image\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaImageBlockParam(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaImageBlockParam(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaImageBlockParam FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaImageBlockParam FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

@@ -1,6 +1,5 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using BetaThinkingConfigParamVariants = Anthropic.Models.Beta.Messages.BetaThinkingConfigParamVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -14,16 +13,16 @@ namespace Anthropic.Models.Beta.Messages;
 /// See [extended thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking)
 /// for details.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<BetaThinkingConfigParam>))]
+[JsonConverter(typeof(UnionConverter<BetaThinkingConfigParam>))]
 public abstract record class BetaThinkingConfigParam
 {
     internal BetaThinkingConfigParam() { }
 
     public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigEnabled value) =>
-        new BetaThinkingConfigParamVariants::BetaThinkingConfigEnabled(value);
+        new BetaThinkingConfigParamVariants::BetaThinkingConfigEnabledVariant(value);
 
     public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigDisabled value) =>
-        new BetaThinkingConfigParamVariants::BetaThinkingConfigDisabled(value);
+        new BetaThinkingConfigParamVariants::BetaThinkingConfigDisabledVariant(value);
 
     public abstract void Validate();
 }

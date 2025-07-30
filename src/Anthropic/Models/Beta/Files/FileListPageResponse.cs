@@ -1,31 +1,28 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System = System;
 
 namespace Anthropic.Models.Beta.Files;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<FileListPageResponse>))]
-public sealed record class FileListPageResponse
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<FileListPageResponse>
+[JsonConverter(typeof(ModelConverter<FileListPageResponse>))]
+public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPageResponse>
 {
     /// <summary>
     /// List of file metadata objects.
     /// </summary>
-    public required Generic::List<FileMetadata> Data
+    public required List<FileMetadata> Data
     {
         get
         {
-            if (!this.Properties.TryGetValue("data", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("data", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("data", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<Generic::List<FileMetadata>>(element)
+            return JsonSerializer.Deserialize<List<FileMetadata>>(element)
                 ?? throw new System::ArgumentNullException("data");
         }
-        set { this.Properties["data"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -35,12 +32,12 @@ public sealed record class FileListPageResponse
     {
         get
         {
-            if (!this.Properties.TryGetValue("first_id", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("first_id", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["first_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["first_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -50,12 +47,12 @@ public sealed record class FileListPageResponse
     {
         get
         {
-            if (!this.Properties.TryGetValue("has_more", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("has_more", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element);
         }
-        set { this.Properties["has_more"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["has_more"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -65,12 +62,12 @@ public sealed record class FileListPageResponse
     {
         get
         {
-            if (!this.Properties.TryGetValue("last_id", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("last_id", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["last_id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["last_id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -87,16 +84,14 @@ public sealed record class FileListPageResponse
     public FileListPageResponse() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    FileListPageResponse(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    FileListPageResponse(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static FileListPageResponse FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static FileListPageResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

@@ -1,21 +1,14 @@
-using Anthropic = Anthropic;
-using Generic = System.Collections.Generic;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.WebSearchToolResultBlockContentVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        WebSearchToolResultError,
-        Messages::WebSearchToolResultError
-    >)
-)]
-public sealed record class WebSearchToolResultError(Messages::WebSearchToolResultError Value)
-    : Messages::WebSearchToolResultBlockContent,
-        Anthropic::IVariant<WebSearchToolResultError, Messages::WebSearchToolResultError>
+[JsonConverter(typeof(VariantConverter<WebSearchToolResultErrorVariant, WebSearchToolResultError>))]
+public sealed record class WebSearchToolResultErrorVariant(WebSearchToolResultError Value)
+    : WebSearchToolResultBlockContent,
+        IVariant<WebSearchToolResultErrorVariant, WebSearchToolResultError>
 {
-    public static WebSearchToolResultError From(Messages::WebSearchToolResultError value)
+    public static WebSearchToolResultErrorVariant From(WebSearchToolResultError value)
     {
         return new(value);
     }
@@ -26,19 +19,12 @@ public sealed record class WebSearchToolResultError(Messages::WebSearchToolResul
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        WebSearchResultBlocks,
-        Generic::List<Messages::WebSearchResultBlock>
-    >)
-)]
-public sealed record class WebSearchResultBlocks(
-    Generic::List<Messages::WebSearchResultBlock> Value
-)
-    : Messages::WebSearchToolResultBlockContent,
-        Anthropic::IVariant<WebSearchResultBlocks, Generic::List<Messages::WebSearchResultBlock>>
+[JsonConverter(typeof(VariantConverter<WebSearchResultBlocks, List<WebSearchResultBlock>>))]
+public sealed record class WebSearchResultBlocks(List<WebSearchResultBlock> Value)
+    : WebSearchToolResultBlockContent,
+        IVariant<WebSearchResultBlocks, List<WebSearchResultBlock>>
 {
-    public static WebSearchResultBlocks From(Generic::List<Messages::WebSearchResultBlock> value)
+    public static WebSearchResultBlocks From(List<WebSearchResultBlock> value)
     {
         return new(value);
     }

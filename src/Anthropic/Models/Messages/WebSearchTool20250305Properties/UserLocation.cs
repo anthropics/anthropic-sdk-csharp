@@ -1,28 +1,27 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.WebSearchTool20250305Properties;
 
 /// <summary>
 /// Parameters for the user's location. Used to provide more relevant search results.
 /// </summary>
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<UserLocation>))]
-public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFromRaw<UserLocation>
+[JsonConverter(typeof(ModelConverter<UserLocation>))]
+public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
 {
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -32,12 +31,12 @@ public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFrom
     {
         get
         {
-            if (!this.Properties.TryGetValue("city", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("city", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["city"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["city"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -48,12 +47,12 @@ public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFrom
     {
         get
         {
-            if (!this.Properties.TryGetValue("country", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("country", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["country"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["country"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -63,12 +62,12 @@ public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFrom
     {
         get
         {
-            if (!this.Properties.TryGetValue("region", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("region", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["region"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["region"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -78,12 +77,12 @@ public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFrom
     {
         get
         {
-            if (!this.Properties.TryGetValue("timezone", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("timezone", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["timezone"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["timezone"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -96,20 +95,18 @@ public sealed record class UserLocation : Anthropic::ModelBase, Anthropic::IFrom
 
     public UserLocation()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"approximate\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    UserLocation(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    UserLocation(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static UserLocation FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static UserLocation FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

@@ -1,46 +1,47 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<MessageBatchCanceledResult>))]
+[JsonConverter(typeof(ModelConverter<MessageBatchCanceledResult>))]
 public sealed record class MessageBatchCanceledResult
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<MessageBatchCanceledResult>
+    : ModelBase,
+        IFromRaw<MessageBatchCanceledResult>
 {
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate() { }
 
     public MessageBatchCanceledResult()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"canceled\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    MessageBatchCanceledResult(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    MessageBatchCanceledResult(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static MessageBatchCanceledResult FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

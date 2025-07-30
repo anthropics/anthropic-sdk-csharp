@@ -1,28 +1,29 @@
-using Anthropic = Anthropic;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BetaCacheControlEphemeralProperties = Anthropic.Models.Beta.Messages.BetaCacheControlEphemeralProperties;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaCacheControlEphemeral>))]
+[JsonConverter(typeof(ModelConverter<BetaCacheControlEphemeral>))]
 public sealed record class BetaCacheControlEphemeral
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaCacheControlEphemeral>
+    : ModelBase,
+        IFromRaw<BetaCacheControlEphemeral>
 {
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -36,14 +37,12 @@ public sealed record class BetaCacheControlEphemeral
     {
         get
         {
-            if (!this.Properties.TryGetValue("ttl", out Json::JsonElement element))
+            if (!this.Properties.TryGetValue("ttl", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<BetaCacheControlEphemeralProperties::TTL?>(
-                element
-            );
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeralProperties::TTL?>(element);
         }
-        set { this.Properties["ttl"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["ttl"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -53,19 +52,19 @@ public sealed record class BetaCacheControlEphemeral
 
     public BetaCacheControlEphemeral()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"ephemeral\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaCacheControlEphemeral(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaCacheControlEphemeral(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaCacheControlEphemeral FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

@@ -1,23 +1,16 @@
-using Anthropic = Anthropic;
-using Generic = System.Collections.Generic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaWebSearchToolResultBlockContentVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaWebSearchToolResultError,
-        Messages::BetaWebSearchToolResultError
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaWebSearchToolResultErrorVariant, BetaWebSearchToolResultError>)
 )]
-public sealed record class BetaWebSearchToolResultError(
-    Messages::BetaWebSearchToolResultError Value
-)
-    : Messages::BetaWebSearchToolResultBlockContent,
-        Anthropic::IVariant<BetaWebSearchToolResultError, Messages::BetaWebSearchToolResultError>
+public sealed record class BetaWebSearchToolResultErrorVariant(BetaWebSearchToolResultError Value)
+    : BetaWebSearchToolResultBlockContent,
+        IVariant<BetaWebSearchToolResultErrorVariant, BetaWebSearchToolResultError>
 {
-    public static BetaWebSearchToolResultError From(Messages::BetaWebSearchToolResultError value)
+    public static BetaWebSearchToolResultErrorVariant From(BetaWebSearchToolResultError value)
     {
         return new(value);
     }
@@ -28,24 +21,12 @@ public sealed record class BetaWebSearchToolResultError(
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaWebSearchResultBlocks,
-        Generic::List<Messages::BetaWebSearchResultBlock>
-    >)
-)]
-public sealed record class BetaWebSearchResultBlocks(
-    Generic::List<Messages::BetaWebSearchResultBlock> Value
-)
-    : Messages::BetaWebSearchToolResultBlockContent,
-        Anthropic::IVariant<
-            BetaWebSearchResultBlocks,
-            Generic::List<Messages::BetaWebSearchResultBlock>
-        >
+[JsonConverter(typeof(VariantConverter<BetaWebSearchResultBlocks, List<BetaWebSearchResultBlock>>))]
+public sealed record class BetaWebSearchResultBlocks(List<BetaWebSearchResultBlock> Value)
+    : BetaWebSearchToolResultBlockContent,
+        IVariant<BetaWebSearchResultBlocks, List<BetaWebSearchResultBlock>>
 {
-    public static BetaWebSearchResultBlocks From(
-        Generic::List<Messages::BetaWebSearchResultBlock> value
-    )
+    public static BetaWebSearchResultBlocks From(List<BetaWebSearchResultBlock> value)
     {
         return new(value);
     }

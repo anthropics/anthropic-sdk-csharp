@@ -1,16 +1,12 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaMessageTokensCount>))]
-public sealed record class BetaMessageTokensCount
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<BetaMessageTokensCount>
+[JsonConverter(typeof(ModelConverter<BetaMessageTokensCount>))]
+public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMessageTokensCount>
 {
     /// <summary>
     /// The total number of tokens across the provided list of messages, system prompt,
@@ -20,15 +16,15 @@ public sealed record class BetaMessageTokensCount
     {
         get
         {
-            if (!this.Properties.TryGetValue("input_tokens", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("input_tokens", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "input_tokens",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.Properties["input_tokens"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -39,15 +35,15 @@ public sealed record class BetaMessageTokensCount
     public BetaMessageTokensCount() { }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaMessageTokensCount(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaMessageTokensCount(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static BetaMessageTokensCount FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

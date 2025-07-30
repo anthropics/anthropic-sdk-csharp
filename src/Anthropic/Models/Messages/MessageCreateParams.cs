@@ -1,10 +1,8 @@
-using Anthropic = Anthropic;
-using Generic = System.Collections.Generic;
-using Http = System.Net.Http;
-using Json = System.Text.Json;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using MessageCreateParamsProperties = Anthropic.Models.Messages.MessageCreateParamsProperties;
-using System = System;
-using Text = System.Text;
 
 namespace Anthropic.Models.Messages;
 
@@ -16,9 +14,9 @@ namespace Anthropic.Models.Messages;
 ///
 /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
 /// </summary>
-public sealed record class MessageCreateParams : Anthropic::ParamsBase
+public sealed record class MessageCreateParams : ParamsBase
 {
-    public Generic::Dictionary<string, Json::JsonElement> BodyProperties { get; set; } = [];
+    public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
 
     /// <summary>
     /// The maximum number of tokens to generate before stopping.
@@ -33,15 +31,15 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("max_tokens", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.BodyProperties.TryGetValue("max_tokens", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "max_tokens",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element);
         }
-        set { this.BodyProperties["max_tokens"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["max_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -103,20 +101,20 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     ///
     /// There is a limit of 100,000 messages in a single request.
     /// </summary>
-    public required Generic::List<MessageParam> Messages
+    public required List<MessageParam> Messages
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("messages", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.BodyProperties.TryGetValue("messages", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "messages",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<Generic::List<MessageParam>>(element)
-                ?? throw new System::ArgumentNullException("messages");
+            return JsonSerializer.Deserialize<List<MessageParam>>(element)
+                ?? throw new global::System.ArgumentNullException("messages");
         }
-        set { this.BodyProperties["messages"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["messages"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -127,13 +125,16 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("model", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("model", "Missing required argument");
+            if (!this.BodyProperties.TryGetValue("model", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "model",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Model>(element)
-                ?? throw new System::ArgumentNullException("model");
+            return JsonSerializer.Deserialize<Model>(element)
+                ?? throw new global::System.ArgumentNullException("model");
         }
-        set { this.BodyProperties["model"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["model"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -143,12 +144,12 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("metadata", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("metadata", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Metadata?>(element);
+            return JsonSerializer.Deserialize<Metadata?>(element);
         }
-        set { this.BodyProperties["metadata"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["metadata"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -162,17 +163,12 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("service_tier", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("service_tier", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<MessageCreateParamsProperties::ServiceTier?>(
-                element
-            );
+            return JsonSerializer.Deserialize<MessageCreateParamsProperties::ServiceTier?>(element);
         }
-        set
-        {
-            this.BodyProperties["service_tier"] = Json::JsonSerializer.SerializeToElement(value);
-        }
+        set { this.BodyProperties["service_tier"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -186,19 +182,16 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     /// one of the custom sequences, the response `stop_reason` value will be `"stop_sequence"`
     /// and the response `stop_sequence` value will contain the matched stop sequence.
     /// </summary>
-    public Generic::List<string>? StopSequences
+    public List<string>? StopSequences
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("stop_sequences", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("stop_sequences", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Generic::List<string>?>(element);
+            return JsonSerializer.Deserialize<List<string>?>(element);
         }
-        set
-        {
-            this.BodyProperties["stop_sequences"] = Json::JsonSerializer.SerializeToElement(value);
-        }
+        set { this.BodyProperties["stop_sequences"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -210,12 +203,12 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("stream", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("stream", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element);
         }
-        set { this.BodyProperties["stream"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["stream"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -228,14 +221,12 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("system", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("system", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<MessageCreateParamsProperties::System?>(
-                element
-            );
+            return JsonSerializer.Deserialize<MessageCreateParamsProperties::System?>(element);
         }
-        set { this.BodyProperties["system"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["system"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -250,12 +241,12 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("temperature", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("temperature", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<double?>(element);
+            return JsonSerializer.Deserialize<double?>(element);
         }
-        set { this.BodyProperties["temperature"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["temperature"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -272,12 +263,12 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("thinking", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("thinking", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<ThinkingConfigParam?>(element);
+            return JsonSerializer.Deserialize<ThinkingConfigParam?>(element);
         }
-        set { this.BodyProperties["thinking"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["thinking"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -288,12 +279,12 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("tool_choice", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<ToolChoice?>(element);
+            return JsonSerializer.Deserialize<ToolChoice?>(element);
         }
-        set { this.BodyProperties["tool_choice"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -342,16 +333,16 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     ///
     /// See our [guide](https://docs.anthropic.com/en/docs/tool-use) for more details.
     /// </summary>
-    public Generic::List<ToolUnion>? Tools
+    public List<ToolUnion>? Tools
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("tools", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("tools", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Generic::List<ToolUnion>?>(element);
+            return JsonSerializer.Deserialize<List<ToolUnion>?>(element);
         }
-        set { this.BodyProperties["tools"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["tools"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -366,12 +357,12 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("top_k", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("top_k", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element);
         }
-        set { this.BodyProperties["top_k"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["top_k"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -388,40 +379,39 @@ public sealed record class MessageCreateParams : Anthropic::ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("top_p", out Json::JsonElement element))
+            if (!this.BodyProperties.TryGetValue("top_p", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<double?>(element);
+            return JsonSerializer.Deserialize<double?>(element);
         }
-        set { this.BodyProperties["top_p"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.BodyProperties["top_p"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public override System::Uri Url(Anthropic::IAnthropicClient client)
+    public override global::System.Uri Url(IAnthropicClient client)
     {
-        return new System::UriBuilder(client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages")
+        return new global::System.UriBuilder(
+            client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages"
+        )
         {
             Query = this.QueryString(client),
         }.Uri;
     }
 
-    public Http::StringContent BodyContent()
+    public StringContent BodyContent()
     {
         return new(
-            Json::JsonSerializer.Serialize(this.BodyProperties),
-            Text::Encoding.UTF8,
+            JsonSerializer.Serialize(this.BodyProperties),
+            Encoding.UTF8,
             "application/json"
         );
     }
 
-    public void AddHeadersToRequest(
-        Http::HttpRequestMessage request,
-        Anthropic::IAnthropicClient client
-    )
+    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
     {
-        Anthropic::ParamsBase.AddDefaultHeaders(request, client);
+        ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)
         {
-            Anthropic::ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
     }
 }

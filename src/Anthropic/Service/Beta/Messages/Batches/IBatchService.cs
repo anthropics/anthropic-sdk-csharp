@@ -1,5 +1,5 @@
-using Batches = Anthropic.Models.Beta.Messages.Batches;
-using Tasks = System.Threading.Tasks;
+using System.Threading.Tasks;
+using Anthropic.Models.Beta.Messages.Batches;
 
 namespace Anthropic.Service.Beta.Messages.Batches;
 
@@ -14,7 +14,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Tasks::Task<Batches::BetaMessageBatch> Create(Batches::BatchCreateParams @params);
+    Task<BetaMessageBatch> Create(BatchCreateParams @params);
 
     /// <summary>
     /// This endpoint is idempotent and can be used to poll for Message Batch completion.
@@ -23,7 +23,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Tasks::Task<Batches::BetaMessageBatch> Retrieve(Batches::BatchRetrieveParams @params);
+    Task<BetaMessageBatch> Retrieve(BatchRetrieveParams @params);
 
     /// <summary>
     /// List all Message Batches within a Workspace. Most recently created batches
@@ -31,7 +31,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Tasks::Task<Batches::BatchListPageResponse> List(Batches::BatchListParams @params);
+    Task<BatchListPageResponse> List(BatchListParams @params);
 
     /// <summary>
     /// Delete a Message Batch.
@@ -41,7 +41,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Tasks::Task<Batches::BetaDeletedMessageBatch> Delete(Batches::BatchDeleteParams @params);
+    Task<BetaDeletedMessageBatch> Delete(BatchDeleteParams @params);
 
     /// <summary>
     /// Batches may be canceled any time before processing ends. Once cancellation
@@ -54,7 +54,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Tasks::Task<Batches::BetaMessageBatch> Cancel(Batches::BatchCancelParams @params);
+    Task<BetaMessageBatch> Cancel(BatchCancelParams @params);
 
     /// <summary>
     /// Streams the results of a Message Batch as a `.jsonl` file.
@@ -65,7 +65,5 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Tasks::Task<Batches::BetaMessageBatchIndividualResponse> Results(
-        Batches::BatchResultsParams @params
-    );
+    Task<BetaMessageBatchIndividualResponse> Results(BatchResultsParams @params);
 }

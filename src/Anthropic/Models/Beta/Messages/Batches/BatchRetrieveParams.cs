@@ -1,9 +1,6 @@
-using Anthropic = Anthropic;
-using Beta = Anthropic.Models.Beta;
-using Generic = System.Collections.Generic;
-using Http = System.Net.Http;
-using Json = System.Text.Json;
-using System = System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
@@ -14,28 +11,28 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 ///
 /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
 /// </summary>
-public sealed record class BatchRetrieveParams : Anthropic::ParamsBase
+public sealed record class BatchRetrieveParams : ParamsBase
 {
     public required string MessageBatchID;
 
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
-    public Generic::List<Beta::AnthropicBeta>? Betas
+    public List<AnthropicBeta>? Betas
     {
         get
         {
-            if (!this.HeaderProperties.TryGetValue("betas", out Json::JsonElement element))
+            if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return Json::JsonSerializer.Deserialize<Generic::List<Beta::AnthropicBeta>?>(element);
+            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(element);
         }
-        set { this.HeaderProperties["betas"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public override System::Uri Url(Anthropic::IAnthropicClient client)
+    public override global::System.Uri Url(IAnthropicClient client)
     {
-        return new System::UriBuilder(
+        return new global::System.UriBuilder(
             client.BaseUrl.ToString().TrimEnd('/')
                 + string.Format("/v1/messages/batches/{0}?beta=true", this.MessageBatchID)
         )
@@ -44,15 +41,12 @@ public sealed record class BatchRetrieveParams : Anthropic::ParamsBase
         }.Uri;
     }
 
-    public void AddHeadersToRequest(
-        Http::HttpRequestMessage request,
-        Anthropic::IAnthropicClient client
-    )
+    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
     {
-        Anthropic::ParamsBase.AddDefaultHeaders(request, client);
+        ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)
         {
-            Anthropic::ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
     }
 }

@@ -1,86 +1,91 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::ModelConverter<CitationWebSearchResultLocationParam>)
-)]
+[JsonConverter(typeof(ModelConverter<CitationWebSearchResultLocationParam>))]
 public sealed record class CitationWebSearchResultLocationParam
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<CitationWebSearchResultLocationParam>
+    : ModelBase,
+        IFromRaw<CitationWebSearchResultLocationParam>
 {
     public required string CitedText
     {
         get
         {
-            if (!this.Properties.TryGetValue("cited_text", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("cited_text", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "cited_text",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("cited_text");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("cited_text");
         }
-        set { this.Properties["cited_text"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["cited_text"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string EncryptedIndex
     {
         get
         {
-            if (!this.Properties.TryGetValue("encrypted_index", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("encrypted_index", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "encrypted_index",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("encrypted_index");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("encrypted_index");
         }
-        set { this.Properties["encrypted_index"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["encrypted_index"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string? Title
     {
         get
         {
-            if (!this.Properties.TryGetValue("title", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("title", "Missing required argument");
+            if (!this.Properties.TryGetValue("title", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "title",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["title"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public required string URL
     {
         get
         {
-            if (!this.Properties.TryGetValue("url", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("url", "Missing required argument");
+            if (!this.Properties.TryGetValue("url", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "url",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("url");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("url");
         }
-        set { this.Properties["url"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["url"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -93,21 +98,19 @@ public sealed record class CitationWebSearchResultLocationParam
 
     public CitationWebSearchResultLocationParam()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>(
-            "\"web_search_result_location\""
-        );
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    CitationWebSearchResultLocationParam(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    CitationWebSearchResultLocationParam(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
     public static CitationWebSearchResultLocationParam FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
+        Dictionary<string, JsonElement> properties
     )
     {
         return new(properties);

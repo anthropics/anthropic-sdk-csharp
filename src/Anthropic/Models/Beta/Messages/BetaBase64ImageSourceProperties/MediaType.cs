@@ -1,11 +1,10 @@
-using Anthropic = Anthropic;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
+using System;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaBase64ImageSourceProperties;
 
-[Serialization::JsonConverter(typeof(Anthropic::EnumConverter<MediaType, string>))]
-public sealed record class MediaType(string value) : Anthropic::IEnum<MediaType, string>
+[JsonConverter(typeof(EnumConverter<MediaType, string>))]
+public sealed record class MediaType(string value) : IEnum<MediaType, string>
 {
     public static readonly MediaType ImageJPEG = new("image/jpeg");
 
@@ -32,7 +31,7 @@ public sealed record class MediaType(string value) : Anthropic::IEnum<MediaType,
             "image/png" => Value.ImagePNG,
             "image/gif" => Value.ImageGIF,
             "image/webp" => Value.ImageWebP,
-            _ => throw new System::ArgumentOutOfRangeException(nameof(_value)),
+            _ => throw new ArgumentOutOfRangeException(nameof(_value)),
         };
 
     public string Raw()

@@ -1,23 +1,21 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using SourceVariants = Anthropic.Models.Beta.Messages.BetaImageBlockParamProperties.SourceVariants;
 
 namespace Anthropic.Models.Beta.Messages.BetaImageBlockParamProperties;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<Source>))]
+[JsonConverter(typeof(UnionConverter<Source>))]
 public abstract record class Source
 {
     internal Source() { }
 
-    public static implicit operator Source(Messages::BetaBase64ImageSource value) =>
-        new SourceVariants::BetaBase64ImageSource(value);
+    public static implicit operator Source(BetaBase64ImageSource value) =>
+        new SourceVariants::BetaBase64ImageSourceVariant(value);
 
-    public static implicit operator Source(Messages::BetaURLImageSource value) =>
-        new SourceVariants::BetaURLImageSource(value);
+    public static implicit operator Source(BetaURLImageSource value) =>
+        new SourceVariants::BetaURLImageSourceVariant(value);
 
-    public static implicit operator Source(Messages::BetaFileImageSource value) =>
-        new SourceVariants::BetaFileImageSource(value);
+    public static implicit operator Source(BetaFileImageSource value) =>
+        new SourceVariants::BetaFileImageSourceVariant(value);
 
     public abstract void Validate();
 }

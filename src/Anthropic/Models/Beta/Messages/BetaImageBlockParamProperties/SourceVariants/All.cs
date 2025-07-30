@@ -1,18 +1,13 @@
-using Anthropic = Anthropic;
-using BetaImageBlockParamProperties = Anthropic.Models.Beta.Messages.BetaImageBlockParamProperties;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaImageBlockParamProperties.SourceVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaBase64ImageSource, Messages::BetaBase64ImageSource>)
-)]
-public sealed record class BetaBase64ImageSource(Messages::BetaBase64ImageSource Value)
-    : BetaImageBlockParamProperties::Source,
-        Anthropic::IVariant<BetaBase64ImageSource, Messages::BetaBase64ImageSource>
+[JsonConverter(typeof(VariantConverter<BetaBase64ImageSourceVariant, BetaBase64ImageSource>))]
+public sealed record class BetaBase64ImageSourceVariant(BetaBase64ImageSource Value)
+    : Source,
+        IVariant<BetaBase64ImageSourceVariant, BetaBase64ImageSource>
 {
-    public static BetaBase64ImageSource From(Messages::BetaBase64ImageSource value)
+    public static BetaBase64ImageSourceVariant From(BetaBase64ImageSource value)
     {
         return new(value);
     }
@@ -23,14 +18,12 @@ public sealed record class BetaBase64ImageSource(Messages::BetaBase64ImageSource
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaURLImageSource, Messages::BetaURLImageSource>)
-)]
-public sealed record class BetaURLImageSource(Messages::BetaURLImageSource Value)
-    : BetaImageBlockParamProperties::Source,
-        Anthropic::IVariant<BetaURLImageSource, Messages::BetaURLImageSource>
+[JsonConverter(typeof(VariantConverter<BetaURLImageSourceVariant, BetaURLImageSource>))]
+public sealed record class BetaURLImageSourceVariant(BetaURLImageSource Value)
+    : Source,
+        IVariant<BetaURLImageSourceVariant, BetaURLImageSource>
 {
-    public static BetaURLImageSource From(Messages::BetaURLImageSource value)
+    public static BetaURLImageSourceVariant From(BetaURLImageSource value)
     {
         return new(value);
     }
@@ -41,14 +34,12 @@ public sealed record class BetaURLImageSource(Messages::BetaURLImageSource Value
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaFileImageSource, Messages::BetaFileImageSource>)
-)]
-public sealed record class BetaFileImageSource(Messages::BetaFileImageSource Value)
-    : BetaImageBlockParamProperties::Source,
-        Anthropic::IVariant<BetaFileImageSource, Messages::BetaFileImageSource>
+[JsonConverter(typeof(VariantConverter<BetaFileImageSourceVariant, BetaFileImageSource>))]
+public sealed record class BetaFileImageSourceVariant(BetaFileImageSource Value)
+    : Source,
+        IVariant<BetaFileImageSourceVariant, BetaFileImageSource>
 {
-    public static BetaFileImageSource From(Messages::BetaFileImageSource value)
+    public static BetaFileImageSourceVariant From(BetaFileImageSource value)
     {
         return new(value);
     }

@@ -1,29 +1,27 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using SourceVariants = Anthropic.Models.Beta.Messages.BetaRequestDocumentBlockProperties.SourceVariants;
 
 namespace Anthropic.Models.Beta.Messages.BetaRequestDocumentBlockProperties;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<Source>))]
+[JsonConverter(typeof(UnionConverter<Source>))]
 public abstract record class Source
 {
     internal Source() { }
 
-    public static implicit operator Source(Messages::BetaBase64PDFSource value) =>
-        new SourceVariants::BetaBase64PDFSource(value);
+    public static implicit operator Source(BetaBase64PDFSource value) =>
+        new SourceVariants::BetaBase64PDFSourceVariant(value);
 
-    public static implicit operator Source(Messages::BetaPlainTextSource value) =>
-        new SourceVariants::BetaPlainTextSource(value);
+    public static implicit operator Source(BetaPlainTextSource value) =>
+        new SourceVariants::BetaPlainTextSourceVariant(value);
 
-    public static implicit operator Source(Messages::BetaContentBlockSource value) =>
-        new SourceVariants::BetaContentBlockSource(value);
+    public static implicit operator Source(BetaContentBlockSource value) =>
+        new SourceVariants::BetaContentBlockSourceVariant(value);
 
-    public static implicit operator Source(Messages::BetaURLPDFSource value) =>
-        new SourceVariants::BetaURLPDFSource(value);
+    public static implicit operator Source(BetaURLPDFSource value) =>
+        new SourceVariants::BetaURLPDFSourceVariant(value);
 
-    public static implicit operator Source(Messages::BetaFileDocumentSource value) =>
-        new SourceVariants::BetaFileDocumentSource(value);
+    public static implicit operator Source(BetaFileDocumentSource value) =>
+        new SourceVariants::BetaFileDocumentSourceVariant(value);
 
     public abstract void Validate();
 }

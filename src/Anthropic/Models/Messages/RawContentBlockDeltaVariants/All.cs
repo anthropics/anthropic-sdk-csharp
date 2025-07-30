@@ -1,15 +1,13 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Messages.RawContentBlockDeltaVariants;
 
-[Serialization::JsonConverter(typeof(Anthropic::VariantConverter<TextDelta, Messages::TextDelta>))]
-public sealed record class TextDelta(Messages::TextDelta Value)
-    : Messages::RawContentBlockDelta,
-        Anthropic::IVariant<TextDelta, Messages::TextDelta>
+[JsonConverter(typeof(VariantConverter<TextDeltaVariant, TextDelta>))]
+public sealed record class TextDeltaVariant(TextDelta Value)
+    : RawContentBlockDelta,
+        IVariant<TextDeltaVariant, TextDelta>
 {
-    public static TextDelta From(Messages::TextDelta value)
+    public static TextDeltaVariant From(TextDelta value)
     {
         return new(value);
     }
@@ -20,14 +18,12 @@ public sealed record class TextDelta(Messages::TextDelta Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<InputJSONDelta, Messages::InputJSONDelta>)
-)]
-public sealed record class InputJSONDelta(Messages::InputJSONDelta Value)
-    : Messages::RawContentBlockDelta,
-        Anthropic::IVariant<InputJSONDelta, Messages::InputJSONDelta>
+[JsonConverter(typeof(VariantConverter<InputJSONDeltaVariant, InputJSONDelta>))]
+public sealed record class InputJSONDeltaVariant(InputJSONDelta Value)
+    : RawContentBlockDelta,
+        IVariant<InputJSONDeltaVariant, InputJSONDelta>
 {
-    public static InputJSONDelta From(Messages::InputJSONDelta value)
+    public static InputJSONDeltaVariant From(InputJSONDelta value)
     {
         return new(value);
     }
@@ -38,14 +34,12 @@ public sealed record class InputJSONDelta(Messages::InputJSONDelta Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<CitationsDelta, Messages::CitationsDelta>)
-)]
-public sealed record class CitationsDelta(Messages::CitationsDelta Value)
-    : Messages::RawContentBlockDelta,
-        Anthropic::IVariant<CitationsDelta, Messages::CitationsDelta>
+[JsonConverter(typeof(VariantConverter<CitationsDeltaVariant, CitationsDelta>))]
+public sealed record class CitationsDeltaVariant(CitationsDelta Value)
+    : RawContentBlockDelta,
+        IVariant<CitationsDeltaVariant, CitationsDelta>
 {
-    public static CitationsDelta From(Messages::CitationsDelta value)
+    public static CitationsDeltaVariant From(CitationsDelta value)
     {
         return new(value);
     }
@@ -56,14 +50,12 @@ public sealed record class CitationsDelta(Messages::CitationsDelta Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<ThinkingDelta, Messages::ThinkingDelta>)
-)]
-public sealed record class ThinkingDelta(Messages::ThinkingDelta Value)
-    : Messages::RawContentBlockDelta,
-        Anthropic::IVariant<ThinkingDelta, Messages::ThinkingDelta>
+[JsonConverter(typeof(VariantConverter<ThinkingDeltaVariant, ThinkingDelta>))]
+public sealed record class ThinkingDeltaVariant(ThinkingDelta Value)
+    : RawContentBlockDelta,
+        IVariant<ThinkingDeltaVariant, ThinkingDelta>
 {
-    public static ThinkingDelta From(Messages::ThinkingDelta value)
+    public static ThinkingDeltaVariant From(ThinkingDelta value)
     {
         return new(value);
     }
@@ -74,14 +66,12 @@ public sealed record class ThinkingDelta(Messages::ThinkingDelta Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<SignatureDelta, Messages::SignatureDelta>)
-)]
-public sealed record class SignatureDelta(Messages::SignatureDelta Value)
-    : Messages::RawContentBlockDelta,
-        Anthropic::IVariant<SignatureDelta, Messages::SignatureDelta>
+[JsonConverter(typeof(VariantConverter<SignatureDeltaVariant, SignatureDelta>))]
+public sealed record class SignatureDeltaVariant(SignatureDelta Value)
+    : RawContentBlockDelta,
+        IVariant<SignatureDeltaVariant, SignatureDelta>
 {
-    public static SignatureDelta From(Messages::SignatureDelta value)
+    public static SignatureDeltaVariant From(SignatureDelta value)
     {
         return new(value);
     }

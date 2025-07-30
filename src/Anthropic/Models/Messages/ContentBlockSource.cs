@@ -1,44 +1,43 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ContentBlockSourceProperties = Anthropic.Models.Messages.ContentBlockSourceProperties;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<ContentBlockSource>))]
-public sealed record class ContentBlockSource
-    : Anthropic::ModelBase,
-        Anthropic::IFromRaw<ContentBlockSource>
+[JsonConverter(typeof(ModelConverter<ContentBlockSource>))]
+public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlockSource>
 {
     public required ContentBlockSourceProperties::Content Content
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("content", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "content",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<ContentBlockSourceProperties::Content>(element)
-                ?? throw new System::ArgumentNullException("content");
+            return JsonSerializer.Deserialize<ContentBlockSourceProperties::Content>(element)
+                ?? throw new global::System.ArgumentNullException("content");
         }
-        set { this.Properties["content"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -48,20 +47,18 @@ public sealed record class ContentBlockSource
 
     public ContentBlockSource()
     {
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"content\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    ContentBlockSource(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    ContentBlockSource(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static ContentBlockSource FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static ContentBlockSource FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

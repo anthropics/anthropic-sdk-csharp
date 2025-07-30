@@ -1,15 +1,13 @@
-using Anthropic = Anthropic;
-using CodeAnalysis = System.Diagnostics.CodeAnalysis;
-using Generic = System.Collections.Generic;
-using Json = System.Text.Json;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Messages = Anthropic.Models.Messages;
-using Serialization = System.Text.Json.Serialization;
-using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::ModelConverter<BetaMessage>))]
-public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromRaw<BetaMessage>
+[JsonConverter(typeof(ModelConverter<BetaMessage>))]
+public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
 {
     /// <summary>
     /// Unique object identifier.
@@ -20,13 +18,16 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("id", "Missing required argument");
+            if (!this.Properties.TryGetValue("id", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "id",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<string>(element)
-                ?? throw new System::ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(element)
+                ?? throw new global::System.ArgumentNullException("id");
         }
-        set { this.Properties["id"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -36,15 +37,15 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     {
         get
         {
-            if (!this.Properties.TryGetValue("container", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("container", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "container",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaContainer?>(element);
+            return JsonSerializer.Deserialize<BetaContainer?>(element);
         }
-        set { this.Properties["container"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["container"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -69,20 +70,20 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     ///
     /// ```json [{"type": "text", "text": "B)"}] ```
     /// </summary>
-    public required Generic::List<BetaContentBlock> Content
+    public required List<BetaContentBlock> Content
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("content", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "content",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<Generic::List<BetaContentBlock>>(element)
-                ?? throw new System::ArgumentNullException("content");
+            return JsonSerializer.Deserialize<List<BetaContentBlock>>(element)
+                ?? throw new global::System.ArgumentNullException("content");
         }
-        set { this.Properties["content"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -93,13 +94,16 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     {
         get
         {
-            if (!this.Properties.TryGetValue("model", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("model", "Missing required argument");
+            if (!this.Properties.TryGetValue("model", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "model",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Messages::Model>(element)
-                ?? throw new System::ArgumentNullException("model");
+            return JsonSerializer.Deserialize<Messages::Model>(element)
+                ?? throw new global::System.ArgumentNullException("model");
         }
-        set { this.Properties["model"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["model"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -107,16 +111,19 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     ///
     /// This will always be `"assistant"`.
     /// </summary>
-    public Json::JsonElement Role
+    public JsonElement Role
     {
         get
         {
-            if (!this.Properties.TryGetValue("role", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("role", "Missing required argument");
+            if (!this.Properties.TryGetValue("role", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "role",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["role"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["role"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -137,15 +144,15 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     {
         get
         {
-            if (!this.Properties.TryGetValue("stop_reason", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("stop_reason", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "stop_reason",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<BetaStopReason?>(element);
+            return JsonSerializer.Deserialize<BetaStopReason?>(element);
         }
-        set { this.Properties["stop_reason"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["stop_reason"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -157,15 +164,15 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     {
         get
         {
-            if (!this.Properties.TryGetValue("stop_sequence", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException(
+            if (!this.Properties.TryGetValue("stop_sequence", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
                     "stop_sequence",
                     "Missing required argument"
                 );
 
-            return Json::JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element);
         }
-        set { this.Properties["stop_sequence"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["stop_sequence"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -173,16 +180,19 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     ///
     /// For Messages, this is always `"message"`.
     /// </summary>
-    public Json::JsonElement Type
+    public JsonElement Type
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "type",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<Json::JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element);
         }
-        set { this.Properties["type"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
 
     /// <summary>
@@ -206,13 +216,16 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
     {
         get
         {
-            if (!this.Properties.TryGetValue("usage", out Json::JsonElement element))
-                throw new System::ArgumentOutOfRangeException("usage", "Missing required argument");
+            if (!this.Properties.TryGetValue("usage", out JsonElement element))
+                throw new global::System.ArgumentOutOfRangeException(
+                    "usage",
+                    "Missing required argument"
+                );
 
-            return Json::JsonSerializer.Deserialize<BetaUsage>(element)
-                ?? throw new System::ArgumentNullException("usage");
+            return JsonSerializer.Deserialize<BetaUsage>(element)
+                ?? throw new global::System.ArgumentNullException("usage");
         }
-        set { this.Properties["usage"] = Json::JsonSerializer.SerializeToElement(value); }
+        set { this.Properties["usage"] = JsonSerializer.SerializeToElement(value); }
     }
 
     public override void Validate()
@@ -231,21 +244,19 @@ public sealed record class BetaMessage : Anthropic::ModelBase, Anthropic::IFromR
 
     public BetaMessage()
     {
-        this.Role = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"assistant\"");
-        this.Type = Json::JsonSerializer.Deserialize<Json::JsonElement>("\"message\"");
+        this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
     }
 
 #pragma warning disable CS8618
-    [CodeAnalysis::SetsRequiredMembers]
-    BetaMessage(Generic::Dictionary<string, Json::JsonElement> properties)
+    [SetsRequiredMembers]
+    BetaMessage(Dictionary<string, JsonElement> properties)
     {
         Properties = properties;
     }
 #pragma warning restore CS8618
 
-    public static BetaMessage FromRawUnchecked(
-        Generic::Dictionary<string, Json::JsonElement> properties
-    )
+    public static BetaMessage FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

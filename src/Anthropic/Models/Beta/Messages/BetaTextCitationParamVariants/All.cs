@@ -1,22 +1,15 @@
-using Anthropic = Anthropic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaTextCitationParamVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCitationCharLocationParam,
-        Messages::BetaCitationCharLocationParam
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaCitationCharLocationParamVariant, BetaCitationCharLocationParam>)
 )]
-public sealed record class BetaCitationCharLocationParam(
-    Messages::BetaCitationCharLocationParam Value
-)
-    : Messages::BetaTextCitationParam,
-        Anthropic::IVariant<BetaCitationCharLocationParam, Messages::BetaCitationCharLocationParam>
+public sealed record class BetaCitationCharLocationParamVariant(BetaCitationCharLocationParam Value)
+    : BetaTextCitationParam,
+        IVariant<BetaCitationCharLocationParamVariant, BetaCitationCharLocationParam>
 {
-    public static BetaCitationCharLocationParam From(Messages::BetaCitationCharLocationParam value)
+    public static BetaCitationCharLocationParamVariant From(BetaCitationCharLocationParam value)
     {
         return new(value);
     }
@@ -27,19 +20,14 @@ public sealed record class BetaCitationCharLocationParam(
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCitationPageLocationParam,
-        Messages::BetaCitationPageLocationParam
-    >)
+[JsonConverter(
+    typeof(VariantConverter<BetaCitationPageLocationParamVariant, BetaCitationPageLocationParam>)
 )]
-public sealed record class BetaCitationPageLocationParam(
-    Messages::BetaCitationPageLocationParam Value
-)
-    : Messages::BetaTextCitationParam,
-        Anthropic::IVariant<BetaCitationPageLocationParam, Messages::BetaCitationPageLocationParam>
+public sealed record class BetaCitationPageLocationParamVariant(BetaCitationPageLocationParam Value)
+    : BetaTextCitationParam,
+        IVariant<BetaCitationPageLocationParamVariant, BetaCitationPageLocationParam>
 {
-    public static BetaCitationPageLocationParam From(Messages::BetaCitationPageLocationParam value)
+    public static BetaCitationPageLocationParamVariant From(BetaCitationPageLocationParam value)
     {
         return new(value);
     }
@@ -50,23 +38,23 @@ public sealed record class BetaCitationPageLocationParam(
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCitationContentBlockLocationParam,
-        Messages::BetaCitationContentBlockLocationParam
+[JsonConverter(
+    typeof(VariantConverter<
+        BetaCitationContentBlockLocationParamVariant,
+        BetaCitationContentBlockLocationParam
     >)
 )]
-public sealed record class BetaCitationContentBlockLocationParam(
-    Messages::BetaCitationContentBlockLocationParam Value
+public sealed record class BetaCitationContentBlockLocationParamVariant(
+    BetaCitationContentBlockLocationParam Value
 )
-    : Messages::BetaTextCitationParam,
-        Anthropic::IVariant<
-            BetaCitationContentBlockLocationParam,
-            Messages::BetaCitationContentBlockLocationParam
+    : BetaTextCitationParam,
+        IVariant<
+            BetaCitationContentBlockLocationParamVariant,
+            BetaCitationContentBlockLocationParam
         >
 {
-    public static BetaCitationContentBlockLocationParam From(
-        Messages::BetaCitationContentBlockLocationParam value
+    public static BetaCitationContentBlockLocationParamVariant From(
+        BetaCitationContentBlockLocationParam value
     )
     {
         return new(value);
@@ -78,23 +66,23 @@ public sealed record class BetaCitationContentBlockLocationParam(
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCitationWebSearchResultLocationParam,
-        Messages::BetaCitationWebSearchResultLocationParam
+[JsonConverter(
+    typeof(VariantConverter<
+        BetaCitationWebSearchResultLocationParamVariant,
+        BetaCitationWebSearchResultLocationParam
     >)
 )]
-public sealed record class BetaCitationWebSearchResultLocationParam(
-    Messages::BetaCitationWebSearchResultLocationParam Value
+public sealed record class BetaCitationWebSearchResultLocationParamVariant(
+    BetaCitationWebSearchResultLocationParam Value
 )
-    : Messages::BetaTextCitationParam,
-        Anthropic::IVariant<
-            BetaCitationWebSearchResultLocationParam,
-            Messages::BetaCitationWebSearchResultLocationParam
+    : BetaTextCitationParam,
+        IVariant<
+            BetaCitationWebSearchResultLocationParamVariant,
+            BetaCitationWebSearchResultLocationParam
         >
 {
-    public static BetaCitationWebSearchResultLocationParam From(
-        Messages::BetaCitationWebSearchResultLocationParam value
+    public static BetaCitationWebSearchResultLocationParamVariant From(
+        BetaCitationWebSearchResultLocationParam value
     )
     {
         return new(value);
@@ -106,23 +94,23 @@ public sealed record class BetaCitationWebSearchResultLocationParam(
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaCitationSearchResultLocationParam,
-        Messages::BetaCitationSearchResultLocationParam
+[JsonConverter(
+    typeof(VariantConverter<
+        BetaCitationSearchResultLocationParamVariant,
+        BetaCitationSearchResultLocationParam
     >)
 )]
-public sealed record class BetaCitationSearchResultLocationParam(
-    Messages::BetaCitationSearchResultLocationParam Value
+public sealed record class BetaCitationSearchResultLocationParamVariant(
+    BetaCitationSearchResultLocationParam Value
 )
-    : Messages::BetaTextCitationParam,
-        Anthropic::IVariant<
-            BetaCitationSearchResultLocationParam,
-            Messages::BetaCitationSearchResultLocationParam
+    : BetaTextCitationParam,
+        IVariant<
+            BetaCitationSearchResultLocationParamVariant,
+            BetaCitationSearchResultLocationParam
         >
 {
-    public static BetaCitationSearchResultLocationParam From(
-        Messages::BetaCitationSearchResultLocationParam value
+    public static BetaCitationSearchResultLocationParamVariant From(
+        BetaCitationSearchResultLocationParam value
     )
     {
         return new(value);

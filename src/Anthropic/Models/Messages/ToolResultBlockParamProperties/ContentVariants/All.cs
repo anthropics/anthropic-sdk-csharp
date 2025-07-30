@@ -1,15 +1,11 @@
-using Anthropic = Anthropic;
-using ContentProperties = Anthropic.Models.Messages.ToolResultBlockParamProperties.ContentProperties;
-using Generic = System.Collections.Generic;
-using Serialization = System.Text.Json.Serialization;
-using ToolResultBlockParamProperties = Anthropic.Models.Messages.ToolResultBlockParamProperties;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Anthropic.Models.Messages.ToolResultBlockParamProperties.ContentProperties;
 
 namespace Anthropic.Models.Messages.ToolResultBlockParamProperties.ContentVariants;
 
-[Serialization::JsonConverter(typeof(Anthropic::VariantConverter<String, string>))]
-public sealed record class String(string Value)
-    : ToolResultBlockParamProperties::Content,
-        Anthropic::IVariant<String, string>
+[JsonConverter(typeof(VariantConverter<String, string>))]
+public sealed record class String(string Value) : Content, IVariant<String, string>
 {
     public static String From(string value)
     {
@@ -19,14 +15,10 @@ public sealed record class String(string Value)
     public override void Validate() { }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<Blocks, Generic::List<ContentProperties::Block>>)
-)]
-public sealed record class Blocks(Generic::List<ContentProperties::Block> Value)
-    : ToolResultBlockParamProperties::Content,
-        Anthropic::IVariant<Blocks, Generic::List<ContentProperties::Block>>
+[JsonConverter(typeof(VariantConverter<Blocks, List<Block>>))]
+public sealed record class Blocks(List<Block> Value) : Content, IVariant<Blocks, List<Block>>
 {
-    public static Blocks From(Generic::List<ContentProperties::Block> value)
+    public static Blocks From(List<Block> value)
     {
         return new(value);
     }

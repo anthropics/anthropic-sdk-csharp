@@ -1,15 +1,10 @@
-using Anthropic = Anthropic;
-using BetaMCPToolResultBlockProperties = Anthropic.Models.Beta.Messages.BetaMCPToolResultBlockProperties;
-using Generic = System.Collections.Generic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaMCPToolResultBlockProperties.ContentVariants;
 
-[Serialization::JsonConverter(typeof(Anthropic::VariantConverter<String, string>))]
-public sealed record class String(string Value)
-    : BetaMCPToolResultBlockProperties::Content,
-        Anthropic::IVariant<String, string>
+[JsonConverter(typeof(VariantConverter<String, string>))]
+public sealed record class String(string Value) : Content, IVariant<String, string>
 {
     public static String From(string value)
     {
@@ -19,19 +14,12 @@ public sealed record class String(string Value)
     public override void Validate() { }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaMCPToolResultBlockContent,
-        Generic::List<Messages::BetaTextBlock>
-    >)
-)]
-public sealed record class BetaMCPToolResultBlockContent(
-    Generic::List<Messages::BetaTextBlock> Value
-)
-    : BetaMCPToolResultBlockProperties::Content,
-        Anthropic::IVariant<BetaMCPToolResultBlockContent, Generic::List<Messages::BetaTextBlock>>
+[JsonConverter(typeof(VariantConverter<BetaMCPToolResultBlockContent, List<BetaTextBlock>>))]
+public sealed record class BetaMCPToolResultBlockContent(List<BetaTextBlock> Value)
+    : Content,
+        IVariant<BetaMCPToolResultBlockContent, List<BetaTextBlock>>
 {
-    public static BetaMCPToolResultBlockContent From(Generic::List<Messages::BetaTextBlock> value)
+    public static BetaMCPToolResultBlockContent From(List<BetaTextBlock> value)
     {
         return new(value);
     }

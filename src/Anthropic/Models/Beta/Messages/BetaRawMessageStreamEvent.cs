@@ -1,33 +1,32 @@
-using Anthropic = Anthropic;
+using System.Text.Json.Serialization;
 using BetaRawMessageStreamEventVariants = Anthropic.Models.Beta.Messages.BetaRawMessageStreamEventVariants;
-using Serialization = System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[Serialization::JsonConverter(typeof(Anthropic::UnionConverter<BetaRawMessageStreamEvent>))]
+[JsonConverter(typeof(UnionConverter<BetaRawMessageStreamEvent>))]
 public abstract record class BetaRawMessageStreamEvent
 {
     internal BetaRawMessageStreamEvent() { }
 
     public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageStartEvent value) =>
-        new BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent(value);
+        new BetaRawMessageStreamEventVariants::BetaRawMessageStartEventVariant(value);
 
     public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value) =>
-        new BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent(value);
+        new BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEventVariant(value);
 
     public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageStopEvent value) =>
-        new BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent(value);
+        new BetaRawMessageStreamEventVariants::BetaRawMessageStopEventVariant(value);
 
     public static implicit operator BetaRawMessageStreamEvent(
         BetaRawContentBlockStartEvent value
-    ) => new BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent(value);
+    ) => new BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEventVariant(value);
 
     public static implicit operator BetaRawMessageStreamEvent(
         BetaRawContentBlockDeltaEvent value
-    ) => new BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent(value);
+    ) => new BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEventVariant(value);
 
     public static implicit operator BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value) =>
-        new BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(value);
+        new BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEventVariant(value);
 
     public abstract void Validate();
 }

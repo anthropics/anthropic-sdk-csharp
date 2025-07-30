@@ -1,15 +1,10 @@
-using Anthropic = Anthropic;
-using BetaMessageParamProperties = Anthropic.Models.Beta.Messages.BetaMessageParamProperties;
-using Generic = System.Collections.Generic;
-using Messages = Anthropic.Models.Beta.Messages;
-using Serialization = System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.Messages.BetaMessageParamProperties.ContentVariants;
 
-[Serialization::JsonConverter(typeof(Anthropic::VariantConverter<String, string>))]
-public sealed record class String(string Value)
-    : BetaMessageParamProperties::Content,
-        Anthropic::IVariant<String, string>
+[JsonConverter(typeof(VariantConverter<String, string>))]
+public sealed record class String(string Value) : Content, IVariant<String, string>
 {
     public static String From(string value)
     {
@@ -19,19 +14,12 @@ public sealed record class String(string Value)
     public override void Validate() { }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<
-        BetaContentBlockParams,
-        Generic::List<Messages::BetaContentBlockParam>
-    >)
-)]
-public sealed record class BetaContentBlockParams(
-    Generic::List<Messages::BetaContentBlockParam> Value
-)
-    : BetaMessageParamProperties::Content,
-        Anthropic::IVariant<BetaContentBlockParams, Generic::List<Messages::BetaContentBlockParam>>
+[JsonConverter(typeof(VariantConverter<BetaContentBlockParams, List<BetaContentBlockParam>>))]
+public sealed record class BetaContentBlockParams(List<BetaContentBlockParam> Value)
+    : Content,
+        IVariant<BetaContentBlockParams, List<BetaContentBlockParam>>
 {
-    public static BetaContentBlockParams From(Generic::List<Messages::BetaContentBlockParam> value)
+    public static BetaContentBlockParams From(List<BetaContentBlockParam> value)
     {
         return new(value);
     }

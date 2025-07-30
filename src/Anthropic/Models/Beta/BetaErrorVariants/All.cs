@@ -1,17 +1,13 @@
-using Anthropic = Anthropic;
-using Beta = Anthropic.Models.Beta;
-using Serialization = System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Anthropic.Models.Beta.BetaErrorVariants;
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaInvalidRequestError, Beta::BetaInvalidRequestError>)
-)]
-public sealed record class BetaInvalidRequestError(Beta::BetaInvalidRequestError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaInvalidRequestError, Beta::BetaInvalidRequestError>
+[JsonConverter(typeof(VariantConverter<BetaInvalidRequestErrorVariant, BetaInvalidRequestError>))]
+public sealed record class BetaInvalidRequestErrorVariant(BetaInvalidRequestError Value)
+    : BetaError,
+        IVariant<BetaInvalidRequestErrorVariant, BetaInvalidRequestError>
 {
-    public static BetaInvalidRequestError From(Beta::BetaInvalidRequestError value)
+    public static BetaInvalidRequestErrorVariant From(BetaInvalidRequestError value)
     {
         return new(value);
     }
@@ -22,14 +18,12 @@ public sealed record class BetaInvalidRequestError(Beta::BetaInvalidRequestError
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaAuthenticationError, Beta::BetaAuthenticationError>)
-)]
-public sealed record class BetaAuthenticationError(Beta::BetaAuthenticationError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaAuthenticationError, Beta::BetaAuthenticationError>
+[JsonConverter(typeof(VariantConverter<BetaAuthenticationErrorVariant, BetaAuthenticationError>))]
+public sealed record class BetaAuthenticationErrorVariant(BetaAuthenticationError Value)
+    : BetaError,
+        IVariant<BetaAuthenticationErrorVariant, BetaAuthenticationError>
 {
-    public static BetaAuthenticationError From(Beta::BetaAuthenticationError value)
+    public static BetaAuthenticationErrorVariant From(BetaAuthenticationError value)
     {
         return new(value);
     }
@@ -40,14 +34,12 @@ public sealed record class BetaAuthenticationError(Beta::BetaAuthenticationError
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaBillingError, Beta::BetaBillingError>)
-)]
-public sealed record class BetaBillingError(Beta::BetaBillingError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaBillingError, Beta::BetaBillingError>
+[JsonConverter(typeof(VariantConverter<BetaBillingErrorVariant, BetaBillingError>))]
+public sealed record class BetaBillingErrorVariant(BetaBillingError Value)
+    : BetaError,
+        IVariant<BetaBillingErrorVariant, BetaBillingError>
 {
-    public static BetaBillingError From(Beta::BetaBillingError value)
+    public static BetaBillingErrorVariant From(BetaBillingError value)
     {
         return new(value);
     }
@@ -58,14 +50,12 @@ public sealed record class BetaBillingError(Beta::BetaBillingError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaPermissionError, Beta::BetaPermissionError>)
-)]
-public sealed record class BetaPermissionError(Beta::BetaPermissionError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaPermissionError, Beta::BetaPermissionError>
+[JsonConverter(typeof(VariantConverter<BetaPermissionErrorVariant, BetaPermissionError>))]
+public sealed record class BetaPermissionErrorVariant(BetaPermissionError Value)
+    : BetaError,
+        IVariant<BetaPermissionErrorVariant, BetaPermissionError>
 {
-    public static BetaPermissionError From(Beta::BetaPermissionError value)
+    public static BetaPermissionErrorVariant From(BetaPermissionError value)
     {
         return new(value);
     }
@@ -76,14 +66,12 @@ public sealed record class BetaPermissionError(Beta::BetaPermissionError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaNotFoundError, Beta::BetaNotFoundError>)
-)]
-public sealed record class BetaNotFoundError(Beta::BetaNotFoundError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaNotFoundError, Beta::BetaNotFoundError>
+[JsonConverter(typeof(VariantConverter<BetaNotFoundErrorVariant, BetaNotFoundError>))]
+public sealed record class BetaNotFoundErrorVariant(BetaNotFoundError Value)
+    : BetaError,
+        IVariant<BetaNotFoundErrorVariant, BetaNotFoundError>
 {
-    public static BetaNotFoundError From(Beta::BetaNotFoundError value)
+    public static BetaNotFoundErrorVariant From(BetaNotFoundError value)
     {
         return new(value);
     }
@@ -94,14 +82,12 @@ public sealed record class BetaNotFoundError(Beta::BetaNotFoundError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaRateLimitError, Beta::BetaRateLimitError>)
-)]
-public sealed record class BetaRateLimitError(Beta::BetaRateLimitError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaRateLimitError, Beta::BetaRateLimitError>
+[JsonConverter(typeof(VariantConverter<BetaRateLimitErrorVariant, BetaRateLimitError>))]
+public sealed record class BetaRateLimitErrorVariant(BetaRateLimitError Value)
+    : BetaError,
+        IVariant<BetaRateLimitErrorVariant, BetaRateLimitError>
 {
-    public static BetaRateLimitError From(Beta::BetaRateLimitError value)
+    public static BetaRateLimitErrorVariant From(BetaRateLimitError value)
     {
         return new(value);
     }
@@ -112,14 +98,12 @@ public sealed record class BetaRateLimitError(Beta::BetaRateLimitError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaGatewayTimeoutError, Beta::BetaGatewayTimeoutError>)
-)]
-public sealed record class BetaGatewayTimeoutError(Beta::BetaGatewayTimeoutError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaGatewayTimeoutError, Beta::BetaGatewayTimeoutError>
+[JsonConverter(typeof(VariantConverter<BetaGatewayTimeoutErrorVariant, BetaGatewayTimeoutError>))]
+public sealed record class BetaGatewayTimeoutErrorVariant(BetaGatewayTimeoutError Value)
+    : BetaError,
+        IVariant<BetaGatewayTimeoutErrorVariant, BetaGatewayTimeoutError>
 {
-    public static BetaGatewayTimeoutError From(Beta::BetaGatewayTimeoutError value)
+    public static BetaGatewayTimeoutErrorVariant From(BetaGatewayTimeoutError value)
     {
         return new(value);
     }
@@ -130,14 +114,12 @@ public sealed record class BetaGatewayTimeoutError(Beta::BetaGatewayTimeoutError
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaAPIError, Beta::BetaAPIError>)
-)]
-public sealed record class BetaAPIError(Beta::BetaAPIError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaAPIError, Beta::BetaAPIError>
+[JsonConverter(typeof(VariantConverter<BetaAPIErrorVariant, BetaAPIError>))]
+public sealed record class BetaAPIErrorVariant(BetaAPIError Value)
+    : BetaError,
+        IVariant<BetaAPIErrorVariant, BetaAPIError>
 {
-    public static BetaAPIError From(Beta::BetaAPIError value)
+    public static BetaAPIErrorVariant From(BetaAPIError value)
     {
         return new(value);
     }
@@ -148,14 +130,12 @@ public sealed record class BetaAPIError(Beta::BetaAPIError Value)
     }
 }
 
-[Serialization::JsonConverter(
-    typeof(Anthropic::VariantConverter<BetaOverloadedError, Beta::BetaOverloadedError>)
-)]
-public sealed record class BetaOverloadedError(Beta::BetaOverloadedError Value)
-    : Beta::BetaError,
-        Anthropic::IVariant<BetaOverloadedError, Beta::BetaOverloadedError>
+[JsonConverter(typeof(VariantConverter<BetaOverloadedErrorVariant, BetaOverloadedError>))]
+public sealed record class BetaOverloadedErrorVariant(BetaOverloadedError Value)
+    : BetaError,
+        IVariant<BetaOverloadedErrorVariant, BetaOverloadedError>
 {
-    public static BetaOverloadedError From(Beta::BetaOverloadedError value)
+    public static BetaOverloadedErrorVariant From(BetaOverloadedError value)
     {
         return new(value);
     }
