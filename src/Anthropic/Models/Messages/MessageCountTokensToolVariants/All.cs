@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using MessageCountTokensToolProperties = Anthropic.Models.Messages.MessageCountTokensToolProperties;
 
 namespace Anthropic.Models.Messages.MessageCountTokensToolVariants;
 
@@ -51,21 +50,12 @@ public sealed record class ToolTextEditor20250124Variant(ToolTextEditor20250124 
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<
-        TextEditor20250429,
-        MessageCountTokensToolProperties::TextEditor20250429
-    >)
-)]
-public sealed record class TextEditor20250429(
-    MessageCountTokensToolProperties::TextEditor20250429 Value
-)
+[JsonConverter(typeof(VariantConverter<ToolTextEditor20250429Variant, ToolTextEditor20250429>))]
+public sealed record class ToolTextEditor20250429Variant(ToolTextEditor20250429 Value)
     : MessageCountTokensTool,
-        IVariant<TextEditor20250429, MessageCountTokensToolProperties::TextEditor20250429>
+        IVariant<ToolTextEditor20250429Variant, ToolTextEditor20250429>
 {
-    public static TextEditor20250429 From(
-        MessageCountTokensToolProperties::TextEditor20250429 value
-    )
+    public static ToolTextEditor20250429Variant From(ToolTextEditor20250429 value)
     {
         return new(value);
     }
