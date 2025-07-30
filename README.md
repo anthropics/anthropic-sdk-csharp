@@ -28,13 +28,13 @@ using Messages = Anthropic.Models.Messages;
 using System = System;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
-Anthropic::AnthropicClient client = new Anthropic::AnthropicClient();
+Anthropic::AnthropicClient client = new();
 
-var param = new Messages::MessageCreateParams()
+Messages::MessageCreateParams param = new()
 {
   MaxTokens = 1024,
   Messages = [
-    new Messages::MessageParam()
+    new()
     {
       Role = MessageParamProperties::Role.User,
       Content = "Hello, Claude",
@@ -56,7 +56,7 @@ Configure the client using environment variables:
 using Anthropic = Anthropic;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
-Anthropic::AnthropicClient client = new Anthropic::AnthropicClient();
+Anthropic::AnthropicClient client = new();
 ```
 
 Or manually:
@@ -64,7 +64,7 @@ Or manually:
 ```C#
 using Anthropic = Anthropic;
 
-Anthropic::AnthropicClient client = new Anthropic::AnthropicClient()
+Anthropic::AnthropicClient client = new()
 {
   APIKey = "my-anthropic-api-key", AuthToken = "my-auth-token"
 };

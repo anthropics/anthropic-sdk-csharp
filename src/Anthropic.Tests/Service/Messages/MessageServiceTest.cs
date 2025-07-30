@@ -14,22 +14,12 @@ public class MessageServiceTest : Tests::TestBase
     public async Tasks::Task Create_Works()
     {
         var message = await this.client.Messages.Create(
-            new Messages::MessageCreateParams()
+            new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new Messages::MessageParam()
-                    {
-                        Content = "string",
-                        Role = MessageParamProperties::Role.User,
-                    },
-                ],
+                Messages = [new() { Content = "string", Role = MessageParamProperties::Role.User }],
                 Model = Messages::Model.Claude3_7SonnetLatest,
-                Metadata = new Messages::Metadata()
-                {
-                    UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
-                },
+                Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                 ServiceTier = MessageCreateParamsProperties::ServiceTier.Auto,
                 StopSequences = ["string"],
                 Stream = true,
@@ -38,7 +28,7 @@ public class MessageServiceTest : Tests::TestBase
                     new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new Messages::CacheControlEphemeral() { },
+                        CacheControl = new() { },
                         Citations =
                         [
                             new Messages::CitationCharLocationParam()
@@ -59,7 +49,7 @@ public class MessageServiceTest : Tests::TestBase
                 [
                     new Messages::Tool()
                     {
-                        InputSchema = new ToolProperties::InputSchema()
+                        InputSchema = new()
                         {
                             Properties1 = Json::JsonSerializer.Deserialize<Json::JsonElement>(
                                 "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
@@ -67,7 +57,7 @@ public class MessageServiceTest : Tests::TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        CacheControl = new Messages::CacheControlEphemeral() { },
+                        CacheControl = new() { },
                         Description = "Get the current weather in a given location",
                         Type = ToolProperties::Type.Custom,
                     },
@@ -83,23 +73,16 @@ public class MessageServiceTest : Tests::TestBase
     public async Tasks::Task CountTokens_Works()
     {
         var messageTokensCount = await this.client.Messages.CountTokens(
-            new Messages::MessageCountTokensParams()
+            new()
             {
-                Messages =
-                [
-                    new Messages::MessageParam()
-                    {
-                        Content = "string",
-                        Role = MessageParamProperties::Role.User,
-                    },
-                ],
+                Messages = [new() { Content = "string", Role = MessageParamProperties::Role.User }],
                 Model = Messages::Model.Claude3_7SonnetLatest,
                 System =
                 [
                     new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new Messages::CacheControlEphemeral() { },
+                        CacheControl = new() { },
                         Citations =
                         [
                             new Messages::CitationCharLocationParam()
@@ -119,7 +102,7 @@ public class MessageServiceTest : Tests::TestBase
                 [
                     new Messages::Tool()
                     {
-                        InputSchema = new ToolProperties::InputSchema()
+                        InputSchema = new()
                         {
                             Properties1 = Json::JsonSerializer.Deserialize<Json::JsonElement>(
                                 "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
@@ -127,7 +110,7 @@ public class MessageServiceTest : Tests::TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        CacheControl = new Messages::CacheControlEphemeral() { },
+                        CacheControl = new() { },
                         Description = "Get the current weather in a given location",
                         Type = ToolProperties::Type.Custom,
                     },

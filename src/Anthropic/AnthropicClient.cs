@@ -9,7 +9,7 @@ namespace Anthropic;
 
 public sealed class AnthropicClient : IAnthropicClient
 {
-    public Http::HttpClient HttpClient { get; init; } = new Http::HttpClient();
+    public Http::HttpClient HttpClient { get; init; } = new();
 
     System::Lazy<System::Uri> _baseUrl = new(() =>
         new System::Uri(

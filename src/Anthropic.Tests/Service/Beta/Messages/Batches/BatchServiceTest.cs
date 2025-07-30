@@ -1,14 +1,11 @@
-using BatchCreateParamsProperties = Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties;
-using Batches = Anthropic.Models.Beta.Messages.Batches;
 using Beta = Anthropic.Models.Beta;
 using BetaCacheControlEphemeralProperties = Anthropic.Models.Beta.Messages.BetaCacheControlEphemeralProperties;
 using BetaMessageParamProperties = Anthropic.Models.Beta.Messages.BetaMessageParamProperties;
 using BetaToolProperties = Anthropic.Models.Beta.Messages.BetaToolProperties;
 using Json = System.Text.Json;
-using Messages = Anthropic.Models.Beta.Messages;
-using Messages1 = Anthropic.Models.Messages;
+using Messages = Anthropic.Models.Messages;
+using Messages1 = Anthropic.Models.Beta.Messages;
 using ParamsProperties = Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties;
-using RequestProperties = Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties;
 using Tasks = System.Threading.Tasks;
 using Tests = Anthropic.Tests;
 
@@ -20,60 +17,56 @@ public class BatchServiceTest : Tests::TestBase
     public async Tasks::Task Create_Works()
     {
         var betaMessageBatch = await this.client.Beta.Messages.Batches.Create(
-            new Batches::BatchCreateParams()
+            new()
             {
                 Requests =
                 [
-                    new BatchCreateParamsProperties::Request()
+                    new()
                     {
                         CustomID = "my-custom-id-1",
-                        Params = new RequestProperties::Params()
+                        Params = new()
                         {
                             MaxTokens = 1024,
                             Messages =
                             [
-                                new Messages::BetaMessageParam()
+                                new()
                                 {
                                     Content = "Hello, world",
                                     Role = BetaMessageParamProperties::Role.User,
                                 },
                             ],
-                            Model = Messages1::Model.Claude3_7SonnetLatest,
+                            Model = Messages::Model.Claude3_7SonnetLatest,
                             Container = "container",
                             MCPServers =
                             [
-                                new Messages::BetaRequestMCPServerURLDefinition()
+                                new()
                                 {
                                     Name = "name",
                                     URL = "url",
                                     AuthorizationToken = "authorization_token",
-                                    ToolConfiguration =
-                                        new Messages::BetaRequestMCPServerToolConfiguration()
-                                        {
-                                            AllowedTools = ["string"],
-                                            Enabled = true,
-                                        },
+                                    ToolConfiguration = new()
+                                    {
+                                        AllowedTools = ["string"],
+                                        Enabled = true,
+                                    },
                                 },
                             ],
-                            Metadata = new Messages::BetaMetadata()
-                            {
-                                UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
-                            },
+                            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             ServiceTier = ParamsProperties::ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
                             System =
                             [
-                                new Messages::BetaTextBlockParam()
+                                new Messages1::BetaTextBlockParam()
                                 {
                                     Text = "Today's date is 2024-06-01.",
-                                    CacheControl = new Messages::BetaCacheControlEphemeral()
+                                    CacheControl = new()
                                     {
                                         TTL = BetaCacheControlEphemeralProperties::TTL.TTL5m,
                                     },
                                     Citations =
                                     [
-                                        new Messages::BetaCitationCharLocationParam()
+                                        new Messages1::BetaCitationCharLocationParam()
                                         {
                                             CitedText = "cited_text",
                                             DocumentIndex = 0,
@@ -85,19 +78,19 @@ public class BatchServiceTest : Tests::TestBase
                                 },
                             ],
                             Temperature = 1,
-                            Thinking = new Messages::BetaThinkingConfigEnabled()
+                            Thinking = new Messages1::BetaThinkingConfigEnabled()
                             {
                                 BudgetTokens = 1024,
                             },
-                            ToolChoice = new Messages::BetaToolChoiceAuto()
+                            ToolChoice = new Messages1::BetaToolChoiceAuto()
                             {
                                 DisableParallelToolUse = true,
                             },
                             Tools =
                             [
-                                new Messages::BetaTool()
+                                new Messages1::BetaTool()
                                 {
-                                    InputSchema = new BetaToolProperties::InputSchema()
+                                    InputSchema = new()
                                     {
                                         Properties1 =
                                             Json::JsonSerializer.Deserialize<Json::JsonElement>(
@@ -106,7 +99,7 @@ public class BatchServiceTest : Tests::TestBase
                                         Required = ["location"],
                                     },
                                     Name = "name",
-                                    CacheControl = new Messages::BetaCacheControlEphemeral()
+                                    CacheControl = new()
                                     {
                                         TTL = BetaCacheControlEphemeralProperties::TTL.TTL5m,
                                     },
@@ -129,7 +122,7 @@ public class BatchServiceTest : Tests::TestBase
     public async Tasks::Task Retrieve_Works()
     {
         var betaMessageBatch = await this.client.Beta.Messages.Batches.Retrieve(
-            new Batches::BatchRetrieveParams()
+            new()
             {
                 MessageBatchID = "message_batch_id",
                 Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24],
@@ -142,7 +135,7 @@ public class BatchServiceTest : Tests::TestBase
     public async Tasks::Task List_Works()
     {
         var page = await this.client.Beta.Messages.Batches.List(
-            new Batches::BatchListParams()
+            new()
             {
                 AfterID = "after_id",
                 BeforeID = "before_id",
@@ -157,7 +150,7 @@ public class BatchServiceTest : Tests::TestBase
     public async Tasks::Task Delete_Works()
     {
         var betaDeletedMessageBatch = await this.client.Beta.Messages.Batches.Delete(
-            new Batches::BatchDeleteParams()
+            new()
             {
                 MessageBatchID = "message_batch_id",
                 Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24],
@@ -170,7 +163,7 @@ public class BatchServiceTest : Tests::TestBase
     public async Tasks::Task Cancel_Works()
     {
         var betaMessageBatch = await this.client.Beta.Messages.Batches.Cancel(
-            new Batches::BatchCancelParams()
+            new()
             {
                 MessageBatchID = "message_batch_id",
                 Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24],
@@ -183,7 +176,7 @@ public class BatchServiceTest : Tests::TestBase
     public async Tasks::Task Results_Works()
     {
         var betaMessageBatchIndividualResponse = await this.client.Beta.Messages.Batches.Results(
-            new Batches::BatchResultsParams()
+            new()
             {
                 MessageBatchID = "message_batch_id",
                 Betas = [Beta::AnthropicBeta.MessageBatches2024_09_24],
