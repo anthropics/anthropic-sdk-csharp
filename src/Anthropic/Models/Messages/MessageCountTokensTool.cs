@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using MessageCountTokensToolProperties = Anthropic.Models.Messages.MessageCountTokensToolProperties;
 using MessageCountTokensToolVariants = Anthropic.Models.Messages.MessageCountTokensToolVariants;
 
 namespace Anthropic.Models.Messages;
@@ -18,9 +17,8 @@ public abstract record class MessageCountTokensTool
     public static implicit operator MessageCountTokensTool(ToolTextEditor20250124 value) =>
         new MessageCountTokensToolVariants::ToolTextEditor20250124Variant(value);
 
-    public static implicit operator MessageCountTokensTool(
-        MessageCountTokensToolProperties::TextEditor20250429 value
-    ) => new MessageCountTokensToolVariants::TextEditor20250429(value);
+    public static implicit operator MessageCountTokensTool(ToolTextEditor20250429 value) =>
+        new MessageCountTokensToolVariants::ToolTextEditor20250429Variant(value);
 
     public static implicit operator MessageCountTokensTool(ToolTextEditor20250728 value) =>
         new MessageCountTokensToolVariants::ToolTextEditor20250728Variant(value);
