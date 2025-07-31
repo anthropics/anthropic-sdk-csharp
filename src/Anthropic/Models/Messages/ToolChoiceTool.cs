@@ -24,7 +24,7 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("name");
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
@@ -40,7 +40,7 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -57,7 +57,7 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
             if (!this.Properties.TryGetValue("disable_parallel_tool_use", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
         set
         {

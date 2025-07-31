@@ -23,7 +23,7 @@ public sealed record class BetaToolComputerUse20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["display_height_px"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -41,7 +41,7 @@ public sealed record class BetaToolComputerUse20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["display_width_px"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -61,7 +61,7 @@ public sealed record class BetaToolComputerUse20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -76,7 +76,7 @@ public sealed record class BetaToolComputerUse20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -91,7 +91,10 @@ public sealed record class BetaToolComputerUse20250124
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -106,7 +109,7 @@ public sealed record class BetaToolComputerUse20250124
             if (!this.Properties.TryGetValue("display_number", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["display_number"] = JsonSerializer.SerializeToElement(value); }
     }

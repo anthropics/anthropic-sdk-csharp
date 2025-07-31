@@ -18,7 +18,7 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

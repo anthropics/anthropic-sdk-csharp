@@ -20,7 +20,7 @@ public sealed record class BetaWebSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("encrypted_content");
         }
         set { this.Properties["encrypted_content"] = JsonSerializer.SerializeToElement(value); }
@@ -36,7 +36,7 @@ public sealed record class BetaWebSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("title");
         }
         set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
@@ -52,7 +52,7 @@ public sealed record class BetaWebSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -67,7 +67,7 @@ public sealed record class BetaWebSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("url");
         }
         set { this.Properties["url"] = JsonSerializer.SerializeToElement(value); }
@@ -80,7 +80,7 @@ public sealed record class BetaWebSearchResultBlockParam
             if (!this.Properties.TryGetValue("page_age", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["page_age"] = JsonSerializer.SerializeToElement(value); }
     }

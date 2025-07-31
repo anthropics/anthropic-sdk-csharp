@@ -30,7 +30,7 @@ public sealed record class MessageBatchIndividualResponse
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("custom_id");
         }
         set { this.Properties["custom_id"] = JsonSerializer.SerializeToElement(value); }
@@ -53,8 +53,10 @@ public sealed record class MessageBatchIndividualResponse
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<MessageBatchResult>(element)
-                ?? throw new global::System.ArgumentNullException("result");
+            return JsonSerializer.Deserialize<MessageBatchResult>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("result");
         }
         set { this.Properties["result"] = JsonSerializer.SerializeToElement(value); }
     }

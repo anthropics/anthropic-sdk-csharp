@@ -18,8 +18,10 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<BetaMessageBatch>>(element)
-                ?? throw new global::System.ArgumentNullException("data");
+            return JsonSerializer.Deserialize<List<BetaMessageBatch>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -37,7 +39,7 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["first_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -55,7 +57,7 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<bool>(element);
+            return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["has_more"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -73,7 +75,7 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["last_id"] = JsonSerializer.SerializeToElement(value); }
     }

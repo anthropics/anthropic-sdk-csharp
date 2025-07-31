@@ -20,8 +20,10 @@ public sealed record class BetaSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<BetaTextBlockParam>>(element)
-                ?? throw new global::System.ArgumentNullException("content");
+            return JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -36,7 +38,7 @@ public sealed record class BetaSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
@@ -52,7 +54,7 @@ public sealed record class BetaSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("title");
         }
         set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
@@ -68,7 +70,7 @@ public sealed record class BetaSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -83,7 +85,10 @@ public sealed record class BetaSearchResultBlockParam
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -95,7 +100,10 @@ public sealed record class BetaSearchResultBlockParam
             if (!this.Properties.TryGetValue("citations", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(element);
+            return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }
     }

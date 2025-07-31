@@ -22,7 +22,7 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(value); }
     }

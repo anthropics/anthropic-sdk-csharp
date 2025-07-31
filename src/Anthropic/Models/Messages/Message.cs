@@ -23,7 +23,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
@@ -61,8 +61,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<ContentBlock>>(element)
-                ?? throw new global::System.ArgumentNullException("content");
+            return JsonSerializer.Deserialize<List<ContentBlock>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -81,7 +83,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Model>(element)
+            return JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.Properties["model"] = JsonSerializer.SerializeToElement(value); }
@@ -102,7 +104,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["role"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -131,7 +133,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<StopReason?>(element);
+            return JsonSerializer.Deserialize<StopReason?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["stop_reason"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -151,7 +153,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["stop_sequence"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -171,7 +173,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -203,7 +205,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Usage>(element)
+            return JsonSerializer.Deserialize<Usage>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("usage");
         }
         set { this.Properties["usage"] = JsonSerializer.SerializeToElement(value); }

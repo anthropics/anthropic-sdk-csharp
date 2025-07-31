@@ -15,7 +15,7 @@ public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsC
             if (!this.Properties.TryGetValue("enabled", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["enabled"] = JsonSerializer.SerializeToElement(value); }
     }

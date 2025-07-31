@@ -25,8 +25,10 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<ToolProperties::InputSchema>(element)
-                ?? throw new global::System.ArgumentNullException("input_schema");
+            return JsonSerializer.Deserialize<ToolProperties::InputSchema>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("input_schema");
         }
         set { this.Properties["input_schema"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -46,7 +48,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("name");
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
@@ -62,7 +64,10 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<CacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<CacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -82,7 +87,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
             if (!this.Properties.TryGetValue("description", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["description"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -94,7 +99,10 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<ToolProperties::Type?>(element);
+            return JsonSerializer.Deserialize<ToolProperties::Type?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

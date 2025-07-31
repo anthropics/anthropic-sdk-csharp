@@ -25,7 +25,7 @@ public sealed record class BetaMessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["canceled"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -45,7 +45,7 @@ public sealed record class BetaMessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["errored"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -65,7 +65,7 @@ public sealed record class BetaMessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["expired"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -83,7 +83,7 @@ public sealed record class BetaMessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["processing"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -103,7 +103,7 @@ public sealed record class BetaMessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["succeeded"] = JsonSerializer.SerializeToElement(value); }
     }

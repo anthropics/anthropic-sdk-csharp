@@ -19,8 +19,10 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaMessageParamProperties::Content>(element)
-                ?? throw new global::System.ArgumentNullException("content");
+            return JsonSerializer.Deserialize<BetaMessageParamProperties::Content>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,8 +37,10 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaMessageParamProperties::Role>(element)
-                ?? throw new global::System.ArgumentNullException("role");
+            return JsonSerializer.Deserialize<BetaMessageParamProperties::Role>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("role");
         }
         set { this.Properties["role"] = JsonSerializer.SerializeToElement(value); }
     }

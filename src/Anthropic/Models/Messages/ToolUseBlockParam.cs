@@ -18,7 +18,7 @@ public sealed record class ToolUseBlockParam : ModelBase, IFromRaw<ToolUseBlockP
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
@@ -34,7 +34,7 @@ public sealed record class ToolUseBlockParam : ModelBase, IFromRaw<ToolUseBlockP
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["input"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -49,7 +49,7 @@ public sealed record class ToolUseBlockParam : ModelBase, IFromRaw<ToolUseBlockP
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("name");
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
@@ -65,7 +65,7 @@ public sealed record class ToolUseBlockParam : ModelBase, IFromRaw<ToolUseBlockP
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -80,7 +80,10 @@ public sealed record class ToolUseBlockParam : ModelBase, IFromRaw<ToolUseBlockP
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<CacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<CacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }

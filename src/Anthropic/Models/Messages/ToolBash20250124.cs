@@ -23,7 +23,7 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -38,7 +38,7 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -53,7 +53,10 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<CacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<CacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }

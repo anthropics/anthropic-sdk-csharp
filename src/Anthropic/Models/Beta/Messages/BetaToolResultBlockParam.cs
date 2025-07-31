@@ -19,7 +19,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("tool_use_id");
         }
         set { this.Properties["tool_use_id"] = JsonSerializer.SerializeToElement(value); }
@@ -35,7 +35,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -50,7 +50,10 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -63,7 +66,8 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                 return null;
 
             return JsonSerializer.Deserialize<BetaToolResultBlockParamProperties::Content?>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -76,7 +80,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
             if (!this.Properties.TryGetValue("is_error", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["is_error"] = JsonSerializer.SerializeToElement(value); }
     }

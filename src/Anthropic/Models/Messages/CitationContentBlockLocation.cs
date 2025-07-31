@@ -20,7 +20,7 @@ public sealed record class CitationContentBlockLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("cited_text");
         }
         set { this.Properties["cited_text"] = JsonSerializer.SerializeToElement(value); }
@@ -36,7 +36,7 @@ public sealed record class CitationContentBlockLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["document_index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -51,7 +51,7 @@ public sealed record class CitationContentBlockLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["document_title"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -66,7 +66,7 @@ public sealed record class CitationContentBlockLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["end_block_index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -81,7 +81,7 @@ public sealed record class CitationContentBlockLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["file_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -96,7 +96,7 @@ public sealed record class CitationContentBlockLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["start_block_index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -111,7 +111,7 @@ public sealed record class CitationContentBlockLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -22,7 +22,8 @@ public sealed record class WebSearchToolRequestError
                 );
 
             return JsonSerializer.Deserialize<WebSearchToolRequestErrorProperties::ErrorCode>(
-                    element
+                    element,
+                    ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("error_code");
         }
         set { this.Properties["error_code"] = JsonSerializer.SerializeToElement(value); }
@@ -38,7 +39,7 @@ public sealed record class WebSearchToolRequestError
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

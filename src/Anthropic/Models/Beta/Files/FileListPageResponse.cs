@@ -19,8 +19,10 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
             if (!this.Properties.TryGetValue("data", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("data", "Missing required argument");
 
-            return JsonSerializer.Deserialize<List<FileMetadata>>(element)
-                ?? throw new System::ArgumentNullException("data");
+            return JsonSerializer.Deserialize<List<FileMetadata>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new System::ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +37,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
             if (!this.Properties.TryGetValue("first_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["first_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -50,7 +52,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
             if (!this.Properties.TryGetValue("has_more", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["has_more"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -65,7 +67,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
             if (!this.Properties.TryGetValue("last_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["last_id"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -87,8 +87,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<MessageParam>>(element)
-                ?? throw new global::System.ArgumentNullException("messages");
+            return JsonSerializer.Deserialize<List<MessageParam>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("messages");
         }
         set { this.BodyProperties["messages"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -107,7 +109,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Model>(element)
+            return JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.BodyProperties["model"] = JsonSerializer.SerializeToElement(value); }
@@ -126,7 +128,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("system", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<MessageCountTokensParamsProperties::System?>(element);
+            return JsonSerializer.Deserialize<MessageCountTokensParamsProperties::System?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["system"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -148,7 +153,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("thinking", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<ThinkingConfigParam?>(element);
+            return JsonSerializer.Deserialize<ThinkingConfigParam?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["thinking"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -164,7 +172,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<ToolChoice?>(element);
+            return JsonSerializer.Deserialize<ToolChoice?>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -222,7 +230,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("tools", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<MessageCountTokensTool>?>(element);
+            return JsonSerializer.Deserialize<List<MessageCountTokensTool>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["tools"] = JsonSerializer.SerializeToElement(value); }
     }

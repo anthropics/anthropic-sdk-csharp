@@ -24,7 +24,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
@@ -44,7 +44,10 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<global::System.DateTime?>(element);
+            return JsonSerializer.Deserialize<global::System.DateTime?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["archived_at"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -63,7 +66,10 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<global::System.DateTime?>(element);
+            return JsonSerializer.Deserialize<global::System.DateTime?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cancel_initiated_at"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -81,7 +87,10 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<global::System.DateTime>(element);
+            return JsonSerializer.Deserialize<global::System.DateTime>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["created_at"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -103,7 +112,10 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<global::System.DateTime?>(element);
+            return JsonSerializer.Deserialize<global::System.DateTime?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["ended_at"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -122,7 +134,10 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<global::System.DateTime>(element);
+            return JsonSerializer.Deserialize<global::System.DateTime>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["expires_at"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -140,8 +155,10 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<MessageBatchProperties::ProcessingStatus>(element)
-                ?? throw new global::System.ArgumentNullException("processing_status");
+            return JsonSerializer.Deserialize<MessageBatchProperties::ProcessingStatus>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("processing_status");
         }
         set { this.Properties["processing_status"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -163,8 +180,10 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<MessageBatchRequestCounts>(element)
-                ?? throw new global::System.ArgumentNullException("request_counts");
+            return JsonSerializer.Deserialize<MessageBatchRequestCounts>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("request_counts");
         }
         set { this.Properties["request_counts"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -186,7 +205,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["results_url"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -206,7 +225,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

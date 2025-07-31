@@ -19,7 +19,7 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +34,7 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
             if (!this.Properties.TryGetValue("city", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["city"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -50,7 +50,7 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
             if (!this.Properties.TryGetValue("country", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["country"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -65,7 +65,7 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
             if (!this.Properties.TryGetValue("region", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["region"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -80,7 +80,7 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
             if (!this.Properties.TryGetValue("timezone", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["timezone"] = JsonSerializer.SerializeToElement(value); }
     }

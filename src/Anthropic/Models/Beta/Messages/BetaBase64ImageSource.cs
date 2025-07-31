@@ -19,7 +19,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
@@ -35,8 +35,10 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaBase64ImageSourceProperties::MediaType>(element)
-                ?? throw new global::System.ArgumentNullException("media_type");
+            return JsonSerializer.Deserialize<BetaBase64ImageSourceProperties::MediaType>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("media_type");
         }
         set { this.Properties["media_type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -51,7 +53,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

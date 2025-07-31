@@ -88,8 +88,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<BetaMessageParam>>(element)
-                ?? throw new global::System.ArgumentNullException("messages");
+            return JsonSerializer.Deserialize<List<BetaMessageParam>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("messages");
         }
         set { this.BodyProperties["messages"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -108,7 +110,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Messages::Model>(element)
+            return JsonSerializer.Deserialize<Messages::Model>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.BodyProperties["model"] = JsonSerializer.SerializeToElement(value); }
@@ -124,7 +126,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("mcp_servers", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>?>(element);
+            return JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["mcp_servers"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -142,7 +147,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("system", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<MessageCountTokensParamsProperties::System?>(element);
+            return JsonSerializer.Deserialize<MessageCountTokensParamsProperties::System?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["system"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -164,7 +172,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("thinking", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaThinkingConfigParam?>(element);
+            return JsonSerializer.Deserialize<BetaThinkingConfigParam?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["thinking"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -180,7 +191,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaToolChoice?>(element);
+            return JsonSerializer.Deserialize<BetaToolChoice?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -239,7 +253,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return null;
 
             return JsonSerializer.Deserialize<List<MessageCountTokensParamsProperties::Tool>?>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["tools"] = JsonSerializer.SerializeToElement(value); }
@@ -255,7 +270,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(element);
+            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }

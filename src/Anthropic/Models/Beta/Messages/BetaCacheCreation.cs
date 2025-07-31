@@ -21,7 +21,7 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set
         {
@@ -42,7 +42,7 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set
         {

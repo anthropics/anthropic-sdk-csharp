@@ -20,7 +20,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("name");
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
@@ -36,7 +36,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -51,7 +51,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("url");
         }
         set { this.Properties["url"] = JsonSerializer.SerializeToElement(value); }
@@ -64,7 +64,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
             if (!this.Properties.TryGetValue("authorization_token", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["authorization_token"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -76,7 +76,10 @@ public sealed record class BetaRequestMCPServerURLDefinition
             if (!this.Properties.TryGetValue("tool_configuration", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaRequestMCPServerToolConfiguration?>(element);
+            return JsonSerializer.Deserialize<BetaRequestMCPServerToolConfiguration?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["tool_configuration"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -18,7 +18,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
@@ -34,7 +34,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["input"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -49,7 +49,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("name");
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
@@ -68,7 +68,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("server_name");
         }
         set { this.Properties["server_name"] = JsonSerializer.SerializeToElement(value); }
@@ -84,7 +84,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -99,7 +99,10 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }

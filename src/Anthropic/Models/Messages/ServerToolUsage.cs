@@ -21,7 +21,7 @@ public sealed record class ServerToolUsage : ModelBase, IFromRaw<ServerToolUsage
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["web_search_requests"] = JsonSerializer.SerializeToElement(value); }
     }

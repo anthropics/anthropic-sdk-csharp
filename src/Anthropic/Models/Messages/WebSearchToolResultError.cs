@@ -20,7 +20,8 @@ public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSea
                 );
 
             return JsonSerializer.Deserialize<WebSearchToolResultErrorProperties::ErrorCode>(
-                    element
+                    element,
+                    ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("error_code");
         }
         set { this.Properties["error_code"] = JsonSerializer.SerializeToElement(value); }
@@ -36,7 +37,7 @@ public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSea
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

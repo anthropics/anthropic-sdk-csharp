@@ -19,8 +19,10 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaRequestDocumentBlockProperties::Source>(element)
-                ?? throw new global::System.ArgumentNullException("source");
+            return JsonSerializer.Deserialize<BetaRequestDocumentBlockProperties::Source>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +37,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -50,7 +52,10 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -62,7 +67,10 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
             if (!this.Properties.TryGetValue("citations", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(element);
+            return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -74,7 +82,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
             if (!this.Properties.TryGetValue("context", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["context"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -86,7 +94,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
             if (!this.Properties.TryGetValue("title", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
     }

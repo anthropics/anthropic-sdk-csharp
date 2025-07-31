@@ -18,7 +18,7 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("partial_json");
         }
         set { this.Properties["partial_json"] = JsonSerializer.SerializeToElement(value); }
@@ -34,7 +34,7 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

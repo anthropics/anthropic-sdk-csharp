@@ -24,7 +24,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
@@ -43,7 +43,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaContainer?>(element);
+            return JsonSerializer.Deserialize<BetaContainer?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["container"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -80,8 +80,10 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<BetaContentBlock>>(element)
-                ?? throw new global::System.ArgumentNullException("content");
+            return JsonSerializer.Deserialize<List<BetaContentBlock>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -100,7 +102,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Messages::Model>(element)
+            return JsonSerializer.Deserialize<Messages::Model>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.Properties["model"] = JsonSerializer.SerializeToElement(value); }
@@ -121,7 +123,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["role"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -150,7 +152,10 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaStopReason?>(element);
+            return JsonSerializer.Deserialize<BetaStopReason?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["stop_reason"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -170,7 +175,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["stop_sequence"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -190,7 +195,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -222,7 +227,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaUsage>(element)
+            return JsonSerializer.Deserialize<BetaUsage>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("usage");
         }
         set { this.Properties["usage"] = JsonSerializer.SerializeToElement(value); }

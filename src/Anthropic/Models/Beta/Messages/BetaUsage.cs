@@ -22,7 +22,10 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaCacheCreation?>(element);
+            return JsonSerializer.Deserialize<BetaCacheCreation?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_creation"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -42,7 +45,7 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set
         {
@@ -65,7 +68,7 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set
         {
@@ -86,7 +89,7 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -104,7 +107,7 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["output_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -122,7 +125,10 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaServerToolUsage?>(element);
+            return JsonSerializer.Deserialize<BetaServerToolUsage?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["server_tool_use"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -140,7 +146,10 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaUsageProperties::ServiceTier?>(element);
+            return JsonSerializer.Deserialize<BetaUsageProperties::ServiceTier?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["service_tier"] = JsonSerializer.SerializeToElement(value); }
     }

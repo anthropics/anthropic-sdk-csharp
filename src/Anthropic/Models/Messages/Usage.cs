@@ -24,7 +24,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set
         {
@@ -47,7 +47,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set
         {
@@ -68,7 +68,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -86,7 +86,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["output_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -104,7 +104,10 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<ServerToolUsage?>(element);
+            return JsonSerializer.Deserialize<ServerToolUsage?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["server_tool_use"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -122,7 +125,10 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<UsageProperties::ServiceTier?>(element);
+            return JsonSerializer.Deserialize<UsageProperties::ServiceTier?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["service_tier"] = JsonSerializer.SerializeToElement(value); }
     }

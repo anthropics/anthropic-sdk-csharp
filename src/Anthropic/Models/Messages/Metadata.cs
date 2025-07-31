@@ -22,7 +22,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
             if (!this.Properties.TryGetValue("user_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["user_id"] = JsonSerializer.SerializeToElement(value); }
     }

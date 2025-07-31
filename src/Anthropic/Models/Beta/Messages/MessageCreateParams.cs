@@ -38,7 +38,7 @@ public sealed record class MessageCreateParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["max_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -112,8 +112,10 @@ public sealed record class MessageCreateParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<BetaMessageParam>>(element)
-                ?? throw new global::System.ArgumentNullException("messages");
+            return JsonSerializer.Deserialize<List<BetaMessageParam>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("messages");
         }
         set { this.BodyProperties["messages"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -132,7 +134,7 @@ public sealed record class MessageCreateParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Messages::Model>(element)
+            return JsonSerializer.Deserialize<Messages::Model>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.BodyProperties["model"] = JsonSerializer.SerializeToElement(value); }
@@ -148,7 +150,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("container", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["container"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -163,7 +165,10 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("mcp_servers", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>?>(element);
+            return JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["mcp_servers"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -178,7 +183,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("metadata", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaMetadata?>(element);
+            return JsonSerializer.Deserialize<BetaMetadata?>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["metadata"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -197,7 +202,10 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("service_tier", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<MessageCreateParamsProperties::ServiceTier?>(element);
+            return JsonSerializer.Deserialize<MessageCreateParamsProperties::ServiceTier?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["service_tier"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -220,7 +228,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("stop_sequences", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<string>?>(element);
+            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["stop_sequences"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -237,7 +245,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("stream", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["stream"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -255,7 +263,10 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("system", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<MessageCreateParamsProperties::System?>(element);
+            return JsonSerializer.Deserialize<MessageCreateParamsProperties::System?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["system"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -275,7 +286,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("temperature", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<double?>(element);
+            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["temperature"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -297,7 +308,10 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("thinking", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaThinkingConfigParam?>(element);
+            return JsonSerializer.Deserialize<BetaThinkingConfigParam?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["thinking"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -313,7 +327,10 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaToolChoice?>(element);
+            return JsonSerializer.Deserialize<BetaToolChoice?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -371,7 +388,10 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("tools", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<BetaToolUnion>?>(element);
+            return JsonSerializer.Deserialize<List<BetaToolUnion>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["tools"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -391,7 +411,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("top_k", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["top_k"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -413,7 +433,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("top_p", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<double?>(element);
+            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
         }
         set { this.BodyProperties["top_p"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -428,7 +448,10 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(element);
+            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }

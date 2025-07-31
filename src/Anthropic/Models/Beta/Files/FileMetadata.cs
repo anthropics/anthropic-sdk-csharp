@@ -21,7 +21,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
             if (!this.Properties.TryGetValue("id", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("id", "Missing required argument");
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new System::ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
@@ -40,7 +40,10 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<System::DateTime>(element);
+            return JsonSerializer.Deserialize<System::DateTime>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["created_at"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -58,7 +61,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new System::ArgumentNullException("filename");
         }
         set { this.Properties["filename"] = JsonSerializer.SerializeToElement(value); }
@@ -77,7 +80,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new System::ArgumentNullException("mime_type");
         }
         set { this.Properties["mime_type"] = JsonSerializer.SerializeToElement(value); }
@@ -96,7 +99,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["size_bytes"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -113,7 +116,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -128,7 +131,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
             if (!this.Properties.TryGetValue("downloadable", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["downloadable"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -21,7 +21,7 @@ public sealed record class FileListParams : ParamsBase
             if (!this.QueryProperties.TryGetValue("after_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.QueryProperties["after_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -37,7 +37,7 @@ public sealed record class FileListParams : ParamsBase
             if (!this.QueryProperties.TryGetValue("before_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.QueryProperties["before_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -54,7 +54,7 @@ public sealed record class FileListParams : ParamsBase
             if (!this.QueryProperties.TryGetValue("limit", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set { this.QueryProperties["limit"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -69,7 +69,10 @@ public sealed record class FileListParams : ParamsBase
             if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(element);
+            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }

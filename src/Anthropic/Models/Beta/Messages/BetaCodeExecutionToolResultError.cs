@@ -20,8 +20,10 @@ public sealed record class BetaCodeExecutionToolResultError
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorCode>(element)
-                ?? throw new global::System.ArgumentNullException("error_code");
+            return JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorCode>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("error_code");
         }
         set { this.Properties["error_code"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -36,7 +38,7 @@ public sealed record class BetaCodeExecutionToolResultError
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

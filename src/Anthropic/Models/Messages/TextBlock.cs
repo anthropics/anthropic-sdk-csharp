@@ -25,7 +25,10 @@ public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<TextCitation>?>(element);
+            return JsonSerializer.Deserialize<List<TextCitation>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -40,7 +43,7 @@ public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("text");
         }
         set { this.Properties["text"] = JsonSerializer.SerializeToElement(value); }
@@ -56,7 +59,7 @@ public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

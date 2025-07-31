@@ -18,7 +18,7 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("text");
         }
         set { this.Properties["text"] = JsonSerializer.SerializeToElement(value); }
@@ -34,7 +34,7 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -49,7 +49,10 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<CacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<CacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -61,7 +64,10 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
             if (!this.Properties.TryGetValue("citations", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<TextCitationParam>?>(element);
+            return JsonSerializer.Deserialize<List<TextCitationParam>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }
     }

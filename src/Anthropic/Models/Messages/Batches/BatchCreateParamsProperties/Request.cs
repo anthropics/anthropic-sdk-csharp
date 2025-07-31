@@ -25,7 +25,7 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("custom_id");
         }
         set { this.Properties["custom_id"] = JsonSerializer.SerializeToElement(value); }
@@ -47,8 +47,10 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<RequestProperties::Params>(element)
-                ?? throw new global::System.ArgumentNullException("params");
+            return JsonSerializer.Deserialize<RequestProperties::Params>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("params");
         }
         set { this.Properties["params"] = JsonSerializer.SerializeToElement(value); }
     }

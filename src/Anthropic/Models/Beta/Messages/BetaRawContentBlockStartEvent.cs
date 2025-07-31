@@ -25,7 +25,8 @@ public sealed record class BetaRawContentBlockStartEvent
                 );
 
             return JsonSerializer.Deserialize<BetaRawContentBlockStartEventProperties::ContentBlock>(
-                    element
+                    element,
+                    ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content_block");
         }
         set { this.Properties["content_block"] = JsonSerializer.SerializeToElement(value); }
@@ -41,7 +42,7 @@ public sealed record class BetaRawContentBlockStartEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -56,7 +57,7 @@ public sealed record class BetaRawContentBlockStartEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

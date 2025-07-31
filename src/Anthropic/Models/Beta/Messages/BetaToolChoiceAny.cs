@@ -21,7 +21,7 @@ public sealed record class BetaToolChoiceAny : ModelBase, IFromRaw<BetaToolChoic
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -38,7 +38,7 @@ public sealed record class BetaToolChoiceAny : ModelBase, IFromRaw<BetaToolChoic
             if (!this.Properties.TryGetValue("disable_parallel_tool_use", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element);
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
         set
         {

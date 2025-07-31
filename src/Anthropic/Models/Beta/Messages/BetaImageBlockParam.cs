@@ -19,8 +19,10 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaImageBlockParamProperties::Source>(element)
-                ?? throw new global::System.ArgumentNullException("source");
+            return JsonSerializer.Deserialize<BetaImageBlockParamProperties::Source>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +37,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -50,7 +52,10 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -23,7 +23,7 @@ public sealed record class FileUploadParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("file", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("file", "Missing required argument");
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new System::ArgumentNullException("file");
         }
         set { this.BodyProperties["file"] = JsonSerializer.SerializeToElement(value); }
@@ -39,7 +39,10 @@ public sealed record class FileUploadParams : ParamsBase
             if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(element);
+            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }

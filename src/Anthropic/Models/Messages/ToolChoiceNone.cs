@@ -21,7 +21,7 @@ public sealed record class ToolChoiceNone : ModelBase, IFromRaw<ToolChoiceNone>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

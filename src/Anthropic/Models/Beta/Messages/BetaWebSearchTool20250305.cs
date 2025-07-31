@@ -26,7 +26,7 @@ public sealed record class BetaWebSearchTool20250305
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -41,7 +41,7 @@ public sealed record class BetaWebSearchTool20250305
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -57,7 +57,7 @@ public sealed record class BetaWebSearchTool20250305
             if (!this.Properties.TryGetValue("allowed_domains", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<string>?>(element);
+            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["allowed_domains"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -72,7 +72,7 @@ public sealed record class BetaWebSearchTool20250305
             if (!this.Properties.TryGetValue("blocked_domains", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<string>?>(element);
+            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["blocked_domains"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -87,7 +87,10 @@ public sealed record class BetaWebSearchTool20250305
             if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -102,7 +105,7 @@ public sealed record class BetaWebSearchTool20250305
             if (!this.Properties.TryGetValue("max_uses", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["max_uses"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -118,7 +121,8 @@ public sealed record class BetaWebSearchTool20250305
                 return null;
 
             return JsonSerializer.Deserialize<BetaWebSearchTool20250305Properties::UserLocation?>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
         }
         set { this.Properties["user_location"] = JsonSerializer.SerializeToElement(value); }

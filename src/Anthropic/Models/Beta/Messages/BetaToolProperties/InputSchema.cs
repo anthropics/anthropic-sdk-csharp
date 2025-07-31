@@ -22,7 +22,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +34,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
             if (!this.Properties.TryGetValue("properties", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<JsonElement?>(element);
+            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["properties"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -46,7 +46,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
             if (!this.Properties.TryGetValue("required", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<string>?>(element);
+            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["required"] = JsonSerializer.SerializeToElement(value); }
     }

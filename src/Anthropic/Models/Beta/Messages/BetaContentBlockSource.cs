@@ -19,8 +19,10 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaContentBlockSourceProperties::Content>(element)
-                ?? throw new global::System.ArgumentNullException("content");
+            return JsonSerializer.Deserialize<BetaContentBlockSourceProperties::Content>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +37,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

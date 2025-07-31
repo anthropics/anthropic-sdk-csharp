@@ -21,7 +21,7 @@ public sealed record class BetaCacheControlEphemeral
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -40,7 +40,10 @@ public sealed record class BetaCacheControlEphemeral
             if (!this.Properties.TryGetValue("ttl", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeralProperties::TTL?>(element);
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeralProperties::TTL?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["ttl"] = JsonSerializer.SerializeToElement(value); }
     }

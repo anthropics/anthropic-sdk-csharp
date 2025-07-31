@@ -24,7 +24,7 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element)
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
@@ -43,7 +43,10 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<global::System.DateTime>(element);
+            return JsonSerializer.Deserialize<global::System.DateTime>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["expires_at"] = JsonSerializer.SerializeToElement(value); }
     }

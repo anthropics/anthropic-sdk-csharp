@@ -19,8 +19,10 @@ public sealed record class CitationsDelta : ModelBase, IFromRaw<CitationsDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<CitationsDeltaProperties::Citation>(element)
-                ?? throw new global::System.ArgumentNullException("citation");
+            return JsonSerializer.Deserialize<CitationsDeltaProperties::Citation>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("citation");
         }
         set { this.Properties["citation"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +37,7 @@ public sealed record class CitationsDelta : ModelBase, IFromRaw<CitationsDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

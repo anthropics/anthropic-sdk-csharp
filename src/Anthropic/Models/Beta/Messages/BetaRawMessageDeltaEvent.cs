@@ -19,8 +19,10 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaRawMessageDeltaEventProperties::Delta>(element)
-                ?? throw new global::System.ArgumentNullException("delta");
+            return JsonSerializer.Deserialize<BetaRawMessageDeltaEventProperties::Delta>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("delta");
         }
         set { this.Properties["delta"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +37,7 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -67,8 +69,10 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaMessageDeltaUsage>(element)
-                ?? throw new global::System.ArgumentNullException("usage");
+            return JsonSerializer.Deserialize<BetaMessageDeltaUsage>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("usage");
         }
         set { this.Properties["usage"] = JsonSerializer.SerializeToElement(value); }
     }

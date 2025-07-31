@@ -23,7 +23,7 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set
         {
@@ -46,7 +46,7 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set
         {
@@ -67,7 +67,7 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element);
+            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -85,7 +85,7 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["output_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -103,7 +103,10 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<ServerToolUsage?>(element);
+            return JsonSerializer.Deserialize<ServerToolUsage?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["server_tool_use"] = JsonSerializer.SerializeToElement(value); }
     }

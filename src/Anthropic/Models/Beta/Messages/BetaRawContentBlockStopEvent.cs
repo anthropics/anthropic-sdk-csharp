@@ -20,7 +20,7 @@ public sealed record class BetaRawContentBlockStopEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element);
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +35,7 @@ public sealed record class BetaRawContentBlockStopEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

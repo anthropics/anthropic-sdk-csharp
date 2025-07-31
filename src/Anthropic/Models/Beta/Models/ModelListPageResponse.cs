@@ -16,8 +16,10 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
             if (!this.Properties.TryGetValue("data", out JsonElement element))
                 throw new ArgumentOutOfRangeException("data", "Missing required argument");
 
-            return JsonSerializer.Deserialize<List<BetaModelInfo>>(element)
-                ?? throw new ArgumentNullException("data");
+            return JsonSerializer.Deserialize<List<BetaModelInfo>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -32,7 +34,7 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
             if (!this.Properties.TryGetValue("first_id", out JsonElement element))
                 throw new ArgumentOutOfRangeException("first_id", "Missing required argument");
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["first_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -47,7 +49,7 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
             if (!this.Properties.TryGetValue("has_more", out JsonElement element))
                 throw new ArgumentOutOfRangeException("has_more", "Missing required argument");
 
-            return JsonSerializer.Deserialize<bool>(element);
+            return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["has_more"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -62,7 +64,7 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
             if (!this.Properties.TryGetValue("last_id", out JsonElement element))
                 throw new ArgumentOutOfRangeException("last_id", "Missing required argument");
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["last_id"] = JsonSerializer.SerializeToElement(value); }
     }

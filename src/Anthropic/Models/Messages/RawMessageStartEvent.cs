@@ -18,7 +18,7 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Message>(element)
+            return JsonSerializer.Deserialize<Message>(element, ModelBase.SerializerOptions)
                 ?? throw new global::System.ArgumentNullException("message");
         }
         set { this.Properties["message"] = JsonSerializer.SerializeToElement(value); }
@@ -34,7 +34,7 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element);
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

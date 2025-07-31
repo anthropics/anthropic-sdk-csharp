@@ -33,8 +33,10 @@ public sealed record class BatchCreateParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<BatchCreateParamsProperties::Request>>(element)
-                ?? throw new global::System.ArgumentNullException("requests");
+            return JsonSerializer.Deserialize<List<BatchCreateParamsProperties::Request>>(
+                    element,
+                    ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("requests");
         }
         set { this.BodyProperties["requests"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -49,7 +51,10 @@ public sealed record class BatchCreateParams : ParamsBase
             if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(element);
+            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }

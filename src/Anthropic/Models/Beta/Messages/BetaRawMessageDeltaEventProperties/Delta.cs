@@ -19,7 +19,7 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
             if (!this.Properties.TryGetValue("container", out JsonElement element))
                 throw new ArgumentOutOfRangeException("container", "Missing required argument");
 
-            return JsonSerializer.Deserialize<BetaContainer?>(element);
+            return JsonSerializer.Deserialize<BetaContainer?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["container"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -31,7 +31,10 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
             if (!this.Properties.TryGetValue("stop_reason", out JsonElement element))
                 throw new ArgumentOutOfRangeException("stop_reason", "Missing required argument");
 
-            return JsonSerializer.Deserialize<BetaStopReason?>(element);
+            return JsonSerializer.Deserialize<BetaStopReason?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["stop_reason"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -43,7 +46,7 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
             if (!this.Properties.TryGetValue("stop_sequence", out JsonElement element))
                 throw new ArgumentOutOfRangeException("stop_sequence", "Missing required argument");
 
-            return JsonSerializer.Deserialize<string?>(element);
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         set { this.Properties["stop_sequence"] = JsonSerializer.SerializeToElement(value); }
     }
