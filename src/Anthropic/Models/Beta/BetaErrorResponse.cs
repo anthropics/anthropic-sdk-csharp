@@ -62,7 +62,9 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaErrorResponse(BetaError error)
+        : this()
     {
         this.Error = error;
     }

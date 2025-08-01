@@ -66,7 +66,9 @@ public sealed record class BetaRedactedThinkingBlock
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaRedactedThinkingBlock(string data)
+        : this()
     {
         this.Data = data;
     }

@@ -67,7 +67,9 @@ public sealed record class BetaContainerUploadBlock : ModelBase, IFromRaw<BetaCo
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaContainerUploadBlock(string fileID)
+        : this()
     {
         this.FileID = fileID;
     }

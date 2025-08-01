@@ -78,7 +78,9 @@ public sealed record class BetaPlainTextSource : ModelBase, IFromRaw<BetaPlainTe
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaPlainTextSource(string data)
+        : this()
     {
         this.Data = data;
     }

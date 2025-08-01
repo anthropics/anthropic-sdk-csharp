@@ -62,7 +62,9 @@ public sealed record class URLPDFSource : ModelBase, IFromRaw<URLPDFSource>
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public URLPDFSource(string url)
+        : this()
     {
         this.URL = url;
     }

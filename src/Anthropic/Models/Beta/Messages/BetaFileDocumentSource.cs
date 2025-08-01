@@ -64,7 +64,9 @@ public sealed record class BetaFileDocumentSource : ModelBase, IFromRaw<BetaFile
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaFileDocumentSource(string fileID)
+        : this()
     {
         this.FileID = fileID;
     }

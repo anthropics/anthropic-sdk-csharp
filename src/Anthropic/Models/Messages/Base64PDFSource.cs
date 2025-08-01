@@ -78,7 +78,9 @@ public sealed record class Base64PDFSource : ModelBase, IFromRaw<Base64PDFSource
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public Base64PDFSource(string data)
+        : this()
     {
         this.Data = data;
     }

@@ -66,7 +66,9 @@ public sealed record class BetaMessageBatchSucceededResult
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaMessageBatchSucceededResult(BetaMessage message)
+        : this()
     {
         this.Message = message;
     }

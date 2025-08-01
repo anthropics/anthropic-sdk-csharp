@@ -78,7 +78,9 @@ public sealed record class PlainTextSource : ModelBase, IFromRaw<PlainTextSource
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public PlainTextSource(string data)
+        : this()
     {
         this.Data = data;
     }

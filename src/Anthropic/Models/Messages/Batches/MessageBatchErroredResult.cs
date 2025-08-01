@@ -66,7 +66,9 @@ public sealed record class MessageBatchErroredResult
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public MessageBatchErroredResult(ErrorResponse error)
+        : this()
     {
         this.Error = error;
     }

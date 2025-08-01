@@ -78,7 +78,9 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaBase64PDFSource(string data)
+        : this()
     {
         this.Data = data;
     }

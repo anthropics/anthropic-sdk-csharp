@@ -64,7 +64,9 @@ public sealed record class BetaInvalidRequestError : ModelBase, IFromRaw<BetaInv
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaInvalidRequestError(string message)
+        : this()
     {
         this.Message = message;
     }

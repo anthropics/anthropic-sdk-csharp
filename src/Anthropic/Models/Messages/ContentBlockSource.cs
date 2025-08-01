@@ -65,7 +65,9 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public ContentBlockSource(ContentBlockSourceProperties::Content content)
+        : this()
     {
         this.Content = content;
     }

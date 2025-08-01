@@ -63,7 +63,9 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public RawContentBlockStopEvent(long index)
+        : this()
     {
         this.Index = index;
     }

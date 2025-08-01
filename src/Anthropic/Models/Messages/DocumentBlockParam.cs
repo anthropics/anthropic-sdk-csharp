@@ -126,7 +126,9 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public DocumentBlockParam(DocumentBlockParamProperties::Source source)
+        : this()
     {
         this.Source = source;
     }

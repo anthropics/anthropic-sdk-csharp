@@ -71,7 +71,9 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public ThinkingConfigEnabled(long budgetTokens)
+        : this()
     {
         this.BudgetTokens = budgetTokens;
     }

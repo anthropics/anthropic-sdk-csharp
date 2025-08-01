@@ -69,7 +69,9 @@ public sealed record class MessageBatchSucceededResult
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public MessageBatchSucceededResult(Messages::Message message)
+        : this()
     {
         this.Message = message;
     }

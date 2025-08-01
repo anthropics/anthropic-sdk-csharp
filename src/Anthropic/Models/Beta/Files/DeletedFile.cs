@@ -67,7 +67,9 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public DeletedFile(string id)
+        : this()
     {
         this.ID = id;
     }

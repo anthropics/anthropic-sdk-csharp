@@ -62,7 +62,9 @@ public sealed record class APIErrorObject : ModelBase, IFromRaw<APIErrorObject>
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public APIErrorObject(string message)
+        : this()
     {
         this.Message = message;
     }

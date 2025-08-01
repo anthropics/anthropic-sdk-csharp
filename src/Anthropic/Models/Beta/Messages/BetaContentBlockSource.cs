@@ -67,7 +67,9 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaContentBlockSource(BetaContentBlockSourceProperties::Content content)
+        : this()
     {
         this.Content = content;
     }

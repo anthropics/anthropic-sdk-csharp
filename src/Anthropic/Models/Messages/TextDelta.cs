@@ -62,7 +62,9 @@ public sealed record class TextDelta : ModelBase, IFromRaw<TextDelta>
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public TextDelta(string text)
+        : this()
     {
         this.Text = text;
     }

@@ -90,7 +90,9 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaToolChoiceTool(string name)
+        : this()
     {
         this.Name = name;
     }

@@ -49,7 +49,9 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaMessageTokensCount(long inputTokens)
+        : this()
     {
         this.InputTokens = inputTokens;
     }

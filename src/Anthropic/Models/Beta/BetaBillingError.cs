@@ -62,7 +62,9 @@ public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingErr
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaBillingError(string message)
+        : this()
     {
         this.Message = message;
     }

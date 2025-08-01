@@ -62,7 +62,9 @@ public sealed record class BetaURLImageSource : ModelBase, IFromRaw<BetaURLImage
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaURLImageSource(string url)
+        : this()
     {
         this.URL = url;
     }

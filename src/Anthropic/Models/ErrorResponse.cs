@@ -62,7 +62,9 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public ErrorResponse(ErrorObject error)
+        : this()
     {
         this.Error = error;
     }

@@ -66,7 +66,9 @@ public sealed record class BetaCodeExecutionOutputBlockParam
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaCodeExecutionOutputBlockParam(string fileID)
+        : this()
     {
         this.FileID = fileID;
     }
