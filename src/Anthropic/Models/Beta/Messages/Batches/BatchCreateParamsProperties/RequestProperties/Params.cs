@@ -46,15 +46,16 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// Our models are trained to operate on alternating `user` and `assistant` conversational
     /// turns. When creating a new `Message`, you specify the prior conversational
     /// turns with the `messages` parameter, and the model then generates the next
-    /// `Message` in the conversation. Consecutive `user` or `assistant` turns in your
-    /// request will be combined into a single turn.
+    /// `Message` in the conversation. Consecutive `user` or `assistant` turns in
+    /// your request will be combined into a single turn.
     ///
-    /// Each input message must be an object with a `role` and `content`. You can specify
-    /// a single `user`-role message, or you can include multiple `user` and `assistant` messages.
+    /// Each input message must be an object with a `role` and `content`. You can
+    /// specify a single `user`-role message, or you can include multiple `user`
+    /// and `assistant` messages.
     ///
-    /// If the final message uses the `assistant` role, the response content will continue
-    /// immediately from the content in that message. This can be used to constrain
-    /// part of the model's response.
+    /// If the final message uses the `assistant` role, the response content will
+    /// continue immediately from the content in that message. This can be used to
+    /// constrain part of the model's response.
     ///
     /// Example with a single `user` message:
     ///
@@ -72,10 +73,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// Sol (B) Helios (C) Sun"},   {"role": "assistant", "content": "The best answer
     /// is ("}, ] ```
     ///
-    /// Each input message `content` may be either a single `string` or an array of
-    /// content blocks, where each block has a specific `type`. Using a `string` for
-    /// `content` is shorthand for an array of one content block of type `"text"`. The
-    /// following input messages are equivalent:
+    /// Each input message `content` may be either a single `string` or an array
+    /// of content blocks, where each block has a specific `type`. Using a `string`
+    /// for `content` is shorthand for an array of one content block of type `"text"`.
+    /// The following input messages are equivalent:
     ///
     /// ```json {"role": "user", "content": "Hello, Claude"} ```
     ///
@@ -84,14 +85,15 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// Starting with Claude 3 models, you can also send image content blocks:
     ///
     /// ```json {"role": "user", "content": [   {     "type": "image",     "source":
-    /// {       "type": "base64",       "media_type": "image/jpeg",       "data": "/9j/4AAQSkZJRg...",
-    ///     }   },   {"type": "text", "text": "What is in this image?"} ]} ```
+    /// {       "type": "base64",       "media_type": "image/jpeg",       "data":
+    /// "/9j/4AAQSkZJRg...",     }   },   {"type": "text", "text": "What is in this
+    /// image?"} ]} ```
     ///
     /// We currently support the `base64` source type for images, and the `image/jpeg`,
     /// `image/png`, `image/gif`, and `image/webp` media types.
     ///
-    /// See [examples](https://docs.anthropic.com/en/api/messages-examples#vision) for
-    /// more input examples.
+    /// See [examples](https://docs.anthropic.com/en/api/messages-examples#vision)
+    /// for more input examples.
     ///
     /// Note that if you want to include a [system prompt](https://docs.anthropic.com/en/docs/system-prompts),
     /// you can use the top-level `system` parameter — there is no `"system"` role
@@ -250,8 +252,8 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// <summary>
     /// System prompt.
     ///
-    /// A system prompt is a way of providing context and instructions to Claude, such
-    /// as specifying a particular goal or role. See our [guide to system prompts](https://docs.anthropic.com/en/docs/system-prompts).
+    /// A system prompt is a way of providing context and instructions to Claude,
+    /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.anthropic.com/en/docs/system-prompts).
     /// </summary>
     public ParamsProperties::System? System
     {
@@ -271,8 +273,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// <summary>
     /// Amount of randomness injected into the response.
     ///
-    /// Defaults to `1.0`. Ranges from `0.0` to `1.0`. Use `temperature` closer to `0.0`
-    /// for analytical / multiple choice, and closer to `1.0` for creative and generative tasks.
+    /// Defaults to `1.0`. Ranges from `0.0` to `1.0`. Use `temperature` closer to
+    /// `0.0` for analytical / multiple choice, and closer to `1.0` for creative and
+    /// generative tasks.
     ///
     /// Note that even with `temperature` of `0.0`, the results will not be fully deterministic.
     /// </summary>
@@ -314,8 +317,8 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     }
 
     /// <summary>
-    /// How the model should use the provided tools. The model can use a specific tool,
-    /// any available tool, decide by itself, or not use tools at all.
+    /// How the model should use the provided tools. The model can use a specific
+    /// tool, any available tool, decide by itself, or not use tools at all.
     /// </summary>
     public BetaToolChoice? ToolChoice
     {
@@ -336,14 +339,14 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// Definitions of tools that the model may use.
     ///
     /// If you include `tools` in your API request, the model may return `tool_use`
-    /// content blocks that represent the model's use of those tools. You can then run
-    /// those tools using the tool input generated by the model and then optionally
+    /// content blocks that represent the model's use of those tools. You can then
+    /// run those tools using the tool input generated by the model and then optionally
     /// return results back to the model using `tool_result` content blocks.
     ///
     /// There are two types of tools: **client tools** and **server tools**. The behavior
     /// described below applies to client tools. For [server tools](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview\#server-tools),
-    /// see their individual documentation as each has its own behavior (e.g., the [web
-    /// search tool](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool)).
+    /// see their individual documentation as each has its own behavior (e.g., the
+    /// [web search tool](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool)).
     ///
     /// Each tool definition includes:
     ///
@@ -366,15 +369,15 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// ```json [   {     "type": "tool_use",     "id": "toolu_01D7FLrfh4GYq7yT1ULFeyMV",
     ///     "name": "get_stock_price",     "input": { "ticker": "^GSPC" }   } ] ```
     ///
-    /// You might then run your `get_stock_price` tool with `{"ticker": "^GSPC"}` as
-    /// an input, and return the following back to the model in a subsequent `user` message:
+    /// You might then run your `get_stock_price` tool with `{"ticker": "^GSPC"}`
+    /// as an input, and return the following back to the model in a subsequent `user` message:
     ///
     /// ```json [   {     "type": "tool_result",     "tool_use_id": "toolu_01D7FLrfh4GYq7yT1ULFeyMV",
     ///     "content": "259.75 USD"   } ] ```
     ///
-    /// Tools can be used for workflows that include running client-side tools and functions,
-    /// or more generally whenever you want the model to produce a particular JSON structure
-    /// of output.
+    /// Tools can be used for workflows that include running client-side tools and
+    /// functions, or more generally whenever you want the model to produce a particular
+    /// JSON structure of output.
     ///
     /// See our [guide](https://docs.anthropic.com/en/docs/tool-use) for more details.
     /// </summary>
@@ -416,10 +419,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// <summary>
     /// Use nucleus sampling.
     ///
-    /// In nucleus sampling, we compute the cumulative distribution over all the options
-    /// for each subsequent token in decreasing probability order and cut it off once
-    /// it reaches a particular probability specified by `top_p`. You should either
-    /// alter `temperature` or `top_p`, but not both.
+    /// In nucleus sampling, we compute the cumulative distribution over all the
+    /// options for each subsequent token in decreasing probability order and cut
+    /// it off once it reaches a particular probability specified by `top_p`. You
+    /// should either alter `temperature` or `top_p`, but not both.
     ///
     /// Recommended for advanced use cases only. You usually only need to use `temperature`.
     /// </summary>

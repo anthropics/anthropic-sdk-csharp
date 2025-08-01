@@ -145,8 +145,9 @@ public sealed record class CompletionCreateParams : ParamsBase
     /// <summary>
     /// Amount of randomness injected into the response.
     ///
-    /// Defaults to `1.0`. Ranges from `0.0` to `1.0`. Use `temperature` closer to `0.0`
-    /// for analytical / multiple choice, and closer to `1.0` for creative and generative tasks.
+    /// Defaults to `1.0`. Ranges from `0.0` to `1.0`. Use `temperature` closer to
+    /// `0.0` for analytical / multiple choice, and closer to `1.0` for creative and
+    /// generative tasks.
     ///
     /// Note that even with `temperature` of `0.0`, the results will not be fully deterministic.
     /// </summary>
@@ -185,10 +186,10 @@ public sealed record class CompletionCreateParams : ParamsBase
     /// <summary>
     /// Use nucleus sampling.
     ///
-    /// In nucleus sampling, we compute the cumulative distribution over all the options
-    /// for each subsequent token in decreasing probability order and cut it off once
-    /// it reaches a particular probability specified by `top_p`. You should either
-    /// alter `temperature` or `top_p`, but not both.
+    /// In nucleus sampling, we compute the cumulative distribution over all the
+    /// options for each subsequent token in decreasing probability order and cut
+    /// it off once it reaches a particular probability specified by `top_p`. You
+    /// should either alter `temperature` or `top_p`, but not both.
     ///
     /// Recommended for advanced use cases only. You usually only need to use `temperature`.
     /// </summary>

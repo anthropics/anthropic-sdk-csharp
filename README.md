@@ -34,15 +34,16 @@ AnthropicClient client = new();
 
 MessageCreateParams param = new()
 {
-  MaxTokens = 1024,
-  Messages = [
-    new()
-    {
-      Role = Role.User,
-      Content = "Hello, Claude",
-    }
-  ],
-  Model = Model.Claude3_7SonnetLatest
+    MaxTokens = 1024,
+    Messages =
+    [
+        new()
+        {
+            Role = Role.User,
+            Content = "Hello, Claude",
+        },
+    ],
+    Model = Model.Claude3_7SonnetLatest,
 };
 
 var message = await client.Messages.Create(param);
@@ -68,7 +69,8 @@ using Anthropic;
 
 AnthropicClient client = new()
 {
-  APIKey = "my-anthropic-api-key", AuthToken = "my-auth-token"
+    APIKey = "my-anthropic-api-key",
+    AuthToken = "my-auth-token",
 };
 ```
 

@@ -35,7 +35,7 @@ public class BatchServiceTest : TestBase
                                 new()
                                 {
                                     Text = "Today's date is 2024-06-01.",
-                                    CacheControl = new() { },
+                                    CacheControl = new(),
                                     Citations =
                                     [
                                         new CitationCharLocationParam()
@@ -64,7 +64,7 @@ public class BatchServiceTest : TestBase
                                         Required = ["location"],
                                     },
                                     Name = "name",
-                                    CacheControl = new() { },
+                                    CacheControl = new(),
                                     Description = "Get the current weather in a given location",
                                     Type = Type.Custom,
                                 },

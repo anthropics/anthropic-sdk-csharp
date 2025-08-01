@@ -10,8 +10,8 @@ namespace Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties;
 public sealed record class Request : ModelBase, IFromRaw<Request>
 {
     /// <summary>
-    /// Developer-provided ID created for each request in a Message Batch. Useful for
-    /// matching results to requests, as results may be given out of request order.
+    /// Developer-provided ID created for each request in a Message Batch. Useful
+    /// for matching results to requests, as results may be given out of request order.
     ///
     /// Must be unique for each request within the Message Batch.
     /// </summary>
@@ -34,8 +34,8 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
     /// <summary>
     /// Messages API creation parameters for the individual request.
     ///
-    /// See the [Messages API reference](/en/api/messages) for full documentation on
-    /// available parameters.
+    /// See the [Messages API reference](/en/api/messages) for full documentation
+    /// on available parameters.
     /// </summary>
     public required RequestProperties::Params Params
     {

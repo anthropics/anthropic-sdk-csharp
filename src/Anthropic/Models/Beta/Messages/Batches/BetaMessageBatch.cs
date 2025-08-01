@@ -31,8 +31,8 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     }
 
     /// <summary>
-    /// RFC 3339 datetime string representing the time at which the Message Batch was
-    /// archived and its results became unavailable.
+    /// RFC 3339 datetime string representing the time at which the Message Batch
+    /// was archived and its results became unavailable.
     /// </summary>
     public required global::System.DateTime? ArchivedAt
     {
@@ -53,8 +53,8 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     }
 
     /// <summary>
-    /// RFC 3339 datetime string representing the time at which cancellation was initiated
-    /// for the Message Batch. Specified only if cancellation was initiated.
+    /// RFC 3339 datetime string representing the time at which cancellation was
+    /// initiated for the Message Batch. Specified only if cancellation was initiated.
     /// </summary>
     public required global::System.DateTime? CancelInitiatedAt
     {
@@ -75,7 +75,8 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     }
 
     /// <summary>
-    /// RFC 3339 datetime string representing the time at which the Message Batch was created.
+    /// RFC 3339 datetime string representing the time at which the Message Batch
+    /// was created.
     /// </summary>
     public required global::System.DateTime CreatedAt
     {
@@ -96,8 +97,8 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     }
 
     /// <summary>
-    /// RFC 3339 datetime string representing the time at which processing for the Message
-    /// Batch ended. Specified only once processing ends.
+    /// RFC 3339 datetime string representing the time at which processing for the
+    /// Message Batch ended. Specified only once processing ends.
     ///
     /// Processing ends when every request in a Message Batch has either succeeded,
     /// errored, canceled, or expired.
@@ -121,8 +122,8 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     }
 
     /// <summary>
-    /// RFC 3339 datetime string representing the time at which the Message Batch will
-    /// expire and end processing, which is 24 hours after creation.
+    /// RFC 3339 datetime string representing the time at which the Message Batch
+    /// will expire and end processing, which is 24 hours after creation.
     /// </summary>
     public required global::System.DateTime ExpiresAt
     {
@@ -166,9 +167,9 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     /// <summary>
     /// Tallies requests within the Message Batch, categorized by their status.
     ///
-    /// Requests start as `processing` and move to one of the other statuses only once
-    /// processing of the entire batch ends. The sum of all values always matches the
-    /// total number of requests in the batch.
+    /// Requests start as `processing` and move to one of the other statuses only
+    /// once processing of the entire batch ends. The sum of all values always matches
+    /// the total number of requests in the batch.
     /// </summary>
     public required BetaMessageBatchRequestCounts RequestCounts
     {

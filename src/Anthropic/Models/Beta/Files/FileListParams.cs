@@ -11,8 +11,8 @@ namespace Anthropic.Models.Beta.Files;
 public sealed record class FileListParams : ParamsBase
 {
     /// <summary>
-    /// ID of the object to use as a cursor for pagination. When provided, returns the
-    /// page of results immediately after this object.
+    /// ID of the object to use as a cursor for pagination. When provided, returns
+    /// the page of results immediately after this object.
     /// </summary>
     public string? AfterID
     {
@@ -27,8 +27,8 @@ public sealed record class FileListParams : ParamsBase
     }
 
     /// <summary>
-    /// ID of the object to use as a cursor for pagination. When provided, returns the
-    /// page of results immediately before this object.
+    /// ID of the object to use as a cursor for pagination. When provided, returns
+    /// the page of results immediately before this object.
     /// </summary>
     public string? BeforeID
     {

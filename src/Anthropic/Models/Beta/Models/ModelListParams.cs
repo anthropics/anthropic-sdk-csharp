@@ -14,8 +14,8 @@ namespace Anthropic.Models.Beta.Models;
 public sealed record class ModelListParams : ParamsBase
 {
     /// <summary>
-    /// ID of the object to use as a cursor for pagination. When provided, returns the
-    /// page of results immediately after this object.
+    /// ID of the object to use as a cursor for pagination. When provided, returns
+    /// the page of results immediately after this object.
     /// </summary>
     public string? AfterID
     {
@@ -30,8 +30,8 @@ public sealed record class ModelListParams : ParamsBase
     }
 
     /// <summary>
-    /// ID of the object to use as a cursor for pagination. When provided, returns the
-    /// page of results immediately before this object.
+    /// ID of the object to use as a cursor for pagination. When provided, returns
+    /// the page of results immediately before this object.
     /// </summary>
     public string? BeforeID
     {

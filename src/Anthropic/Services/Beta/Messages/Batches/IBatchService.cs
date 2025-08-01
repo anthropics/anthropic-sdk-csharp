@@ -36,8 +36,8 @@ public interface IBatchService
     /// <summary>
     /// Delete a Message Batch.
     ///
-    /// Message Batches can only be deleted once they've finished processing. If you'd
-    /// like to delete an in-progress batch, you must first cancel it.
+    /// Message Batches can only be deleted once they've finished processing. If
+    /// you'd like to delete an in-progress batch, you must first cancel it.
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
@@ -59,9 +59,9 @@ public interface IBatchService
     /// <summary>
     /// Streams the results of a Message Batch as a `.jsonl` file.
     ///
-    /// Each line in the file is a JSON object containing the result of a single request
-    /// in the Message Batch. Results are not guaranteed to be in the same order as
-    /// requests. Use the `custom_id` field to match results to requests.
+    /// Each line in the file is a JSON object containing the result of a single
+    /// request in the Message Batch. Results are not guaranteed to be in the same
+    /// order as requests. Use the `custom_id` field to match results to requests.
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>

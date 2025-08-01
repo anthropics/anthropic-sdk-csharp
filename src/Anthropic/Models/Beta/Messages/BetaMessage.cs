@@ -59,12 +59,12 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// ```json [{"type": "text", "text": "Hi, I'm Claude."}] ```
     ///
     /// If the request input `messages` ended with an `assistant` turn, then the response
-    /// `content` will continue directly from that last turn. You can use this to constrain
-    /// the model's output.
+    /// `content` will continue directly from that last turn. You can use this to
+    /// constrain the model's output.
     ///
     /// For example, if the input `messages` were: ```json [   {"role": "user", "content":
-    /// "What's the Greek name for Sun? (A) Sol (B) Helios (C) Sun"},   {"role": "assistant",
-    /// "content": "The best answer is ("} ] ```
+    /// "What's the Greek name for Sun? (A) Sol (B) Helios (C) Sun"},   {"role":
+    /// "assistant", "content": "The best answer is ("} ] ```
     ///
     /// Then the response `content` might be:
     ///
@@ -131,16 +131,16 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// <summary>
     /// The reason that we stopped.
     ///
-    /// This may be one the following values: * `"end_turn"`: the model reached a natural
-    /// stopping point * `"max_tokens"`: we exceeded the requested `max_tokens` or the
-    /// model's maximum * `"stop_sequence"`: one of your provided custom `stop_sequences`
+    /// This may be one the following values: * `"end_turn"`: the model reached a
+    /// natural stopping point * `"max_tokens"`: we exceeded the requested `max_tokens`
+    /// or the model's maximum * `"stop_sequence"`: one of your provided custom `stop_sequences`
     /// was generated * `"tool_use"`: the model invoked one or more tools * `"pause_turn"`:
-    /// we paused a long-running turn. You may provide the response back as-is in a
-    /// subsequent request to let the model continue. * `"refusal"`: when streaming
+    /// we paused a long-running turn. You may provide the response back as-is in
+    /// a subsequent request to let the model continue. * `"refusal"`: when streaming
     /// classifiers intervene to handle potential policy violations
     ///
-    /// In non-streaming mode this value is always non-null. In streaming mode, it is
-    /// null in the `message_start` event and non-null otherwise.
+    /// In non-streaming mode this value is always non-null. In streaming mode, it
+    /// is null in the `message_start` event and non-null otherwise.
     /// </summary>
     public required BetaStopReason? StopReason
     {
@@ -163,7 +163,8 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// <summary>
     /// Which custom stop sequence was generated, if any.
     ///
-    /// This value will be a non-null string if one of your custom stop sequences was generated.
+    /// This value will be a non-null string if one of your custom stop sequences
+    /// was generated.
     /// </summary>
     public required string? StopSequence
     {
@@ -208,8 +209,8 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     ///
     /// Under the hood, the API transforms requests into a format suitable for the
     /// model. The model's output then goes through a parsing stage before becoming
-    /// an API response. As a result, the token counts in `usage` will not match one-to-one
-    /// with the exact visible content of an API request or response.
+    /// an API response. As a result, the token counts in `usage` will not match
+    /// one-to-one with the exact visible content of an API request or response.
     ///
     /// For example, `output_tokens` will be non-zero, even for an empty string response
     /// from Claude.

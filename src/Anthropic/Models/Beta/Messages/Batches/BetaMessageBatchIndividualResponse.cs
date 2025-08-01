@@ -15,8 +15,8 @@ public sealed record class BetaMessageBatchIndividualResponse
         IFromRaw<BetaMessageBatchIndividualResponse>
 {
     /// <summary>
-    /// Developer-provided ID created for each request in a Message Batch. Useful for
-    /// matching results to requests, as results may be given out of request order.
+    /// Developer-provided ID created for each request in a Message Batch. Useful
+    /// for matching results to requests, as results may be given out of request order.
     ///
     /// Must be unique for each request within the Message Batch.
     /// </summary>
@@ -39,9 +39,9 @@ public sealed record class BetaMessageBatchIndividualResponse
     /// <summary>
     /// Processing result for this request.
     ///
-    /// Contains a Message output if processing was successful, an error response if
-    /// processing failed, or the reason why processing was not attempted, such as cancellation
-    /// or expiration.
+    /// Contains a Message output if processing was successful, an error response
+    /// if processing failed, or the reason why processing was not attempted, such
+    /// as cancellation or expiration.
     /// </summary>
     public required BetaMessageBatchResult Result
     {

@@ -12,8 +12,8 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     /// <summary>
     /// [JSON schema](https://json-schema.org/draft/2020-12) for this tool's input.
     ///
-    /// This defines the shape of the `input` that your tool accepts and that the model
-    /// will produce.
+    /// This defines the shape of the `input` that your tool accepts and that the
+    /// model will produce.
     /// </summary>
     public required ToolProperties::InputSchema InputSchema
     {
@@ -75,10 +75,10 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     /// <summary>
     /// Description of what this tool does.
     ///
-    /// Tool descriptions should be as detailed as possible. The more information that
-    /// the model has about what the tool is and how to use it, the better it will
-    /// perform. You can use natural language descriptions to reinforce important aspects
-    /// of the tool input JSON schema.
+    /// Tool descriptions should be as detailed as possible. The more information
+    /// that the model has about what the tool is and how to use it, the better it
+    /// will perform. You can use natural language descriptions to reinforce important
+    /// aspects of the tool input JSON schema.
     /// </summary>
     public string? Description
     {
