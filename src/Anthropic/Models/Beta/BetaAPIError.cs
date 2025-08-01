@@ -62,7 +62,9 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaAPIError(string message)
+        : this()
     {
         this.Message = message;
     }

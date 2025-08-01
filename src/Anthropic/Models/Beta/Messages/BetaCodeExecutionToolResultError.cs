@@ -68,7 +68,9 @@ public sealed record class BetaCodeExecutionToolResultError
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaCodeExecutionToolResultError(BetaCodeExecutionToolResultErrorCode errorCode)
+        : this()
     {
         this.ErrorCode = errorCode;
     }

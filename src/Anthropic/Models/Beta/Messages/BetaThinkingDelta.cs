@@ -62,7 +62,9 @@ public sealed record class BetaThinkingDelta : ModelBase, IFromRaw<BetaThinkingD
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaThinkingDelta(string thinking)
+        : this()
     {
         this.Thinking = thinking;
     }

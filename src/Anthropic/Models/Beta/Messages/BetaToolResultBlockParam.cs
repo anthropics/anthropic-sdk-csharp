@@ -113,7 +113,9 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaToolResultBlockParam(string toolUseID)
+        : this()
     {
         this.ToolUseID = toolUseID;
     }

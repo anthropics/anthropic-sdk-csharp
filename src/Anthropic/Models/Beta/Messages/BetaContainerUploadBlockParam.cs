@@ -89,7 +89,9 @@ public sealed record class BetaContainerUploadBlockParam
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaContainerUploadBlockParam(string fileID)
+        : this()
     {
         this.FileID = fileID;
     }

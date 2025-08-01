@@ -65,7 +65,9 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaCitationsDelta(BetaCitationsDeltaProperties::Citation citation)
+        : this()
     {
         this.Citation = citation;
     }

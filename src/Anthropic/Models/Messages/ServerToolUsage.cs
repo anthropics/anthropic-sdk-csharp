@@ -46,7 +46,9 @@ public sealed record class ServerToolUsage : ModelBase, IFromRaw<ServerToolUsage
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public ServerToolUsage(long webSearchRequests)
+        : this()
     {
         this.WebSearchRequests = webSearchRequests;
     }

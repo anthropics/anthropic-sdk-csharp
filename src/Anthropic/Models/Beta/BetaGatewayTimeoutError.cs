@@ -64,7 +64,9 @@ public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGat
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaGatewayTimeoutError(string message)
+        : this()
     {
         this.Message = message;
     }

@@ -115,7 +115,9 @@ public sealed record class BetaRequestMCPToolResultBlockParam
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaRequestMCPToolResultBlockParam(string toolUseID)
+        : this()
     {
         this.ToolUseID = toolUseID;
     }

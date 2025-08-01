@@ -100,7 +100,9 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public TextBlockParam(string text)
+        : this()
     {
         this.Text = text;
     }

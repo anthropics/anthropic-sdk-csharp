@@ -111,7 +111,9 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public ToolResultBlockParam(string toolUseID)
+        : this()
     {
         this.ToolUseID = toolUseID;
     }

@@ -128,7 +128,9 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaRequestDocumentBlock(BetaRequestDocumentBlockProperties::Source source)
+        : this()
     {
         this.Source = source;
     }

@@ -65,7 +65,9 @@ public sealed record class BetaRawContentBlockStopEvent
         return new(properties);
     }
 
+    [SetsRequiredMembers]
     public BetaRawContentBlockStopEvent(long index)
+        : this()
     {
         this.Index = index;
     }
