@@ -110,4 +110,9 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
     {
         return new(properties);
     }
+
+    public ToolResultBlockParam(string toolUseID)
+    {
+        this.ToolUseID = toolUseID;
+    }
 }

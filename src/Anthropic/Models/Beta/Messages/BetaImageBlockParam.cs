@@ -83,4 +83,9 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     {
         return new(properties);
     }
+
+    public BetaImageBlockParam(BetaImageBlockParamProperties::Source source)
+    {
+        this.Source = source;
+    }
 }

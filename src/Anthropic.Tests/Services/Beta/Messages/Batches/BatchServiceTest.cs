@@ -68,10 +68,7 @@ public class BatchServiceTest : TestBase
                                 },
                             },
                             Temperature = 1,
-                            Thinking = new Messages::BetaThinkingConfigEnabled()
-                            {
-                                BudgetTokens = 1024,
-                            },
+                            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
                             ToolChoice = new Messages::BetaToolChoiceAuto()
                             {
                                 DisableParallelToolUse = true,

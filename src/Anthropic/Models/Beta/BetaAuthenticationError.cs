@@ -63,4 +63,9 @@ public sealed record class BetaAuthenticationError : ModelBase, IFromRaw<BetaAut
     {
         return new(properties);
     }
+
+    public BetaAuthenticationError(string message)
+    {
+        this.Message = message;
+    }
 }

@@ -68,4 +68,9 @@ public sealed record class WebSearchToolRequestError
     {
         return new(properties);
     }
+
+    public WebSearchToolRequestError(WebSearchToolRequestErrorProperties::ErrorCode errorCode)
+    {
+        this.ErrorCode = errorCode;
+    }
 }

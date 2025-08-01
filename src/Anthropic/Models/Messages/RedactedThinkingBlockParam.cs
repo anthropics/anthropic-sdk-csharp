@@ -65,4 +65,9 @@ public sealed record class RedactedThinkingBlockParam
     {
         return new(properties);
     }
+
+    public RedactedThinkingBlockParam(string data)
+    {
+        this.Data = data;
+    }
 }

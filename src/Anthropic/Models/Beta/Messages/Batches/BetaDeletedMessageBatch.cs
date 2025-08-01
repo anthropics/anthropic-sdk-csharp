@@ -71,4 +71,9 @@ public sealed record class BetaDeletedMessageBatch : ModelBase, IFromRaw<BetaDel
     {
         return new(properties);
     }
+
+    public BetaDeletedMessageBatch(string id)
+    {
+        this.ID = id;
+    }
 }

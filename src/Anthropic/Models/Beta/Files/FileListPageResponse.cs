@@ -97,4 +97,9 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
     {
         return new(properties);
     }
+
+    public FileListPageResponse(List<FileMetadata> data)
+    {
+        this.Data = data;
+    }
 }

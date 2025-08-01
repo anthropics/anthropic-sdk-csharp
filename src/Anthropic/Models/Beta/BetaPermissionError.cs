@@ -61,4 +61,9 @@ public sealed record class BetaPermissionError : ModelBase, IFromRaw<BetaPermiss
     {
         return new(properties);
     }
+
+    public BetaPermissionError(string message)
+    {
+        this.Message = message;
+    }
 }

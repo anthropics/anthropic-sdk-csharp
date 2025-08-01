@@ -61,4 +61,9 @@ public sealed record class APIErrorObject : ModelBase, IFromRaw<APIErrorObject>
     {
         return new(properties);
     }
+
+    public APIErrorObject(string message)
+    {
+        this.Message = message;
+    }
 }

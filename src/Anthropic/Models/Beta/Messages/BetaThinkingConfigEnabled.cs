@@ -74,4 +74,9 @@ public sealed record class BetaThinkingConfigEnabled
     {
         return new(properties);
     }
+
+    public BetaThinkingConfigEnabled(long budgetTokens)
+    {
+        this.BudgetTokens = budgetTokens;
+    }
 }

@@ -89,4 +89,9 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
     {
         return new(properties);
     }
+
+    public ToolChoiceTool(string name)
+    {
+        this.Name = name;
+    }
 }

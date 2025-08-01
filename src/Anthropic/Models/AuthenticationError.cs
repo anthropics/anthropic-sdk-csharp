@@ -61,4 +61,9 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
     {
         return new(properties);
     }
+
+    public AuthenticationError(string message)
+    {
+        this.Message = message;
+    }
 }

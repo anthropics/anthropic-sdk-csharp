@@ -61,4 +61,9 @@ public sealed record class InvalidRequestError : ModelBase, IFromRaw<InvalidRequ
     {
         return new(properties);
     }
+
+    public InvalidRequestError(string message)
+    {
+        this.Message = message;
+    }
 }

@@ -61,4 +61,9 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
     {
         return new(properties);
     }
+
+    public ThinkingDelta(string thinking)
+    {
+        this.Thinking = thinking;
+    }
 }

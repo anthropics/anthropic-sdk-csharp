@@ -61,4 +61,9 @@ public sealed record class PermissionError : ModelBase, IFromRaw<PermissionError
     {
         return new(properties);
     }
+
+    public PermissionError(string message)
+    {
+        this.Message = message;
+    }
 }

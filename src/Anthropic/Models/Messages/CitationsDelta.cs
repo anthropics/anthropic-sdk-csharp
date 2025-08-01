@@ -64,4 +64,9 @@ public sealed record class CitationsDelta : ModelBase, IFromRaw<CitationsDelta>
     {
         return new(properties);
     }
+
+    public CitationsDelta(CitationsDeltaProperties::Citation citation)
+    {
+        this.Citation = citation;
+    }
 }

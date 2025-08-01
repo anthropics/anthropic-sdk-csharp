@@ -61,4 +61,9 @@ public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimi
     {
         return new(properties);
     }
+
+    public BetaRateLimitError(string message)
+    {
+        this.Message = message;
+    }
 }

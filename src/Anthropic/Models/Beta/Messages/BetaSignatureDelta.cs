@@ -61,4 +61,9 @@ public sealed record class BetaSignatureDelta : ModelBase, IFromRaw<BetaSignatur
     {
         return new(properties);
     }
+
+    public BetaSignatureDelta(string signature)
+    {
+        this.Signature = signature;
+    }
 }

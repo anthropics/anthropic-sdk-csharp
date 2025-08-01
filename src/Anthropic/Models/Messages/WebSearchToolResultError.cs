@@ -66,4 +66,9 @@ public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSea
     {
         return new(properties);
     }
+
+    public WebSearchToolResultError(WebSearchToolResultErrorProperties::ErrorCode errorCode)
+    {
+        this.ErrorCode = errorCode;
+    }
 }

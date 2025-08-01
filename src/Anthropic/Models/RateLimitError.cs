@@ -61,4 +61,9 @@ public sealed record class RateLimitError : ModelBase, IFromRaw<RateLimitError>
     {
         return new(properties);
     }
+
+    public RateLimitError(string message)
+    {
+        this.Message = message;
+    }
 }

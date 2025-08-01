@@ -67,4 +67,9 @@ public sealed record class BetaWebSearchToolResultError
     {
         return new(properties);
     }
+
+    public BetaWebSearchToolResultError(BetaWebSearchToolResultErrorCode errorCode)
+    {
+        this.ErrorCode = errorCode;
+    }
 }

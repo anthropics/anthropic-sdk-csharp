@@ -65,4 +65,9 @@ public sealed record class MessageBatchErroredResult
     {
         return new(properties);
     }
+
+    public MessageBatchErroredResult(ErrorResponse error)
+    {
+        this.Error = error;
+    }
 }

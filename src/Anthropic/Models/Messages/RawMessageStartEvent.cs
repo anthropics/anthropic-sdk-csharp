@@ -61,4 +61,9 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
     {
         return new(properties);
     }
+
+    public RawMessageStartEvent(Message message)
+    {
+        this.Message = message;
+    }
 }

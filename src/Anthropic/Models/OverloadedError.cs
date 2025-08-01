@@ -61,4 +61,9 @@ public sealed record class OverloadedError : ModelBase, IFromRaw<OverloadedError
     {
         return new(properties);
     }
+
+    public OverloadedError(string message)
+    {
+        this.Message = message;
+    }
 }

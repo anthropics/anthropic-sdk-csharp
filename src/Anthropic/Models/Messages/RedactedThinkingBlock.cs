@@ -61,4 +61,9 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
     {
         return new(properties);
     }
+
+    public RedactedThinkingBlock(string data)
+    {
+        this.Data = data;
+    }
 }

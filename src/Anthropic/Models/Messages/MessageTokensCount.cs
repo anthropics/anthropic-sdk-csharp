@@ -46,4 +46,9 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
     {
         return new(properties);
     }
+
+    public MessageTokensCount(long inputTokens)
+    {
+        this.InputTokens = inputTokens;
+    }
 }

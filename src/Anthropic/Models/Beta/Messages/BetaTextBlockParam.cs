@@ -99,4 +99,9 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
     {
         return new(properties);
     }
+
+    public BetaTextBlockParam(string text)
+    {
+        this.Text = text;
+    }
 }

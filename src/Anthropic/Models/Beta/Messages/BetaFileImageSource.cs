@@ -61,4 +61,9 @@ public sealed record class BetaFileImageSource : ModelBase, IFromRaw<BetaFileIma
     {
         return new(properties);
     }
+
+    public BetaFileImageSource(string fileID)
+    {
+        this.FileID = fileID;
+    }
 }

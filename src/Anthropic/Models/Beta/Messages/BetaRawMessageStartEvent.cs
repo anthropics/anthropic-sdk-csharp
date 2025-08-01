@@ -63,4 +63,9 @@ public sealed record class BetaRawMessageStartEvent : ModelBase, IFromRaw<BetaRa
     {
         return new(properties);
     }
+
+    public BetaRawMessageStartEvent(BetaMessage message)
+    {
+        this.Message = message;
+    }
 }

@@ -67,4 +67,9 @@ public sealed record class BetaMessageBatchErroredResult
     {
         return new(properties);
     }
+
+    public BetaMessageBatchErroredResult(BetaErrorResponse error)
+    {
+        this.Error = error;
+    }
 }

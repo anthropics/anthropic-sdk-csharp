@@ -61,4 +61,9 @@ public sealed record class GatewayTimeoutError : ModelBase, IFromRaw<GatewayTime
     {
         return new(properties);
     }
+
+    public GatewayTimeoutError(string message)
+    {
+        this.Message = message;
+    }
 }

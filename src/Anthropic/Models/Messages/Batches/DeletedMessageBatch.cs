@@ -69,4 +69,9 @@ public sealed record class DeletedMessageBatch : ModelBase, IFromRaw<DeletedMess
     {
         return new(properties);
     }
+
+    public DeletedMessageBatch(string id)
+    {
+        this.ID = id;
+    }
 }

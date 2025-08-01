@@ -61,4 +61,9 @@ public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSO
     {
         return new(properties);
     }
+
+    public BetaInputJSONDelta(string partialJSON)
+    {
+        this.PartialJSON = partialJSON;
+    }
 }

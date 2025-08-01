@@ -83,4 +83,9 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     {
         return new(properties);
     }
+
+    public ImageBlockParam(ImageBlockParamProperties::Source source)
+    {
+        this.Source = source;
+    }
 }

@@ -61,4 +61,9 @@ public sealed record class BetaNotFoundError : ModelBase, IFromRaw<BetaNotFoundE
     {
         return new(properties);
     }
+
+    public BetaNotFoundError(string message)
+    {
+        this.Message = message;
+    }
 }

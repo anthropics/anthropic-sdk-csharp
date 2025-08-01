@@ -61,4 +61,9 @@ public sealed record class NotFoundError : ModelBase, IFromRaw<NotFoundError>
     {
         return new(properties);
     }
+
+    public NotFoundError(string message)
+    {
+        this.Message = message;
+    }
 }

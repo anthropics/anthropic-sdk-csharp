@@ -45,4 +45,9 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
     {
         return new(properties);
     }
+
+    public BetaServerToolUsage(long webSearchRequests)
+    {
+        this.WebSearchRequests = webSearchRequests;
+    }
 }

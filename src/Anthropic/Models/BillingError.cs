@@ -61,4 +61,9 @@ public sealed record class BillingError : ModelBase, IFromRaw<BillingError>
     {
         return new(properties);
     }
+
+    public BillingError(string message)
+    {
+        this.Message = message;
+    }
 }

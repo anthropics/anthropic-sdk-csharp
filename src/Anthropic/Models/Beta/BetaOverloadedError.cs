@@ -61,4 +61,9 @@ public sealed record class BetaOverloadedError : ModelBase, IFromRaw<BetaOverloa
     {
         return new(properties);
     }
+
+    public BetaOverloadedError(string message)
+    {
+        this.Message = message;
+    }
 }

@@ -70,4 +70,9 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
     {
         return new(properties);
     }
+
+    public ThinkingConfigEnabled(long budgetTokens)
+    {
+        this.BudgetTokens = budgetTokens;
+    }
 }

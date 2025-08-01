@@ -43,7 +43,7 @@ public class MessageServiceTest : TestBase
                     },
                 },
                 Temperature = 1,
-                Thinking = new ThinkingConfigEnabled() { BudgetTokens = 1024 },
+                Thinking = new ThinkingConfigEnabled(1024),
                 ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -96,7 +96,7 @@ public class MessageServiceTest : TestBase
                         ],
                     },
                 },
-                Thinking = new ThinkingConfigEnabled() { BudgetTokens = 1024 },
+                Thinking = new ThinkingConfigEnabled(1024),
                 ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [

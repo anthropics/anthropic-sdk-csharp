@@ -50,7 +50,7 @@ public class BatchServiceTest : TestBase
                                 },
                             },
                             Temperature = 1,
-                            Thinking = new ThinkingConfigEnabled() { BudgetTokens = 1024 },
+                            Thinking = new ThinkingConfigEnabled(1024),
                             ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
                             Tools =
                             [
