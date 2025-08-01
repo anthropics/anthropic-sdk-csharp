@@ -13,10 +13,8 @@ The REST API documentation can be found on [docs.anthropic.com](https://docs.ant
 
 ## Installation
 
-### Dotnet
-
 ```bash
-dotnet add reference /path/to/anthropic-csharp/src/Anthropic/
+dotnet add package Anthropic
 ```
 
 ## Usage
