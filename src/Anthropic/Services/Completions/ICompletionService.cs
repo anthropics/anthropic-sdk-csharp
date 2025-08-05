@@ -15,5 +15,5 @@ public interface ICompletionService
     /// See our [migration guide](https://docs.anthropic.com/en/api/migrating-from-text-completions-to-messages)
     /// for guidance in migrating from Text Completions to Messages.
     /// </summary>
-    Task<Completion> Create(CompletionCreateParams @params);
+    Task<Completion> Create(CompletionCreateParams parameters);
 }

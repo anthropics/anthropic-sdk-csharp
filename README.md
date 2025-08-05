@@ -30,7 +30,7 @@ using System;
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
 
-MessageCreateParams param = new()
+MessageCreateParams parameters = new()
 {
     MaxTokens = 1024,
     Messages =
@@ -44,7 +44,7 @@ MessageCreateParams param = new()
     Model = Model.Claude3_7SonnetLatest,
 };
 
-var message = await client.Messages.Create(param);
+var message = await client.Messages.Create(parameters);
 
 Console.WriteLine(message);
 ```

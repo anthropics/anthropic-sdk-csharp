@@ -14,7 +14,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<MessageBatch> Create(BatchCreateParams @params);
+    Task<MessageBatch> Create(BatchCreateParams parameters);
 
     /// <summary>
     /// This endpoint is idempotent and can be used to poll for Message Batch completion.
@@ -23,7 +23,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<MessageBatch> Retrieve(BatchRetrieveParams @params);
+    Task<MessageBatch> Retrieve(BatchRetrieveParams parameters);
 
     /// <summary>
     /// List all Message Batches within a Workspace. Most recently created batches
@@ -31,7 +31,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<BatchListPageResponse> List(BatchListParams @params);
+    Task<BatchListPageResponse> List(BatchListParams parameters);
 
     /// <summary>
     /// Delete a Message Batch.
@@ -41,7 +41,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<DeletedMessageBatch> Delete(BatchDeleteParams @params);
+    Task<DeletedMessageBatch> Delete(BatchDeleteParams parameters);
 
     /// <summary>
     /// Batches may be canceled any time before processing ends. Once cancellation
@@ -54,7 +54,7 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<MessageBatch> Cancel(BatchCancelParams @params);
+    Task<MessageBatch> Cancel(BatchCancelParams parameters);
 
     /// <summary>
     /// Streams the results of a Message Batch as a `.jsonl` file.
@@ -65,5 +65,5 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<MessageBatchIndividualResponse> Results(BatchResultsParams @params);
+    Task<MessageBatchIndividualResponse> Results(BatchResultsParams parameters);
 }

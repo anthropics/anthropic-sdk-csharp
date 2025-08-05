@@ -15,10 +15,10 @@ public sealed class ModelService : IModelService
         _client = client;
     }
 
-    public async Task<ModelInfo> Retrieve(ModelRetrieveParams @params)
+    public async Task<ModelInfo> Retrieve(ModelRetrieveParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Get, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -35,10 +35,10 @@ public sealed class ModelService : IModelService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<ModelListPageResponse> List(ModelListParams @params)
+    public async Task<ModelListPageResponse> List(ModelListParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Get, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);

@@ -15,13 +15,13 @@ public sealed class BatchService : IBatchService
         _client = client;
     }
 
-    public async Task<MessageBatch> Create(BatchCreateParams @params)
+    public async Task<MessageBatch> Create(BatchCreateParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client))
+        using HttpRequestMessage webRequest = new(HttpMethod.Post, parameters.Url(this._client))
         {
-            Content = @params.BodyContent(),
+            Content = parameters.BodyContent(),
         };
-        @params.AddHeadersToRequest(webRequest, this._client);
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -38,10 +38,10 @@ public sealed class BatchService : IBatchService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<MessageBatch> Retrieve(BatchRetrieveParams @params)
+    public async Task<MessageBatch> Retrieve(BatchRetrieveParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Get, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -58,10 +58,10 @@ public sealed class BatchService : IBatchService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<BatchListPageResponse> List(BatchListParams @params)
+    public async Task<BatchListPageResponse> List(BatchListParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Get, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -78,10 +78,10 @@ public sealed class BatchService : IBatchService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<DeletedMessageBatch> Delete(BatchDeleteParams @params)
+    public async Task<DeletedMessageBatch> Delete(BatchDeleteParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Delete, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Delete, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -98,10 +98,10 @@ public sealed class BatchService : IBatchService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<MessageBatch> Cancel(BatchCancelParams @params)
+    public async Task<MessageBatch> Cancel(BatchCancelParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Post, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -118,10 +118,10 @@ public sealed class BatchService : IBatchService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<MessageBatchIndividualResponse> Results(BatchResultsParams @params)
+    public async Task<MessageBatchIndividualResponse> Results(BatchResultsParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Get, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);

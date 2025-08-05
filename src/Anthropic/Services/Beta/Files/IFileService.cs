@@ -9,25 +9,25 @@ public interface IFileService
     /// <summary>
     /// List Files
     /// </summary>
-    Task<FileListPageResponse> List(FileListParams @params);
+    Task<FileListPageResponse> List(FileListParams parameters);
 
     /// <summary>
     /// Delete File
     /// </summary>
-    Task<DeletedFile> Delete(FileDeleteParams @params);
+    Task<DeletedFile> Delete(FileDeleteParams parameters);
 
     /// <summary>
     /// Download File
     /// </summary>
-    Task<JsonElement> Download(FileDownloadParams @params);
+    Task<JsonElement> Download(FileDownloadParams parameters);
 
     /// <summary>
     /// Get File Metadata
     /// </summary>
-    Task<FileMetadata> RetrieveMetadata(FileRetrieveMetadataParams @params);
+    Task<FileMetadata> RetrieveMetadata(FileRetrieveMetadataParams parameters);
 
     /// <summary>
     /// Upload File
     /// </summary>
-    Task<FileMetadata> Upload(FileUploadParams @params);
+    Task<FileMetadata> Upload(FileUploadParams parameters);
 }

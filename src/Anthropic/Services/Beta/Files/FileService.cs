@@ -15,10 +15,10 @@ public sealed class FileService : IFileService
         _client = client;
     }
 
-    public async Task<FileListPageResponse> List(FileListParams @params)
+    public async Task<FileListPageResponse> List(FileListParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Get, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -35,10 +35,10 @@ public sealed class FileService : IFileService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<DeletedFile> Delete(FileDeleteParams @params)
+    public async Task<DeletedFile> Delete(FileDeleteParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Delete, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Delete, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -55,10 +55,10 @@ public sealed class FileService : IFileService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<JsonElement> Download(FileDownloadParams @params)
+    public async Task<JsonElement> Download(FileDownloadParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Get, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -75,10 +75,10 @@ public sealed class FileService : IFileService
         );
     }
 
-    public async Task<FileMetadata> RetrieveMetadata(FileRetrieveMetadataParams @params)
+    public async Task<FileMetadata> RetrieveMetadata(FileRetrieveMetadataParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Get, @params.Url(this._client));
-        @params.AddHeadersToRequest(webRequest, this._client);
+        using HttpRequestMessage webRequest = new(HttpMethod.Get, parameters.Url(this._client));
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -95,13 +95,13 @@ public sealed class FileService : IFileService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<FileMetadata> Upload(FileUploadParams @params)
+    public async Task<FileMetadata> Upload(FileUploadParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client))
+        using HttpRequestMessage webRequest = new(HttpMethod.Post, parameters.Url(this._client))
         {
-            Content = @params.BodyContent(),
+            Content = parameters.BodyContent(),
         };
-        @params.AddHeadersToRequest(webRequest, this._client);
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);

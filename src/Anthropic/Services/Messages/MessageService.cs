@@ -23,13 +23,13 @@ public sealed class MessageService : IMessageService
         get { return _batches.Value; }
     }
 
-    public async Task<Message> Create(MessageCreateParams @params)
+    public async Task<Message> Create(MessageCreateParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client))
+        using HttpRequestMessage webRequest = new(HttpMethod.Post, parameters.Url(this._client))
         {
-            Content = @params.BodyContent(),
+            Content = parameters.BodyContent(),
         };
-        @params.AddHeadersToRequest(webRequest, this._client);
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);
@@ -46,13 +46,13 @@ public sealed class MessageService : IMessageService
             ) ?? throw new NullReferenceException();
     }
 
-    public async Task<MessageTokensCount> CountTokens(MessageCountTokensParams @params)
+    public async Task<MessageTokensCount> CountTokens(MessageCountTokensParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client))
+        using HttpRequestMessage webRequest = new(HttpMethod.Post, parameters.Url(this._client))
         {
-            Content = @params.BodyContent(),
+            Content = parameters.BodyContent(),
         };
-        @params.AddHeadersToRequest(webRequest, this._client);
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);

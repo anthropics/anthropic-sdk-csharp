@@ -15,13 +15,13 @@ public sealed class CompletionService : ICompletionService
         _client = client;
     }
 
-    public async Task<Completion> Create(CompletionCreateParams @params)
+    public async Task<Completion> Create(CompletionCreateParams parameters)
     {
-        using HttpRequestMessage webRequest = new(HttpMethod.Post, @params.Url(this._client))
+        using HttpRequestMessage webRequest = new(HttpMethod.Post, parameters.Url(this._client))
         {
-            Content = @params.BodyContent(),
+            Content = parameters.BodyContent(),
         };
-        @params.AddHeadersToRequest(webRequest, this._client);
+        parameters.AddHeadersToRequest(webRequest, this._client);
         using HttpResponseMessage response = await _client
             .HttpClient.SendAsync(webRequest)
             .ConfigureAwait(false);

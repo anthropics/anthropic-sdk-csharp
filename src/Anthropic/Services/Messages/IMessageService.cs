@@ -16,7 +16,7 @@ public interface IMessageService
     ///
     /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
     /// </summary>
-    Task<Message> Create(MessageCreateParams @params);
+    Task<Message> Create(MessageCreateParams parameters);
 
     /// <summary>
     /// Count the number of tokens in a Message.
@@ -26,5 +26,5 @@ public interface IMessageService
     ///
     /// Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)
     /// </summary>
-    Task<MessageTokensCount> CountTokens(MessageCountTokensParams @params);
+    Task<MessageTokensCount> CountTokens(MessageCountTokensParams parameters);
 }
