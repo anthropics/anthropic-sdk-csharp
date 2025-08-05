@@ -22,7 +22,7 @@ public abstract record class ModelBase
     public abstract void Validate();
 }
 
-public interface IFromRaw<T>
+interface IFromRaw<T>
 {
     static abstract T FromRawUnchecked(Dictionary<string, JsonElement> properties);
 }

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Anthropic;
 
-public sealed class ModelConverter<TModel> : JsonConverter<TModel>
+sealed class ModelConverter<TModel> : JsonConverter<TModel>
     where TModel : ModelBase, IFromRaw<TModel>
 {
     public override TModel? Read(
@@ -30,7 +30,7 @@ public sealed class ModelConverter<TModel> : JsonConverter<TModel>
     }
 }
 
-public sealed class EnumConverter<TEnum, TValue> : JsonConverter<TEnum>
+sealed class EnumConverter<TEnum, TValue> : JsonConverter<TEnum>
     where TEnum : IEnum<TEnum, TValue>
 {
     public override TEnum Read(
@@ -48,7 +48,7 @@ public sealed class EnumConverter<TEnum, TValue> : JsonConverter<TEnum>
     }
 }
 
-public sealed class UnionConverter<T> : JsonConverter<T>
+sealed class UnionConverter<T> : JsonConverter<T>
     where T : class
 {
     readonly List<global::System.Type> _variantTypes = Enumerable.ToList(
@@ -88,7 +88,7 @@ public sealed class UnionConverter<T> : JsonConverter<T>
     }
 }
 
-public sealed class VariantConverter<TVariant, TValue> : JsonConverter<TVariant>
+sealed class VariantConverter<TVariant, TValue> : JsonConverter<TVariant>
     where TVariant : IVariant<TVariant, TValue>
 {
     public override TVariant Read(
