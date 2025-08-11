@@ -113,7 +113,7 @@ public class BatchServiceTest : TestBase
         messageBatch.Validate();
     }
 
-    [Fact]
+    [Fact(Skip = "Prism doesn't support application/x-jsonl responses")]
     public async Task ResultsStreaming_Works()
     {
         var stream = this.client.Messages.Batches.ResultsStreaming(
