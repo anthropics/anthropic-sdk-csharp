@@ -1,15 +1,16 @@
-using System.Text.Json.Serialization;
+using Batches = Anthropic.Models.Messages.Batches;
 
 namespace Anthropic.Models.Messages.Batches.MessageBatchResultVariants;
 
-[JsonConverter(
-    typeof(VariantConverter<MessageBatchSucceededResultVariant, MessageBatchSucceededResult>)
-)]
-public sealed record class MessageBatchSucceededResultVariant(MessageBatchSucceededResult Value)
-    : MessageBatchResult,
-        IVariant<MessageBatchSucceededResultVariant, MessageBatchSucceededResult>
+public sealed record class MessageBatchSucceededResultVariant(
+    Batches::MessageBatchSucceededResult Value
+)
+    : Batches::MessageBatchResult,
+        IVariant<MessageBatchSucceededResultVariant, Batches::MessageBatchSucceededResult>
 {
-    public static MessageBatchSucceededResultVariant From(MessageBatchSucceededResult value)
+    public static MessageBatchSucceededResultVariant From(
+        Batches::MessageBatchSucceededResult value
+    )
     {
         return new(value);
     }
@@ -20,14 +21,13 @@ public sealed record class MessageBatchSucceededResultVariant(MessageBatchSuccee
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<MessageBatchErroredResultVariant, MessageBatchErroredResult>)
-)]
-public sealed record class MessageBatchErroredResultVariant(MessageBatchErroredResult Value)
-    : MessageBatchResult,
-        IVariant<MessageBatchErroredResultVariant, MessageBatchErroredResult>
+public sealed record class MessageBatchErroredResultVariant(
+    Batches::MessageBatchErroredResult Value
+)
+    : Batches::MessageBatchResult,
+        IVariant<MessageBatchErroredResultVariant, Batches::MessageBatchErroredResult>
 {
-    public static MessageBatchErroredResultVariant From(MessageBatchErroredResult value)
+    public static MessageBatchErroredResultVariant From(Batches::MessageBatchErroredResult value)
     {
         return new(value);
     }
@@ -38,14 +38,13 @@ public sealed record class MessageBatchErroredResultVariant(MessageBatchErroredR
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<MessageBatchCanceledResultVariant, MessageBatchCanceledResult>)
-)]
-public sealed record class MessageBatchCanceledResultVariant(MessageBatchCanceledResult Value)
-    : MessageBatchResult,
-        IVariant<MessageBatchCanceledResultVariant, MessageBatchCanceledResult>
+public sealed record class MessageBatchCanceledResultVariant(
+    Batches::MessageBatchCanceledResult Value
+)
+    : Batches::MessageBatchResult,
+        IVariant<MessageBatchCanceledResultVariant, Batches::MessageBatchCanceledResult>
 {
-    public static MessageBatchCanceledResultVariant From(MessageBatchCanceledResult value)
+    public static MessageBatchCanceledResultVariant From(Batches::MessageBatchCanceledResult value)
     {
         return new(value);
     }
@@ -56,14 +55,13 @@ public sealed record class MessageBatchCanceledResultVariant(MessageBatchCancele
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<MessageBatchExpiredResultVariant, MessageBatchExpiredResult>)
-)]
-public sealed record class MessageBatchExpiredResultVariant(MessageBatchExpiredResult Value)
-    : MessageBatchResult,
-        IVariant<MessageBatchExpiredResultVariant, MessageBatchExpiredResult>
+public sealed record class MessageBatchExpiredResultVariant(
+    Batches::MessageBatchExpiredResult Value
+)
+    : Batches::MessageBatchResult,
+        IVariant<MessageBatchExpiredResultVariant, Batches::MessageBatchExpiredResult>
 {
-    public static MessageBatchExpiredResultVariant From(MessageBatchExpiredResult value)
+    public static MessageBatchExpiredResultVariant From(Batches::MessageBatchExpiredResult value)
     {
         return new(value);
     }

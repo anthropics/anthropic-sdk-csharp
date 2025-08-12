@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Beta = Anthropic.Models.Beta;
 
 namespace Anthropic.Models.Beta.BetaErrorVariants;
 
-[JsonConverter(typeof(VariantConverter<BetaInvalidRequestErrorVariant, BetaInvalidRequestError>))]
-public sealed record class BetaInvalidRequestErrorVariant(BetaInvalidRequestError Value)
-    : BetaError,
-        IVariant<BetaInvalidRequestErrorVariant, BetaInvalidRequestError>
+public sealed record class BetaInvalidRequestErrorVariant(Beta::BetaInvalidRequestError Value)
+    : Beta::BetaError,
+        IVariant<BetaInvalidRequestErrorVariant, Beta::BetaInvalidRequestError>
 {
-    public static BetaInvalidRequestErrorVariant From(BetaInvalidRequestError value)
+    public static BetaInvalidRequestErrorVariant From(Beta::BetaInvalidRequestError value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class BetaInvalidRequestErrorVariant(BetaInvalidRequestErro
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaAuthenticationErrorVariant, BetaAuthenticationError>))]
-public sealed record class BetaAuthenticationErrorVariant(BetaAuthenticationError Value)
-    : BetaError,
-        IVariant<BetaAuthenticationErrorVariant, BetaAuthenticationError>
+public sealed record class BetaAuthenticationErrorVariant(Beta::BetaAuthenticationError Value)
+    : Beta::BetaError,
+        IVariant<BetaAuthenticationErrorVariant, Beta::BetaAuthenticationError>
 {
-    public static BetaAuthenticationErrorVariant From(BetaAuthenticationError value)
+    public static BetaAuthenticationErrorVariant From(Beta::BetaAuthenticationError value)
     {
         return new(value);
     }
@@ -34,12 +32,11 @@ public sealed record class BetaAuthenticationErrorVariant(BetaAuthenticationErro
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaBillingErrorVariant, BetaBillingError>))]
-public sealed record class BetaBillingErrorVariant(BetaBillingError Value)
-    : BetaError,
-        IVariant<BetaBillingErrorVariant, BetaBillingError>
+public sealed record class BetaBillingErrorVariant(Beta::BetaBillingError Value)
+    : Beta::BetaError,
+        IVariant<BetaBillingErrorVariant, Beta::BetaBillingError>
 {
-    public static BetaBillingErrorVariant From(BetaBillingError value)
+    public static BetaBillingErrorVariant From(Beta::BetaBillingError value)
     {
         return new(value);
     }
@@ -50,12 +47,11 @@ public sealed record class BetaBillingErrorVariant(BetaBillingError Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaPermissionErrorVariant, BetaPermissionError>))]
-public sealed record class BetaPermissionErrorVariant(BetaPermissionError Value)
-    : BetaError,
-        IVariant<BetaPermissionErrorVariant, BetaPermissionError>
+public sealed record class BetaPermissionErrorVariant(Beta::BetaPermissionError Value)
+    : Beta::BetaError,
+        IVariant<BetaPermissionErrorVariant, Beta::BetaPermissionError>
 {
-    public static BetaPermissionErrorVariant From(BetaPermissionError value)
+    public static BetaPermissionErrorVariant From(Beta::BetaPermissionError value)
     {
         return new(value);
     }
@@ -66,12 +62,11 @@ public sealed record class BetaPermissionErrorVariant(BetaPermissionError Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaNotFoundErrorVariant, BetaNotFoundError>))]
-public sealed record class BetaNotFoundErrorVariant(BetaNotFoundError Value)
-    : BetaError,
-        IVariant<BetaNotFoundErrorVariant, BetaNotFoundError>
+public sealed record class BetaNotFoundErrorVariant(Beta::BetaNotFoundError Value)
+    : Beta::BetaError,
+        IVariant<BetaNotFoundErrorVariant, Beta::BetaNotFoundError>
 {
-    public static BetaNotFoundErrorVariant From(BetaNotFoundError value)
+    public static BetaNotFoundErrorVariant From(Beta::BetaNotFoundError value)
     {
         return new(value);
     }
@@ -82,12 +77,11 @@ public sealed record class BetaNotFoundErrorVariant(BetaNotFoundError Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaRateLimitErrorVariant, BetaRateLimitError>))]
-public sealed record class BetaRateLimitErrorVariant(BetaRateLimitError Value)
-    : BetaError,
-        IVariant<BetaRateLimitErrorVariant, BetaRateLimitError>
+public sealed record class BetaRateLimitErrorVariant(Beta::BetaRateLimitError Value)
+    : Beta::BetaError,
+        IVariant<BetaRateLimitErrorVariant, Beta::BetaRateLimitError>
 {
-    public static BetaRateLimitErrorVariant From(BetaRateLimitError value)
+    public static BetaRateLimitErrorVariant From(Beta::BetaRateLimitError value)
     {
         return new(value);
     }
@@ -98,12 +92,11 @@ public sealed record class BetaRateLimitErrorVariant(BetaRateLimitError Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaGatewayTimeoutErrorVariant, BetaGatewayTimeoutError>))]
-public sealed record class BetaGatewayTimeoutErrorVariant(BetaGatewayTimeoutError Value)
-    : BetaError,
-        IVariant<BetaGatewayTimeoutErrorVariant, BetaGatewayTimeoutError>
+public sealed record class BetaGatewayTimeoutErrorVariant(Beta::BetaGatewayTimeoutError Value)
+    : Beta::BetaError,
+        IVariant<BetaGatewayTimeoutErrorVariant, Beta::BetaGatewayTimeoutError>
 {
-    public static BetaGatewayTimeoutErrorVariant From(BetaGatewayTimeoutError value)
+    public static BetaGatewayTimeoutErrorVariant From(Beta::BetaGatewayTimeoutError value)
     {
         return new(value);
     }
@@ -114,12 +107,11 @@ public sealed record class BetaGatewayTimeoutErrorVariant(BetaGatewayTimeoutErro
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaAPIErrorVariant, BetaAPIError>))]
-public sealed record class BetaAPIErrorVariant(BetaAPIError Value)
-    : BetaError,
-        IVariant<BetaAPIErrorVariant, BetaAPIError>
+public sealed record class BetaAPIErrorVariant(Beta::BetaAPIError Value)
+    : Beta::BetaError,
+        IVariant<BetaAPIErrorVariant, Beta::BetaAPIError>
 {
-    public static BetaAPIErrorVariant From(BetaAPIError value)
+    public static BetaAPIErrorVariant From(Beta::BetaAPIError value)
     {
         return new(value);
     }
@@ -130,12 +122,11 @@ public sealed record class BetaAPIErrorVariant(BetaAPIError Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaOverloadedErrorVariant, BetaOverloadedError>))]
-public sealed record class BetaOverloadedErrorVariant(BetaOverloadedError Value)
-    : BetaError,
-        IVariant<BetaOverloadedErrorVariant, BetaOverloadedError>
+public sealed record class BetaOverloadedErrorVariant(Beta::BetaOverloadedError Value)
+    : Beta::BetaError,
+        IVariant<BetaOverloadedErrorVariant, Beta::BetaOverloadedError>
 {
-    public static BetaOverloadedErrorVariant From(BetaOverloadedError value)
+    public static BetaOverloadedErrorVariant From(Beta::BetaOverloadedError value)
     {
         return new(value);
     }

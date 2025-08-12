@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageTokensCount>))]
-public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageTokensCount>
+[JsonConverter(typeof(Anthropic::ModelConverter<MessageTokensCount>))]
+public sealed record class MessageTokensCount
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<MessageTokensCount>
 {
     /// <summary>
     /// The total number of tokens across the provided list of messages, system prompt,
@@ -22,7 +25,10 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(value); }
     }

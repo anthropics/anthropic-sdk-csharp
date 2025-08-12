@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using DocumentBlockParamProperties = Anthropic.Models.Messages.DocumentBlockParamProperties;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<DocumentBlockParam>))]
-public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBlockParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<DocumentBlockParam>))]
+public sealed record class DocumentBlockParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<DocumentBlockParam>
 {
     public required DocumentBlockParamProperties::Source Source
     {
@@ -21,7 +24,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
 
             return JsonSerializer.Deserialize<DocumentBlockParamProperties::Source>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -54,7 +60,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
@@ -69,7 +75,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
 
             return JsonSerializer.Deserialize<CitationsConfigParam?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }
@@ -82,7 +88,10 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
             if (!this.Properties.TryGetValue("context", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["context"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -94,7 +103,10 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
             if (!this.Properties.TryGetValue("title", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
     }

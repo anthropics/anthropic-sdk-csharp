@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<URLPDFSource>))]
-public sealed record class URLPDFSource : ModelBase, IFromRaw<URLPDFSource>
+[JsonConverter(typeof(Anthropic::ModelConverter<URLPDFSource>))]
+public sealed record class URLPDFSource : Anthropic::ModelBase, Anthropic::IFromRaw<URLPDFSource>
 {
     public JsonElement Type
     {
@@ -18,7 +19,10 @@ public sealed record class URLPDFSource : ModelBase, IFromRaw<URLPDFSource>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -33,8 +37,10 @@ public sealed record class URLPDFSource : ModelBase, IFromRaw<URLPDFSource>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("url");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("url");
         }
         set { this.Properties["url"] = JsonSerializer.SerializeToElement(value); }
     }

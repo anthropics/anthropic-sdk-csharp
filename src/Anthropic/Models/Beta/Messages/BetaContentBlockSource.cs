@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaContentBlockSourceProperties = Anthropic.Models.Beta.Messages.BetaContentBlockSourceProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaContentBlockSource>))]
-public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaContentBlockSource>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaContentBlockSource>))]
+public sealed record class BetaContentBlockSource
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaContentBlockSource>
 {
     public required BetaContentBlockSourceProperties::Content Content
     {
@@ -21,7 +24,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
 
             return JsonSerializer.Deserialize<BetaContentBlockSourceProperties::Content>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

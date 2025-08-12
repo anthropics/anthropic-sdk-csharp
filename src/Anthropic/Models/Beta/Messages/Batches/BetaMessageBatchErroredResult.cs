@@ -2,15 +2,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
+using Beta = Anthropic.Models.Beta;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageBatchErroredResult>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaMessageBatchErroredResult>))]
 public sealed record class BetaMessageBatchErroredResult
-    : ModelBase,
-        IFromRaw<BetaMessageBatchErroredResult>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaMessageBatchErroredResult>
 {
-    public required BetaErrorResponse Error
+    public required Beta::BetaErrorResponse Error
     {
         get
         {
@@ -20,9 +22,9 @@ public sealed record class BetaMessageBatchErroredResult
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaErrorResponse>(
+            return JsonSerializer.Deserialize<Beta::BetaErrorResponse>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("error");
         }
         set { this.Properties["error"] = JsonSerializer.SerializeToElement(value); }
@@ -38,7 +40,10 @@ public sealed record class BetaMessageBatchErroredResult
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -69,7 +74,7 @@ public sealed record class BetaMessageBatchErroredResult
     }
 
     [SetsRequiredMembers]
-    public BetaMessageBatchErroredResult(BetaErrorResponse error)
+    public BetaMessageBatchErroredResult(Beta::BetaErrorResponse error)
         : this()
     {
         this.Error = error;

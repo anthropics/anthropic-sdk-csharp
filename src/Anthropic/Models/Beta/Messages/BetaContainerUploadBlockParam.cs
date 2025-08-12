@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -9,10 +10,10 @@ namespace Anthropic.Models.Beta.Messages;
 /// A content block that represents a file to be uploaded to the container Files uploaded
 /// via this block will be available in the container's input directory.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainerUploadBlockParam>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaContainerUploadBlockParam>))]
 public sealed record class BetaContainerUploadBlockParam
-    : ModelBase,
-        IFromRaw<BetaContainerUploadBlockParam>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaContainerUploadBlockParam>
 {
     public required string FileID
     {
@@ -24,8 +25,10 @@ public sealed record class BetaContainerUploadBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("file_id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("file_id");
         }
         set { this.Properties["file_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -40,7 +43,10 @@ public sealed record class BetaContainerUploadBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -57,7 +63,7 @@ public sealed record class BetaContainerUploadBlockParam
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }

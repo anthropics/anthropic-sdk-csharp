@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties;
 
@@ -9,8 +10,8 @@ namespace Anthropic.Models.Messages.Batches.BatchCreateParamsProperties.RequestP
 /// Anthropic offers different levels of service for your API requests. See [service-tiers](https://docs.anthropic.com/en/api/service-tiers)
 /// for details.
 /// </summary>
-[JsonConverter(typeof(EnumConverter<ServiceTier, string>))]
-public sealed record class ServiceTier(string value) : IEnum<ServiceTier, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<ServiceTier, string>))]
+public sealed record class ServiceTier(string value) : Anthropic::IEnum<ServiceTier, string>
 {
     public static readonly ServiceTier Auto = new("auto");
 

@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaMCPToolResultBlockProperties = Anthropic.Models.Beta.Messages.BetaMCPToolResultBlockProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMCPToolResultBlock>))]
-public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPToolResultBlock>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaMCPToolResultBlock>))]
+public sealed record class BetaMCPToolResultBlock
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaMCPToolResultBlock>
 {
     public required BetaMCPToolResultBlockProperties::Content Content
     {
@@ -21,7 +24,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
 
             return JsonSerializer.Deserialize<BetaMCPToolResultBlockProperties::Content>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<bool>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["is_error"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -52,8 +58,10 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("tool_use_id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("tool_use_id");
         }
         set { this.Properties["tool_use_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -68,7 +76,10 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

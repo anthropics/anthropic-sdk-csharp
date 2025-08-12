@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaToolResultBlockParamProperties.ContentProperties.BlockVariants;
 
-[JsonConverter(typeof(VariantConverter<BetaTextBlockParamVariant, BetaTextBlockParam>))]
-public sealed record class BetaTextBlockParamVariant(BetaTextBlockParam Value)
+public sealed record class BetaTextBlockParamVariant(Messages::BetaTextBlockParam Value)
     : Block,
-        IVariant<BetaTextBlockParamVariant, BetaTextBlockParam>
+        IVariant<BetaTextBlockParamVariant, Messages::BetaTextBlockParam>
 {
-    public static BetaTextBlockParamVariant From(BetaTextBlockParam value)
+    public static BetaTextBlockParamVariant From(Messages::BetaTextBlockParam value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class BetaTextBlockParamVariant(BetaTextBlockParam Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaImageBlockParamVariant, BetaImageBlockParam>))]
-public sealed record class BetaImageBlockParamVariant(BetaImageBlockParam Value)
+public sealed record class BetaImageBlockParamVariant(Messages::BetaImageBlockParam Value)
     : Block,
-        IVariant<BetaImageBlockParamVariant, BetaImageBlockParam>
+        IVariant<BetaImageBlockParamVariant, Messages::BetaImageBlockParam>
 {
-    public static BetaImageBlockParamVariant From(BetaImageBlockParam value)
+    public static BetaImageBlockParamVariant From(Messages::BetaImageBlockParam value)
     {
         return new(value);
     }
@@ -34,14 +32,11 @@ public sealed record class BetaImageBlockParamVariant(BetaImageBlockParam Value)
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaSearchResultBlockParamVariant, BetaSearchResultBlockParam>)
-)]
-public sealed record class BetaSearchResultBlockParamVariant(BetaSearchResultBlockParam Value)
-    : Block,
-        IVariant<BetaSearchResultBlockParamVariant, BetaSearchResultBlockParam>
+public sealed record class BetaSearchResultBlockParamVariant(
+    Messages::BetaSearchResultBlockParam Value
+) : Block, IVariant<BetaSearchResultBlockParamVariant, Messages::BetaSearchResultBlockParam>
 {
-    public static BetaSearchResultBlockParamVariant From(BetaSearchResultBlockParam value)
+    public static BetaSearchResultBlockParamVariant From(Messages::BetaSearchResultBlockParam value)
     {
         return new(value);
     }

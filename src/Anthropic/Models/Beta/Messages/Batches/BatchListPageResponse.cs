@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BatchListPageResponse>))]
-public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchListPageResponse>
+[JsonConverter(typeof(Anthropic::ModelConverter<BatchListPageResponse>))]
+public sealed record class BatchListPageResponse
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BatchListPageResponse>
 {
     public required List<BetaMessageBatch> Data
     {
@@ -20,7 +23,7 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
 
             return JsonSerializer.Deserialize<List<BetaMessageBatch>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
@@ -39,7 +42,10 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["first_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -57,7 +63,10 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<bool>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["has_more"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -75,7 +84,10 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["last_id"] = JsonSerializer.SerializeToElement(value); }
     }

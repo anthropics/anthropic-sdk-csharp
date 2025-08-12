@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawContentBlockDeltaEvent>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<RawContentBlockDeltaEvent>))]
 public sealed record class RawContentBlockDeltaEvent
-    : ModelBase,
-        IFromRaw<RawContentBlockDeltaEvent>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<RawContentBlockDeltaEvent>
 {
     public required RawContentBlockDelta Delta
     {
@@ -22,7 +23,7 @@ public sealed record class RawContentBlockDeltaEvent
 
             return JsonSerializer.Deserialize<RawContentBlockDelta>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("delta");
         }
         set { this.Properties["delta"] = JsonSerializer.SerializeToElement(value); }
@@ -38,7 +39,10 @@ public sealed record class RawContentBlockDeltaEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -53,7 +57,10 @@ public sealed record class RawContentBlockDeltaEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

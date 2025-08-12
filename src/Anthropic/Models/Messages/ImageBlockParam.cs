@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using ImageBlockParamProperties = Anthropic.Models.Messages.ImageBlockParamProperties;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ImageBlockParam>))]
-public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<ImageBlockParam>))]
+public sealed record class ImageBlockParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<ImageBlockParam>
 {
     public required ImageBlockParamProperties::Source Source
     {
@@ -21,7 +24,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
 
             return JsonSerializer.Deserialize<ImageBlockParamProperties::Source>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -54,7 +60,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }

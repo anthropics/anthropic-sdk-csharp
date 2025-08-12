@@ -2,15 +2,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageBatchSucceededResult>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaMessageBatchSucceededResult>))]
 public sealed record class BetaMessageBatchSucceededResult
-    : ModelBase,
-        IFromRaw<BetaMessageBatchSucceededResult>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaMessageBatchSucceededResult>
 {
-    public required BetaMessage Message
+    public required Messages::BetaMessage Message
     {
         get
         {
@@ -20,8 +22,10 @@ public sealed record class BetaMessageBatchSucceededResult
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaMessage>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("message");
+            return JsonSerializer.Deserialize<Messages::BetaMessage>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("message");
         }
         set { this.Properties["message"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -36,7 +40,10 @@ public sealed record class BetaMessageBatchSucceededResult
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -67,7 +74,7 @@ public sealed record class BetaMessageBatchSucceededResult
     }
 
     [SetsRequiredMembers]
-    public BetaMessageBatchSucceededResult(BetaMessage message)
+    public BetaMessageBatchSucceededResult(Messages::BetaMessage message)
         : this()
     {
         this.Message = message;

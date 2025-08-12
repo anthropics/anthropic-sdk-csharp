@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using RequestProperties = Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties;
 
 namespace Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties;
 
-[JsonConverter(typeof(ModelConverter<Request>))]
-public sealed record class Request : ModelBase, IFromRaw<Request>
+[JsonConverter(typeof(Anthropic::ModelConverter<Request>))]
+public sealed record class Request : Anthropic::ModelBase, Anthropic::IFromRaw<Request>
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful
@@ -25,8 +26,10 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("custom_id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("custom_id");
         }
         set { this.Properties["custom_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -49,7 +52,7 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
 
             return JsonSerializer.Deserialize<RequestProperties::Params>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("params");
         }
         set { this.Properties["params"] = JsonSerializer.SerializeToElement(value); }

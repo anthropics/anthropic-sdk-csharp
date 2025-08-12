@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.RawMessageStreamEventVariants;
 
-[JsonConverter(typeof(VariantConverter<RawMessageStartEventVariant, RawMessageStartEvent>))]
-public sealed record class RawMessageStartEventVariant(RawMessageStartEvent Value)
-    : RawMessageStreamEvent,
-        IVariant<RawMessageStartEventVariant, RawMessageStartEvent>
+public sealed record class RawMessageStartEventVariant(Messages::RawMessageStartEvent Value)
+    : Messages::RawMessageStreamEvent,
+        IVariant<RawMessageStartEventVariant, Messages::RawMessageStartEvent>
 {
-    public static RawMessageStartEventVariant From(RawMessageStartEvent value)
+    public static RawMessageStartEventVariant From(Messages::RawMessageStartEvent value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class RawMessageStartEventVariant(RawMessageStartEvent Valu
     }
 }
 
-[JsonConverter(typeof(VariantConverter<RawMessageDeltaEventVariant, RawMessageDeltaEvent>))]
-public sealed record class RawMessageDeltaEventVariant(RawMessageDeltaEvent Value)
-    : RawMessageStreamEvent,
-        IVariant<RawMessageDeltaEventVariant, RawMessageDeltaEvent>
+public sealed record class RawMessageDeltaEventVariant(Messages::RawMessageDeltaEvent Value)
+    : Messages::RawMessageStreamEvent,
+        IVariant<RawMessageDeltaEventVariant, Messages::RawMessageDeltaEvent>
 {
-    public static RawMessageDeltaEventVariant From(RawMessageDeltaEvent value)
+    public static RawMessageDeltaEventVariant From(Messages::RawMessageDeltaEvent value)
     {
         return new(value);
     }
@@ -34,12 +32,11 @@ public sealed record class RawMessageDeltaEventVariant(RawMessageDeltaEvent Valu
     }
 }
 
-[JsonConverter(typeof(VariantConverter<RawMessageStopEventVariant, RawMessageStopEvent>))]
-public sealed record class RawMessageStopEventVariant(RawMessageStopEvent Value)
-    : RawMessageStreamEvent,
-        IVariant<RawMessageStopEventVariant, RawMessageStopEvent>
+public sealed record class RawMessageStopEventVariant(Messages::RawMessageStopEvent Value)
+    : Messages::RawMessageStreamEvent,
+        IVariant<RawMessageStopEventVariant, Messages::RawMessageStopEvent>
 {
-    public static RawMessageStopEventVariant From(RawMessageStopEvent value)
+    public static RawMessageStopEventVariant From(Messages::RawMessageStopEvent value)
     {
         return new(value);
     }
@@ -50,14 +47,13 @@ public sealed record class RawMessageStopEventVariant(RawMessageStopEvent Value)
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<RawContentBlockStartEventVariant, RawContentBlockStartEvent>)
-)]
-public sealed record class RawContentBlockStartEventVariant(RawContentBlockStartEvent Value)
-    : RawMessageStreamEvent,
-        IVariant<RawContentBlockStartEventVariant, RawContentBlockStartEvent>
+public sealed record class RawContentBlockStartEventVariant(
+    Messages::RawContentBlockStartEvent Value
+)
+    : Messages::RawMessageStreamEvent,
+        IVariant<RawContentBlockStartEventVariant, Messages::RawContentBlockStartEvent>
 {
-    public static RawContentBlockStartEventVariant From(RawContentBlockStartEvent value)
+    public static RawContentBlockStartEventVariant From(Messages::RawContentBlockStartEvent value)
     {
         return new(value);
     }
@@ -68,14 +64,13 @@ public sealed record class RawContentBlockStartEventVariant(RawContentBlockStart
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<RawContentBlockDeltaEventVariant, RawContentBlockDeltaEvent>)
-)]
-public sealed record class RawContentBlockDeltaEventVariant(RawContentBlockDeltaEvent Value)
-    : RawMessageStreamEvent,
-        IVariant<RawContentBlockDeltaEventVariant, RawContentBlockDeltaEvent>
+public sealed record class RawContentBlockDeltaEventVariant(
+    Messages::RawContentBlockDeltaEvent Value
+)
+    : Messages::RawMessageStreamEvent,
+        IVariant<RawContentBlockDeltaEventVariant, Messages::RawContentBlockDeltaEvent>
 {
-    public static RawContentBlockDeltaEventVariant From(RawContentBlockDeltaEvent value)
+    public static RawContentBlockDeltaEventVariant From(Messages::RawContentBlockDeltaEvent value)
     {
         return new(value);
     }
@@ -86,12 +81,11 @@ public sealed record class RawContentBlockDeltaEventVariant(RawContentBlockDelta
     }
 }
 
-[JsonConverter(typeof(VariantConverter<RawContentBlockStopEventVariant, RawContentBlockStopEvent>))]
-public sealed record class RawContentBlockStopEventVariant(RawContentBlockStopEvent Value)
-    : RawMessageStreamEvent,
-        IVariant<RawContentBlockStopEventVariant, RawContentBlockStopEvent>
+public sealed record class RawContentBlockStopEventVariant(Messages::RawContentBlockStopEvent Value)
+    : Messages::RawMessageStreamEvent,
+        IVariant<RawContentBlockStopEventVariant, Messages::RawContentBlockStopEvent>
 {
-    public static RawContentBlockStopEventVariant From(RawContentBlockStopEvent value)
+    public static RawContentBlockStopEventVariant From(Messages::RawContentBlockStopEvent value)
     {
         return new(value);
     }

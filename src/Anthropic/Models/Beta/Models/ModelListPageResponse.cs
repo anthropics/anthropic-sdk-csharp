@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Models;
 
-[JsonConverter(typeof(ModelConverter<ModelListPageResponse>))]
-public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelListPageResponse>
+[JsonConverter(typeof(Anthropic::ModelConverter<ModelListPageResponse>))]
+public sealed record class ModelListPageResponse
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<ModelListPageResponse>
 {
     public required List<BetaModelInfo> Data
     {
@@ -18,7 +21,7 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
 
             return JsonSerializer.Deserialize<List<BetaModelInfo>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
@@ -34,7 +37,10 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
             if (!this.Properties.TryGetValue("first_id", out JsonElement element))
                 throw new ArgumentOutOfRangeException("first_id", "Missing required argument");
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["first_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -49,7 +55,10 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
             if (!this.Properties.TryGetValue("has_more", out JsonElement element))
                 throw new ArgumentOutOfRangeException("has_more", "Missing required argument");
 
-            return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<bool>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["has_more"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -64,7 +73,10 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
             if (!this.Properties.TryGetValue("last_id", out JsonElement element))
                 throw new ArgumentOutOfRangeException("last_id", "Missing required argument");
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["last_id"] = JsonSerializer.SerializeToElement(value); }
     }

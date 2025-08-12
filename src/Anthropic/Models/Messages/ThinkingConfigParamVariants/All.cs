@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.ThinkingConfigParamVariants;
 
-[JsonConverter(typeof(VariantConverter<ThinkingConfigEnabledVariant, ThinkingConfigEnabled>))]
-public sealed record class ThinkingConfigEnabledVariant(ThinkingConfigEnabled Value)
-    : ThinkingConfigParam,
-        IVariant<ThinkingConfigEnabledVariant, ThinkingConfigEnabled>
+public sealed record class ThinkingConfigEnabledVariant(Messages::ThinkingConfigEnabled Value)
+    : Messages::ThinkingConfigParam,
+        IVariant<ThinkingConfigEnabledVariant, Messages::ThinkingConfigEnabled>
 {
-    public static ThinkingConfigEnabledVariant From(ThinkingConfigEnabled value)
+    public static ThinkingConfigEnabledVariant From(Messages::ThinkingConfigEnabled value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class ThinkingConfigEnabledVariant(ThinkingConfigEnabled Va
     }
 }
 
-[JsonConverter(typeof(VariantConverter<ThinkingConfigDisabledVariant, ThinkingConfigDisabled>))]
-public sealed record class ThinkingConfigDisabledVariant(ThinkingConfigDisabled Value)
-    : ThinkingConfigParam,
-        IVariant<ThinkingConfigDisabledVariant, ThinkingConfigDisabled>
+public sealed record class ThinkingConfigDisabledVariant(Messages::ThinkingConfigDisabled Value)
+    : Messages::ThinkingConfigParam,
+        IVariant<ThinkingConfigDisabledVariant, Messages::ThinkingConfigDisabled>
 {
-    public static ThinkingConfigDisabledVariant From(ThinkingConfigDisabled value)
+    public static ThinkingConfigDisabledVariant From(Messages::ThinkingConfigDisabled value)
     {
         return new(value);
     }

@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Messages = Anthropic.Models.Messages;
+using Anthropic = Anthropic;
+using Messages = Anthropic.Models.Beta.Messages;
 using ParamsProperties = Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties;
 
 namespace Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties;
@@ -13,8 +14,8 @@ namespace Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.Req
 /// See the [Messages API reference](/en/api/messages) for full documentation on
 /// available parameters.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<Params>))]
-public sealed record class Params : ModelBase, IFromRaw<Params>
+[JsonConverter(typeof(Anthropic::ModelConverter<Params>))]
+public sealed record class Params : Anthropic::ModelBase, Anthropic::IFromRaw<Params>
 {
     /// <summary>
     /// The maximum number of tokens to generate before stopping.
@@ -35,7 +36,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["max_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -101,7 +105,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     ///
     /// There is a limit of 100,000 messages in a single request.
     /// </summary>
-    public required List<BetaMessageParam> Messages
+    public required List<Messages::BetaMessageParam> Messages
     {
         get
         {
@@ -111,9 +115,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<List<BetaMessageParam>>(
+            return JsonSerializer.Deserialize<List<Messages::BetaMessageParam>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("messages");
         }
         set { this.Properties["messages"] = JsonSerializer.SerializeToElement(value); }
@@ -123,7 +127,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
     /// for additional details and options.
     /// </summary>
-    public required Messages::Model Model
+    public required global::Anthropic.Models.Messages.Model Model
     {
         get
         {
@@ -133,8 +137,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Messages::Model>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("model");
+            return JsonSerializer.Deserialize<global::Anthropic.Models.Messages.Model>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.Properties["model"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -149,7 +155,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
             if (!this.Properties.TryGetValue("container", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["container"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -157,16 +166,16 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
-    public List<BetaRequestMCPServerURLDefinition>? MCPServers
+    public List<Messages::BetaRequestMCPServerURLDefinition>? MCPServers
     {
         get
         {
             if (!this.Properties.TryGetValue("mcp_servers", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>?>(
+            return JsonSerializer.Deserialize<List<Messages::BetaRequestMCPServerURLDefinition>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["mcp_servers"] = JsonSerializer.SerializeToElement(value); }
@@ -175,14 +184,17 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// <summary>
     /// An object describing metadata about the request.
     /// </summary>
-    public BetaMetadata? Metadata
+    public Messages::BetaMetadata? Metadata
     {
         get
         {
             if (!this.Properties.TryGetValue("metadata", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaMetadata?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<Messages::BetaMetadata?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["metadata"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -203,7 +215,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
 
             return JsonSerializer.Deserialize<ParamsProperties::ServiceTier?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["service_tier"] = JsonSerializer.SerializeToElement(value); }
@@ -227,7 +239,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
             if (!this.Properties.TryGetValue("stop_sequences", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<List<string>?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["stop_sequences"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -244,7 +259,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
             if (!this.Properties.TryGetValue("stream", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<bool?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["stream"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -264,7 +282,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
 
             return JsonSerializer.Deserialize<ParamsProperties::System?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["system"] = JsonSerializer.SerializeToElement(value); }
@@ -286,7 +304,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
             if (!this.Properties.TryGetValue("temperature", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<double?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["temperature"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -301,16 +322,16 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// See [extended thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking)
     /// for details.
     /// </summary>
-    public BetaThinkingConfigParam? Thinking
+    public Messages::BetaThinkingConfigParam? Thinking
     {
         get
         {
             if (!this.Properties.TryGetValue("thinking", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaThinkingConfigParam?>(
+            return JsonSerializer.Deserialize<Messages::BetaThinkingConfigParam?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["thinking"] = JsonSerializer.SerializeToElement(value); }
@@ -320,16 +341,16 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     /// How the model should use the provided tools. The model can use a specific
     /// tool, any available tool, decide by itself, or not use tools at all.
     /// </summary>
-    public BetaToolChoice? ToolChoice
+    public Messages::BetaToolChoice? ToolChoice
     {
         get
         {
             if (!this.Properties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<BetaToolChoice?>(
+            return JsonSerializer.Deserialize<Messages::BetaToolChoice?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["tool_choice"] = JsonSerializer.SerializeToElement(value); }
@@ -381,16 +402,16 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     ///
     /// See our [guide](https://docs.anthropic.com/en/docs/tool-use) for more details.
     /// </summary>
-    public List<BetaToolUnion>? Tools
+    public List<Messages::BetaToolUnion>? Tools
     {
         get
         {
             if (!this.Properties.TryGetValue("tools", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<BetaToolUnion>?>(
+            return JsonSerializer.Deserialize<List<Messages::BetaToolUnion>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["tools"] = JsonSerializer.SerializeToElement(value); }
@@ -411,7 +432,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
             if (!this.Properties.TryGetValue("top_k", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["top_k"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -433,7 +457,10 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
             if (!this.Properties.TryGetValue("top_p", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<double?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["top_p"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaErrorResponse>))]
-public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResponse>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaErrorResponse>))]
+public sealed record class BetaErrorResponse
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaErrorResponse>
 {
     public required BetaError Error
     {
@@ -18,8 +21,10 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaError>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("error");
+            return JsonSerializer.Deserialize<BetaError>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("error");
         }
         set { this.Properties["error"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +39,10 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

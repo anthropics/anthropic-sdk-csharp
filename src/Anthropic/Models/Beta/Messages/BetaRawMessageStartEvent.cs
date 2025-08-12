@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawMessageStartEvent>))]
-public sealed record class BetaRawMessageStartEvent : ModelBase, IFromRaw<BetaRawMessageStartEvent>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaRawMessageStartEvent>))]
+public sealed record class BetaRawMessageStartEvent
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaRawMessageStartEvent>
 {
     public required BetaMessage Message
     {
@@ -18,8 +21,10 @@ public sealed record class BetaRawMessageStartEvent : ModelBase, IFromRaw<BetaRa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<BetaMessage>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("message");
+            return JsonSerializer.Deserialize<BetaMessage>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("message");
         }
         set { this.Properties["message"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +39,10 @@ public sealed record class BetaRawMessageStartEvent : ModelBase, IFromRaw<BetaRa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

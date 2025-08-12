@@ -1,13 +1,15 @@
 using System;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages.Batches.BetaMessageBatchProperties;
 
 /// <summary>
 /// Processing status of the Message Batch.
 /// </summary>
-[JsonConverter(typeof(EnumConverter<ProcessingStatus, string>))]
-public sealed record class ProcessingStatus(string value) : IEnum<ProcessingStatus, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<ProcessingStatus, string>))]
+public sealed record class ProcessingStatus(string value)
+    : Anthropic::IEnum<ProcessingStatus, string>
 {
     public static readonly ProcessingStatus InProgress = new("in_progress");
 

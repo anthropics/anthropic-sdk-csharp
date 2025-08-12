@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatchCanceledResult>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<MessageBatchCanceledResult>))]
 public sealed record class MessageBatchCanceledResult
-    : ModelBase,
-        IFromRaw<MessageBatchCanceledResult>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<MessageBatchCanceledResult>
 {
     public JsonElement Type
     {
@@ -20,7 +21,10 @@ public sealed record class MessageBatchCanceledResult
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

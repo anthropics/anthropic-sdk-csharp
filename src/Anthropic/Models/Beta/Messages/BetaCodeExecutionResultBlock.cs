@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCodeExecutionResultBlock>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaCodeExecutionResultBlock>))]
 public sealed record class BetaCodeExecutionResultBlock
-    : ModelBase,
-        IFromRaw<BetaCodeExecutionResultBlock>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaCodeExecutionResultBlock>
 {
     public required List<BetaCodeExecutionOutputBlock> Content
     {
@@ -22,7 +23,7 @@ public sealed record class BetaCodeExecutionResultBlock
 
             return JsonSerializer.Deserialize<List<BetaCodeExecutionOutputBlock>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -38,7 +39,10 @@ public sealed record class BetaCodeExecutionResultBlock
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["return_code"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -53,8 +57,10 @@ public sealed record class BetaCodeExecutionResultBlock
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("stderr");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("stderr");
         }
         set { this.Properties["stderr"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -69,8 +75,10 @@ public sealed record class BetaCodeExecutionResultBlock
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("stdout");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("stdout");
         }
         set { this.Properties["stdout"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -85,7 +93,10 @@ public sealed record class BetaCodeExecutionResultBlock
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

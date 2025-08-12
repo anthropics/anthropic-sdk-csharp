@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using BetaMessageBatchResultVariants = Anthropic.Models.Beta.Messages.Batches.BetaMessageBatchResultVariants;
 
@@ -10,7 +12,7 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// failed, or the reason why processing was not attempted, such as cancellation
 /// or expiration.
 /// </summary>
-[JsonConverter(typeof(UnionConverter<BetaMessageBatchResult>))]
+[JsonConverter(typeof(BetaMessageBatchResultConverter))]
 public abstract record class BetaMessageBatchResult
 {
     internal BetaMessageBatchResult() { }
@@ -28,4 +30,115 @@ public abstract record class BetaMessageBatchResult
         new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResultVariant(value);
 
     public abstract void Validate();
+}
+
+sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchResult>
+{
+    public override BetaMessageBatchResult? Read(
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<JsonException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMessageBatchSucceededResult>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new BetaMessageBatchResultVariants::BetaMessageBatchSucceededResultVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new BetaMessageBatchResultVariants::BetaMessageBatchErroredResultVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMessageBatchCanceledResult>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new BetaMessageBatchResultVariants::BetaMessageBatchCanceledResultVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMessageBatchExpiredResult>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResultVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        throw new global::System.AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaMessageBatchResult value,
+        JsonSerializerOptions options
+    )
+    {
+        object variant = value switch
+        {
+            BetaMessageBatchResultVariants::BetaMessageBatchSucceededResultVariant(
+                var betaMessageBatchSucceededResult
+            ) => betaMessageBatchSucceededResult,
+            BetaMessageBatchResultVariants::BetaMessageBatchErroredResultVariant(
+                var betaMessageBatchErroredResult
+            ) => betaMessageBatchErroredResult,
+            BetaMessageBatchResultVariants::BetaMessageBatchCanceledResultVariant(
+                var betaMessageBatchCanceledResult
+            ) => betaMessageBatchCanceledResult,
+            BetaMessageBatchResultVariants::BetaMessageBatchExpiredResultVariant(
+                var betaMessageBatchExpiredResult
+            ) => betaMessageBatchExpiredResult,
+            _ => throw new global::System.ArgumentOutOfRangeException(nameof(value)),
+        };
+        JsonSerializer.Serialize(writer, variant, options);
+    }
 }

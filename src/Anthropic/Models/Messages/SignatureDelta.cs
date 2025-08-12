@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<SignatureDelta>))]
-public sealed record class SignatureDelta : ModelBase, IFromRaw<SignatureDelta>
+[JsonConverter(typeof(Anthropic::ModelConverter<SignatureDelta>))]
+public sealed record class SignatureDelta
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<SignatureDelta>
 {
     public required string Signature
     {
@@ -18,8 +21,10 @@ public sealed record class SignatureDelta : ModelBase, IFromRaw<SignatureDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("signature");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("signature");
         }
         set { this.Properties["signature"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +39,10 @@ public sealed record class SignatureDelta : ModelBase, IFromRaw<SignatureDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

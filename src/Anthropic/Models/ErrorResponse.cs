@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<ErrorResponse>))]
-public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
+[JsonConverter(typeof(Anthropic::ModelConverter<ErrorResponse>))]
+public sealed record class ErrorResponse : Anthropic::ModelBase, Anthropic::IFromRaw<ErrorResponse>
 {
     public required ErrorObject Error
     {
@@ -18,8 +19,10 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<ErrorObject>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("error");
+            return JsonSerializer.Deserialize<ErrorObject>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("error");
         }
         set { this.Properties["error"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +37,10 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

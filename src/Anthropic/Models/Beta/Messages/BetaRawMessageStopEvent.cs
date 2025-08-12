@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawMessageStopEvent>))]
-public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRawMessageStopEvent>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaRawMessageStopEvent>))]
+public sealed record class BetaRawMessageStopEvent
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaRawMessageStopEvent>
 {
     public JsonElement Type
     {
@@ -18,7 +21,10 @@ public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRaw
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

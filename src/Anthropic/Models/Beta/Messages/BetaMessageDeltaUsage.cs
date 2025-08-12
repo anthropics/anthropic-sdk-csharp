@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageDeltaUsage>))]
-public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessageDeltaUsage>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaMessageDeltaUsage>))]
+public sealed record class BetaMessageDeltaUsage
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaMessageDeltaUsage>
 {
     /// <summary>
     /// The cumulative number of input tokens used to create the cache entry.
@@ -23,7 +26,10 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -46,7 +52,10 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -67,7 +76,10 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -85,7 +97,10 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["output_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -105,7 +120,7 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
 
             return JsonSerializer.Deserialize<BetaServerToolUsage?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["server_tool_use"] = JsonSerializer.SerializeToElement(value); }

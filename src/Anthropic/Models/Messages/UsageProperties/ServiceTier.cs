@@ -1,13 +1,14 @@
 using System;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages.UsageProperties;
 
 /// <summary>
 /// If the request used the priority, standard, or batch tier.
 /// </summary>
-[JsonConverter(typeof(EnumConverter<ServiceTier, string>))]
-public sealed record class ServiceTier(string value) : IEnum<ServiceTier, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<ServiceTier, string>))]
+public sealed record class ServiceTier(string value) : Anthropic::IEnum<ServiceTier, string>
 {
     public static readonly ServiceTier Standard = new("standard");
 

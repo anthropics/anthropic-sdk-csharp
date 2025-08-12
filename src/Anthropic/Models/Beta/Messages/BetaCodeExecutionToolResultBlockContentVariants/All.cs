@@ -1,21 +1,18 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaCodeExecutionToolResultBlockContentVariants;
 
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaCodeExecutionToolResultErrorVariant,
-        BetaCodeExecutionToolResultError
-    >)
-)]
 public sealed record class BetaCodeExecutionToolResultErrorVariant(
-    BetaCodeExecutionToolResultError Value
+    Messages::BetaCodeExecutionToolResultError Value
 )
-    : BetaCodeExecutionToolResultBlockContent,
-        IVariant<BetaCodeExecutionToolResultErrorVariant, BetaCodeExecutionToolResultError>
+    : Messages::BetaCodeExecutionToolResultBlockContent,
+        IVariant<
+            BetaCodeExecutionToolResultErrorVariant,
+            Messages::BetaCodeExecutionToolResultError
+        >
 {
     public static BetaCodeExecutionToolResultErrorVariant From(
-        BetaCodeExecutionToolResultError value
+        Messages::BetaCodeExecutionToolResultError value
     )
     {
         return new(value);
@@ -27,14 +24,15 @@ public sealed record class BetaCodeExecutionToolResultErrorVariant(
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaCodeExecutionResultBlockVariant, BetaCodeExecutionResultBlock>)
-)]
-public sealed record class BetaCodeExecutionResultBlockVariant(BetaCodeExecutionResultBlock Value)
-    : BetaCodeExecutionToolResultBlockContent,
-        IVariant<BetaCodeExecutionResultBlockVariant, BetaCodeExecutionResultBlock>
+public sealed record class BetaCodeExecutionResultBlockVariant(
+    Messages::BetaCodeExecutionResultBlock Value
+)
+    : Messages::BetaCodeExecutionToolResultBlockContent,
+        IVariant<BetaCodeExecutionResultBlockVariant, Messages::BetaCodeExecutionResultBlock>
 {
-    public static BetaCodeExecutionResultBlockVariant From(BetaCodeExecutionResultBlock value)
+    public static BetaCodeExecutionResultBlockVariant From(
+        Messages::BetaCodeExecutionResultBlock value
+    )
     {
         return new(value);
     }

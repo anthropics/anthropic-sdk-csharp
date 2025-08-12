@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaMessageBatchProperties = Anthropic.Models.Beta.Messages.Batches.BetaMessageBatchProperties;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageBatch>))]
-public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBatch>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaMessageBatch>))]
+public sealed record class BetaMessageBatch
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaMessageBatch>
 {
     /// <summary>
     /// Unique object identifier.
@@ -24,8 +27,10 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -46,7 +51,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
 
             return JsonSerializer.Deserialize<global::System.DateTime?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["archived_at"] = JsonSerializer.SerializeToElement(value); }
@@ -68,7 +73,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
 
             return JsonSerializer.Deserialize<global::System.DateTime?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cancel_initiated_at"] = JsonSerializer.SerializeToElement(value); }
@@ -90,7 +95,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
 
             return JsonSerializer.Deserialize<global::System.DateTime>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["created_at"] = JsonSerializer.SerializeToElement(value); }
@@ -115,7 +120,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
 
             return JsonSerializer.Deserialize<global::System.DateTime?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["ended_at"] = JsonSerializer.SerializeToElement(value); }
@@ -137,7 +142,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
 
             return JsonSerializer.Deserialize<global::System.DateTime>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["expires_at"] = JsonSerializer.SerializeToElement(value); }
@@ -158,7 +163,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
 
             return JsonSerializer.Deserialize<BetaMessageBatchProperties::ProcessingStatus>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("processing_status");
         }
         set { this.Properties["processing_status"] = JsonSerializer.SerializeToElement(value); }
@@ -183,7 +188,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
 
             return JsonSerializer.Deserialize<BetaMessageBatchRequestCounts>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("request_counts");
         }
         set { this.Properties["request_counts"] = JsonSerializer.SerializeToElement(value); }
@@ -206,7 +211,10 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["results_url"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -226,7 +234,10 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

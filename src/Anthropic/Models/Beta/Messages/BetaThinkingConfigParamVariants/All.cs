@@ -1,15 +1,14 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaThinkingConfigParamVariants;
 
-[JsonConverter(
-    typeof(VariantConverter<BetaThinkingConfigEnabledVariant, BetaThinkingConfigEnabled>)
-)]
-public sealed record class BetaThinkingConfigEnabledVariant(BetaThinkingConfigEnabled Value)
-    : BetaThinkingConfigParam,
-        IVariant<BetaThinkingConfigEnabledVariant, BetaThinkingConfigEnabled>
+public sealed record class BetaThinkingConfigEnabledVariant(
+    Messages::BetaThinkingConfigEnabled Value
+)
+    : Messages::BetaThinkingConfigParam,
+        IVariant<BetaThinkingConfigEnabledVariant, Messages::BetaThinkingConfigEnabled>
 {
-    public static BetaThinkingConfigEnabledVariant From(BetaThinkingConfigEnabled value)
+    public static BetaThinkingConfigEnabledVariant From(Messages::BetaThinkingConfigEnabled value)
     {
         return new(value);
     }
@@ -20,14 +19,13 @@ public sealed record class BetaThinkingConfigEnabledVariant(BetaThinkingConfigEn
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaThinkingConfigDisabledVariant, BetaThinkingConfigDisabled>)
-)]
-public sealed record class BetaThinkingConfigDisabledVariant(BetaThinkingConfigDisabled Value)
-    : BetaThinkingConfigParam,
-        IVariant<BetaThinkingConfigDisabledVariant, BetaThinkingConfigDisabled>
+public sealed record class BetaThinkingConfigDisabledVariant(
+    Messages::BetaThinkingConfigDisabled Value
+)
+    : Messages::BetaThinkingConfigParam,
+        IVariant<BetaThinkingConfigDisabledVariant, Messages::BetaThinkingConfigDisabled>
 {
-    public static BetaThinkingConfigDisabledVariant From(BetaThinkingConfigDisabled value)
+    public static BetaThinkingConfigDisabledVariant From(Messages::BetaThinkingConfigDisabled value)
     {
         return new(value);
     }

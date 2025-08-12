@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaRawContentBlockStartEventProperties.ContentBlockVariants;
 
-[JsonConverter(typeof(VariantConverter<BetaTextBlockVariant, BetaTextBlock>))]
-public sealed record class BetaTextBlockVariant(BetaTextBlock Value)
+public sealed record class BetaTextBlockVariant(Messages::BetaTextBlock Value)
     : ContentBlock,
-        IVariant<BetaTextBlockVariant, BetaTextBlock>
+        IVariant<BetaTextBlockVariant, Messages::BetaTextBlock>
 {
-    public static BetaTextBlockVariant From(BetaTextBlock value)
+    public static BetaTextBlockVariant From(Messages::BetaTextBlock value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class BetaTextBlockVariant(BetaTextBlock Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaThinkingBlockVariant, BetaThinkingBlock>))]
-public sealed record class BetaThinkingBlockVariant(BetaThinkingBlock Value)
+public sealed record class BetaThinkingBlockVariant(Messages::BetaThinkingBlock Value)
     : ContentBlock,
-        IVariant<BetaThinkingBlockVariant, BetaThinkingBlock>
+        IVariant<BetaThinkingBlockVariant, Messages::BetaThinkingBlock>
 {
-    public static BetaThinkingBlockVariant From(BetaThinkingBlock value)
+    public static BetaThinkingBlockVariant From(Messages::BetaThinkingBlock value)
     {
         return new(value);
     }
@@ -34,14 +32,11 @@ public sealed record class BetaThinkingBlockVariant(BetaThinkingBlock Value)
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaRedactedThinkingBlockVariant, BetaRedactedThinkingBlock>)
-)]
-public sealed record class BetaRedactedThinkingBlockVariant(BetaRedactedThinkingBlock Value)
-    : ContentBlock,
-        IVariant<BetaRedactedThinkingBlockVariant, BetaRedactedThinkingBlock>
+public sealed record class BetaRedactedThinkingBlockVariant(
+    Messages::BetaRedactedThinkingBlock Value
+) : ContentBlock, IVariant<BetaRedactedThinkingBlockVariant, Messages::BetaRedactedThinkingBlock>
 {
-    public static BetaRedactedThinkingBlockVariant From(BetaRedactedThinkingBlock value)
+    public static BetaRedactedThinkingBlockVariant From(Messages::BetaRedactedThinkingBlock value)
     {
         return new(value);
     }
@@ -52,12 +47,11 @@ public sealed record class BetaRedactedThinkingBlockVariant(BetaRedactedThinking
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaToolUseBlockVariant, BetaToolUseBlock>))]
-public sealed record class BetaToolUseBlockVariant(BetaToolUseBlock Value)
+public sealed record class BetaToolUseBlockVariant(Messages::BetaToolUseBlock Value)
     : ContentBlock,
-        IVariant<BetaToolUseBlockVariant, BetaToolUseBlock>
+        IVariant<BetaToolUseBlockVariant, Messages::BetaToolUseBlock>
 {
-    public static BetaToolUseBlockVariant From(BetaToolUseBlock value)
+    public static BetaToolUseBlockVariant From(Messages::BetaToolUseBlock value)
     {
         return new(value);
     }
@@ -68,12 +62,11 @@ public sealed record class BetaToolUseBlockVariant(BetaToolUseBlock Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaServerToolUseBlockVariant, BetaServerToolUseBlock>))]
-public sealed record class BetaServerToolUseBlockVariant(BetaServerToolUseBlock Value)
+public sealed record class BetaServerToolUseBlockVariant(Messages::BetaServerToolUseBlock Value)
     : ContentBlock,
-        IVariant<BetaServerToolUseBlockVariant, BetaServerToolUseBlock>
+        IVariant<BetaServerToolUseBlockVariant, Messages::BetaServerToolUseBlock>
 {
-    public static BetaServerToolUseBlockVariant From(BetaServerToolUseBlock value)
+    public static BetaServerToolUseBlockVariant From(Messages::BetaServerToolUseBlock value)
     {
         return new(value);
     }
@@ -84,38 +77,14 @@ public sealed record class BetaServerToolUseBlockVariant(BetaServerToolUseBlock 
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaWebSearchToolResultBlockVariant, BetaWebSearchToolResultBlock>)
-)]
-public sealed record class BetaWebSearchToolResultBlockVariant(BetaWebSearchToolResultBlock Value)
-    : ContentBlock,
-        IVariant<BetaWebSearchToolResultBlockVariant, BetaWebSearchToolResultBlock>
-{
-    public static BetaWebSearchToolResultBlockVariant From(BetaWebSearchToolResultBlock value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaCodeExecutionToolResultBlockVariant,
-        BetaCodeExecutionToolResultBlock
-    >)
-)]
-public sealed record class BetaCodeExecutionToolResultBlockVariant(
-    BetaCodeExecutionToolResultBlock Value
+public sealed record class BetaWebSearchToolResultBlockVariant(
+    Messages::BetaWebSearchToolResultBlock Value
 )
     : ContentBlock,
-        IVariant<BetaCodeExecutionToolResultBlockVariant, BetaCodeExecutionToolResultBlock>
+        IVariant<BetaWebSearchToolResultBlockVariant, Messages::BetaWebSearchToolResultBlock>
 {
-    public static BetaCodeExecutionToolResultBlockVariant From(
-        BetaCodeExecutionToolResultBlock value
+    public static BetaWebSearchToolResultBlockVariant From(
+        Messages::BetaWebSearchToolResultBlock value
     )
     {
         return new(value);
@@ -127,12 +96,18 @@ public sealed record class BetaCodeExecutionToolResultBlockVariant(
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaMCPToolUseBlockVariant, BetaMCPToolUseBlock>))]
-public sealed record class BetaMCPToolUseBlockVariant(BetaMCPToolUseBlock Value)
+public sealed record class BetaCodeExecutionToolResultBlockVariant(
+    Messages::BetaCodeExecutionToolResultBlock Value
+)
     : ContentBlock,
-        IVariant<BetaMCPToolUseBlockVariant, BetaMCPToolUseBlock>
+        IVariant<
+            BetaCodeExecutionToolResultBlockVariant,
+            Messages::BetaCodeExecutionToolResultBlock
+        >
 {
-    public static BetaMCPToolUseBlockVariant From(BetaMCPToolUseBlock value)
+    public static BetaCodeExecutionToolResultBlockVariant From(
+        Messages::BetaCodeExecutionToolResultBlock value
+    )
     {
         return new(value);
     }
@@ -143,12 +118,26 @@ public sealed record class BetaMCPToolUseBlockVariant(BetaMCPToolUseBlock Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaMCPToolResultBlockVariant, BetaMCPToolResultBlock>))]
-public sealed record class BetaMCPToolResultBlockVariant(BetaMCPToolResultBlock Value)
+public sealed record class BetaMCPToolUseBlockVariant(Messages::BetaMCPToolUseBlock Value)
     : ContentBlock,
-        IVariant<BetaMCPToolResultBlockVariant, BetaMCPToolResultBlock>
+        IVariant<BetaMCPToolUseBlockVariant, Messages::BetaMCPToolUseBlock>
 {
-    public static BetaMCPToolResultBlockVariant From(BetaMCPToolResultBlock value)
+    public static BetaMCPToolUseBlockVariant From(Messages::BetaMCPToolUseBlock value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+public sealed record class BetaMCPToolResultBlockVariant(Messages::BetaMCPToolResultBlock Value)
+    : ContentBlock,
+        IVariant<BetaMCPToolResultBlockVariant, Messages::BetaMCPToolResultBlock>
+{
+    public static BetaMCPToolResultBlockVariant From(Messages::BetaMCPToolResultBlock value)
     {
         return new(value);
     }
@@ -162,12 +151,11 @@ public sealed record class BetaMCPToolResultBlockVariant(BetaMCPToolResultBlock 
 /// <summary>
 /// Response model for a file uploaded to the container.
 /// </summary>
-[JsonConverter(typeof(VariantConverter<BetaContainerUploadBlockVariant, BetaContainerUploadBlock>))]
-public sealed record class BetaContainerUploadBlockVariant(BetaContainerUploadBlock Value)
+public sealed record class BetaContainerUploadBlockVariant(Messages::BetaContainerUploadBlock Value)
     : ContentBlock,
-        IVariant<BetaContainerUploadBlockVariant, BetaContainerUploadBlock>
+        IVariant<BetaContainerUploadBlockVariant, Messages::BetaContainerUploadBlock>
 {
-    public static BetaContainerUploadBlockVariant From(BetaContainerUploadBlock value)
+    public static BetaContainerUploadBlockVariant From(Messages::BetaContainerUploadBlock value)
     {
         return new(value);
     }

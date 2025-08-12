@@ -1,16 +1,15 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.WebSearchToolResultBlockParamContentVariants;
 
-[JsonConverter(
-    typeof(VariantConverter<WebSearchToolResultBlockItem, List<WebSearchResultBlockParam>>)
-)]
-public sealed record class WebSearchToolResultBlockItem(List<WebSearchResultBlockParam> Value)
-    : WebSearchToolResultBlockParamContent,
-        IVariant<WebSearchToolResultBlockItem, List<WebSearchResultBlockParam>>
+public sealed record class WebSearchToolResultBlockItem(
+    List<Messages::WebSearchResultBlockParam> Value
+)
+    : Messages::WebSearchToolResultBlockParamContent,
+        IVariant<WebSearchToolResultBlockItem, List<Messages::WebSearchResultBlockParam>>
 {
-    public static WebSearchToolResultBlockItem From(List<WebSearchResultBlockParam> value)
+    public static WebSearchToolResultBlockItem From(List<Messages::WebSearchResultBlockParam> value)
     {
         return new(value);
     }
@@ -18,14 +17,13 @@ public sealed record class WebSearchToolResultBlockItem(List<WebSearchResultBloc
     public override void Validate() { }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<WebSearchToolRequestErrorVariant, WebSearchToolRequestError>)
-)]
-public sealed record class WebSearchToolRequestErrorVariant(WebSearchToolRequestError Value)
-    : WebSearchToolResultBlockParamContent,
-        IVariant<WebSearchToolRequestErrorVariant, WebSearchToolRequestError>
+public sealed record class WebSearchToolRequestErrorVariant(
+    Messages::WebSearchToolRequestError Value
+)
+    : Messages::WebSearchToolResultBlockParamContent,
+        IVariant<WebSearchToolRequestErrorVariant, Messages::WebSearchToolRequestError>
 {
-    public static WebSearchToolRequestErrorVariant From(WebSearchToolRequestError value)
+    public static WebSearchToolRequestErrorVariant From(Messages::WebSearchToolRequestError value)
     {
         return new(value);
     }

@@ -1,10 +1,11 @@
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using System = System;
 
 namespace Anthropic.Models.Messages.ToolProperties;
 
-[JsonConverter(typeof(EnumConverter<Type, string>))]
-public sealed record class Type(string value) : IEnum<Type, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<Type, string>))]
+public sealed record class Type(string value) : Anthropic::IEnum<Type, string>
 {
     public static readonly Type Custom = new("custom");
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using MessageBatchResultVariants = Anthropic.Models.Messages.Batches.MessageBatchResultVariants;
 
@@ -10,7 +12,7 @@ namespace Anthropic.Models.Messages.Batches;
 /// failed, or the reason why processing was not attempted, such as cancellation
 /// or expiration.
 /// </summary>
-[JsonConverter(typeof(UnionConverter<MessageBatchResult>))]
+[JsonConverter(typeof(MessageBatchResultConverter))]
 public abstract record class MessageBatchResult
 {
     internal MessageBatchResult() { }
@@ -28,4 +30,115 @@ public abstract record class MessageBatchResult
         new MessageBatchResultVariants::MessageBatchExpiredResultVariant(value);
 
     public abstract void Validate();
+}
+
+sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
+{
+    public override MessageBatchResult? Read(
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<JsonException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new MessageBatchResultVariants::MessageBatchSucceededResultVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new MessageBatchResultVariants::MessageBatchErroredResultVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new MessageBatchResultVariants::MessageBatchCanceledResultVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new MessageBatchResultVariants::MessageBatchExpiredResultVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        throw new global::System.AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        MessageBatchResult value,
+        JsonSerializerOptions options
+    )
+    {
+        object variant = value switch
+        {
+            MessageBatchResultVariants::MessageBatchSucceededResultVariant(
+                var messageBatchSucceededResult
+            ) => messageBatchSucceededResult,
+            MessageBatchResultVariants::MessageBatchErroredResultVariant(
+                var messageBatchErroredResult
+            ) => messageBatchErroredResult,
+            MessageBatchResultVariants::MessageBatchCanceledResultVariant(
+                var messageBatchCanceledResult
+            ) => messageBatchCanceledResult,
+            MessageBatchResultVariants::MessageBatchExpiredResultVariant(
+                var messageBatchExpiredResult
+            ) => messageBatchExpiredResult,
+            _ => throw new global::System.ArgumentOutOfRangeException(nameof(value)),
+        };
+        JsonSerializer.Serialize(writer, variant, options);
+    }
 }

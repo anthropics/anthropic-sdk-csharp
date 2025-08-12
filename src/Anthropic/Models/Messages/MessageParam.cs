@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using MessageParamProperties = Anthropic.Models.Messages.MessageParamProperties;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageParam>))]
-public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<MessageParam>))]
+public sealed record class MessageParam : Anthropic::ModelBase, Anthropic::IFromRaw<MessageParam>
 {
     public required MessageParamProperties::Content Content
     {
@@ -21,7 +22,7 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
 
             return JsonSerializer.Deserialize<MessageParamProperties::Content>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -39,7 +40,7 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
 
             return JsonSerializer.Deserialize<MessageParamProperties::Role>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("role");
         }
         set { this.Properties["role"] = JsonSerializer.SerializeToElement(value); }

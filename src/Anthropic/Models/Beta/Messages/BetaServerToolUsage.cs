@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaServerToolUsage>))]
-public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerToolUsage>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaServerToolUsage>))]
+public sealed record class BetaServerToolUsage
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaServerToolUsage>
 {
     /// <summary>
     /// The number of web search tool requests.
@@ -21,7 +24,10 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["web_search_requests"] = JsonSerializer.SerializeToElement(value); }
     }

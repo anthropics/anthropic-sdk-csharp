@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using DeletedFileProperties = Anthropic.Models.Beta.Files.DeletedFileProperties;
 using System = System;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<DeletedFile>))]
-public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
+[JsonConverter(typeof(Anthropic::ModelConverter<DeletedFile>))]
+public sealed record class DeletedFile : Anthropic::ModelBase, Anthropic::IFromRaw<DeletedFile>
 {
     /// <summary>
     /// ID of the deleted file.
@@ -20,8 +21,10 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
             if (!this.Properties.TryGetValue("id", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("id", "Missing required argument");
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new System::ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new System::ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -40,7 +43,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
 
             return JsonSerializer.Deserialize<DeletedFileProperties::Type?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }

@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Message>))]
-public sealed record class Message : ModelBase, IFromRaw<Message>
+[JsonConverter(typeof(Anthropic::ModelConverter<Message>))]
+public sealed record class Message : Anthropic::ModelBase, Anthropic::IFromRaw<Message>
 {
     /// <summary>
     /// Unique object identifier.
@@ -23,8 +24,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -63,7 +66,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
 
             return JsonSerializer.Deserialize<List<ContentBlock>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -83,8 +86,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("model");
+            return JsonSerializer.Deserialize<Model>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.Properties["model"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -104,7 +109,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["role"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -133,7 +141,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<StopReason?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<StopReason?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["stop_reason"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -154,7 +165,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["stop_sequence"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -174,7 +188,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -206,8 +223,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Usage>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("usage");
+            return JsonSerializer.Deserialize<Usage>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("usage");
         }
         set { this.Properties["usage"] = JsonSerializer.SerializeToElement(value); }
     }

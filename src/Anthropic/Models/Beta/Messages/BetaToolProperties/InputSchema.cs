@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages.BetaToolProperties;
@@ -12,8 +13,8 @@ namespace Anthropic.Models.Beta.Messages.BetaToolProperties;
 /// This defines the shape of the `input` that your tool accepts and that the model
 /// will produce.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<InputSchema>))]
-public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
+[JsonConverter(typeof(Anthropic::ModelConverter<InputSchema>))]
+public sealed record class InputSchema : Anthropic::ModelBase, Anthropic::IFromRaw<InputSchema>
 {
     public JsonElement Type
     {
@@ -22,7 +23,10 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new System::ArgumentOutOfRangeException("type", "Missing required argument");
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +38,10 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
             if (!this.Properties.TryGetValue("properties", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["properties"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -46,7 +53,10 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
             if (!this.Properties.TryGetValue("required", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<List<string>?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["required"] = JsonSerializer.SerializeToElement(value); }
     }

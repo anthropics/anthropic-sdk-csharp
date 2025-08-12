@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCacheCreation>))]
-public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCreation>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaCacheCreation>))]
+public sealed record class BetaCacheCreation
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaCacheCreation>
 {
     /// <summary>
     /// The number of input tokens used to create the 1 hour cache entry.
@@ -21,7 +24,10 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -42,7 +48,10 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set
         {

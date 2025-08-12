@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.TextCitationVariants;
 
-[JsonConverter(typeof(VariantConverter<CitationCharLocationVariant, CitationCharLocation>))]
-public sealed record class CitationCharLocationVariant(CitationCharLocation Value)
-    : TextCitation,
-        IVariant<CitationCharLocationVariant, CitationCharLocation>
+public sealed record class CitationCharLocationVariant(Messages::CitationCharLocation Value)
+    : Messages::TextCitation,
+        IVariant<CitationCharLocationVariant, Messages::CitationCharLocation>
 {
-    public static CitationCharLocationVariant From(CitationCharLocation value)
+    public static CitationCharLocationVariant From(Messages::CitationCharLocation value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class CitationCharLocationVariant(CitationCharLocation Valu
     }
 }
 
-[JsonConverter(typeof(VariantConverter<CitationPageLocationVariant, CitationPageLocation>))]
-public sealed record class CitationPageLocationVariant(CitationPageLocation Value)
-    : TextCitation,
-        IVariant<CitationPageLocationVariant, CitationPageLocation>
+public sealed record class CitationPageLocationVariant(Messages::CitationPageLocation Value)
+    : Messages::TextCitation,
+        IVariant<CitationPageLocationVariant, Messages::CitationPageLocation>
 {
-    public static CitationPageLocationVariant From(CitationPageLocation value)
+    public static CitationPageLocationVariant From(Messages::CitationPageLocation value)
     {
         return new(value);
     }
@@ -34,38 +32,14 @@ public sealed record class CitationPageLocationVariant(CitationPageLocation Valu
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<CitationContentBlockLocationVariant, CitationContentBlockLocation>)
-)]
-public sealed record class CitationContentBlockLocationVariant(CitationContentBlockLocation Value)
-    : TextCitation,
-        IVariant<CitationContentBlockLocationVariant, CitationContentBlockLocation>
-{
-    public static CitationContentBlockLocationVariant From(CitationContentBlockLocation value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[JsonConverter(
-    typeof(VariantConverter<
-        CitationsWebSearchResultLocationVariant,
-        CitationsWebSearchResultLocation
-    >)
-)]
-public sealed record class CitationsWebSearchResultLocationVariant(
-    CitationsWebSearchResultLocation Value
+public sealed record class CitationContentBlockLocationVariant(
+    Messages::CitationContentBlockLocation Value
 )
-    : TextCitation,
-        IVariant<CitationsWebSearchResultLocationVariant, CitationsWebSearchResultLocation>
+    : Messages::TextCitation,
+        IVariant<CitationContentBlockLocationVariant, Messages::CitationContentBlockLocation>
 {
-    public static CitationsWebSearchResultLocationVariant From(
-        CitationsWebSearchResultLocation value
+    public static CitationContentBlockLocationVariant From(
+        Messages::CitationContentBlockLocation value
     )
     {
         return new(value);
@@ -77,14 +51,37 @@ public sealed record class CitationsWebSearchResultLocationVariant(
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<CitationsSearchResultLocationVariant, CitationsSearchResultLocation>)
-)]
-public sealed record class CitationsSearchResultLocationVariant(CitationsSearchResultLocation Value)
-    : TextCitation,
-        IVariant<CitationsSearchResultLocationVariant, CitationsSearchResultLocation>
+public sealed record class CitationsWebSearchResultLocationVariant(
+    Messages::CitationsWebSearchResultLocation Value
+)
+    : Messages::TextCitation,
+        IVariant<
+            CitationsWebSearchResultLocationVariant,
+            Messages::CitationsWebSearchResultLocation
+        >
 {
-    public static CitationsSearchResultLocationVariant From(CitationsSearchResultLocation value)
+    public static CitationsWebSearchResultLocationVariant From(
+        Messages::CitationsWebSearchResultLocation value
+    )
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+public sealed record class CitationsSearchResultLocationVariant(
+    Messages::CitationsSearchResultLocation Value
+)
+    : Messages::TextCitation,
+        IVariant<CitationsSearchResultLocationVariant, Messages::CitationsSearchResultLocation>
+{
+    public static CitationsSearchResultLocationVariant From(
+        Messages::CitationsSearchResultLocation value
+    )
     {
         return new(value);
     }

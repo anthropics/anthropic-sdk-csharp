@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages.Batches;
 
@@ -9,10 +10,10 @@ namespace Anthropic.Models.Messages.Batches;
 /// This is a single line in the response `.jsonl` file and does not represent the
 /// response as a whole.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<MessageBatchIndividualResponse>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<MessageBatchIndividualResponse>))]
 public sealed record class MessageBatchIndividualResponse
-    : ModelBase,
-        IFromRaw<MessageBatchIndividualResponse>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<MessageBatchIndividualResponse>
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful
@@ -30,8 +31,10 @@ public sealed record class MessageBatchIndividualResponse
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("custom_id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("custom_id");
         }
         set { this.Properties["custom_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -55,7 +58,7 @@ public sealed record class MessageBatchIndividualResponse
 
             return JsonSerializer.Deserialize<MessageBatchResult>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("result");
         }
         set { this.Properties["result"] = JsonSerializer.SerializeToElement(value); }

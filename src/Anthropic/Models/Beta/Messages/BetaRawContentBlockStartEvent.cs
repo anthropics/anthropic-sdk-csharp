@@ -2,14 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaRawContentBlockStartEventProperties = Anthropic.Models.Beta.Messages.BetaRawContentBlockStartEventProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawContentBlockStartEvent>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaRawContentBlockStartEvent>))]
 public sealed record class BetaRawContentBlockStartEvent
-    : ModelBase,
-        IFromRaw<BetaRawContentBlockStartEvent>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaRawContentBlockStartEvent>
 {
     /// <summary>
     /// Response model for a file uploaded to the container.
@@ -26,7 +27,7 @@ public sealed record class BetaRawContentBlockStartEvent
 
             return JsonSerializer.Deserialize<BetaRawContentBlockStartEventProperties::ContentBlock>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content_block");
         }
         set { this.Properties["content_block"] = JsonSerializer.SerializeToElement(value); }
@@ -42,7 +43,10 @@ public sealed record class BetaRawContentBlockStartEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -57,7 +61,10 @@ public sealed record class BetaRawContentBlockStartEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

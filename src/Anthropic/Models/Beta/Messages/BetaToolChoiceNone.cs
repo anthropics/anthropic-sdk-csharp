@@ -2,14 +2,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
 /// The model will not be allowed to use tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolChoiceNone>))]
-public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoiceNone>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaToolChoiceNone>))]
+public sealed record class BetaToolChoiceNone
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaToolChoiceNone>
 {
     public JsonElement Type
     {
@@ -21,7 +24,10 @@ public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

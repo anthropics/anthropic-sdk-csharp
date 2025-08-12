@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Anthropic = Anthropic;
+using Beta = Anthropic.Models.Beta;
 using MessageCountTokensParamsProperties = Anthropic.Models.Beta.Messages.MessageCountTokensParamsProperties;
 using Messages = Anthropic.Models.Messages;
 
@@ -15,7 +17,7 @@ namespace Anthropic.Models.Beta.Messages;
 ///
 /// Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)
 /// </summary>
-public sealed record class MessageCountTokensParams : ParamsBase
+public sealed record class MessageCountTokensParams : Anthropic::ParamsBase
 {
     public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
 
@@ -92,7 +94,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<List<BetaMessageParam>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("messages");
         }
         set { this.BodyProperties["messages"] = JsonSerializer.SerializeToElement(value); }
@@ -112,8 +114,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Messages::Model>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("model");
+            return JsonSerializer.Deserialize<Messages::Model>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.BodyProperties["model"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -130,7 +134,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["mcp_servers"] = JsonSerializer.SerializeToElement(value); }
@@ -151,7 +155,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<MessageCountTokensParamsProperties::System?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["system"] = JsonSerializer.SerializeToElement(value); }
@@ -176,7 +180,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<BetaThinkingConfigParam?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["thinking"] = JsonSerializer.SerializeToElement(value); }
@@ -195,7 +199,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<BetaToolChoice?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(value); }
@@ -256,7 +260,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<List<MessageCountTokensParamsProperties::Tool>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["tools"] = JsonSerializer.SerializeToElement(value); }
@@ -265,22 +269,22 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
-    public List<AnthropicBeta>? Betas
+    public List<Beta::AnthropicBeta>? Betas
     {
         get
         {
             if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(
+            return JsonSerializer.Deserialize<List<Beta::AnthropicBeta>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public override global::System.Uri Url(IAnthropicClient client)
+    public override global::System.Uri Url(Anthropic::IAnthropicClient client)
     {
         return new global::System.UriBuilder(
             client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages/count_tokens?beta=true"
@@ -299,12 +303,12 @@ public sealed record class MessageCountTokensParams : ParamsBase
         );
     }
 
-    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
+    public void AddHeadersToRequest(HttpRequestMessage request, Anthropic::IAnthropicClient client)
     {
-        ParamsBase.AddDefaultHeaders(request, client);
+        Anthropic::ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)
         {
-            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+            Anthropic::ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
     }
 }

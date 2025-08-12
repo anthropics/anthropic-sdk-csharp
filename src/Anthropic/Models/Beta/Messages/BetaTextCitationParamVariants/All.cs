@@ -1,60 +1,56 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaTextCitationParamVariants;
 
-[JsonConverter(
-    typeof(VariantConverter<BetaCitationCharLocationParamVariant, BetaCitationCharLocationParam>)
-)]
-public sealed record class BetaCitationCharLocationParamVariant(BetaCitationCharLocationParam Value)
-    : BetaTextCitationParam,
-        IVariant<BetaCitationCharLocationParamVariant, BetaCitationCharLocationParam>
-{
-    public static BetaCitationCharLocationParamVariant From(BetaCitationCharLocationParam value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[JsonConverter(
-    typeof(VariantConverter<BetaCitationPageLocationParamVariant, BetaCitationPageLocationParam>)
-)]
-public sealed record class BetaCitationPageLocationParamVariant(BetaCitationPageLocationParam Value)
-    : BetaTextCitationParam,
-        IVariant<BetaCitationPageLocationParamVariant, BetaCitationPageLocationParam>
-{
-    public static BetaCitationPageLocationParamVariant From(BetaCitationPageLocationParam value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaCitationContentBlockLocationParamVariant,
-        BetaCitationContentBlockLocationParam
-    >)
-)]
-public sealed record class BetaCitationContentBlockLocationParamVariant(
-    BetaCitationContentBlockLocationParam Value
+public sealed record class BetaCitationCharLocationParamVariant(
+    Messages::BetaCitationCharLocationParam Value
 )
-    : BetaTextCitationParam,
+    : Messages::BetaTextCitationParam,
+        IVariant<BetaCitationCharLocationParamVariant, Messages::BetaCitationCharLocationParam>
+{
+    public static BetaCitationCharLocationParamVariant From(
+        Messages::BetaCitationCharLocationParam value
+    )
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+public sealed record class BetaCitationPageLocationParamVariant(
+    Messages::BetaCitationPageLocationParam Value
+)
+    : Messages::BetaTextCitationParam,
+        IVariant<BetaCitationPageLocationParamVariant, Messages::BetaCitationPageLocationParam>
+{
+    public static BetaCitationPageLocationParamVariant From(
+        Messages::BetaCitationPageLocationParam value
+    )
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+public sealed record class BetaCitationContentBlockLocationParamVariant(
+    Messages::BetaCitationContentBlockLocationParam Value
+)
+    : Messages::BetaTextCitationParam,
         IVariant<
             BetaCitationContentBlockLocationParamVariant,
-            BetaCitationContentBlockLocationParam
+            Messages::BetaCitationContentBlockLocationParam
         >
 {
     public static BetaCitationContentBlockLocationParamVariant From(
-        BetaCitationContentBlockLocationParam value
+        Messages::BetaCitationContentBlockLocationParam value
     )
     {
         return new(value);
@@ -66,23 +62,17 @@ public sealed record class BetaCitationContentBlockLocationParamVariant(
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaCitationWebSearchResultLocationParamVariant,
-        BetaCitationWebSearchResultLocationParam
-    >)
-)]
 public sealed record class BetaCitationWebSearchResultLocationParamVariant(
-    BetaCitationWebSearchResultLocationParam Value
+    Messages::BetaCitationWebSearchResultLocationParam Value
 )
-    : BetaTextCitationParam,
+    : Messages::BetaTextCitationParam,
         IVariant<
             BetaCitationWebSearchResultLocationParamVariant,
-            BetaCitationWebSearchResultLocationParam
+            Messages::BetaCitationWebSearchResultLocationParam
         >
 {
     public static BetaCitationWebSearchResultLocationParamVariant From(
-        BetaCitationWebSearchResultLocationParam value
+        Messages::BetaCitationWebSearchResultLocationParam value
     )
     {
         return new(value);
@@ -94,23 +84,17 @@ public sealed record class BetaCitationWebSearchResultLocationParamVariant(
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaCitationSearchResultLocationParamVariant,
-        BetaCitationSearchResultLocationParam
-    >)
-)]
 public sealed record class BetaCitationSearchResultLocationParamVariant(
-    BetaCitationSearchResultLocationParam Value
+    Messages::BetaCitationSearchResultLocationParam Value
 )
-    : BetaTextCitationParam,
+    : Messages::BetaTextCitationParam,
         IVariant<
             BetaCitationSearchResultLocationParamVariant,
-            BetaCitationSearchResultLocationParam
+            Messages::BetaCitationSearchResultLocationParam
         >
 {
     public static BetaCitationSearchResultLocationParamVariant From(
-        BetaCitationSearchResultLocationParam value
+        Messages::BetaCitationSearchResultLocationParam value
     )
     {
         return new(value);

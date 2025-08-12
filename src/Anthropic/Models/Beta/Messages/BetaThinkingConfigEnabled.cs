@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaThinkingConfigEnabled>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaThinkingConfigEnabled>))]
 public sealed record class BetaThinkingConfigEnabled
-    : ModelBase,
-        IFromRaw<BetaThinkingConfigEnabled>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaThinkingConfigEnabled>
 {
     /// <summary>
     /// Determines how many tokens Claude can use for its internal reasoning process.
@@ -30,7 +31,10 @@ public sealed record class BetaThinkingConfigEnabled
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["budget_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -45,7 +49,10 @@ public sealed record class BetaThinkingConfigEnabled
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

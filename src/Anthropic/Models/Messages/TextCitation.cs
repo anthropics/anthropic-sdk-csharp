@@ -1,9 +1,11 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using TextCitationVariants = Anthropic.Models.Messages.TextCitationVariants;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(UnionConverter<TextCitation>))]
+[JsonConverter(typeof(TextCitationConverter))]
 public abstract record class TextCitation
 {
     internal TextCitation() { }
@@ -24,4 +26,126 @@ public abstract record class TextCitation
         new TextCitationVariants::CitationsSearchResultLocationVariant(value);
 
     public abstract void Validate();
+}
+
+sealed class TextCitationConverter : JsonConverter<TextCitation>
+{
+    public override TextCitation? Read(
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<JsonException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<CitationCharLocation>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new TextCitationVariants::CitationCharLocationVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new TextCitationVariants::CitationPageLocationVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<CitationContentBlockLocation>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new TextCitationVariants::CitationContentBlockLocationVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new TextCitationVariants::CitationsWebSearchResultLocationVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<CitationsSearchResultLocation>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new TextCitationVariants::CitationsSearchResultLocationVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        throw new global::System.AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        TextCitation value,
+        JsonSerializerOptions options
+    )
+    {
+        object variant = value switch
+        {
+            TextCitationVariants::CitationCharLocationVariant(var citationCharLocation) =>
+                citationCharLocation,
+            TextCitationVariants::CitationPageLocationVariant(var citationPageLocation) =>
+                citationPageLocation,
+            TextCitationVariants::CitationContentBlockLocationVariant(
+                var citationContentBlockLocation
+            ) => citationContentBlockLocation,
+            TextCitationVariants::CitationsWebSearchResultLocationVariant(
+                var citationsWebSearchResultLocation
+            ) => citationsWebSearchResultLocation,
+            TextCitationVariants::CitationsSearchResultLocationVariant(
+                var citationsSearchResultLocation
+            ) => citationsSearchResultLocation,
+            _ => throw new global::System.ArgumentOutOfRangeException(nameof(value)),
+        };
+        JsonSerializer.Serialize(writer, variant, options);
+    }
 }

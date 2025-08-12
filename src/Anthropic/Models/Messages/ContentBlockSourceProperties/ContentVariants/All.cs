@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.ContentBlockSourceProperties.ContentVariants;
 
-[JsonConverter(typeof(VariantConverter<String, string>))]
 public sealed record class String(string Value) : Content, IVariant<String, string>
 {
     public static String From(string value)
@@ -14,14 +13,13 @@ public sealed record class String(string Value) : Content, IVariant<String, stri
     public override void Validate() { }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<ContentBlockSourceContentVariant, List<ContentBlockSourceContent>>)
-)]
-public sealed record class ContentBlockSourceContentVariant(List<ContentBlockSourceContent> Value)
-    : Content,
-        IVariant<ContentBlockSourceContentVariant, List<ContentBlockSourceContent>>
+public sealed record class ContentBlockSourceContentVariant(
+    List<Messages::ContentBlockSourceContent> Value
+) : Content, IVariant<ContentBlockSourceContentVariant, List<Messages::ContentBlockSourceContent>>
 {
-    public static ContentBlockSourceContentVariant From(List<ContentBlockSourceContent> value)
+    public static ContentBlockSourceContentVariant From(
+        List<Messages::ContentBlockSourceContent> value
+    )
     {
         return new(value);
     }

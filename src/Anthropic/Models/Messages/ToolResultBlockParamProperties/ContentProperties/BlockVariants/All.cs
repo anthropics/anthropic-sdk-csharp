@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.ToolResultBlockParamProperties.ContentProperties.BlockVariants;
 
-[JsonConverter(typeof(VariantConverter<TextBlockParamVariant, TextBlockParam>))]
-public sealed record class TextBlockParamVariant(TextBlockParam Value)
+public sealed record class TextBlockParamVariant(Messages::TextBlockParam Value)
     : Block,
-        IVariant<TextBlockParamVariant, TextBlockParam>
+        IVariant<TextBlockParamVariant, Messages::TextBlockParam>
 {
-    public static TextBlockParamVariant From(TextBlockParam value)
+    public static TextBlockParamVariant From(Messages::TextBlockParam value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class TextBlockParamVariant(TextBlockParam Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<ImageBlockParamVariant, ImageBlockParam>))]
-public sealed record class ImageBlockParamVariant(ImageBlockParam Value)
+public sealed record class ImageBlockParamVariant(Messages::ImageBlockParam Value)
     : Block,
-        IVariant<ImageBlockParamVariant, ImageBlockParam>
+        IVariant<ImageBlockParamVariant, Messages::ImageBlockParam>
 {
-    public static ImageBlockParamVariant From(ImageBlockParam value)
+    public static ImageBlockParamVariant From(Messages::ImageBlockParam value)
     {
         return new(value);
     }
@@ -34,12 +32,11 @@ public sealed record class ImageBlockParamVariant(ImageBlockParam Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<SearchResultBlockParamVariant, SearchResultBlockParam>))]
-public sealed record class SearchResultBlockParamVariant(SearchResultBlockParam Value)
+public sealed record class SearchResultBlockParamVariant(Messages::SearchResultBlockParam Value)
     : Block,
-        IVariant<SearchResultBlockParamVariant, SearchResultBlockParam>
+        IVariant<SearchResultBlockParamVariant, Messages::SearchResultBlockParam>
 {
-    public static SearchResultBlockParamVariant From(SearchResultBlockParam value)
+    public static SearchResultBlockParamVariant From(Messages::SearchResultBlockParam value)
     {
         return new(value);
     }

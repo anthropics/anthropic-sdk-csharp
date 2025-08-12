@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaRequestMCPToolResultBlockParamProperties.ContentVariants;
 
-[JsonConverter(typeof(VariantConverter<String, string>))]
 public sealed record class String(string Value) : Content, IVariant<String, string>
 {
     public static String From(string value)
@@ -14,14 +13,11 @@ public sealed record class String(string Value) : Content, IVariant<String, stri
     public override void Validate() { }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaMCPToolResultBlockParamContent, List<BetaTextBlockParam>>)
-)]
-public sealed record class BetaMCPToolResultBlockParamContent(List<BetaTextBlockParam> Value)
-    : Content,
-        IVariant<BetaMCPToolResultBlockParamContent, List<BetaTextBlockParam>>
+public sealed record class BetaMCPToolResultBlockParamContent(
+    List<Messages::BetaTextBlockParam> Value
+) : Content, IVariant<BetaMCPToolResultBlockParamContent, List<Messages::BetaTextBlockParam>>
 {
-    public static BetaMCPToolResultBlockParamContent From(List<BetaTextBlockParam> value)
+    public static BetaMCPToolResultBlockParamContent From(List<Messages::BetaTextBlockParam> value)
     {
         return new(value);
     }

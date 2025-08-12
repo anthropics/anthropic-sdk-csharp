@@ -2,14 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
 /// Information about the container used in the request (for the code execution tool)
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainer>))]
-public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaContainer>))]
+public sealed record class BetaContainer : Anthropic::ModelBase, Anthropic::IFromRaw<BetaContainer>
 {
     /// <summary>
     /// Identifier for the container used in this request
@@ -24,8 +25,10 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -45,7 +48,7 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
 
             return JsonSerializer.Deserialize<global::System.DateTime>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["expires_at"] = JsonSerializer.SerializeToElement(value); }

@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.ImageBlockParamProperties.SourceVariants;
 
-[JsonConverter(typeof(VariantConverter<Base64ImageSourceVariant, Base64ImageSource>))]
-public sealed record class Base64ImageSourceVariant(Base64ImageSource Value)
+public sealed record class Base64ImageSourceVariant(Messages::Base64ImageSource Value)
     : Source,
-        IVariant<Base64ImageSourceVariant, Base64ImageSource>
+        IVariant<Base64ImageSourceVariant, Messages::Base64ImageSource>
 {
-    public static Base64ImageSourceVariant From(Base64ImageSource value)
+    public static Base64ImageSourceVariant From(Messages::Base64ImageSource value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class Base64ImageSourceVariant(Base64ImageSource Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<URLImageSourceVariant, URLImageSource>))]
-public sealed record class URLImageSourceVariant(URLImageSource Value)
+public sealed record class URLImageSourceVariant(Messages::URLImageSource Value)
     : Source,
-        IVariant<URLImageSourceVariant, URLImageSource>
+        IVariant<URLImageSourceVariant, Messages::URLImageSource>
 {
-    public static URLImageSourceVariant From(URLImageSource value)
+    public static URLImageSourceVariant From(Messages::URLImageSource value)
     {
         return new(value);
     }

@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaBase64ImageSourceProperties = Anthropic.Models.Beta.Messages.BetaBase64ImageSourceProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBase64ImageSource>))]
-public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase64ImageSource>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaBase64ImageSource>))]
+public sealed record class BetaBase64ImageSource
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaBase64ImageSource>
 {
     public required string Data
     {
@@ -19,8 +22,10 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("data");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -37,7 +42,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
 
             return JsonSerializer.Deserialize<BetaBase64ImageSourceProperties::MediaType>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("media_type");
         }
         set { this.Properties["media_type"] = JsonSerializer.SerializeToElement(value); }
@@ -53,7 +58,10 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsSearchResultLocation>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<CitationsSearchResultLocation>))]
 public sealed record class CitationsSearchResultLocation
-    : ModelBase,
-        IFromRaw<CitationsSearchResultLocation>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<CitationsSearchResultLocation>
 {
     public required string CitedText
     {
@@ -20,8 +21,10 @@ public sealed record class CitationsSearchResultLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("cited_text");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("cited_text");
         }
         set { this.Properties["cited_text"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -36,7 +39,10 @@ public sealed record class CitationsSearchResultLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["end_block_index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -51,7 +57,10 @@ public sealed record class CitationsSearchResultLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["search_result_index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -66,8 +75,10 @@ public sealed record class CitationsSearchResultLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("source");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -82,7 +93,10 @@ public sealed record class CitationsSearchResultLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["start_block_index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -97,7 +111,10 @@ public sealed record class CitationsSearchResultLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -112,7 +129,10 @@ public sealed record class CitationsSearchResultLocation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

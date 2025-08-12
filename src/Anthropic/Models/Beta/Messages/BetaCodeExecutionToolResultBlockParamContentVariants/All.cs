@@ -1,24 +1,18 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaCodeExecutionToolResultBlockParamContentVariants;
 
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaCodeExecutionToolResultErrorParamVariant,
-        BetaCodeExecutionToolResultErrorParam
-    >)
-)]
 public sealed record class BetaCodeExecutionToolResultErrorParamVariant(
-    BetaCodeExecutionToolResultErrorParam Value
+    Messages::BetaCodeExecutionToolResultErrorParam Value
 )
-    : BetaCodeExecutionToolResultBlockParamContent,
+    : Messages::BetaCodeExecutionToolResultBlockParamContent,
         IVariant<
             BetaCodeExecutionToolResultErrorParamVariant,
-            BetaCodeExecutionToolResultErrorParam
+            Messages::BetaCodeExecutionToolResultErrorParam
         >
 {
     public static BetaCodeExecutionToolResultErrorParamVariant From(
-        BetaCodeExecutionToolResultErrorParam value
+        Messages::BetaCodeExecutionToolResultErrorParam value
     )
     {
         return new(value);
@@ -30,20 +24,17 @@ public sealed record class BetaCodeExecutionToolResultErrorParamVariant(
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaCodeExecutionResultBlockParamVariant,
-        BetaCodeExecutionResultBlockParam
-    >)
-)]
 public sealed record class BetaCodeExecutionResultBlockParamVariant(
-    BetaCodeExecutionResultBlockParam Value
+    Messages::BetaCodeExecutionResultBlockParam Value
 )
-    : BetaCodeExecutionToolResultBlockParamContent,
-        IVariant<BetaCodeExecutionResultBlockParamVariant, BetaCodeExecutionResultBlockParam>
+    : Messages::BetaCodeExecutionToolResultBlockParamContent,
+        IVariant<
+            BetaCodeExecutionResultBlockParamVariant,
+            Messages::BetaCodeExecutionResultBlockParam
+        >
 {
     public static BetaCodeExecutionResultBlockParamVariant From(
-        BetaCodeExecutionResultBlockParam value
+        Messages::BetaCodeExecutionResultBlockParam value
     )
     {
         return new(value);

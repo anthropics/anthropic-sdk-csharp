@@ -1,9 +1,10 @@
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(EnumConverter<AnthropicBeta, string>))]
-public sealed record class AnthropicBeta(string value) : IEnum<AnthropicBeta, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<AnthropicBeta, string>))]
+public sealed record class AnthropicBeta(string value) : Anthropic::IEnum<AnthropicBeta, string>
 {
     public static readonly AnthropicBeta MessageBatches2024_09_24 = new(
         "message-batches-2024-09-24"

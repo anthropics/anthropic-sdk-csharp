@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<RateLimitError>))]
-public sealed record class RateLimitError : ModelBase, IFromRaw<RateLimitError>
+[JsonConverter(typeof(Anthropic::ModelConverter<RateLimitError>))]
+public sealed record class RateLimitError
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<RateLimitError>
 {
     public required string Message
     {
@@ -18,8 +21,10 @@ public sealed record class RateLimitError : ModelBase, IFromRaw<RateLimitError>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("message");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("message");
         }
         set { this.Properties["message"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +39,10 @@ public sealed record class RateLimitError : ModelBase, IFromRaw<RateLimitError>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

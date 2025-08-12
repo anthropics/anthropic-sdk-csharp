@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<SearchResultBlockParam>))]
-public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchResultBlockParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<SearchResultBlockParam>))]
+public sealed record class SearchResultBlockParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<SearchResultBlockParam>
 {
     public required List<TextBlockParam> Content
     {
@@ -20,7 +23,7 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
 
             return JsonSerializer.Deserialize<List<TextBlockParam>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -36,8 +39,10 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("source");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -52,8 +57,10 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("title");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("title");
         }
         set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -68,7 +75,10 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -85,7 +95,7 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
@@ -100,7 +110,7 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
 
             return JsonSerializer.Deserialize<CitationsConfigParam?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }

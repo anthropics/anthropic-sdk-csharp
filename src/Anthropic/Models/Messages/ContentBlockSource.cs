@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using ContentBlockSourceProperties = Anthropic.Models.Messages.ContentBlockSourceProperties;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ContentBlockSource>))]
-public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlockSource>
+[JsonConverter(typeof(Anthropic::ModelConverter<ContentBlockSource>))]
+public sealed record class ContentBlockSource
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<ContentBlockSource>
 {
     public required ContentBlockSourceProperties::Content Content
     {
@@ -21,7 +24,7 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
 
             return JsonSerializer.Deserialize<ContentBlockSourceProperties::Content>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

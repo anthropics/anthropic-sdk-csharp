@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawContentBlockStopEvent>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaRawContentBlockStopEvent>))]
 public sealed record class BetaRawContentBlockStopEvent
-    : ModelBase,
-        IFromRaw<BetaRawContentBlockStopEvent>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaRawContentBlockStopEvent>
 {
     public required long Index
     {
@@ -20,7 +21,10 @@ public sealed record class BetaRawContentBlockStopEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +39,10 @@ public sealed record class BetaRawContentBlockStopEvent
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

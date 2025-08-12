@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRequestMCPServerURLDefinition>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaRequestMCPServerURLDefinition>))]
 public sealed record class BetaRequestMCPServerURLDefinition
-    : ModelBase,
-        IFromRaw<BetaRequestMCPServerURLDefinition>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaRequestMCPServerURLDefinition>
 {
     public required string Name
     {
@@ -20,8 +21,10 @@ public sealed record class BetaRequestMCPServerURLDefinition
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("name");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("name");
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -36,7 +39,10 @@ public sealed record class BetaRequestMCPServerURLDefinition
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -51,8 +57,10 @@ public sealed record class BetaRequestMCPServerURLDefinition
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("url");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("url");
         }
         set { this.Properties["url"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -64,7 +72,10 @@ public sealed record class BetaRequestMCPServerURLDefinition
             if (!this.Properties.TryGetValue("authorization_token", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["authorization_token"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -78,7 +89,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
 
             return JsonSerializer.Deserialize<BetaRequestMCPServerToolConfiguration?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["tool_configuration"] = JsonSerializer.SerializeToElement(value); }

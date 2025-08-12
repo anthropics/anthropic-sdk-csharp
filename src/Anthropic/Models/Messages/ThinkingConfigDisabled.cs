@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingConfigDisabled>))]
-public sealed record class ThinkingConfigDisabled : ModelBase, IFromRaw<ThinkingConfigDisabled>
+[JsonConverter(typeof(Anthropic::ModelConverter<ThinkingConfigDisabled>))]
+public sealed record class ThinkingConfigDisabled
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<ThinkingConfigDisabled>
 {
     public JsonElement Type
     {
@@ -18,7 +21,10 @@ public sealed record class ThinkingConfigDisabled : ModelBase, IFromRaw<Thinking
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

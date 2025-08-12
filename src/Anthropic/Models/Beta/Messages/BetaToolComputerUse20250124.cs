@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaToolComputerUse20250124>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaToolComputerUse20250124>))]
 public sealed record class BetaToolComputerUse20250124
-    : ModelBase,
-        IFromRaw<BetaToolComputerUse20250124>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaToolComputerUse20250124>
 {
     /// <summary>
     /// The height of the display in pixels.
@@ -23,7 +24,10 @@ public sealed record class BetaToolComputerUse20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["display_height_px"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -41,7 +45,10 @@ public sealed record class BetaToolComputerUse20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["display_width_px"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -61,7 +68,10 @@ public sealed record class BetaToolComputerUse20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -76,7 +86,10 @@ public sealed record class BetaToolComputerUse20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -93,7 +106,7 @@ public sealed record class BetaToolComputerUse20250124
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
@@ -109,7 +122,10 @@ public sealed record class BetaToolComputerUse20250124
             if (!this.Properties.TryGetValue("display_number", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["display_number"] = JsonSerializer.SerializeToElement(value); }
     }

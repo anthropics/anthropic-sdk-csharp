@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
@@ -6,8 +7,8 @@ namespace Anthropic.Models.Messages;
 /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
 /// for additional details and options.
 /// </summary>
-[JsonConverter(typeof(EnumConverter<Model, string>))]
-public sealed record class Model(string value) : IEnum<Model, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<Model, string>))]
+public sealed record class Model(string value) : Anthropic::IEnum<Model, string>
 {
     /// <summary>
     /// High-performance model with early extended thinking

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Anthropic = Anthropic;
 using MessageCountTokensParamsProperties = Anthropic.Models.Messages.MessageCountTokensParamsProperties;
 
 namespace Anthropic.Models.Messages;
@@ -14,7 +15,7 @@ namespace Anthropic.Models.Messages;
 ///
 /// Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)
 /// </summary>
-public sealed record class MessageCountTokensParams : ParamsBase
+public sealed record class MessageCountTokensParams : Anthropic::ParamsBase
 {
     public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
 
@@ -91,7 +92,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<List<MessageParam>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("messages");
         }
         set { this.BodyProperties["messages"] = JsonSerializer.SerializeToElement(value); }
@@ -111,8 +112,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("model");
+            return JsonSerializer.Deserialize<Model>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("model");
         }
         set { this.BodyProperties["model"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -132,7 +135,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<MessageCountTokensParamsProperties::System?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["system"] = JsonSerializer.SerializeToElement(value); }
@@ -157,7 +160,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<ThinkingConfigParam?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["thinking"] = JsonSerializer.SerializeToElement(value); }
@@ -174,7 +177,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<ToolChoice?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<ToolChoice?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.BodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -234,13 +240,13 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
             return JsonSerializer.Deserialize<List<MessageCountTokensTool>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.BodyProperties["tools"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public override global::System.Uri Url(IAnthropicClient client)
+    public override global::System.Uri Url(Anthropic::IAnthropicClient client)
     {
         return new global::System.UriBuilder(
             client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages/count_tokens"
@@ -259,12 +265,12 @@ public sealed record class MessageCountTokensParams : ParamsBase
         );
     }
 
-    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
+    public void AddHeadersToRequest(HttpRequestMessage request, Anthropic::IAnthropicClient client)
     {
-        ParamsBase.AddDefaultHeaders(request, client);
+        Anthropic::ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)
         {
-            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+            Anthropic::ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
     }
 }

@@ -2,14 +2,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
 /// <summary>
 /// The model will automatically decide whether to use tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolChoiceAuto>))]
-public sealed record class BetaToolChoiceAuto : ModelBase, IFromRaw<BetaToolChoiceAuto>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaToolChoiceAuto>))]
+public sealed record class BetaToolChoiceAuto
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaToolChoiceAuto>
 {
     public JsonElement Type
     {
@@ -21,7 +24,10 @@ public sealed record class BetaToolChoiceAuto : ModelBase, IFromRaw<BetaToolChoi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -38,7 +44,10 @@ public sealed record class BetaToolChoiceAuto : ModelBase, IFromRaw<BetaToolChoi
             if (!this.Properties.TryGetValue("disable_parallel_tool_use", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<bool?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set
         {

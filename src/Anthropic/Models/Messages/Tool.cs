@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using ToolProperties = Anthropic.Models.Messages.ToolProperties;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Tool>))]
-public sealed record class Tool : ModelBase, IFromRaw<Tool>
+[JsonConverter(typeof(Anthropic::ModelConverter<Tool>))]
+public sealed record class Tool : Anthropic::ModelBase, Anthropic::IFromRaw<Tool>
 {
     /// <summary>
     /// [JSON schema](https://json-schema.org/draft/2020-12) for this tool's input.
@@ -27,7 +28,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
 
             return JsonSerializer.Deserialize<ToolProperties::InputSchema>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("input_schema");
         }
         set { this.Properties["input_schema"] = JsonSerializer.SerializeToElement(value); }
@@ -48,8 +49,10 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("name");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("name");
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -66,7 +69,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
@@ -87,7 +90,10 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
             if (!this.Properties.TryGetValue("description", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["description"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -101,7 +107,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
 
             return JsonSerializer.Deserialize<ToolProperties::Type?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }

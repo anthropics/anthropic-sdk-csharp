@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<TextBlock>))]
-public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
+[JsonConverter(typeof(Anthropic::ModelConverter<TextBlock>))]
+public sealed record class TextBlock : Anthropic::ModelBase, Anthropic::IFromRaw<TextBlock>
 {
     /// <summary>
     /// Citations supporting the text block.
@@ -27,7 +28,7 @@ public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
 
             return JsonSerializer.Deserialize<List<TextCitation>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }
@@ -43,8 +44,10 @@ public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("text");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("text");
         }
         set { this.Properties["text"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -59,7 +62,10 @@ public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

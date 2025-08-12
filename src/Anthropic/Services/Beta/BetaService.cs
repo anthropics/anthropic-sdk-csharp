@@ -1,4 +1,5 @@
 using System;
+using Anthropic = Anthropic;
 using Files = Anthropic.Services.Beta.Files;
 using Messages = Anthropic.Services.Beta.Messages;
 using Models = Anthropic.Services.Beta.Models;
@@ -7,7 +8,7 @@ namespace Anthropic.Services.Beta;
 
 public sealed class BetaService : IBetaService
 {
-    public BetaService(IAnthropicClient client)
+    public BetaService(Anthropic::IAnthropicClient client)
     {
         _models = new(() => new Models::ModelService(client));
         _messages = new(() => new Messages::MessageService(client));

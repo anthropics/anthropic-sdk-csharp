@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebSearchToolRequestError>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaWebSearchToolRequestError>))]
 public sealed record class BetaWebSearchToolRequestError
-    : ModelBase,
-        IFromRaw<BetaWebSearchToolRequestError>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaWebSearchToolRequestError>
 {
     public required BetaWebSearchToolResultErrorCode ErrorCode
     {
@@ -22,7 +23,7 @@ public sealed record class BetaWebSearchToolRequestError
 
             return JsonSerializer.Deserialize<BetaWebSearchToolResultErrorCode>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("error_code");
         }
         set { this.Properties["error_code"] = JsonSerializer.SerializeToElement(value); }
@@ -38,7 +39,10 @@ public sealed record class BetaWebSearchToolRequestError
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

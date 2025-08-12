@@ -3,14 +3,15 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Models.Beta.Files;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Services.Beta.Files;
 
 public sealed class FileService : IFileService
 {
-    readonly IAnthropicClient _client;
+    readonly Anthropic::IAnthropicClient _client;
 
-    public FileService(IAnthropicClient client)
+    public FileService(Anthropic::IAnthropicClient client)
     {
         _client = client;
     }
@@ -24,7 +25,7 @@ public sealed class FileService : IFileService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -32,7 +33,7 @@ public sealed class FileService : IFileService
 
         return JsonSerializer.Deserialize<FileListPageResponse>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -45,7 +46,7 @@ public sealed class FileService : IFileService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -53,7 +54,7 @@ public sealed class FileService : IFileService
 
         return JsonSerializer.Deserialize<DeletedFile>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -66,7 +67,7 @@ public sealed class FileService : IFileService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -74,7 +75,7 @@ public sealed class FileService : IFileService
 
         return JsonSerializer.Deserialize<JsonElement>(
             await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-            ModelBase.SerializerOptions
+            Anthropic::ModelBase.SerializerOptions
         );
     }
 
@@ -87,7 +88,7 @@ public sealed class FileService : IFileService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -95,7 +96,7 @@ public sealed class FileService : IFileService
 
         return JsonSerializer.Deserialize<FileMetadata>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -111,7 +112,7 @@ public sealed class FileService : IFileService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -119,7 +120,7 @@ public sealed class FileService : IFileService
 
         return JsonSerializer.Deserialize<FileMetadata>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 }

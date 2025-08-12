@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ServerToolUseBlockParam>))]
-public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerToolUseBlockParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<ServerToolUseBlockParam>))]
+public sealed record class ServerToolUseBlockParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<ServerToolUseBlockParam>
 {
     public required string ID
     {
@@ -18,8 +21,10 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("id");
         }
         set { this.Properties["id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +39,10 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["input"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -49,7 +57,10 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -64,7 +75,10 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -81,7 +95,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }

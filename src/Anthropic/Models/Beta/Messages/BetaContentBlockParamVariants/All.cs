@@ -1,16 +1,15 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaContentBlockParamVariants;
 
 /// <summary>
 /// Regular text content.
 /// </summary>
-[JsonConverter(typeof(VariantConverter<BetaTextBlockParamVariant, BetaTextBlockParam>))]
-public sealed record class BetaTextBlockParamVariant(BetaTextBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaTextBlockParamVariant, BetaTextBlockParam>
+public sealed record class BetaTextBlockParamVariant(Messages::BetaTextBlockParam Value)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaTextBlockParamVariant, Messages::BetaTextBlockParam>
 {
-    public static BetaTextBlockParamVariant From(BetaTextBlockParam value)
+    public static BetaTextBlockParamVariant From(Messages::BetaTextBlockParam value)
     {
         return new(value);
     }
@@ -24,12 +23,11 @@ public sealed record class BetaTextBlockParamVariant(BetaTextBlockParam Value)
 /// <summary>
 /// Image content specified directly as base64 data or as a reference via a URL.
 /// </summary>
-[JsonConverter(typeof(VariantConverter<BetaImageBlockParamVariant, BetaImageBlockParam>))]
-public sealed record class BetaImageBlockParamVariant(BetaImageBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaImageBlockParamVariant, BetaImageBlockParam>
+public sealed record class BetaImageBlockParamVariant(Messages::BetaImageBlockParam Value)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaImageBlockParamVariant, Messages::BetaImageBlockParam>
 {
-    public static BetaImageBlockParamVariant From(BetaImageBlockParam value)
+    public static BetaImageBlockParamVariant From(Messages::BetaImageBlockParam value)
     {
         return new(value);
     }
@@ -44,12 +42,11 @@ public sealed record class BetaImageBlockParamVariant(BetaImageBlockParam Value)
 /// Document content, either specified directly as base64 data, as text, or as a
 /// reference via a URL.
 /// </summary>
-[JsonConverter(typeof(VariantConverter<BetaRequestDocumentBlockVariant, BetaRequestDocumentBlock>))]
-public sealed record class BetaRequestDocumentBlockVariant(BetaRequestDocumentBlock Value)
-    : BetaContentBlockParam,
-        IVariant<BetaRequestDocumentBlockVariant, BetaRequestDocumentBlock>
+public sealed record class BetaRequestDocumentBlockVariant(Messages::BetaRequestDocumentBlock Value)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaRequestDocumentBlockVariant, Messages::BetaRequestDocumentBlock>
 {
-    public static BetaRequestDocumentBlockVariant From(BetaRequestDocumentBlock value)
+    public static BetaRequestDocumentBlockVariant From(Messages::BetaRequestDocumentBlock value)
     {
         return new(value);
     }
@@ -63,14 +60,13 @@ public sealed record class BetaRequestDocumentBlockVariant(BetaRequestDocumentBl
 /// <summary>
 /// A search result block containing source, title, and content from search operations.
 /// </summary>
-[JsonConverter(
-    typeof(VariantConverter<BetaSearchResultBlockParamVariant, BetaSearchResultBlockParam>)
-)]
-public sealed record class BetaSearchResultBlockParamVariant(BetaSearchResultBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaSearchResultBlockParamVariant, BetaSearchResultBlockParam>
+public sealed record class BetaSearchResultBlockParamVariant(
+    Messages::BetaSearchResultBlockParam Value
+)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaSearchResultBlockParamVariant, Messages::BetaSearchResultBlockParam>
 {
-    public static BetaSearchResultBlockParamVariant From(BetaSearchResultBlockParam value)
+    public static BetaSearchResultBlockParamVariant From(Messages::BetaSearchResultBlockParam value)
     {
         return new(value);
     }
@@ -84,12 +80,11 @@ public sealed record class BetaSearchResultBlockParamVariant(BetaSearchResultBlo
 /// <summary>
 /// A block specifying internal thinking by the model.
 /// </summary>
-[JsonConverter(typeof(VariantConverter<BetaThinkingBlockParamVariant, BetaThinkingBlockParam>))]
-public sealed record class BetaThinkingBlockParamVariant(BetaThinkingBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaThinkingBlockParamVariant, BetaThinkingBlockParam>
+public sealed record class BetaThinkingBlockParamVariant(Messages::BetaThinkingBlockParam Value)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaThinkingBlockParamVariant, Messages::BetaThinkingBlockParam>
 {
-    public static BetaThinkingBlockParamVariant From(BetaThinkingBlockParam value)
+    public static BetaThinkingBlockParamVariant From(Messages::BetaThinkingBlockParam value)
     {
         return new(value);
     }
@@ -103,16 +98,15 @@ public sealed record class BetaThinkingBlockParamVariant(BetaThinkingBlockParam 
 /// <summary>
 /// A block specifying internal, redacted thinking by the model.
 /// </summary>
-[JsonConverter(
-    typeof(VariantConverter<BetaRedactedThinkingBlockParamVariant, BetaRedactedThinkingBlockParam>)
-)]
 public sealed record class BetaRedactedThinkingBlockParamVariant(
-    BetaRedactedThinkingBlockParam Value
+    Messages::BetaRedactedThinkingBlockParam Value
 )
-    : BetaContentBlockParam,
-        IVariant<BetaRedactedThinkingBlockParamVariant, BetaRedactedThinkingBlockParam>
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaRedactedThinkingBlockParamVariant, Messages::BetaRedactedThinkingBlockParam>
 {
-    public static BetaRedactedThinkingBlockParamVariant From(BetaRedactedThinkingBlockParam value)
+    public static BetaRedactedThinkingBlockParamVariant From(
+        Messages::BetaRedactedThinkingBlockParam value
+    )
     {
         return new(value);
     }
@@ -126,12 +120,11 @@ public sealed record class BetaRedactedThinkingBlockParamVariant(
 /// <summary>
 /// A block indicating a tool use by the model.
 /// </summary>
-[JsonConverter(typeof(VariantConverter<BetaToolUseBlockParamVariant, BetaToolUseBlockParam>))]
-public sealed record class BetaToolUseBlockParamVariant(BetaToolUseBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaToolUseBlockParamVariant, BetaToolUseBlockParam>
+public sealed record class BetaToolUseBlockParamVariant(Messages::BetaToolUseBlockParam Value)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaToolUseBlockParamVariant, Messages::BetaToolUseBlockParam>
 {
-    public static BetaToolUseBlockParamVariant From(BetaToolUseBlockParam value)
+    public static BetaToolUseBlockParamVariant From(Messages::BetaToolUseBlockParam value)
     {
         return new(value);
     }
@@ -145,12 +138,11 @@ public sealed record class BetaToolUseBlockParamVariant(BetaToolUseBlockParam Va
 /// <summary>
 /// A block specifying the results of a tool use by the model.
 /// </summary>
-[JsonConverter(typeof(VariantConverter<BetaToolResultBlockParamVariant, BetaToolResultBlockParam>))]
-public sealed record class BetaToolResultBlockParamVariant(BetaToolResultBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaToolResultBlockParamVariant, BetaToolResultBlockParam>
+public sealed record class BetaToolResultBlockParamVariant(Messages::BetaToolResultBlockParam Value)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaToolResultBlockParamVariant, Messages::BetaToolResultBlockParam>
 {
-    public static BetaToolResultBlockParamVariant From(BetaToolResultBlockParam value)
+    public static BetaToolResultBlockParamVariant From(Messages::BetaToolResultBlockParam value)
     {
         return new(value);
     }
@@ -161,38 +153,14 @@ public sealed record class BetaToolResultBlockParamVariant(BetaToolResultBlockPa
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaServerToolUseBlockParamVariant, BetaServerToolUseBlockParam>)
-)]
-public sealed record class BetaServerToolUseBlockParamVariant(BetaServerToolUseBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaServerToolUseBlockParamVariant, BetaServerToolUseBlockParam>
-{
-    public static BetaServerToolUseBlockParamVariant From(BetaServerToolUseBlockParam value)
-    {
-        return new(value);
-    }
-
-    public override void Validate()
-    {
-        this.Value.Validate();
-    }
-}
-
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaWebSearchToolResultBlockParamVariant,
-        BetaWebSearchToolResultBlockParam
-    >)
-)]
-public sealed record class BetaWebSearchToolResultBlockParamVariant(
-    BetaWebSearchToolResultBlockParam Value
+public sealed record class BetaServerToolUseBlockParamVariant(
+    Messages::BetaServerToolUseBlockParam Value
 )
-    : BetaContentBlockParam,
-        IVariant<BetaWebSearchToolResultBlockParamVariant, BetaWebSearchToolResultBlockParam>
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaServerToolUseBlockParamVariant, Messages::BetaServerToolUseBlockParam>
 {
-    public static BetaWebSearchToolResultBlockParamVariant From(
-        BetaWebSearchToolResultBlockParam value
+    public static BetaServerToolUseBlockParamVariant From(
+        Messages::BetaServerToolUseBlockParam value
     )
     {
         return new(value);
@@ -204,23 +172,39 @@ public sealed record class BetaWebSearchToolResultBlockParamVariant(
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaCodeExecutionToolResultBlockParamVariant,
-        BetaCodeExecutionToolResultBlockParam
-    >)
-)]
-public sealed record class BetaCodeExecutionToolResultBlockParamVariant(
-    BetaCodeExecutionToolResultBlockParam Value
+public sealed record class BetaWebSearchToolResultBlockParamVariant(
+    Messages::BetaWebSearchToolResultBlockParam Value
 )
-    : BetaContentBlockParam,
+    : Messages::BetaContentBlockParam,
+        IVariant<
+            BetaWebSearchToolResultBlockParamVariant,
+            Messages::BetaWebSearchToolResultBlockParam
+        >
+{
+    public static BetaWebSearchToolResultBlockParamVariant From(
+        Messages::BetaWebSearchToolResultBlockParam value
+    )
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
+public sealed record class BetaCodeExecutionToolResultBlockParamVariant(
+    Messages::BetaCodeExecutionToolResultBlockParam Value
+)
+    : Messages::BetaContentBlockParam,
         IVariant<
             BetaCodeExecutionToolResultBlockParamVariant,
-            BetaCodeExecutionToolResultBlockParam
+            Messages::BetaCodeExecutionToolResultBlockParam
         >
 {
     public static BetaCodeExecutionToolResultBlockParamVariant From(
-        BetaCodeExecutionToolResultBlockParam value
+        Messages::BetaCodeExecutionToolResultBlockParam value
     )
     {
         return new(value);
@@ -232,12 +216,11 @@ public sealed record class BetaCodeExecutionToolResultBlockParamVariant(
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaMCPToolUseBlockParamVariant, BetaMCPToolUseBlockParam>))]
-public sealed record class BetaMCPToolUseBlockParamVariant(BetaMCPToolUseBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaMCPToolUseBlockParamVariant, BetaMCPToolUseBlockParam>
+public sealed record class BetaMCPToolUseBlockParamVariant(Messages::BetaMCPToolUseBlockParam Value)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaMCPToolUseBlockParamVariant, Messages::BetaMCPToolUseBlockParam>
 {
-    public static BetaMCPToolUseBlockParamVariant From(BetaMCPToolUseBlockParam value)
+    public static BetaMCPToolUseBlockParamVariant From(Messages::BetaMCPToolUseBlockParam value)
     {
         return new(value);
     }
@@ -248,20 +231,17 @@ public sealed record class BetaMCPToolUseBlockParamVariant(BetaMCPToolUseBlockPa
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<
-        BetaRequestMCPToolResultBlockParamVariant,
-        BetaRequestMCPToolResultBlockParam
-    >)
-)]
 public sealed record class BetaRequestMCPToolResultBlockParamVariant(
-    BetaRequestMCPToolResultBlockParam Value
+    Messages::BetaRequestMCPToolResultBlockParam Value
 )
-    : BetaContentBlockParam,
-        IVariant<BetaRequestMCPToolResultBlockParamVariant, BetaRequestMCPToolResultBlockParam>
+    : Messages::BetaContentBlockParam,
+        IVariant<
+            BetaRequestMCPToolResultBlockParamVariant,
+            Messages::BetaRequestMCPToolResultBlockParam
+        >
 {
     public static BetaRequestMCPToolResultBlockParamVariant From(
-        BetaRequestMCPToolResultBlockParam value
+        Messages::BetaRequestMCPToolResultBlockParam value
     )
     {
         return new(value);
@@ -277,14 +257,15 @@ public sealed record class BetaRequestMCPToolResultBlockParamVariant(
 /// A content block that represents a file to be uploaded to the container Files uploaded
 /// via this block will be available in the container's input directory.
 /// </summary>
-[JsonConverter(
-    typeof(VariantConverter<BetaContainerUploadBlockParamVariant, BetaContainerUploadBlockParam>)
-)]
-public sealed record class BetaContainerUploadBlockParamVariant(BetaContainerUploadBlockParam Value)
-    : BetaContentBlockParam,
-        IVariant<BetaContainerUploadBlockParamVariant, BetaContainerUploadBlockParam>
+public sealed record class BetaContainerUploadBlockParamVariant(
+    Messages::BetaContainerUploadBlockParam Value
+)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaContainerUploadBlockParamVariant, Messages::BetaContainerUploadBlockParam>
 {
-    public static BetaContainerUploadBlockParamVariant From(BetaContainerUploadBlockParam value)
+    public static BetaContainerUploadBlockParamVariant From(
+        Messages::BetaContainerUploadBlockParam value
+    )
     {
         return new(value);
     }

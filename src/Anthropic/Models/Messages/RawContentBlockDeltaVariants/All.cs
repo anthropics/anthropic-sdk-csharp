@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.RawContentBlockDeltaVariants;
 
-[JsonConverter(typeof(VariantConverter<TextDeltaVariant, TextDelta>))]
-public sealed record class TextDeltaVariant(TextDelta Value)
-    : RawContentBlockDelta,
-        IVariant<TextDeltaVariant, TextDelta>
+public sealed record class TextDeltaVariant(Messages::TextDelta Value)
+    : Messages::RawContentBlockDelta,
+        IVariant<TextDeltaVariant, Messages::TextDelta>
 {
-    public static TextDeltaVariant From(TextDelta value)
+    public static TextDeltaVariant From(Messages::TextDelta value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class TextDeltaVariant(TextDelta Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<InputJSONDeltaVariant, InputJSONDelta>))]
-public sealed record class InputJSONDeltaVariant(InputJSONDelta Value)
-    : RawContentBlockDelta,
-        IVariant<InputJSONDeltaVariant, InputJSONDelta>
+public sealed record class InputJSONDeltaVariant(Messages::InputJSONDelta Value)
+    : Messages::RawContentBlockDelta,
+        IVariant<InputJSONDeltaVariant, Messages::InputJSONDelta>
 {
-    public static InputJSONDeltaVariant From(InputJSONDelta value)
+    public static InputJSONDeltaVariant From(Messages::InputJSONDelta value)
     {
         return new(value);
     }
@@ -34,12 +32,11 @@ public sealed record class InputJSONDeltaVariant(InputJSONDelta Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<CitationsDeltaVariant, CitationsDelta>))]
-public sealed record class CitationsDeltaVariant(CitationsDelta Value)
-    : RawContentBlockDelta,
-        IVariant<CitationsDeltaVariant, CitationsDelta>
+public sealed record class CitationsDeltaVariant(Messages::CitationsDelta Value)
+    : Messages::RawContentBlockDelta,
+        IVariant<CitationsDeltaVariant, Messages::CitationsDelta>
 {
-    public static CitationsDeltaVariant From(CitationsDelta value)
+    public static CitationsDeltaVariant From(Messages::CitationsDelta value)
     {
         return new(value);
     }
@@ -50,12 +47,11 @@ public sealed record class CitationsDeltaVariant(CitationsDelta Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<ThinkingDeltaVariant, ThinkingDelta>))]
-public sealed record class ThinkingDeltaVariant(ThinkingDelta Value)
-    : RawContentBlockDelta,
-        IVariant<ThinkingDeltaVariant, ThinkingDelta>
+public sealed record class ThinkingDeltaVariant(Messages::ThinkingDelta Value)
+    : Messages::RawContentBlockDelta,
+        IVariant<ThinkingDeltaVariant, Messages::ThinkingDelta>
 {
-    public static ThinkingDeltaVariant From(ThinkingDelta value)
+    public static ThinkingDeltaVariant From(Messages::ThinkingDelta value)
     {
         return new(value);
     }
@@ -66,12 +62,11 @@ public sealed record class ThinkingDeltaVariant(ThinkingDelta Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<SignatureDeltaVariant, SignatureDelta>))]
-public sealed record class SignatureDeltaVariant(SignatureDelta Value)
-    : RawContentBlockDelta,
-        IVariant<SignatureDeltaVariant, SignatureDelta>
+public sealed record class SignatureDeltaVariant(Messages::SignatureDelta Value)
+    : Messages::RawContentBlockDelta,
+        IVariant<SignatureDeltaVariant, Messages::SignatureDelta>
 {
-    public static SignatureDeltaVariant From(SignatureDelta value)
+    public static SignatureDeltaVariant From(Messages::SignatureDelta value)
     {
         return new(value);
     }

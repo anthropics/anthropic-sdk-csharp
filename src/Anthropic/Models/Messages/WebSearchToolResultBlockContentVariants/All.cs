@@ -1,14 +1,13 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.WebSearchToolResultBlockContentVariants;
 
-[JsonConverter(typeof(VariantConverter<WebSearchToolResultErrorVariant, WebSearchToolResultError>))]
-public sealed record class WebSearchToolResultErrorVariant(WebSearchToolResultError Value)
-    : WebSearchToolResultBlockContent,
-        IVariant<WebSearchToolResultErrorVariant, WebSearchToolResultError>
+public sealed record class WebSearchToolResultErrorVariant(Messages::WebSearchToolResultError Value)
+    : Messages::WebSearchToolResultBlockContent,
+        IVariant<WebSearchToolResultErrorVariant, Messages::WebSearchToolResultError>
 {
-    public static WebSearchToolResultErrorVariant From(WebSearchToolResultError value)
+    public static WebSearchToolResultErrorVariant From(Messages::WebSearchToolResultError value)
     {
         return new(value);
     }
@@ -19,12 +18,11 @@ public sealed record class WebSearchToolResultErrorVariant(WebSearchToolResultEr
     }
 }
 
-[JsonConverter(typeof(VariantConverter<WebSearchResultBlocks, List<WebSearchResultBlock>>))]
-public sealed record class WebSearchResultBlocks(List<WebSearchResultBlock> Value)
-    : WebSearchToolResultBlockContent,
-        IVariant<WebSearchResultBlocks, List<WebSearchResultBlock>>
+public sealed record class WebSearchResultBlocks(List<Messages::WebSearchResultBlock> Value)
+    : Messages::WebSearchToolResultBlockContent,
+        IVariant<WebSearchResultBlocks, List<Messages::WebSearchResultBlock>>
 {
-    public static WebSearchResultBlocks From(List<WebSearchResultBlock> value)
+    public static WebSearchResultBlocks From(List<Messages::WebSearchResultBlock> value)
     {
         return new(value);
     }

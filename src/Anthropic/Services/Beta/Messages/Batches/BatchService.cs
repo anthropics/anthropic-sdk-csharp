@@ -4,14 +4,15 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Models.Beta.Messages.Batches;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Services.Beta.Messages.Batches;
 
 public sealed class BatchService : IBatchService
 {
-    readonly IAnthropicClient _client;
+    readonly Anthropic::IAnthropicClient _client;
 
-    public BatchService(IAnthropicClient client)
+    public BatchService(Anthropic::IAnthropicClient client)
     {
         _client = client;
     }
@@ -28,7 +29,7 @@ public sealed class BatchService : IBatchService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -36,7 +37,7 @@ public sealed class BatchService : IBatchService
 
         return JsonSerializer.Deserialize<BetaMessageBatch>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -49,7 +50,7 @@ public sealed class BatchService : IBatchService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -57,7 +58,7 @@ public sealed class BatchService : IBatchService
 
         return JsonSerializer.Deserialize<BetaMessageBatch>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -70,7 +71,7 @@ public sealed class BatchService : IBatchService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -78,7 +79,7 @@ public sealed class BatchService : IBatchService
 
         return JsonSerializer.Deserialize<BatchListPageResponse>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -91,7 +92,7 @@ public sealed class BatchService : IBatchService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -99,7 +100,7 @@ public sealed class BatchService : IBatchService
 
         return JsonSerializer.Deserialize<BetaDeletedMessageBatch>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -112,7 +113,7 @@ public sealed class BatchService : IBatchService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -120,7 +121,7 @@ public sealed class BatchService : IBatchService
 
         return JsonSerializer.Deserialize<BetaMessageBatch>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -135,17 +136,17 @@ public sealed class BatchService : IBatchService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
         }
 
-        await foreach (var message in SseMessage.GetEnumerable(response))
+        await foreach (var message in Anthropic::SseMessage.GetEnumerable(response))
         {
             yield return JsonSerializer.Deserialize<BetaMessageBatchIndividualResponse>(
                 message.Data,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
         }
     }

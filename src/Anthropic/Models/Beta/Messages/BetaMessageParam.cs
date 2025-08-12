@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaMessageParamProperties = Anthropic.Models.Beta.Messages.BetaMessageParamProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageParam>))]
-public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessageParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaMessageParam>))]
+public sealed record class BetaMessageParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaMessageParam>
 {
     public required BetaMessageParamProperties::Content Content
     {
@@ -21,7 +24,7 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
 
             return JsonSerializer.Deserialize<BetaMessageParamProperties::Content>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -39,7 +42,7 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
 
             return JsonSerializer.Deserialize<BetaMessageParamProperties::Role>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("role");
         }
         set { this.Properties["role"] = JsonSerializer.SerializeToElement(value); }

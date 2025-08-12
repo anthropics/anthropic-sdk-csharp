@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaThinkingConfigDisabled>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaThinkingConfigDisabled>))]
 public sealed record class BetaThinkingConfigDisabled
-    : ModelBase,
-        IFromRaw<BetaThinkingConfigDisabled>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaThinkingConfigDisabled>
 {
     public JsonElement Type
     {
@@ -20,7 +21,10 @@ public sealed record class BetaThinkingConfigDisabled
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

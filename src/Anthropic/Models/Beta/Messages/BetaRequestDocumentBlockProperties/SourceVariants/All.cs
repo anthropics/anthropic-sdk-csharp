@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaRequestDocumentBlockProperties.SourceVariants;
 
-[JsonConverter(typeof(VariantConverter<BetaBase64PDFSourceVariant, BetaBase64PDFSource>))]
-public sealed record class BetaBase64PDFSourceVariant(BetaBase64PDFSource Value)
+public sealed record class BetaBase64PDFSourceVariant(Messages::BetaBase64PDFSource Value)
     : Source,
-        IVariant<BetaBase64PDFSourceVariant, BetaBase64PDFSource>
+        IVariant<BetaBase64PDFSourceVariant, Messages::BetaBase64PDFSource>
 {
-    public static BetaBase64PDFSourceVariant From(BetaBase64PDFSource value)
+    public static BetaBase64PDFSourceVariant From(Messages::BetaBase64PDFSource value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class BetaBase64PDFSourceVariant(BetaBase64PDFSource Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaPlainTextSourceVariant, BetaPlainTextSource>))]
-public sealed record class BetaPlainTextSourceVariant(BetaPlainTextSource Value)
+public sealed record class BetaPlainTextSourceVariant(Messages::BetaPlainTextSource Value)
     : Source,
-        IVariant<BetaPlainTextSourceVariant, BetaPlainTextSource>
+        IVariant<BetaPlainTextSourceVariant, Messages::BetaPlainTextSource>
 {
-    public static BetaPlainTextSourceVariant From(BetaPlainTextSource value)
+    public static BetaPlainTextSourceVariant From(Messages::BetaPlainTextSource value)
     {
         return new(value);
     }
@@ -34,12 +32,11 @@ public sealed record class BetaPlainTextSourceVariant(BetaPlainTextSource Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaContentBlockSourceVariant, BetaContentBlockSource>))]
-public sealed record class BetaContentBlockSourceVariant(BetaContentBlockSource Value)
+public sealed record class BetaContentBlockSourceVariant(Messages::BetaContentBlockSource Value)
     : Source,
-        IVariant<BetaContentBlockSourceVariant, BetaContentBlockSource>
+        IVariant<BetaContentBlockSourceVariant, Messages::BetaContentBlockSource>
 {
-    public static BetaContentBlockSourceVariant From(BetaContentBlockSource value)
+    public static BetaContentBlockSourceVariant From(Messages::BetaContentBlockSource value)
     {
         return new(value);
     }
@@ -50,12 +47,11 @@ public sealed record class BetaContentBlockSourceVariant(BetaContentBlockSource 
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaURLPDFSourceVariant, BetaURLPDFSource>))]
-public sealed record class BetaURLPDFSourceVariant(BetaURLPDFSource Value)
+public sealed record class BetaURLPDFSourceVariant(Messages::BetaURLPDFSource Value)
     : Source,
-        IVariant<BetaURLPDFSourceVariant, BetaURLPDFSource>
+        IVariant<BetaURLPDFSourceVariant, Messages::BetaURLPDFSource>
 {
-    public static BetaURLPDFSourceVariant From(BetaURLPDFSource value)
+    public static BetaURLPDFSourceVariant From(Messages::BetaURLPDFSource value)
     {
         return new(value);
     }
@@ -66,12 +62,11 @@ public sealed record class BetaURLPDFSourceVariant(BetaURLPDFSource Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaFileDocumentSourceVariant, BetaFileDocumentSource>))]
-public sealed record class BetaFileDocumentSourceVariant(BetaFileDocumentSource Value)
+public sealed record class BetaFileDocumentSourceVariant(Messages::BetaFileDocumentSource Value)
     : Source,
-        IVariant<BetaFileDocumentSourceVariant, BetaFileDocumentSource>
+        IVariant<BetaFileDocumentSourceVariant, Messages::BetaFileDocumentSource>
 {
-    public static BetaFileDocumentSourceVariant From(BetaFileDocumentSource value)
+    public static BetaFileDocumentSourceVariant From(Messages::BetaFileDocumentSource value)
     {
         return new(value);
     }

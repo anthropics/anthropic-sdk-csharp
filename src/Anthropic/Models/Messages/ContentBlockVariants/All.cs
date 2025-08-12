@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.ContentBlockVariants;
 
-[JsonConverter(typeof(VariantConverter<TextBlockVariant, TextBlock>))]
-public sealed record class TextBlockVariant(TextBlock Value)
-    : ContentBlock,
-        IVariant<TextBlockVariant, TextBlock>
+public sealed record class TextBlockVariant(Messages::TextBlock Value)
+    : Messages::ContentBlock,
+        IVariant<TextBlockVariant, Messages::TextBlock>
 {
-    public static TextBlockVariant From(TextBlock value)
+    public static TextBlockVariant From(Messages::TextBlock value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class TextBlockVariant(TextBlock Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<ThinkingBlockVariant, ThinkingBlock>))]
-public sealed record class ThinkingBlockVariant(ThinkingBlock Value)
-    : ContentBlock,
-        IVariant<ThinkingBlockVariant, ThinkingBlock>
+public sealed record class ThinkingBlockVariant(Messages::ThinkingBlock Value)
+    : Messages::ContentBlock,
+        IVariant<ThinkingBlockVariant, Messages::ThinkingBlock>
 {
-    public static ThinkingBlockVariant From(ThinkingBlock value)
+    public static ThinkingBlockVariant From(Messages::ThinkingBlock value)
     {
         return new(value);
     }
@@ -34,12 +32,11 @@ public sealed record class ThinkingBlockVariant(ThinkingBlock Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<RedactedThinkingBlockVariant, RedactedThinkingBlock>))]
-public sealed record class RedactedThinkingBlockVariant(RedactedThinkingBlock Value)
-    : ContentBlock,
-        IVariant<RedactedThinkingBlockVariant, RedactedThinkingBlock>
+public sealed record class RedactedThinkingBlockVariant(Messages::RedactedThinkingBlock Value)
+    : Messages::ContentBlock,
+        IVariant<RedactedThinkingBlockVariant, Messages::RedactedThinkingBlock>
 {
-    public static RedactedThinkingBlockVariant From(RedactedThinkingBlock value)
+    public static RedactedThinkingBlockVariant From(Messages::RedactedThinkingBlock value)
     {
         return new(value);
     }
@@ -50,12 +47,11 @@ public sealed record class RedactedThinkingBlockVariant(RedactedThinkingBlock Va
     }
 }
 
-[JsonConverter(typeof(VariantConverter<ToolUseBlockVariant, ToolUseBlock>))]
-public sealed record class ToolUseBlockVariant(ToolUseBlock Value)
-    : ContentBlock,
-        IVariant<ToolUseBlockVariant, ToolUseBlock>
+public sealed record class ToolUseBlockVariant(Messages::ToolUseBlock Value)
+    : Messages::ContentBlock,
+        IVariant<ToolUseBlockVariant, Messages::ToolUseBlock>
 {
-    public static ToolUseBlockVariant From(ToolUseBlock value)
+    public static ToolUseBlockVariant From(Messages::ToolUseBlock value)
     {
         return new(value);
     }
@@ -66,12 +62,11 @@ public sealed record class ToolUseBlockVariant(ToolUseBlock Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<ServerToolUseBlockVariant, ServerToolUseBlock>))]
-public sealed record class ServerToolUseBlockVariant(ServerToolUseBlock Value)
-    : ContentBlock,
-        IVariant<ServerToolUseBlockVariant, ServerToolUseBlock>
+public sealed record class ServerToolUseBlockVariant(Messages::ServerToolUseBlock Value)
+    : Messages::ContentBlock,
+        IVariant<ServerToolUseBlockVariant, Messages::ServerToolUseBlock>
 {
-    public static ServerToolUseBlockVariant From(ServerToolUseBlock value)
+    public static ServerToolUseBlockVariant From(Messages::ServerToolUseBlock value)
     {
         return new(value);
     }
@@ -82,12 +77,11 @@ public sealed record class ServerToolUseBlockVariant(ServerToolUseBlock Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<WebSearchToolResultBlockVariant, WebSearchToolResultBlock>))]
-public sealed record class WebSearchToolResultBlockVariant(WebSearchToolResultBlock Value)
-    : ContentBlock,
-        IVariant<WebSearchToolResultBlockVariant, WebSearchToolResultBlock>
+public sealed record class WebSearchToolResultBlockVariant(Messages::WebSearchToolResultBlock Value)
+    : Messages::ContentBlock,
+        IVariant<WebSearchToolResultBlockVariant, Messages::WebSearchToolResultBlock>
 {
-    public static WebSearchToolResultBlockVariant From(WebSearchToolResultBlock value)
+    public static WebSearchToolResultBlockVariant From(Messages::WebSearchToolResultBlock value)
     {
         return new(value);
     }

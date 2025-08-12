@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties.SystemVariants;
 
-[JsonConverter(typeof(VariantConverter<String, string>))]
 public sealed record class String(string Value) : System, IVariant<String, string>
 {
     public static String From(string value)
@@ -14,12 +13,11 @@ public sealed record class String(string Value) : System, IVariant<String, strin
     public override void Validate() { }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaTextBlockParams, List<BetaTextBlockParam>>))]
-public sealed record class BetaTextBlockParams(List<BetaTextBlockParam> Value)
+public sealed record class BetaTextBlockParams(List<Messages::BetaTextBlockParam> Value)
     : System,
-        IVariant<BetaTextBlockParams, List<BetaTextBlockParam>>
+        IVariant<BetaTextBlockParams, List<Messages::BetaTextBlockParam>>
 {
-    public static BetaTextBlockParams From(List<BetaTextBlockParam> value)
+    public static BetaTextBlockParams From(List<Messages::BetaTextBlockParam> value)
     {
         return new(value);
     }

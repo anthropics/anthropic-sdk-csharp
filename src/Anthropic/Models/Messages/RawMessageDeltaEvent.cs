@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using RawMessageDeltaEventProperties = Anthropic.Models.Messages.RawMessageDeltaEventProperties;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageDeltaEvent>))]
-public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessageDeltaEvent>
+[JsonConverter(typeof(Anthropic::ModelConverter<RawMessageDeltaEvent>))]
+public sealed record class RawMessageDeltaEvent
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<RawMessageDeltaEvent>
 {
     public required RawMessageDeltaEventProperties::Delta Delta
     {
@@ -21,7 +24,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
 
             return JsonSerializer.Deserialize<RawMessageDeltaEventProperties::Delta>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("delta");
         }
         set { this.Properties["delta"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -71,7 +77,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
 
             return JsonSerializer.Deserialize<MessageDeltaUsage>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("usage");
         }
         set { this.Properties["usage"] = JsonSerializer.SerializeToElement(value); }

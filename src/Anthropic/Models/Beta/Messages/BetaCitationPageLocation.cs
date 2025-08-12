@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationPageLocation>))]
-public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCitationPageLocation>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaCitationPageLocation>))]
+public sealed record class BetaCitationPageLocation
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaCitationPageLocation>
 {
     public required string CitedText
     {
@@ -18,8 +21,10 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("cited_text");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("cited_text");
         }
         set { this.Properties["cited_text"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +39,10 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["document_index"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -49,7 +57,10 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["document_title"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -64,7 +75,10 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["end_page_number"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -79,7 +93,10 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["file_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -94,7 +111,10 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["start_page_number"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -109,7 +129,10 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

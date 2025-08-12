@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.DocumentBlockParamProperties.SourceVariants;
 
-[JsonConverter(typeof(VariantConverter<Base64PDFSourceVariant, Base64PDFSource>))]
-public sealed record class Base64PDFSourceVariant(Base64PDFSource Value)
+public sealed record class Base64PDFSourceVariant(Messages::Base64PDFSource Value)
     : Source,
-        IVariant<Base64PDFSourceVariant, Base64PDFSource>
+        IVariant<Base64PDFSourceVariant, Messages::Base64PDFSource>
 {
-    public static Base64PDFSourceVariant From(Base64PDFSource value)
+    public static Base64PDFSourceVariant From(Messages::Base64PDFSource value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class Base64PDFSourceVariant(Base64PDFSource Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<PlainTextSourceVariant, PlainTextSource>))]
-public sealed record class PlainTextSourceVariant(PlainTextSource Value)
+public sealed record class PlainTextSourceVariant(Messages::PlainTextSource Value)
     : Source,
-        IVariant<PlainTextSourceVariant, PlainTextSource>
+        IVariant<PlainTextSourceVariant, Messages::PlainTextSource>
 {
-    public static PlainTextSourceVariant From(PlainTextSource value)
+    public static PlainTextSourceVariant From(Messages::PlainTextSource value)
     {
         return new(value);
     }
@@ -34,12 +32,11 @@ public sealed record class PlainTextSourceVariant(PlainTextSource Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<ContentBlockSourceVariant, ContentBlockSource>))]
-public sealed record class ContentBlockSourceVariant(ContentBlockSource Value)
+public sealed record class ContentBlockSourceVariant(Messages::ContentBlockSource Value)
     : Source,
-        IVariant<ContentBlockSourceVariant, ContentBlockSource>
+        IVariant<ContentBlockSourceVariant, Messages::ContentBlockSource>
 {
-    public static ContentBlockSourceVariant From(ContentBlockSource value)
+    public static ContentBlockSourceVariant From(Messages::ContentBlockSource value)
     {
         return new(value);
     }
@@ -50,12 +47,11 @@ public sealed record class ContentBlockSourceVariant(ContentBlockSource Value)
     }
 }
 
-[JsonConverter(typeof(VariantConverter<URLPDFSourceVariant, URLPDFSource>))]
-public sealed record class URLPDFSourceVariant(URLPDFSource Value)
+public sealed record class URLPDFSourceVariant(Messages::URLPDFSource Value)
     : Source,
-        IVariant<URLPDFSourceVariant, URLPDFSource>
+        IVariant<URLPDFSourceVariant, Messages::URLPDFSource>
 {
-    public static URLPDFSourceVariant From(URLPDFSource value)
+    public static URLPDFSourceVariant From(Messages::URLPDFSource value)
     {
         return new(value);
     }

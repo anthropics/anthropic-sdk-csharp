@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaCitationsDeltaProperties = Anthropic.Models.Beta.Messages.BetaCitationsDeltaProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationsDelta>))]
-public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitationsDelta>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaCitationsDelta>))]
+public sealed record class BetaCitationsDelta
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaCitationsDelta>
 {
     public required BetaCitationsDeltaProperties::Citation Citation
     {
@@ -21,7 +24,7 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
 
             return JsonSerializer.Deserialize<BetaCitationsDeltaProperties::Citation>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("citation");
         }
         set { this.Properties["citation"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

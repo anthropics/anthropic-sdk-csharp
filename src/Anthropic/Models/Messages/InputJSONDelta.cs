@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<InputJSONDelta>))]
-public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
+[JsonConverter(typeof(Anthropic::ModelConverter<InputJSONDelta>))]
+public sealed record class InputJSONDelta
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<InputJSONDelta>
 {
     public required string PartialJSON
     {
@@ -18,8 +21,10 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("partial_json");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("partial_json");
         }
         set { this.Properties["partial_json"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +39,10 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

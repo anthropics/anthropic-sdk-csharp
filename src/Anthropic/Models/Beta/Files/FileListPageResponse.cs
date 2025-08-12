@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using System = System;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<FileListPageResponse>))]
-public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPageResponse>
+[JsonConverter(typeof(Anthropic::ModelConverter<FileListPageResponse>))]
+public sealed record class FileListPageResponse
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<FileListPageResponse>
 {
     /// <summary>
     /// List of file metadata objects.
@@ -21,7 +24,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
 
             return JsonSerializer.Deserialize<List<FileMetadata>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new System::ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
             if (!this.Properties.TryGetValue("first_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["first_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -52,7 +58,10 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
             if (!this.Properties.TryGetValue("has_more", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<bool?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["has_more"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -67,7 +76,10 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
             if (!this.Properties.TryGetValue("last_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["last_id"] = JsonSerializer.SerializeToElement(value); }
     }

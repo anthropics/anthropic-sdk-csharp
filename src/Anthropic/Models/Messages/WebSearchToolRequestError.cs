@@ -2,14 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using WebSearchToolRequestErrorProperties = Anthropic.Models.Messages.WebSearchToolRequestErrorProperties;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolRequestError>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<WebSearchToolRequestError>))]
 public sealed record class WebSearchToolRequestError
-    : ModelBase,
-        IFromRaw<WebSearchToolRequestError>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<WebSearchToolRequestError>
 {
     public required WebSearchToolRequestErrorProperties::ErrorCode ErrorCode
     {
@@ -23,7 +24,7 @@ public sealed record class WebSearchToolRequestError
 
             return JsonSerializer.Deserialize<WebSearchToolRequestErrorProperties::ErrorCode>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("error_code");
         }
         set { this.Properties["error_code"] = JsonSerializer.SerializeToElement(value); }
@@ -39,7 +40,10 @@ public sealed record class WebSearchToolRequestError
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -1,10 +1,11 @@
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages.BetaMessageParamProperties;
 
-[JsonConverter(typeof(EnumConverter<Role, string>))]
-public sealed record class Role(string value) : IEnum<Role, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<Role, string>))]
+public sealed record class Role(string value) : Anthropic::IEnum<Role, string>
 {
     public static readonly Role User = new("user");
 

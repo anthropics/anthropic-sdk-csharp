@@ -1,10 +1,11 @@
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(EnumConverter<BetaWebSearchToolResultErrorCode, string>))]
+[JsonConverter(typeof(Anthropic::EnumConverter<BetaWebSearchToolResultErrorCode, string>))]
 public sealed record class BetaWebSearchToolResultErrorCode(string value)
-    : IEnum<BetaWebSearchToolResultErrorCode, string>
+    : Anthropic::IEnum<BetaWebSearchToolResultErrorCode, string>
 {
     public static readonly BetaWebSearchToolResultErrorCode InvalidToolInput = new(
         "invalid_tool_input"

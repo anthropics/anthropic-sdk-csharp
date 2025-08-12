@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaThinkingBlock>))]
-public sealed record class BetaThinkingBlock : ModelBase, IFromRaw<BetaThinkingBlock>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaThinkingBlock>))]
+public sealed record class BetaThinkingBlock
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaThinkingBlock>
 {
     public required string Signature
     {
@@ -18,8 +21,10 @@ public sealed record class BetaThinkingBlock : ModelBase, IFromRaw<BetaThinkingB
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("signature");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("signature");
         }
         set { this.Properties["signature"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,8 +39,10 @@ public sealed record class BetaThinkingBlock : ModelBase, IFromRaw<BetaThinkingB
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("thinking");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("thinking");
         }
         set { this.Properties["thinking"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -50,7 +57,10 @@ public sealed record class BetaThinkingBlock : ModelBase, IFromRaw<BetaThinkingB
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

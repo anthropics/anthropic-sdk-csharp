@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
+using Anthropic = Anthropic;
+using Beta = Anthropic.Models.Beta;
 
 namespace Anthropic.Models.Beta.Models;
 
@@ -11,7 +13,7 @@ namespace Anthropic.Models.Beta.Models;
 /// The Models API response can be used to determine which models are available for
 /// use in the API. More recently released models are listed first.
 /// </summary>
-public sealed record class ModelListParams : ParamsBase
+public sealed record class ModelListParams : Anthropic::ParamsBase
 {
     /// <summary>
     /// ID of the object to use as a cursor for pagination. When provided, returns
@@ -24,7 +26,10 @@ public sealed record class ModelListParams : ParamsBase
             if (!this.QueryProperties.TryGetValue("after_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.QueryProperties["after_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -40,7 +45,10 @@ public sealed record class ModelListParams : ParamsBase
             if (!this.QueryProperties.TryGetValue("before_id", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<string?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.QueryProperties["before_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -57,7 +65,10 @@ public sealed record class ModelListParams : ParamsBase
             if (!this.QueryProperties.TryGetValue("limit", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.QueryProperties["limit"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -65,22 +76,22 @@ public sealed record class ModelListParams : ParamsBase
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
-    public List<AnthropicBeta>? Betas
+    public List<Beta::AnthropicBeta>? Betas
     {
         get
         {
             if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<AnthropicBeta>?>(
+            return JsonSerializer.Deserialize<List<Beta::AnthropicBeta>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(value); }
     }
 
-    public override Uri Url(IAnthropicClient client)
+    public override Uri Url(Anthropic::IAnthropicClient client)
     {
         return new UriBuilder(client.BaseUrl.ToString().TrimEnd('/') + "/v1/models?beta=true")
         {
@@ -88,12 +99,12 @@ public sealed record class ModelListParams : ParamsBase
         }.Uri;
     }
 
-    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
+    public void AddHeadersToRequest(HttpRequestMessage request, Anthropic::IAnthropicClient client)
     {
-        ParamsBase.AddDefaultHeaders(request, client);
+        Anthropic::ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)
         {
-            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+            Anthropic::ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
     }
 }

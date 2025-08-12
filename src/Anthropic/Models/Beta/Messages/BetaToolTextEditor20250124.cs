@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaToolTextEditor20250124>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaToolTextEditor20250124>))]
 public sealed record class BetaToolTextEditor20250124
-    : ModelBase,
-        IFromRaw<BetaToolTextEditor20250124>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaToolTextEditor20250124>
 {
     /// <summary>
     /// Name of the tool.
@@ -25,7 +26,10 @@ public sealed record class BetaToolTextEditor20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -40,7 +44,10 @@ public sealed record class BetaToolTextEditor20250124
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -57,7 +64,7 @@ public sealed record class BetaToolTextEditor20250124
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }

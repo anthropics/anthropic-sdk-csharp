@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using ThinkingConfigParamVariants = Anthropic.Models.Messages.ThinkingConfigParamVariants;
 
@@ -13,7 +15,7 @@ namespace Anthropic.Models.Messages;
 /// See [extended thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking)
 /// for details.
 /// </summary>
-[JsonConverter(typeof(UnionConverter<ThinkingConfigParam>))]
+[JsonConverter(typeof(ThinkingConfigParamConverter))]
 public abstract record class ThinkingConfigParam
 {
     internal ThinkingConfigParam() { }
@@ -25,4 +27,68 @@ public abstract record class ThinkingConfigParam
         new ThinkingConfigParamVariants::ThinkingConfigDisabledVariant(value);
 
     public abstract void Validate();
+}
+
+sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
+{
+    public override ThinkingConfigParam? Read(
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<JsonException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<ThinkingConfigEnabled>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new ThinkingConfigParamVariants::ThinkingConfigEnabledVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new ThinkingConfigParamVariants::ThinkingConfigDisabledVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        throw new global::System.AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ThinkingConfigParam value,
+        JsonSerializerOptions options
+    )
+    {
+        object variant = value switch
+        {
+            ThinkingConfigParamVariants::ThinkingConfigEnabledVariant(var thinkingConfigEnabled) =>
+                thinkingConfigEnabled,
+            ThinkingConfigParamVariants::ThinkingConfigDisabledVariant(
+                var thinkingConfigDisabled
+            ) => thinkingConfigDisabled,
+            _ => throw new global::System.ArgumentOutOfRangeException(nameof(value)),
+        };
+        JsonSerializer.Serialize(writer, variant, options);
+    }
 }

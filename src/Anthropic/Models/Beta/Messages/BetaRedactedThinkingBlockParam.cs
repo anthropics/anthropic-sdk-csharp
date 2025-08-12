@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRedactedThinkingBlockParam>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaRedactedThinkingBlockParam>))]
 public sealed record class BetaRedactedThinkingBlockParam
-    : ModelBase,
-        IFromRaw<BetaRedactedThinkingBlockParam>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaRedactedThinkingBlockParam>
 {
     public required string Data
     {
@@ -20,8 +21,10 @@ public sealed record class BetaRedactedThinkingBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("data");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("data");
         }
         set { this.Properties["data"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -36,7 +39,10 @@ public sealed record class BetaRedactedThinkingBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

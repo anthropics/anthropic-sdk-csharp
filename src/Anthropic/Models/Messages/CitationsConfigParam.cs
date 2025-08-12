@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsConfigParam>))]
-public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsConfigParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<CitationsConfigParam>))]
+public sealed record class CitationsConfigParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<CitationsConfigParam>
 {
     public bool? Enabled
     {
@@ -15,7 +18,10 @@ public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsC
             if (!this.Properties.TryGetValue("enabled", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<bool?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["enabled"] = JsonSerializer.SerializeToElement(value); }
     }

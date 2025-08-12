@@ -1,10 +1,11 @@
 using System;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages.BetaServerToolUseBlockProperties;
 
-[JsonConverter(typeof(EnumConverter<Name, string>))]
-public sealed record class Name(string value) : IEnum<Name, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<Name, string>))]
+public sealed record class Name(string value) : Anthropic::IEnum<Name, string>
 {
     public static readonly Name WebSearch = new("web_search");
 

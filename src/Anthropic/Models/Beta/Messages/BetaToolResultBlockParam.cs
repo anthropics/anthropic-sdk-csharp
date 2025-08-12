@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaToolResultBlockParamProperties = Anthropic.Models.Beta.Messages.BetaToolResultBlockParamProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaToolResultBlockParam>))]
-public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaToolResultBlockParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaToolResultBlockParam>))]
+public sealed record class BetaToolResultBlockParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaToolResultBlockParam>
 {
     public required string ToolUseID
     {
@@ -19,8 +22,10 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("tool_use_id");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("tool_use_id");
         }
         set { this.Properties["tool_use_id"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -35,7 +40,10 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -52,7 +60,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
@@ -67,7 +75,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
 
             return JsonSerializer.Deserialize<BetaToolResultBlockParamProperties::Content?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -80,7 +88,10 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
             if (!this.Properties.TryGetValue("is_error", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<bool?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["is_error"] = JsonSerializer.SerializeToElement(value); }
     }

@@ -1,9 +1,11 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using RawMessageStreamEventVariants = Anthropic.Models.Messages.RawMessageStreamEventVariants;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(UnionConverter<RawMessageStreamEvent>))]
+[JsonConverter(typeof(RawMessageStreamEventConverter))]
 public abstract record class RawMessageStreamEvent
 {
     internal RawMessageStreamEvent() { }
@@ -27,4 +29,145 @@ public abstract record class RawMessageStreamEvent
         new RawMessageStreamEventVariants::RawContentBlockStopEventVariant(value);
 
     public abstract void Validate();
+}
+
+sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEvent>
+{
+    public override RawMessageStreamEvent? Read(
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<JsonException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new RawMessageStreamEventVariants::RawMessageStartEventVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new RawMessageStreamEventVariants::RawMessageDeltaEventVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new RawMessageStreamEventVariants::RawMessageStopEventVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new RawMessageStreamEventVariants::RawContentBlockStartEventVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new RawMessageStreamEventVariants::RawContentBlockDeltaEventVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<RawContentBlockStopEvent>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new RawMessageStreamEventVariants::RawContentBlockStopEventVariant(
+                    deserialized
+                );
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        throw new global::System.AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        RawMessageStreamEvent value,
+        JsonSerializerOptions options
+    )
+    {
+        object variant = value switch
+        {
+            RawMessageStreamEventVariants::RawMessageStartEventVariant(var rawMessageStartEvent) =>
+                rawMessageStartEvent,
+            RawMessageStreamEventVariants::RawMessageDeltaEventVariant(var rawMessageDeltaEvent) =>
+                rawMessageDeltaEvent,
+            RawMessageStreamEventVariants::RawMessageStopEventVariant(var rawMessageStopEvent) =>
+                rawMessageStopEvent,
+            RawMessageStreamEventVariants::RawContentBlockStartEventVariant(
+                var rawContentBlockStartEvent
+            ) => rawContentBlockStartEvent,
+            RawMessageStreamEventVariants::RawContentBlockDeltaEventVariant(
+                var rawContentBlockDeltaEvent
+            ) => rawContentBlockDeltaEvent,
+            RawMessageStreamEventVariants::RawContentBlockStopEventVariant(
+                var rawContentBlockStopEvent
+            ) => rawContentBlockStopEvent,
+            _ => throw new global::System.ArgumentOutOfRangeException(nameof(value)),
+        };
+        JsonSerializer.Serialize(writer, variant, options);
+    }
 }

@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTextBlockParam>))]
-public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBlockParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaTextBlockParam>))]
+public sealed record class BetaTextBlockParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaTextBlockParam>
 {
     public required string Text
     {
@@ -18,8 +21,10 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("text");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("text");
         }
         set { this.Properties["text"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +39,10 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -51,7 +59,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
@@ -66,7 +74,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
 
             return JsonSerializer.Deserialize<List<BetaTextCitationParam>?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }

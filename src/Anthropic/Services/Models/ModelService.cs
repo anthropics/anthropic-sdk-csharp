@@ -3,14 +3,15 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Models.Models;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Services.Models;
 
 public sealed class ModelService : IModelService
 {
-    readonly IAnthropicClient _client;
+    readonly Anthropic::IAnthropicClient _client;
 
-    public ModelService(IAnthropicClient client)
+    public ModelService(Anthropic::IAnthropicClient client)
     {
         _client = client;
     }
@@ -24,7 +25,7 @@ public sealed class ModelService : IModelService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -32,7 +33,7 @@ public sealed class ModelService : IModelService
 
         return JsonSerializer.Deserialize<ModelInfo>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -45,7 +46,7 @@ public sealed class ModelService : IModelService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -53,7 +54,7 @@ public sealed class ModelService : IModelService
 
         return JsonSerializer.Deserialize<ModelListPageResponse>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using BetaToolChoiceVariants = Anthropic.Models.Beta.Messages.BetaToolChoiceVariants;
 
@@ -7,7 +9,7 @@ namespace Anthropic.Models.Beta.Messages;
 /// How the model should use the provided tools. The model can use a specific tool,
 /// any available tool, decide by itself, or not use tools at all.
 /// </summary>
-[JsonConverter(typeof(UnionConverter<BetaToolChoice>))]
+[JsonConverter(typeof(BetaToolChoiceConverter))]
 public abstract record class BetaToolChoice
 {
     internal BetaToolChoice() { }
@@ -25,4 +27,91 @@ public abstract record class BetaToolChoice
         new BetaToolChoiceVariants::BetaToolChoiceNoneVariant(value);
 
     public abstract void Validate();
+}
+
+sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
+{
+    public override BetaToolChoice? Read(
+        ref Utf8JsonReader reader,
+        global::System.Type _typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<JsonException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAuto>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new BetaToolChoiceVariants::BetaToolChoiceAutoVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAny>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new BetaToolChoiceVariants::BetaToolChoiceAnyVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolChoiceTool>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new BetaToolChoiceVariants::BetaToolChoiceToolVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolChoiceNone>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new BetaToolChoiceVariants::BetaToolChoiceNoneVariant(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        throw new global::System.AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaToolChoice value,
+        JsonSerializerOptions options
+    )
+    {
+        object variant = value switch
+        {
+            BetaToolChoiceVariants::BetaToolChoiceAutoVariant(var betaToolChoiceAuto) =>
+                betaToolChoiceAuto,
+            BetaToolChoiceVariants::BetaToolChoiceAnyVariant(var betaToolChoiceAny) =>
+                betaToolChoiceAny,
+            BetaToolChoiceVariants::BetaToolChoiceToolVariant(var betaToolChoiceTool) =>
+                betaToolChoiceTool,
+            BetaToolChoiceVariants::BetaToolChoiceNoneVariant(var betaToolChoiceNone) =>
+                betaToolChoiceNone,
+            _ => throw new global::System.ArgumentOutOfRangeException(nameof(value)),
+        };
+        JsonSerializer.Serialize(writer, variant, options);
+    }
 }

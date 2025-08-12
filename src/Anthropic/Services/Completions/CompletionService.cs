@@ -4,14 +4,15 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Models.Completions;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Services.Completions;
 
 public sealed class CompletionService : ICompletionService
 {
-    readonly IAnthropicClient _client;
+    readonly Anthropic::IAnthropicClient _client;
 
-    public CompletionService(IAnthropicClient client)
+    public CompletionService(Anthropic::IAnthropicClient client)
     {
         _client = client;
     }
@@ -28,7 +29,7 @@ public sealed class CompletionService : ICompletionService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
@@ -36,7 +37,7 @@ public sealed class CompletionService : ICompletionService
 
         return JsonSerializer.Deserialize<Completion>(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
     }
 
@@ -53,17 +54,17 @@ public sealed class CompletionService : ICompletionService
             .ConfigureAwait(false);
         if (!response.IsSuccessStatusCode)
         {
-            throw new HttpException(
+            throw new Anthropic::HttpException(
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync().ConfigureAwait(false)
             );
         }
 
-        await foreach (var message in SseMessage.GetEnumerable(response))
+        await foreach (var message in Anthropic::SseMessage.GetEnumerable(response))
         {
             yield return JsonSerializer.Deserialize<Completion>(
                 message.Data,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             ) ?? throw new NullReferenceException();
         }
     }

@@ -1,13 +1,12 @@
-using System.Text.Json.Serialization;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.BetaRawMessageStreamEventVariants;
 
-[JsonConverter(typeof(VariantConverter<BetaRawMessageStartEventVariant, BetaRawMessageStartEvent>))]
-public sealed record class BetaRawMessageStartEventVariant(BetaRawMessageStartEvent Value)
-    : BetaRawMessageStreamEvent,
-        IVariant<BetaRawMessageStartEventVariant, BetaRawMessageStartEvent>
+public sealed record class BetaRawMessageStartEventVariant(Messages::BetaRawMessageStartEvent Value)
+    : Messages::BetaRawMessageStreamEvent,
+        IVariant<BetaRawMessageStartEventVariant, Messages::BetaRawMessageStartEvent>
 {
-    public static BetaRawMessageStartEventVariant From(BetaRawMessageStartEvent value)
+    public static BetaRawMessageStartEventVariant From(Messages::BetaRawMessageStartEvent value)
     {
         return new(value);
     }
@@ -18,12 +17,11 @@ public sealed record class BetaRawMessageStartEventVariant(BetaRawMessageStartEv
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaRawMessageDeltaEventVariant, BetaRawMessageDeltaEvent>))]
-public sealed record class BetaRawMessageDeltaEventVariant(BetaRawMessageDeltaEvent Value)
-    : BetaRawMessageStreamEvent,
-        IVariant<BetaRawMessageDeltaEventVariant, BetaRawMessageDeltaEvent>
+public sealed record class BetaRawMessageDeltaEventVariant(Messages::BetaRawMessageDeltaEvent Value)
+    : Messages::BetaRawMessageStreamEvent,
+        IVariant<BetaRawMessageDeltaEventVariant, Messages::BetaRawMessageDeltaEvent>
 {
-    public static BetaRawMessageDeltaEventVariant From(BetaRawMessageDeltaEvent value)
+    public static BetaRawMessageDeltaEventVariant From(Messages::BetaRawMessageDeltaEvent value)
     {
         return new(value);
     }
@@ -34,12 +32,11 @@ public sealed record class BetaRawMessageDeltaEventVariant(BetaRawMessageDeltaEv
     }
 }
 
-[JsonConverter(typeof(VariantConverter<BetaRawMessageStopEventVariant, BetaRawMessageStopEvent>))]
-public sealed record class BetaRawMessageStopEventVariant(BetaRawMessageStopEvent Value)
-    : BetaRawMessageStreamEvent,
-        IVariant<BetaRawMessageStopEventVariant, BetaRawMessageStopEvent>
+public sealed record class BetaRawMessageStopEventVariant(Messages::BetaRawMessageStopEvent Value)
+    : Messages::BetaRawMessageStreamEvent,
+        IVariant<BetaRawMessageStopEventVariant, Messages::BetaRawMessageStopEvent>
 {
-    public static BetaRawMessageStopEventVariant From(BetaRawMessageStopEvent value)
+    public static BetaRawMessageStopEventVariant From(Messages::BetaRawMessageStopEvent value)
     {
         return new(value);
     }
@@ -50,14 +47,15 @@ public sealed record class BetaRawMessageStopEventVariant(BetaRawMessageStopEven
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaRawContentBlockStartEventVariant, BetaRawContentBlockStartEvent>)
-)]
-public sealed record class BetaRawContentBlockStartEventVariant(BetaRawContentBlockStartEvent Value)
-    : BetaRawMessageStreamEvent,
-        IVariant<BetaRawContentBlockStartEventVariant, BetaRawContentBlockStartEvent>
+public sealed record class BetaRawContentBlockStartEventVariant(
+    Messages::BetaRawContentBlockStartEvent Value
+)
+    : Messages::BetaRawMessageStreamEvent,
+        IVariant<BetaRawContentBlockStartEventVariant, Messages::BetaRawContentBlockStartEvent>
 {
-    public static BetaRawContentBlockStartEventVariant From(BetaRawContentBlockStartEvent value)
+    public static BetaRawContentBlockStartEventVariant From(
+        Messages::BetaRawContentBlockStartEvent value
+    )
     {
         return new(value);
     }
@@ -68,14 +66,15 @@ public sealed record class BetaRawContentBlockStartEventVariant(BetaRawContentBl
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaRawContentBlockDeltaEventVariant, BetaRawContentBlockDeltaEvent>)
-)]
-public sealed record class BetaRawContentBlockDeltaEventVariant(BetaRawContentBlockDeltaEvent Value)
-    : BetaRawMessageStreamEvent,
-        IVariant<BetaRawContentBlockDeltaEventVariant, BetaRawContentBlockDeltaEvent>
+public sealed record class BetaRawContentBlockDeltaEventVariant(
+    Messages::BetaRawContentBlockDeltaEvent Value
+)
+    : Messages::BetaRawMessageStreamEvent,
+        IVariant<BetaRawContentBlockDeltaEventVariant, Messages::BetaRawContentBlockDeltaEvent>
 {
-    public static BetaRawContentBlockDeltaEventVariant From(BetaRawContentBlockDeltaEvent value)
+    public static BetaRawContentBlockDeltaEventVariant From(
+        Messages::BetaRawContentBlockDeltaEvent value
+    )
     {
         return new(value);
     }
@@ -86,14 +85,15 @@ public sealed record class BetaRawContentBlockDeltaEventVariant(BetaRawContentBl
     }
 }
 
-[JsonConverter(
-    typeof(VariantConverter<BetaRawContentBlockStopEventVariant, BetaRawContentBlockStopEvent>)
-)]
-public sealed record class BetaRawContentBlockStopEventVariant(BetaRawContentBlockStopEvent Value)
-    : BetaRawMessageStreamEvent,
-        IVariant<BetaRawContentBlockStopEventVariant, BetaRawContentBlockStopEvent>
+public sealed record class BetaRawContentBlockStopEventVariant(
+    Messages::BetaRawContentBlockStopEvent Value
+)
+    : Messages::BetaRawMessageStreamEvent,
+        IVariant<BetaRawContentBlockStopEventVariant, Messages::BetaRawContentBlockStopEvent>
 {
-    public static BetaRawContentBlockStopEventVariant From(BetaRawContentBlockStopEvent value)
+    public static BetaRawContentBlockStopEventVariant From(
+        Messages::BetaRawContentBlockStopEvent value
+    )
     {
         return new(value);
     }

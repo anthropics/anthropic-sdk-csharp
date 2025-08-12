@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatchRequestCounts>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<MessageBatchRequestCounts>))]
 public sealed record class MessageBatchRequestCounts
-    : ModelBase,
-        IFromRaw<MessageBatchRequestCounts>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<MessageBatchRequestCounts>
 {
     /// <summary>
     /// Number of requests in the Message Batch that have been canceled.
@@ -25,7 +26,10 @@ public sealed record class MessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["canceled"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -45,7 +49,10 @@ public sealed record class MessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["errored"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -65,7 +72,10 @@ public sealed record class MessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["expired"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -83,7 +93,10 @@ public sealed record class MessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["processing"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -103,7 +116,10 @@ public sealed record class MessageBatchRequestCounts
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["succeeded"] = JsonSerializer.SerializeToElement(value); }
     }

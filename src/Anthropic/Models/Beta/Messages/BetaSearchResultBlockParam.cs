@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaSearchResultBlockParam>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaSearchResultBlockParam>))]
 public sealed record class BetaSearchResultBlockParam
-    : ModelBase,
-        IFromRaw<BetaSearchResultBlockParam>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaSearchResultBlockParam>
 {
     public required List<BetaTextBlockParam> Content
     {
@@ -22,7 +23,7 @@ public sealed record class BetaSearchResultBlockParam
 
             return JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("content");
         }
         set { this.Properties["content"] = JsonSerializer.SerializeToElement(value); }
@@ -38,8 +39,10 @@ public sealed record class BetaSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("source");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -54,8 +57,10 @@ public sealed record class BetaSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("title");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("title");
         }
         set { this.Properties["title"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -70,7 +75,10 @@ public sealed record class BetaSearchResultBlockParam
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -87,7 +95,7 @@ public sealed record class BetaSearchResultBlockParam
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
@@ -102,7 +110,7 @@ public sealed record class BetaSearchResultBlockParam
 
             return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["citations"] = JsonSerializer.SerializeToElement(value); }

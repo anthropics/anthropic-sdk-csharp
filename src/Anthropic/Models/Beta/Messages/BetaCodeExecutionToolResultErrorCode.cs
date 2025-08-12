@@ -1,10 +1,11 @@
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(EnumConverter<BetaCodeExecutionToolResultErrorCode, string>))]
+[JsonConverter(typeof(Anthropic::EnumConverter<BetaCodeExecutionToolResultErrorCode, string>))]
 public sealed record class BetaCodeExecutionToolResultErrorCode(string value)
-    : IEnum<BetaCodeExecutionToolResultErrorCode, string>
+    : Anthropic::IEnum<BetaCodeExecutionToolResultErrorCode, string>
 {
     public static readonly BetaCodeExecutionToolResultErrorCode InvalidToolInput = new(
         "invalid_tool_input"

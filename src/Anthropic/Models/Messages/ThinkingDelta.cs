@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingDelta>))]
-public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
+[JsonConverter(typeof(Anthropic::ModelConverter<ThinkingDelta>))]
+public sealed record class ThinkingDelta : Anthropic::ModelBase, Anthropic::IFromRaw<ThinkingDelta>
 {
     public required string Thinking
     {
@@ -18,8 +19,10 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("thinking");
+            return JsonSerializer.Deserialize<string>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("thinking");
         }
         set { this.Properties["thinking"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -34,7 +37,10 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

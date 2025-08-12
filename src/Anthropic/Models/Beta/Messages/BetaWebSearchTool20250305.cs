@@ -2,14 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaWebSearchTool20250305Properties = Anthropic.Models.Beta.Messages.BetaWebSearchTool20250305Properties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebSearchTool20250305>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaWebSearchTool20250305>))]
 public sealed record class BetaWebSearchTool20250305
-    : ModelBase,
-        IFromRaw<BetaWebSearchTool20250305>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaWebSearchTool20250305>
 {
     /// <summary>
     /// Name of the tool.
@@ -26,7 +27,10 @@ public sealed record class BetaWebSearchTool20250305
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["name"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -41,7 +45,10 @@ public sealed record class BetaWebSearchTool20250305
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -57,7 +64,10 @@ public sealed record class BetaWebSearchTool20250305
             if (!this.Properties.TryGetValue("allowed_domains", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<List<string>?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["allowed_domains"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -72,7 +82,10 @@ public sealed record class BetaWebSearchTool20250305
             if (!this.Properties.TryGetValue("blocked_domains", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<List<string>?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["blocked_domains"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -89,7 +102,7 @@ public sealed record class BetaWebSearchTool20250305
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }
@@ -105,7 +118,10 @@ public sealed record class BetaWebSearchTool20250305
             if (!this.Properties.TryGetValue("max_uses", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["max_uses"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -122,7 +138,7 @@ public sealed record class BetaWebSearchTool20250305
 
             return JsonSerializer.Deserialize<BetaWebSearchTool20250305Properties::UserLocation?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["user_location"] = JsonSerializer.SerializeToElement(value); }

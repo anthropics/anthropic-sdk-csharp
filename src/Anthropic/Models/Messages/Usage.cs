@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using UsageProperties = Anthropic.Models.Messages.UsageProperties;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Usage>))]
-public sealed record class Usage : ModelBase, IFromRaw<Usage>
+[JsonConverter(typeof(Anthropic::ModelConverter<Usage>))]
+public sealed record class Usage : Anthropic::ModelBase, Anthropic::IFromRaw<Usage>
 {
     /// <summary>
     /// The number of input tokens used to create the cache entry.
@@ -24,7 +25,10 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -47,7 +51,10 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long?>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -68,7 +75,10 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -86,7 +96,10 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<long>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["output_tokens"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -106,7 +119,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
 
             return JsonSerializer.Deserialize<ServerToolUsage?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["server_tool_use"] = JsonSerializer.SerializeToElement(value); }
@@ -127,7 +140,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
 
             return JsonSerializer.Deserialize<UsageProperties::ServiceTier?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["service_tier"] = JsonSerializer.SerializeToElement(value); }

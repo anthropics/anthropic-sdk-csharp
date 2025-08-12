@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaImageBlockParamProperties = Anthropic.Models.Beta.Messages.BetaImageBlockParamProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaImageBlockParam>))]
-public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBlockParam>
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaImageBlockParam>))]
+public sealed record class BetaImageBlockParam
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaImageBlockParam>
 {
     public required BetaImageBlockParamProperties::Source Source
     {
@@ -21,7 +24,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
 
             return JsonSerializer.Deserialize<BetaImageBlockParamProperties::Source>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("source");
         }
         set { this.Properties["source"] = JsonSerializer.SerializeToElement(value); }
@@ -37,7 +40,10 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -54,7 +60,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["cache_control"] = JsonSerializer.SerializeToElement(value); }

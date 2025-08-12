@@ -1,9 +1,10 @@
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(EnumConverter<StopReason, string>))]
-public sealed record class StopReason(string value) : IEnum<StopReason, string>
+[JsonConverter(typeof(Anthropic::EnumConverter<StopReason, string>))]
+public sealed record class StopReason(string value) : Anthropic::IEnum<StopReason, string>
 {
     public static readonly StopReason EndTurn = new("end_turn");
 

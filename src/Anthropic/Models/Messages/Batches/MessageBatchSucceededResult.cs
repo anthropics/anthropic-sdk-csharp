@@ -2,14 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatchSucceededResult>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<MessageBatchSucceededResult>))]
 public sealed record class MessageBatchSucceededResult
-    : ModelBase,
-        IFromRaw<MessageBatchSucceededResult>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<MessageBatchSucceededResult>
 {
     public required Messages::Message Message
     {
@@ -23,7 +24,7 @@ public sealed record class MessageBatchSucceededResult
 
             return JsonSerializer.Deserialize<Messages::Message>(
                     element,
-                    ModelBase.SerializerOptions
+                    Anthropic::ModelBase.SerializerOptions
                 ) ?? throw new global::System.ArgumentNullException("message");
         }
         set { this.Properties["message"] = JsonSerializer.SerializeToElement(value); }
@@ -39,7 +40,10 @@ public sealed record class MessageBatchSucceededResult
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }

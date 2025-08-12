@@ -2,14 +2,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
 using BetaCacheControlEphemeralProperties = Anthropic.Models.Beta.Messages.BetaCacheControlEphemeralProperties;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCacheControlEphemeral>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<BetaCacheControlEphemeral>))]
 public sealed record class BetaCacheControlEphemeral
-    : ModelBase,
-        IFromRaw<BetaCacheControlEphemeral>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<BetaCacheControlEphemeral>
 {
     public JsonElement Type
     {
@@ -21,7 +22,10 @@ public sealed record class BetaCacheControlEphemeral
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -42,7 +46,7 @@ public sealed record class BetaCacheControlEphemeral
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeralProperties::TTL?>(
                 element,
-                ModelBase.SerializerOptions
+                Anthropic::ModelBase.SerializerOptions
             );
         }
         set { this.Properties["ttl"] = JsonSerializer.SerializeToElement(value); }

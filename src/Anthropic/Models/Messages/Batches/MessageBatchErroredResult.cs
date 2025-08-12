@@ -2,15 +2,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic = Anthropic;
+using Models = Anthropic.Models;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatchErroredResult>))]
+[JsonConverter(typeof(Anthropic::ModelConverter<MessageBatchErroredResult>))]
 public sealed record class MessageBatchErroredResult
-    : ModelBase,
-        IFromRaw<MessageBatchErroredResult>
+    : Anthropic::ModelBase,
+        Anthropic::IFromRaw<MessageBatchErroredResult>
 {
-    public required ErrorResponse Error
+    public required Models::ErrorResponse Error
     {
         get
         {
@@ -20,8 +22,10 @@ public sealed record class MessageBatchErroredResult
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<ErrorResponse>(element, ModelBase.SerializerOptions)
-                ?? throw new global::System.ArgumentNullException("error");
+            return JsonSerializer.Deserialize<Models::ErrorResponse>(
+                    element,
+                    Anthropic::ModelBase.SerializerOptions
+                ) ?? throw new global::System.ArgumentNullException("error");
         }
         set { this.Properties["error"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -36,7 +40,10 @@ public sealed record class MessageBatchErroredResult
                     "Missing required argument"
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<JsonElement>(
+                element,
+                Anthropic::ModelBase.SerializerOptions
+            );
         }
         set { this.Properties["type"] = JsonSerializer.SerializeToElement(value); }
     }
@@ -67,7 +74,7 @@ public sealed record class MessageBatchErroredResult
     }
 
     [SetsRequiredMembers]
-    public MessageBatchErroredResult(ErrorResponse error)
+    public MessageBatchErroredResult(Models::ErrorResponse error)
         : this()
     {
         this.Error = error;
