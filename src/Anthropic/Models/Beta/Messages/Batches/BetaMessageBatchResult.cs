@@ -40,81 +40,120 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaMessageBatchSucceededResult>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaMessageBatchResultVariants::BetaMessageBatchSucceededResultVariant(
-                    deserialized
-                );
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "succeeded":
             {
-                return new BetaMessageBatchResultVariants::BetaMessageBatchErroredResultVariant(
-                    deserialized
-                );
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaMessageBatchSucceededResult>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaMessageBatchResultVariants::BetaMessageBatchSucceededResultVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "errored":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaMessageBatchResultVariants::BetaMessageBatchErroredResultVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "canceled":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaMessageBatchCanceledResult>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaMessageBatchResultVariants::BetaMessageBatchCanceledResultVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "expired":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaMessageBatchExpiredResult>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResultVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaMessageBatchCanceledResult>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaMessageBatchResultVariants::BetaMessageBatchCanceledResultVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaMessageBatchExpiredResult>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResultVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

@@ -38,89 +38,134 @@ sealed class SourceConverter : JsonConverter<Source>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaBase64PDFSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new SourceVariants::BetaBase64PDFSourceVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaPlainTextSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "base64":
             {
-                return new SourceVariants::BetaPlainTextSourceVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaBase64PDFSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::BetaBase64PDFSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "text":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaPlainTextSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::BetaPlainTextSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "content":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaContentBlockSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::BetaContentBlockSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "url":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaURLPDFSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::BetaURLPDFSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "file":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaFileDocumentSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::BetaFileDocumentSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaContentBlockSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new SourceVariants::BetaContentBlockSourceVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaURLPDFSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new SourceVariants::BetaURLPDFSourceVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaFileDocumentSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new SourceVariants::BetaFileDocumentSourceVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new AggregateException(exceptions);
     }
 
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)

@@ -48,126 +48,204 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<InvalidRequestError>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ErrorObjectVariants::InvalidRequestErrorVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<AuthenticationError>(ref reader, options);
-            if (deserialized != null)
+            case "invalid_request_error":
             {
-                return new ErrorObjectVariants::AuthenticationErrorVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<InvalidRequestError>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::InvalidRequestErrorVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "authentication_error":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<AuthenticationError>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::AuthenticationErrorVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "billing_error":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BillingError>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::BillingErrorVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "permission_error":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<PermissionError>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::PermissionErrorVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "not_found_error":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<NotFoundError>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::NotFoundErrorVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "rate_limit_error":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RateLimitError>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::RateLimitErrorVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "timeout_error":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<GatewayTimeoutError>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::GatewayTimeoutErrorVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "api_error":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<APIErrorObject>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::APIErrorObjectVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "overloaded_error":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<OverloadedError>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ErrorObjectVariants::OverloadedErrorVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BillingError>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ErrorObjectVariants::BillingErrorVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<PermissionError>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ErrorObjectVariants::PermissionErrorVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<NotFoundError>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ErrorObjectVariants::NotFoundErrorVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<RateLimitError>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ErrorObjectVariants::RateLimitErrorVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<GatewayTimeoutError>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ErrorObjectVariants::GatewayTimeoutErrorVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<APIErrorObject>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ErrorObjectVariants::APIErrorObjectVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<OverloadedError>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ErrorObjectVariants::OverloadedErrorVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

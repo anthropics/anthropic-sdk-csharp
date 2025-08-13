@@ -32,57 +32,91 @@ sealed class BlockConverter : JsonConverter<Block>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaTextBlockParam>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BlockVariants::BetaTextBlockParamVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaImageBlockParam>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "text":
             {
-                return new BlockVariants::BetaImageBlockParamVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaTextBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BlockVariants::BetaTextBlockParamVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "image":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaImageBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BlockVariants::BetaImageBlockParamVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "search_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Messages::BetaSearchResultBlockParam>(
+                            json,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new BlockVariants::BetaSearchResultBlockParamVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaSearchResultBlockParam>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BlockVariants::BetaSearchResultBlockParamVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new AggregateException(exceptions);
     }
 
     public override void Write(Utf8JsonWriter writer, Block value, JsonSerializerOptions options)

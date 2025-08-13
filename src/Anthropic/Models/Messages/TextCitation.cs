@@ -36,91 +36,140 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<CitationCharLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new TextCitationVariants::CitationCharLocationVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "char_location":
             {
-                return new TextCitationVariants::CitationPageLocationVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<CitationCharLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new TextCitationVariants::CitationCharLocationVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "page_location":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new TextCitationVariants::CitationPageLocationVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "content_block_location":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<CitationContentBlockLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new TextCitationVariants::CitationContentBlockLocationVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "web_search_result_location":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new TextCitationVariants::CitationsWebSearchResultLocationVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "search_result_location":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<CitationsSearchResultLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new TextCitationVariants::CitationsSearchResultLocationVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<CitationContentBlockLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new TextCitationVariants::CitationContentBlockLocationVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new TextCitationVariants::CitationsWebSearchResultLocationVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<CitationsSearchResultLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new TextCitationVariants::CitationsSearchResultLocationVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

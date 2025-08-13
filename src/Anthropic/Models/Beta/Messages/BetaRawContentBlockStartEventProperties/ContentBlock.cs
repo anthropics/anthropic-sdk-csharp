@@ -57,172 +57,260 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaTextBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaTextBlockVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaThinkingBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "text":
             {
-                return new ContentBlockVariants::BetaThinkingBlockVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaTextBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaTextBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "thinking":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaThinkingBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaThinkingBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "redacted_thinking":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Messages::BetaRedactedThinkingBlock>(
+                            json,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaRedactedThinkingBlockVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "tool_use":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaToolUseBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaToolUseBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "server_tool_use":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaServerToolUseBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaServerToolUseBlockVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "web_search_tool_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Messages::BetaWebSearchToolResultBlock>(
+                            json,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaWebSearchToolResultBlockVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "code_execution_tool_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Messages::BetaCodeExecutionToolResultBlock>(
+                            json,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaCodeExecutionToolResultBlockVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "mcp_tool_use":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaMCPToolUseBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaMCPToolUseBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "mcp_tool_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaMCPToolResultBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaMCPToolResultBlockVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "container_upload":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Messages::BetaContainerUploadBlock>(
+                            json,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::BetaContainerUploadBlockVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaRedactedThinkingBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaRedactedThinkingBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaToolUseBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaToolUseBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaServerToolUseBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaServerToolUseBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaWebSearchToolResultBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaWebSearchToolResultBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized =
-                JsonSerializer.Deserialize<Messages::BetaCodeExecutionToolResultBlock>(
-                    ref reader,
-                    options
-                );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaCodeExecutionToolResultBlockVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaMCPToolUseBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaMCPToolUseBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaMCPToolResultBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaMCPToolResultBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaContainerUploadBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::BetaContainerUploadBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new AggregateException(exceptions);
     }
 
     public override void Write(

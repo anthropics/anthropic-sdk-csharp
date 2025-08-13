@@ -54,158 +54,251 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<TextBlockParam>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::TextBlockParamVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(ref reader, options);
-            if (deserialized != null)
+            case "text":
             {
-                return new ContentBlockParamVariants::ImageBlockParamVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::TextBlockParamVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "image":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::ImageBlockParamVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "document":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::DocumentBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "search_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<SearchResultBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::SearchResultBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "thinking":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ThinkingBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::ThinkingBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "redacted_thinking":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::RedactedThinkingBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "tool_use":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::ToolUseBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "tool_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ToolResultBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::ToolResultBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "server_tool_use":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ServerToolUseBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::ServerToolUseBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "web_search_tool_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockParamVariants::WebSearchToolResultBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::DocumentBlockParamVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<SearchResultBlockParam>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::SearchResultBlockParamVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<ThinkingBlockParam>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::ThinkingBlockParamVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlockParam>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::RedactedThinkingBlockParamVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::ToolUseBlockParamVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<ToolResultBlockParam>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::ToolResultBlockParamVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<ServerToolUseBlockParam>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::ServerToolUseBlockParamVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParam>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockParamVariants::WebSearchToolResultBlockParamVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

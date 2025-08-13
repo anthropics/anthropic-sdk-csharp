@@ -32,57 +32,90 @@ sealed class SourceConverter : JsonConverter<Source>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaBase64ImageSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new SourceVariants::BetaBase64ImageSourceVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaURLImageSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "base64":
             {
-                return new SourceVariants::BetaURLImageSourceVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaBase64ImageSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::BetaBase64ImageSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "url":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaURLImageSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::BetaURLImageSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "file":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::BetaFileImageSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::BetaFileImageSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::BetaFileImageSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new SourceVariants::BetaFileImageSourceVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new AggregateException(exceptions);
     }
 
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)

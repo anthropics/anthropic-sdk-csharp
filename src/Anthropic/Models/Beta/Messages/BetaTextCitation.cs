@@ -36,95 +36,145 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaTextCitationVariants::BetaCitationCharLocationVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "char_location":
             {
-                return new BetaTextCitationVariants::BetaCitationPageLocationVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaTextCitationVariants::BetaCitationCharLocationVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "page_location":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaTextCitationVariants::BetaCitationPageLocationVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "content_block_location":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaTextCitationVariants::BetaCitationContentBlockLocationVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "web_search_result_location":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCitationsWebSearchResultLocation>(
+                            json,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new BetaTextCitationVariants::BetaCitationsWebSearchResultLocationVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "search_result_location":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCitationSearchResultLocation>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaTextCitationVariants::BetaCitationSearchResultLocationVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaTextCitationVariants::BetaCitationContentBlockLocationVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaCitationsWebSearchResultLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaTextCitationVariants::BetaCitationsWebSearchResultLocationVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaCitationSearchResultLocation>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaTextCitationVariants::BetaCitationSearchResultLocationVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

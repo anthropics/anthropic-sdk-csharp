@@ -36,80 +36,138 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaTextDelta>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new BetaRawContentBlockDeltaVariants::BetaTextDeltaVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<BetaInputJSONDelta>(ref reader, options);
-            if (deserialized != null)
+            case "text_delta":
             {
-                return new BetaRawContentBlockDeltaVariants::BetaInputJSONDeltaVariant(
-                    deserialized
-                );
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaTextDelta>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new BetaRawContentBlockDeltaVariants::BetaTextDeltaVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "input_json_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaInputJSONDelta>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawContentBlockDeltaVariants::BetaInputJSONDeltaVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "citations_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCitationsDelta>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawContentBlockDeltaVariants::BetaCitationsDeltaVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "thinking_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new BetaRawContentBlockDeltaVariants::BetaThinkingDeltaVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "signature_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaSignatureDelta>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawContentBlockDeltaVariants::BetaSignatureDeltaVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaCitationsDelta>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new BetaRawContentBlockDeltaVariants::BetaCitationsDeltaVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new BetaRawContentBlockDeltaVariants::BetaThinkingDeltaVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaSignatureDelta>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new BetaRawContentBlockDeltaVariants::BetaSignatureDeltaVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

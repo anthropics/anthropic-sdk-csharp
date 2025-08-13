@@ -37,41 +37,72 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ThinkingConfigEnabled>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ThinkingConfigParamVariants::ThinkingConfigEnabledVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "enabled":
             {
-                return new ThinkingConfigParamVariants::ThinkingConfigDisabledVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ThinkingConfigEnabled>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ThinkingConfigParamVariants::ThinkingConfigEnabledVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "disabled":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ThinkingConfigParamVariants::ThinkingConfigDisabledVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

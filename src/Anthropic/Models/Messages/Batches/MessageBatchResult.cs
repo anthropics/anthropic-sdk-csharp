@@ -40,81 +40,120 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new MessageBatchResultVariants::MessageBatchSucceededResultVariant(
-                    deserialized
-                );
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "succeeded":
             {
-                return new MessageBatchResultVariants::MessageBatchErroredResultVariant(
-                    deserialized
-                );
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new MessageBatchResultVariants::MessageBatchSucceededResultVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "errored":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new MessageBatchResultVariants::MessageBatchErroredResultVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "canceled":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new MessageBatchResultVariants::MessageBatchCanceledResultVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "expired":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new MessageBatchResultVariants::MessageBatchExpiredResultVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new MessageBatchResultVariants::MessageBatchCanceledResultVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new MessageBatchResultVariants::MessageBatchExpiredResultVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(
