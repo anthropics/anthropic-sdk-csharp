@@ -37,61 +37,100 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolChoiceAuto>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ToolChoiceVariants::ToolChoiceAutoVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(ref reader, options);
-            if (deserialized != null)
+            case "auto":
             {
-                return new ToolChoiceVariants::ToolChoiceAnyVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ToolChoiceAuto>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ToolChoiceVariants::ToolChoiceAutoVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "any":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ToolChoiceVariants::ToolChoiceAnyVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "tool":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ToolChoiceVariants::ToolChoiceToolVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "none":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ToolChoiceVariants::ToolChoiceNoneVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ToolChoiceVariants::ToolChoiceToolVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ToolChoiceVariants::ToolChoiceNoneVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

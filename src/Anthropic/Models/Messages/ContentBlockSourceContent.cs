@@ -27,35 +27,66 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<TextBlockParam>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ContentBlockSourceContentVariants::TextBlockParamVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(ref reader, options);
-            if (deserialized != null)
+            case "text":
             {
-                return new ContentBlockSourceContentVariants::ImageBlockParamVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockSourceContentVariants::TextBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "image":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockSourceContentVariants::ImageBlockParamVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

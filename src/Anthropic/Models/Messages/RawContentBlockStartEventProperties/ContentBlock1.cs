@@ -41,102 +41,159 @@ sealed class ContentBlock1Converter : JsonConverter<ContentBlock1>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::TextBlock>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::TextBlockVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::ThinkingBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "text":
             {
-                return new ContentBlockVariants::ThinkingBlockVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::TextBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::TextBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "thinking":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::ThinkingBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::ThinkingBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "redacted_thinking":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::RedactedThinkingBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::RedactedThinkingBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "tool_use":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::ToolUseBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::ToolUseBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "server_tool_use":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::ServerToolUseBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::ServerToolUseBlockVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "web_search_tool_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Messages::WebSearchToolResultBlock>(
+                            json,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new ContentBlockVariants::WebSearchToolResultBlockVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::RedactedThinkingBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::RedactedThinkingBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::ToolUseBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::ToolUseBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::ServerToolUseBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::ServerToolUseBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<Messages::WebSearchToolResultBlock>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new ContentBlockVariants::WebSearchToolResultBlockVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new AggregateException(exceptions);
     }
 
     public override void Write(

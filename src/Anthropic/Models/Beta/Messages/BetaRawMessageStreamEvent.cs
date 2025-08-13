@@ -41,117 +41,168 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaRawMessageStartEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaRawMessageStreamEventVariants::BetaRawMessageStartEventVariant(
-                    deserialized
-                );
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<BetaRawMessageDeltaEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "message_start":
             {
-                return new BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEventVariant(
-                    deserialized
-                );
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaRawMessageStartEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawMessageStreamEventVariants::BetaRawMessageStartEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "message_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaRawMessageDeltaEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "message_stop":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaRawMessageStopEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawMessageStreamEventVariants::BetaRawMessageStopEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "content_block_start":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStartEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "content_block_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDeltaEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "content_block_stop":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStopEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaRawMessageStopEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaRawMessageStreamEventVariants::BetaRawMessageStopEventVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStartEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEventVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDeltaEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEventVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStopEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEventVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

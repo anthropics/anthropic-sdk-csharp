@@ -39,108 +39,168 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new RawMessageStreamEventVariants::RawMessageStartEventVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "message_start":
             {
-                return new RawMessageStreamEventVariants::RawMessageDeltaEventVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new RawMessageStreamEventVariants::RawMessageStartEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "message_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new RawMessageStreamEventVariants::RawMessageDeltaEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "message_stop":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new RawMessageStreamEventVariants::RawMessageStopEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "content_block_start":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new RawMessageStreamEventVariants::RawContentBlockStartEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "content_block_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new RawMessageStreamEventVariants::RawContentBlockDeltaEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "content_block_stop":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RawContentBlockStopEvent>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new RawMessageStreamEventVariants::RawContentBlockStopEventVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new RawMessageStreamEventVariants::RawMessageStopEventVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new RawMessageStreamEventVariants::RawContentBlockStartEventVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new RawMessageStreamEventVariants::RawContentBlockDeltaEventVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<RawContentBlockStopEvent>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new RawMessageStreamEventVariants::RawContentBlockStopEventVariant(
-                    deserialized
-                );
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

@@ -36,74 +36,125 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<TextDelta>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new RawContentBlockDeltaVariants::TextDeltaVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<InputJSONDelta>(ref reader, options);
-            if (deserialized != null)
+            case "text_delta":
             {
-                return new RawContentBlockDeltaVariants::InputJSONDeltaVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<TextDelta>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new RawContentBlockDeltaVariants::TextDeltaVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "input_json_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<InputJSONDelta>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new RawContentBlockDeltaVariants::InputJSONDeltaVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "citations_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<CitationsDelta>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new RawContentBlockDeltaVariants::CitationsDeltaVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "thinking_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new RawContentBlockDeltaVariants::ThinkingDeltaVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            case "signature_delta":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<SignatureDelta>(json, options);
+                    if (deserialized != null)
+                    {
+                        return new RawContentBlockDeltaVariants::SignatureDeltaVariant(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new global::System.AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new global::System.Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<CitationsDelta>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new RawContentBlockDeltaVariants::CitationsDeltaVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new RawContentBlockDeltaVariants::ThinkingDeltaVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<SignatureDelta>(ref reader, options);
-            if (deserialized != null)
-            {
-                return new RawContentBlockDeltaVariants::SignatureDeltaVariant(deserialized);
-            }
-        }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new global::System.AggregateException(exceptions);
     }
 
     public override void Write(

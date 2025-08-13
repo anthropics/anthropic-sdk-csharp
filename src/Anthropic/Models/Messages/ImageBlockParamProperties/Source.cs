@@ -29,41 +29,68 @@ sealed class SourceConverter : JsonConverter<Source>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::Base64ImageSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
-            {
-                return new SourceVariants::Base64ImageSourceVariant(deserialized);
-            }
+            type = json.GetProperty("type").GetString();
         }
-        catch (JsonException e)
+        catch
         {
-            exceptions.Add(e);
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<Messages::URLImageSource>(
-                ref reader,
-                options
-            );
-            if (deserialized != null)
+            case "base64":
             {
-                return new SourceVariants::URLImageSourceVariant(deserialized);
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::Base64ImageSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::Base64ImageSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "url":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<Messages::URLImageSource>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new SourceVariants::URLImageSourceVariant(deserialized);
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new Exception();
             }
         }
-        catch (JsonException e)
-        {
-            exceptions.Add(e);
-        }
-
-        throw new AggregateException(exceptions);
     }
 
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
