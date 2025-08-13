@@ -19,7 +19,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- Disable missing XML documentation warnings -->
     <NoWarn>$(NoWarn),1570,1573,1574,1591</NoWarn>
-    <!-- Disable JSON warnings (alpha) -->
+    <!-- Disable JSON warnings (beta) -->
     <NoWarn>$(NoWarn),IL2026,IL3050</NoWarn>
     <Configurations>Debug;Release</Configurations>
     <IsTrimmable

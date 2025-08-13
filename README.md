@@ -29,10 +29,10 @@ This library requires .NET 8 or later.
 See the [`examples`](examples) directory for complete and runnable examples.
 
 ```csharp
+using System;
 using Anthropic;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Messages.MessageParamProperties;
-using System;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
