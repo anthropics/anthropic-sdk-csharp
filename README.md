@@ -14,7 +14,8 @@ The REST API documentation can be found on [docs.anthropic.com](https://docs.ant
 ## Installation
 
 ```bash
-dotnet add package Anthropic
+git clone git@github.com:stainless-sdks/anthropic-csharp.git
+dotnet add reference anthropic-csharp/src/Anthropic
 ```
 
 ## Requirements
