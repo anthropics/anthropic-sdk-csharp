@@ -92,6 +92,39 @@ To send a request to the Anthropic API, build an instance of some `Params` class
 
 For example, `client.Messages.Create` should be called with an instance of `MessageCreateParams`, and it will return an instance of `Task<Message>`.
 
+## Streaming
+
+The SDK defines methods that return response "chunk" streams, where each chunk can be individually processed as soon as it arrives instead of waiting on the full response. Streaming methods generally correspond to [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) or [JSONL](https://jsonlines.org) responses.
+
+Some of these methods may have streaming and non-streaming variants, but a streaming method will always have a `Streaming` suffix in its name, even if it doesn't have a non-streaming variant.
+
+These streaming methods return [`IAsyncEnumerable`](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iasyncenumerable-1):
+
+```csharp
+using System;
+using Anthropic.Models.Messages;
+using Anthropic.Models.Messages.MessageParamProperties;
+
+MessageCreateParams parameters = new()
+{
+    MaxTokens = 1024,
+    Messages =
+    [
+        new()
+        {
+            Role = Role.User,
+            Content = "Hello, Claude",
+        },
+    ],
+    Model = Model.Claude3_7SonnetLatest,
+};
+
+await foreach (var message in client.Messages.CreateStreaming(parameters))
+{
+    Console.WriteLine(message);
+}
+```
+
 ## Semantic versioning
 
 This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
