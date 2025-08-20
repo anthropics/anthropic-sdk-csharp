@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaRawMessageStreamEventVariants;
@@ -31,26 +32,32 @@ public abstract record class BetaRawMessageStreamEvent
     public static implicit operator BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value) =>
         new BetaRawContentBlockStopEventVariant(value);
 
-    public bool TryPickBetaRawMessageStartEventVariant(out BetaRawMessageStartEvent? value)
+    public bool TryPickBetaRawMessageStartEventVariant(
+        [NotNullWhen(true)] out BetaRawMessageStartEvent? value
+    )
     {
         value = (this as BetaRawMessageStartEventVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRawMessageDeltaEventVariant(out BetaRawMessageDeltaEvent? value)
+    public bool TryPickBetaRawMessageDeltaEventVariant(
+        [NotNullWhen(true)] out BetaRawMessageDeltaEvent? value
+    )
     {
         value = (this as BetaRawMessageDeltaEventVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRawMessageStopEventVariant(out BetaRawMessageStopEvent? value)
+    public bool TryPickBetaRawMessageStopEventVariant(
+        [NotNullWhen(true)] out BetaRawMessageStopEvent? value
+    )
     {
         value = (this as BetaRawMessageStopEventVariant)?.Value;
         return value != null;
     }
 
     public bool TryPickBetaRawContentBlockStartEventVariant(
-        out BetaRawContentBlockStartEvent? value
+        [NotNullWhen(true)] out BetaRawContentBlockStartEvent? value
     )
     {
         value = (this as BetaRawContentBlockStartEventVariant)?.Value;
@@ -58,14 +65,16 @@ public abstract record class BetaRawMessageStreamEvent
     }
 
     public bool TryPickBetaRawContentBlockDeltaEventVariant(
-        out BetaRawContentBlockDeltaEvent? value
+        [NotNullWhen(true)] out BetaRawContentBlockDeltaEvent? value
     )
     {
         value = (this as BetaRawContentBlockDeltaEventVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRawContentBlockStopEventVariant(out BetaRawContentBlockStopEvent? value)
+    public bool TryPickBetaRawContentBlockStopEventVariant(
+        [NotNullWhen(true)] out BetaRawContentBlockStopEvent? value
+    )
     {
         value = (this as BetaRawContentBlockStopEventVariant)?.Value;
         return value != null;

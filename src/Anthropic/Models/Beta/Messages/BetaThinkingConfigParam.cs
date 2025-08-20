@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaThinkingConfigParamVariants;
@@ -27,13 +28,17 @@ public abstract record class BetaThinkingConfigParam
     public static implicit operator BetaThinkingConfigParam(BetaThinkingConfigDisabled value) =>
         new BetaThinkingConfigDisabledVariant(value);
 
-    public bool TryPickBetaThinkingConfigEnabledVariant(out BetaThinkingConfigEnabled? value)
+    public bool TryPickBetaThinkingConfigEnabledVariant(
+        [NotNullWhen(true)] out BetaThinkingConfigEnabled? value
+    )
     {
         value = (this as BetaThinkingConfigEnabledVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaThinkingConfigDisabledVariant(out BetaThinkingConfigDisabled? value)
+    public bool TryPickBetaThinkingConfigDisabledVariant(
+        [NotNullWhen(true)] out BetaThinkingConfigDisabled? value
+    )
     {
         value = (this as BetaThinkingConfigDisabledVariant)?.Value;
         return value != null;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaToolResultBlockParamProperties.ContentProperties.BlockVariants;
@@ -20,19 +21,23 @@ public abstract record class Block
     public static implicit operator Block(BetaSearchResultBlockParam value) =>
         new BetaSearchResultBlockParamVariant(value);
 
-    public bool TryPickBetaTextBlockParamVariant(out BetaTextBlockParam? value)
+    public bool TryPickBetaTextBlockParamVariant([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
         value = (this as BetaTextBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaImageBlockParamVariant(out BetaImageBlockParam? value)
+    public bool TryPickBetaImageBlockParamVariant(
+        [NotNullWhen(true)] out BetaImageBlockParam? value
+    )
     {
         value = (this as BetaImageBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaSearchResultBlockParamVariant(out BetaSearchResultBlockParam? value)
+    public bool TryPickBetaSearchResultBlockParamVariant(
+        [NotNullWhen(true)] out BetaSearchResultBlockParam? value
+    )
     {
         value = (this as BetaSearchResultBlockParamVariant)?.Value;
         return value != null;

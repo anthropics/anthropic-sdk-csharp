@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.ToolUnionVariants;
@@ -28,37 +29,45 @@ public abstract record class ToolUnion
     public static implicit operator ToolUnion(WebSearchTool20250305 value) =>
         new WebSearchTool20250305Variant(value);
 
-    public bool TryPickToolVariant(out Tool? value)
+    public bool TryPickToolVariant([NotNullWhen(true)] out Tool? value)
     {
         value = (this as ToolVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolBash20250124Variant(out ToolBash20250124? value)
+    public bool TryPickToolBash20250124Variant([NotNullWhen(true)] out ToolBash20250124? value)
     {
         value = (this as ToolBash20250124Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolTextEditor20250124Variant(out ToolTextEditor20250124? value)
+    public bool TryPickToolTextEditor20250124Variant(
+        [NotNullWhen(true)] out ToolTextEditor20250124? value
+    )
     {
         value = (this as ToolTextEditor20250124Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolTextEditor20250429Variant(out ToolTextEditor20250429? value)
+    public bool TryPickToolTextEditor20250429Variant(
+        [NotNullWhen(true)] out ToolTextEditor20250429? value
+    )
     {
         value = (this as ToolTextEditor20250429Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolTextEditor20250728Variant(out ToolTextEditor20250728? value)
+    public bool TryPickToolTextEditor20250728Variant(
+        [NotNullWhen(true)] out ToolTextEditor20250728? value
+    )
     {
         value = (this as ToolTextEditor20250728Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickWebSearchTool20250305Variant(out WebSearchTool20250305? value)
+    public bool TryPickWebSearchTool20250305Variant(
+        [NotNullWhen(true)] out WebSearchTool20250305? value
+    )
     {
         value = (this as WebSearchTool20250305Variant)?.Value;
         return value != null;

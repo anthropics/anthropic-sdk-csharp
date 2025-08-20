@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.Batches.MessageBatchResultVariants;
@@ -30,25 +31,33 @@ public abstract record class MessageBatchResult
     public static implicit operator MessageBatchResult(MessageBatchExpiredResult value) =>
         new MessageBatchExpiredResultVariant(value);
 
-    public bool TryPickMessageBatchSucceededResultVariant(out MessageBatchSucceededResult? value)
+    public bool TryPickMessageBatchSucceededResultVariant(
+        [NotNullWhen(true)] out MessageBatchSucceededResult? value
+    )
     {
         value = (this as MessageBatchSucceededResultVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickMessageBatchErroredResultVariant(out MessageBatchErroredResult? value)
+    public bool TryPickMessageBatchErroredResultVariant(
+        [NotNullWhen(true)] out MessageBatchErroredResult? value
+    )
     {
         value = (this as MessageBatchErroredResultVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickMessageBatchCanceledResultVariant(out MessageBatchCanceledResult? value)
+    public bool TryPickMessageBatchCanceledResultVariant(
+        [NotNullWhen(true)] out MessageBatchCanceledResult? value
+    )
     {
         value = (this as MessageBatchCanceledResultVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickMessageBatchExpiredResultVariant(out MessageBatchExpiredResult? value)
+    public bool TryPickMessageBatchExpiredResultVariant(
+        [NotNullWhen(true)] out MessageBatchExpiredResult? value
+    )
     {
         value = (this as MessageBatchExpiredResultVariant)?.Value;
         return value != null;

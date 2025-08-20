@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.Batches.BetaMessageBatchResultVariants;
@@ -31,7 +32,7 @@ public abstract record class BetaMessageBatchResult
         new BetaMessageBatchExpiredResultVariant(value);
 
     public bool TryPickBetaMessageBatchSucceededResultVariant(
-        out BetaMessageBatchSucceededResult? value
+        [NotNullWhen(true)] out BetaMessageBatchSucceededResult? value
     )
     {
         value = (this as BetaMessageBatchSucceededResultVariant)?.Value;
@@ -39,7 +40,7 @@ public abstract record class BetaMessageBatchResult
     }
 
     public bool TryPickBetaMessageBatchErroredResultVariant(
-        out BetaMessageBatchErroredResult? value
+        [NotNullWhen(true)] out BetaMessageBatchErroredResult? value
     )
     {
         value = (this as BetaMessageBatchErroredResultVariant)?.Value;
@@ -47,7 +48,7 @@ public abstract record class BetaMessageBatchResult
     }
 
     public bool TryPickBetaMessageBatchCanceledResultVariant(
-        out BetaMessageBatchCanceledResult? value
+        [NotNullWhen(true)] out BetaMessageBatchCanceledResult? value
     )
     {
         value = (this as BetaMessageBatchCanceledResultVariant)?.Value;
@@ -55,7 +56,7 @@ public abstract record class BetaMessageBatchResult
     }
 
     public bool TryPickBetaMessageBatchExpiredResultVariant(
-        out BetaMessageBatchExpiredResult? value
+        [NotNullWhen(true)] out BetaMessageBatchExpiredResult? value
     )
     {
         value = (this as BetaMessageBatchExpiredResultVariant)?.Value;

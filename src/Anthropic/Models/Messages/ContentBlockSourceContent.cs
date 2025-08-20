@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.ContentBlockSourceContentVariants;
@@ -17,13 +18,13 @@ public abstract record class ContentBlockSourceContent
     public static implicit operator ContentBlockSourceContent(ImageBlockParam value) =>
         new ImageBlockParamVariant(value);
 
-    public bool TryPickTextBlockParamVariant(out TextBlockParam? value)
+    public bool TryPickTextBlockParamVariant([NotNullWhen(true)] out TextBlockParam? value)
     {
         value = (this as TextBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickImageBlockParamVariant(out ImageBlockParam? value)
+    public bool TryPickImageBlockParamVariant([NotNullWhen(true)] out ImageBlockParam? value)
     {
         value = (this as ImageBlockParamVariant)?.Value;
         return value != null;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.RawContentBlockStartEventProperties.ContentBlockVariants;
@@ -29,37 +30,41 @@ public abstract record class ContentBlockModel
     public static implicit operator ContentBlockModel(WebSearchToolResultBlock value) =>
         new WebSearchToolResultBlockVariant(value);
 
-    public bool TryPickTextBlockVariant(out TextBlock? value)
+    public bool TryPickTextBlockVariant([NotNullWhen(true)] out TextBlock? value)
     {
         value = (this as TextBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickThinkingBlockVariant(out ThinkingBlock? value)
+    public bool TryPickThinkingBlockVariant([NotNullWhen(true)] out ThinkingBlock? value)
     {
         value = (this as ThinkingBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickRedactedThinkingBlockVariant(out RedactedThinkingBlock? value)
+    public bool TryPickRedactedThinkingBlockVariant(
+        [NotNullWhen(true)] out RedactedThinkingBlock? value
+    )
     {
         value = (this as RedactedThinkingBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolUseBlockVariant(out ToolUseBlock? value)
+    public bool TryPickToolUseBlockVariant([NotNullWhen(true)] out ToolUseBlock? value)
     {
         value = (this as ToolUseBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickServerToolUseBlockVariant(out ServerToolUseBlock? value)
+    public bool TryPickServerToolUseBlockVariant([NotNullWhen(true)] out ServerToolUseBlock? value)
     {
         value = (this as ServerToolUseBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickWebSearchToolResultBlockVariant(out WebSearchToolResultBlock? value)
+    public bool TryPickWebSearchToolResultBlockVariant(
+        [NotNullWhen(true)] out WebSearchToolResultBlock? value
+    )
     {
         value = (this as WebSearchToolResultBlockVariant)?.Value;
         return value != null;

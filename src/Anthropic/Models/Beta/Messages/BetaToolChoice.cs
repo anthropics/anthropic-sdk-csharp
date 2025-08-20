@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaToolChoiceVariants;
@@ -27,25 +28,25 @@ public abstract record class BetaToolChoice
     public static implicit operator BetaToolChoice(BetaToolChoiceNone value) =>
         new BetaToolChoiceNoneVariant(value);
 
-    public bool TryPickBetaToolChoiceAutoVariant(out BetaToolChoiceAuto? value)
+    public bool TryPickBetaToolChoiceAutoVariant([NotNullWhen(true)] out BetaToolChoiceAuto? value)
     {
         value = (this as BetaToolChoiceAutoVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolChoiceAnyVariant(out BetaToolChoiceAny? value)
+    public bool TryPickBetaToolChoiceAnyVariant([NotNullWhen(true)] out BetaToolChoiceAny? value)
     {
         value = (this as BetaToolChoiceAnyVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolChoiceToolVariant(out BetaToolChoiceTool? value)
+    public bool TryPickBetaToolChoiceToolVariant([NotNullWhen(true)] out BetaToolChoiceTool? value)
     {
         value = (this as BetaToolChoiceToolVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolChoiceNoneVariant(out BetaToolChoiceNone? value)
+    public bool TryPickBetaToolChoiceNoneVariant([NotNullWhen(true)] out BetaToolChoiceNone? value)
     {
         value = (this as BetaToolChoiceNoneVariant)?.Value;
         return value != null;

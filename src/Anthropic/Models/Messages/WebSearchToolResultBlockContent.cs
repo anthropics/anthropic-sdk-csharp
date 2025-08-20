@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.WebSearchToolResultBlockContentVariants;
@@ -19,13 +20,17 @@ public abstract record class WebSearchToolResultBlockContent
         List<WebSearchResultBlock> value
     ) => new WebSearchResultBlocks(value);
 
-    public bool TryPickWebSearchToolResultErrorVariant(out WebSearchToolResultError? value)
+    public bool TryPickWebSearchToolResultErrorVariant(
+        [NotNullWhen(true)] out WebSearchToolResultError? value
+    )
     {
         value = (this as WebSearchToolResultErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickWebSearchResultBlocks(out List<WebSearchResultBlock>? value)
+    public bool TryPickWebSearchResultBlocks(
+        [NotNullWhen(true)] out List<WebSearchResultBlock>? value
+    )
     {
         value = (this as WebSearchResultBlocks)?.Value;
         return value != null;

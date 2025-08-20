@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaContentBlockSourceContentVariants;
@@ -17,13 +18,15 @@ public abstract record class BetaContentBlockSourceContent
     public static implicit operator BetaContentBlockSourceContent(BetaImageBlockParam value) =>
         new BetaImageBlockParamVariant(value);
 
-    public bool TryPickBetaTextBlockParamVariant(out BetaTextBlockParam? value)
+    public bool TryPickBetaTextBlockParamVariant([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
         value = (this as BetaTextBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaImageBlockParamVariant(out BetaImageBlockParam? value)
+    public bool TryPickBetaImageBlockParamVariant(
+        [NotNullWhen(true)] out BetaImageBlockParam? value
+    )
     {
         value = (this as BetaImageBlockParamVariant)?.Value;
         return value != null;

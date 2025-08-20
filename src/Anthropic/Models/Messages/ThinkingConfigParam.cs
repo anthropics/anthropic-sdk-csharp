@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.ThinkingConfigParamVariants;
@@ -27,13 +28,17 @@ public abstract record class ThinkingConfigParam
     public static implicit operator ThinkingConfigParam(ThinkingConfigDisabled value) =>
         new ThinkingConfigDisabledVariant(value);
 
-    public bool TryPickThinkingConfigEnabledVariant(out ThinkingConfigEnabled? value)
+    public bool TryPickThinkingConfigEnabledVariant(
+        [NotNullWhen(true)] out ThinkingConfigEnabled? value
+    )
     {
         value = (this as ThinkingConfigEnabledVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickThinkingConfigDisabledVariant(out ThinkingConfigDisabled? value)
+    public bool TryPickThinkingConfigDisabledVariant(
+        [NotNullWhen(true)] out ThinkingConfigDisabled? value
+    )
     {
         value = (this as ThinkingConfigDisabledVariant)?.Value;
         return value != null;

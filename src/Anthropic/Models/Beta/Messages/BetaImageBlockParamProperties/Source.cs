@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaImageBlockParamProperties.SourceVariants;
@@ -20,19 +21,23 @@ public abstract record class Source
     public static implicit operator Source(BetaFileImageSource value) =>
         new BetaFileImageSourceVariant(value);
 
-    public bool TryPickBetaBase64ImageSourceVariant(out BetaBase64ImageSource? value)
+    public bool TryPickBetaBase64ImageSourceVariant(
+        [NotNullWhen(true)] out BetaBase64ImageSource? value
+    )
     {
         value = (this as BetaBase64ImageSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaURLImageSourceVariant(out BetaURLImageSource? value)
+    public bool TryPickBetaURLImageSourceVariant([NotNullWhen(true)] out BetaURLImageSource? value)
     {
         value = (this as BetaURLImageSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaFileImageSourceVariant(out BetaFileImageSource? value)
+    public bool TryPickBetaFileImageSourceVariant(
+        [NotNullWhen(true)] out BetaFileImageSource? value
+    )
     {
         value = (this as BetaFileImageSourceVariant)?.Value;
         return value != null;

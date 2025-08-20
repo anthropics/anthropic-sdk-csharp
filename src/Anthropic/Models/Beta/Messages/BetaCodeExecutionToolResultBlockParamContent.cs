@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaCodeExecutionToolResultBlockParamContentVariants;
@@ -20,7 +21,7 @@ public abstract record class BetaCodeExecutionToolResultBlockParamContent
     ) => new BetaCodeExecutionResultBlockParamVariant(value);
 
     public bool TryPickBetaCodeExecutionToolResultErrorParamVariant(
-        out BetaCodeExecutionToolResultErrorParam? value
+        [NotNullWhen(true)] out BetaCodeExecutionToolResultErrorParam? value
     )
     {
         value = (this as BetaCodeExecutionToolResultErrorParamVariant)?.Value;
@@ -28,7 +29,7 @@ public abstract record class BetaCodeExecutionToolResultBlockParamContent
     }
 
     public bool TryPickBetaCodeExecutionResultBlockParamVariant(
-        out BetaCodeExecutionResultBlockParam? value
+        [NotNullWhen(true)] out BetaCodeExecutionResultBlockParam? value
     )
     {
         value = (this as BetaCodeExecutionResultBlockParamVariant)?.Value;

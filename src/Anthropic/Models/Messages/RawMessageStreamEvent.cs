@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.RawMessageStreamEventVariants;
@@ -29,37 +30,49 @@ public abstract record class RawMessageStreamEvent
     public static implicit operator RawMessageStreamEvent(RawContentBlockStopEvent value) =>
         new RawContentBlockStopEventVariant(value);
 
-    public bool TryPickRawMessageStartEventVariant(out RawMessageStartEvent? value)
+    public bool TryPickRawMessageStartEventVariant(
+        [NotNullWhen(true)] out RawMessageStartEvent? value
+    )
     {
         value = (this as RawMessageStartEventVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawMessageDeltaEventVariant(out RawMessageDeltaEvent? value)
+    public bool TryPickRawMessageDeltaEventVariant(
+        [NotNullWhen(true)] out RawMessageDeltaEvent? value
+    )
     {
         value = (this as RawMessageDeltaEventVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawMessageStopEventVariant(out RawMessageStopEvent? value)
+    public bool TryPickRawMessageStopEventVariant(
+        [NotNullWhen(true)] out RawMessageStopEvent? value
+    )
     {
         value = (this as RawMessageStopEventVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawContentBlockStartEventVariant(out RawContentBlockStartEvent? value)
+    public bool TryPickRawContentBlockStartEventVariant(
+        [NotNullWhen(true)] out RawContentBlockStartEvent? value
+    )
     {
         value = (this as RawContentBlockStartEventVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawContentBlockDeltaEventVariant(out RawContentBlockDeltaEvent? value)
+    public bool TryPickRawContentBlockDeltaEventVariant(
+        [NotNullWhen(true)] out RawContentBlockDeltaEvent? value
+    )
     {
         value = (this as RawContentBlockDeltaEventVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawContentBlockStopEventVariant(out RawContentBlockStopEvent? value)
+    public bool TryPickRawContentBlockStopEventVariant(
+        [NotNullWhen(true)] out RawContentBlockStopEvent? value
+    )
     {
         value = (this as RawContentBlockStopEventVariant)?.Value;
         return value != null;

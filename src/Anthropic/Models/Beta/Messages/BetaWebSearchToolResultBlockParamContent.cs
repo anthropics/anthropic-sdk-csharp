@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaWebSearchToolResultBlockParamContentVariants;
@@ -19,14 +20,16 @@ public abstract record class BetaWebSearchToolResultBlockParamContent
         BetaWebSearchToolRequestError value
     ) => new BetaWebSearchToolRequestErrorVariant(value);
 
-    public bool TryPickResultBlock(out List<BetaWebSearchResultBlockParam>? value)
+    public bool TryPickResultBlock(
+        [NotNullWhen(true)] out List<BetaWebSearchResultBlockParam>? value
+    )
     {
         value = (this as ResultBlock)?.Value;
         return value != null;
     }
 
     public bool TryPickBetaWebSearchToolRequestErrorVariant(
-        out BetaWebSearchToolRequestError? value
+        [NotNullWhen(true)] out BetaWebSearchToolRequestError? value
     )
     {
         value = (this as BetaWebSearchToolRequestErrorVariant)?.Value;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.BetaErrorVariants;
@@ -37,55 +38,65 @@ public abstract record class BetaError
     public static implicit operator BetaError(BetaOverloadedError value) =>
         new BetaOverloadedErrorVariant(value);
 
-    public bool TryPickBetaInvalidRequestErrorVariant(out BetaInvalidRequestError? value)
+    public bool TryPickBetaInvalidRequestErrorVariant(
+        [NotNullWhen(true)] out BetaInvalidRequestError? value
+    )
     {
         value = (this as BetaInvalidRequestErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaAuthenticationErrorVariant(out BetaAuthenticationError? value)
+    public bool TryPickBetaAuthenticationErrorVariant(
+        [NotNullWhen(true)] out BetaAuthenticationError? value
+    )
     {
         value = (this as BetaAuthenticationErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaBillingErrorVariant(out BetaBillingError? value)
+    public bool TryPickBetaBillingErrorVariant([NotNullWhen(true)] out BetaBillingError? value)
     {
         value = (this as BetaBillingErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaPermissionErrorVariant(out BetaPermissionError? value)
+    public bool TryPickBetaPermissionErrorVariant(
+        [NotNullWhen(true)] out BetaPermissionError? value
+    )
     {
         value = (this as BetaPermissionErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaNotFoundErrorVariant(out BetaNotFoundError? value)
+    public bool TryPickBetaNotFoundErrorVariant([NotNullWhen(true)] out BetaNotFoundError? value)
     {
         value = (this as BetaNotFoundErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRateLimitErrorVariant(out BetaRateLimitError? value)
+    public bool TryPickBetaRateLimitErrorVariant([NotNullWhen(true)] out BetaRateLimitError? value)
     {
         value = (this as BetaRateLimitErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaGatewayTimeoutErrorVariant(out BetaGatewayTimeoutError? value)
+    public bool TryPickBetaGatewayTimeoutErrorVariant(
+        [NotNullWhen(true)] out BetaGatewayTimeoutError? value
+    )
     {
         value = (this as BetaGatewayTimeoutErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaAPIErrorVariant(out BetaAPIError? value)
+    public bool TryPickBetaAPIErrorVariant([NotNullWhen(true)] out BetaAPIError? value)
     {
         value = (this as BetaAPIErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaOverloadedErrorVariant(out BetaOverloadedError? value)
+    public bool TryPickBetaOverloadedErrorVariant(
+        [NotNullWhen(true)] out BetaOverloadedError? value
+    )
     {
         value = (this as BetaOverloadedErrorVariant)?.Value;
         return value != null;

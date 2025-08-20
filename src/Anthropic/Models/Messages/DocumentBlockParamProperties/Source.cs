@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.DocumentBlockParamProperties.SourceVariants;
@@ -22,25 +23,25 @@ public abstract record class Source
 
     public static implicit operator Source(URLPDFSource value) => new URLPDFSourceVariant(value);
 
-    public bool TryPickBase64PDFSourceVariant(out Base64PDFSource? value)
+    public bool TryPickBase64PDFSourceVariant([NotNullWhen(true)] out Base64PDFSource? value)
     {
         value = (this as Base64PDFSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickPlainTextSourceVariant(out PlainTextSource? value)
+    public bool TryPickPlainTextSourceVariant([NotNullWhen(true)] out PlainTextSource? value)
     {
         value = (this as PlainTextSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickContentBlockSourceVariant(out ContentBlockSource? value)
+    public bool TryPickContentBlockSourceVariant([NotNullWhen(true)] out ContentBlockSource? value)
     {
         value = (this as ContentBlockSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickURLPDFSourceVariant(out URLPDFSource? value)
+    public bool TryPickURLPDFSourceVariant([NotNullWhen(true)] out URLPDFSource? value)
     {
         value = (this as URLPDFSourceVariant)?.Value;
         return value != null;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaContentBlockParamVariants;
@@ -59,64 +60,78 @@ public abstract record class BetaContentBlockParam
     public static implicit operator BetaContentBlockParam(BetaContainerUploadBlockParam value) =>
         new BetaContainerUploadBlockParamVariant(value);
 
-    public bool TryPickBetaTextBlockParamVariant(out BetaTextBlockParam? value)
+    public bool TryPickBetaTextBlockParamVariant([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
         value = (this as BetaTextBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaImageBlockParamVariant(out BetaImageBlockParam? value)
+    public bool TryPickBetaImageBlockParamVariant(
+        [NotNullWhen(true)] out BetaImageBlockParam? value
+    )
     {
         value = (this as BetaImageBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRequestDocumentBlockVariant(out BetaRequestDocumentBlock? value)
+    public bool TryPickBetaRequestDocumentBlockVariant(
+        [NotNullWhen(true)] out BetaRequestDocumentBlock? value
+    )
     {
         value = (this as BetaRequestDocumentBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaSearchResultBlockParamVariant(out BetaSearchResultBlockParam? value)
+    public bool TryPickBetaSearchResultBlockParamVariant(
+        [NotNullWhen(true)] out BetaSearchResultBlockParam? value
+    )
     {
         value = (this as BetaSearchResultBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaThinkingBlockParamVariant(out BetaThinkingBlockParam? value)
+    public bool TryPickBetaThinkingBlockParamVariant(
+        [NotNullWhen(true)] out BetaThinkingBlockParam? value
+    )
     {
         value = (this as BetaThinkingBlockParamVariant)?.Value;
         return value != null;
     }
 
     public bool TryPickBetaRedactedThinkingBlockParamVariant(
-        out BetaRedactedThinkingBlockParam? value
+        [NotNullWhen(true)] out BetaRedactedThinkingBlockParam? value
     )
     {
         value = (this as BetaRedactedThinkingBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolUseBlockParamVariant(out BetaToolUseBlockParam? value)
+    public bool TryPickBetaToolUseBlockParamVariant(
+        [NotNullWhen(true)] out BetaToolUseBlockParam? value
+    )
     {
         value = (this as BetaToolUseBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolResultBlockParamVariant(out BetaToolResultBlockParam? value)
+    public bool TryPickBetaToolResultBlockParamVariant(
+        [NotNullWhen(true)] out BetaToolResultBlockParam? value
+    )
     {
         value = (this as BetaToolResultBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaServerToolUseBlockParamVariant(out BetaServerToolUseBlockParam? value)
+    public bool TryPickBetaServerToolUseBlockParamVariant(
+        [NotNullWhen(true)] out BetaServerToolUseBlockParam? value
+    )
     {
         value = (this as BetaServerToolUseBlockParamVariant)?.Value;
         return value != null;
     }
 
     public bool TryPickBetaWebSearchToolResultBlockParamVariant(
-        out BetaWebSearchToolResultBlockParam? value
+        [NotNullWhen(true)] out BetaWebSearchToolResultBlockParam? value
     )
     {
         value = (this as BetaWebSearchToolResultBlockParamVariant)?.Value;
@@ -124,21 +139,23 @@ public abstract record class BetaContentBlockParam
     }
 
     public bool TryPickBetaCodeExecutionToolResultBlockParamVariant(
-        out BetaCodeExecutionToolResultBlockParam? value
+        [NotNullWhen(true)] out BetaCodeExecutionToolResultBlockParam? value
     )
     {
         value = (this as BetaCodeExecutionToolResultBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaMCPToolUseBlockParamVariant(out BetaMCPToolUseBlockParam? value)
+    public bool TryPickBetaMCPToolUseBlockParamVariant(
+        [NotNullWhen(true)] out BetaMCPToolUseBlockParam? value
+    )
     {
         value = (this as BetaMCPToolUseBlockParamVariant)?.Value;
         return value != null;
     }
 
     public bool TryPickBetaRequestMCPToolResultBlockParamVariant(
-        out BetaRequestMCPToolResultBlockParam? value
+        [NotNullWhen(true)] out BetaRequestMCPToolResultBlockParam? value
     )
     {
         value = (this as BetaRequestMCPToolResultBlockParamVariant)?.Value;
@@ -146,7 +163,7 @@ public abstract record class BetaContentBlockParam
     }
 
     public bool TryPickBetaContainerUploadBlockParamVariant(
-        out BetaContainerUploadBlockParam? value
+        [NotNullWhen(true)] out BetaContainerUploadBlockParam? value
     )
     {
         value = (this as BetaContainerUploadBlockParamVariant)?.Value;

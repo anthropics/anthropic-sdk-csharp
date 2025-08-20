@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaToolUnionVariants;
@@ -43,69 +44,87 @@ public abstract record class BetaToolUnion
     public static implicit operator BetaToolUnion(BetaWebSearchTool20250305 value) =>
         new BetaWebSearchTool20250305Variant(value);
 
-    public bool TryPickBetaToolVariant(out BetaTool? value)
+    public bool TryPickBetaToolVariant([NotNullWhen(true)] out BetaTool? value)
     {
         value = (this as BetaToolVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolBash20241022Variant(out BetaToolBash20241022? value)
+    public bool TryPickBetaToolBash20241022Variant(
+        [NotNullWhen(true)] out BetaToolBash20241022? value
+    )
     {
         value = (this as BetaToolBash20241022Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolBash20250124Variant(out BetaToolBash20250124? value)
+    public bool TryPickBetaToolBash20250124Variant(
+        [NotNullWhen(true)] out BetaToolBash20250124? value
+    )
     {
         value = (this as BetaToolBash20250124Variant)?.Value;
         return value != null;
     }
 
     public bool TryPickBetaCodeExecutionTool20250522Variant(
-        out BetaCodeExecutionTool20250522? value
+        [NotNullWhen(true)] out BetaCodeExecutionTool20250522? value
     )
     {
         value = (this as BetaCodeExecutionTool20250522Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolComputerUse20241022Variant(out BetaToolComputerUse20241022? value)
+    public bool TryPickBetaToolComputerUse20241022Variant(
+        [NotNullWhen(true)] out BetaToolComputerUse20241022? value
+    )
     {
         value = (this as BetaToolComputerUse20241022Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolComputerUse20250124Variant(out BetaToolComputerUse20250124? value)
+    public bool TryPickBetaToolComputerUse20250124Variant(
+        [NotNullWhen(true)] out BetaToolComputerUse20250124? value
+    )
     {
         value = (this as BetaToolComputerUse20250124Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolTextEditor20241022Variant(out BetaToolTextEditor20241022? value)
+    public bool TryPickBetaToolTextEditor20241022Variant(
+        [NotNullWhen(true)] out BetaToolTextEditor20241022? value
+    )
     {
         value = (this as BetaToolTextEditor20241022Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolTextEditor20250124Variant(out BetaToolTextEditor20250124? value)
+    public bool TryPickBetaToolTextEditor20250124Variant(
+        [NotNullWhen(true)] out BetaToolTextEditor20250124? value
+    )
     {
         value = (this as BetaToolTextEditor20250124Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolTextEditor20250429Variant(out BetaToolTextEditor20250429? value)
+    public bool TryPickBetaToolTextEditor20250429Variant(
+        [NotNullWhen(true)] out BetaToolTextEditor20250429? value
+    )
     {
         value = (this as BetaToolTextEditor20250429Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolTextEditor20250728Variant(out BetaToolTextEditor20250728? value)
+    public bool TryPickBetaToolTextEditor20250728Variant(
+        [NotNullWhen(true)] out BetaToolTextEditor20250728? value
+    )
     {
         value = (this as BetaToolTextEditor20250728Variant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaWebSearchTool20250305Variant(out BetaWebSearchTool20250305? value)
+    public bool TryPickBetaWebSearchTool20250305Variant(
+        [NotNullWhen(true)] out BetaWebSearchTool20250305? value
+    )
     {
         value = (this as BetaWebSearchTool20250305Variant)?.Value;
         return value != null;

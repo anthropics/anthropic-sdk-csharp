@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.CitationsDeltaProperties.CitationVariants;
@@ -26,26 +27,32 @@ public abstract record class Citation
     public static implicit operator Citation(CitationsSearchResultLocation value) =>
         new CitationsSearchResultLocationVariant(value);
 
-    public bool TryPickCitationCharLocationVariant(out CitationCharLocation? value)
+    public bool TryPickCitationCharLocationVariant(
+        [NotNullWhen(true)] out CitationCharLocation? value
+    )
     {
         value = (this as CitationCharLocationVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickCitationPageLocationVariant(out CitationPageLocation? value)
+    public bool TryPickCitationPageLocationVariant(
+        [NotNullWhen(true)] out CitationPageLocation? value
+    )
     {
         value = (this as CitationPageLocationVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickCitationContentBlockLocationVariant(out CitationContentBlockLocation? value)
+    public bool TryPickCitationContentBlockLocationVariant(
+        [NotNullWhen(true)] out CitationContentBlockLocation? value
+    )
     {
         value = (this as CitationContentBlockLocationVariant)?.Value;
         return value != null;
     }
 
     public bool TryPickCitationsWebSearchResultLocationVariant(
-        out CitationsWebSearchResultLocation? value
+        [NotNullWhen(true)] out CitationsWebSearchResultLocation? value
     )
     {
         value = (this as CitationsWebSearchResultLocationVariant)?.Value;
@@ -53,7 +60,7 @@ public abstract record class Citation
     }
 
     public bool TryPickCitationsSearchResultLocationVariant(
-        out CitationsSearchResultLocation? value
+        [NotNullWhen(true)] out CitationsSearchResultLocation? value
     )
     {
         value = (this as CitationsSearchResultLocationVariant)?.Value;

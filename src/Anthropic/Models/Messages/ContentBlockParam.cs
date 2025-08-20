@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.ContentBlockParamVariants;
@@ -44,62 +45,70 @@ public abstract record class ContentBlockParam
     public static implicit operator ContentBlockParam(WebSearchToolResultBlockParam value) =>
         new WebSearchToolResultBlockParamVariant(value);
 
-    public bool TryPickTextBlockParamVariant(out TextBlockParam? value)
+    public bool TryPickTextBlockParamVariant([NotNullWhen(true)] out TextBlockParam? value)
     {
         value = (this as TextBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickImageBlockParamVariant(out ImageBlockParam? value)
+    public bool TryPickImageBlockParamVariant([NotNullWhen(true)] out ImageBlockParam? value)
     {
         value = (this as ImageBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickDocumentBlockParamVariant(out DocumentBlockParam? value)
+    public bool TryPickDocumentBlockParamVariant([NotNullWhen(true)] out DocumentBlockParam? value)
     {
         value = (this as DocumentBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickSearchResultBlockParamVariant(out SearchResultBlockParam? value)
+    public bool TryPickSearchResultBlockParamVariant(
+        [NotNullWhen(true)] out SearchResultBlockParam? value
+    )
     {
         value = (this as SearchResultBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickThinkingBlockParamVariant(out ThinkingBlockParam? value)
+    public bool TryPickThinkingBlockParamVariant([NotNullWhen(true)] out ThinkingBlockParam? value)
     {
         value = (this as ThinkingBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickRedactedThinkingBlockParamVariant(out RedactedThinkingBlockParam? value)
+    public bool TryPickRedactedThinkingBlockParamVariant(
+        [NotNullWhen(true)] out RedactedThinkingBlockParam? value
+    )
     {
         value = (this as RedactedThinkingBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolUseBlockParamVariant(out ToolUseBlockParam? value)
+    public bool TryPickToolUseBlockParamVariant([NotNullWhen(true)] out ToolUseBlockParam? value)
     {
         value = (this as ToolUseBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolResultBlockParamVariant(out ToolResultBlockParam? value)
+    public bool TryPickToolResultBlockParamVariant(
+        [NotNullWhen(true)] out ToolResultBlockParam? value
+    )
     {
         value = (this as ToolResultBlockParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickServerToolUseBlockParamVariant(out ServerToolUseBlockParam? value)
+    public bool TryPickServerToolUseBlockParamVariant(
+        [NotNullWhen(true)] out ServerToolUseBlockParam? value
+    )
     {
         value = (this as ServerToolUseBlockParamVariant)?.Value;
         return value != null;
     }
 
     public bool TryPickWebSearchToolResultBlockParamVariant(
-        out WebSearchToolResultBlockParam? value
+        [NotNullWhen(true)] out WebSearchToolResultBlockParam? value
     )
     {
         value = (this as WebSearchToolResultBlockParamVariant)?.Value;

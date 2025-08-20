@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.ErrorObjectVariants;
@@ -38,55 +39,61 @@ public abstract record class ErrorObject
     public static implicit operator ErrorObject(OverloadedError value) =>
         new OverloadedErrorVariant(value);
 
-    public bool TryPickInvalidRequestErrorVariant(out InvalidRequestError? value)
+    public bool TryPickInvalidRequestErrorVariant(
+        [NotNullWhen(true)] out InvalidRequestError? value
+    )
     {
         value = (this as InvalidRequestErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickAuthenticationErrorVariant(out AuthenticationError? value)
+    public bool TryPickAuthenticationErrorVariant(
+        [NotNullWhen(true)] out AuthenticationError? value
+    )
     {
         value = (this as AuthenticationErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBillingErrorVariant(out BillingError? value)
+    public bool TryPickBillingErrorVariant([NotNullWhen(true)] out BillingError? value)
     {
         value = (this as BillingErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickPermissionErrorVariant(out PermissionError? value)
+    public bool TryPickPermissionErrorVariant([NotNullWhen(true)] out PermissionError? value)
     {
         value = (this as PermissionErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickNotFoundErrorVariant(out NotFoundError? value)
+    public bool TryPickNotFoundErrorVariant([NotNullWhen(true)] out NotFoundError? value)
     {
         value = (this as NotFoundErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickRateLimitErrorVariant(out RateLimitError? value)
+    public bool TryPickRateLimitErrorVariant([NotNullWhen(true)] out RateLimitError? value)
     {
         value = (this as RateLimitErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickGatewayTimeoutErrorVariant(out GatewayTimeoutError? value)
+    public bool TryPickGatewayTimeoutErrorVariant(
+        [NotNullWhen(true)] out GatewayTimeoutError? value
+    )
     {
         value = (this as GatewayTimeoutErrorVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickAPIErrorObjectVariant(out APIErrorObject? value)
+    public bool TryPickAPIErrorObjectVariant([NotNullWhen(true)] out APIErrorObject? value)
     {
         value = (this as APIErrorObjectVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickOverloadedErrorVariant(out OverloadedError? value)
+    public bool TryPickOverloadedErrorVariant([NotNullWhen(true)] out OverloadedError? value)
     {
         value = (this as OverloadedErrorVariant)?.Value;
         return value != null;

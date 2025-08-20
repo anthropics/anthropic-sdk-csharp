@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.ImageBlockParamProperties.SourceVariants;
@@ -17,13 +18,13 @@ public abstract record class Source
     public static implicit operator Source(URLImageSource value) =>
         new URLImageSourceVariant(value);
 
-    public bool TryPickBase64ImageSourceVariant(out Base64ImageSource? value)
+    public bool TryPickBase64ImageSourceVariant([NotNullWhen(true)] out Base64ImageSource? value)
     {
         value = (this as Base64ImageSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickURLImageSourceVariant(out URLImageSource? value)
+    public bool TryPickURLImageSourceVariant([NotNullWhen(true)] out URLImageSource? value)
     {
         value = (this as URLImageSourceVariant)?.Value;
         return value != null;

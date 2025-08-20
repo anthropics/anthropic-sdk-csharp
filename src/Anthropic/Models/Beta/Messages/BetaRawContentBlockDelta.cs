@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaRawContentBlockDeltaVariants;
@@ -26,31 +27,31 @@ public abstract record class BetaRawContentBlockDelta
     public static implicit operator BetaRawContentBlockDelta(BetaSignatureDelta value) =>
         new BetaSignatureDeltaVariant(value);
 
-    public bool TryPickBetaTextDeltaVariant(out BetaTextDelta? value)
+    public bool TryPickBetaTextDeltaVariant([NotNullWhen(true)] out BetaTextDelta? value)
     {
         value = (this as BetaTextDeltaVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaInputJSONDeltaVariant(out BetaInputJSONDelta? value)
+    public bool TryPickBetaInputJSONDeltaVariant([NotNullWhen(true)] out BetaInputJSONDelta? value)
     {
         value = (this as BetaInputJSONDeltaVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaCitationsDeltaVariant(out BetaCitationsDelta? value)
+    public bool TryPickBetaCitationsDeltaVariant([NotNullWhen(true)] out BetaCitationsDelta? value)
     {
         value = (this as BetaCitationsDeltaVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaThinkingDeltaVariant(out BetaThinkingDelta? value)
+    public bool TryPickBetaThinkingDeltaVariant([NotNullWhen(true)] out BetaThinkingDelta? value)
     {
         value = (this as BetaThinkingDeltaVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaSignatureDeltaVariant(out BetaSignatureDelta? value)
+    public bool TryPickBetaSignatureDeltaVariant([NotNullWhen(true)] out BetaSignatureDelta? value)
     {
         value = (this as BetaSignatureDeltaVariant)?.Value;
         return value != null;

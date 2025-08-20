@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.TextCitationParamVariants;
@@ -26,20 +27,24 @@ public abstract record class TextCitationParam
     public static implicit operator TextCitationParam(CitationSearchResultLocationParam value) =>
         new CitationSearchResultLocationParamVariant(value);
 
-    public bool TryPickCitationCharLocationParamVariant(out CitationCharLocationParam? value)
+    public bool TryPickCitationCharLocationParamVariant(
+        [NotNullWhen(true)] out CitationCharLocationParam? value
+    )
     {
         value = (this as CitationCharLocationParamVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickCitationPageLocationParamVariant(out CitationPageLocationParam? value)
+    public bool TryPickCitationPageLocationParamVariant(
+        [NotNullWhen(true)] out CitationPageLocationParam? value
+    )
     {
         value = (this as CitationPageLocationParamVariant)?.Value;
         return value != null;
     }
 
     public bool TryPickCitationContentBlockLocationParamVariant(
-        out CitationContentBlockLocationParam? value
+        [NotNullWhen(true)] out CitationContentBlockLocationParam? value
     )
     {
         value = (this as CitationContentBlockLocationParamVariant)?.Value;
@@ -47,7 +52,7 @@ public abstract record class TextCitationParam
     }
 
     public bool TryPickCitationWebSearchResultLocationParamVariant(
-        out CitationWebSearchResultLocationParam? value
+        [NotNullWhen(true)] out CitationWebSearchResultLocationParam? value
     )
     {
         value = (this as CitationWebSearchResultLocationParamVariant)?.Value;
@@ -55,7 +60,7 @@ public abstract record class TextCitationParam
     }
 
     public bool TryPickCitationSearchResultLocationParamVariant(
-        out CitationSearchResultLocationParam? value
+        [NotNullWhen(true)] out CitationSearchResultLocationParam? value
     )
     {
         value = (this as CitationSearchResultLocationParamVariant)?.Value;

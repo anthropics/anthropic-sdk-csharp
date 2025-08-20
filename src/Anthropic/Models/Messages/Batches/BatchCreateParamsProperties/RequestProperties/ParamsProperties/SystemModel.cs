@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using SystemVariants = Anthropic.Models.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties.SystemVariants;
@@ -22,13 +23,13 @@ public abstract record class SystemModel
     public static implicit operator SystemModel(List<TextBlockParam> value) =>
         new SystemVariants::TextBlockParams(value);
 
-    public bool TryPickString(out string? value)
+    public bool TryPickString([NotNullWhen(true)] out string? value)
     {
         value = (this as SystemVariants::String)?.Value;
         return value != null;
     }
 
-    public bool TryPickTextBlockParams(out List<TextBlockParam>? value)
+    public bool TryPickTextBlockParams([NotNullWhen(true)] out List<TextBlockParam>? value)
     {
         value = (this as SystemVariants::TextBlockParams)?.Value;
         return value != null;

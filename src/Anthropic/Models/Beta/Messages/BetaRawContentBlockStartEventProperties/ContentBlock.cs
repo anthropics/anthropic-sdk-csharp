@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaRawContentBlockStartEventProperties.ContentBlockVariants;
@@ -44,63 +45,75 @@ public abstract record class ContentBlock
     public static implicit operator ContentBlock(BetaContainerUploadBlock value) =>
         new BetaContainerUploadBlockVariant(value);
 
-    public bool TryPickBetaTextBlockVariant(out BetaTextBlock? value)
+    public bool TryPickBetaTextBlockVariant([NotNullWhen(true)] out BetaTextBlock? value)
     {
         value = (this as BetaTextBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaThinkingBlockVariant(out BetaThinkingBlock? value)
+    public bool TryPickBetaThinkingBlockVariant([NotNullWhen(true)] out BetaThinkingBlock? value)
     {
         value = (this as BetaThinkingBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRedactedThinkingBlockVariant(out BetaRedactedThinkingBlock? value)
+    public bool TryPickBetaRedactedThinkingBlockVariant(
+        [NotNullWhen(true)] out BetaRedactedThinkingBlock? value
+    )
     {
         value = (this as BetaRedactedThinkingBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolUseBlockVariant(out BetaToolUseBlock? value)
+    public bool TryPickBetaToolUseBlockVariant([NotNullWhen(true)] out BetaToolUseBlock? value)
     {
         value = (this as BetaToolUseBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaServerToolUseBlockVariant(out BetaServerToolUseBlock? value)
+    public bool TryPickBetaServerToolUseBlockVariant(
+        [NotNullWhen(true)] out BetaServerToolUseBlock? value
+    )
     {
         value = (this as BetaServerToolUseBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaWebSearchToolResultBlockVariant(out BetaWebSearchToolResultBlock? value)
+    public bool TryPickBetaWebSearchToolResultBlockVariant(
+        [NotNullWhen(true)] out BetaWebSearchToolResultBlock? value
+    )
     {
         value = (this as BetaWebSearchToolResultBlockVariant)?.Value;
         return value != null;
     }
 
     public bool TryPickBetaCodeExecutionToolResultBlockVariant(
-        out BetaCodeExecutionToolResultBlock? value
+        [NotNullWhen(true)] out BetaCodeExecutionToolResultBlock? value
     )
     {
         value = (this as BetaCodeExecutionToolResultBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaMCPToolUseBlockVariant(out BetaMCPToolUseBlock? value)
+    public bool TryPickBetaMCPToolUseBlockVariant(
+        [NotNullWhen(true)] out BetaMCPToolUseBlock? value
+    )
     {
         value = (this as BetaMCPToolUseBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaMCPToolResultBlockVariant(out BetaMCPToolResultBlock? value)
+    public bool TryPickBetaMCPToolResultBlockVariant(
+        [NotNullWhen(true)] out BetaMCPToolResultBlock? value
+    )
     {
         value = (this as BetaMCPToolResultBlockVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaContainerUploadBlockVariant(out BetaContainerUploadBlock? value)
+    public bool TryPickBetaContainerUploadBlockVariant(
+        [NotNullWhen(true)] out BetaContainerUploadBlock? value
+    )
     {
         value = (this as BetaContainerUploadBlockVariant)?.Value;
         return value != null;

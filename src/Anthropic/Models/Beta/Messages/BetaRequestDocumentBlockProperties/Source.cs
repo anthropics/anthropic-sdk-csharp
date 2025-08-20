@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaRequestDocumentBlockProperties.SourceVariants;
@@ -26,31 +27,39 @@ public abstract record class Source
     public static implicit operator Source(BetaFileDocumentSource value) =>
         new BetaFileDocumentSourceVariant(value);
 
-    public bool TryPickBetaBase64PDFSourceVariant(out BetaBase64PDFSource? value)
+    public bool TryPickBetaBase64PDFSourceVariant(
+        [NotNullWhen(true)] out BetaBase64PDFSource? value
+    )
     {
         value = (this as BetaBase64PDFSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaPlainTextSourceVariant(out BetaPlainTextSource? value)
+    public bool TryPickBetaPlainTextSourceVariant(
+        [NotNullWhen(true)] out BetaPlainTextSource? value
+    )
     {
         value = (this as BetaPlainTextSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaContentBlockSourceVariant(out BetaContentBlockSource? value)
+    public bool TryPickBetaContentBlockSourceVariant(
+        [NotNullWhen(true)] out BetaContentBlockSource? value
+    )
     {
         value = (this as BetaContentBlockSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaURLPDFSourceVariant(out BetaURLPDFSource? value)
+    public bool TryPickBetaURLPDFSourceVariant([NotNullWhen(true)] out BetaURLPDFSource? value)
     {
         value = (this as BetaURLPDFSourceVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaFileDocumentSourceVariant(out BetaFileDocumentSource? value)
+    public bool TryPickBetaFileDocumentSourceVariant(
+        [NotNullWhen(true)] out BetaFileDocumentSource? value
+    )
     {
         value = (this as BetaFileDocumentSourceVariant)?.Value;
         return value != null;

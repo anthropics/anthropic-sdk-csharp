@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.RawContentBlockDeltaVariants;
@@ -26,31 +27,31 @@ public abstract record class RawContentBlockDelta
     public static implicit operator RawContentBlockDelta(SignatureDelta value) =>
         new SignatureDeltaVariant(value);
 
-    public bool TryPickTextDeltaVariant(out TextDelta? value)
+    public bool TryPickTextDeltaVariant([NotNullWhen(true)] out TextDelta? value)
     {
         value = (this as TextDeltaVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickInputJSONDeltaVariant(out InputJSONDelta? value)
+    public bool TryPickInputJSONDeltaVariant([NotNullWhen(true)] out InputJSONDelta? value)
     {
         value = (this as InputJSONDeltaVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickCitationsDeltaVariant(out CitationsDelta? value)
+    public bool TryPickCitationsDeltaVariant([NotNullWhen(true)] out CitationsDelta? value)
     {
         value = (this as CitationsDeltaVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickThinkingDeltaVariant(out ThinkingDelta? value)
+    public bool TryPickThinkingDeltaVariant([NotNullWhen(true)] out ThinkingDelta? value)
     {
         value = (this as ThinkingDeltaVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickSignatureDeltaVariant(out SignatureDelta? value)
+    public bool TryPickSignatureDeltaVariant([NotNullWhen(true)] out SignatureDelta? value)
     {
         value = (this as SignatureDeltaVariant)?.Value;
         return value != null;

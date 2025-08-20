@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ContentVariants = Anthropic.Models.Beta.Messages.BetaMessageParamProperties.ContentVariants;
@@ -16,13 +17,15 @@ public abstract record class Content
     public static implicit operator Content(List<BetaContentBlockParam> value) =>
         new ContentVariants::BetaContentBlockParams(value);
 
-    public bool TryPickString(out string? value)
+    public bool TryPickString([NotNullWhen(true)] out string? value)
     {
         value = (this as ContentVariants::String)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaContentBlockParams(out List<BetaContentBlockParam>? value)
+    public bool TryPickBetaContentBlockParams(
+        [NotNullWhen(true)] out List<BetaContentBlockParam>? value
+    )
     {
         value = (this as ContentVariants::BetaContentBlockParams)?.Value;
         return value != null;

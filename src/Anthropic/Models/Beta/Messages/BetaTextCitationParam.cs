@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Beta.Messages.BetaTextCitationParamVariants;
@@ -30,7 +31,7 @@ public abstract record class BetaTextCitationParam
     ) => new BetaCitationSearchResultLocationParamVariant(value);
 
     public bool TryPickBetaCitationCharLocationParamVariant(
-        out BetaCitationCharLocationParam? value
+        [NotNullWhen(true)] out BetaCitationCharLocationParam? value
     )
     {
         value = (this as BetaCitationCharLocationParamVariant)?.Value;
@@ -38,7 +39,7 @@ public abstract record class BetaTextCitationParam
     }
 
     public bool TryPickBetaCitationPageLocationParamVariant(
-        out BetaCitationPageLocationParam? value
+        [NotNullWhen(true)] out BetaCitationPageLocationParam? value
     )
     {
         value = (this as BetaCitationPageLocationParamVariant)?.Value;
@@ -46,7 +47,7 @@ public abstract record class BetaTextCitationParam
     }
 
     public bool TryPickBetaCitationContentBlockLocationParamVariant(
-        out BetaCitationContentBlockLocationParam? value
+        [NotNullWhen(true)] out BetaCitationContentBlockLocationParam? value
     )
     {
         value = (this as BetaCitationContentBlockLocationParamVariant)?.Value;
@@ -54,7 +55,7 @@ public abstract record class BetaTextCitationParam
     }
 
     public bool TryPickBetaCitationWebSearchResultLocationParamVariant(
-        out BetaCitationWebSearchResultLocationParam? value
+        [NotNullWhen(true)] out BetaCitationWebSearchResultLocationParam? value
     )
     {
         value = (this as BetaCitationWebSearchResultLocationParamVariant)?.Value;
@@ -62,7 +63,7 @@ public abstract record class BetaTextCitationParam
     }
 
     public bool TryPickBetaCitationSearchResultLocationParamVariant(
-        out BetaCitationSearchResultLocationParam? value
+        [NotNullWhen(true)] out BetaCitationSearchResultLocationParam? value
     )
     {
         value = (this as BetaCitationSearchResultLocationParamVariant)?.Value;

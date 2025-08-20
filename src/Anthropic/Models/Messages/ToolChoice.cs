@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Models.Messages.ToolChoiceVariants;
@@ -27,25 +28,25 @@ public abstract record class ToolChoice
     public static implicit operator ToolChoice(ToolChoiceNone value) =>
         new ToolChoiceNoneVariant(value);
 
-    public bool TryPickToolChoiceAutoVariant(out ToolChoiceAuto? value)
+    public bool TryPickToolChoiceAutoVariant([NotNullWhen(true)] out ToolChoiceAuto? value)
     {
         value = (this as ToolChoiceAutoVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolChoiceAnyVariant(out ToolChoiceAny? value)
+    public bool TryPickToolChoiceAnyVariant([NotNullWhen(true)] out ToolChoiceAny? value)
     {
         value = (this as ToolChoiceAnyVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolChoiceToolVariant(out ToolChoiceTool? value)
+    public bool TryPickToolChoiceToolVariant([NotNullWhen(true)] out ToolChoiceTool? value)
     {
         value = (this as ToolChoiceToolVariant)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolChoiceNoneVariant(out ToolChoiceNone? value)
+    public bool TryPickToolChoiceNoneVariant([NotNullWhen(true)] out ToolChoiceNone? value)
     {
         value = (this as ToolChoiceNoneVariant)?.Value;
         return value != null;
