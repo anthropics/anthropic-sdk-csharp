@@ -28,50 +28,50 @@ public abstract record class BetaToolChoice
     public static implicit operator BetaToolChoice(BetaToolChoiceNone value) =>
         new BetaToolChoiceVariants::BetaToolChoiceNone(value);
 
-    public bool TryPickBetaToolChoiceAuto([NotNullWhen(true)] out BetaToolChoiceAuto? value)
+    public bool TryPickAuto([NotNullWhen(true)] out BetaToolChoiceAuto? value)
     {
         value = (this as BetaToolChoiceVariants::BetaToolChoiceAuto)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolChoiceAny([NotNullWhen(true)] out BetaToolChoiceAny? value)
+    public bool TryPickAny([NotNullWhen(true)] out BetaToolChoiceAny? value)
     {
         value = (this as BetaToolChoiceVariants::BetaToolChoiceAny)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolChoiceTool([NotNullWhen(true)] out BetaToolChoiceTool? value)
+    public bool TryPickTool([NotNullWhen(true)] out BetaToolChoiceTool? value)
     {
         value = (this as BetaToolChoiceVariants::BetaToolChoiceTool)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolChoiceNone([NotNullWhen(true)] out BetaToolChoiceNone? value)
+    public bool TryPickNone([NotNullWhen(true)] out BetaToolChoiceNone? value)
     {
         value = (this as BetaToolChoiceVariants::BetaToolChoiceNone)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaToolChoiceVariants::BetaToolChoiceAuto> betaToolChoiceAuto,
-        Action<BetaToolChoiceVariants::BetaToolChoiceAny> betaToolChoiceAny,
-        Action<BetaToolChoiceVariants::BetaToolChoiceTool> betaToolChoiceTool,
-        Action<BetaToolChoiceVariants::BetaToolChoiceNone> betaToolChoiceNone
+        Action<BetaToolChoiceVariants::BetaToolChoiceAuto> auto,
+        Action<BetaToolChoiceVariants::BetaToolChoiceAny> any,
+        Action<BetaToolChoiceVariants::BetaToolChoiceTool> tool,
+        Action<BetaToolChoiceVariants::BetaToolChoiceNone> none
     )
     {
         switch (this)
         {
             case BetaToolChoiceVariants::BetaToolChoiceAuto inner:
-                betaToolChoiceAuto(inner);
+                auto(inner);
                 break;
             case BetaToolChoiceVariants::BetaToolChoiceAny inner:
-                betaToolChoiceAny(inner);
+                any(inner);
                 break;
             case BetaToolChoiceVariants::BetaToolChoiceTool inner:
-                betaToolChoiceTool(inner);
+                tool(inner);
                 break;
             case BetaToolChoiceVariants::BetaToolChoiceNone inner:
-                betaToolChoiceNone(inner);
+                none(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -79,18 +79,18 @@ public abstract record class BetaToolChoice
     }
 
     public T Match<T>(
-        Func<BetaToolChoiceVariants::BetaToolChoiceAuto, T> betaToolChoiceAuto,
-        Func<BetaToolChoiceVariants::BetaToolChoiceAny, T> betaToolChoiceAny,
-        Func<BetaToolChoiceVariants::BetaToolChoiceTool, T> betaToolChoiceTool,
-        Func<BetaToolChoiceVariants::BetaToolChoiceNone, T> betaToolChoiceNone
+        Func<BetaToolChoiceVariants::BetaToolChoiceAuto, T> auto,
+        Func<BetaToolChoiceVariants::BetaToolChoiceAny, T> any,
+        Func<BetaToolChoiceVariants::BetaToolChoiceTool, T> tool,
+        Func<BetaToolChoiceVariants::BetaToolChoiceNone, T> none
     )
     {
         return this switch
         {
-            BetaToolChoiceVariants::BetaToolChoiceAuto inner => betaToolChoiceAuto(inner),
-            BetaToolChoiceVariants::BetaToolChoiceAny inner => betaToolChoiceAny(inner),
-            BetaToolChoiceVariants::BetaToolChoiceTool inner => betaToolChoiceTool(inner),
-            BetaToolChoiceVariants::BetaToolChoiceNone inner => betaToolChoiceNone(inner),
+            BetaToolChoiceVariants::BetaToolChoiceAuto inner => auto(inner),
+            BetaToolChoiceVariants::BetaToolChoiceAny inner => any(inner),
+            BetaToolChoiceVariants::BetaToolChoiceTool inner => tool(inner),
+            BetaToolChoiceVariants::BetaToolChoiceNone inner => none(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -219,13 +219,10 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
     {
         object variant = value switch
         {
-            BetaToolChoiceVariants::BetaToolChoiceAuto(var betaToolChoiceAuto) =>
-                betaToolChoiceAuto,
-            BetaToolChoiceVariants::BetaToolChoiceAny(var betaToolChoiceAny) => betaToolChoiceAny,
-            BetaToolChoiceVariants::BetaToolChoiceTool(var betaToolChoiceTool) =>
-                betaToolChoiceTool,
-            BetaToolChoiceVariants::BetaToolChoiceNone(var betaToolChoiceNone) =>
-                betaToolChoiceNone,
+            BetaToolChoiceVariants::BetaToolChoiceAuto(var auto) => auto,
+            BetaToolChoiceVariants::BetaToolChoiceAny(var any) => any,
+            BetaToolChoiceVariants::BetaToolChoiceTool(var tool) => tool,
+            BetaToolChoiceVariants::BetaToolChoiceNone(var none) => none,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

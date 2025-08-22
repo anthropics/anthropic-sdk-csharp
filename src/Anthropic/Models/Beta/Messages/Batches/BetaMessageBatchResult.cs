@@ -31,58 +31,50 @@ public abstract record class BetaMessageBatchResult
     public static implicit operator BetaMessageBatchResult(BetaMessageBatchExpiredResult value) =>
         new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(value);
 
-    public bool TryPickBetaMessageBatchSucceededResult(
-        [NotNullWhen(true)] out BetaMessageBatchSucceededResult? value
-    )
+    public bool TryPickSucceeded([NotNullWhen(true)] out BetaMessageBatchSucceededResult? value)
     {
         value = (this as BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaMessageBatchErroredResult(
-        [NotNullWhen(true)] out BetaMessageBatchErroredResult? value
-    )
+    public bool TryPickErrored([NotNullWhen(true)] out BetaMessageBatchErroredResult? value)
     {
         value = (this as BetaMessageBatchResultVariants::BetaMessageBatchErroredResult)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaMessageBatchCanceledResult(
-        [NotNullWhen(true)] out BetaMessageBatchCanceledResult? value
-    )
+    public bool TryPickCanceled([NotNullWhen(true)] out BetaMessageBatchCanceledResult? value)
     {
         value = (this as BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaMessageBatchExpiredResult(
-        [NotNullWhen(true)] out BetaMessageBatchExpiredResult? value
-    )
+    public bool TryPickExpired([NotNullWhen(true)] out BetaMessageBatchExpiredResult? value)
     {
         value = (this as BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult> betaMessageBatchSucceededResult,
-        Action<BetaMessageBatchResultVariants::BetaMessageBatchErroredResult> betaMessageBatchErroredResult,
-        Action<BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult> betaMessageBatchCanceledResult,
-        Action<BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult> betaMessageBatchExpiredResult
+        Action<BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult> succeeded,
+        Action<BetaMessageBatchResultVariants::BetaMessageBatchErroredResult> errored,
+        Action<BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult> canceled,
+        Action<BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult> expired
     )
     {
         switch (this)
         {
             case BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult inner:
-                betaMessageBatchSucceededResult(inner);
+                succeeded(inner);
                 break;
             case BetaMessageBatchResultVariants::BetaMessageBatchErroredResult inner:
-                betaMessageBatchErroredResult(inner);
+                errored(inner);
                 break;
             case BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult inner:
-                betaMessageBatchCanceledResult(inner);
+                canceled(inner);
                 break;
             case BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult inner:
-                betaMessageBatchExpiredResult(inner);
+                expired(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -90,34 +82,20 @@ public abstract record class BetaMessageBatchResult
     }
 
     public T Match<T>(
-        Func<
-            BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult,
-            T
-        > betaMessageBatchSucceededResult,
-        Func<
-            BetaMessageBatchResultVariants::BetaMessageBatchErroredResult,
-            T
-        > betaMessageBatchErroredResult,
-        Func<
-            BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult,
-            T
-        > betaMessageBatchCanceledResult,
-        Func<
-            BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult,
-            T
-        > betaMessageBatchExpiredResult
+        Func<BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult, T> succeeded,
+        Func<BetaMessageBatchResultVariants::BetaMessageBatchErroredResult, T> errored,
+        Func<BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult, T> canceled,
+        Func<BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult, T> expired
     )
     {
         return this switch
         {
-            BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult inner =>
-                betaMessageBatchSucceededResult(inner),
-            BetaMessageBatchResultVariants::BetaMessageBatchErroredResult inner =>
-                betaMessageBatchErroredResult(inner),
-            BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult inner =>
-                betaMessageBatchCanceledResult(inner),
-            BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult inner =>
-                betaMessageBatchExpiredResult(inner),
+            BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult inner => succeeded(
+                inner
+            ),
+            BetaMessageBatchResultVariants::BetaMessageBatchErroredResult inner => errored(inner),
+            BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult inner => canceled(inner),
+            BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult inner => expired(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -257,18 +235,12 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
     {
         object variant = value switch
         {
-            BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult(
-                var betaMessageBatchSucceededResult
-            ) => betaMessageBatchSucceededResult,
-            BetaMessageBatchResultVariants::BetaMessageBatchErroredResult(
-                var betaMessageBatchErroredResult
-            ) => betaMessageBatchErroredResult,
-            BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult(
-                var betaMessageBatchCanceledResult
-            ) => betaMessageBatchCanceledResult,
-            BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(
-                var betaMessageBatchExpiredResult
-            ) => betaMessageBatchExpiredResult,
+            BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult(var succeeded) =>
+                succeeded,
+            BetaMessageBatchResultVariants::BetaMessageBatchErroredResult(var errored) => errored,
+            BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult(var canceled) =>
+                canceled,
+            BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(var expired) => expired,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

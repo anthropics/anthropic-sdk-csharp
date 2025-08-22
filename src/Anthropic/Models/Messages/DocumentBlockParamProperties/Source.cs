@@ -24,50 +24,50 @@ public abstract record class Source
     public static implicit operator Source(URLPDFSource value) =>
         new SourceVariants::URLPDFSource(value);
 
-    public bool TryPickBase64PDFSource([NotNullWhen(true)] out Base64PDFSource? value)
+    public bool TryPickBase64PDF([NotNullWhen(true)] out Base64PDFSource? value)
     {
         value = (this as SourceVariants::Base64PDFSource)?.Value;
         return value != null;
     }
 
-    public bool TryPickPlainTextSource([NotNullWhen(true)] out PlainTextSource? value)
+    public bool TryPickPlainText([NotNullWhen(true)] out PlainTextSource? value)
     {
         value = (this as SourceVariants::PlainTextSource)?.Value;
         return value != null;
     }
 
-    public bool TryPickContentBlockSource([NotNullWhen(true)] out ContentBlockSource? value)
+    public bool TryPickContentBlock([NotNullWhen(true)] out ContentBlockSource? value)
     {
         value = (this as SourceVariants::ContentBlockSource)?.Value;
         return value != null;
     }
 
-    public bool TryPickURLPDFSource([NotNullWhen(true)] out URLPDFSource? value)
+    public bool TryPickURLPDF([NotNullWhen(true)] out URLPDFSource? value)
     {
         value = (this as SourceVariants::URLPDFSource)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<SourceVariants::Base64PDFSource> base64PDFSource,
-        Action<SourceVariants::PlainTextSource> plainTextSource,
-        Action<SourceVariants::ContentBlockSource> contentBlockSource,
-        Action<SourceVariants::URLPDFSource> urlpdfSource
+        Action<SourceVariants::Base64PDFSource> base64PDF,
+        Action<SourceVariants::PlainTextSource> plainText,
+        Action<SourceVariants::ContentBlockSource> contentBlock,
+        Action<SourceVariants::URLPDFSource> urlPDF
     )
     {
         switch (this)
         {
             case SourceVariants::Base64PDFSource inner:
-                base64PDFSource(inner);
+                base64PDF(inner);
                 break;
             case SourceVariants::PlainTextSource inner:
-                plainTextSource(inner);
+                plainText(inner);
                 break;
             case SourceVariants::ContentBlockSource inner:
-                contentBlockSource(inner);
+                contentBlock(inner);
                 break;
             case SourceVariants::URLPDFSource inner:
-                urlpdfSource(inner);
+                urlPDF(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -75,18 +75,18 @@ public abstract record class Source
     }
 
     public T Match<T>(
-        Func<SourceVariants::Base64PDFSource, T> base64PDFSource,
-        Func<SourceVariants::PlainTextSource, T> plainTextSource,
-        Func<SourceVariants::ContentBlockSource, T> contentBlockSource,
-        Func<SourceVariants::URLPDFSource, T> urlpdfSource
+        Func<SourceVariants::Base64PDFSource, T> base64PDF,
+        Func<SourceVariants::PlainTextSource, T> plainText,
+        Func<SourceVariants::ContentBlockSource, T> contentBlock,
+        Func<SourceVariants::URLPDFSource, T> urlPDF
     )
     {
         return this switch
         {
-            SourceVariants::Base64PDFSource inner => base64PDFSource(inner),
-            SourceVariants::PlainTextSource inner => plainTextSource(inner),
-            SourceVariants::ContentBlockSource inner => contentBlockSource(inner),
-            SourceVariants::URLPDFSource inner => urlpdfSource(inner),
+            SourceVariants::Base64PDFSource inner => base64PDF(inner),
+            SourceVariants::PlainTextSource inner => plainText(inner),
+            SourceVariants::ContentBlockSource inner => contentBlock(inner),
+            SourceVariants::URLPDFSource inner => urlPDF(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -205,10 +205,10 @@ sealed class SourceConverter : JsonConverter<Source>
     {
         object variant = value switch
         {
-            SourceVariants::Base64PDFSource(var base64PDFSource) => base64PDFSource,
-            SourceVariants::PlainTextSource(var plainTextSource) => plainTextSource,
-            SourceVariants::ContentBlockSource(var contentBlockSource) => contentBlockSource,
-            SourceVariants::URLPDFSource(var urlpdfSource) => urlpdfSource,
+            SourceVariants::Base64PDFSource(var base64PDF) => base64PDF,
+            SourceVariants::PlainTextSource(var plainText) => plainText,
+            SourceVariants::ContentBlockSource(var contentBlock) => contentBlock,
+            SourceVariants::URLPDFSource(var urlPDF) => urlPDF,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

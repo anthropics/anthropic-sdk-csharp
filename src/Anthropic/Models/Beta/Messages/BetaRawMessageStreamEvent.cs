@@ -32,31 +32,25 @@ public abstract record class BetaRawMessageStreamEvent
     public static implicit operator BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value) =>
         new BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(value);
 
-    public bool TryPickBetaRawMessageStartEvent(
-        [NotNullWhen(true)] out BetaRawMessageStartEvent? value
-    )
+    public bool TryPickStart([NotNullWhen(true)] out BetaRawMessageStartEvent? value)
     {
         value = (this as BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRawMessageDeltaEvent(
-        [NotNullWhen(true)] out BetaRawMessageDeltaEvent? value
-    )
+    public bool TryPickDelta([NotNullWhen(true)] out BetaRawMessageDeltaEvent? value)
     {
         value = (this as BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRawMessageStopEvent(
-        [NotNullWhen(true)] out BetaRawMessageStopEvent? value
-    )
+    public bool TryPickStop([NotNullWhen(true)] out BetaRawMessageStopEvent? value)
     {
         value = (this as BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRawContentBlockStartEvent(
+    public bool TryPickContentBlockStart(
         [NotNullWhen(true)] out BetaRawContentBlockStartEvent? value
     )
     {
@@ -64,7 +58,7 @@ public abstract record class BetaRawMessageStreamEvent
         return value != null;
     }
 
-    public bool TryPickBetaRawContentBlockDeltaEvent(
+    public bool TryPickContentBlockDelta(
         [NotNullWhen(true)] out BetaRawContentBlockDeltaEvent? value
     )
     {
@@ -72,42 +66,40 @@ public abstract record class BetaRawMessageStreamEvent
         return value != null;
     }
 
-    public bool TryPickBetaRawContentBlockStopEvent(
-        [NotNullWhen(true)] out BetaRawContentBlockStopEvent? value
-    )
+    public bool TryPickContentBlockStop([NotNullWhen(true)] out BetaRawContentBlockStopEvent? value)
     {
         value = (this as BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent> betaRawMessageStartEvent,
-        Action<BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent> betaRawMessageDeltaEvent,
-        Action<BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent> betaRawMessageStopEvent,
-        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent> betaRawContentBlockStartEvent,
-        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent> betaRawContentBlockDeltaEvent,
-        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent> betaRawContentBlockStopEvent
+        Action<BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent> start,
+        Action<BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent> delta,
+        Action<BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent> stop,
+        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent> contentBlockStart,
+        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent> contentBlockDelta,
+        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent> contentBlockStop
     )
     {
         switch (this)
         {
             case BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent inner:
-                betaRawMessageStartEvent(inner);
+                start(inner);
                 break;
             case BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent inner:
-                betaRawMessageDeltaEvent(inner);
+                delta(inner);
                 break;
             case BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent inner:
-                betaRawMessageStopEvent(inner);
+                stop(inner);
                 break;
             case BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent inner:
-                betaRawContentBlockStartEvent(inner);
+                contentBlockStart(inner);
                 break;
             case BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent inner:
-                betaRawContentBlockDeltaEvent(inner);
+                contentBlockDelta(inner);
                 break;
             case BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent inner:
-                betaRawContentBlockStopEvent(inner);
+                contentBlockStop(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -115,43 +107,25 @@ public abstract record class BetaRawMessageStreamEvent
     }
 
     public T Match<T>(
-        Func<
-            BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent,
-            T
-        > betaRawMessageStartEvent,
-        Func<
-            BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent,
-            T
-        > betaRawMessageDeltaEvent,
-        Func<BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent, T> betaRawMessageStopEvent,
-        Func<
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent,
-            T
-        > betaRawContentBlockStartEvent,
-        Func<
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent,
-            T
-        > betaRawContentBlockDeltaEvent,
-        Func<
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent,
-            T
-        > betaRawContentBlockStopEvent
+        Func<BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent, T> start,
+        Func<BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent, T> delta,
+        Func<BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent, T> stop,
+        Func<BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent, T> contentBlockStart,
+        Func<BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent, T> contentBlockDelta,
+        Func<BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent, T> contentBlockStop
     )
     {
         return this switch
         {
-            BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent inner =>
-                betaRawMessageStartEvent(inner),
-            BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent inner =>
-                betaRawMessageDeltaEvent(inner),
-            BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent inner =>
-                betaRawMessageStopEvent(inner),
+            BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent inner => start(inner),
+            BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent inner => delta(inner),
+            BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent inner => stop(inner),
             BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent inner =>
-                betaRawContentBlockStartEvent(inner),
+                contentBlockStart(inner),
             BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent inner =>
-                betaRawContentBlockDeltaEvent(inner),
+                contentBlockDelta(inner),
             BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent inner =>
-                betaRawContentBlockStopEvent(inner),
+                contentBlockStop(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -339,24 +313,17 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
     {
         object variant = value switch
         {
-            BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent(
-                var betaRawMessageStartEvent
-            ) => betaRawMessageStartEvent,
-            BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent(
-                var betaRawMessageDeltaEvent
-            ) => betaRawMessageDeltaEvent,
-            BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent(
-                var betaRawMessageStopEvent
-            ) => betaRawMessageStopEvent,
+            BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent(var start) => start,
+            BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent(var delta) => delta,
+            BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent(var stop) => stop,
             BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent(
-                var betaRawContentBlockStartEvent
-            ) => betaRawContentBlockStartEvent,
+                var contentBlockStart
+            ) => contentBlockStart,
             BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent(
-                var betaRawContentBlockDeltaEvent
-            ) => betaRawContentBlockDeltaEvent,
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(
-                var betaRawContentBlockStopEvent
-            ) => betaRawContentBlockStopEvent,
+                var contentBlockDelta
+            ) => contentBlockDelta,
+            BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(var contentBlockStop) =>
+                contentBlockStop,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

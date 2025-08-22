@@ -20,9 +20,7 @@ public abstract record class WebSearchToolResultBlockParamContent
         WebSearchToolRequestError value
     ) => new WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError(value);
 
-    public bool TryPickWebSearchToolResultBlockItem(
-        [NotNullWhen(true)] out List<WebSearchResultBlockParam>? value
-    )
+    public bool TryPickItem([NotNullWhen(true)] out List<WebSearchResultBlockParam>? value)
     {
         value = (
             this as WebSearchToolResultBlockParamContentVariants::WebSearchToolResultBlockItem
@@ -30,9 +28,7 @@ public abstract record class WebSearchToolResultBlockParamContent
         return value != null;
     }
 
-    public bool TryPickWebSearchToolRequestError(
-        [NotNullWhen(true)] out WebSearchToolRequestError? value
-    )
+    public bool TryPickRequestError([NotNullWhen(true)] out WebSearchToolRequestError? value)
     {
         value = (
             this as WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError
@@ -42,7 +38,7 @@ public abstract record class WebSearchToolResultBlockParamContent
 
     public void Switch(
         Action<WebSearchToolResultBlockParamContentVariants::WebSearchToolResultBlockItem> webSearchToolResultBlockItem,
-        Action<WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError> webSearchToolRequestError
+        Action<WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError> requestError
     )
     {
         switch (this)
@@ -51,7 +47,7 @@ public abstract record class WebSearchToolResultBlockParamContent
                 webSearchToolResultBlockItem(inner);
                 break;
             case WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError inner:
-                webSearchToolRequestError(inner);
+                requestError(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -66,7 +62,7 @@ public abstract record class WebSearchToolResultBlockParamContent
         Func<
             WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError,
             T
-        > webSearchToolRequestError
+        > requestError
     )
     {
         return this switch
@@ -74,7 +70,7 @@ public abstract record class WebSearchToolResultBlockParamContent
             WebSearchToolResultBlockParamContentVariants::WebSearchToolResultBlockItem inner =>
                 webSearchToolResultBlockItem(inner),
             WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError inner =>
-                webSearchToolRequestError(inner),
+                requestError(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -144,8 +140,8 @@ sealed class WebSearchToolResultBlockParamContentConverter
                 var webSearchToolResultBlockItem
             ) => webSearchToolResultBlockItem,
             WebSearchToolResultBlockParamContentVariants::WebSearchToolRequestError(
-                var webSearchToolRequestError
-            ) => webSearchToolRequestError,
+                var requestError
+            ) => requestError,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

@@ -23,9 +23,7 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
         BetaCodeExecutionResultBlock value
     ) => new BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock(value);
 
-    public bool TryPickBetaCodeExecutionToolResultError(
-        [NotNullWhen(true)] out BetaCodeExecutionToolResultError? value
-    )
+    public bool TryPickError([NotNullWhen(true)] out BetaCodeExecutionToolResultError? value)
     {
         value = (
             this
@@ -34,9 +32,7 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
         return value != null;
     }
 
-    public bool TryPickBetaCodeExecutionResultBlock(
-        [NotNullWhen(true)] out BetaCodeExecutionResultBlock? value
-    )
+    public bool TryPickResultBlock([NotNullWhen(true)] out BetaCodeExecutionResultBlock? value)
     {
         value = (
             this as BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock
@@ -45,17 +41,17 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
     }
 
     public void Switch(
-        Action<BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError> betaCodeExecutionToolResultError,
-        Action<BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock> betaCodeExecutionResultBlock
+        Action<BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError> error,
+        Action<BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock> resultBlock
     )
     {
         switch (this)
         {
             case BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError inner:
-                betaCodeExecutionToolResultError(inner);
+                error(inner);
                 break;
             case BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock inner:
-                betaCodeExecutionResultBlock(inner);
+                resultBlock(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -66,19 +62,19 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
         Func<
             BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError,
             T
-        > betaCodeExecutionToolResultError,
+        > error,
         Func<
             BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock,
             T
-        > betaCodeExecutionResultBlock
+        > resultBlock
     )
     {
         return this switch
         {
             BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError inner =>
-                betaCodeExecutionToolResultError(inner),
+                error(inner),
             BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock inner =>
-                betaCodeExecutionResultBlock(inner),
+                resultBlock(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -145,11 +141,11 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         object variant = value switch
         {
             BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError(
-                var betaCodeExecutionToolResultError
-            ) => betaCodeExecutionToolResultError,
+                var error
+            ) => error,
             BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock(
-                var betaCodeExecutionResultBlock
-            ) => betaCodeExecutionResultBlock,
+                var resultBlock
+            ) => resultBlock,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

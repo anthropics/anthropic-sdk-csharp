@@ -30,76 +30,70 @@ public abstract record class RawMessageStreamEvent
     public static implicit operator RawMessageStreamEvent(RawContentBlockStopEvent value) =>
         new RawMessageStreamEventVariants::RawContentBlockStopEvent(value);
 
-    public bool TryPickRawMessageStartEvent([NotNullWhen(true)] out RawMessageStartEvent? value)
+    public bool TryPickStart([NotNullWhen(true)] out RawMessageStartEvent? value)
     {
         value = (this as RawMessageStreamEventVariants::RawMessageStartEvent)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawMessageDeltaEvent([NotNullWhen(true)] out RawMessageDeltaEvent? value)
+    public bool TryPickDelta([NotNullWhen(true)] out RawMessageDeltaEvent? value)
     {
         value = (this as RawMessageStreamEventVariants::RawMessageDeltaEvent)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawMessageStopEvent([NotNullWhen(true)] out RawMessageStopEvent? value)
+    public bool TryPickStop([NotNullWhen(true)] out RawMessageStopEvent? value)
     {
         value = (this as RawMessageStreamEventVariants::RawMessageStopEvent)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawContentBlockStartEvent(
-        [NotNullWhen(true)] out RawContentBlockStartEvent? value
-    )
+    public bool TryPickContentBlockStart([NotNullWhen(true)] out RawContentBlockStartEvent? value)
     {
         value = (this as RawMessageStreamEventVariants::RawContentBlockStartEvent)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawContentBlockDeltaEvent(
-        [NotNullWhen(true)] out RawContentBlockDeltaEvent? value
-    )
+    public bool TryPickContentBlockDelta([NotNullWhen(true)] out RawContentBlockDeltaEvent? value)
     {
         value = (this as RawMessageStreamEventVariants::RawContentBlockDeltaEvent)?.Value;
         return value != null;
     }
 
-    public bool TryPickRawContentBlockStopEvent(
-        [NotNullWhen(true)] out RawContentBlockStopEvent? value
-    )
+    public bool TryPickContentBlockStop([NotNullWhen(true)] out RawContentBlockStopEvent? value)
     {
         value = (this as RawMessageStreamEventVariants::RawContentBlockStopEvent)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<RawMessageStreamEventVariants::RawMessageStartEvent> rawMessageStartEvent,
-        Action<RawMessageStreamEventVariants::RawMessageDeltaEvent> rawMessageDeltaEvent,
-        Action<RawMessageStreamEventVariants::RawMessageStopEvent> rawMessageStopEvent,
-        Action<RawMessageStreamEventVariants::RawContentBlockStartEvent> rawContentBlockStartEvent,
-        Action<RawMessageStreamEventVariants::RawContentBlockDeltaEvent> rawContentBlockDeltaEvent,
-        Action<RawMessageStreamEventVariants::RawContentBlockStopEvent> rawContentBlockStopEvent
+        Action<RawMessageStreamEventVariants::RawMessageStartEvent> start,
+        Action<RawMessageStreamEventVariants::RawMessageDeltaEvent> delta,
+        Action<RawMessageStreamEventVariants::RawMessageStopEvent> stop,
+        Action<RawMessageStreamEventVariants::RawContentBlockStartEvent> contentBlockStart,
+        Action<RawMessageStreamEventVariants::RawContentBlockDeltaEvent> contentBlockDelta,
+        Action<RawMessageStreamEventVariants::RawContentBlockStopEvent> contentBlockStop
     )
     {
         switch (this)
         {
             case RawMessageStreamEventVariants::RawMessageStartEvent inner:
-                rawMessageStartEvent(inner);
+                start(inner);
                 break;
             case RawMessageStreamEventVariants::RawMessageDeltaEvent inner:
-                rawMessageDeltaEvent(inner);
+                delta(inner);
                 break;
             case RawMessageStreamEventVariants::RawMessageStopEvent inner:
-                rawMessageStopEvent(inner);
+                stop(inner);
                 break;
             case RawMessageStreamEventVariants::RawContentBlockStartEvent inner:
-                rawContentBlockStartEvent(inner);
+                contentBlockStart(inner);
                 break;
             case RawMessageStreamEventVariants::RawContentBlockDeltaEvent inner:
-                rawContentBlockDeltaEvent(inner);
+                contentBlockDelta(inner);
                 break;
             case RawMessageStreamEventVariants::RawContentBlockStopEvent inner:
-                rawContentBlockStopEvent(inner);
+                contentBlockStop(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -107,29 +101,28 @@ public abstract record class RawMessageStreamEvent
     }
 
     public T Match<T>(
-        Func<RawMessageStreamEventVariants::RawMessageStartEvent, T> rawMessageStartEvent,
-        Func<RawMessageStreamEventVariants::RawMessageDeltaEvent, T> rawMessageDeltaEvent,
-        Func<RawMessageStreamEventVariants::RawMessageStopEvent, T> rawMessageStopEvent,
-        Func<RawMessageStreamEventVariants::RawContentBlockStartEvent, T> rawContentBlockStartEvent,
-        Func<RawMessageStreamEventVariants::RawContentBlockDeltaEvent, T> rawContentBlockDeltaEvent,
-        Func<RawMessageStreamEventVariants::RawContentBlockStopEvent, T> rawContentBlockStopEvent
+        Func<RawMessageStreamEventVariants::RawMessageStartEvent, T> start,
+        Func<RawMessageStreamEventVariants::RawMessageDeltaEvent, T> delta,
+        Func<RawMessageStreamEventVariants::RawMessageStopEvent, T> stop,
+        Func<RawMessageStreamEventVariants::RawContentBlockStartEvent, T> contentBlockStart,
+        Func<RawMessageStreamEventVariants::RawContentBlockDeltaEvent, T> contentBlockDelta,
+        Func<RawMessageStreamEventVariants::RawContentBlockStopEvent, T> contentBlockStop
     )
     {
         return this switch
         {
-            RawMessageStreamEventVariants::RawMessageStartEvent inner => rawMessageStartEvent(
+            RawMessageStreamEventVariants::RawMessageStartEvent inner => start(inner),
+            RawMessageStreamEventVariants::RawMessageDeltaEvent inner => delta(inner),
+            RawMessageStreamEventVariants::RawMessageStopEvent inner => stop(inner),
+            RawMessageStreamEventVariants::RawContentBlockStartEvent inner => contentBlockStart(
                 inner
             ),
-            RawMessageStreamEventVariants::RawMessageDeltaEvent inner => rawMessageDeltaEvent(
+            RawMessageStreamEventVariants::RawContentBlockDeltaEvent inner => contentBlockDelta(
                 inner
             ),
-            RawMessageStreamEventVariants::RawMessageStopEvent inner => rawMessageStopEvent(inner),
-            RawMessageStreamEventVariants::RawContentBlockStartEvent inner =>
-                rawContentBlockStartEvent(inner),
-            RawMessageStreamEventVariants::RawContentBlockDeltaEvent inner =>
-                rawContentBlockDeltaEvent(inner),
-            RawMessageStreamEventVariants::RawContentBlockStopEvent inner =>
-                rawContentBlockStopEvent(inner),
+            RawMessageStreamEventVariants::RawContentBlockStopEvent inner => contentBlockStop(
+                inner
+            ),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -315,20 +308,15 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
     {
         object variant = value switch
         {
-            RawMessageStreamEventVariants::RawMessageStartEvent(var rawMessageStartEvent) =>
-                rawMessageStartEvent,
-            RawMessageStreamEventVariants::RawMessageDeltaEvent(var rawMessageDeltaEvent) =>
-                rawMessageDeltaEvent,
-            RawMessageStreamEventVariants::RawMessageStopEvent(var rawMessageStopEvent) =>
-                rawMessageStopEvent,
-            RawMessageStreamEventVariants::RawContentBlockStartEvent(
-                var rawContentBlockStartEvent
-            ) => rawContentBlockStartEvent,
-            RawMessageStreamEventVariants::RawContentBlockDeltaEvent(
-                var rawContentBlockDeltaEvent
-            ) => rawContentBlockDeltaEvent,
-            RawMessageStreamEventVariants::RawContentBlockStopEvent(var rawContentBlockStopEvent) =>
-                rawContentBlockStopEvent,
+            RawMessageStreamEventVariants::RawMessageStartEvent(var start) => start,
+            RawMessageStreamEventVariants::RawMessageDeltaEvent(var delta) => delta,
+            RawMessageStreamEventVariants::RawMessageStopEvent(var stop) => stop,
+            RawMessageStreamEventVariants::RawContentBlockStartEvent(var contentBlockStart) =>
+                contentBlockStart,
+            RawMessageStreamEventVariants::RawContentBlockDeltaEvent(var contentBlockDelta) =>
+                contentBlockDelta,
+            RawMessageStreamEventVariants::RawContentBlockStopEvent(var contentBlockStop) =>
+                contentBlockStop,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

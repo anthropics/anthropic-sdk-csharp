@@ -31,19 +31,19 @@ public abstract record class ContentBlock
     public static implicit operator ContentBlock(Messages::WebSearchToolResultBlock value) =>
         new ContentBlockVariants::WebSearchToolResultBlock(value);
 
-    public bool TryPickTextBlock([NotNullWhen(true)] out Messages::TextBlock? value)
+    public bool TryPickText([NotNullWhen(true)] out Messages::TextBlock? value)
     {
         value = (this as ContentBlockVariants::TextBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickThinkingBlock([NotNullWhen(true)] out Messages::ThinkingBlock? value)
+    public bool TryPickThinking([NotNullWhen(true)] out Messages::ThinkingBlock? value)
     {
         value = (this as ContentBlockVariants::ThinkingBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickRedactedThinkingBlock(
+    public bool TryPickRedactedThinking(
         [NotNullWhen(true)] out Messages::RedactedThinkingBlock? value
     )
     {
@@ -51,21 +51,19 @@ public abstract record class ContentBlock
         return value != null;
     }
 
-    public bool TryPickToolUseBlock([NotNullWhen(true)] out Messages::ToolUseBlock? value)
+    public bool TryPickToolUse([NotNullWhen(true)] out Messages::ToolUseBlock? value)
     {
         value = (this as ContentBlockVariants::ToolUseBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickServerToolUseBlock(
-        [NotNullWhen(true)] out Messages::ServerToolUseBlock? value
-    )
+    public bool TryPickServerToolUse([NotNullWhen(true)] out Messages::ServerToolUseBlock? value)
     {
         value = (this as ContentBlockVariants::ServerToolUseBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickWebSearchToolResultBlock(
+    public bool TryPickWebSearchToolResult(
         [NotNullWhen(true)] out Messages::WebSearchToolResultBlock? value
     )
     {
@@ -74,33 +72,33 @@ public abstract record class ContentBlock
     }
 
     public void Switch(
-        Action<ContentBlockVariants::TextBlock> textBlock,
-        Action<ContentBlockVariants::ThinkingBlock> thinkingBlock,
-        Action<ContentBlockVariants::RedactedThinkingBlock> redactedThinkingBlock,
-        Action<ContentBlockVariants::ToolUseBlock> toolUseBlock,
-        Action<ContentBlockVariants::ServerToolUseBlock> serverToolUseBlock,
-        Action<ContentBlockVariants::WebSearchToolResultBlock> webSearchToolResultBlock
+        Action<ContentBlockVariants::TextBlock> text,
+        Action<ContentBlockVariants::ThinkingBlock> thinking,
+        Action<ContentBlockVariants::RedactedThinkingBlock> redactedThinking,
+        Action<ContentBlockVariants::ToolUseBlock> toolUse,
+        Action<ContentBlockVariants::ServerToolUseBlock> serverToolUse,
+        Action<ContentBlockVariants::WebSearchToolResultBlock> webSearchToolResult
     )
     {
         switch (this)
         {
             case ContentBlockVariants::TextBlock inner:
-                textBlock(inner);
+                text(inner);
                 break;
             case ContentBlockVariants::ThinkingBlock inner:
-                thinkingBlock(inner);
+                thinking(inner);
                 break;
             case ContentBlockVariants::RedactedThinkingBlock inner:
-                redactedThinkingBlock(inner);
+                redactedThinking(inner);
                 break;
             case ContentBlockVariants::ToolUseBlock inner:
-                toolUseBlock(inner);
+                toolUse(inner);
                 break;
             case ContentBlockVariants::ServerToolUseBlock inner:
-                serverToolUseBlock(inner);
+                serverToolUse(inner);
                 break;
             case ContentBlockVariants::WebSearchToolResultBlock inner:
-                webSearchToolResultBlock(inner);
+                webSearchToolResult(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -108,22 +106,22 @@ public abstract record class ContentBlock
     }
 
     public T Match<T>(
-        Func<ContentBlockVariants::TextBlock, T> textBlock,
-        Func<ContentBlockVariants::ThinkingBlock, T> thinkingBlock,
-        Func<ContentBlockVariants::RedactedThinkingBlock, T> redactedThinkingBlock,
-        Func<ContentBlockVariants::ToolUseBlock, T> toolUseBlock,
-        Func<ContentBlockVariants::ServerToolUseBlock, T> serverToolUseBlock,
-        Func<ContentBlockVariants::WebSearchToolResultBlock, T> webSearchToolResultBlock
+        Func<ContentBlockVariants::TextBlock, T> text,
+        Func<ContentBlockVariants::ThinkingBlock, T> thinking,
+        Func<ContentBlockVariants::RedactedThinkingBlock, T> redactedThinking,
+        Func<ContentBlockVariants::ToolUseBlock, T> toolUse,
+        Func<ContentBlockVariants::ServerToolUseBlock, T> serverToolUse,
+        Func<ContentBlockVariants::WebSearchToolResultBlock, T> webSearchToolResult
     )
     {
         return this switch
         {
-            ContentBlockVariants::TextBlock inner => textBlock(inner),
-            ContentBlockVariants::ThinkingBlock inner => thinkingBlock(inner),
-            ContentBlockVariants::RedactedThinkingBlock inner => redactedThinkingBlock(inner),
-            ContentBlockVariants::ToolUseBlock inner => toolUseBlock(inner),
-            ContentBlockVariants::ServerToolUseBlock inner => serverToolUseBlock(inner),
-            ContentBlockVariants::WebSearchToolResultBlock inner => webSearchToolResultBlock(inner),
+            ContentBlockVariants::TextBlock inner => text(inner),
+            ContentBlockVariants::ThinkingBlock inner => thinking(inner),
+            ContentBlockVariants::RedactedThinkingBlock inner => redactedThinking(inner),
+            ContentBlockVariants::ToolUseBlock inner => toolUse(inner),
+            ContentBlockVariants::ServerToolUseBlock inner => serverToolUse(inner),
+            ContentBlockVariants::WebSearchToolResultBlock inner => webSearchToolResult(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -300,14 +298,13 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
     {
         object variant = value switch
         {
-            ContentBlockVariants::TextBlock(var textBlock) => textBlock,
-            ContentBlockVariants::ThinkingBlock(var thinkingBlock) => thinkingBlock,
-            ContentBlockVariants::RedactedThinkingBlock(var redactedThinkingBlock) =>
-                redactedThinkingBlock,
-            ContentBlockVariants::ToolUseBlock(var toolUseBlock) => toolUseBlock,
-            ContentBlockVariants::ServerToolUseBlock(var serverToolUseBlock) => serverToolUseBlock,
-            ContentBlockVariants::WebSearchToolResultBlock(var webSearchToolResultBlock) =>
-                webSearchToolResultBlock,
+            ContentBlockVariants::TextBlock(var text) => text,
+            ContentBlockVariants::ThinkingBlock(var thinking) => thinking,
+            ContentBlockVariants::RedactedThinkingBlock(var redactedThinking) => redactedThinking,
+            ContentBlockVariants::ToolUseBlock(var toolUse) => toolUse,
+            ContentBlockVariants::ServerToolUseBlock(var serverToolUse) => serverToolUse,
+            ContentBlockVariants::WebSearchToolResultBlock(var webSearchToolResult) =>
+                webSearchToolResult,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

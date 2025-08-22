@@ -31,58 +31,50 @@ public abstract record class MessageBatchResult
     public static implicit operator MessageBatchResult(MessageBatchExpiredResult value) =>
         new MessageBatchResultVariants::MessageBatchExpiredResult(value);
 
-    public bool TryPickMessageBatchSucceededResult(
-        [NotNullWhen(true)] out MessageBatchSucceededResult? value
-    )
+    public bool TryPickSucceeded([NotNullWhen(true)] out MessageBatchSucceededResult? value)
     {
         value = (this as MessageBatchResultVariants::MessageBatchSucceededResult)?.Value;
         return value != null;
     }
 
-    public bool TryPickMessageBatchErroredResult(
-        [NotNullWhen(true)] out MessageBatchErroredResult? value
-    )
+    public bool TryPickErrored([NotNullWhen(true)] out MessageBatchErroredResult? value)
     {
         value = (this as MessageBatchResultVariants::MessageBatchErroredResult)?.Value;
         return value != null;
     }
 
-    public bool TryPickMessageBatchCanceledResult(
-        [NotNullWhen(true)] out MessageBatchCanceledResult? value
-    )
+    public bool TryPickCanceled([NotNullWhen(true)] out MessageBatchCanceledResult? value)
     {
         value = (this as MessageBatchResultVariants::MessageBatchCanceledResult)?.Value;
         return value != null;
     }
 
-    public bool TryPickMessageBatchExpiredResult(
-        [NotNullWhen(true)] out MessageBatchExpiredResult? value
-    )
+    public bool TryPickExpired([NotNullWhen(true)] out MessageBatchExpiredResult? value)
     {
         value = (this as MessageBatchResultVariants::MessageBatchExpiredResult)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<MessageBatchResultVariants::MessageBatchSucceededResult> messageBatchSucceededResult,
-        Action<MessageBatchResultVariants::MessageBatchErroredResult> messageBatchErroredResult,
-        Action<MessageBatchResultVariants::MessageBatchCanceledResult> messageBatchCanceledResult,
-        Action<MessageBatchResultVariants::MessageBatchExpiredResult> messageBatchExpiredResult
+        Action<MessageBatchResultVariants::MessageBatchSucceededResult> succeeded,
+        Action<MessageBatchResultVariants::MessageBatchErroredResult> errored,
+        Action<MessageBatchResultVariants::MessageBatchCanceledResult> canceled,
+        Action<MessageBatchResultVariants::MessageBatchExpiredResult> expired
     )
     {
         switch (this)
         {
             case MessageBatchResultVariants::MessageBatchSucceededResult inner:
-                messageBatchSucceededResult(inner);
+                succeeded(inner);
                 break;
             case MessageBatchResultVariants::MessageBatchErroredResult inner:
-                messageBatchErroredResult(inner);
+                errored(inner);
                 break;
             case MessageBatchResultVariants::MessageBatchCanceledResult inner:
-                messageBatchCanceledResult(inner);
+                canceled(inner);
                 break;
             case MessageBatchResultVariants::MessageBatchExpiredResult inner:
-                messageBatchExpiredResult(inner);
+                expired(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -90,25 +82,18 @@ public abstract record class MessageBatchResult
     }
 
     public T Match<T>(
-        Func<
-            MessageBatchResultVariants::MessageBatchSucceededResult,
-            T
-        > messageBatchSucceededResult,
-        Func<MessageBatchResultVariants::MessageBatchErroredResult, T> messageBatchErroredResult,
-        Func<MessageBatchResultVariants::MessageBatchCanceledResult, T> messageBatchCanceledResult,
-        Func<MessageBatchResultVariants::MessageBatchExpiredResult, T> messageBatchExpiredResult
+        Func<MessageBatchResultVariants::MessageBatchSucceededResult, T> succeeded,
+        Func<MessageBatchResultVariants::MessageBatchErroredResult, T> errored,
+        Func<MessageBatchResultVariants::MessageBatchCanceledResult, T> canceled,
+        Func<MessageBatchResultVariants::MessageBatchExpiredResult, T> expired
     )
     {
         return this switch
         {
-            MessageBatchResultVariants::MessageBatchSucceededResult inner =>
-                messageBatchSucceededResult(inner),
-            MessageBatchResultVariants::MessageBatchErroredResult inner =>
-                messageBatchErroredResult(inner),
-            MessageBatchResultVariants::MessageBatchCanceledResult inner =>
-                messageBatchCanceledResult(inner),
-            MessageBatchResultVariants::MessageBatchExpiredResult inner =>
-                messageBatchExpiredResult(inner),
+            MessageBatchResultVariants::MessageBatchSucceededResult inner => succeeded(inner),
+            MessageBatchResultVariants::MessageBatchErroredResult inner => errored(inner),
+            MessageBatchResultVariants::MessageBatchCanceledResult inner => canceled(inner),
+            MessageBatchResultVariants::MessageBatchExpiredResult inner => expired(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -248,16 +233,10 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
     {
         object variant = value switch
         {
-            MessageBatchResultVariants::MessageBatchSucceededResult(
-                var messageBatchSucceededResult
-            ) => messageBatchSucceededResult,
-            MessageBatchResultVariants::MessageBatchErroredResult(var messageBatchErroredResult) =>
-                messageBatchErroredResult,
-            MessageBatchResultVariants::MessageBatchCanceledResult(
-                var messageBatchCanceledResult
-            ) => messageBatchCanceledResult,
-            MessageBatchResultVariants::MessageBatchExpiredResult(var messageBatchExpiredResult) =>
-                messageBatchExpiredResult,
+            MessageBatchResultVariants::MessageBatchSucceededResult(var succeeded) => succeeded,
+            MessageBatchResultVariants::MessageBatchErroredResult(var errored) => errored,
+            MessageBatchResultVariants::MessageBatchCanceledResult(var canceled) => canceled,
+            MessageBatchResultVariants::MessageBatchExpiredResult(var expired) => expired,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

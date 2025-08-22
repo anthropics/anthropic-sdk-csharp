@@ -23,9 +23,7 @@ public abstract record class Content
         return value != null;
     }
 
-    public bool TryPickBetaMCPToolResultBlockContent(
-        [NotNullWhen(true)] out List<BetaTextBlock>? value
-    )
+    public bool TryPickBetaMCPToolResultBlock([NotNullWhen(true)] out List<BetaTextBlock>? value)
     {
         value = (this as ContentVariants::BetaMCPToolResultBlockContent)?.Value;
         return value != null;

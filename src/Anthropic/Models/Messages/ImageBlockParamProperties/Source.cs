@@ -18,30 +18,30 @@ public abstract record class Source
     public static implicit operator Source(URLImageSource value) =>
         new SourceVariants::URLImageSource(value);
 
-    public bool TryPickBase64ImageSource([NotNullWhen(true)] out Base64ImageSource? value)
+    public bool TryPickBase64Image([NotNullWhen(true)] out Base64ImageSource? value)
     {
         value = (this as SourceVariants::Base64ImageSource)?.Value;
         return value != null;
     }
 
-    public bool TryPickURLImageSource([NotNullWhen(true)] out URLImageSource? value)
+    public bool TryPickURLImage([NotNullWhen(true)] out URLImageSource? value)
     {
         value = (this as SourceVariants::URLImageSource)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<SourceVariants::Base64ImageSource> base64ImageSource,
-        Action<SourceVariants::URLImageSource> urlImageSource
+        Action<SourceVariants::Base64ImageSource> base64Image,
+        Action<SourceVariants::URLImageSource> urlImage
     )
     {
         switch (this)
         {
             case SourceVariants::Base64ImageSource inner:
-                base64ImageSource(inner);
+                base64Image(inner);
                 break;
             case SourceVariants::URLImageSource inner:
-                urlImageSource(inner);
+                urlImage(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -49,14 +49,14 @@ public abstract record class Source
     }
 
     public T Match<T>(
-        Func<SourceVariants::Base64ImageSource, T> base64ImageSource,
-        Func<SourceVariants::URLImageSource, T> urlImageSource
+        Func<SourceVariants::Base64ImageSource, T> base64Image,
+        Func<SourceVariants::URLImageSource, T> urlImage
     )
     {
         return this switch
         {
-            SourceVariants::Base64ImageSource inner => base64ImageSource(inner),
-            SourceVariants::URLImageSource inner => urlImageSource(inner),
+            SourceVariants::Base64ImageSource inner => base64Image(inner),
+            SourceVariants::URLImageSource inner => urlImage(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -134,8 +134,8 @@ sealed class SourceConverter : JsonConverter<Source>
     {
         object variant = value switch
         {
-            SourceVariants::Base64ImageSource(var base64ImageSource) => base64ImageSource,
-            SourceVariants::URLImageSource(var urlImageSource) => urlImageSource,
+            SourceVariants::Base64ImageSource(var base64Image) => base64Image,
+            SourceVariants::URLImageSource(var urlImage) => urlImage,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

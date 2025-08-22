@@ -27,7 +27,7 @@ public abstract record class TextCitationParam
     public static implicit operator TextCitationParam(CitationSearchResultLocationParam value) =>
         new TextCitationParamVariants::CitationSearchResultLocationParam(value);
 
-    public bool TryPickCitationCharLocationParam(
+    public bool TryPickCitationCharLocation(
         [NotNullWhen(true)] out CitationCharLocationParam? value
     )
     {
@@ -35,7 +35,7 @@ public abstract record class TextCitationParam
         return value != null;
     }
 
-    public bool TryPickCitationPageLocationParam(
+    public bool TryPickCitationPageLocation(
         [NotNullWhen(true)] out CitationPageLocationParam? value
     )
     {
@@ -43,7 +43,7 @@ public abstract record class TextCitationParam
         return value != null;
     }
 
-    public bool TryPickCitationContentBlockLocationParam(
+    public bool TryPickCitationContentBlockLocation(
         [NotNullWhen(true)] out CitationContentBlockLocationParam? value
     )
     {
@@ -51,7 +51,7 @@ public abstract record class TextCitationParam
         return value != null;
     }
 
-    public bool TryPickCitationWebSearchResultLocationParam(
+    public bool TryPickCitationWebSearchResultLocation(
         [NotNullWhen(true)] out CitationWebSearchResultLocationParam? value
     )
     {
@@ -59,7 +59,7 @@ public abstract record class TextCitationParam
         return value != null;
     }
 
-    public bool TryPickCitationSearchResultLocationParam(
+    public bool TryPickCitationSearchResultLocation(
         [NotNullWhen(true)] out CitationSearchResultLocationParam? value
     )
     {
@@ -68,29 +68,29 @@ public abstract record class TextCitationParam
     }
 
     public void Switch(
-        Action<TextCitationParamVariants::CitationCharLocationParam> citationCharLocationParam,
-        Action<TextCitationParamVariants::CitationPageLocationParam> citationPageLocationParam,
-        Action<TextCitationParamVariants::CitationContentBlockLocationParam> citationContentBlockLocationParam,
-        Action<TextCitationParamVariants::CitationWebSearchResultLocationParam> citationWebSearchResultLocationParam,
-        Action<TextCitationParamVariants::CitationSearchResultLocationParam> citationSearchResultLocationParam
+        Action<TextCitationParamVariants::CitationCharLocationParam> citationCharLocation,
+        Action<TextCitationParamVariants::CitationPageLocationParam> citationPageLocation,
+        Action<TextCitationParamVariants::CitationContentBlockLocationParam> citationContentBlockLocation,
+        Action<TextCitationParamVariants::CitationWebSearchResultLocationParam> citationWebSearchResultLocation,
+        Action<TextCitationParamVariants::CitationSearchResultLocationParam> citationSearchResultLocation
     )
     {
         switch (this)
         {
             case TextCitationParamVariants::CitationCharLocationParam inner:
-                citationCharLocationParam(inner);
+                citationCharLocation(inner);
                 break;
             case TextCitationParamVariants::CitationPageLocationParam inner:
-                citationPageLocationParam(inner);
+                citationPageLocation(inner);
                 break;
             case TextCitationParamVariants::CitationContentBlockLocationParam inner:
-                citationContentBlockLocationParam(inner);
+                citationContentBlockLocation(inner);
                 break;
             case TextCitationParamVariants::CitationWebSearchResultLocationParam inner:
-                citationWebSearchResultLocationParam(inner);
+                citationWebSearchResultLocation(inner);
                 break;
             case TextCitationParamVariants::CitationSearchResultLocationParam inner:
-                citationSearchResultLocationParam(inner);
+                citationSearchResultLocation(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -98,36 +98,36 @@ public abstract record class TextCitationParam
     }
 
     public T Match<T>(
-        Func<TextCitationParamVariants::CitationCharLocationParam, T> citationCharLocationParam,
-        Func<TextCitationParamVariants::CitationPageLocationParam, T> citationPageLocationParam,
+        Func<TextCitationParamVariants::CitationCharLocationParam, T> citationCharLocation,
+        Func<TextCitationParamVariants::CitationPageLocationParam, T> citationPageLocation,
         Func<
             TextCitationParamVariants::CitationContentBlockLocationParam,
             T
-        > citationContentBlockLocationParam,
+        > citationContentBlockLocation,
         Func<
             TextCitationParamVariants::CitationWebSearchResultLocationParam,
             T
-        > citationWebSearchResultLocationParam,
+        > citationWebSearchResultLocation,
         Func<
             TextCitationParamVariants::CitationSearchResultLocationParam,
             T
-        > citationSearchResultLocationParam
+        > citationSearchResultLocation
     )
     {
         return this switch
         {
-            TextCitationParamVariants::CitationCharLocationParam inner => citationCharLocationParam(
+            TextCitationParamVariants::CitationCharLocationParam inner => citationCharLocation(
                 inner
             ),
-            TextCitationParamVariants::CitationPageLocationParam inner => citationPageLocationParam(
+            TextCitationParamVariants::CitationPageLocationParam inner => citationPageLocation(
                 inner
             ),
             TextCitationParamVariants::CitationContentBlockLocationParam inner =>
-                citationContentBlockLocationParam(inner),
+                citationContentBlockLocation(inner),
             TextCitationParamVariants::CitationWebSearchResultLocationParam inner =>
-                citationWebSearchResultLocationParam(inner),
+                citationWebSearchResultLocation(inner),
             TextCitationParamVariants::CitationSearchResultLocationParam inner =>
-                citationSearchResultLocationParam(inner),
+                citationSearchResultLocation(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -294,19 +294,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
     {
         object variant = value switch
         {
-            TextCitationParamVariants::CitationCharLocationParam(var citationCharLocationParam) =>
-                citationCharLocationParam,
-            TextCitationParamVariants::CitationPageLocationParam(var citationPageLocationParam) =>
-                citationPageLocationParam,
+            TextCitationParamVariants::CitationCharLocationParam(var citationCharLocation) =>
+                citationCharLocation,
+            TextCitationParamVariants::CitationPageLocationParam(var citationPageLocation) =>
+                citationPageLocation,
             TextCitationParamVariants::CitationContentBlockLocationParam(
-                var citationContentBlockLocationParam
-            ) => citationContentBlockLocationParam,
+                var citationContentBlockLocation
+            ) => citationContentBlockLocation,
             TextCitationParamVariants::CitationWebSearchResultLocationParam(
-                var citationWebSearchResultLocationParam
-            ) => citationWebSearchResultLocationParam,
+                var citationWebSearchResultLocation
+            ) => citationWebSearchResultLocation,
             TextCitationParamVariants::CitationSearchResultLocationParam(
-                var citationSearchResultLocationParam
-            ) => citationSearchResultLocationParam,
+                var citationSearchResultLocation
+            ) => citationSearchResultLocation,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

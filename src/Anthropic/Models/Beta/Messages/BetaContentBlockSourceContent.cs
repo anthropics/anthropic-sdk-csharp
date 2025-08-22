@@ -18,30 +18,30 @@ public abstract record class BetaContentBlockSourceContent
     public static implicit operator BetaContentBlockSourceContent(BetaImageBlockParam value) =>
         new BetaContentBlockSourceContentVariants::BetaImageBlockParam(value);
 
-    public bool TryPickBetaTextBlockParam([NotNullWhen(true)] out BetaTextBlockParam? value)
+    public bool TryPickTextBlockParam([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
         value = (this as BetaContentBlockSourceContentVariants::BetaTextBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaImageBlockParam([NotNullWhen(true)] out BetaImageBlockParam? value)
+    public bool TryPickImageBlockParam([NotNullWhen(true)] out BetaImageBlockParam? value)
     {
         value = (this as BetaContentBlockSourceContentVariants::BetaImageBlockParam)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaContentBlockSourceContentVariants::BetaTextBlockParam> betaTextBlockParam,
-        Action<BetaContentBlockSourceContentVariants::BetaImageBlockParam> betaImageBlockParam
+        Action<BetaContentBlockSourceContentVariants::BetaTextBlockParam> textBlockParam,
+        Action<BetaContentBlockSourceContentVariants::BetaImageBlockParam> imageBlockParam
     )
     {
         switch (this)
         {
             case BetaContentBlockSourceContentVariants::BetaTextBlockParam inner:
-                betaTextBlockParam(inner);
+                textBlockParam(inner);
                 break;
             case BetaContentBlockSourceContentVariants::BetaImageBlockParam inner:
-                betaImageBlockParam(inner);
+                imageBlockParam(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -49,16 +49,16 @@ public abstract record class BetaContentBlockSourceContent
     }
 
     public T Match<T>(
-        Func<BetaContentBlockSourceContentVariants::BetaTextBlockParam, T> betaTextBlockParam,
-        Func<BetaContentBlockSourceContentVariants::BetaImageBlockParam, T> betaImageBlockParam
+        Func<BetaContentBlockSourceContentVariants::BetaTextBlockParam, T> textBlockParam,
+        Func<BetaContentBlockSourceContentVariants::BetaImageBlockParam, T> imageBlockParam
     )
     {
         return this switch
         {
-            BetaContentBlockSourceContentVariants::BetaTextBlockParam inner => betaTextBlockParam(
+            BetaContentBlockSourceContentVariants::BetaTextBlockParam inner => textBlockParam(
                 inner
             ),
-            BetaContentBlockSourceContentVariants::BetaImageBlockParam inner => betaImageBlockParam(
+            BetaContentBlockSourceContentVariants::BetaImageBlockParam inner => imageBlockParam(
                 inner
             ),
             _ => throw new InvalidOperationException(),
@@ -152,10 +152,10 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
     {
         object variant = value switch
         {
-            BetaContentBlockSourceContentVariants::BetaTextBlockParam(var betaTextBlockParam) =>
-                betaTextBlockParam,
-            BetaContentBlockSourceContentVariants::BetaImageBlockParam(var betaImageBlockParam) =>
-                betaImageBlockParam,
+            BetaContentBlockSourceContentVariants::BetaTextBlockParam(var textBlockParam) =>
+                textBlockParam,
+            BetaContentBlockSourceContentVariants::BetaImageBlockParam(var imageBlockParam) =>
+                imageBlockParam,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

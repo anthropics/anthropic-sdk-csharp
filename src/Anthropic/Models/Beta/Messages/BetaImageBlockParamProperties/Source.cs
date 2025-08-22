@@ -21,40 +21,40 @@ public abstract record class Source
     public static implicit operator Source(BetaFileImageSource value) =>
         new SourceVariants::BetaFileImageSource(value);
 
-    public bool TryPickBetaBase64ImageSource([NotNullWhen(true)] out BetaBase64ImageSource? value)
+    public bool TryPickBetaBase64Image([NotNullWhen(true)] out BetaBase64ImageSource? value)
     {
         value = (this as SourceVariants::BetaBase64ImageSource)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaURLImageSource([NotNullWhen(true)] out BetaURLImageSource? value)
+    public bool TryPickBetaURLImage([NotNullWhen(true)] out BetaURLImageSource? value)
     {
         value = (this as SourceVariants::BetaURLImageSource)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaFileImageSource([NotNullWhen(true)] out BetaFileImageSource? value)
+    public bool TryPickBetaFileImage([NotNullWhen(true)] out BetaFileImageSource? value)
     {
         value = (this as SourceVariants::BetaFileImageSource)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<SourceVariants::BetaBase64ImageSource> betaBase64ImageSource,
-        Action<SourceVariants::BetaURLImageSource> betaURLImageSource,
-        Action<SourceVariants::BetaFileImageSource> betaFileImageSource
+        Action<SourceVariants::BetaBase64ImageSource> betaBase64Image,
+        Action<SourceVariants::BetaURLImageSource> betaURLImage,
+        Action<SourceVariants::BetaFileImageSource> betaFileImage
     )
     {
         switch (this)
         {
             case SourceVariants::BetaBase64ImageSource inner:
-                betaBase64ImageSource(inner);
+                betaBase64Image(inner);
                 break;
             case SourceVariants::BetaURLImageSource inner:
-                betaURLImageSource(inner);
+                betaURLImage(inner);
                 break;
             case SourceVariants::BetaFileImageSource inner:
-                betaFileImageSource(inner);
+                betaFileImage(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -62,16 +62,16 @@ public abstract record class Source
     }
 
     public T Match<T>(
-        Func<SourceVariants::BetaBase64ImageSource, T> betaBase64ImageSource,
-        Func<SourceVariants::BetaURLImageSource, T> betaURLImageSource,
-        Func<SourceVariants::BetaFileImageSource, T> betaFileImageSource
+        Func<SourceVariants::BetaBase64ImageSource, T> betaBase64Image,
+        Func<SourceVariants::BetaURLImageSource, T> betaURLImage,
+        Func<SourceVariants::BetaFileImageSource, T> betaFileImage
     )
     {
         return this switch
         {
-            SourceVariants::BetaBase64ImageSource inner => betaBase64ImageSource(inner),
-            SourceVariants::BetaURLImageSource inner => betaURLImageSource(inner),
-            SourceVariants::BetaFileImageSource inner => betaFileImageSource(inner),
+            SourceVariants::BetaBase64ImageSource inner => betaBase64Image(inner),
+            SourceVariants::BetaURLImageSource inner => betaURLImage(inner),
+            SourceVariants::BetaFileImageSource inner => betaFileImage(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -177,10 +177,9 @@ sealed class SourceConverter : JsonConverter<Source>
     {
         object variant = value switch
         {
-            SourceVariants::BetaBase64ImageSource(var betaBase64ImageSource) =>
-                betaBase64ImageSource,
-            SourceVariants::BetaURLImageSource(var betaURLImageSource) => betaURLImageSource,
-            SourceVariants::BetaFileImageSource(var betaFileImageSource) => betaFileImageSource,
+            SourceVariants::BetaBase64ImageSource(var betaBase64Image) => betaBase64Image,
+            SourceVariants::BetaURLImageSource(var betaURLImage) => betaURLImage,
+            SourceVariants::BetaFileImageSource(var betaFileImage) => betaFileImage,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

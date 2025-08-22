@@ -35,25 +35,25 @@ public abstract record class ToolUnion
         return value != null;
     }
 
-    public bool TryPickToolBash20250124([NotNullWhen(true)] out ToolBash20250124? value)
+    public bool TryPickBash20250124([NotNullWhen(true)] out ToolBash20250124? value)
     {
         value = (this as ToolUnionVariants::ToolBash20250124)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolTextEditor20250124([NotNullWhen(true)] out ToolTextEditor20250124? value)
+    public bool TryPickTextEditor20250124([NotNullWhen(true)] out ToolTextEditor20250124? value)
     {
         value = (this as ToolUnionVariants::ToolTextEditor20250124)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolTextEditor20250429([NotNullWhen(true)] out ToolTextEditor20250429? value)
+    public bool TryPickTextEditor20250429([NotNullWhen(true)] out ToolTextEditor20250429? value)
     {
         value = (this as ToolUnionVariants::ToolTextEditor20250429)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolTextEditor20250728([NotNullWhen(true)] out ToolTextEditor20250728? value)
+    public bool TryPickTextEditor20250728([NotNullWhen(true)] out ToolTextEditor20250728? value)
     {
         value = (this as ToolUnionVariants::ToolTextEditor20250728)?.Value;
         return value != null;
@@ -67,10 +67,10 @@ public abstract record class ToolUnion
 
     public void Switch(
         Action<ToolUnionVariants::Tool> tool,
-        Action<ToolUnionVariants::ToolBash20250124> toolBash20250124,
-        Action<ToolUnionVariants::ToolTextEditor20250124> toolTextEditor20250124,
-        Action<ToolUnionVariants::ToolTextEditor20250429> toolTextEditor20250429,
-        Action<ToolUnionVariants::ToolTextEditor20250728> toolTextEditor20250728,
+        Action<ToolUnionVariants::ToolBash20250124> bash20250124,
+        Action<ToolUnionVariants::ToolTextEditor20250124> textEditor20250124,
+        Action<ToolUnionVariants::ToolTextEditor20250429> textEditor20250429,
+        Action<ToolUnionVariants::ToolTextEditor20250728> textEditor20250728,
         Action<ToolUnionVariants::WebSearchTool20250305> webSearchTool20250305
     )
     {
@@ -80,16 +80,16 @@ public abstract record class ToolUnion
                 tool(inner);
                 break;
             case ToolUnionVariants::ToolBash20250124 inner:
-                toolBash20250124(inner);
+                bash20250124(inner);
                 break;
             case ToolUnionVariants::ToolTextEditor20250124 inner:
-                toolTextEditor20250124(inner);
+                textEditor20250124(inner);
                 break;
             case ToolUnionVariants::ToolTextEditor20250429 inner:
-                toolTextEditor20250429(inner);
+                textEditor20250429(inner);
                 break;
             case ToolUnionVariants::ToolTextEditor20250728 inner:
-                toolTextEditor20250728(inner);
+                textEditor20250728(inner);
                 break;
             case ToolUnionVariants::WebSearchTool20250305 inner:
                 webSearchTool20250305(inner);
@@ -101,20 +101,20 @@ public abstract record class ToolUnion
 
     public T Match<T>(
         Func<ToolUnionVariants::Tool, T> tool,
-        Func<ToolUnionVariants::ToolBash20250124, T> toolBash20250124,
-        Func<ToolUnionVariants::ToolTextEditor20250124, T> toolTextEditor20250124,
-        Func<ToolUnionVariants::ToolTextEditor20250429, T> toolTextEditor20250429,
-        Func<ToolUnionVariants::ToolTextEditor20250728, T> toolTextEditor20250728,
+        Func<ToolUnionVariants::ToolBash20250124, T> bash20250124,
+        Func<ToolUnionVariants::ToolTextEditor20250124, T> textEditor20250124,
+        Func<ToolUnionVariants::ToolTextEditor20250429, T> textEditor20250429,
+        Func<ToolUnionVariants::ToolTextEditor20250728, T> textEditor20250728,
         Func<ToolUnionVariants::WebSearchTool20250305, T> webSearchTool20250305
     )
     {
         return this switch
         {
             ToolUnionVariants::Tool inner => tool(inner),
-            ToolUnionVariants::ToolBash20250124 inner => toolBash20250124(inner),
-            ToolUnionVariants::ToolTextEditor20250124 inner => toolTextEditor20250124(inner),
-            ToolUnionVariants::ToolTextEditor20250429 inner => toolTextEditor20250429(inner),
-            ToolUnionVariants::ToolTextEditor20250728 inner => toolTextEditor20250728(inner),
+            ToolUnionVariants::ToolBash20250124 inner => bash20250124(inner),
+            ToolUnionVariants::ToolTextEditor20250124 inner => textEditor20250124(inner),
+            ToolUnionVariants::ToolTextEditor20250429 inner => textEditor20250429(inner),
+            ToolUnionVariants::ToolTextEditor20250728 inner => textEditor20250728(inner),
             ToolUnionVariants::WebSearchTool20250305 inner => webSearchTool20250305(inner),
             _ => throw new InvalidOperationException(),
         };
@@ -235,13 +235,10 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         object variant = value switch
         {
             ToolUnionVariants::Tool(var tool) => tool,
-            ToolUnionVariants::ToolBash20250124(var toolBash20250124) => toolBash20250124,
-            ToolUnionVariants::ToolTextEditor20250124(var toolTextEditor20250124) =>
-                toolTextEditor20250124,
-            ToolUnionVariants::ToolTextEditor20250429(var toolTextEditor20250429) =>
-                toolTextEditor20250429,
-            ToolUnionVariants::ToolTextEditor20250728(var toolTextEditor20250728) =>
-                toolTextEditor20250728,
+            ToolUnionVariants::ToolBash20250124(var bash20250124) => bash20250124,
+            ToolUnionVariants::ToolTextEditor20250124(var textEditor20250124) => textEditor20250124,
+            ToolUnionVariants::ToolTextEditor20250429(var textEditor20250429) => textEditor20250429,
+            ToolUnionVariants::ToolTextEditor20250728(var textEditor20250728) => textEditor20250728,
             ToolUnionVariants::WebSearchTool20250305(var webSearchTool20250305) =>
                 webSearchTool20250305,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),

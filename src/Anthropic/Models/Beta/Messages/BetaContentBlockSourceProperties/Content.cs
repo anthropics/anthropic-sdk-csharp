@@ -23,7 +23,7 @@ public abstract record class Content
         return value != null;
     }
 
-    public bool TryPickBetaContentBlockSourceContent(
+    public bool TryPickBetaContentBlockSource(
         [NotNullWhen(true)] out List<BetaContentBlockSourceContent>? value
     )
     {

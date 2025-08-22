@@ -28,9 +28,7 @@ public abstract record class BetaWebSearchToolResultBlockParamContent
         return value != null;
     }
 
-    public bool TryPickBetaWebSearchToolRequestError(
-        [NotNullWhen(true)] out BetaWebSearchToolRequestError? value
-    )
+    public bool TryPickRequestError([NotNullWhen(true)] out BetaWebSearchToolRequestError? value)
     {
         value = (
             this as BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError
@@ -40,7 +38,7 @@ public abstract record class BetaWebSearchToolResultBlockParamContent
 
     public void Switch(
         Action<BetaWebSearchToolResultBlockParamContentVariants::ResultBlock> resultBlock,
-        Action<BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError> betaWebSearchToolRequestError
+        Action<BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError> requestError
     )
     {
         switch (this)
@@ -49,7 +47,7 @@ public abstract record class BetaWebSearchToolResultBlockParamContent
                 resultBlock(inner);
                 break;
             case BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError inner:
-                betaWebSearchToolRequestError(inner);
+                requestError(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -61,7 +59,7 @@ public abstract record class BetaWebSearchToolResultBlockParamContent
         Func<
             BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError,
             T
-        > betaWebSearchToolRequestError
+        > requestError
     )
     {
         return this switch
@@ -70,7 +68,7 @@ public abstract record class BetaWebSearchToolResultBlockParamContent
                 inner
             ),
             BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError inner =>
-                betaWebSearchToolRequestError(inner),
+                requestError(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -139,8 +137,8 @@ sealed class BetaWebSearchToolResultBlockParamContentConverter
             BetaWebSearchToolResultBlockParamContentVariants::ResultBlock(var resultBlock) =>
                 resultBlock,
             BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError(
-                var betaWebSearchToolRequestError
-            ) => betaWebSearchToolRequestError,
+                var requestError
+            ) => requestError,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

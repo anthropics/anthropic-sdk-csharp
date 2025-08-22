@@ -23,9 +23,7 @@ public abstract record class Content
         return value != null;
     }
 
-    public bool TryPickContentBlockSourceContent(
-        [NotNullWhen(true)] out List<ContentBlockSourceContent>? value
-    )
+    public bool TryPickBlockSource([NotNullWhen(true)] out List<ContentBlockSourceContent>? value)
     {
         value = (this as ContentVariants::ContentBlockSourceContent)?.Value;
         return value != null;

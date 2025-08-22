@@ -23,7 +23,7 @@ public abstract record class Content
         return value != null;
     }
 
-    public bool TryPickBetaMCPToolResultBlockParamContent(
+    public bool TryPickBetaMCPToolResultBlockParam(
         [NotNullWhen(true)] out List<BetaTextBlockParam>? value
     )
     {

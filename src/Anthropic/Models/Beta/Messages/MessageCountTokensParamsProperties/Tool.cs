@@ -44,7 +44,7 @@ public abstract record class Tool
     public static implicit operator Tool(BetaWebSearchTool20250305 value) =>
         new ToolVariants::BetaWebSearchTool20250305(value);
 
-    public bool TryPickBetaTool([NotNullWhen(true)] out BetaTool? value)
+    public bool TryPickBeta([NotNullWhen(true)] out BetaTool? value)
     {
         value = (this as ToolVariants::BetaTool)?.Value;
         return value != null;
@@ -127,7 +127,7 @@ public abstract record class Tool
     }
 
     public void Switch(
-        Action<ToolVariants::BetaTool> betaTool,
+        Action<ToolVariants::BetaTool> beta,
         Action<ToolVariants::BetaToolBash20241022> betaToolBash20241022,
         Action<ToolVariants::BetaToolBash20250124> betaToolBash20250124,
         Action<ToolVariants::BetaCodeExecutionTool20250522> betaCodeExecutionTool20250522,
@@ -143,7 +143,7 @@ public abstract record class Tool
         switch (this)
         {
             case ToolVariants::BetaTool inner:
-                betaTool(inner);
+                beta(inner);
                 break;
             case ToolVariants::BetaToolBash20241022 inner:
                 betaToolBash20241022(inner);
@@ -181,7 +181,7 @@ public abstract record class Tool
     }
 
     public T Match<T>(
-        Func<ToolVariants::BetaTool, T> betaTool,
+        Func<ToolVariants::BetaTool, T> beta,
         Func<ToolVariants::BetaToolBash20241022, T> betaToolBash20241022,
         Func<ToolVariants::BetaToolBash20250124, T> betaToolBash20250124,
         Func<ToolVariants::BetaCodeExecutionTool20250522, T> betaCodeExecutionTool20250522,
@@ -196,7 +196,7 @@ public abstract record class Tool
     {
         return this switch
         {
-            ToolVariants::BetaTool inner => betaTool(inner),
+            ToolVariants::BetaTool inner => beta(inner),
             ToolVariants::BetaToolBash20241022 inner => betaToolBash20241022(inner),
             ToolVariants::BetaToolBash20250124 inner => betaToolBash20250124(inner),
             ToolVariants::BetaCodeExecutionTool20250522 inner => betaCodeExecutionTool20250522(
@@ -406,7 +406,7 @@ sealed class ToolConverter : JsonConverter<Tool>
     {
         object variant = value switch
         {
-            ToolVariants::BetaTool(var betaTool) => betaTool,
+            ToolVariants::BetaTool(var beta) => beta,
             ToolVariants::BetaToolBash20241022(var betaToolBash20241022) => betaToolBash20241022,
             ToolVariants::BetaToolBash20250124(var betaToolBash20250124) => betaToolBash20250124,
             ToolVariants::BetaCodeExecutionTool20250522(var betaCodeExecutionTool20250522) =>

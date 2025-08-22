@@ -20,9 +20,7 @@ public abstract record class WebSearchToolResultBlockContent
         List<WebSearchResultBlock> value
     ) => new WebSearchToolResultBlockContentVariants::WebSearchResultBlocks(value);
 
-    public bool TryPickWebSearchToolResultError(
-        [NotNullWhen(true)] out WebSearchToolResultError? value
-    )
+    public bool TryPickError([NotNullWhen(true)] out WebSearchToolResultError? value)
     {
         value = (this as WebSearchToolResultBlockContentVariants::WebSearchToolResultError)?.Value;
         return value != null;
@@ -37,14 +35,14 @@ public abstract record class WebSearchToolResultBlockContent
     }
 
     public void Switch(
-        Action<WebSearchToolResultBlockContentVariants::WebSearchToolResultError> webSearchToolResultError,
+        Action<WebSearchToolResultBlockContentVariants::WebSearchToolResultError> error,
         Action<WebSearchToolResultBlockContentVariants::WebSearchResultBlocks> webSearchResultBlocks
     )
     {
         switch (this)
         {
             case WebSearchToolResultBlockContentVariants::WebSearchToolResultError inner:
-                webSearchToolResultError(inner);
+                error(inner);
                 break;
             case WebSearchToolResultBlockContentVariants::WebSearchResultBlocks inner:
                 webSearchResultBlocks(inner);
@@ -55,10 +53,7 @@ public abstract record class WebSearchToolResultBlockContent
     }
 
     public T Match<T>(
-        Func<
-            WebSearchToolResultBlockContentVariants::WebSearchToolResultError,
-            T
-        > webSearchToolResultError,
+        Func<WebSearchToolResultBlockContentVariants::WebSearchToolResultError, T> error,
         Func<
             WebSearchToolResultBlockContentVariants::WebSearchResultBlocks,
             T
@@ -67,8 +62,7 @@ public abstract record class WebSearchToolResultBlockContent
     {
         return this switch
         {
-            WebSearchToolResultBlockContentVariants::WebSearchToolResultError inner =>
-                webSearchToolResultError(inner),
+            WebSearchToolResultBlockContentVariants::WebSearchToolResultError inner => error(inner),
             WebSearchToolResultBlockContentVariants::WebSearchResultBlocks inner =>
                 webSearchResultBlocks(inner),
             _ => throw new InvalidOperationException(),
@@ -136,9 +130,7 @@ sealed class WebSearchToolResultBlockContentConverter
     {
         object variant = value switch
         {
-            WebSearchToolResultBlockContentVariants::WebSearchToolResultError(
-                var webSearchToolResultError
-            ) => webSearchToolResultError,
+            WebSearchToolResultBlockContentVariants::WebSearchToolResultError(var error) => error,
             WebSearchToolResultBlockContentVariants::WebSearchResultBlocks(
                 var webSearchResultBlocks
             ) => webSearchResultBlocks,

@@ -28,30 +28,30 @@ public abstract record class ThinkingConfigParam
     public static implicit operator ThinkingConfigParam(ThinkingConfigDisabled value) =>
         new ThinkingConfigParamVariants::ThinkingConfigDisabled(value);
 
-    public bool TryPickThinkingConfigEnabled([NotNullWhen(true)] out ThinkingConfigEnabled? value)
+    public bool TryPickEnabled([NotNullWhen(true)] out ThinkingConfigEnabled? value)
     {
         value = (this as ThinkingConfigParamVariants::ThinkingConfigEnabled)?.Value;
         return value != null;
     }
 
-    public bool TryPickThinkingConfigDisabled([NotNullWhen(true)] out ThinkingConfigDisabled? value)
+    public bool TryPickDisabled([NotNullWhen(true)] out ThinkingConfigDisabled? value)
     {
         value = (this as ThinkingConfigParamVariants::ThinkingConfigDisabled)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<ThinkingConfigParamVariants::ThinkingConfigEnabled> thinkingConfigEnabled,
-        Action<ThinkingConfigParamVariants::ThinkingConfigDisabled> thinkingConfigDisabled
+        Action<ThinkingConfigParamVariants::ThinkingConfigEnabled> enabled,
+        Action<ThinkingConfigParamVariants::ThinkingConfigDisabled> disabled
     )
     {
         switch (this)
         {
             case ThinkingConfigParamVariants::ThinkingConfigEnabled inner:
-                thinkingConfigEnabled(inner);
+                enabled(inner);
                 break;
             case ThinkingConfigParamVariants::ThinkingConfigDisabled inner:
-                thinkingConfigDisabled(inner);
+                disabled(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -59,18 +59,14 @@ public abstract record class ThinkingConfigParam
     }
 
     public T Match<T>(
-        Func<ThinkingConfigParamVariants::ThinkingConfigEnabled, T> thinkingConfigEnabled,
-        Func<ThinkingConfigParamVariants::ThinkingConfigDisabled, T> thinkingConfigDisabled
+        Func<ThinkingConfigParamVariants::ThinkingConfigEnabled, T> enabled,
+        Func<ThinkingConfigParamVariants::ThinkingConfigDisabled, T> disabled
     )
     {
         return this switch
         {
-            ThinkingConfigParamVariants::ThinkingConfigEnabled inner => thinkingConfigEnabled(
-                inner
-            ),
-            ThinkingConfigParamVariants::ThinkingConfigDisabled inner => thinkingConfigDisabled(
-                inner
-            ),
+            ThinkingConfigParamVariants::ThinkingConfigEnabled inner => enabled(inner),
+            ThinkingConfigParamVariants::ThinkingConfigDisabled inner => disabled(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -160,10 +156,8 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
     {
         object variant = value switch
         {
-            ThinkingConfigParamVariants::ThinkingConfigEnabled(var thinkingConfigEnabled) =>
-                thinkingConfigEnabled,
-            ThinkingConfigParamVariants::ThinkingConfigDisabled(var thinkingConfigDisabled) =>
-                thinkingConfigDisabled,
+            ThinkingConfigParamVariants::ThinkingConfigEnabled(var enabled) => enabled,
+            ThinkingConfigParamVariants::ThinkingConfigDisabled(var disabled) => disabled,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

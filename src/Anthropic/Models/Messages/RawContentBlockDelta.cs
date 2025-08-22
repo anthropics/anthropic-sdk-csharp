@@ -27,60 +27,60 @@ public abstract record class RawContentBlockDelta
     public static implicit operator RawContentBlockDelta(SignatureDelta value) =>
         new RawContentBlockDeltaVariants::SignatureDelta(value);
 
-    public bool TryPickTextDelta([NotNullWhen(true)] out TextDelta? value)
+    public bool TryPickText([NotNullWhen(true)] out TextDelta? value)
     {
         value = (this as RawContentBlockDeltaVariants::TextDelta)?.Value;
         return value != null;
     }
 
-    public bool TryPickInputJSONDelta([NotNullWhen(true)] out InputJSONDelta? value)
+    public bool TryPickInputJSON([NotNullWhen(true)] out InputJSONDelta? value)
     {
         value = (this as RawContentBlockDeltaVariants::InputJSONDelta)?.Value;
         return value != null;
     }
 
-    public bool TryPickCitationsDelta([NotNullWhen(true)] out CitationsDelta? value)
+    public bool TryPickCitations([NotNullWhen(true)] out CitationsDelta? value)
     {
         value = (this as RawContentBlockDeltaVariants::CitationsDelta)?.Value;
         return value != null;
     }
 
-    public bool TryPickThinkingDelta([NotNullWhen(true)] out ThinkingDelta? value)
+    public bool TryPickThinking([NotNullWhen(true)] out ThinkingDelta? value)
     {
         value = (this as RawContentBlockDeltaVariants::ThinkingDelta)?.Value;
         return value != null;
     }
 
-    public bool TryPickSignatureDelta([NotNullWhen(true)] out SignatureDelta? value)
+    public bool TryPickSignature([NotNullWhen(true)] out SignatureDelta? value)
     {
         value = (this as RawContentBlockDeltaVariants::SignatureDelta)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<RawContentBlockDeltaVariants::TextDelta> textDelta,
-        Action<RawContentBlockDeltaVariants::InputJSONDelta> inputJSONDelta,
-        Action<RawContentBlockDeltaVariants::CitationsDelta> citationsDelta,
-        Action<RawContentBlockDeltaVariants::ThinkingDelta> thinkingDelta,
-        Action<RawContentBlockDeltaVariants::SignatureDelta> signatureDelta
+        Action<RawContentBlockDeltaVariants::TextDelta> text,
+        Action<RawContentBlockDeltaVariants::InputJSONDelta> inputJSON,
+        Action<RawContentBlockDeltaVariants::CitationsDelta> citations,
+        Action<RawContentBlockDeltaVariants::ThinkingDelta> thinking,
+        Action<RawContentBlockDeltaVariants::SignatureDelta> signature
     )
     {
         switch (this)
         {
             case RawContentBlockDeltaVariants::TextDelta inner:
-                textDelta(inner);
+                text(inner);
                 break;
             case RawContentBlockDeltaVariants::InputJSONDelta inner:
-                inputJSONDelta(inner);
+                inputJSON(inner);
                 break;
             case RawContentBlockDeltaVariants::CitationsDelta inner:
-                citationsDelta(inner);
+                citations(inner);
                 break;
             case RawContentBlockDeltaVariants::ThinkingDelta inner:
-                thinkingDelta(inner);
+                thinking(inner);
                 break;
             case RawContentBlockDeltaVariants::SignatureDelta inner:
-                signatureDelta(inner);
+                signature(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -88,20 +88,20 @@ public abstract record class RawContentBlockDelta
     }
 
     public T Match<T>(
-        Func<RawContentBlockDeltaVariants::TextDelta, T> textDelta,
-        Func<RawContentBlockDeltaVariants::InputJSONDelta, T> inputJSONDelta,
-        Func<RawContentBlockDeltaVariants::CitationsDelta, T> citationsDelta,
-        Func<RawContentBlockDeltaVariants::ThinkingDelta, T> thinkingDelta,
-        Func<RawContentBlockDeltaVariants::SignatureDelta, T> signatureDelta
+        Func<RawContentBlockDeltaVariants::TextDelta, T> text,
+        Func<RawContentBlockDeltaVariants::InputJSONDelta, T> inputJSON,
+        Func<RawContentBlockDeltaVariants::CitationsDelta, T> citations,
+        Func<RawContentBlockDeltaVariants::ThinkingDelta, T> thinking,
+        Func<RawContentBlockDeltaVariants::SignatureDelta, T> signature
     )
     {
         return this switch
         {
-            RawContentBlockDeltaVariants::TextDelta inner => textDelta(inner),
-            RawContentBlockDeltaVariants::InputJSONDelta inner => inputJSONDelta(inner),
-            RawContentBlockDeltaVariants::CitationsDelta inner => citationsDelta(inner),
-            RawContentBlockDeltaVariants::ThinkingDelta inner => thinkingDelta(inner),
-            RawContentBlockDeltaVariants::SignatureDelta inner => signatureDelta(inner),
+            RawContentBlockDeltaVariants::TextDelta inner => text(inner),
+            RawContentBlockDeltaVariants::InputJSONDelta inner => inputJSON(inner),
+            RawContentBlockDeltaVariants::CitationsDelta inner => citations(inner),
+            RawContentBlockDeltaVariants::ThinkingDelta inner => thinking(inner),
+            RawContentBlockDeltaVariants::SignatureDelta inner => signature(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -240,11 +240,11 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
     {
         object variant = value switch
         {
-            RawContentBlockDeltaVariants::TextDelta(var textDelta) => textDelta,
-            RawContentBlockDeltaVariants::InputJSONDelta(var inputJSONDelta) => inputJSONDelta,
-            RawContentBlockDeltaVariants::CitationsDelta(var citationsDelta) => citationsDelta,
-            RawContentBlockDeltaVariants::ThinkingDelta(var thinkingDelta) => thinkingDelta,
-            RawContentBlockDeltaVariants::SignatureDelta(var signatureDelta) => signatureDelta,
+            RawContentBlockDeltaVariants::TextDelta(var text) => text,
+            RawContentBlockDeltaVariants::InputJSONDelta(var inputJSON) => inputJSON,
+            RawContentBlockDeltaVariants::CitationsDelta(var citations) => citations,
+            RawContentBlockDeltaVariants::ThinkingDelta(var thinking) => thinking,
+            RawContentBlockDeltaVariants::SignatureDelta(var signature) => signature,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

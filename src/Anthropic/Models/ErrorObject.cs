@@ -81,7 +81,7 @@ public abstract record class ErrorObject
         return value != null;
     }
 
-    public bool TryPickAPIErrorObject([NotNullWhen(true)] out APIErrorObject? value)
+    public bool TryPickAPI([NotNullWhen(true)] out APIErrorObject? value)
     {
         value = (this as ErrorObjectVariants::APIErrorObject)?.Value;
         return value != null;
@@ -101,7 +101,7 @@ public abstract record class ErrorObject
         Action<ErrorObjectVariants::NotFoundError> notFoundError,
         Action<ErrorObjectVariants::RateLimitError> rateLimitError,
         Action<ErrorObjectVariants::GatewayTimeoutError> gatewayTimeoutError,
-        Action<ErrorObjectVariants::APIErrorObject> apiErrorObject,
+        Action<ErrorObjectVariants::APIErrorObject> api,
         Action<ErrorObjectVariants::OverloadedError> overloadedError
     )
     {
@@ -129,7 +129,7 @@ public abstract record class ErrorObject
                 gatewayTimeoutError(inner);
                 break;
             case ErrorObjectVariants::APIErrorObject inner:
-                apiErrorObject(inner);
+                api(inner);
                 break;
             case ErrorObjectVariants::OverloadedError inner:
                 overloadedError(inner);
@@ -147,7 +147,7 @@ public abstract record class ErrorObject
         Func<ErrorObjectVariants::NotFoundError, T> notFoundError,
         Func<ErrorObjectVariants::RateLimitError, T> rateLimitError,
         Func<ErrorObjectVariants::GatewayTimeoutError, T> gatewayTimeoutError,
-        Func<ErrorObjectVariants::APIErrorObject, T> apiErrorObject,
+        Func<ErrorObjectVariants::APIErrorObject, T> api,
         Func<ErrorObjectVariants::OverloadedError, T> overloadedError
     )
     {
@@ -160,7 +160,7 @@ public abstract record class ErrorObject
             ErrorObjectVariants::NotFoundError inner => notFoundError(inner),
             ErrorObjectVariants::RateLimitError inner => rateLimitError(inner),
             ErrorObjectVariants::GatewayTimeoutError inner => gatewayTimeoutError(inner),
-            ErrorObjectVariants::APIErrorObject inner => apiErrorObject(inner),
+            ErrorObjectVariants::APIErrorObject inner => api(inner),
             ErrorObjectVariants::OverloadedError inner => overloadedError(inner),
             _ => throw new InvalidOperationException(),
         };
@@ -395,7 +395,7 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
             ErrorObjectVariants::RateLimitError(var rateLimitError) => rateLimitError,
             ErrorObjectVariants::GatewayTimeoutError(var gatewayTimeoutError) =>
                 gatewayTimeoutError,
-            ErrorObjectVariants::APIErrorObject(var apiErrorObject) => apiErrorObject,
+            ErrorObjectVariants::APIErrorObject(var api) => api,
             ErrorObjectVariants::OverloadedError(var overloadedError) => overloadedError,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };

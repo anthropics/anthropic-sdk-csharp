@@ -20,9 +20,7 @@ public abstract record class BetaWebSearchToolResultBlockContent
         List<BetaWebSearchResultBlock> value
     ) => new BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks(value);
 
-    public bool TryPickBetaWebSearchToolResultError(
-        [NotNullWhen(true)] out BetaWebSearchToolResultError? value
-    )
+    public bool TryPickError([NotNullWhen(true)] out BetaWebSearchToolResultError? value)
     {
         value = (
             this as BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError
@@ -41,14 +39,14 @@ public abstract record class BetaWebSearchToolResultBlockContent
     }
 
     public void Switch(
-        Action<BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError> betaWebSearchToolResultError,
+        Action<BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError> error,
         Action<BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks> betaWebSearchResultBlocks
     )
     {
         switch (this)
         {
             case BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError inner:
-                betaWebSearchToolResultError(inner);
+                error(inner);
                 break;
             case BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks inner:
                 betaWebSearchResultBlocks(inner);
@@ -59,10 +57,7 @@ public abstract record class BetaWebSearchToolResultBlockContent
     }
 
     public T Match<T>(
-        Func<
-            BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError,
-            T
-        > betaWebSearchToolResultError,
+        Func<BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError, T> error,
         Func<
             BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks,
             T
@@ -72,7 +67,7 @@ public abstract record class BetaWebSearchToolResultBlockContent
         return this switch
         {
             BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError inner =>
-                betaWebSearchToolResultError(inner),
+                error(inner),
             BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks inner =>
                 betaWebSearchResultBlocks(inner),
             _ => throw new InvalidOperationException(),
@@ -140,9 +135,8 @@ sealed class BetaWebSearchToolResultBlockContentConverter
     {
         object variant = value switch
         {
-            BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError(
-                var betaWebSearchToolResultError
-            ) => betaWebSearchToolResultError,
+            BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError(var error) =>
+                error,
             BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks(
                 var betaWebSearchResultBlocks
             ) => betaWebSearchResultBlocks,

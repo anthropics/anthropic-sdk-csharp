@@ -60,41 +60,37 @@ public abstract record class BetaContentBlockParam
     public static implicit operator BetaContentBlockParam(BetaContainerUploadBlockParam value) =>
         new BetaContentBlockParamVariants::BetaContainerUploadBlockParam(value);
 
-    public bool TryPickBetaTextBlockParam([NotNullWhen(true)] out BetaTextBlockParam? value)
+    public bool TryPickText([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaTextBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaImageBlockParam([NotNullWhen(true)] out BetaImageBlockParam? value)
+    public bool TryPickImage([NotNullWhen(true)] out BetaImageBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaImageBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRequestDocumentBlock(
-        [NotNullWhen(true)] out BetaRequestDocumentBlock? value
-    )
+    public bool TryPickRequestDocumentBlock([NotNullWhen(true)] out BetaRequestDocumentBlock? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaRequestDocumentBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaSearchResultBlockParam(
-        [NotNullWhen(true)] out BetaSearchResultBlockParam? value
-    )
+    public bool TryPickSearchResult([NotNullWhen(true)] out BetaSearchResultBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaSearchResultBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaThinkingBlockParam([NotNullWhen(true)] out BetaThinkingBlockParam? value)
+    public bool TryPickThinking([NotNullWhen(true)] out BetaThinkingBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaThinkingBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRedactedThinkingBlockParam(
+    public bool TryPickRedactedThinking(
         [NotNullWhen(true)] out BetaRedactedThinkingBlockParam? value
     )
     {
@@ -102,29 +98,25 @@ public abstract record class BetaContentBlockParam
         return value != null;
     }
 
-    public bool TryPickBetaToolUseBlockParam([NotNullWhen(true)] out BetaToolUseBlockParam? value)
+    public bool TryPickToolUse([NotNullWhen(true)] out BetaToolUseBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaToolUseBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaToolResultBlockParam(
-        [NotNullWhen(true)] out BetaToolResultBlockParam? value
-    )
+    public bool TryPickToolResult([NotNullWhen(true)] out BetaToolResultBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaToolResultBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaServerToolUseBlockParam(
-        [NotNullWhen(true)] out BetaServerToolUseBlockParam? value
-    )
+    public bool TryPickServerToolUse([NotNullWhen(true)] out BetaServerToolUseBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaServerToolUseBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaWebSearchToolResultBlockParam(
+    public bool TryPickWebSearchToolResult(
         [NotNullWhen(true)] out BetaWebSearchToolResultBlockParam? value
     )
     {
@@ -132,7 +124,7 @@ public abstract record class BetaContentBlockParam
         return value != null;
     }
 
-    public bool TryPickBetaCodeExecutionToolResultBlockParam(
+    public bool TryPickCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaCodeExecutionToolResultBlockParam? value
     )
     {
@@ -142,15 +134,13 @@ public abstract record class BetaContentBlockParam
         return value != null;
     }
 
-    public bool TryPickBetaMCPToolUseBlockParam(
-        [NotNullWhen(true)] out BetaMCPToolUseBlockParam? value
-    )
+    public bool TryPickMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaMCPToolUseBlockParam)?.Value;
         return value != null;
     }
 
-    public bool TryPickBetaRequestMCPToolResultBlockParam(
+    public bool TryPickRequestMCPToolResult(
         [NotNullWhen(true)] out BetaRequestMCPToolResultBlockParam? value
     )
     {
@@ -158,74 +148,72 @@ public abstract record class BetaContentBlockParam
         return value != null;
     }
 
-    public bool TryPickBetaContainerUploadBlockParam(
-        [NotNullWhen(true)] out BetaContainerUploadBlockParam? value
-    )
+    public bool TryPickContainerUpload([NotNullWhen(true)] out BetaContainerUploadBlockParam? value)
     {
         value = (this as BetaContentBlockParamVariants::BetaContainerUploadBlockParam)?.Value;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaContentBlockParamVariants::BetaTextBlockParam> betaTextBlockParam,
-        Action<BetaContentBlockParamVariants::BetaImageBlockParam> betaImageBlockParam,
-        Action<BetaContentBlockParamVariants::BetaRequestDocumentBlock> betaRequestDocumentBlock,
-        Action<BetaContentBlockParamVariants::BetaSearchResultBlockParam> betaSearchResultBlockParam,
-        Action<BetaContentBlockParamVariants::BetaThinkingBlockParam> betaThinkingBlockParam,
-        Action<BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam> betaRedactedThinkingBlockParam,
-        Action<BetaContentBlockParamVariants::BetaToolUseBlockParam> betaToolUseBlockParam,
-        Action<BetaContentBlockParamVariants::BetaToolResultBlockParam> betaToolResultBlockParam,
-        Action<BetaContentBlockParamVariants::BetaServerToolUseBlockParam> betaServerToolUseBlockParam,
-        Action<BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam> betaWebSearchToolResultBlockParam,
-        Action<BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam> betaCodeExecutionToolResultBlockParam,
-        Action<BetaContentBlockParamVariants::BetaMCPToolUseBlockParam> betaMCPToolUseBlockParam,
-        Action<BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam> betaRequestMCPToolResultBlockParam,
-        Action<BetaContentBlockParamVariants::BetaContainerUploadBlockParam> betaContainerUploadBlockParam
+        Action<BetaContentBlockParamVariants::BetaTextBlockParam> text,
+        Action<BetaContentBlockParamVariants::BetaImageBlockParam> image,
+        Action<BetaContentBlockParamVariants::BetaRequestDocumentBlock> requestDocumentBlock,
+        Action<BetaContentBlockParamVariants::BetaSearchResultBlockParam> searchResult,
+        Action<BetaContentBlockParamVariants::BetaThinkingBlockParam> thinking,
+        Action<BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam> redactedThinking,
+        Action<BetaContentBlockParamVariants::BetaToolUseBlockParam> toolUse,
+        Action<BetaContentBlockParamVariants::BetaToolResultBlockParam> toolResult,
+        Action<BetaContentBlockParamVariants::BetaServerToolUseBlockParam> serverToolUse,
+        Action<BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam> webSearchToolResult,
+        Action<BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam> codeExecutionToolResult,
+        Action<BetaContentBlockParamVariants::BetaMCPToolUseBlockParam> mcpToolUse,
+        Action<BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam> requestMCPToolResult,
+        Action<BetaContentBlockParamVariants::BetaContainerUploadBlockParam> containerUpload
     )
     {
         switch (this)
         {
             case BetaContentBlockParamVariants::BetaTextBlockParam inner:
-                betaTextBlockParam(inner);
+                text(inner);
                 break;
             case BetaContentBlockParamVariants::BetaImageBlockParam inner:
-                betaImageBlockParam(inner);
+                image(inner);
                 break;
             case BetaContentBlockParamVariants::BetaRequestDocumentBlock inner:
-                betaRequestDocumentBlock(inner);
+                requestDocumentBlock(inner);
                 break;
             case BetaContentBlockParamVariants::BetaSearchResultBlockParam inner:
-                betaSearchResultBlockParam(inner);
+                searchResult(inner);
                 break;
             case BetaContentBlockParamVariants::BetaThinkingBlockParam inner:
-                betaThinkingBlockParam(inner);
+                thinking(inner);
                 break;
             case BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam inner:
-                betaRedactedThinkingBlockParam(inner);
+                redactedThinking(inner);
                 break;
             case BetaContentBlockParamVariants::BetaToolUseBlockParam inner:
-                betaToolUseBlockParam(inner);
+                toolUse(inner);
                 break;
             case BetaContentBlockParamVariants::BetaToolResultBlockParam inner:
-                betaToolResultBlockParam(inner);
+                toolResult(inner);
                 break;
             case BetaContentBlockParamVariants::BetaServerToolUseBlockParam inner:
-                betaServerToolUseBlockParam(inner);
+                serverToolUse(inner);
                 break;
             case BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam inner:
-                betaWebSearchToolResultBlockParam(inner);
+                webSearchToolResult(inner);
                 break;
             case BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam inner:
-                betaCodeExecutionToolResultBlockParam(inner);
+                codeExecutionToolResult(inner);
                 break;
             case BetaContentBlockParamVariants::BetaMCPToolUseBlockParam inner:
-                betaMCPToolUseBlockParam(inner);
+                mcpToolUse(inner);
                 break;
             case BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam inner:
-                betaRequestMCPToolResultBlockParam(inner);
+                requestMCPToolResult(inner);
                 break;
             case BetaContentBlockParamVariants::BetaContainerUploadBlockParam inner:
-                betaContainerUploadBlockParam(inner);
+                containerUpload(inner);
                 break;
             default:
                 throw new InvalidOperationException();
@@ -233,73 +221,58 @@ public abstract record class BetaContentBlockParam
     }
 
     public T Match<T>(
-        Func<BetaContentBlockParamVariants::BetaTextBlockParam, T> betaTextBlockParam,
-        Func<BetaContentBlockParamVariants::BetaImageBlockParam, T> betaImageBlockParam,
-        Func<BetaContentBlockParamVariants::BetaRequestDocumentBlock, T> betaRequestDocumentBlock,
-        Func<
-            BetaContentBlockParamVariants::BetaSearchResultBlockParam,
-            T
-        > betaSearchResultBlockParam,
-        Func<BetaContentBlockParamVariants::BetaThinkingBlockParam, T> betaThinkingBlockParam,
-        Func<
-            BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam,
-            T
-        > betaRedactedThinkingBlockParam,
-        Func<BetaContentBlockParamVariants::BetaToolUseBlockParam, T> betaToolUseBlockParam,
-        Func<BetaContentBlockParamVariants::BetaToolResultBlockParam, T> betaToolResultBlockParam,
-        Func<
-            BetaContentBlockParamVariants::BetaServerToolUseBlockParam,
-            T
-        > betaServerToolUseBlockParam,
+        Func<BetaContentBlockParamVariants::BetaTextBlockParam, T> text,
+        Func<BetaContentBlockParamVariants::BetaImageBlockParam, T> image,
+        Func<BetaContentBlockParamVariants::BetaRequestDocumentBlock, T> requestDocumentBlock,
+        Func<BetaContentBlockParamVariants::BetaSearchResultBlockParam, T> searchResult,
+        Func<BetaContentBlockParamVariants::BetaThinkingBlockParam, T> thinking,
+        Func<BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam, T> redactedThinking,
+        Func<BetaContentBlockParamVariants::BetaToolUseBlockParam, T> toolUse,
+        Func<BetaContentBlockParamVariants::BetaToolResultBlockParam, T> toolResult,
+        Func<BetaContentBlockParamVariants::BetaServerToolUseBlockParam, T> serverToolUse,
         Func<
             BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam,
             T
-        > betaWebSearchToolResultBlockParam,
+        > webSearchToolResult,
         Func<
             BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam,
             T
-        > betaCodeExecutionToolResultBlockParam,
-        Func<BetaContentBlockParamVariants::BetaMCPToolUseBlockParam, T> betaMCPToolUseBlockParam,
+        > codeExecutionToolResult,
+        Func<BetaContentBlockParamVariants::BetaMCPToolUseBlockParam, T> mcpToolUse,
         Func<
             BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam,
             T
-        > betaRequestMCPToolResultBlockParam,
-        Func<
-            BetaContentBlockParamVariants::BetaContainerUploadBlockParam,
-            T
-        > betaContainerUploadBlockParam
+        > requestMCPToolResult,
+        Func<BetaContentBlockParamVariants::BetaContainerUploadBlockParam, T> containerUpload
     )
     {
         return this switch
         {
-            BetaContentBlockParamVariants::BetaTextBlockParam inner => betaTextBlockParam(inner),
-            BetaContentBlockParamVariants::BetaImageBlockParam inner => betaImageBlockParam(inner),
-            BetaContentBlockParamVariants::BetaRequestDocumentBlock inner =>
-                betaRequestDocumentBlock(inner),
-            BetaContentBlockParamVariants::BetaSearchResultBlockParam inner =>
-                betaSearchResultBlockParam(inner),
-            BetaContentBlockParamVariants::BetaThinkingBlockParam inner => betaThinkingBlockParam(
+            BetaContentBlockParamVariants::BetaTextBlockParam inner => text(inner),
+            BetaContentBlockParamVariants::BetaImageBlockParam inner => image(inner),
+            BetaContentBlockParamVariants::BetaRequestDocumentBlock inner => requestDocumentBlock(
                 inner
             ),
-            BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam inner =>
-                betaRedactedThinkingBlockParam(inner),
-            BetaContentBlockParamVariants::BetaToolUseBlockParam inner => betaToolUseBlockParam(
+            BetaContentBlockParamVariants::BetaSearchResultBlockParam inner => searchResult(inner),
+            BetaContentBlockParamVariants::BetaThinkingBlockParam inner => thinking(inner),
+            BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam inner => redactedThinking(
                 inner
             ),
-            BetaContentBlockParamVariants::BetaToolResultBlockParam inner =>
-                betaToolResultBlockParam(inner),
-            BetaContentBlockParamVariants::BetaServerToolUseBlockParam inner =>
-                betaServerToolUseBlockParam(inner),
+            BetaContentBlockParamVariants::BetaToolUseBlockParam inner => toolUse(inner),
+            BetaContentBlockParamVariants::BetaToolResultBlockParam inner => toolResult(inner),
+            BetaContentBlockParamVariants::BetaServerToolUseBlockParam inner => serverToolUse(
+                inner
+            ),
             BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam inner =>
-                betaWebSearchToolResultBlockParam(inner),
+                webSearchToolResult(inner),
             BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam inner =>
-                betaCodeExecutionToolResultBlockParam(inner),
-            BetaContentBlockParamVariants::BetaMCPToolUseBlockParam inner =>
-                betaMCPToolUseBlockParam(inner),
+                codeExecutionToolResult(inner),
+            BetaContentBlockParamVariants::BetaMCPToolUseBlockParam inner => mcpToolUse(inner),
             BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam inner =>
-                betaRequestMCPToolResultBlockParam(inner),
-            BetaContentBlockParamVariants::BetaContainerUploadBlockParam inner =>
-                betaContainerUploadBlockParam(inner),
+                requestMCPToolResult(inner),
+            BetaContentBlockParamVariants::BetaContainerUploadBlockParam inner => containerUpload(
+                inner
+            ),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -678,41 +651,31 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
     {
         object variant = value switch
         {
-            BetaContentBlockParamVariants::BetaTextBlockParam(var betaTextBlockParam) =>
-                betaTextBlockParam,
-            BetaContentBlockParamVariants::BetaImageBlockParam(var betaImageBlockParam) =>
-                betaImageBlockParam,
-            BetaContentBlockParamVariants::BetaRequestDocumentBlock(var betaRequestDocumentBlock) =>
-                betaRequestDocumentBlock,
-            BetaContentBlockParamVariants::BetaSearchResultBlockParam(
-                var betaSearchResultBlockParam
-            ) => betaSearchResultBlockParam,
-            BetaContentBlockParamVariants::BetaThinkingBlockParam(var betaThinkingBlockParam) =>
-                betaThinkingBlockParam,
-            BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam(
-                var betaRedactedThinkingBlockParam
-            ) => betaRedactedThinkingBlockParam,
-            BetaContentBlockParamVariants::BetaToolUseBlockParam(var betaToolUseBlockParam) =>
-                betaToolUseBlockParam,
-            BetaContentBlockParamVariants::BetaToolResultBlockParam(var betaToolResultBlockParam) =>
-                betaToolResultBlockParam,
-            BetaContentBlockParamVariants::BetaServerToolUseBlockParam(
-                var betaServerToolUseBlockParam
-            ) => betaServerToolUseBlockParam,
+            BetaContentBlockParamVariants::BetaTextBlockParam(var text) => text,
+            BetaContentBlockParamVariants::BetaImageBlockParam(var image) => image,
+            BetaContentBlockParamVariants::BetaRequestDocumentBlock(var requestDocumentBlock) =>
+                requestDocumentBlock,
+            BetaContentBlockParamVariants::BetaSearchResultBlockParam(var searchResult) =>
+                searchResult,
+            BetaContentBlockParamVariants::BetaThinkingBlockParam(var thinking) => thinking,
+            BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam(var redactedThinking) =>
+                redactedThinking,
+            BetaContentBlockParamVariants::BetaToolUseBlockParam(var toolUse) => toolUse,
+            BetaContentBlockParamVariants::BetaToolResultBlockParam(var toolResult) => toolResult,
+            BetaContentBlockParamVariants::BetaServerToolUseBlockParam(var serverToolUse) =>
+                serverToolUse,
             BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam(
-                var betaWebSearchToolResultBlockParam
-            ) => betaWebSearchToolResultBlockParam,
+                var webSearchToolResult
+            ) => webSearchToolResult,
             BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam(
-                var betaCodeExecutionToolResultBlockParam
-            ) => betaCodeExecutionToolResultBlockParam,
-            BetaContentBlockParamVariants::BetaMCPToolUseBlockParam(var betaMCPToolUseBlockParam) =>
-                betaMCPToolUseBlockParam,
+                var codeExecutionToolResult
+            ) => codeExecutionToolResult,
+            BetaContentBlockParamVariants::BetaMCPToolUseBlockParam(var mcpToolUse) => mcpToolUse,
             BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam(
-                var betaRequestMCPToolResultBlockParam
-            ) => betaRequestMCPToolResultBlockParam,
-            BetaContentBlockParamVariants::BetaContainerUploadBlockParam(
-                var betaContainerUploadBlockParam
-            ) => betaContainerUploadBlockParam,
+                var requestMCPToolResult
+            ) => requestMCPToolResult,
+            BetaContentBlockParamVariants::BetaContainerUploadBlockParam(var containerUpload) =>
+                containerUpload,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

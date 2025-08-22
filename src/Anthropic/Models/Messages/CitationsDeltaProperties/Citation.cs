@@ -27,19 +27,19 @@ public abstract record class Citation
     public static implicit operator Citation(CitationsSearchResultLocation value) =>
         new CitationVariants::CitationsSearchResultLocation(value);
 
-    public bool TryPickCitationCharLocation([NotNullWhen(true)] out CitationCharLocation? value)
+    public bool TryPickCharLocation([NotNullWhen(true)] out CitationCharLocation? value)
     {
         value = (this as CitationVariants::CitationCharLocation)?.Value;
         return value != null;
     }
 
-    public bool TryPickCitationPageLocation([NotNullWhen(true)] out CitationPageLocation? value)
+    public bool TryPickPageLocation([NotNullWhen(true)] out CitationPageLocation? value)
     {
         value = (this as CitationVariants::CitationPageLocation)?.Value;
         return value != null;
     }
 
-    public bool TryPickCitationContentBlockLocation(
+    public bool TryPickContentBlockLocation(
         [NotNullWhen(true)] out CitationContentBlockLocation? value
     )
     {
@@ -64,9 +64,9 @@ public abstract record class Citation
     }
 
     public void Switch(
-        Action<CitationVariants::CitationCharLocation> citationCharLocation,
-        Action<CitationVariants::CitationPageLocation> citationPageLocation,
-        Action<CitationVariants::CitationContentBlockLocation> citationContentBlockLocation,
+        Action<CitationVariants::CitationCharLocation> charLocation,
+        Action<CitationVariants::CitationPageLocation> pageLocation,
+        Action<CitationVariants::CitationContentBlockLocation> contentBlockLocation,
         Action<CitationVariants::CitationsWebSearchResultLocation> citationsWebSearchResultLocation,
         Action<CitationVariants::CitationsSearchResultLocation> citationsSearchResultLocation
     )
@@ -74,13 +74,13 @@ public abstract record class Citation
         switch (this)
         {
             case CitationVariants::CitationCharLocation inner:
-                citationCharLocation(inner);
+                charLocation(inner);
                 break;
             case CitationVariants::CitationPageLocation inner:
-                citationPageLocation(inner);
+                pageLocation(inner);
                 break;
             case CitationVariants::CitationContentBlockLocation inner:
-                citationContentBlockLocation(inner);
+                contentBlockLocation(inner);
                 break;
             case CitationVariants::CitationsWebSearchResultLocation inner:
                 citationsWebSearchResultLocation(inner);
@@ -94,9 +94,9 @@ public abstract record class Citation
     }
 
     public T Match<T>(
-        Func<CitationVariants::CitationCharLocation, T> citationCharLocation,
-        Func<CitationVariants::CitationPageLocation, T> citationPageLocation,
-        Func<CitationVariants::CitationContentBlockLocation, T> citationContentBlockLocation,
+        Func<CitationVariants::CitationCharLocation, T> charLocation,
+        Func<CitationVariants::CitationPageLocation, T> pageLocation,
+        Func<CitationVariants::CitationContentBlockLocation, T> contentBlockLocation,
         Func<
             CitationVariants::CitationsWebSearchResultLocation,
             T
@@ -106,11 +106,9 @@ public abstract record class Citation
     {
         return this switch
         {
-            CitationVariants::CitationCharLocation inner => citationCharLocation(inner),
-            CitationVariants::CitationPageLocation inner => citationPageLocation(inner),
-            CitationVariants::CitationContentBlockLocation inner => citationContentBlockLocation(
-                inner
-            ),
+            CitationVariants::CitationCharLocation inner => charLocation(inner),
+            CitationVariants::CitationPageLocation inner => pageLocation(inner),
+            CitationVariants::CitationContentBlockLocation inner => contentBlockLocation(inner),
             CitationVariants::CitationsWebSearchResultLocation inner =>
                 citationsWebSearchResultLocation(inner),
             CitationVariants::CitationsSearchResultLocation inner => citationsSearchResultLocation(
@@ -265,12 +263,10 @@ sealed class CitationConverter : JsonConverter<Citation>
     {
         object variant = value switch
         {
-            CitationVariants::CitationCharLocation(var citationCharLocation) =>
-                citationCharLocation,
-            CitationVariants::CitationPageLocation(var citationPageLocation) =>
-                citationPageLocation,
-            CitationVariants::CitationContentBlockLocation(var citationContentBlockLocation) =>
-                citationContentBlockLocation,
+            CitationVariants::CitationCharLocation(var charLocation) => charLocation,
+            CitationVariants::CitationPageLocation(var pageLocation) => pageLocation,
+            CitationVariants::CitationContentBlockLocation(var contentBlockLocation) =>
+                contentBlockLocation,
             CitationVariants::CitationsWebSearchResultLocation(
                 var citationsWebSearchResultLocation
             ) => citationsWebSearchResultLocation,
