@@ -15,7 +15,7 @@ The REST API documentation can be found on [docs.anthropic.com](https://docs.ant
 
 ```bash
 git clone git@github.com:stainless-sdks/anthropic-csharp.git
-dotnet add reference anthropic-csharp/src/Anthropic
+dotnet add reference anthropic-csharp/src/Anthropic.Beta.Client
 ```
 
 ## Requirements
@@ -31,9 +31,9 @@ See the [`examples`](examples) directory for complete and runnable examples.
 
 ```csharp
 using System;
-using Anthropic;
-using Anthropic.Models.Messages;
-using Anthropic.Models.Messages.MessageParamProperties;
+using Anthropic.Beta.Client;
+using Anthropic.Beta.Client.Models.Messages;
+using Anthropic.Beta.Client.Models.Messages.MessageParamProperties;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
@@ -62,7 +62,7 @@ Console.WriteLine(message);
 Configure the client using environment variables:
 
 ```csharp
-using Anthropic;
+using Anthropic.Beta.Client;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
@@ -71,7 +71,7 @@ AnthropicClient client = new();
 Or manually:
 
 ```csharp
-using Anthropic;
+using Anthropic.Beta.Client;
 
 AnthropicClient client = new() { APIKey = "my-anthropic-api-key" };
 ```
@@ -102,8 +102,8 @@ These streaming methods return [`IAsyncEnumerable`](https://learn.microsoft.com/
 
 ```csharp
 using System;
-using Anthropic.Models.Messages;
-using Anthropic.Models.Messages.MessageParamProperties;
+using Anthropic.Beta.Client.Models.Messages;
+using Anthropic.Beta.Client.Models.Messages.MessageParamProperties;
 
 MessageCreateParams parameters = new()
 {
