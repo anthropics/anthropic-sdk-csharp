@@ -92,6 +92,21 @@ public sealed record class BetaWebSearchToolResultBlock(
     }
 }
 
+public sealed record class BetaWebFetchToolResultBlock(Messages::BetaWebFetchToolResultBlock Value)
+    : ContentBlock,
+        IVariant<BetaWebFetchToolResultBlock, Messages::BetaWebFetchToolResultBlock>
+{
+    public static BetaWebFetchToolResultBlock From(Messages::BetaWebFetchToolResultBlock value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
 public sealed record class BetaCodeExecutionToolResultBlock(
     Messages::BetaCodeExecutionToolResultBlock Value
 )

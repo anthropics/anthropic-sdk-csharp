@@ -46,6 +46,9 @@ public abstract record class BetaContentBlockParam
         BetaWebSearchToolResultBlockParam value
     ) => new BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam(value);
 
+    public static implicit operator BetaContentBlockParam(BetaWebFetchToolResultBlockParam value) =>
+        new BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam(value);
+
     public static implicit operator BetaContentBlockParam(
         BetaCodeExecutionToolResultBlockParam value
     ) => new BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam(value);
@@ -132,6 +135,14 @@ public abstract record class BetaContentBlockParam
         return value != null;
     }
 
+    public bool TryPickWebFetchToolResult(
+        [NotNullWhen(true)] out BetaWebFetchToolResultBlockParam? value
+    )
+    {
+        value = (this as BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam)?.Value;
+        return value != null;
+    }
+
     public bool TryPickCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaCodeExecutionToolResultBlockParam? value
     )
@@ -193,6 +204,7 @@ public abstract record class BetaContentBlockParam
         Action<BetaContentBlockParamVariants::BetaToolResultBlockParam> toolResult,
         Action<BetaContentBlockParamVariants::BetaServerToolUseBlockParam> serverToolUse,
         Action<BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam> webSearchToolResult,
+        Action<BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam> webFetchToolResult,
         Action<BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam> codeExecutionToolResult,
         Action<BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
         Action<BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
@@ -233,6 +245,9 @@ public abstract record class BetaContentBlockParam
             case BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam inner:
                 webSearchToolResult(inner);
                 break;
+            case BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam inner:
+                webFetchToolResult(inner);
+                break;
             case BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam inner:
                 codeExecutionToolResult(inner);
                 break;
@@ -270,6 +285,7 @@ public abstract record class BetaContentBlockParam
             BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam,
             T
         > webSearchToolResult,
+        Func<BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam, T> webFetchToolResult,
         Func<
             BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam,
             T
@@ -309,6 +325,8 @@ public abstract record class BetaContentBlockParam
             ),
             BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam inner =>
                 webSearchToolResult(inner),
+            BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam inner =>
+                webFetchToolResult(inner),
             BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam inner =>
                 codeExecutionToolResult(inner),
             BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam inner =>
@@ -586,6 +604,30 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
 
                 throw new AggregateException(exceptions);
             }
+            case "web_fetch_tool_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
             case "code_execution_tool_result":
             {
                 List<JsonException> exceptions = [];
@@ -765,6 +807,9 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
             BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam(
                 var webSearchToolResult
             ) => webSearchToolResult,
+            BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam(
+                var webFetchToolResult
+            ) => webFetchToolResult,
             BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam(
                 var codeExecutionToolResult
             ) => codeExecutionToolResult,

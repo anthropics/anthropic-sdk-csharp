@@ -48,6 +48,9 @@ public abstract record class BetaToolUnion
     public static implicit operator BetaToolUnion(BetaWebSearchTool20250305 value) =>
         new BetaToolUnionVariants::BetaWebSearchTool20250305(value);
 
+    public static implicit operator BetaToolUnion(BetaWebFetchTool20250910 value) =>
+        new BetaToolUnionVariants::BetaWebFetchTool20250910(value);
+
     public bool TryPickBetaTool([NotNullWhen(true)] out BetaTool? value)
     {
         value = (this as BetaToolUnionVariants::BetaTool)?.Value;
@@ -130,6 +133,12 @@ public abstract record class BetaToolUnion
         return value != null;
     }
 
+    public bool TryPickWebFetchTool20250910([NotNullWhen(true)] out BetaWebFetchTool20250910? value)
+    {
+        value = (this as BetaToolUnionVariants::BetaWebFetchTool20250910)?.Value;
+        return value != null;
+    }
+
     public void Switch(
         Action<BetaToolUnionVariants::BetaTool> betaTool,
         Action<BetaToolUnionVariants::BetaToolBash20241022> bash20241022,
@@ -142,7 +151,8 @@ public abstract record class BetaToolUnion
         Action<BetaToolUnionVariants::BetaToolTextEditor20250124> textEditor20250124,
         Action<BetaToolUnionVariants::BetaToolTextEditor20250429> textEditor20250429,
         Action<BetaToolUnionVariants::BetaToolTextEditor20250728> textEditor20250728,
-        Action<BetaToolUnionVariants::BetaWebSearchTool20250305> webSearchTool20250305
+        Action<BetaToolUnionVariants::BetaWebSearchTool20250305> webSearchTool20250305,
+        Action<BetaToolUnionVariants::BetaWebFetchTool20250910> webFetchTool20250910
     )
     {
         switch (this)
@@ -183,6 +193,9 @@ public abstract record class BetaToolUnion
             case BetaToolUnionVariants::BetaWebSearchTool20250305 inner:
                 webSearchTool20250305(inner);
                 break;
+            case BetaToolUnionVariants::BetaWebFetchTool20250910 inner:
+                webFetchTool20250910(inner);
+                break;
             default:
                 throw new InvalidOperationException();
         }
@@ -200,7 +213,8 @@ public abstract record class BetaToolUnion
         Func<BetaToolUnionVariants::BetaToolTextEditor20250124, T> textEditor20250124,
         Func<BetaToolUnionVariants::BetaToolTextEditor20250429, T> textEditor20250429,
         Func<BetaToolUnionVariants::BetaToolTextEditor20250728, T> textEditor20250728,
-        Func<BetaToolUnionVariants::BetaWebSearchTool20250305, T> webSearchTool20250305
+        Func<BetaToolUnionVariants::BetaWebSearchTool20250305, T> webSearchTool20250305,
+        Func<BetaToolUnionVariants::BetaWebFetchTool20250910, T> webFetchTool20250910
     )
     {
         return this switch
@@ -221,6 +235,7 @@ public abstract record class BetaToolUnion
             BetaToolUnionVariants::BetaToolTextEditor20250429 inner => textEditor20250429(inner),
             BetaToolUnionVariants::BetaToolTextEditor20250728 inner => textEditor20250728(inner),
             BetaToolUnionVariants::BetaWebSearchTool20250305 inner => webSearchTool20250305(inner),
+            BetaToolUnionVariants::BetaWebFetchTool20250910 inner => webFetchTool20250910(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -427,6 +442,22 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
             exceptions.Add(e);
         }
 
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new BetaToolUnionVariants::BetaWebFetchTool20250910(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
         throw new AggregateException(exceptions);
     }
 
@@ -459,6 +490,8 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 textEditor20250728,
             BetaToolUnionVariants::BetaWebSearchTool20250305(var webSearchTool20250305) =>
                 webSearchTool20250305,
+            BetaToolUnionVariants::BetaWebFetchTool20250910(var webFetchTool20250910) =>
+                webFetchTool20250910,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

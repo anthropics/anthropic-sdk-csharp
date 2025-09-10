@@ -82,6 +82,7 @@ public abstract record class ModelBase
             >(),
             new ApiEnumConverter<string, BetaToolProperties::Type>(),
             new ApiEnumConverter<string, BetaUsageProperties::ServiceTier>(),
+            new ApiEnumConverter<string, BetaWebFetchToolResultErrorCode>(),
             new ApiEnumConverter<string, BetaWebSearchToolResultErrorCode>(),
             new ApiEnumConverter<
                 string,

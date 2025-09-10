@@ -185,6 +185,25 @@ public sealed record class BetaWebSearchToolResultBlockParam(
     }
 }
 
+public sealed record class BetaWebFetchToolResultBlockParam(
+    Messages::BetaWebFetchToolResultBlockParam Value
+)
+    : Messages::BetaContentBlockParam,
+        IVariant<BetaWebFetchToolResultBlockParam, Messages::BetaWebFetchToolResultBlockParam>
+{
+    public static BetaWebFetchToolResultBlockParam From(
+        Messages::BetaWebFetchToolResultBlockParam value
+    )
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
 public sealed record class BetaCodeExecutionToolResultBlockParam(
     Messages::BetaCodeExecutionToolResultBlockParam Value
 )

@@ -8,6 +8,7 @@ namespace Anthropic.Client.Models.Beta.Messages.BetaServerToolUseBlockParamPrope
 public enum Name
 {
     WebSearch,
+    WebFetch,
     CodeExecution,
     BashCodeExecution,
     TextEditorCodeExecution,
@@ -24,6 +25,7 @@ sealed class NameConverter : JsonConverter<Name>
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
             "web_search" => Name.WebSearch,
+            "web_fetch" => Name.WebFetch,
             "code_execution" => Name.CodeExecution,
             "bash_code_execution" => Name.BashCodeExecution,
             "text_editor_code_execution" => Name.TextEditorCodeExecution,
@@ -38,6 +40,7 @@ sealed class NameConverter : JsonConverter<Name>
             value switch
             {
                 Name.WebSearch => "web_search",
+                Name.WebFetch => "web_fetch",
                 Name.CodeExecution => "code_execution",
                 Name.BashCodeExecution => "bash_code_execution",
                 Name.TextEditorCodeExecution => "text_editor_code_execution",

@@ -47,6 +47,9 @@ public abstract record class Tool
     public static implicit operator Tool(BetaWebSearchTool20250305 value) =>
         new ToolVariants::BetaWebSearchTool20250305(value);
 
+    public static implicit operator Tool(BetaWebFetchTool20250910 value) =>
+        new ToolVariants::BetaWebFetchTool20250910(value);
+
     public bool TryPickBeta([NotNullWhen(true)] out BetaTool? value)
     {
         value = (this as ToolVariants::BetaTool)?.Value;
@@ -137,6 +140,14 @@ public abstract record class Tool
         return value != null;
     }
 
+    public bool TryPickBetaWebFetchTool20250910(
+        [NotNullWhen(true)] out BetaWebFetchTool20250910? value
+    )
+    {
+        value = (this as ToolVariants::BetaWebFetchTool20250910)?.Value;
+        return value != null;
+    }
+
     public void Switch(
         Action<ToolVariants::BetaTool> beta,
         Action<ToolVariants::BetaToolBash20241022> betaToolBash20241022,
@@ -149,7 +160,8 @@ public abstract record class Tool
         Action<ToolVariants::BetaToolTextEditor20250124> betaToolTextEditor20250124,
         Action<ToolVariants::BetaToolTextEditor20250429> betaToolTextEditor20250429,
         Action<ToolVariants::BetaToolTextEditor20250728> betaToolTextEditor20250728,
-        Action<ToolVariants::BetaWebSearchTool20250305> betaWebSearchTool20250305
+        Action<ToolVariants::BetaWebSearchTool20250305> betaWebSearchTool20250305,
+        Action<ToolVariants::BetaWebFetchTool20250910> betaWebFetchTool20250910
     )
     {
         switch (this)
@@ -190,6 +202,9 @@ public abstract record class Tool
             case ToolVariants::BetaWebSearchTool20250305 inner:
                 betaWebSearchTool20250305(inner);
                 break;
+            case ToolVariants::BetaWebFetchTool20250910 inner:
+                betaWebFetchTool20250910(inner);
+                break;
             default:
                 throw new InvalidOperationException();
         }
@@ -207,7 +222,8 @@ public abstract record class Tool
         Func<ToolVariants::BetaToolTextEditor20250124, T> betaToolTextEditor20250124,
         Func<ToolVariants::BetaToolTextEditor20250429, T> betaToolTextEditor20250429,
         Func<ToolVariants::BetaToolTextEditor20250728, T> betaToolTextEditor20250728,
-        Func<ToolVariants::BetaWebSearchTool20250305, T> betaWebSearchTool20250305
+        Func<ToolVariants::BetaWebSearchTool20250305, T> betaWebSearchTool20250305,
+        Func<ToolVariants::BetaWebFetchTool20250910, T> betaWebFetchTool20250910
     )
     {
         return this switch
@@ -228,6 +244,7 @@ public abstract record class Tool
             ToolVariants::BetaToolTextEditor20250429 inner => betaToolTextEditor20250429(inner),
             ToolVariants::BetaToolTextEditor20250728 inner => betaToolTextEditor20250728(inner),
             ToolVariants::BetaWebSearchTool20250305 inner => betaWebSearchTool20250305(inner),
+            ToolVariants::BetaWebFetchTool20250910 inner => betaWebFetchTool20250910(inner),
             _ => throw new InvalidOperationException(),
         };
     }
@@ -434,6 +451,22 @@ sealed class ToolConverter : JsonConverter<Tool>
             exceptions.Add(e);
         }
 
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new ToolVariants::BetaWebFetchTool20250910(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
         throw new AggregateException(exceptions);
     }
 
@@ -462,6 +495,8 @@ sealed class ToolConverter : JsonConverter<Tool>
                 betaToolTextEditor20250728,
             ToolVariants::BetaWebSearchTool20250305(var betaWebSearchTool20250305) =>
                 betaWebSearchTool20250305,
+            ToolVariants::BetaWebFetchTool20250910(var betaWebFetchTool20250910) =>
+                betaWebFetchTool20250910,
             _ => throw new ArgumentOutOfRangeException(nameof(value)),
         };
         JsonSerializer.Serialize(writer, variant, options);

@@ -181,3 +181,18 @@ public sealed record class BetaWebSearchTool20250305(Messages::BetaWebSearchTool
         this.Value.Validate();
     }
 }
+
+public sealed record class BetaWebFetchTool20250910(Messages::BetaWebFetchTool20250910 Value)
+    : Tool,
+        IVariant<BetaWebFetchTool20250910, Messages::BetaWebFetchTool20250910>
+{
+    public static BetaWebFetchTool20250910 From(Messages::BetaWebFetchTool20250910 value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}

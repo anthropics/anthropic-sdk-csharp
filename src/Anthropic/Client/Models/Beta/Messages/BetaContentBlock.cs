@@ -33,6 +33,9 @@ public abstract record class BetaContentBlock
     public static implicit operator BetaContentBlock(BetaWebSearchToolResultBlock value) =>
         new BetaContentBlockVariants::BetaWebSearchToolResultBlock(value);
 
+    public static implicit operator BetaContentBlock(BetaWebFetchToolResultBlock value) =>
+        new BetaContentBlockVariants::BetaWebFetchToolResultBlock(value);
+
     public static implicit operator BetaContentBlock(BetaCodeExecutionToolResultBlock value) =>
         new BetaContentBlockVariants::BetaCodeExecutionToolResultBlock(value);
 
@@ -90,6 +93,14 @@ public abstract record class BetaContentBlock
         return value != null;
     }
 
+    public bool TryPickWebFetchToolResult(
+        [NotNullWhen(true)] out BetaWebFetchToolResultBlock? value
+    )
+    {
+        value = (this as BetaContentBlockVariants::BetaWebFetchToolResultBlock)?.Value;
+        return value != null;
+    }
+
     public bool TryPickCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaCodeExecutionToolResultBlock? value
     )
@@ -141,6 +152,7 @@ public abstract record class BetaContentBlock
         Action<BetaContentBlockVariants::BetaToolUseBlock> toolUse,
         Action<BetaContentBlockVariants::BetaServerToolUseBlock> serverToolUse,
         Action<BetaContentBlockVariants::BetaWebSearchToolResultBlock> webSearchToolResult,
+        Action<BetaContentBlockVariants::BetaWebFetchToolResultBlock> webFetchToolResult,
         Action<BetaContentBlockVariants::BetaCodeExecutionToolResultBlock> codeExecutionToolResult,
         Action<BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock> bashCodeExecutionToolResult,
         Action<BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock> textEditorCodeExecutionToolResult,
@@ -168,6 +180,9 @@ public abstract record class BetaContentBlock
                 break;
             case BetaContentBlockVariants::BetaWebSearchToolResultBlock inner:
                 webSearchToolResult(inner);
+                break;
+            case BetaContentBlockVariants::BetaWebFetchToolResultBlock inner:
+                webFetchToolResult(inner);
                 break;
             case BetaContentBlockVariants::BetaCodeExecutionToolResultBlock inner:
                 codeExecutionToolResult(inner);
@@ -199,6 +214,7 @@ public abstract record class BetaContentBlock
         Func<BetaContentBlockVariants::BetaToolUseBlock, T> toolUse,
         Func<BetaContentBlockVariants::BetaServerToolUseBlock, T> serverToolUse,
         Func<BetaContentBlockVariants::BetaWebSearchToolResultBlock, T> webSearchToolResult,
+        Func<BetaContentBlockVariants::BetaWebFetchToolResultBlock, T> webFetchToolResult,
         Func<BetaContentBlockVariants::BetaCodeExecutionToolResultBlock, T> codeExecutionToolResult,
         Func<
             BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock,
@@ -221,6 +237,9 @@ public abstract record class BetaContentBlock
             BetaContentBlockVariants::BetaToolUseBlock inner => toolUse(inner),
             BetaContentBlockVariants::BetaServerToolUseBlock inner => serverToolUse(inner),
             BetaContentBlockVariants::BetaWebSearchToolResultBlock inner => webSearchToolResult(
+                inner
+            ),
+            BetaContentBlockVariants::BetaWebFetchToolResultBlock inner => webFetchToolResult(
                 inner
             ),
             BetaContentBlockVariants::BetaCodeExecutionToolResultBlock inner =>
@@ -376,6 +395,30 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     if (deserialized != null)
                     {
                         return new BetaContentBlockVariants::BetaWebSearchToolResultBlock(
+                            deserialized
+                        );
+                    }
+                }
+                catch (JsonException e)
+                {
+                    exceptions.Add(e);
+                }
+
+                throw new AggregateException(exceptions);
+            }
+            case "web_fetch_tool_result":
+            {
+                List<JsonException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new BetaContentBlockVariants::BetaWebFetchToolResultBlock(
                             deserialized
                         );
                     }
@@ -550,6 +593,8 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
             BetaContentBlockVariants::BetaServerToolUseBlock(var serverToolUse) => serverToolUse,
             BetaContentBlockVariants::BetaWebSearchToolResultBlock(var webSearchToolResult) =>
                 webSearchToolResult,
+            BetaContentBlockVariants::BetaWebFetchToolResultBlock(var webFetchToolResult) =>
+                webFetchToolResult,
             BetaContentBlockVariants::BetaCodeExecutionToolResultBlock(
                 var codeExecutionToolResult
             ) => codeExecutionToolResult,

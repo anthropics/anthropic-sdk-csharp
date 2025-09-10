@@ -10,6 +10,30 @@ namespace Anthropic.Client.Models.Beta.Messages;
 public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerToolUsage>
 {
     /// <summary>
+    /// The number of web fetch tool requests.
+    /// </summary>
+    public required long WebFetchRequests
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("web_fetch_requests", out JsonElement element))
+                throw new ArgumentOutOfRangeException(
+                    "web_fetch_requests",
+                    "Missing required argument"
+                );
+
+            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
+        }
+        set
+        {
+            this.Properties["web_fetch_requests"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
     /// The number of web search tool requests.
     /// </summary>
     public required long WebSearchRequests
@@ -35,6 +59,7 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
 
     public override void Validate()
     {
+        _ = this.WebFetchRequests;
         _ = this.WebSearchRequests;
     }
 
@@ -51,12 +76,5 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
     public static BetaServerToolUsage FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
-    }
-
-    [SetsRequiredMembers]
-    public BetaServerToolUsage(long webSearchRequests)
-        : this()
-    {
-        this.WebSearchRequests = webSearchRequests;
     }
 }
