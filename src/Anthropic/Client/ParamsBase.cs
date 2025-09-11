@@ -149,8 +149,14 @@ public abstract record class ParamsBase
 
     protected static void AddDefaultHeaders(HttpRequestMessage request, IAnthropicClient client)
     {
-        request.Headers.Add("X-Api-Key", client.APIKey);
-        request.Headers.Add("Authorization", string.Format("Bearer {0}", client.AuthToken));
+        if (client.APIKey != null)
+        {
+            request.Headers.Add("X-Api-Key", client.APIKey);
+        }
+        if (client.AuthToken != null)
+        {
+            request.Headers.Add("Authorization", string.Format("Bearer {0}", client.AuthToken));
+        }
         request.Headers.Add("anthropic-version", "2023-06-01");
     }
 }
