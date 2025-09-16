@@ -12,7 +12,7 @@ namespace Anthropic.Client.Tests.Services.Beta.Messages.Batches;
 
 public class BatchServiceTest : TestBase
 {
-    [Fact]
+    [Fact(Skip = "prism validates based on the non-beta endpoint")]
     public async Task Create_Works()
     {
         var betaMessageBatch = await this.client.Beta.Messages.Batches.Create(
