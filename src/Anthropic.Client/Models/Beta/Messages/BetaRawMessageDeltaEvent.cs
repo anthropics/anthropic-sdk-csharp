@@ -10,6 +10,30 @@ namespace Anthropic.Client.Models.Beta.Messages;
 [JsonConverter(typeof(ModelConverter<BetaRawMessageDeltaEvent>))]
 public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRawMessageDeltaEvent>
 {
+    /// <summary>
+    /// Information about context management operations applied during the request.
+    /// </summary>
+    public required BetaContextManagementResponse? ContextManagement
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("context_management", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaContextManagementResponse?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        set
+        {
+            this.Properties["context_management"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
     public required Delta Delta
     {
         get
@@ -87,6 +111,7 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
 
     public override void Validate()
     {
+        this.ContextManagement?.Validate();
         this.Delta.Validate();
         this.Usage.Validate();
     }

@@ -99,6 +99,30 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     }
 
     /// <summary>
+    /// Information about context management operations applied during the request.
+    /// </summary>
+    public required BetaContextManagementResponse? ContextManagement
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("context_management", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaContextManagementResponse?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        set
+        {
+            this.Properties["context_management"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
     /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
     /// for additional details and options.
     /// </summary>
@@ -272,6 +296,7 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
         {
             item.Validate();
         }
+        this.ContextManagement?.Validate();
         this.Model.Validate();
         this.StopReason?.Validate();
         _ = this.StopSequence;

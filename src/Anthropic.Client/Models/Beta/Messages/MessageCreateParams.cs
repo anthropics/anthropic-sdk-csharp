@@ -165,6 +165,30 @@ public sealed record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// Configuration for context management operations.
+    /// </summary>
+    public BetaContextManagementConfig? ContextManagement
+    {
+        get
+        {
+            if (!this.BodyProperties.TryGetValue("context_management", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaContextManagementConfig?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        set
+        {
+            this.BodyProperties["context_management"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
     public List<BetaRequestMCPServerURLDefinition>? MCPServers

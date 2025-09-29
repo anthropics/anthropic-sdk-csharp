@@ -13,6 +13,7 @@ public enum BetaStopReason
     ToolUse,
     PauseTurn,
     Refusal,
+    ModelContextWindowExceeded,
 }
 
 sealed class BetaStopReasonConverter : JsonConverter<BetaStopReason>
@@ -31,6 +32,7 @@ sealed class BetaStopReasonConverter : JsonConverter<BetaStopReason>
             "tool_use" => BetaStopReason.ToolUse,
             "pause_turn" => BetaStopReason.PauseTurn,
             "refusal" => BetaStopReason.Refusal,
+            "model_context_window_exceeded" => BetaStopReason.ModelContextWindowExceeded,
             _ => (BetaStopReason)(-1),
         };
     }
@@ -51,6 +53,7 @@ sealed class BetaStopReasonConverter : JsonConverter<BetaStopReason>
                 BetaStopReason.ToolUse => "tool_use",
                 BetaStopReason.PauseTurn => "pause_turn",
                 BetaStopReason.Refusal => "refusal",
+                BetaStopReason.ModelContextWindowExceeded => "model_context_window_exceeded",
                 _ => throw new ArgumentOutOfRangeException(nameof(value)),
             },
             options

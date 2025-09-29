@@ -162,6 +162,30 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     }
 
     /// <summary>
+    /// Configuration for context management operations.
+    /// </summary>
+    public BetaContextManagementConfig? ContextManagement
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("context_management", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaContextManagementConfig?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        set
+        {
+            this.Properties["context_management"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
     public List<BetaRequestMCPServerURLDefinition>? MCPServers
@@ -523,6 +547,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         this.Model.Validate();
         _ = this.Container;
+        this.ContextManagement?.Validate();
         foreach (var item in this.MCPServers ?? [])
         {
             item.Validate();

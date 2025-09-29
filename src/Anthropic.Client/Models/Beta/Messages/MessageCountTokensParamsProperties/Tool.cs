@@ -29,6 +29,9 @@ public abstract record class Tool
     public static implicit operator Tool(BetaToolComputerUse20241022 value) =>
         new ToolVariants::BetaToolComputerUse20241022(value);
 
+    public static implicit operator Tool(BetaMemoryTool20250818 value) =>
+        new ToolVariants::BetaMemoryTool20250818(value);
+
     public static implicit operator Tool(BetaToolComputerUse20250124 value) =>
         new ToolVariants::BetaToolComputerUse20250124(value);
 
@@ -89,6 +92,12 @@ public abstract record class Tool
     )
     {
         value = (this as ToolVariants::BetaToolComputerUse20241022)?.Value;
+        return value != null;
+    }
+
+    public bool TryPickBetaMemoryTool20250818([NotNullWhen(true)] out BetaMemoryTool20250818? value)
+    {
+        value = (this as ToolVariants::BetaMemoryTool20250818)?.Value;
         return value != null;
     }
 
@@ -155,6 +164,7 @@ public abstract record class Tool
         Action<ToolVariants::BetaCodeExecutionTool20250522> betaCodeExecutionTool20250522,
         Action<ToolVariants::BetaCodeExecutionTool20250825> betaCodeExecutionTool20250825,
         Action<ToolVariants::BetaToolComputerUse20241022> betaToolComputerUse20241022,
+        Action<ToolVariants::BetaMemoryTool20250818> betaMemoryTool20250818,
         Action<ToolVariants::BetaToolComputerUse20250124> betaToolComputerUse20250124,
         Action<ToolVariants::BetaToolTextEditor20241022> betaToolTextEditor20241022,
         Action<ToolVariants::BetaToolTextEditor20250124> betaToolTextEditor20250124,
@@ -183,6 +193,9 @@ public abstract record class Tool
                 break;
             case ToolVariants::BetaToolComputerUse20241022 inner:
                 betaToolComputerUse20241022(inner);
+                break;
+            case ToolVariants::BetaMemoryTool20250818 inner:
+                betaMemoryTool20250818(inner);
                 break;
             case ToolVariants::BetaToolComputerUse20250124 inner:
                 betaToolComputerUse20250124(inner);
@@ -217,6 +230,7 @@ public abstract record class Tool
         Func<ToolVariants::BetaCodeExecutionTool20250522, T> betaCodeExecutionTool20250522,
         Func<ToolVariants::BetaCodeExecutionTool20250825, T> betaCodeExecutionTool20250825,
         Func<ToolVariants::BetaToolComputerUse20241022, T> betaToolComputerUse20241022,
+        Func<ToolVariants::BetaMemoryTool20250818, T> betaMemoryTool20250818,
         Func<ToolVariants::BetaToolComputerUse20250124, T> betaToolComputerUse20250124,
         Func<ToolVariants::BetaToolTextEditor20241022, T> betaToolTextEditor20241022,
         Func<ToolVariants::BetaToolTextEditor20250124, T> betaToolTextEditor20250124,
@@ -238,6 +252,7 @@ public abstract record class Tool
                 inner
             ),
             ToolVariants::BetaToolComputerUse20241022 inner => betaToolComputerUse20241022(inner),
+            ToolVariants::BetaMemoryTool20250818 inner => betaMemoryTool20250818(inner),
             ToolVariants::BetaToolComputerUse20250124 inner => betaToolComputerUse20250124(inner),
             ToolVariants::BetaToolTextEditor20241022 inner => betaToolTextEditor20241022(inner),
             ToolVariants::BetaToolTextEditor20250124 inner => betaToolTextEditor20250124(inner),
@@ -348,6 +363,22 @@ sealed class ToolConverter : JsonConverter<Tool>
             if (deserialized != null)
             {
                 return new ToolVariants::BetaToolComputerUse20241022(deserialized);
+            }
+        }
+        catch (JsonException e)
+        {
+            exceptions.Add(e);
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new ToolVariants::BetaMemoryTool20250818(deserialized);
             }
         }
         catch (JsonException e)
@@ -483,6 +514,8 @@ sealed class ToolConverter : JsonConverter<Tool>
                 betaCodeExecutionTool20250825,
             ToolVariants::BetaToolComputerUse20241022(var betaToolComputerUse20241022) =>
                 betaToolComputerUse20241022,
+            ToolVariants::BetaMemoryTool20250818(var betaMemoryTool20250818) =>
+                betaMemoryTool20250818,
             ToolVariants::BetaToolComputerUse20250124(var betaToolComputerUse20250124) =>
                 betaToolComputerUse20250124,
             ToolVariants::BetaToolTextEditor20241022(var betaToolTextEditor20241022) =>

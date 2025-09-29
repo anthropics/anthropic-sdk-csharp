@@ -92,6 +92,21 @@ public sealed record class BetaToolComputerUse20241022(Messages::BetaToolCompute
     }
 }
 
+public sealed record class BetaMemoryTool20250818(Messages::BetaMemoryTool20250818 Value)
+    : Tool,
+        IVariant<BetaMemoryTool20250818, Messages::BetaMemoryTool20250818>
+{
+    public static BetaMemoryTool20250818 From(Messages::BetaMemoryTool20250818 value)
+    {
+        return new(value);
+    }
+
+    public override void Validate()
+    {
+        this.Value.Validate();
+    }
+}
+
 public sealed record class BetaToolComputerUse20250124(Messages::BetaToolComputerUse20250124 Value)
     : Tool,
         IVariant<BetaToolComputerUse20250124, Messages::BetaToolComputerUse20250124>

@@ -10,6 +10,30 @@ namespace Anthropic.Client.Models.Beta.Messages;
 public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMessageTokensCount>
 {
     /// <summary>
+    /// Information about context management applied to the message.
+    /// </summary>
+    public required BetaCountTokensContextManagementResponse? ContextManagement
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("context_management", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaCountTokensContextManagementResponse?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        set
+        {
+            this.Properties["context_management"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
     /// The total number of tokens across the provided list of messages, system prompt,
     /// and tools.
     /// </summary>
@@ -33,6 +57,7 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
 
     public override void Validate()
     {
+        this.ContextManagement?.Validate();
         _ = this.InputTokens;
     }
 
@@ -51,12 +76,5 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
     )
     {
         return new(properties);
-    }
-
-    [SetsRequiredMembers]
-    public BetaMessageTokensCount(long inputTokens)
-        : this()
-    {
-        this.InputTokens = inputTokens;
     }
 }
