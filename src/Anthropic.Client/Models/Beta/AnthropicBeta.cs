@@ -23,6 +23,7 @@ public enum AnthropicBeta
     ExtendedCacheTTL2025_04_11,
     Context1m2025_08_07,
     ContextManagement2025_06_27,
+    ModelContextWindowExceeded2025_08_26,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -51,6 +52,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "extended-cache-ttl-2025-04-11" => AnthropicBeta.ExtendedCacheTTL2025_04_11,
             "context-1m-2025-08-07" => AnthropicBeta.Context1m2025_08_07,
             "context-management-2025-06-27" => AnthropicBeta.ContextManagement2025_06_27,
+            "model-context-window-exceeded-2025-08-26" =>
+                AnthropicBeta.ModelContextWindowExceeded2025_08_26,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -81,6 +84,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.ExtendedCacheTTL2025_04_11 => "extended-cache-ttl-2025-04-11",
                 AnthropicBeta.Context1m2025_08_07 => "context-1m-2025-08-07",
                 AnthropicBeta.ContextManagement2025_06_27 => "context-management-2025-06-27",
+                AnthropicBeta.ModelContextWindowExceeded2025_08_26 =>
+                    "model-context-window-exceeded-2025-08-26",
                 _ => throw new ArgumentOutOfRangeException(nameof(value)),
             },
             options
