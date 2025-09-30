@@ -1,0 +1,36 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{2CB42F12-E813-91B3-7D11-3220E40BEF4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anthropic.Client", "Client\Anthropic.Client.csproj", "{DA0B2FFF-44D5-488C-87FA-AA38C21A657F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client.Tests", "Client.Tests", "{1CBBD901-9B87-B49F-C947-7D8B5E2A63F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anthropic.Client.Tests", "Client.Tests\Anthropic.Client.Tests.csproj", "{5EF809B6-93A9-43AD-B961-DBE3C81AAD1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA0B2FFF-44D5-488C-87FA-AA38C21A657F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA0B2FFF-44D5-488C-87FA-AA38C21A657F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA0B2FFF-44D5-488C-87FA-AA38C21A657F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA0B2FFF-44D5-488C-87FA-AA38C21A657F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EF809B6-93A9-43AD-B961-DBE3C81AAD1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EF809B6-93A9-43AD-B961-DBE3C81AAD1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EF809B6-93A9-43AD-B961-DBE3C81AAD1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EF809B6-93A9-43AD-B961-DBE3C81AAD1A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DA0B2FFF-44D5-488C-87FA-AA38C21A657F} = {2CB42F12-E813-91B3-7D11-3220E40BEF4A}
+		{5EF809B6-93A9-43AD-B961-DBE3C81AAD1A} = {1CBBD901-9B87-B49F-C947-7D8B5E2A63F0}
+	EndGlobalSection
+EndGlobal
