@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Beta.Messages.BetaCitationsDeltaProperties;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -15,10 +17,16 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
         get
         {
             if (!this.Properties.TryGetValue("citation", out JsonElement element))
-                throw new ArgumentOutOfRangeException("citation", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'citation' cannot be null",
+                    new ArgumentOutOfRangeException("citation", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<Citation>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("citation");
+                ?? throw new AnthropicInvalidDataException(
+                    "'citation' cannot be null",
+                    new ArgumentNullException("citation")
+                );
         }
         set
         {
@@ -34,7 +42,10 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

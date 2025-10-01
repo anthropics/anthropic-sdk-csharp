@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaBashCodeExecutionToolResultErrorProperties;
 
@@ -48,7 +49,9 @@ sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
                 ErrorCode.TooManyRequests => "too_many_requests",
                 ErrorCode.ExecutionTimeExceeded => "execution_time_exceeded",
                 ErrorCode.OutputFileTooLarge => "output_file_too_large",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

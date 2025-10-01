@@ -125,6 +125,33 @@ await foreach (var message in client.Messages.CreateStreaming(parameters))
 }
 ```
 
+## Error handling
+
+The SDK throws custom unchecked exception types:
+
+- `AnthropicApiException`: Base class for API errors. See this table for which exception subclass is thrown for each HTTP status code:
+
+| Status | Exception                                |
+| ------ | ---------------------------------------- |
+| 400    | `AnthropicBadRequestException`           |
+| 401    | `AnthropicUnauthorizedException`         |
+| 403    | `AnthropicForbiddenException`            |
+| 404    | `AnthropicNotFoundException`             |
+| 422    | `AnthropicUnprocessableEntityException`  |
+| 429    | `AnthropicRateLimitException`            |
+| 5xx    | `Anthropic5xxException`                  |
+| others | `AnthropicUnexpectedStatusCodeException` |
+
+Additionally, all 4xx errors inherit from `Anthropic4xxException`.
+
+- `AnthropicSseException`: thrown for errors encountered during [SSE streaming](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) after a successful initial HTTP response.
+
+- `AnthropicIOException`: I/O networking errors.
+
+- `AnthropicInvalidDataException`: Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
+
+- `AnthropicException`: Base class for all exceptions.
+
 ## Semantic versioning
 
 This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using SourceVariants = Anthropic.Client.Models.Messages.ImageBlockParamProperties.SourceVariants;
 
 namespace Anthropic.Client.Models.Messages.ImageBlockParamProperties;
@@ -44,7 +45,7 @@ public abstract record class Source
                 urlImage(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
     }
 
@@ -57,7 +58,9 @@ public abstract record class Source
         {
             SourceVariants::Base64ImageSource inner => base64Image(inner),
             SourceVariants::URLImageSource inner => urlImage(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Source"
+            ),
         };
     }
 
@@ -87,7 +90,7 @@ sealed class SourceConverter : JsonConverter<Source>
         {
             case "base64":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -99,14 +102,19 @@ sealed class SourceConverter : JsonConverter<Source>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant SourceVariants::Base64ImageSource",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "url":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -118,14 +126,21 @@ sealed class SourceConverter : JsonConverter<Source>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant SourceVariants::URLImageSource",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -136,7 +151,9 @@ sealed class SourceConverter : JsonConverter<Source>
         {
             SourceVariants::Base64ImageSource(var base64Image) => base64Image,
             SourceVariants::URLImageSource(var urlImage) => urlImage,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Source"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

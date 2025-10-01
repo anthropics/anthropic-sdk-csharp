@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using Anthropic.Client.Core;
 
 namespace Anthropic.Client.Models.Messages.Batches;
 
@@ -27,7 +28,7 @@ public sealed record class BatchResultsParams : ParamsBase
         }.Uri;
     }
 
-    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
+    internal override void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
     {
         ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -82,7 +84,10 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
         get
         {
             if (!this.Properties.TryGetValue("output_tokens", out JsonElement element))
-                throw new ArgumentOutOfRangeException("output_tokens", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'output_tokens' cannot be null",
+                    new ArgumentOutOfRangeException("output_tokens", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }

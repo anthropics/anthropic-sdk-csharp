@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using WebSearchToolResultBlockContentVariants = Anthropic.Client.Models.Messages.WebSearchToolResultBlockContentVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -48,7 +49,9 @@ public abstract record class WebSearchToolResultBlockContent
                 webSearchResultBlocks(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of WebSearchToolResultBlockContent"
+                );
         }
     }
 
@@ -65,7 +68,9 @@ public abstract record class WebSearchToolResultBlockContent
             WebSearchToolResultBlockContentVariants::WebSearchToolResultError inner => error(inner),
             WebSearchToolResultBlockContentVariants::WebSearchResultBlocks inner =>
                 webSearchResultBlocks(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of WebSearchToolResultBlockContent"
+            ),
         };
     }
 
@@ -81,7 +86,7 @@ sealed class WebSearchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -98,7 +103,12 @@ sealed class WebSearchToolResultBlockContentConverter
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant WebSearchToolResultBlockContentVariants::WebSearchToolResultError",
+                    e
+                )
+            );
         }
 
         try
@@ -116,7 +126,12 @@ sealed class WebSearchToolResultBlockContentConverter
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant WebSearchToolResultBlockContentVariants::WebSearchResultBlocks",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -134,7 +149,9 @@ sealed class WebSearchToolResultBlockContentConverter
             WebSearchToolResultBlockContentVariants::WebSearchResultBlocks(
                 var webSearchResultBlocks
             ) => webSearchResultBlocks,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of WebSearchToolResultBlockContent"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

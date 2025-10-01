@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta;
 
@@ -86,7 +87,9 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.ContextManagement2025_06_27 => "context-management-2025-06-27",
                 AnthropicBeta.ModelContextWindowExceeded2025_08_26 =>
                     "model-context-window-exceeded-2025-08-26",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

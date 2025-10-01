@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using ContentBlockParamVariants = Anthropic.Client.Models.Messages.ContentBlockParamVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -153,7 +154,9 @@ public abstract record class ContentBlockParam
                 webSearchToolResult(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of ContentBlockParam"
+                );
         }
     }
 
@@ -184,7 +187,9 @@ public abstract record class ContentBlockParam
             ContentBlockParamVariants::WebSearchToolResultBlockParam inner => webSearchToolResult(
                 inner
             ),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ContentBlockParam"
+            ),
         };
     }
 
@@ -214,7 +219,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
         {
             case "text":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -226,14 +231,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::TextBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "image":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -245,14 +255,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::ImageBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "document":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -267,14 +282,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::DocumentBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "search_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -289,14 +309,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::SearchResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "thinking":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -311,14 +336,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::ThinkingBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "redacted_thinking":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -335,14 +365,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::RedactedThinkingBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "tool_use":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -354,14 +389,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::ToolUseBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -376,14 +416,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::ToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "server_tool_use":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -398,14 +443,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::ServerToolUseBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "web_search_tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -422,14 +472,21 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ContentBlockParamVariants::WebSearchToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -454,7 +511,9 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
             ContentBlockParamVariants::ServerToolUseBlockParam(var serverToolUse) => serverToolUse,
             ContentBlockParamVariants::WebSearchToolResultBlockParam(var webSearchToolResult) =>
                 webSearchToolResult,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ContentBlockParam"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

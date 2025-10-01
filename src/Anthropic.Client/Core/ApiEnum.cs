@@ -1,15 +1,18 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
-namespace Anthropic.Client;
+namespace Anthropic.Client.Core;
 
 public record struct ApiEnum<TRaw, TEnum>(JsonElement Json)
     where TEnum : struct, Enum
 {
     public readonly TRaw Raw() =>
         JsonSerializer.Deserialize<TRaw>(this.Json, ModelBase.SerializerOptions)
-        ?? throw new NullReferenceException(nameof(this.Json));
+        ?? throw new AnthropicInvalidDataException(
+            string.Format("{0} cannot be null", nameof(this.Json))
+        );
 
     public readonly TEnum Value() =>
         JsonSerializer.Deserialize<TEnum>(this.Json, ModelBase.SerializerOptions);
@@ -18,7 +21,7 @@ public record struct ApiEnum<TRaw, TEnum>(JsonElement Json)
     {
         if (!Enum.IsDefined(Value()))
         {
-            throw new Exception();
+            throw new AnthropicInvalidDataException("Invalid enum value");
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaContentBlockParamVariants = Anthropic.Client.Models.Beta.Messages.BetaContentBlockParamVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -267,7 +268,9 @@ public abstract record class BetaContentBlockParam
                 containerUpload(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaContentBlockParam"
+                );
         }
     }
 
@@ -339,7 +342,9 @@ public abstract record class BetaContentBlockParam
             BetaContentBlockParamVariants::BetaContainerUploadBlockParam inner => containerUpload(
                 inner
             ),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaContentBlockParam"
+            ),
         };
     }
 
@@ -369,7 +374,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
         {
             case "text":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -384,14 +389,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaTextBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "image":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -406,14 +416,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaImageBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "document":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -430,14 +445,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaRequestDocumentBlock",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "search_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -454,14 +474,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaSearchResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "thinking":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -478,14 +503,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaThinkingBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "redacted_thinking":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -502,14 +532,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "tool_use":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -526,14 +561,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaToolUseBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -550,14 +590,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "server_tool_use":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -574,14 +619,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaServerToolUseBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "web_search_tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -599,14 +649,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "web_fetch_tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -623,14 +678,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "code_execution_tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -648,14 +708,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "bash_code_execution_tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -673,14 +738,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "text_editor_code_execution_tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -698,14 +768,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "mcp_tool_use":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -722,14 +797,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaMCPToolUseBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "mcp_tool_result":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -747,14 +827,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "container_upload":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -771,14 +856,21 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockParamVariants::BetaContainerUploadBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -825,7 +917,9 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
             ) => requestMCPToolResult,
             BetaContentBlockParamVariants::BetaContainerUploadBlockParam(var containerUpload) =>
                 containerUpload,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaContentBlockParam"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

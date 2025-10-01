@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaCodeExecutionToolResultBlockContentVariants = Anthropic.Client.Models.Beta.Messages.BetaCodeExecutionToolResultBlockContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -54,7 +55,9 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
                 resultBlock(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaCodeExecutionToolResultBlockContent"
+                );
         }
     }
 
@@ -75,7 +78,9 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
                 error(inner),
             BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock inner =>
                 resultBlock(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaCodeExecutionToolResultBlockContent"
+            ),
         };
     }
 
@@ -91,7 +96,7 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -108,7 +113,12 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError",
+                    e
+                )
+            );
         }
 
         try
@@ -126,7 +136,12 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -146,7 +161,9 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
             BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock(
                 var resultBlock
             ) => resultBlock,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaCodeExecutionToolResultBlockContent"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

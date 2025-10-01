@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -19,7 +21,10 @@ public sealed record class BetaMemoryTool20250818InsertCommand
         get
         {
             if (!this.Properties.TryGetValue("command", out JsonElement element))
-                throw new ArgumentOutOfRangeException("command", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'command' cannot be null",
+                    new ArgumentOutOfRangeException("command", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
@@ -40,7 +45,10 @@ public sealed record class BetaMemoryTool20250818InsertCommand
         get
         {
             if (!this.Properties.TryGetValue("insert_line", out JsonElement element))
-                throw new ArgumentOutOfRangeException("insert_line", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'insert_line' cannot be null",
+                    new ArgumentOutOfRangeException("insert_line", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
@@ -61,10 +69,16 @@ public sealed record class BetaMemoryTool20250818InsertCommand
         get
         {
             if (!this.Properties.TryGetValue("insert_text", out JsonElement element))
-                throw new ArgumentOutOfRangeException("insert_text", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'insert_text' cannot be null",
+                    new ArgumentOutOfRangeException("insert_text", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("insert_text");
+                ?? throw new AnthropicInvalidDataException(
+                    "'insert_text' cannot be null",
+                    new ArgumentNullException("insert_text")
+                );
         }
         set
         {
@@ -83,10 +97,16 @@ public sealed record class BetaMemoryTool20250818InsertCommand
         get
         {
             if (!this.Properties.TryGetValue("path", out JsonElement element))
-                throw new ArgumentOutOfRangeException("path", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'path' cannot be null",
+                    new ArgumentOutOfRangeException("path", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("path");
+                ?? throw new AnthropicInvalidDataException(
+                    "'path' cannot be null",
+                    new ArgumentNullException("path")
+                );
         }
         set
         {

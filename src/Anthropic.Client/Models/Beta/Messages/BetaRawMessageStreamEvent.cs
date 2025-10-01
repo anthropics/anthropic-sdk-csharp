@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaRawMessageStreamEventVariants = Anthropic.Client.Models.Beta.Messages.BetaRawMessageStreamEventVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -102,7 +103,9 @@ public abstract record class BetaRawMessageStreamEvent
                 contentBlockStop(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaRawMessageStreamEvent"
+                );
         }
     }
 
@@ -126,7 +129,9 @@ public abstract record class BetaRawMessageStreamEvent
                 contentBlockDelta(inner),
             BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent inner =>
                 contentBlockStop(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaRawMessageStreamEvent"
+            ),
         };
     }
 
@@ -156,7 +161,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
         {
             case "message_start":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -173,14 +178,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "message_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -197,14 +207,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "message_stop":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -221,14 +236,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_start":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -245,14 +265,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -269,14 +294,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_stop":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -293,14 +323,21 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -324,7 +361,9 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
             ) => contentBlockDelta,
             BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(var contentBlockStop) =>
                 contentBlockStop,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaRawMessageStreamEvent"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

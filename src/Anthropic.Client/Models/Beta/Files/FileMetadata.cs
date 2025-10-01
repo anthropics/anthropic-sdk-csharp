@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Files;
 
@@ -19,10 +21,16 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         get
         {
             if (!this.Properties.TryGetValue("id", out JsonElement element))
-                throw new ArgumentOutOfRangeException("id", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'id' cannot be null",
+                    new ArgumentOutOfRangeException("id", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("id");
+                ?? throw new AnthropicInvalidDataException(
+                    "'id' cannot be null",
+                    new ArgumentNullException("id")
+                );
         }
         set
         {
@@ -41,7 +49,10 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         get
         {
             if (!this.Properties.TryGetValue("created_at", out JsonElement element))
-                throw new ArgumentOutOfRangeException("created_at", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'created_at' cannot be null",
+                    new ArgumentOutOfRangeException("created_at", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
         }
@@ -62,10 +73,16 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         get
         {
             if (!this.Properties.TryGetValue("filename", out JsonElement element))
-                throw new ArgumentOutOfRangeException("filename", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'filename' cannot be null",
+                    new ArgumentOutOfRangeException("filename", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("filename");
+                ?? throw new AnthropicInvalidDataException(
+                    "'filename' cannot be null",
+                    new ArgumentNullException("filename")
+                );
         }
         set
         {
@@ -84,10 +101,16 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         get
         {
             if (!this.Properties.TryGetValue("mime_type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("mime_type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'mime_type' cannot be null",
+                    new ArgumentOutOfRangeException("mime_type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("mime_type");
+                ?? throw new AnthropicInvalidDataException(
+                    "'mime_type' cannot be null",
+                    new ArgumentNullException("mime_type")
+                );
         }
         set
         {
@@ -106,7 +129,10 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         get
         {
             if (!this.Properties.TryGetValue("size_bytes", out JsonElement element))
-                throw new ArgumentOutOfRangeException("size_bytes", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'size_bytes' cannot be null",
+                    new ArgumentOutOfRangeException("size_bytes", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
@@ -129,7 +155,10 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

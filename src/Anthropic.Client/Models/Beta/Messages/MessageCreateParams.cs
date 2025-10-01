@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Beta.Messages.MessageCreateParamsProperties;
 using Messages = Anthropic.Client.Models.Messages;
 
@@ -34,7 +36,10 @@ public sealed record class MessageCreateParams : ParamsBase
         get
         {
             if (!this.BodyProperties.TryGetValue("max_tokens", out JsonElement element))
-                throw new ArgumentOutOfRangeException("max_tokens", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'max_tokens' cannot be null",
+                    new ArgumentOutOfRangeException("max_tokens", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
@@ -102,12 +107,19 @@ public sealed record class MessageCreateParams : ParamsBase
         get
         {
             if (!this.BodyProperties.TryGetValue("messages", out JsonElement element))
-                throw new ArgumentOutOfRangeException("messages", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'messages' cannot be null",
+                    new ArgumentOutOfRangeException("messages", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<List<BetaMessageParam>>(
                     element,
                     ModelBase.SerializerOptions
-                ) ?? throw new ArgumentNullException("messages");
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'messages' cannot be null",
+                    new ArgumentNullException("messages")
+                );
         }
         set
         {
@@ -127,7 +139,10 @@ public sealed record class MessageCreateParams : ParamsBase
         get
         {
             if (!this.BodyProperties.TryGetValue("model", out JsonElement element))
-                throw new ArgumentOutOfRangeException("model", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'model' cannot be null",
+                    new ArgumentOutOfRangeException("model", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Messages::Model>>(
                 element,
@@ -550,7 +565,7 @@ public sealed record class MessageCreateParams : ParamsBase
         }.Uri;
     }
 
-    public StringContent BodyContent()
+    internal override StringContent? BodyContent()
     {
         return new(
             JsonSerializer.Serialize(this.BodyProperties),
@@ -559,7 +574,7 @@ public sealed record class MessageCreateParams : ParamsBase
         );
     }
 
-    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
+    internal override void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
     {
         ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)

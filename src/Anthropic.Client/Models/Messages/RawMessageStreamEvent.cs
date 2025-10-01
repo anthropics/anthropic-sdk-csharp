@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using RawMessageStreamEventVariants = Anthropic.Client.Models.Messages.RawMessageStreamEventVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -96,7 +97,9 @@ public abstract record class RawMessageStreamEvent
                 contentBlockStop(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of RawMessageStreamEvent"
+                );
         }
     }
 
@@ -123,7 +126,9 @@ public abstract record class RawMessageStreamEvent
             RawMessageStreamEventVariants::RawContentBlockStopEvent inner => contentBlockStop(
                 inner
             ),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of RawMessageStreamEvent"
+            ),
         };
     }
 
@@ -153,7 +158,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
         {
             case "message_start":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -170,14 +175,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawMessageStreamEventVariants::RawMessageStartEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "message_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -194,14 +204,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawMessageStreamEventVariants::RawMessageDeltaEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "message_stop":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -216,14 +231,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawMessageStreamEventVariants::RawMessageStopEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_start":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -240,14 +260,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawMessageStreamEventVariants::RawContentBlockStartEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -264,14 +289,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawMessageStreamEventVariants::RawContentBlockDeltaEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_stop":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -288,14 +318,21 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawMessageStreamEventVariants::RawContentBlockStopEvent",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -317,7 +354,9 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                 contentBlockDelta,
             RawMessageStreamEventVariants::RawContentBlockStopEvent(var contentBlockStop) =>
                 contentBlockStop,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of RawMessageStreamEvent"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -14,10 +16,16 @@ public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSO
         get
         {
             if (!this.Properties.TryGetValue("partial_json", out JsonElement element))
-                throw new ArgumentOutOfRangeException("partial_json", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'partial_json' cannot be null",
+                    new ArgumentOutOfRangeException("partial_json", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("partial_json");
+                ?? throw new AnthropicInvalidDataException(
+                    "'partial_json' cannot be null",
+                    new ArgumentNullException("partial_json")
+                );
         }
         set
         {
@@ -33,7 +41,10 @@ public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSO
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

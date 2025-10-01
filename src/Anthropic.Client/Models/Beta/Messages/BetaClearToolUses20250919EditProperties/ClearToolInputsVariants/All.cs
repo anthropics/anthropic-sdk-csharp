@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Anthropic.Client.Core;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties.ClearToolInputsVariants;
 

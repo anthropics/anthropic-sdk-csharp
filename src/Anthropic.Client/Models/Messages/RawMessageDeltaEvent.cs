@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Messages.RawMessageDeltaEventProperties;
 
 namespace Anthropic.Client.Models.Messages;
@@ -15,10 +17,16 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
         get
         {
             if (!this.Properties.TryGetValue("delta", out JsonElement element))
-                throw new ArgumentOutOfRangeException("delta", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'delta' cannot be null",
+                    new ArgumentOutOfRangeException("delta", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<Delta>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("delta");
+                ?? throw new AnthropicInvalidDataException(
+                    "'delta' cannot be null",
+                    new ArgumentNullException("delta")
+                );
         }
         set
         {
@@ -34,7 +42,10 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
@@ -69,12 +80,19 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
         get
         {
             if (!this.Properties.TryGetValue("usage", out JsonElement element))
-                throw new ArgumentOutOfRangeException("usage", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'usage' cannot be null",
+                    new ArgumentOutOfRangeException("usage", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<MessageDeltaUsage>(
                     element,
                     ModelBase.SerializerOptions
-                ) ?? throw new ArgumentNullException("usage");
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'usage' cannot be null",
+                    new ArgumentNullException("usage")
+                );
         }
         set
         {

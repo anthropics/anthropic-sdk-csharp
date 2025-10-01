@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaTextCitationParamVariants = Anthropic.Client.Models.Beta.Messages.BetaTextCitationParamVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -102,7 +103,9 @@ public abstract record class BetaTextCitationParam
                 citationSearchResultLocation(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaTextCitationParam"
+                );
         }
     }
 
@@ -135,7 +138,9 @@ public abstract record class BetaTextCitationParam
                 citationWebSearchResultLocation(inner),
             BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam inner =>
                 citationSearchResultLocation(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaTextCitationParam"
+            ),
         };
     }
 
@@ -165,7 +170,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
         {
             case "char_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -182,14 +187,19 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationCharLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "page_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -206,14 +216,19 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationPageLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -231,14 +246,19 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "web_search_result_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -256,14 +276,19 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "search_result_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -281,14 +306,21 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -316,7 +348,9 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
             BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam(
                 var citationSearchResultLocation
             ) => citationSearchResultLocation,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaTextCitationParam"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

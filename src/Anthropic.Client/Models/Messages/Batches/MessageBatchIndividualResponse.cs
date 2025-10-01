@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages.Batches;
 
@@ -26,10 +28,16 @@ public sealed record class MessageBatchIndividualResponse
         get
         {
             if (!this.Properties.TryGetValue("custom_id", out JsonElement element))
-                throw new ArgumentOutOfRangeException("custom_id", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'custom_id' cannot be null",
+                    new ArgumentOutOfRangeException("custom_id", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("custom_id");
+                ?? throw new AnthropicInvalidDataException(
+                    "'custom_id' cannot be null",
+                    new ArgumentNullException("custom_id")
+                );
         }
         set
         {
@@ -52,12 +60,19 @@ public sealed record class MessageBatchIndividualResponse
         get
         {
             if (!this.Properties.TryGetValue("result", out JsonElement element))
-                throw new ArgumentOutOfRangeException("result", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'result' cannot be null",
+                    new ArgumentOutOfRangeException("result", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<MessageBatchResult>(
                     element,
                     ModelBase.SerializerOptions
-                ) ?? throw new ArgumentNullException("result");
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'result' cannot be null",
+                    new ArgumentNullException("result")
+                );
         }
         set
         {

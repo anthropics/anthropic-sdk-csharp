@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages.Base64ImageSourceProperties;
 
@@ -45,7 +46,9 @@ sealed class MediaTypeConverter : JsonConverter<MediaType>
                 MediaType.ImagePNG => "image/png",
                 MediaType.ImageGIF => "image/gif",
                 MediaType.ImageWebP => "image/webp",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

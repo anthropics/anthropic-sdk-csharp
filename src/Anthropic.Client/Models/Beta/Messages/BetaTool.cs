@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using BetaToolProperties = Anthropic.Client.Models.Beta.Messages.BetaToolProperties;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -21,12 +23,19 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
         get
         {
             if (!this.Properties.TryGetValue("input_schema", out JsonElement element))
-                throw new ArgumentOutOfRangeException("input_schema", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'input_schema' cannot be null",
+                    new ArgumentOutOfRangeException("input_schema", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<BetaToolProperties::InputSchema>(
                     element,
                     ModelBase.SerializerOptions
-                ) ?? throw new ArgumentNullException("input_schema");
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'input_schema' cannot be null",
+                    new ArgumentNullException("input_schema")
+                );
         }
         set
         {
@@ -47,10 +56,16 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
         get
         {
             if (!this.Properties.TryGetValue("name", out JsonElement element))
-                throw new ArgumentOutOfRangeException("name", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'name' cannot be null",
+                    new ArgumentOutOfRangeException("name", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("name");
+                ?? throw new AnthropicInvalidDataException(
+                    "'name' cannot be null",
+                    new ArgumentNullException("name")
+                );
         }
         set
         {

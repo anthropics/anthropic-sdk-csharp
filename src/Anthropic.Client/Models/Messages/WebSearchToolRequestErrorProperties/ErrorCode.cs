@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages.WebSearchToolRequestErrorProperties;
 
@@ -48,7 +49,9 @@ sealed class ErrorCodeConverter : JsonConverter<ErrorCode>
                 ErrorCode.MaxUsesExceeded => "max_uses_exceeded",
                 ErrorCode.TooManyRequests => "too_many_requests",
                 ErrorCode.QueryTooLong => "query_too_long",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

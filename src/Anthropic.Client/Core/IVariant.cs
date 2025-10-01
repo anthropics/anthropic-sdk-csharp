@@ -1,4 +1,4 @@
-namespace Anthropic.Client;
+namespace Anthropic.Client.Core;
 
 interface IVariant<TVariant, TValue>
     where TVariant : IVariant<TVariant, TValue>

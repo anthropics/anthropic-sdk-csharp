@@ -1,3 +1,4 @@
+using Anthropic.Client.Core;
 using Messages = Anthropic.Client.Models.Beta.Messages;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties.TriggerVariants;

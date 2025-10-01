@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Messages.MessageParamProperties;
 
 namespace Anthropic.Client.Models.Messages;
@@ -15,10 +17,16 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
         get
         {
             if (!this.Properties.TryGetValue("content", out JsonElement element))
-                throw new ArgumentOutOfRangeException("content", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'content' cannot be null",
+                    new ArgumentOutOfRangeException("content", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<Content>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("content");
+                ?? throw new AnthropicInvalidDataException(
+                    "'content' cannot be null",
+                    new ArgumentNullException("content")
+                );
         }
         set
         {
@@ -34,7 +42,10 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
         get
         {
             if (!this.Properties.TryGetValue("role", out JsonElement element))
-                throw new ArgumentOutOfRangeException("role", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'role' cannot be null",
+                    new ArgumentOutOfRangeException("role", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Role>>(
                 element,

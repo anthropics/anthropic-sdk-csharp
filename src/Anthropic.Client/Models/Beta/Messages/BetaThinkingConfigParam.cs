@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaThinkingConfigParamVariants = Anthropic.Client.Models.Beta.Messages.BetaThinkingConfigParamVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -54,7 +55,9 @@ public abstract record class BetaThinkingConfigParam
                 disabled(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaThinkingConfigParam"
+                );
         }
     }
 
@@ -67,7 +70,9 @@ public abstract record class BetaThinkingConfigParam
         {
             BetaThinkingConfigParamVariants::BetaThinkingConfigEnabled inner => enabled(inner),
             BetaThinkingConfigParamVariants::BetaThinkingConfigDisabled inner => disabled(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaThinkingConfigParam"
+            ),
         };
     }
 
@@ -97,7 +102,7 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
         {
             case "enabled":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -114,14 +119,19 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaThinkingConfigParamVariants::BetaThinkingConfigEnabled",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "disabled":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -138,14 +148,21 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaThinkingConfigParamVariants::BetaThinkingConfigDisabled",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -160,7 +177,9 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
         {
             BetaThinkingConfigParamVariants::BetaThinkingConfigEnabled(var enabled) => enabled,
             BetaThinkingConfigParamVariants::BetaThinkingConfigDisabled(var disabled) => disabled,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaThinkingConfigParam"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

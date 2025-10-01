@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaToolChoiceVariants = Anthropic.Client.Models.Beta.Messages.BetaToolChoiceVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -74,7 +75,9 @@ public abstract record class BetaToolChoice
                 none(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaToolChoice"
+                );
         }
     }
 
@@ -91,7 +94,9 @@ public abstract record class BetaToolChoice
             BetaToolChoiceVariants::BetaToolChoiceAny inner => any(inner),
             BetaToolChoiceVariants::BetaToolChoiceTool inner => tool(inner),
             BetaToolChoiceVariants::BetaToolChoiceNone inner => none(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaToolChoice"
+            ),
         };
     }
 
@@ -121,7 +126,7 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
         {
             case "auto":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -136,14 +141,19 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaToolChoiceVariants::BetaToolChoiceAuto",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "any":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -155,14 +165,19 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaToolChoiceVariants::BetaToolChoiceAny",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "tool":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -177,14 +192,19 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaToolChoiceVariants::BetaToolChoiceTool",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "none":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -199,14 +219,21 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaToolChoiceVariants::BetaToolChoiceNone",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -223,7 +250,9 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
             BetaToolChoiceVariants::BetaToolChoiceAny(var any) => any,
             BetaToolChoiceVariants::BetaToolChoiceTool(var tool) => tool,
             BetaToolChoiceVariants::BetaToolChoiceNone(var none) => none,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaToolChoice"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

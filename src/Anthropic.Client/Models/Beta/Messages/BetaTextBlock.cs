@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -42,10 +44,16 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
         get
         {
             if (!this.Properties.TryGetValue("text", out JsonElement element))
-                throw new ArgumentOutOfRangeException("text", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'text' cannot be null",
+                    new ArgumentOutOfRangeException("text", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("text");
+                ?? throw new AnthropicInvalidDataException(
+                    "'text' cannot be null",
+                    new ArgumentNullException("text")
+                );
         }
         set
         {
@@ -61,7 +69,10 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

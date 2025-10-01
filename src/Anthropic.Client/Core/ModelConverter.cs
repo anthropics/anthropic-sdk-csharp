@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Anthropic.Client;
+namespace Anthropic.Client.Core;
 
 sealed class ModelConverter<TModel> : JsonConverter<TModel>
     where TModel : ModelBase, IFromRaw<TModel>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -20,10 +22,16 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
         get
         {
             if (!this.Properties.TryGetValue("id", out JsonElement element))
-                throw new ArgumentOutOfRangeException("id", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'id' cannot be null",
+                    new ArgumentOutOfRangeException("id", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("id");
+                ?? throw new AnthropicInvalidDataException(
+                    "'id' cannot be null",
+                    new ArgumentNullException("id")
+                );
         }
         set
         {
@@ -42,7 +50,10 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
         get
         {
             if (!this.Properties.TryGetValue("expires_at", out JsonElement element))
-                throw new ArgumentOutOfRangeException("expires_at", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'expires_at' cannot be null",
+                    new ArgumentOutOfRangeException("expires_at", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
         }

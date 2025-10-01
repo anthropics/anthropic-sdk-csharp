@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties.ClearToolInputsVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties;
@@ -42,7 +43,9 @@ public abstract record class ClearToolInputs
                 strings(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of ClearToolInputs"
+                );
         }
     }
 
@@ -52,7 +55,9 @@ public abstract record class ClearToolInputs
         {
             Bool inner => @bool(inner),
             Strings inner => strings(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ClearToolInputs"
+            ),
         };
     }
 
@@ -67,7 +72,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -75,7 +80,9 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException("Data does not match union variant Bool", e)
+            );
         }
 
         try
@@ -88,7 +95,9 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException("Data does not match union variant Strings", e)
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -105,7 +114,9 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
             null => null,
             Bool(var @bool) => @bool,
             Strings(var strings) => strings,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ClearToolInputs"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

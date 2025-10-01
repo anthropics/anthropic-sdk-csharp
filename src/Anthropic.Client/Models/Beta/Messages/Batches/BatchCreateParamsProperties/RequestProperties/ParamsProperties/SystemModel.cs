@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using SystemVariants = Anthropic.Client.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties.SystemVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties;
@@ -49,7 +50,9 @@ public abstract record class SystemModel
                 betaTextBlockParams(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of SystemModel"
+                );
         }
     }
 
@@ -62,7 +65,9 @@ public abstract record class SystemModel
         {
             SystemVariants::String inner => @string(inner),
             SystemVariants::BetaTextBlockParams inner => betaTextBlockParams(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of SystemModel"
+            ),
         };
     }
 
@@ -77,7 +82,7 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -89,7 +94,12 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant SystemVariants::String",
+                    e
+                )
+            );
         }
 
         try
@@ -105,7 +115,12 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant SystemVariants::BetaTextBlockParams",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -121,7 +136,9 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
         {
             SystemVariants::String(var @string) => @string,
             SystemVariants::BetaTextBlockParams(var betaTextBlockParams) => betaTextBlockParams,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of SystemModel"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

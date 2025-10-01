@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaServerToolUseBlockProperties;
 
@@ -44,7 +45,9 @@ sealed class NameConverter : JsonConverter<Name>
                 Name.CodeExecution => "code_execution",
                 Name.BashCodeExecution => "bash_code_execution",
                 Name.TextEditorCodeExecution => "text_editor_code_execution",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

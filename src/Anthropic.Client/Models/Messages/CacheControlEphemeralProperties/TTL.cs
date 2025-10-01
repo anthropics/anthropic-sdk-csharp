@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages.CacheControlEphemeralProperties;
 
@@ -42,7 +43,9 @@ sealed class TTLConverter : JsonConverter<TTL>
             {
                 TTL.TTL5m => "5m",
                 TTL.TTL1h => "1h",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

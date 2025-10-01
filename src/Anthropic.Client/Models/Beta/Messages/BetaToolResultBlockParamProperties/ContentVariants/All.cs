@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Messages.BetaToolResultBlockParamProperties.ContentProperties;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaToolResultBlockParamProperties.ContentVariants;

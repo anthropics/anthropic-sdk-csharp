@@ -1,3 +1,4 @@
+using Anthropic.Client.Core;
 using Batches = Anthropic.Client.Models.Messages.Batches;
 
 namespace Anthropic.Client.Models.Messages.Batches.MessageBatchResultVariants;

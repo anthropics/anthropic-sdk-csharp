@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -17,9 +19,12 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
         get
         {
             if (!this.Properties.TryGetValue("web_fetch_requests", out JsonElement element))
-                throw new ArgumentOutOfRangeException(
-                    "web_fetch_requests",
-                    "Missing required argument"
+                throw new AnthropicInvalidDataException(
+                    "'web_fetch_requests' cannot be null",
+                    new ArgumentOutOfRangeException(
+                        "web_fetch_requests",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -41,9 +46,12 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
         get
         {
             if (!this.Properties.TryGetValue("web_search_requests", out JsonElement element))
-                throw new ArgumentOutOfRangeException(
-                    "web_search_requests",
-                    "Missing required argument"
+                throw new AnthropicInvalidDataException(
+                    "'web_search_requests' cannot be null",
+                    new ArgumentOutOfRangeException(
+                        "web_search_requests",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);

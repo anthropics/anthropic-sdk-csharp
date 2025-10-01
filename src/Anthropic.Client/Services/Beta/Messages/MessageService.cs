@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Messages;
 using Anthropic.Client.Services.Beta.Messages.Batches;
 
@@ -26,26 +27,13 @@ public sealed class MessageService : IMessageService
 
     public async Task<BetaMessage> Create(MessageCreateParams parameters)
     {
-        using HttpRequestMessage request = new(HttpMethod.Post, parameters.Url(this._client))
+        HttpRequest<MessageCreateParams> request = new()
         {
-            Content = parameters.BodyContent(),
+            Method = HttpMethod.Post,
+            Params = parameters,
         };
-        parameters.AddHeadersToRequest(request, this._client);
-        using HttpResponseMessage response = await this
-            ._client.HttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead)
-            .ConfigureAwait(false);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpException(
-                response.StatusCode,
-                await response.Content.ReadAsStringAsync().ConfigureAwait(false)
-            );
-        }
-
-        return JsonSerializer.Deserialize<BetaMessage>(
-                await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
-            ) ?? throw new NullReferenceException();
+        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        return await response.Deserialize<BetaMessage>().ConfigureAwait(false);
     }
 
     public async IAsyncEnumerable<BetaRawMessageStreamEvent> CreateStreaming(
@@ -53,52 +41,26 @@ public sealed class MessageService : IMessageService
     )
     {
         parameters.BodyProperties["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
-        using HttpRequestMessage request = new(HttpMethod.Post, parameters.Url(this._client))
+        HttpRequest<MessageCreateParams> request = new()
         {
-            Content = parameters.BodyContent(),
+            Method = HttpMethod.Post,
+            Params = parameters,
         };
-        parameters.AddHeadersToRequest(request, this._client);
-        using HttpResponseMessage response = await this
-            ._client.HttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead)
-            .ConfigureAwait(false);
-        if (!response.IsSuccessStatusCode)
+        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        await foreach (var message in SseMessage.GetEnumerable(response.Message))
         {
-            throw new HttpException(
-                response.StatusCode,
-                await response.Content.ReadAsStringAsync().ConfigureAwait(false)
-            );
-        }
-
-        await foreach (var message in SseMessage.GetEnumerable(response))
-        {
-            yield return JsonSerializer.Deserialize<BetaRawMessageStreamEvent>(
-                message.Data,
-                ModelBase.SerializerOptions
-            ) ?? throw new NullReferenceException();
+            yield return message.MessageDeserializeMethod<BetaRawMessageStreamEvent>();
         }
     }
 
     public async Task<BetaMessageTokensCount> CountTokens(MessageCountTokensParams parameters)
     {
-        using HttpRequestMessage request = new(HttpMethod.Post, parameters.Url(this._client))
+        HttpRequest<MessageCountTokensParams> request = new()
         {
-            Content = parameters.BodyContent(),
+            Method = HttpMethod.Post,
+            Params = parameters,
         };
-        parameters.AddHeadersToRequest(request, this._client);
-        using HttpResponseMessage response = await this
-            ._client.HttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead)
-            .ConfigureAwait(false);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpException(
-                response.StatusCode,
-                await response.Content.ReadAsStringAsync().ConfigureAwait(false)
-            );
-        }
-
-        return JsonSerializer.Deserialize<BetaMessageTokensCount>(
-                await response.Content.ReadAsStreamAsync().ConfigureAwait(false),
-                ModelBase.SerializerOptions
-            ) ?? throw new NullReferenceException();
+        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        return await response.Deserialize<BetaMessageTokensCount>().ConfigureAwait(false);
     }
 }

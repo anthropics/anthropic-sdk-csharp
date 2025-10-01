@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -16,9 +18,9 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
         get
         {
             if (!this.Properties.TryGetValue("is_file_update", out JsonElement element))
-                throw new ArgumentOutOfRangeException(
-                    "is_file_update",
-                    "Missing required argument"
+                throw new AnthropicInvalidDataException(
+                    "'is_file_update' cannot be null",
+                    new ArgumentOutOfRangeException("is_file_update", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
@@ -37,7 +39,10 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaToolUnionVariants = Anthropic.Client.Models.Beta.Messages.BetaToolUnionVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -210,7 +211,9 @@ public abstract record class BetaToolUnion
                 webFetchTool20250910(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaToolUnion"
+                );
         }
     }
 
@@ -251,7 +254,9 @@ public abstract record class BetaToolUnion
             BetaToolUnionVariants::BetaToolTextEditor20250728 inner => textEditor20250728(inner),
             BetaToolUnionVariants::BetaWebSearchTool20250305 inner => webSearchTool20250305(inner),
             BetaToolUnionVariants::BetaWebFetchTool20250910 inner => webFetchTool20250910(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaToolUnion"
+            ),
         };
     }
 
@@ -266,7 +271,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -278,7 +283,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaTool",
+                    e
+                )
+            );
         }
 
         try
@@ -294,7 +304,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaToolBash20241022",
+                    e
+                )
+            );
         }
 
         try
@@ -310,7 +325,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaToolBash20250124",
+                    e
+                )
+            );
         }
 
         try
@@ -326,7 +346,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaCodeExecutionTool20250522",
+                    e
+                )
+            );
         }
 
         try
@@ -342,7 +367,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaCodeExecutionTool20250825",
+                    e
+                )
+            );
         }
 
         try
@@ -358,7 +388,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaToolComputerUse20241022",
+                    e
+                )
+            );
         }
 
         try
@@ -374,7 +409,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaMemoryTool20250818",
+                    e
+                )
+            );
         }
 
         try
@@ -390,7 +430,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaToolComputerUse20250124",
+                    e
+                )
+            );
         }
 
         try
@@ -406,7 +451,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaToolTextEditor20241022",
+                    e
+                )
+            );
         }
 
         try
@@ -422,7 +472,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaToolTextEditor20250124",
+                    e
+                )
+            );
         }
 
         try
@@ -438,7 +493,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaToolTextEditor20250429",
+                    e
+                )
+            );
         }
 
         try
@@ -454,7 +514,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaToolTextEditor20250728",
+                    e
+                )
+            );
         }
 
         try
@@ -470,7 +535,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaWebSearchTool20250305",
+                    e
+                )
+            );
         }
 
         try
@@ -486,7 +556,12 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaToolUnionVariants::BetaWebFetchTool20250910",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -525,7 +600,9 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 webSearchTool20250305,
             BetaToolUnionVariants::BetaWebFetchTool20250910(var webFetchTool20250910) =>
                 webFetchTool20250910,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaToolUnion"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

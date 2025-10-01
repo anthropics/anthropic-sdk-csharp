@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -16,10 +18,16 @@ public sealed record class CitationCharLocationParam
         get
         {
             if (!this.Properties.TryGetValue("cited_text", out JsonElement element))
-                throw new ArgumentOutOfRangeException("cited_text", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'cited_text' cannot be null",
+                    new ArgumentOutOfRangeException("cited_text", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("cited_text");
+                ?? throw new AnthropicInvalidDataException(
+                    "'cited_text' cannot be null",
+                    new ArgumentNullException("cited_text")
+                );
         }
         set
         {
@@ -35,9 +43,9 @@ public sealed record class CitationCharLocationParam
         get
         {
             if (!this.Properties.TryGetValue("document_index", out JsonElement element))
-                throw new ArgumentOutOfRangeException(
-                    "document_index",
-                    "Missing required argument"
+                throw new AnthropicInvalidDataException(
+                    "'document_index' cannot be null",
+                    new ArgumentOutOfRangeException("document_index", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -74,9 +82,9 @@ public sealed record class CitationCharLocationParam
         get
         {
             if (!this.Properties.TryGetValue("end_char_index", out JsonElement element))
-                throw new ArgumentOutOfRangeException(
-                    "end_char_index",
-                    "Missing required argument"
+                throw new AnthropicInvalidDataException(
+                    "'end_char_index' cannot be null",
+                    new ArgumentOutOfRangeException("end_char_index", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -95,9 +103,9 @@ public sealed record class CitationCharLocationParam
         get
         {
             if (!this.Properties.TryGetValue("start_char_index", out JsonElement element))
-                throw new ArgumentOutOfRangeException(
-                    "start_char_index",
-                    "Missing required argument"
+                throw new AnthropicInvalidDataException(
+                    "'start_char_index' cannot be null",
+                    new ArgumentOutOfRangeException("start_char_index", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -116,7 +124,10 @@ public sealed record class CitationCharLocationParam
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

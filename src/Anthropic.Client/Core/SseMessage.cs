@@ -1,11 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading;
+using Anthropic.Client.Exceptions;
 
-namespace Anthropic.Client;
+namespace Anthropic.Client.Core;
 
 sealed record class SseMessage(string? Event, string Data, string? ID, int? Retry)
 {
@@ -20,9 +21,25 @@ sealed record class SseMessage(string? Event, string Data, string? ID, int? Retr
             .Content.ReadAsStreamAsync(cancellationToken)
             .ConfigureAwait(false);
         using var reader = new StreamReader(stream);
-        string? line;
-        while ((line = await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false)) != null)
+        while (true)
         {
+            string line;
+            try
+            {
+                var maybeLine = await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false);
+                if (maybeLine == null)
+                {
+                    break;
+                }
+                else
+                {
+                    line = maybeLine;
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                throw new AnthropicIOException("I/O Exception", e);
+            }
             // Check for cancellation before decoding the line.
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -46,8 +63,14 @@ sealed record class SseMessage(string? Event, string Data, string? ID, int? Retr
                 case "ping":
                     continue;
                 case "error":
-                    throw new Exception();
+                    throw new AnthropicSseException();
             }
         }
+    }
+
+    internal T MessageDeserializeMethod<T>()
+    {
+        return JsonSerializer.Deserialize<T>(this.Data)
+            ?? throw new AnthropicInvalidDataException("Message cannot be null");
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Messages.Batches.BatchCreateParamsProperties.RequestProperties;
 
 namespace Anthropic.Client.Models.Messages.Batches.BatchCreateParamsProperties;
@@ -21,10 +23,16 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
         get
         {
             if (!this.Properties.TryGetValue("custom_id", out JsonElement element))
-                throw new ArgumentOutOfRangeException("custom_id", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'custom_id' cannot be null",
+                    new ArgumentOutOfRangeException("custom_id", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("custom_id");
+                ?? throw new AnthropicInvalidDataException(
+                    "'custom_id' cannot be null",
+                    new ArgumentNullException("custom_id")
+                );
         }
         set
         {
@@ -46,10 +54,16 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
         get
         {
             if (!this.Properties.TryGetValue("params", out JsonElement element))
-                throw new ArgumentOutOfRangeException("params", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'params' cannot be null",
+                    new ArgumentOutOfRangeException("params", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<Params>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("params");
+                ?? throw new AnthropicInvalidDataException(
+                    "'params' cannot be null",
+                    new ArgumentNullException("params")
+                );
         }
         set
         {

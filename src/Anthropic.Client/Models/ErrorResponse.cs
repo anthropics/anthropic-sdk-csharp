@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models;
 
@@ -14,10 +16,16 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
         get
         {
             if (!this.Properties.TryGetValue("error", out JsonElement element))
-                throw new ArgumentOutOfRangeException("error", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'error' cannot be null",
+                    new ArgumentOutOfRangeException("error", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<ErrorObject>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("error");
+                ?? throw new AnthropicInvalidDataException(
+                    "'error' cannot be null",
+                    new ArgumentNullException("error")
+                );
         }
         set
         {
@@ -51,7 +59,10 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

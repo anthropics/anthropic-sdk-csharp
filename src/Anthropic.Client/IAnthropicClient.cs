@@ -1,5 +1,7 @@
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Anthropic.Client.Core;
 using Anthropic.Client.Services.Beta;
 using Anthropic.Client.Services.Messages;
 using Anthropic.Client.Services.Models;
@@ -21,4 +23,7 @@ public interface IAnthropicClient
     IModelService Models { get; }
 
     IBetaService Beta { get; }
+
+    Task<HttpResponse> Execute<T>(HttpRequest<T> request)
+        where T : ParamsBase;
 }

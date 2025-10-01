@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using MessageCountTokensToolVariants = Anthropic.Client.Models.Messages.MessageCountTokensToolVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -96,7 +97,9 @@ public abstract record class MessageCountTokensTool
                 webSearchTool20250305(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of MessageCountTokensTool"
+                );
         }
     }
 
@@ -125,7 +128,9 @@ public abstract record class MessageCountTokensTool
             MessageCountTokensToolVariants::WebSearchTool20250305 inner => webSearchTool20250305(
                 inner
             ),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of MessageCountTokensTool"
+            ),
         };
     }
 
@@ -140,7 +145,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -152,7 +157,12 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant MessageCountTokensToolVariants::Tool",
+                    e
+                )
+            );
         }
 
         try
@@ -165,7 +175,12 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant MessageCountTokensToolVariants::ToolBash20250124",
+                    e
+                )
+            );
         }
 
         try
@@ -181,7 +196,12 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant MessageCountTokensToolVariants::ToolTextEditor20250124",
+                    e
+                )
+            );
         }
 
         try
@@ -197,7 +217,12 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant MessageCountTokensToolVariants::ToolTextEditor20250429",
+                    e
+                )
+            );
         }
 
         try
@@ -213,7 +238,12 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant MessageCountTokensToolVariants::ToolTextEditor20250728",
+                    e
+                )
+            );
         }
 
         try
@@ -229,7 +259,12 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant MessageCountTokensToolVariants::WebSearchTool20250305",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -254,7 +289,9 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
                 toolTextEditor20250728,
             MessageCountTokensToolVariants::WebSearchTool20250305(var webSearchTool20250305) =>
                 webSearchTool20250305,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of MessageCountTokensTool"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

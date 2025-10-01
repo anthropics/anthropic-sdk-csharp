@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -14,12 +16,19 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
         get
         {
             if (!this.Properties.TryGetValue("content", out JsonElement element))
-                throw new ArgumentOutOfRangeException("content", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'content' cannot be null",
+                    new ArgumentOutOfRangeException("content", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<List<TextBlockParam>>(
                     element,
                     ModelBase.SerializerOptions
-                ) ?? throw new ArgumentNullException("content");
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'content' cannot be null",
+                    new ArgumentNullException("content")
+                );
         }
         set
         {
@@ -35,10 +44,16 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
         get
         {
             if (!this.Properties.TryGetValue("source", out JsonElement element))
-                throw new ArgumentOutOfRangeException("source", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'source' cannot be null",
+                    new ArgumentOutOfRangeException("source", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("source");
+                ?? throw new AnthropicInvalidDataException(
+                    "'source' cannot be null",
+                    new ArgumentNullException("source")
+                );
         }
         set
         {
@@ -54,10 +69,16 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
         get
         {
             if (!this.Properties.TryGetValue("title", out JsonElement element))
-                throw new ArgumentOutOfRangeException("title", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'title' cannot be null",
+                    new ArgumentOutOfRangeException("title", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("title");
+                ?? throw new AnthropicInvalidDataException(
+                    "'title' cannot be null",
+                    new ArgumentNullException("title")
+                );
         }
         set
         {
@@ -73,7 +94,10 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

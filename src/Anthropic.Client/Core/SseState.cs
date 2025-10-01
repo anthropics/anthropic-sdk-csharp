@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Anthropic.Client;
+namespace Anthropic.Client.Core;
 
 sealed class SseState
 {

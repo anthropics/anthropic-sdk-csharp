@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Beta.Messages.Batches.BatchCreateParamsProperties;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches;
@@ -29,10 +31,16 @@ public sealed record class BatchCreateParams : ParamsBase
         get
         {
             if (!this.BodyProperties.TryGetValue("requests", out JsonElement element))
-                throw new ArgumentOutOfRangeException("requests", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'requests' cannot be null",
+                    new ArgumentOutOfRangeException("requests", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<List<Request>>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("requests");
+                ?? throw new AnthropicInvalidDataException(
+                    "'requests' cannot be null",
+                    new ArgumentNullException("requests")
+                );
         }
         set
         {
@@ -77,7 +85,7 @@ public sealed record class BatchCreateParams : ParamsBase
         }.Uri;
     }
 
-    public StringContent BodyContent()
+    internal override StringContent? BodyContent()
     {
         return new(
             JsonSerializer.Serialize(this.BodyProperties),
@@ -86,7 +94,7 @@ public sealed record class BatchCreateParams : ParamsBase
         );
     }
 
-    public void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
+    internal override void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
     {
         ParamsBase.AddDefaultHeaders(request, client);
         foreach (var item in this.HeaderProperties)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using ContentVariants = Anthropic.Client.Models.Beta.Messages.BetaWebFetchToolResultBlockParamProperties.ContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaWebFetchToolResultBlockParamProperties;
@@ -46,7 +47,9 @@ public abstract record class Content
                 betaWebFetchBlockParam(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of Content"
+                );
         }
     }
 
@@ -63,7 +66,9 @@ public abstract record class Content
             ContentVariants::BetaWebFetchToolResultErrorBlockParam inner =>
                 betaWebFetchToolResultErrorBlockParam(inner),
             ContentVariants::BetaWebFetchBlockParam inner => betaWebFetchBlockParam(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Content"
+            ),
         };
     }
 
@@ -78,7 +83,7 @@ sealed class ContentConverter : JsonConverter<Content>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -93,7 +98,12 @@ sealed class ContentConverter : JsonConverter<Content>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ContentVariants::BetaWebFetchToolResultErrorBlockParam",
+                    e
+                )
+            );
         }
 
         try
@@ -109,7 +119,12 @@ sealed class ContentConverter : JsonConverter<Content>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ContentVariants::BetaWebFetchBlockParam",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -124,7 +139,9 @@ sealed class ContentConverter : JsonConverter<Content>
             ) => betaWebFetchToolResultErrorBlockParam,
             ContentVariants::BetaWebFetchBlockParam(var betaWebFetchBlockParam) =>
                 betaWebFetchBlockParam,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Content"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

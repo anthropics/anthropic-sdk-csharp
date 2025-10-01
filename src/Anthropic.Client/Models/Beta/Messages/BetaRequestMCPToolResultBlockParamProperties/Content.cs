@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using ContentVariants = Anthropic.Client.Models.Beta.Messages.BetaRequestMCPToolResultBlockParamProperties.ContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaRequestMCPToolResultBlockParamProperties;
@@ -45,7 +46,9 @@ public abstract record class Content
                 betaMCPToolResultBlockParamContent(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of Content"
+                );
         }
     }
 
@@ -62,7 +65,9 @@ public abstract record class Content
             ContentVariants::String inner => @string(inner),
             ContentVariants::BetaMCPToolResultBlockParamContent inner =>
                 betaMCPToolResultBlockParamContent(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Content"
+            ),
         };
     }
 
@@ -77,7 +82,7 @@ sealed class ContentConverter : JsonConverter<Content>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -89,7 +94,12 @@ sealed class ContentConverter : JsonConverter<Content>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ContentVariants::String",
+                    e
+                )
+            );
         }
 
         try
@@ -105,7 +115,12 @@ sealed class ContentConverter : JsonConverter<Content>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ContentVariants::BetaMCPToolResultBlockParamContent",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -119,7 +134,9 @@ sealed class ContentConverter : JsonConverter<Content>
             ContentVariants::BetaMCPToolResultBlockParamContent(
                 var betaMCPToolResultBlockParamContent
             ) => betaMCPToolResultBlockParamContent,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Content"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

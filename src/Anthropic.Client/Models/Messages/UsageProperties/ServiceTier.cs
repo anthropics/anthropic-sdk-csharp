@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages.UsageProperties;
 
@@ -45,7 +46,9 @@ sealed class ServiceTierConverter : JsonConverter<ServiceTier>
                 ServiceTier.Standard => "standard",
                 ServiceTier.Priority => "priority",
                 ServiceTier.Batch => "batch",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using ContentVariants = Anthropic.Client.Models.Beta.Messages.BetaBashCodeExecutionToolResultBlockProperties.ContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaBashCodeExecutionToolResultBlockProperties;
@@ -48,7 +49,9 @@ public abstract record class Content
                 betaBashCodeExecutionResultBlock(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of Content"
+                );
         }
     }
 
@@ -66,7 +69,9 @@ public abstract record class Content
                 betaBashCodeExecutionToolResultError(inner),
             ContentVariants::BetaBashCodeExecutionResultBlock inner =>
                 betaBashCodeExecutionResultBlock(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Content"
+            ),
         };
     }
 
@@ -81,7 +86,7 @@ sealed class ContentConverter : JsonConverter<Content>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -96,7 +101,12 @@ sealed class ContentConverter : JsonConverter<Content>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ContentVariants::BetaBashCodeExecutionToolResultError",
+                    e
+                )
+            );
         }
 
         try
@@ -112,7 +122,12 @@ sealed class ContentConverter : JsonConverter<Content>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ContentVariants::BetaBashCodeExecutionResultBlock",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -128,7 +143,9 @@ sealed class ContentConverter : JsonConverter<Content>
             ContentVariants::BetaBashCodeExecutionResultBlock(
                 var betaBashCodeExecutionResultBlock
             ) => betaBashCodeExecutionResultBlock,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Content"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

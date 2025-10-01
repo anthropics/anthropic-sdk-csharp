@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using SourceVariants = Anthropic.Client.Models.Beta.Messages.BetaRequestDocumentBlockProperties.SourceVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaRequestDocumentBlockProperties;
@@ -83,7 +84,7 @@ public abstract record class Source
                 betaFileDocument(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
     }
 
@@ -102,7 +103,9 @@ public abstract record class Source
             SourceVariants::BetaContentBlockSource inner => betaContentBlock(inner),
             SourceVariants::BetaURLPDFSource inner => betaURLPDF(inner),
             SourceVariants::BetaFileDocumentSource inner => betaFileDocument(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Source"
+            ),
         };
     }
 
@@ -132,7 +135,7 @@ sealed class SourceConverter : JsonConverter<Source>
         {
             case "base64":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -147,14 +150,19 @@ sealed class SourceConverter : JsonConverter<Source>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant SourceVariants::BetaBase64PDFSource",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "text":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -169,14 +177,19 @@ sealed class SourceConverter : JsonConverter<Source>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant SourceVariants::BetaPlainTextSource",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -191,14 +204,19 @@ sealed class SourceConverter : JsonConverter<Source>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant SourceVariants::BetaContentBlockSource",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "url":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -210,14 +228,19 @@ sealed class SourceConverter : JsonConverter<Source>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant SourceVariants::BetaURLPDFSource",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "file":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -232,14 +255,21 @@ sealed class SourceConverter : JsonConverter<Source>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant SourceVariants::BetaFileDocumentSource",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -253,7 +283,9 @@ sealed class SourceConverter : JsonConverter<Source>
             SourceVariants::BetaContentBlockSource(var betaContentBlock) => betaContentBlock,
             SourceVariants::BetaURLPDFSource(var betaURLPDF) => betaURLPDF,
             SourceVariants::BetaFileDocumentSource(var betaFileDocument) => betaFileDocument,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Source"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

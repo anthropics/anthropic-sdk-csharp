@@ -29,7 +29,7 @@ using Messages = Anthropic.Client.Models.Messages;
 using ParamsProperties = Anthropic.Client.Models.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties;
 using WebSearchToolResultErrorProperties = Anthropic.Client.Models.Messages.WebSearchToolResultErrorProperties;
 
-namespace Anthropic.Client;
+namespace Anthropic.Client.Core;
 
 public abstract record class ModelBase
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using TextCitationParamVariants = Anthropic.Client.Models.Messages.TextCitationParamVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -93,7 +94,9 @@ public abstract record class TextCitationParam
                 citationSearchResultLocation(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of TextCitationParam"
+                );
         }
     }
 
@@ -128,7 +131,9 @@ public abstract record class TextCitationParam
                 citationWebSearchResultLocation(inner),
             TextCitationParamVariants::CitationSearchResultLocationParam inner =>
                 citationSearchResultLocation(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of TextCitationParam"
+            ),
         };
     }
 
@@ -158,7 +163,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
         {
             case "char_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -175,14 +180,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationParamVariants::CitationCharLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "page_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -199,14 +209,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationParamVariants::CitationPageLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -224,14 +239,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationParamVariants::CitationContentBlockLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "web_search_result_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -249,14 +269,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationParamVariants::CitationWebSearchResultLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "search_result_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -274,14 +299,21 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationParamVariants::CitationSearchResultLocationParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -307,7 +339,9 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
             TextCitationParamVariants::CitationSearchResultLocationParam(
                 var citationSearchResultLocation
             ) => citationSearchResultLocation,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of TextCitationParam"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaErrorVariants = Anthropic.Client.Models.Beta.BetaErrorVariants;
 
 namespace Anthropic.Client.Models.Beta;
@@ -135,7 +136,9 @@ public abstract record class BetaError
                 overloaded(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaError"
+                );
         }
     }
 
@@ -162,7 +165,9 @@ public abstract record class BetaError
             BetaErrorVariants::BetaGatewayTimeoutError inner => gatewayTimeout(inner),
             BetaErrorVariants::BetaAPIError inner => api(inner),
             BetaErrorVariants::BetaOverloadedError inner => overloaded(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaError"
+            ),
         };
     }
 
@@ -192,7 +197,7 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
         {
             case "invalid_request_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -207,14 +212,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaInvalidRequestError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "authentication_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -229,14 +239,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaAuthenticationError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "billing_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -248,14 +263,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaBillingError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "permission_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -270,14 +290,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaPermissionError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "not_found_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -289,14 +314,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaNotFoundError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "rate_limit_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -311,14 +341,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaRateLimitError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "timeout_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -333,14 +368,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaGatewayTimeoutError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "api_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -352,14 +392,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaAPIError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "overloaded_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -374,14 +419,21 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaErrorVariants::BetaOverloadedError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -403,7 +455,9 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
             BetaErrorVariants::BetaGatewayTimeoutError(var gatewayTimeout) => gatewayTimeout,
             BetaErrorVariants::BetaAPIError(var api) => api,
             BetaErrorVariants::BetaOverloadedError(var overloaded) => overloaded,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaError"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

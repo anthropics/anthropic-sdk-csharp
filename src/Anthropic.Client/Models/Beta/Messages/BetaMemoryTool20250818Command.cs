@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaMemoryTool20250818CommandVariants = Anthropic.Client.Models.Beta.Messages.BetaMemoryTool20250818CommandVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -126,7 +127,9 @@ public abstract record class BetaMemoryTool20250818Command
                 tool20250818Rename(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaMemoryTool20250818Command"
+                );
         }
     }
 
@@ -171,7 +174,9 @@ public abstract record class BetaMemoryTool20250818Command
                 tool20250818Delete(inner),
             BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand inner =>
                 tool20250818Rename(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaMemoryTool20250818Command"
+            ),
         };
     }
 
@@ -201,7 +206,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
         {
             case "view":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -219,14 +224,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "create":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -244,14 +254,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "str_replace":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -269,14 +284,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "insert":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -294,14 +314,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "delete":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -319,14 +344,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "rename":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -344,14 +374,21 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -382,7 +419,9 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
             BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand(
                 var tool20250818Rename
             ) => tool20250818Rename,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaMemoryTool20250818Command"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

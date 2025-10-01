@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionViewResultBlockProperties;
 
@@ -38,7 +39,9 @@ sealed class FileTypeConverter : JsonConverter<FileType>
                 FileType.Text => "text",
                 FileType.Image => "image",
                 FileType.PDF => "pdf",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

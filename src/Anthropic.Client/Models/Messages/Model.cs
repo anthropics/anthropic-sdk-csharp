@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -161,7 +162,9 @@ sealed class ModelConverter1 : JsonConverter<Model>
                 Model.Claude3OpusLatest => "claude-3-opus-latest",
                 Model.Claude_3_Opus_20240229 => "claude-3-opus-20240229",
                 Model.Claude_3_Haiku_20240307 => "claude-3-haiku-20240307",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

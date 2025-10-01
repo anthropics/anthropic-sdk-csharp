@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Anthropic.Client.Core;
 using Messages = Anthropic.Client.Models.Beta.Messages;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaWebSearchToolResultBlockParamContentVariants;

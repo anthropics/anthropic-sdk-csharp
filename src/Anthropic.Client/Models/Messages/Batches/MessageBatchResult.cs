@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using MessageBatchResultVariants = Anthropic.Client.Models.Messages.Batches.MessageBatchResultVariants;
 
 namespace Anthropic.Client.Models.Messages.Batches;
@@ -77,7 +78,9 @@ public abstract record class MessageBatchResult
                 expired(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of MessageBatchResult"
+                );
         }
     }
 
@@ -94,7 +97,9 @@ public abstract record class MessageBatchResult
             MessageBatchResultVariants::MessageBatchErroredResult inner => errored(inner),
             MessageBatchResultVariants::MessageBatchCanceledResult inner => canceled(inner),
             MessageBatchResultVariants::MessageBatchExpiredResult inner => expired(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of MessageBatchResult"
+            ),
         };
     }
 
@@ -124,7 +129,7 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
         {
             case "succeeded":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -141,14 +146,19 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant MessageBatchResultVariants::MessageBatchSucceededResult",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "errored":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -165,14 +175,19 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant MessageBatchResultVariants::MessageBatchErroredResult",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "canceled":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -189,14 +204,19 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant MessageBatchResultVariants::MessageBatchCanceledResult",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "expired":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -213,14 +233,21 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant MessageBatchResultVariants::MessageBatchExpiredResult",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -237,7 +264,9 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
             MessageBatchResultVariants::MessageBatchErroredResult(var errored) => errored,
             MessageBatchResultVariants::MessageBatchCanceledResult(var canceled) => canceled,
             MessageBatchResultVariants::MessageBatchExpiredResult(var expired) => expired,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of MessageBatchResult"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

@@ -1,3 +1,4 @@
+using Anthropic.Client.Core;
 using Beta = Anthropic.Client.Models.Beta;
 
 namespace Anthropic.Client.Models.Beta.BetaErrorVariants;

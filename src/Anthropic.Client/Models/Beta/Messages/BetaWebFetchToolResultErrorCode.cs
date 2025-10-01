@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -59,7 +60,9 @@ sealed class BetaWebFetchToolResultErrorCodeConverter
                 BetaWebFetchToolResultErrorCode.TooManyRequests => "too_many_requests",
                 BetaWebFetchToolResultErrorCode.MaxUsesExceeded => "max_uses_exceeded",
                 BetaWebFetchToolResultErrorCode.Unavailable => "unavailable",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

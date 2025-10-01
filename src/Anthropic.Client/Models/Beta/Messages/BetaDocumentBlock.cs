@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Beta.Messages.BetaDocumentBlockProperties;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -39,10 +41,16 @@ public sealed record class BetaDocumentBlock : ModelBase, IFromRaw<BetaDocumentB
         get
         {
             if (!this.Properties.TryGetValue("source", out JsonElement element))
-                throw new ArgumentOutOfRangeException("source", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'source' cannot be null",
+                    new ArgumentOutOfRangeException("source", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("source");
+                ?? throw new AnthropicInvalidDataException(
+                    "'source' cannot be null",
+                    new ArgumentNullException("source")
+                );
         }
         set
         {
@@ -79,7 +87,10 @@ public sealed record class BetaDocumentBlock : ModelBase, IFromRaw<BetaDocumentB
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

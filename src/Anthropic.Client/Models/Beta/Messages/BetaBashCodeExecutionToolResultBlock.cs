@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Beta.Messages.BetaBashCodeExecutionToolResultBlockProperties;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -17,10 +19,16 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
         get
         {
             if (!this.Properties.TryGetValue("content", out JsonElement element))
-                throw new ArgumentOutOfRangeException("content", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'content' cannot be null",
+                    new ArgumentOutOfRangeException("content", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<Content>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("content");
+                ?? throw new AnthropicInvalidDataException(
+                    "'content' cannot be null",
+                    new ArgumentNullException("content")
+                );
         }
         set
         {
@@ -36,10 +44,16 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
         get
         {
             if (!this.Properties.TryGetValue("tool_use_id", out JsonElement element))
-                throw new ArgumentOutOfRangeException("tool_use_id", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'tool_use_id' cannot be null",
+                    new ArgumentOutOfRangeException("tool_use_id", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new ArgumentNullException("tool_use_id");
+                ?? throw new AnthropicInvalidDataException(
+                    "'tool_use_id' cannot be null",
+                    new ArgumentNullException("tool_use_id")
+                );
         }
         set
         {
@@ -55,7 +69,10 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
         get
         {
             if (!this.Properties.TryGetValue("type", out JsonElement element))
-                throw new ArgumentOutOfRangeException("type", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }

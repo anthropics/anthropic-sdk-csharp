@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -54,7 +55,9 @@ sealed class StopReasonConverter : JsonConverter<StopReason>
                 StopReason.PauseTurn => "pause_turn",
                 StopReason.Refusal => "refusal",
                 StopReason.ModelContextWindowExceeded => "model_context_window_exceeded",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

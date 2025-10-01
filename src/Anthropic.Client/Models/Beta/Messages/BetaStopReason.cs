@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -54,7 +55,9 @@ sealed class BetaStopReasonConverter : JsonConverter<BetaStopReason>
                 BetaStopReason.PauseTurn => "pause_turn",
                 BetaStopReason.Refusal => "refusal",
                 BetaStopReason.ModelContextWindowExceeded => "model_context_window_exceeded",
-                _ => throw new ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

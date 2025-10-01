@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using TriggerVariants = Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties.TriggerVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties;
@@ -47,7 +48,9 @@ public abstract record class Trigger
                 betaToolUses(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of Trigger"
+                );
         }
     }
 
@@ -60,7 +63,9 @@ public abstract record class Trigger
         {
             TriggerVariants::BetaInputTokensTrigger inner => betaInputTokens(inner),
             TriggerVariants::BetaToolUsesTrigger inner => betaToolUses(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Trigger"
+            ),
         };
     }
 
@@ -90,7 +95,7 @@ sealed class TriggerConverter : JsonConverter<Trigger>
         {
             case "input_tokens":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -105,14 +110,19 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TriggerVariants::BetaInputTokensTrigger",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "tool_uses":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -127,14 +137,21 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TriggerVariants::BetaToolUsesTrigger",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -145,7 +162,9 @@ sealed class TriggerConverter : JsonConverter<Trigger>
         {
             TriggerVariants::BetaInputTokensTrigger(var betaInputTokens) => betaInputTokens,
             TriggerVariants::BetaToolUsesTrigger(var betaToolUses) => betaToolUses,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Trigger"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

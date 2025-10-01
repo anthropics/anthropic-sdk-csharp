@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using TextCitationVariants = Anthropic.Client.Models.Messages.TextCitationVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -89,7 +90,9 @@ public abstract record class TextCitation
                 citationsSearchResultLocation(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of TextCitation"
+                );
         }
     }
 
@@ -114,7 +117,9 @@ public abstract record class TextCitation
                 citationsWebSearchResultLocation(inner),
             TextCitationVariants::CitationsSearchResultLocation inner =>
                 citationsSearchResultLocation(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of TextCitation"
+            ),
         };
     }
 
@@ -144,7 +149,7 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
         {
             case "char_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -159,14 +164,19 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationVariants::CitationCharLocation",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "page_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -181,14 +191,19 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationVariants::CitationPageLocation",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "content_block_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -203,14 +218,19 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationVariants::CitationContentBlockLocation",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "web_search_result_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -227,14 +247,19 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationVariants::CitationsWebSearchResultLocation",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "search_result_location":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -251,14 +276,21 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant TextCitationVariants::CitationsSearchResultLocation",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -283,7 +315,9 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
             TextCitationVariants::CitationsSearchResultLocation(
                 var citationsSearchResultLocation
             ) => citationsSearchResultLocation,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of TextCitation"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

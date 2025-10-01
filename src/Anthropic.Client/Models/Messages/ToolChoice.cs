@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using ToolChoiceVariants = Anthropic.Client.Models.Messages.ToolChoiceVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -74,7 +75,9 @@ public abstract record class ToolChoice
                 none(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of ToolChoice"
+                );
         }
     }
 
@@ -91,7 +94,9 @@ public abstract record class ToolChoice
             ToolChoiceVariants::ToolChoiceAny inner => any(inner),
             ToolChoiceVariants::ToolChoiceTool inner => tool(inner),
             ToolChoiceVariants::ToolChoiceNone inner => none(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ToolChoice"
+            ),
         };
     }
 
@@ -121,7 +126,7 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
         {
             case "auto":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -133,14 +138,19 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ToolChoiceVariants::ToolChoiceAuto",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "any":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -152,14 +162,19 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ToolChoiceVariants::ToolChoiceAny",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "tool":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -171,14 +186,19 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ToolChoiceVariants::ToolChoiceTool",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "none":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -190,14 +210,21 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ToolChoiceVariants::ToolChoiceNone",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -214,7 +241,9 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
             ToolChoiceVariants::ToolChoiceAny(var any) => any,
             ToolChoiceVariants::ToolChoiceTool(var tool) => tool,
             ToolChoiceVariants::ToolChoiceNone(var none) => none,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ToolChoice"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

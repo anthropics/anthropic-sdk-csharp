@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -22,12 +24,19 @@ public sealed record class BetaContextManagementResponse
         get
         {
             if (!this.Properties.TryGetValue("applied_edits", out JsonElement element))
-                throw new ArgumentOutOfRangeException("applied_edits", "Missing required argument");
+                throw new AnthropicInvalidDataException(
+                    "'applied_edits' cannot be null",
+                    new ArgumentOutOfRangeException("applied_edits", "Missing required argument")
+                );
 
             return JsonSerializer.Deserialize<List<BetaClearToolUses20250919EditResponse>>(
                     element,
                     ModelBase.SerializerOptions
-                ) ?? throw new ArgumentNullException("applied_edits");
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'applied_edits' cannot be null",
+                    new ArgumentNullException("applied_edits")
+                );
         }
         set
         {

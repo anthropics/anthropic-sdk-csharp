@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using ToolUnionVariants = Anthropic.Client.Models.Messages.ToolUnionVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -95,7 +96,9 @@ public abstract record class ToolUnion
                 webSearchTool20250305(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of ToolUnion"
+                );
         }
     }
 
@@ -116,7 +119,9 @@ public abstract record class ToolUnion
             ToolUnionVariants::ToolTextEditor20250429 inner => textEditor20250429(inner),
             ToolUnionVariants::ToolTextEditor20250728 inner => textEditor20250728(inner),
             ToolUnionVariants::WebSearchTool20250305 inner => webSearchTool20250305(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ToolUnion"
+            ),
         };
     }
 
@@ -131,7 +136,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -143,7 +148,12 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ToolUnionVariants::Tool",
+                    e
+                )
+            );
         }
 
         try
@@ -156,7 +166,12 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ToolUnionVariants::ToolBash20250124",
+                    e
+                )
+            );
         }
 
         try
@@ -172,7 +187,12 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ToolUnionVariants::ToolTextEditor20250124",
+                    e
+                )
+            );
         }
 
         try
@@ -188,7 +208,12 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ToolUnionVariants::ToolTextEditor20250429",
+                    e
+                )
+            );
         }
 
         try
@@ -204,7 +229,12 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ToolUnionVariants::ToolTextEditor20250728",
+                    e
+                )
+            );
         }
 
         try
@@ -220,7 +250,12 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant ToolUnionVariants::WebSearchTool20250305",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -241,7 +276,9 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             ToolUnionVariants::ToolTextEditor20250728(var textEditor20250728) => textEditor20250728,
             ToolUnionVariants::WebSearchTool20250305(var webSearchTool20250305) =>
                 webSearchTool20250305,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ToolUnion"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

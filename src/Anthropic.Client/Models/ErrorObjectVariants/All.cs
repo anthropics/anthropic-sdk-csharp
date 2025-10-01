@@ -1,3 +1,4 @@
+using Anthropic.Client.Core;
 using Models = Anthropic.Client.Models;
 
 namespace Anthropic.Client.Models.ErrorObjectVariants;

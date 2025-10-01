@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaWebSearchToolResultBlockContentVariants = Anthropic.Client.Models.Beta.Messages.BetaWebSearchToolResultBlockContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -52,7 +53,9 @@ public abstract record class BetaWebSearchToolResultBlockContent
                 betaWebSearchResultBlocks(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaWebSearchToolResultBlockContent"
+                );
         }
     }
 
@@ -70,7 +73,9 @@ public abstract record class BetaWebSearchToolResultBlockContent
                 error(inner),
             BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks inner =>
                 betaWebSearchResultBlocks(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaWebSearchToolResultBlockContent"
+            ),
         };
     }
 
@@ -86,7 +91,7 @@ sealed class BetaWebSearchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        List<JsonException> exceptions = [];
+        List<AnthropicInvalidDataException> exceptions = [];
 
         try
         {
@@ -103,7 +108,12 @@ sealed class BetaWebSearchToolResultBlockContentConverter
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaWebSearchToolResultBlockContentVariants::BetaWebSearchToolResultError",
+                    e
+                )
+            );
         }
 
         try
@@ -121,7 +131,12 @@ sealed class BetaWebSearchToolResultBlockContentConverter
         }
         catch (JsonException e)
         {
-            exceptions.Add(e);
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks",
+                    e
+                )
+            );
         }
 
         throw new AggregateException(exceptions);
@@ -140,7 +155,9 @@ sealed class BetaWebSearchToolResultBlockContentConverter
             BetaWebSearchToolResultBlockContentVariants::BetaWebSearchResultBlocks(
                 var betaWebSearchResultBlocks
             ) => betaWebSearchResultBlocks,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaWebSearchToolResultBlockContent"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

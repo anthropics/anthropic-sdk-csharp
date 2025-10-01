@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Anthropic.Client.Core;
 using Anthropic.Client.Models.Messages.ToolResultBlockParamProperties.ContentProperties;
 
 namespace Anthropic.Client.Models.Messages.ToolResultBlockParamProperties.ContentVariants;

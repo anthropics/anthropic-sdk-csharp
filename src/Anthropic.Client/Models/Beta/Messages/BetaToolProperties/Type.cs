@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaToolProperties;
@@ -32,7 +33,9 @@ sealed class TypeConverter : JsonConverter<Type>
             value switch
             {
                 BetaToolProperties.Type.Custom => "custom",
-                _ => throw new System::ArgumentOutOfRangeException(nameof(value)),
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
             },
             options
         );

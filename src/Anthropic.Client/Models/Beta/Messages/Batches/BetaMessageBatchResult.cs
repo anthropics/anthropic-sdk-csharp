@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaMessageBatchResultVariants = Anthropic.Client.Models.Beta.Messages.Batches.BetaMessageBatchResultVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches;
@@ -77,7 +78,9 @@ public abstract record class BetaMessageBatchResult
                 expired(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaMessageBatchResult"
+                );
         }
     }
 
@@ -96,7 +99,9 @@ public abstract record class BetaMessageBatchResult
             BetaMessageBatchResultVariants::BetaMessageBatchErroredResult inner => errored(inner),
             BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult inner => canceled(inner),
             BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult inner => expired(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaMessageBatchResult"
+            ),
         };
     }
 
@@ -126,7 +131,7 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
         {
             case "succeeded":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -143,14 +148,19 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "errored":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -167,14 +177,19 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMessageBatchResultVariants::BetaMessageBatchErroredResult",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "canceled":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -191,14 +206,19 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "expired":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -215,14 +235,21 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -241,7 +268,9 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
             BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult(var canceled) =>
                 canceled,
             BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(var expired) => expired,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaMessageBatchResult"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

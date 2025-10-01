@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using RawContentBlockDeltaVariants = Anthropic.Client.Models.Messages.RawContentBlockDeltaVariants;
 
 namespace Anthropic.Client.Models.Messages;
@@ -83,7 +84,9 @@ public abstract record class RawContentBlockDelta
                 signature(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of RawContentBlockDelta"
+                );
         }
     }
 
@@ -102,7 +105,9 @@ public abstract record class RawContentBlockDelta
             RawContentBlockDeltaVariants::CitationsDelta inner => citations(inner),
             RawContentBlockDeltaVariants::ThinkingDelta inner => thinking(inner),
             RawContentBlockDeltaVariants::SignatureDelta inner => signature(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of RawContentBlockDelta"
+            ),
         };
     }
 
@@ -132,7 +137,7 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
         {
             case "text_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -144,14 +149,19 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawContentBlockDeltaVariants::TextDelta",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "input_json_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -163,14 +173,19 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawContentBlockDeltaVariants::InputJSONDelta",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "citations_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -182,14 +197,19 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawContentBlockDeltaVariants::CitationsDelta",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "thinking_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -201,14 +221,19 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawContentBlockDeltaVariants::ThinkingDelta",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "signature_delta":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -220,14 +245,21 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant RawContentBlockDeltaVariants::SignatureDelta",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -245,7 +277,9 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
             RawContentBlockDeltaVariants::CitationsDelta(var citations) => citations,
             RawContentBlockDeltaVariants::ThinkingDelta(var thinking) => thinking,
             RawContentBlockDeltaVariants::SignatureDelta(var signature) => signature,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of RawContentBlockDelta"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using BetaContentBlockSourceContentVariants = Anthropic.Client.Models.Beta.Messages.BetaContentBlockSourceContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
@@ -44,7 +45,9 @@ public abstract record class BetaContentBlockSourceContent
                 imageBlockParam(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of BetaContentBlockSourceContent"
+                );
         }
     }
 
@@ -61,7 +64,9 @@ public abstract record class BetaContentBlockSourceContent
             BetaContentBlockSourceContentVariants::BetaImageBlockParam inner => imageBlockParam(
                 inner
             ),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaContentBlockSourceContent"
+            ),
         };
     }
 
@@ -91,7 +96,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
         {
             case "text":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -108,14 +113,19 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockSourceContentVariants::BetaTextBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "image":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -132,14 +142,21 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant BetaContentBlockSourceContentVariants::BetaImageBlockParam",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -156,7 +173,9 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                 textBlockParam,
             BetaContentBlockSourceContentVariants::BetaImageBlockParam(var imageBlockParam) =>
                 imageBlockParam,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaContentBlockSourceContent"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }

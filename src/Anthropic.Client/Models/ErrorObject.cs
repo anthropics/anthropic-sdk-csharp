@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Client.Exceptions;
 using ErrorObjectVariants = Anthropic.Client.Models.ErrorObjectVariants;
 
 namespace Anthropic.Client.Models;
@@ -135,7 +136,9 @@ public abstract record class ErrorObject
                 overloadedError(inner);
                 break;
             default:
-                throw new InvalidOperationException();
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of ErrorObject"
+                );
         }
     }
 
@@ -162,7 +165,9 @@ public abstract record class ErrorObject
             ErrorObjectVariants::GatewayTimeoutError inner => gatewayTimeoutError(inner),
             ErrorObjectVariants::APIErrorObject inner => api(inner),
             ErrorObjectVariants::OverloadedError inner => overloadedError(inner),
-            _ => throw new InvalidOperationException(),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ErrorObject"
+            ),
         };
     }
 
@@ -192,7 +197,7 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
         {
             case "invalid_request_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -207,14 +212,19 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::InvalidRequestError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "authentication_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -229,14 +239,19 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::AuthenticationError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "billing_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -248,14 +263,19 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::BillingError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "permission_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -267,14 +287,19 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::PermissionError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "not_found_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -286,14 +311,19 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::NotFoundError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "rate_limit_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -305,14 +335,19 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::RateLimitError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "timeout_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -327,14 +362,19 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::GatewayTimeoutError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "api_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -346,14 +386,19 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::APIErrorObject",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             case "overloaded_error":
             {
-                List<JsonException> exceptions = [];
+                List<AnthropicInvalidDataException> exceptions = [];
 
                 try
                 {
@@ -365,14 +410,21 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 }
                 catch (JsonException e)
                 {
-                    exceptions.Add(e);
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant ErrorObjectVariants::OverloadedError",
+                            e
+                        )
+                    );
                 }
 
                 throw new AggregateException(exceptions);
             }
             default:
             {
-                throw new Exception();
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
             }
         }
     }
@@ -397,7 +449,9 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 gatewayTimeoutError,
             ErrorObjectVariants::APIErrorObject(var api) => api,
             ErrorObjectVariants::OverloadedError(var overloadedError) => overloadedError,
-            _ => throw new ArgumentOutOfRangeException(nameof(value)),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ErrorObject"
+            ),
         };
         JsonSerializer.Serialize(writer, variant, options);
     }
