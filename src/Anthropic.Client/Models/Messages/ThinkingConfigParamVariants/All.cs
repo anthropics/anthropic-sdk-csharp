@@ -4,7 +4,7 @@ using Messages = Anthropic.Client.Models.Messages;
 namespace Anthropic.Client.Models.Messages.ThinkingConfigParamVariants;
 
 public sealed record class ThinkingConfigEnabled(Messages::ThinkingConfigEnabled Value)
-    : Messages::ThinkingConfigParam,
+    : ThinkingConfigParam,
         IVariant<ThinkingConfigEnabled, Messages::ThinkingConfigEnabled>
 {
     public static ThinkingConfigEnabled From(Messages::ThinkingConfigEnabled value)
@@ -19,7 +19,7 @@ public sealed record class ThinkingConfigEnabled(Messages::ThinkingConfigEnabled
 }
 
 public sealed record class ThinkingConfigDisabled(Messages::ThinkingConfigDisabled Value)
-    : Messages::ThinkingConfigParam,
+    : ThinkingConfigParam,
         IVariant<ThinkingConfigDisabled, Messages::ThinkingConfigDisabled>
 {
     public static ThinkingConfigDisabled From(Messages::ThinkingConfigDisabled value)

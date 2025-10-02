@@ -4,13 +4,11 @@ using Messages = Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Models.Messages.WebSearchToolResultBlockParamContentVariants;
 
-public sealed record class WebSearchToolResultBlockItem(
-    List<Messages::WebSearchResultBlockParam> Value
-)
-    : Messages::WebSearchToolResultBlockParamContent,
-        IVariant<WebSearchToolResultBlockItem, List<Messages::WebSearchResultBlockParam>>
+public sealed record class WebSearchToolResultBlockItem(List<WebSearchResultBlockParam> Value)
+    : WebSearchToolResultBlockParamContent,
+        IVariant<WebSearchToolResultBlockItem, List<WebSearchResultBlockParam>>
 {
-    public static WebSearchToolResultBlockItem From(List<Messages::WebSearchResultBlockParam> value)
+    public static WebSearchToolResultBlockItem From(List<WebSearchResultBlockParam> value)
     {
         return new(value);
     }
@@ -19,7 +17,7 @@ public sealed record class WebSearchToolResultBlockItem(
 }
 
 public sealed record class WebSearchToolRequestError(Messages::WebSearchToolRequestError Value)
-    : Messages::WebSearchToolResultBlockParamContent,
+    : WebSearchToolResultBlockParamContent,
         IVariant<WebSearchToolRequestError, Messages::WebSearchToolRequestError>
 {
     public static WebSearchToolRequestError From(Messages::WebSearchToolRequestError value)

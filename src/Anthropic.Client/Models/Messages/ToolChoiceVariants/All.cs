@@ -7,7 +7,7 @@ namespace Anthropic.Client.Models.Messages.ToolChoiceVariants;
 /// The model will automatically decide whether to use tools.
 /// </summary>
 public sealed record class ToolChoiceAuto(Messages::ToolChoiceAuto Value)
-    : Messages::ToolChoice,
+    : ToolChoice,
         IVariant<ToolChoiceAuto, Messages::ToolChoiceAuto>
 {
     public static ToolChoiceAuto From(Messages::ToolChoiceAuto value)
@@ -25,7 +25,7 @@ public sealed record class ToolChoiceAuto(Messages::ToolChoiceAuto Value)
 /// The model will use any available tools.
 /// </summary>
 public sealed record class ToolChoiceAny(Messages::ToolChoiceAny Value)
-    : Messages::ToolChoice,
+    : ToolChoice,
         IVariant<ToolChoiceAny, Messages::ToolChoiceAny>
 {
     public static ToolChoiceAny From(Messages::ToolChoiceAny value)
@@ -43,7 +43,7 @@ public sealed record class ToolChoiceAny(Messages::ToolChoiceAny Value)
 /// The model will use the specified tool with `tool_choice.name`.
 /// </summary>
 public sealed record class ToolChoiceTool(Messages::ToolChoiceTool Value)
-    : Messages::ToolChoice,
+    : ToolChoice,
         IVariant<ToolChoiceTool, Messages::ToolChoiceTool>
 {
     public static ToolChoiceTool From(Messages::ToolChoiceTool value)
@@ -61,7 +61,7 @@ public sealed record class ToolChoiceTool(Messages::ToolChoiceTool Value)
 /// The model will not be allowed to use tools.
 /// </summary>
 public sealed record class ToolChoiceNone(Messages::ToolChoiceNone Value)
-    : Messages::ToolChoice,
+    : ToolChoice,
         IVariant<ToolChoiceNone, Messages::ToolChoiceNone>
 {
     public static ToolChoiceNone From(Messages::ToolChoiceNone value)

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
 using ContentBlockVariants = Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlockVariants;
-using Messages = Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties;
 
@@ -14,59 +13,55 @@ public abstract record class ContentBlock
 {
     internal ContentBlock() { }
 
-    public static implicit operator ContentBlock(Messages::TextBlock value) =>
+    public static implicit operator ContentBlock(TextBlock value) =>
         new ContentBlockVariants::TextBlock(value);
 
-    public static implicit operator ContentBlock(Messages::ThinkingBlock value) =>
+    public static implicit operator ContentBlock(ThinkingBlock value) =>
         new ContentBlockVariants::ThinkingBlock(value);
 
-    public static implicit operator ContentBlock(Messages::RedactedThinkingBlock value) =>
+    public static implicit operator ContentBlock(RedactedThinkingBlock value) =>
         new ContentBlockVariants::RedactedThinkingBlock(value);
 
-    public static implicit operator ContentBlock(Messages::ToolUseBlock value) =>
+    public static implicit operator ContentBlock(ToolUseBlock value) =>
         new ContentBlockVariants::ToolUseBlock(value);
 
-    public static implicit operator ContentBlock(Messages::ServerToolUseBlock value) =>
+    public static implicit operator ContentBlock(ServerToolUseBlock value) =>
         new ContentBlockVariants::ServerToolUseBlock(value);
 
-    public static implicit operator ContentBlock(Messages::WebSearchToolResultBlock value) =>
+    public static implicit operator ContentBlock(WebSearchToolResultBlock value) =>
         new ContentBlockVariants::WebSearchToolResultBlock(value);
 
-    public bool TryPickText([NotNullWhen(true)] out Messages::TextBlock? value)
+    public bool TryPickText([NotNullWhen(true)] out TextBlock? value)
     {
         value = (this as ContentBlockVariants::TextBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickThinking([NotNullWhen(true)] out Messages::ThinkingBlock? value)
+    public bool TryPickThinking([NotNullWhen(true)] out ThinkingBlock? value)
     {
         value = (this as ContentBlockVariants::ThinkingBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickRedactedThinking(
-        [NotNullWhen(true)] out Messages::RedactedThinkingBlock? value
-    )
+    public bool TryPickRedactedThinking([NotNullWhen(true)] out RedactedThinkingBlock? value)
     {
         value = (this as ContentBlockVariants::RedactedThinkingBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickToolUse([NotNullWhen(true)] out Messages::ToolUseBlock? value)
+    public bool TryPickToolUse([NotNullWhen(true)] out ToolUseBlock? value)
     {
         value = (this as ContentBlockVariants::ToolUseBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickServerToolUse([NotNullWhen(true)] out Messages::ServerToolUseBlock? value)
+    public bool TryPickServerToolUse([NotNullWhen(true)] out ServerToolUseBlock? value)
     {
         value = (this as ContentBlockVariants::ServerToolUseBlock)?.Value;
         return value != null;
     }
 
-    public bool TryPickWebSearchToolResult(
-        [NotNullWhen(true)] out Messages::WebSearchToolResultBlock? value
-    )
+    public bool TryPickWebSearchToolResult([NotNullWhen(true)] out WebSearchToolResultBlock? value)
     {
         value = (this as ContentBlockVariants::WebSearchToolResultBlock)?.Value;
         return value != null;
@@ -161,10 +156,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
 
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Messages::TextBlock>(
-                        json,
-                        options
-                    );
+                    var deserialized = JsonSerializer.Deserialize<TextBlock>(json, options);
                     if (deserialized != null)
                     {
                         return new ContentBlockVariants::TextBlock(deserialized);
@@ -188,10 +180,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
 
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Messages::ThinkingBlock>(
-                        json,
-                        options
-                    );
+                    var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(json, options);
                     if (deserialized != null)
                     {
                         return new ContentBlockVariants::ThinkingBlock(deserialized);
@@ -215,7 +204,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
 
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Messages::RedactedThinkingBlock>(
+                    var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlock>(
                         json,
                         options
                     );
@@ -242,10 +231,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
 
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Messages::ToolUseBlock>(
-                        json,
-                        options
-                    );
+                    var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(json, options);
                     if (deserialized != null)
                     {
                         return new ContentBlockVariants::ToolUseBlock(deserialized);
@@ -269,7 +255,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
 
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Messages::ServerToolUseBlock>(
+                    var deserialized = JsonSerializer.Deserialize<ServerToolUseBlock>(
                         json,
                         options
                     );
@@ -296,11 +282,10 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
 
                 try
                 {
-                    var deserialized =
-                        JsonSerializer.Deserialize<Messages::WebSearchToolResultBlock>(
-                            json,
-                            options
-                        );
+                    var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(
+                        json,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         return new ContentBlockVariants::WebSearchToolResultBlock(deserialized);

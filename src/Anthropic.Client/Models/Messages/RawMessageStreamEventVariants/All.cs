@@ -4,7 +4,7 @@ using Messages = Anthropic.Client.Models.Messages;
 namespace Anthropic.Client.Models.Messages.RawMessageStreamEventVariants;
 
 public sealed record class RawMessageStartEvent(Messages::RawMessageStartEvent Value)
-    : Messages::RawMessageStreamEvent,
+    : RawMessageStreamEvent,
         IVariant<RawMessageStartEvent, Messages::RawMessageStartEvent>
 {
     public static RawMessageStartEvent From(Messages::RawMessageStartEvent value)
@@ -19,7 +19,7 @@ public sealed record class RawMessageStartEvent(Messages::RawMessageStartEvent V
 }
 
 public sealed record class RawMessageDeltaEvent(Messages::RawMessageDeltaEvent Value)
-    : Messages::RawMessageStreamEvent,
+    : RawMessageStreamEvent,
         IVariant<RawMessageDeltaEvent, Messages::RawMessageDeltaEvent>
 {
     public static RawMessageDeltaEvent From(Messages::RawMessageDeltaEvent value)
@@ -34,7 +34,7 @@ public sealed record class RawMessageDeltaEvent(Messages::RawMessageDeltaEvent V
 }
 
 public sealed record class RawMessageStopEvent(Messages::RawMessageStopEvent Value)
-    : Messages::RawMessageStreamEvent,
+    : RawMessageStreamEvent,
         IVariant<RawMessageStopEvent, Messages::RawMessageStopEvent>
 {
     public static RawMessageStopEvent From(Messages::RawMessageStopEvent value)
@@ -49,7 +49,7 @@ public sealed record class RawMessageStopEvent(Messages::RawMessageStopEvent Val
 }
 
 public sealed record class RawContentBlockStartEvent(Messages::RawContentBlockStartEvent Value)
-    : Messages::RawMessageStreamEvent,
+    : RawMessageStreamEvent,
         IVariant<RawContentBlockStartEvent, Messages::RawContentBlockStartEvent>
 {
     public static RawContentBlockStartEvent From(Messages::RawContentBlockStartEvent value)
@@ -64,7 +64,7 @@ public sealed record class RawContentBlockStartEvent(Messages::RawContentBlockSt
 }
 
 public sealed record class RawContentBlockDeltaEvent(Messages::RawContentBlockDeltaEvent Value)
-    : Messages::RawMessageStreamEvent,
+    : RawMessageStreamEvent,
         IVariant<RawContentBlockDeltaEvent, Messages::RawContentBlockDeltaEvent>
 {
     public static RawContentBlockDeltaEvent From(Messages::RawContentBlockDeltaEvent value)
@@ -79,7 +79,7 @@ public sealed record class RawContentBlockDeltaEvent(Messages::RawContentBlockDe
 }
 
 public sealed record class RawContentBlockStopEvent(Messages::RawContentBlockStopEvent Value)
-    : Messages::RawMessageStreamEvent,
+    : RawMessageStreamEvent,
         IVariant<RawContentBlockStopEvent, Messages::RawContentBlockStopEvent>
 {
     public static RawContentBlockStopEvent From(Messages::RawContentBlockStopEvent value)

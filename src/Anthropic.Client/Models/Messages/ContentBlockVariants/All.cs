@@ -4,7 +4,7 @@ using Messages = Anthropic.Client.Models.Messages;
 namespace Anthropic.Client.Models.Messages.ContentBlockVariants;
 
 public sealed record class TextBlock(Messages::TextBlock Value)
-    : Messages::ContentBlock,
+    : ContentBlock,
         IVariant<TextBlock, Messages::TextBlock>
 {
     public static TextBlock From(Messages::TextBlock value)
@@ -19,7 +19,7 @@ public sealed record class TextBlock(Messages::TextBlock Value)
 }
 
 public sealed record class ThinkingBlock(Messages::ThinkingBlock Value)
-    : Messages::ContentBlock,
+    : ContentBlock,
         IVariant<ThinkingBlock, Messages::ThinkingBlock>
 {
     public static ThinkingBlock From(Messages::ThinkingBlock value)
@@ -34,7 +34,7 @@ public sealed record class ThinkingBlock(Messages::ThinkingBlock Value)
 }
 
 public sealed record class RedactedThinkingBlock(Messages::RedactedThinkingBlock Value)
-    : Messages::ContentBlock,
+    : ContentBlock,
         IVariant<RedactedThinkingBlock, Messages::RedactedThinkingBlock>
 {
     public static RedactedThinkingBlock From(Messages::RedactedThinkingBlock value)
@@ -49,7 +49,7 @@ public sealed record class RedactedThinkingBlock(Messages::RedactedThinkingBlock
 }
 
 public sealed record class ToolUseBlock(Messages::ToolUseBlock Value)
-    : Messages::ContentBlock,
+    : ContentBlock,
         IVariant<ToolUseBlock, Messages::ToolUseBlock>
 {
     public static ToolUseBlock From(Messages::ToolUseBlock value)
@@ -64,7 +64,7 @@ public sealed record class ToolUseBlock(Messages::ToolUseBlock Value)
 }
 
 public sealed record class ServerToolUseBlock(Messages::ServerToolUseBlock Value)
-    : Messages::ContentBlock,
+    : ContentBlock,
         IVariant<ServerToolUseBlock, Messages::ServerToolUseBlock>
 {
     public static ServerToolUseBlock From(Messages::ServerToolUseBlock value)
@@ -79,7 +79,7 @@ public sealed record class ServerToolUseBlock(Messages::ServerToolUseBlock Value
 }
 
 public sealed record class WebSearchToolResultBlock(Messages::WebSearchToolResultBlock Value)
-    : Messages::ContentBlock,
+    : ContentBlock,
         IVariant<WebSearchToolResultBlock, Messages::WebSearchToolResultBlock>
 {
     public static WebSearchToolResultBlock From(Messages::WebSearchToolResultBlock value)
