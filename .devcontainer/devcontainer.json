@@ -1,0 +1,8 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
+{
+    "name": "C# (.NET)",
+    "image": "mcr.microsoft.com/devcontainers/dotnet:1-9.0-noble",
+    "postAttachCommand": "cat .vscode/extensions.json | jq -r .recommendations[] | xargs -n 1 code --install-extension",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
+}
