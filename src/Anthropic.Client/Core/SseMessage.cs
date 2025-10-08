@@ -63,7 +63,9 @@ sealed record class SseMessage(string? Event, string Data, string? ID, int? Retr
                 case "ping":
                     continue;
                 case "error":
-                    throw new AnthropicSseException();
+                    throw new AnthropicSseException(
+                        string.Format("SSE error returned from server: '{0}'", message)
+                    );
             }
         }
     }
