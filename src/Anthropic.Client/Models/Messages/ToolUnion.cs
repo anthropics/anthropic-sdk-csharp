@@ -4,96 +4,133 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ToolUnionVariants = Anthropic.Client.Models.Messages.ToolUnionVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
 [JsonConverter(typeof(ToolUnionConverter))]
-public abstract record class ToolUnion
+public record class ToolUnion
 {
-    internal ToolUnion() { }
+    public object Value { get; private init; }
 
-    public static implicit operator ToolUnion(Tool value) => new ToolUnionVariants::Tool(value);
+    public CacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return Match<CacheControlEphemeral?>(
+                tool: (x) => x.CacheControl,
+                bash20250124: (x) => x.CacheControl,
+                textEditor20250124: (x) => x.CacheControl,
+                textEditor20250429: (x) => x.CacheControl,
+                textEditor20250728: (x) => x.CacheControl,
+                webSearchTool20250305: (x) => x.CacheControl
+            );
+        }
+    }
 
-    public static implicit operator ToolUnion(ToolBash20250124 value) =>
-        new ToolUnionVariants::ToolBash20250124(value);
+    public ToolUnion(Tool value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ToolUnion(ToolTextEditor20250124 value) =>
-        new ToolUnionVariants::ToolTextEditor20250124(value);
+    public ToolUnion(ToolBash20250124 value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ToolUnion(ToolTextEditor20250429 value) =>
-        new ToolUnionVariants::ToolTextEditor20250429(value);
+    public ToolUnion(ToolTextEditor20250124 value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ToolUnion(ToolTextEditor20250728 value) =>
-        new ToolUnionVariants::ToolTextEditor20250728(value);
+    public ToolUnion(ToolTextEditor20250429 value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ToolUnion(WebSearchTool20250305 value) =>
-        new ToolUnionVariants::WebSearchTool20250305(value);
+    public ToolUnion(ToolTextEditor20250728 value)
+    {
+        Value = value;
+    }
+
+    public ToolUnion(WebSearchTool20250305 value)
+    {
+        Value = value;
+    }
+
+    ToolUnion(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static ToolUnion CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickTool([NotNullWhen(true)] out Tool? value)
     {
-        value = (this as ToolUnionVariants::Tool)?.Value;
+        value = this.Value as Tool;
         return value != null;
     }
 
     public bool TryPickBash20250124([NotNullWhen(true)] out ToolBash20250124? value)
     {
-        value = (this as ToolUnionVariants::ToolBash20250124)?.Value;
+        value = this.Value as ToolBash20250124;
         return value != null;
     }
 
     public bool TryPickTextEditor20250124([NotNullWhen(true)] out ToolTextEditor20250124? value)
     {
-        value = (this as ToolUnionVariants::ToolTextEditor20250124)?.Value;
+        value = this.Value as ToolTextEditor20250124;
         return value != null;
     }
 
     public bool TryPickTextEditor20250429([NotNullWhen(true)] out ToolTextEditor20250429? value)
     {
-        value = (this as ToolUnionVariants::ToolTextEditor20250429)?.Value;
+        value = this.Value as ToolTextEditor20250429;
         return value != null;
     }
 
     public bool TryPickTextEditor20250728([NotNullWhen(true)] out ToolTextEditor20250728? value)
     {
-        value = (this as ToolUnionVariants::ToolTextEditor20250728)?.Value;
+        value = this.Value as ToolTextEditor20250728;
         return value != null;
     }
 
     public bool TryPickWebSearchTool20250305([NotNullWhen(true)] out WebSearchTool20250305? value)
     {
-        value = (this as ToolUnionVariants::WebSearchTool20250305)?.Value;
+        value = this.Value as WebSearchTool20250305;
         return value != null;
     }
 
     public void Switch(
-        Action<ToolUnionVariants::Tool> tool,
-        Action<ToolUnionVariants::ToolBash20250124> bash20250124,
-        Action<ToolUnionVariants::ToolTextEditor20250124> textEditor20250124,
-        Action<ToolUnionVariants::ToolTextEditor20250429> textEditor20250429,
-        Action<ToolUnionVariants::ToolTextEditor20250728> textEditor20250728,
-        Action<ToolUnionVariants::WebSearchTool20250305> webSearchTool20250305
+        Action<Tool> tool,
+        Action<ToolBash20250124> bash20250124,
+        Action<ToolTextEditor20250124> textEditor20250124,
+        Action<ToolTextEditor20250429> textEditor20250429,
+        Action<ToolTextEditor20250728> textEditor20250728,
+        Action<WebSearchTool20250305> webSearchTool20250305
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ToolUnionVariants::Tool inner:
-                tool(inner);
+            case Tool value:
+                tool(value);
                 break;
-            case ToolUnionVariants::ToolBash20250124 inner:
-                bash20250124(inner);
+            case ToolBash20250124 value:
+                bash20250124(value);
                 break;
-            case ToolUnionVariants::ToolTextEditor20250124 inner:
-                textEditor20250124(inner);
+            case ToolTextEditor20250124 value:
+                textEditor20250124(value);
                 break;
-            case ToolUnionVariants::ToolTextEditor20250429 inner:
-                textEditor20250429(inner);
+            case ToolTextEditor20250429 value:
+                textEditor20250429(value);
                 break;
-            case ToolUnionVariants::ToolTextEditor20250728 inner:
-                textEditor20250728(inner);
+            case ToolTextEditor20250728 value:
+                textEditor20250728(value);
                 break;
-            case ToolUnionVariants::WebSearchTool20250305 inner:
-                webSearchTool20250305(inner);
+            case WebSearchTool20250305 value:
+                webSearchTool20250305(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -103,29 +140,37 @@ public abstract record class ToolUnion
     }
 
     public T Match<T>(
-        Func<ToolUnionVariants::Tool, T> tool,
-        Func<ToolUnionVariants::ToolBash20250124, T> bash20250124,
-        Func<ToolUnionVariants::ToolTextEditor20250124, T> textEditor20250124,
-        Func<ToolUnionVariants::ToolTextEditor20250429, T> textEditor20250429,
-        Func<ToolUnionVariants::ToolTextEditor20250728, T> textEditor20250728,
-        Func<ToolUnionVariants::WebSearchTool20250305, T> webSearchTool20250305
+        Func<Tool, T> tool,
+        Func<ToolBash20250124, T> bash20250124,
+        Func<ToolTextEditor20250124, T> textEditor20250124,
+        Func<ToolTextEditor20250429, T> textEditor20250429,
+        Func<ToolTextEditor20250728, T> textEditor20250728,
+        Func<WebSearchTool20250305, T> webSearchTool20250305
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ToolUnionVariants::Tool inner => tool(inner),
-            ToolUnionVariants::ToolBash20250124 inner => bash20250124(inner),
-            ToolUnionVariants::ToolTextEditor20250124 inner => textEditor20250124(inner),
-            ToolUnionVariants::ToolTextEditor20250429 inner => textEditor20250429(inner),
-            ToolUnionVariants::ToolTextEditor20250728 inner => textEditor20250728(inner),
-            ToolUnionVariants::WebSearchTool20250305 inner => webSearchTool20250305(inner),
+            Tool value => tool(value),
+            ToolBash20250124 value => bash20250124(value),
+            ToolTextEditor20250124 value => textEditor20250124(value),
+            ToolTextEditor20250429 value => textEditor20250429(value),
+            ToolTextEditor20250728 value => textEditor20250728(value),
+            WebSearchTool20250305 value => webSearchTool20250305(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ToolUnion"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of ToolUnion");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ToolUnionConverter : JsonConverter<ToolUnion>
@@ -143,16 +188,14 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             var deserialized = JsonSerializer.Deserialize<Tool>(ref reader, options);
             if (deserialized != null)
             {
-                return new ToolUnionVariants::Tool(deserialized);
+                deserialized.Validate();
+                return new ToolUnion(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant ToolUnionVariants::Tool",
-                    e
-                )
+                new AnthropicInvalidDataException("Data does not match union variant 'Tool'", e)
             );
         }
 
@@ -161,14 +204,15 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(ref reader, options);
             if (deserialized != null)
             {
-                return new ToolUnionVariants::ToolBash20250124(deserialized);
+                deserialized.Validate();
+                return new ToolUnion(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ToolUnionVariants::ToolBash20250124",
+                    "Data does not match union variant 'ToolBash20250124'",
                     e
                 )
             );
@@ -182,14 +226,15 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             );
             if (deserialized != null)
             {
-                return new ToolUnionVariants::ToolTextEditor20250124(deserialized);
+                deserialized.Validate();
+                return new ToolUnion(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ToolUnionVariants::ToolTextEditor20250124",
+                    "Data does not match union variant 'ToolTextEditor20250124'",
                     e
                 )
             );
@@ -203,14 +248,15 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             );
             if (deserialized != null)
             {
-                return new ToolUnionVariants::ToolTextEditor20250429(deserialized);
+                deserialized.Validate();
+                return new ToolUnion(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ToolUnionVariants::ToolTextEditor20250429",
+                    "Data does not match union variant 'ToolTextEditor20250429'",
                     e
                 )
             );
@@ -224,14 +270,15 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             );
             if (deserialized != null)
             {
-                return new ToolUnionVariants::ToolTextEditor20250728(deserialized);
+                deserialized.Validate();
+                return new ToolUnion(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ToolUnionVariants::ToolTextEditor20250728",
+                    "Data does not match union variant 'ToolTextEditor20250728'",
                     e
                 )
             );
@@ -245,14 +292,15 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             );
             if (deserialized != null)
             {
-                return new ToolUnionVariants::WebSearchTool20250305(deserialized);
+                deserialized.Validate();
+                return new ToolUnion(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ToolUnionVariants::WebSearchTool20250305",
+                    "Data does not match union variant 'WebSearchTool20250305'",
                     e
                 )
             );
@@ -267,19 +315,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            ToolUnionVariants::Tool(var tool) => tool,
-            ToolUnionVariants::ToolBash20250124(var bash20250124) => bash20250124,
-            ToolUnionVariants::ToolTextEditor20250124(var textEditor20250124) => textEditor20250124,
-            ToolUnionVariants::ToolTextEditor20250429(var textEditor20250429) => textEditor20250429,
-            ToolUnionVariants::ToolTextEditor20250728(var textEditor20250728) => textEditor20250728,
-            ToolUnionVariants::WebSearchTool20250305(var webSearchTool20250305) =>
-                webSearchTool20250305,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ToolUnion"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

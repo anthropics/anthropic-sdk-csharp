@@ -4,97 +4,163 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ContentBlockVariants = Anthropic.Client.Models.Messages.ContentBlockVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
 [JsonConverter(typeof(ContentBlockConverter))]
-public abstract record class ContentBlock
+public record class ContentBlock
 {
-    internal ContentBlock() { }
+    public object Value { get; private init; }
 
-    public static implicit operator ContentBlock(TextBlock value) =>
-        new ContentBlockVariants::TextBlock(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                text: (x) => x.Type,
+                thinking: (x) => x.Type,
+                redactedThinking: (x) => x.Type,
+                toolUse: (x) => x.Type,
+                serverToolUse: (x) => x.Type,
+                webSearchToolResult: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator ContentBlock(ThinkingBlock value) =>
-        new ContentBlockVariants::ThinkingBlock(value);
+    public string? ID
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.ID,
+                serverToolUse: (x) => x.ID,
+                webSearchToolResult: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator ContentBlock(RedactedThinkingBlock value) =>
-        new ContentBlockVariants::RedactedThinkingBlock(value);
+    public JsonElement? Input
+    {
+        get
+        {
+            return Match<JsonElement?>(
+                text: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.Input,
+                serverToolUse: (x) => x.Input,
+                webSearchToolResult: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator ContentBlock(ToolUseBlock value) =>
-        new ContentBlockVariants::ToolUseBlock(value);
+    public ContentBlock(TextBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ContentBlock(ServerToolUseBlock value) =>
-        new ContentBlockVariants::ServerToolUseBlock(value);
+    public ContentBlock(ThinkingBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ContentBlock(WebSearchToolResultBlock value) =>
-        new ContentBlockVariants::WebSearchToolResultBlock(value);
+    public ContentBlock(RedactedThinkingBlock value)
+    {
+        Value = value;
+    }
+
+    public ContentBlock(ToolUseBlock value)
+    {
+        Value = value;
+    }
+
+    public ContentBlock(ServerToolUseBlock value)
+    {
+        Value = value;
+    }
+
+    public ContentBlock(WebSearchToolResultBlock value)
+    {
+        Value = value;
+    }
+
+    ContentBlock(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static ContentBlock CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickText([NotNullWhen(true)] out TextBlock? value)
     {
-        value = (this as ContentBlockVariants::TextBlock)?.Value;
+        value = this.Value as TextBlock;
         return value != null;
     }
 
     public bool TryPickThinking([NotNullWhen(true)] out ThinkingBlock? value)
     {
-        value = (this as ContentBlockVariants::ThinkingBlock)?.Value;
+        value = this.Value as ThinkingBlock;
         return value != null;
     }
 
     public bool TryPickRedactedThinking([NotNullWhen(true)] out RedactedThinkingBlock? value)
     {
-        value = (this as ContentBlockVariants::RedactedThinkingBlock)?.Value;
+        value = this.Value as RedactedThinkingBlock;
         return value != null;
     }
 
     public bool TryPickToolUse([NotNullWhen(true)] out ToolUseBlock? value)
     {
-        value = (this as ContentBlockVariants::ToolUseBlock)?.Value;
+        value = this.Value as ToolUseBlock;
         return value != null;
     }
 
     public bool TryPickServerToolUse([NotNullWhen(true)] out ServerToolUseBlock? value)
     {
-        value = (this as ContentBlockVariants::ServerToolUseBlock)?.Value;
+        value = this.Value as ServerToolUseBlock;
         return value != null;
     }
 
     public bool TryPickWebSearchToolResult([NotNullWhen(true)] out WebSearchToolResultBlock? value)
     {
-        value = (this as ContentBlockVariants::WebSearchToolResultBlock)?.Value;
+        value = this.Value as WebSearchToolResultBlock;
         return value != null;
     }
 
     public void Switch(
-        Action<ContentBlockVariants::TextBlock> text,
-        Action<ContentBlockVariants::ThinkingBlock> thinking,
-        Action<ContentBlockVariants::RedactedThinkingBlock> redactedThinking,
-        Action<ContentBlockVariants::ToolUseBlock> toolUse,
-        Action<ContentBlockVariants::ServerToolUseBlock> serverToolUse,
-        Action<ContentBlockVariants::WebSearchToolResultBlock> webSearchToolResult
+        Action<TextBlock> text,
+        Action<ThinkingBlock> thinking,
+        Action<RedactedThinkingBlock> redactedThinking,
+        Action<ToolUseBlock> toolUse,
+        Action<ServerToolUseBlock> serverToolUse,
+        Action<WebSearchToolResultBlock> webSearchToolResult
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ContentBlockVariants::TextBlock inner:
-                text(inner);
+            case TextBlock value:
+                text(value);
                 break;
-            case ContentBlockVariants::ThinkingBlock inner:
-                thinking(inner);
+            case ThinkingBlock value:
+                thinking(value);
                 break;
-            case ContentBlockVariants::RedactedThinkingBlock inner:
-                redactedThinking(inner);
+            case RedactedThinkingBlock value:
+                redactedThinking(value);
                 break;
-            case ContentBlockVariants::ToolUseBlock inner:
-                toolUse(inner);
+            case ToolUseBlock value:
+                toolUse(value);
                 break;
-            case ContentBlockVariants::ServerToolUseBlock inner:
-                serverToolUse(inner);
+            case ServerToolUseBlock value:
+                serverToolUse(value);
                 break;
-            case ContentBlockVariants::WebSearchToolResultBlock inner:
-                webSearchToolResult(inner);
+            case WebSearchToolResultBlock value:
+                webSearchToolResult(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -104,29 +170,39 @@ public abstract record class ContentBlock
     }
 
     public T Match<T>(
-        Func<ContentBlockVariants::TextBlock, T> text,
-        Func<ContentBlockVariants::ThinkingBlock, T> thinking,
-        Func<ContentBlockVariants::RedactedThinkingBlock, T> redactedThinking,
-        Func<ContentBlockVariants::ToolUseBlock, T> toolUse,
-        Func<ContentBlockVariants::ServerToolUseBlock, T> serverToolUse,
-        Func<ContentBlockVariants::WebSearchToolResultBlock, T> webSearchToolResult
+        Func<TextBlock, T> text,
+        Func<ThinkingBlock, T> thinking,
+        Func<RedactedThinkingBlock, T> redactedThinking,
+        Func<ToolUseBlock, T> toolUse,
+        Func<ServerToolUseBlock, T> serverToolUse,
+        Func<WebSearchToolResultBlock, T> webSearchToolResult
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ContentBlockVariants::TextBlock inner => text(inner),
-            ContentBlockVariants::ThinkingBlock inner => thinking(inner),
-            ContentBlockVariants::RedactedThinkingBlock inner => redactedThinking(inner),
-            ContentBlockVariants::ToolUseBlock inner => toolUse(inner),
-            ContentBlockVariants::ServerToolUseBlock inner => serverToolUse(inner),
-            ContentBlockVariants::WebSearchToolResultBlock inner => webSearchToolResult(inner),
+            TextBlock value => text(value),
+            ThinkingBlock value => thinking(value),
+            RedactedThinkingBlock value => redactedThinking(value),
+            ToolUseBlock value => toolUse(value),
+            ServerToolUseBlock value => serverToolUse(value),
+            WebSearchToolResultBlock value => webSearchToolResult(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlock"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ContentBlock"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentBlockConverter : JsonConverter<ContentBlock>
@@ -159,14 +235,15 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     var deserialized = JsonSerializer.Deserialize<TextBlock>(json, options);
                     if (deserialized != null)
                     {
-                        return new ContentBlockVariants::TextBlock(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockVariants::TextBlock",
+                            "Data does not match union variant 'TextBlock'",
                             e
                         )
                     );
@@ -183,14 +260,15 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(json, options);
                     if (deserialized != null)
                     {
-                        return new ContentBlockVariants::ThinkingBlock(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockVariants::ThinkingBlock",
+                            "Data does not match union variant 'ThinkingBlock'",
                             e
                         )
                     );
@@ -210,14 +288,15 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockVariants::RedactedThinkingBlock(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockVariants::RedactedThinkingBlock",
+                            "Data does not match union variant 'RedactedThinkingBlock'",
                             e
                         )
                     );
@@ -234,14 +313,15 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(json, options);
                     if (deserialized != null)
                     {
-                        return new ContentBlockVariants::ToolUseBlock(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockVariants::ToolUseBlock",
+                            "Data does not match union variant 'ToolUseBlock'",
                             e
                         )
                     );
@@ -261,14 +341,15 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockVariants::ServerToolUseBlock(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockVariants::ServerToolUseBlock",
+                            "Data does not match union variant 'ServerToolUseBlock'",
                             e
                         )
                     );
@@ -288,14 +369,15 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockVariants::WebSearchToolResultBlock(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockVariants::WebSearchToolResultBlock",
+                            "Data does not match union variant 'WebSearchToolResultBlock'",
                             e
                         )
                     );
@@ -318,19 +400,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            ContentBlockVariants::TextBlock(var text) => text,
-            ContentBlockVariants::ThinkingBlock(var thinking) => thinking,
-            ContentBlockVariants::RedactedThinkingBlock(var redactedThinking) => redactedThinking,
-            ContentBlockVariants::ToolUseBlock(var toolUse) => toolUse,
-            ContentBlockVariants::ServerToolUseBlock(var serverToolUse) => serverToolUse,
-            ContentBlockVariants::WebSearchToolResultBlock(var webSearchToolResult) =>
-                webSearchToolResult,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentBlock"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

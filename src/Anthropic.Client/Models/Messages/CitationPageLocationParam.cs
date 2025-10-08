@@ -154,7 +154,7 @@ public sealed record class CitationPageLocationParam
 
     public CitationPageLocationParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

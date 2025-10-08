@@ -65,7 +65,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
 
     public BetaContentBlockSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

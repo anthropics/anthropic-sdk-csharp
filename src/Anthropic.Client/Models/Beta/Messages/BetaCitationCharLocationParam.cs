@@ -151,7 +151,7 @@ public sealed record class BetaCitationCharLocationParam
 
     public BetaCitationCharLocationParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

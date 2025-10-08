@@ -93,7 +93,7 @@ public sealed record class BetaWebFetchToolResultBlock
 
     public BetaWebFetchToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

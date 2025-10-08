@@ -46,7 +46,7 @@ MessageCreateParams parameters = new()
         new()
         {
             Role = Role.User,
-            Content = "Hello, Claude",
+            Content = new("Hello, Claude"),
         },
     ],
     Model = Model.Claude3_7SonnetLatest,
@@ -113,7 +113,7 @@ MessageCreateParams parameters = new()
         new()
         {
             Role = Role.User,
-            Content = "Hello, Claude",
+            Content = new("Hello, Claude"),
         },
     ],
     Model = Model.Claude3_7SonnetLatest,

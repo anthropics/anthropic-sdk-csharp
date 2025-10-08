@@ -85,8 +85,8 @@ public sealed record class BetaPlainTextSource : ModelBase, IFromRaw<BetaPlainTe
 
     public BetaPlainTextSource()
     {
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.MediaType = new();
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

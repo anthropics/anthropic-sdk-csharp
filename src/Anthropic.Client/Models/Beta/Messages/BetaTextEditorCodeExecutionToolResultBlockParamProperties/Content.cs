@@ -4,36 +4,62 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ContentVariants = Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionToolResultBlockParamProperties.ContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionToolResultBlockParamProperties;
 
 [JsonConverter(typeof(ContentConverter))]
-public abstract record class Content
+public record class Content
 {
-    internal Content() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Content(
-        BetaTextEditorCodeExecutionToolResultErrorParam value
-    ) => new ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                betaTextEditorCodeExecutionToolResultErrorParam: (x) => x.Type,
+                betaTextEditorCodeExecutionViewResultBlockParam: (x) => x.Type,
+                betaTextEditorCodeExecutionCreateResultBlockParam: (x) => x.Type,
+                betaTextEditorCodeExecutionStrReplaceResultBlockParam: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator Content(
-        BetaTextEditorCodeExecutionViewResultBlockParam value
-    ) => new ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam(value);
+    public Content(BetaTextEditorCodeExecutionToolResultErrorParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator Content(
-        BetaTextEditorCodeExecutionCreateResultBlockParam value
-    ) => new ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam(value);
+    public Content(BetaTextEditorCodeExecutionViewResultBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator Content(
-        BetaTextEditorCodeExecutionStrReplaceResultBlockParam value
-    ) => new ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam(value);
+    public Content(BetaTextEditorCodeExecutionCreateResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public Content(BetaTextEditorCodeExecutionStrReplaceResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    Content(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Content CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBetaTextEditorCodeExecutionToolResultErrorParam(
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionToolResultErrorParam? value
     )
     {
-        value = (this as ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam)?.Value;
+        value = this.Value as BetaTextEditorCodeExecutionToolResultErrorParam;
         return value != null;
     }
 
@@ -41,7 +67,7 @@ public abstract record class Content
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionViewResultBlockParam? value
     )
     {
-        value = (this as ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam)?.Value;
+        value = this.Value as BetaTextEditorCodeExecutionViewResultBlockParam;
         return value != null;
     }
 
@@ -49,7 +75,7 @@ public abstract record class Content
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionCreateResultBlockParam? value
     )
     {
-        value = (this as ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam)?.Value;
+        value = this.Value as BetaTextEditorCodeExecutionCreateResultBlockParam;
         return value != null;
     }
 
@@ -57,32 +83,30 @@ public abstract record class Content
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionStrReplaceResultBlockParam? value
     )
     {
-        value = (
-            this as ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam
-        )?.Value;
+        value = this.Value as BetaTextEditorCodeExecutionStrReplaceResultBlockParam;
         return value != null;
     }
 
     public void Switch(
-        Action<ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam> betaTextEditorCodeExecutionToolResultErrorParam,
-        Action<ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam> betaTextEditorCodeExecutionViewResultBlockParam,
-        Action<ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam> betaTextEditorCodeExecutionCreateResultBlockParam,
-        Action<ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam> betaTextEditorCodeExecutionStrReplaceResultBlockParam
+        Action<BetaTextEditorCodeExecutionToolResultErrorParam> betaTextEditorCodeExecutionToolResultErrorParam,
+        Action<BetaTextEditorCodeExecutionViewResultBlockParam> betaTextEditorCodeExecutionViewResultBlockParam,
+        Action<BetaTextEditorCodeExecutionCreateResultBlockParam> betaTextEditorCodeExecutionCreateResultBlockParam,
+        Action<BetaTextEditorCodeExecutionStrReplaceResultBlockParam> betaTextEditorCodeExecutionStrReplaceResultBlockParam
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam inner:
-                betaTextEditorCodeExecutionToolResultErrorParam(inner);
+            case BetaTextEditorCodeExecutionToolResultErrorParam value:
+                betaTextEditorCodeExecutionToolResultErrorParam(value);
                 break;
-            case ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam inner:
-                betaTextEditorCodeExecutionViewResultBlockParam(inner);
+            case BetaTextEditorCodeExecutionViewResultBlockParam value:
+                betaTextEditorCodeExecutionViewResultBlockParam(value);
                 break;
-            case ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam inner:
-                betaTextEditorCodeExecutionCreateResultBlockParam(inner);
+            case BetaTextEditorCodeExecutionCreateResultBlockParam value:
+                betaTextEditorCodeExecutionCreateResultBlockParam(value);
                 break;
-            case ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam inner:
-                betaTextEditorCodeExecutionStrReplaceResultBlockParam(inner);
+            case BetaTextEditorCodeExecutionStrReplaceResultBlockParam value:
+                betaTextEditorCodeExecutionStrReplaceResultBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -93,40 +117,48 @@ public abstract record class Content
 
     public T Match<T>(
         Func<
-            ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam,
+            BetaTextEditorCodeExecutionToolResultErrorParam,
             T
         > betaTextEditorCodeExecutionToolResultErrorParam,
         Func<
-            ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam,
+            BetaTextEditorCodeExecutionViewResultBlockParam,
             T
         > betaTextEditorCodeExecutionViewResultBlockParam,
         Func<
-            ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam,
+            BetaTextEditorCodeExecutionCreateResultBlockParam,
             T
         > betaTextEditorCodeExecutionCreateResultBlockParam,
         Func<
-            ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam,
+            BetaTextEditorCodeExecutionStrReplaceResultBlockParam,
             T
         > betaTextEditorCodeExecutionStrReplaceResultBlockParam
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam inner =>
-                betaTextEditorCodeExecutionToolResultErrorParam(inner),
-            ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam inner =>
-                betaTextEditorCodeExecutionViewResultBlockParam(inner),
-            ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam inner =>
-                betaTextEditorCodeExecutionCreateResultBlockParam(inner),
-            ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam inner =>
-                betaTextEditorCodeExecutionStrReplaceResultBlockParam(inner),
+            BetaTextEditorCodeExecutionToolResultErrorParam value =>
+                betaTextEditorCodeExecutionToolResultErrorParam(value),
+            BetaTextEditorCodeExecutionViewResultBlockParam value =>
+                betaTextEditorCodeExecutionViewResultBlockParam(value),
+            BetaTextEditorCodeExecutionCreateResultBlockParam value =>
+                betaTextEditorCodeExecutionCreateResultBlockParam(value),
+            BetaTextEditorCodeExecutionStrReplaceResultBlockParam value =>
+                betaTextEditorCodeExecutionStrReplaceResultBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Content"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Content");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentConverter : JsonConverter<Content>
@@ -148,16 +180,15 @@ sealed class ContentConverter : JsonConverter<Content>
                 );
             if (deserialized != null)
             {
-                return new ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam(
-                    deserialized
-                );
+                deserialized.Validate();
+                return new Content(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam",
+                    "Data does not match union variant 'BetaTextEditorCodeExecutionToolResultErrorParam'",
                     e
                 )
             );
@@ -172,16 +203,15 @@ sealed class ContentConverter : JsonConverter<Content>
                 );
             if (deserialized != null)
             {
-                return new ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam(
-                    deserialized
-                );
+                deserialized.Validate();
+                return new Content(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam",
+                    "Data does not match union variant 'BetaTextEditorCodeExecutionViewResultBlockParam'",
                     e
                 )
             );
@@ -196,16 +226,15 @@ sealed class ContentConverter : JsonConverter<Content>
                 );
             if (deserialized != null)
             {
-                return new ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam(
-                    deserialized
-                );
+                deserialized.Validate();
+                return new Content(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam",
+                    "Data does not match union variant 'BetaTextEditorCodeExecutionCreateResultBlockParam'",
                     e
                 )
             );
@@ -220,16 +249,15 @@ sealed class ContentConverter : JsonConverter<Content>
                 );
             if (deserialized != null)
             {
-                return new ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam(
-                    deserialized
-                );
+                deserialized.Validate();
+                return new Content(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam",
+                    "Data does not match union variant 'BetaTextEditorCodeExecutionStrReplaceResultBlockParam'",
                     e
                 )
             );
@@ -240,24 +268,7 @@ sealed class ContentConverter : JsonConverter<Content>
 
     public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            ContentVariants::BetaTextEditorCodeExecutionToolResultErrorParam(
-                var betaTextEditorCodeExecutionToolResultErrorParam
-            ) => betaTextEditorCodeExecutionToolResultErrorParam,
-            ContentVariants::BetaTextEditorCodeExecutionViewResultBlockParam(
-                var betaTextEditorCodeExecutionViewResultBlockParam
-            ) => betaTextEditorCodeExecutionViewResultBlockParam,
-            ContentVariants::BetaTextEditorCodeExecutionCreateResultBlockParam(
-                var betaTextEditorCodeExecutionCreateResultBlockParam
-            ) => betaTextEditorCodeExecutionCreateResultBlockParam,
-            ContentVariants::BetaTextEditorCodeExecutionStrReplaceResultBlockParam(
-                var betaTextEditorCodeExecutionStrReplaceResultBlockParam
-            ) => betaTextEditorCodeExecutionStrReplaceResultBlockParam,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

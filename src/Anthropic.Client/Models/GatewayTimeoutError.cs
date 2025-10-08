@@ -64,7 +64,7 @@ public sealed record class GatewayTimeoutError : ModelBase, IFromRaw<GatewayTime
 
     public GatewayTimeoutError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

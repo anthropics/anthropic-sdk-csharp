@@ -114,7 +114,7 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
 
     public TextBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

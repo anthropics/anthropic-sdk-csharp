@@ -171,7 +171,7 @@ public sealed record class BetaSearchResultBlockParam
 
     public BetaSearchResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

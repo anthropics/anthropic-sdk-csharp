@@ -166,8 +166,8 @@ public sealed record class BetaToolComputerUse20241022
 
     public BetaToolComputerUse20241022()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"computer_20241022\"");
+        this.Name = new();
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

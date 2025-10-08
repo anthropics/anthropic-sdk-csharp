@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaMessageBatchResultVariants = Anthropic.Client.Models.Beta.Messages.Batches.BetaMessageBatchResultVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches;
 
@@ -16,66 +15,97 @@ namespace Anthropic.Client.Models.Beta.Messages.Batches;
 /// or expiration.
 /// </summary>
 [JsonConverter(typeof(BetaMessageBatchResultConverter))]
-public abstract record class BetaMessageBatchResult
+public record class BetaMessageBatchResult
 {
-    internal BetaMessageBatchResult() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaMessageBatchResult(BetaMessageBatchSucceededResult value) =>
-        new BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                succeeded: (x) => x.Type,
+                errored: (x) => x.Type,
+                canceled: (x) => x.Type,
+                expired: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator BetaMessageBatchResult(BetaMessageBatchErroredResult value) =>
-        new BetaMessageBatchResultVariants::BetaMessageBatchErroredResult(value);
+    public BetaMessageBatchResult(BetaMessageBatchSucceededResult value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaMessageBatchResult(BetaMessageBatchCanceledResult value) =>
-        new BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult(value);
+    public BetaMessageBatchResult(BetaMessageBatchErroredResult value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaMessageBatchResult(BetaMessageBatchExpiredResult value) =>
-        new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(value);
+    public BetaMessageBatchResult(BetaMessageBatchCanceledResult value)
+    {
+        Value = value;
+    }
+
+    public BetaMessageBatchResult(BetaMessageBatchExpiredResult value)
+    {
+        Value = value;
+    }
+
+    BetaMessageBatchResult(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaMessageBatchResult CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickSucceeded([NotNullWhen(true)] out BetaMessageBatchSucceededResult? value)
     {
-        value = (this as BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult)?.Value;
+        value = this.Value as BetaMessageBatchSucceededResult;
         return value != null;
     }
 
     public bool TryPickErrored([NotNullWhen(true)] out BetaMessageBatchErroredResult? value)
     {
-        value = (this as BetaMessageBatchResultVariants::BetaMessageBatchErroredResult)?.Value;
+        value = this.Value as BetaMessageBatchErroredResult;
         return value != null;
     }
 
     public bool TryPickCanceled([NotNullWhen(true)] out BetaMessageBatchCanceledResult? value)
     {
-        value = (this as BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult)?.Value;
+        value = this.Value as BetaMessageBatchCanceledResult;
         return value != null;
     }
 
     public bool TryPickExpired([NotNullWhen(true)] out BetaMessageBatchExpiredResult? value)
     {
-        value = (this as BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult)?.Value;
+        value = this.Value as BetaMessageBatchExpiredResult;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult> succeeded,
-        Action<BetaMessageBatchResultVariants::BetaMessageBatchErroredResult> errored,
-        Action<BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult> canceled,
-        Action<BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult> expired
+        Action<BetaMessageBatchSucceededResult> succeeded,
+        Action<BetaMessageBatchErroredResult> errored,
+        Action<BetaMessageBatchCanceledResult> canceled,
+        Action<BetaMessageBatchExpiredResult> expired
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult inner:
-                succeeded(inner);
+            case BetaMessageBatchSucceededResult value:
+                succeeded(value);
                 break;
-            case BetaMessageBatchResultVariants::BetaMessageBatchErroredResult inner:
-                errored(inner);
+            case BetaMessageBatchErroredResult value:
+                errored(value);
                 break;
-            case BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult inner:
-                canceled(inner);
+            case BetaMessageBatchCanceledResult value:
+                canceled(value);
                 break;
-            case BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult inner:
-                expired(inner);
+            case BetaMessageBatchExpiredResult value:
+                expired(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -85,27 +115,35 @@ public abstract record class BetaMessageBatchResult
     }
 
     public T Match<T>(
-        Func<BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult, T> succeeded,
-        Func<BetaMessageBatchResultVariants::BetaMessageBatchErroredResult, T> errored,
-        Func<BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult, T> canceled,
-        Func<BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult, T> expired
+        Func<BetaMessageBatchSucceededResult, T> succeeded,
+        Func<BetaMessageBatchErroredResult, T> errored,
+        Func<BetaMessageBatchCanceledResult, T> canceled,
+        Func<BetaMessageBatchExpiredResult, T> expired
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult inner => succeeded(
-                inner
-            ),
-            BetaMessageBatchResultVariants::BetaMessageBatchErroredResult inner => errored(inner),
-            BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult inner => canceled(inner),
-            BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult inner => expired(inner),
+            BetaMessageBatchSucceededResult value => succeeded(value),
+            BetaMessageBatchErroredResult value => errored(value),
+            BetaMessageBatchCanceledResult value => canceled(value),
+            BetaMessageBatchExpiredResult value => expired(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaMessageBatchResult"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaMessageBatchResult"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchResult>
@@ -141,16 +179,15 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                     );
                     if (deserialized != null)
                     {
-                        return new BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMessageBatchResult(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult",
+                            "Data does not match union variant 'BetaMessageBatchSucceededResult'",
                             e
                         )
                     );
@@ -170,16 +207,15 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                     );
                     if (deserialized != null)
                     {
-                        return new BetaMessageBatchResultVariants::BetaMessageBatchErroredResult(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMessageBatchResult(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMessageBatchResultVariants::BetaMessageBatchErroredResult",
+                            "Data does not match union variant 'BetaMessageBatchErroredResult'",
                             e
                         )
                     );
@@ -199,16 +235,15 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                     );
                     if (deserialized != null)
                     {
-                        return new BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMessageBatchResult(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult",
+                            "Data does not match union variant 'BetaMessageBatchCanceledResult'",
                             e
                         )
                     );
@@ -228,16 +263,15 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                     );
                     if (deserialized != null)
                     {
-                        return new BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMessageBatchResult(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult",
+                            "Data does not match union variant 'BetaMessageBatchExpiredResult'",
                             e
                         )
                     );
@@ -260,18 +294,7 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaMessageBatchResultVariants::BetaMessageBatchSucceededResult(var succeeded) =>
-                succeeded,
-            BetaMessageBatchResultVariants::BetaMessageBatchErroredResult(var errored) => errored,
-            BetaMessageBatchResultVariants::BetaMessageBatchCanceledResult(var canceled) =>
-                canceled,
-            BetaMessageBatchResultVariants::BetaMessageBatchExpiredResult(var expired) => expired,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaMessageBatchResult"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

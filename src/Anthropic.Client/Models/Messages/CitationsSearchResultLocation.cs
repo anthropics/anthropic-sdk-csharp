@@ -183,7 +183,7 @@ public sealed record class CitationsSearchResultLocation
 
     public CitationsSearchResultLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result_location\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

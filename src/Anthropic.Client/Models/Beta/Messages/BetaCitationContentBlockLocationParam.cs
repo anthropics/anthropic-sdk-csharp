@@ -154,7 +154,7 @@ public sealed record class BetaCitationContentBlockLocationParam
 
     public BetaCitationContentBlockLocationParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_location\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

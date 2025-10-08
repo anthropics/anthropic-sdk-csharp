@@ -4,97 +4,148 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using RawMessageStreamEventVariants = Anthropic.Client.Models.Messages.RawMessageStreamEventVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
 [JsonConverter(typeof(RawMessageStreamEventConverter))]
-public abstract record class RawMessageStreamEvent
+public record class RawMessageStreamEvent
 {
-    internal RawMessageStreamEvent() { }
+    public object Value { get; private init; }
 
-    public static implicit operator RawMessageStreamEvent(RawMessageStartEvent value) =>
-        new RawMessageStreamEventVariants::RawMessageStartEvent(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                start: (x) => x.Type,
+                delta: (x) => x.Type,
+                stop: (x) => x.Type,
+                contentBlockStart: (x) => x.Type,
+                contentBlockDelta: (x) => x.Type,
+                contentBlockStop: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator RawMessageStreamEvent(RawMessageDeltaEvent value) =>
-        new RawMessageStreamEventVariants::RawMessageDeltaEvent(value);
+    public long? Index
+    {
+        get
+        {
+            return Match<long?>(
+                start: (_) => null,
+                delta: (_) => null,
+                stop: (_) => null,
+                contentBlockStart: (x) => x.Index,
+                contentBlockDelta: (x) => x.Index,
+                contentBlockStop: (x) => x.Index
+            );
+        }
+    }
 
-    public static implicit operator RawMessageStreamEvent(RawMessageStopEvent value) =>
-        new RawMessageStreamEventVariants::RawMessageStopEvent(value);
+    public RawMessageStreamEvent(RawMessageStartEvent value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator RawMessageStreamEvent(RawContentBlockStartEvent value) =>
-        new RawMessageStreamEventVariants::RawContentBlockStartEvent(value);
+    public RawMessageStreamEvent(RawMessageDeltaEvent value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator RawMessageStreamEvent(RawContentBlockDeltaEvent value) =>
-        new RawMessageStreamEventVariants::RawContentBlockDeltaEvent(value);
+    public RawMessageStreamEvent(RawMessageStopEvent value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator RawMessageStreamEvent(RawContentBlockStopEvent value) =>
-        new RawMessageStreamEventVariants::RawContentBlockStopEvent(value);
+    public RawMessageStreamEvent(RawContentBlockStartEvent value)
+    {
+        Value = value;
+    }
+
+    public RawMessageStreamEvent(RawContentBlockDeltaEvent value)
+    {
+        Value = value;
+    }
+
+    public RawMessageStreamEvent(RawContentBlockStopEvent value)
+    {
+        Value = value;
+    }
+
+    RawMessageStreamEvent(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static RawMessageStreamEvent CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickStart([NotNullWhen(true)] out RawMessageStartEvent? value)
     {
-        value = (this as RawMessageStreamEventVariants::RawMessageStartEvent)?.Value;
+        value = this.Value as RawMessageStartEvent;
         return value != null;
     }
 
     public bool TryPickDelta([NotNullWhen(true)] out RawMessageDeltaEvent? value)
     {
-        value = (this as RawMessageStreamEventVariants::RawMessageDeltaEvent)?.Value;
+        value = this.Value as RawMessageDeltaEvent;
         return value != null;
     }
 
     public bool TryPickStop([NotNullWhen(true)] out RawMessageStopEvent? value)
     {
-        value = (this as RawMessageStreamEventVariants::RawMessageStopEvent)?.Value;
+        value = this.Value as RawMessageStopEvent;
         return value != null;
     }
 
     public bool TryPickContentBlockStart([NotNullWhen(true)] out RawContentBlockStartEvent? value)
     {
-        value = (this as RawMessageStreamEventVariants::RawContentBlockStartEvent)?.Value;
+        value = this.Value as RawContentBlockStartEvent;
         return value != null;
     }
 
     public bool TryPickContentBlockDelta([NotNullWhen(true)] out RawContentBlockDeltaEvent? value)
     {
-        value = (this as RawMessageStreamEventVariants::RawContentBlockDeltaEvent)?.Value;
+        value = this.Value as RawContentBlockDeltaEvent;
         return value != null;
     }
 
     public bool TryPickContentBlockStop([NotNullWhen(true)] out RawContentBlockStopEvent? value)
     {
-        value = (this as RawMessageStreamEventVariants::RawContentBlockStopEvent)?.Value;
+        value = this.Value as RawContentBlockStopEvent;
         return value != null;
     }
 
     public void Switch(
-        Action<RawMessageStreamEventVariants::RawMessageStartEvent> start,
-        Action<RawMessageStreamEventVariants::RawMessageDeltaEvent> delta,
-        Action<RawMessageStreamEventVariants::RawMessageStopEvent> stop,
-        Action<RawMessageStreamEventVariants::RawContentBlockStartEvent> contentBlockStart,
-        Action<RawMessageStreamEventVariants::RawContentBlockDeltaEvent> contentBlockDelta,
-        Action<RawMessageStreamEventVariants::RawContentBlockStopEvent> contentBlockStop
+        Action<RawMessageStartEvent> start,
+        Action<RawMessageDeltaEvent> delta,
+        Action<RawMessageStopEvent> stop,
+        Action<RawContentBlockStartEvent> contentBlockStart,
+        Action<RawContentBlockDeltaEvent> contentBlockDelta,
+        Action<RawContentBlockStopEvent> contentBlockStop
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case RawMessageStreamEventVariants::RawMessageStartEvent inner:
-                start(inner);
+            case RawMessageStartEvent value:
+                start(value);
                 break;
-            case RawMessageStreamEventVariants::RawMessageDeltaEvent inner:
-                delta(inner);
+            case RawMessageDeltaEvent value:
+                delta(value);
                 break;
-            case RawMessageStreamEventVariants::RawMessageStopEvent inner:
-                stop(inner);
+            case RawMessageStopEvent value:
+                stop(value);
                 break;
-            case RawMessageStreamEventVariants::RawContentBlockStartEvent inner:
-                contentBlockStart(inner);
+            case RawContentBlockStartEvent value:
+                contentBlockStart(value);
                 break;
-            case RawMessageStreamEventVariants::RawContentBlockDeltaEvent inner:
-                contentBlockDelta(inner);
+            case RawContentBlockDeltaEvent value:
+                contentBlockDelta(value);
                 break;
-            case RawMessageStreamEventVariants::RawContentBlockStopEvent inner:
-                contentBlockStop(inner);
+            case RawContentBlockStopEvent value:
+                contentBlockStop(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -104,35 +155,39 @@ public abstract record class RawMessageStreamEvent
     }
 
     public T Match<T>(
-        Func<RawMessageStreamEventVariants::RawMessageStartEvent, T> start,
-        Func<RawMessageStreamEventVariants::RawMessageDeltaEvent, T> delta,
-        Func<RawMessageStreamEventVariants::RawMessageStopEvent, T> stop,
-        Func<RawMessageStreamEventVariants::RawContentBlockStartEvent, T> contentBlockStart,
-        Func<RawMessageStreamEventVariants::RawContentBlockDeltaEvent, T> contentBlockDelta,
-        Func<RawMessageStreamEventVariants::RawContentBlockStopEvent, T> contentBlockStop
+        Func<RawMessageStartEvent, T> start,
+        Func<RawMessageDeltaEvent, T> delta,
+        Func<RawMessageStopEvent, T> stop,
+        Func<RawContentBlockStartEvent, T> contentBlockStart,
+        Func<RawContentBlockDeltaEvent, T> contentBlockDelta,
+        Func<RawContentBlockStopEvent, T> contentBlockStop
     )
     {
-        return this switch
+        return this.Value switch
         {
-            RawMessageStreamEventVariants::RawMessageStartEvent inner => start(inner),
-            RawMessageStreamEventVariants::RawMessageDeltaEvent inner => delta(inner),
-            RawMessageStreamEventVariants::RawMessageStopEvent inner => stop(inner),
-            RawMessageStreamEventVariants::RawContentBlockStartEvent inner => contentBlockStart(
-                inner
-            ),
-            RawMessageStreamEventVariants::RawContentBlockDeltaEvent inner => contentBlockDelta(
-                inner
-            ),
-            RawMessageStreamEventVariants::RawContentBlockStopEvent inner => contentBlockStop(
-                inner
-            ),
+            RawMessageStartEvent value => start(value),
+            RawMessageDeltaEvent value => delta(value),
+            RawMessageStopEvent value => stop(value),
+            RawContentBlockStartEvent value => contentBlockStart(value),
+            RawContentBlockDeltaEvent value => contentBlockDelta(value),
+            RawContentBlockStopEvent value => contentBlockStop(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of RawMessageStreamEvent"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of RawMessageStreamEvent"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEvent>
@@ -168,16 +223,15 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                     if (deserialized != null)
                     {
-                        return new RawMessageStreamEventVariants::RawMessageStartEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant RawMessageStreamEventVariants::RawMessageStartEvent",
+                            "Data does not match union variant 'RawMessageStartEvent'",
                             e
                         )
                     );
@@ -197,16 +251,15 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                     if (deserialized != null)
                     {
-                        return new RawMessageStreamEventVariants::RawMessageDeltaEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant RawMessageStreamEventVariants::RawMessageDeltaEvent",
+                            "Data does not match union variant 'RawMessageDeltaEvent'",
                             e
                         )
                     );
@@ -226,14 +279,15 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                     if (deserialized != null)
                     {
-                        return new RawMessageStreamEventVariants::RawMessageStopEvent(deserialized);
+                        deserialized.Validate();
+                        return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant RawMessageStreamEventVariants::RawMessageStopEvent",
+                            "Data does not match union variant 'RawMessageStopEvent'",
                             e
                         )
                     );
@@ -253,16 +307,15 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                     if (deserialized != null)
                     {
-                        return new RawMessageStreamEventVariants::RawContentBlockStartEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant RawMessageStreamEventVariants::RawContentBlockStartEvent",
+                            "Data does not match union variant 'RawContentBlockStartEvent'",
                             e
                         )
                     );
@@ -282,16 +335,15 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                     if (deserialized != null)
                     {
-                        return new RawMessageStreamEventVariants::RawContentBlockDeltaEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant RawMessageStreamEventVariants::RawContentBlockDeltaEvent",
+                            "Data does not match union variant 'RawContentBlockDeltaEvent'",
                             e
                         )
                     );
@@ -311,16 +363,15 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                     if (deserialized != null)
                     {
-                        return new RawMessageStreamEventVariants::RawContentBlockStopEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant RawMessageStreamEventVariants::RawContentBlockStopEvent",
+                            "Data does not match union variant 'RawContentBlockStopEvent'",
                             e
                         )
                     );
@@ -343,21 +394,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            RawMessageStreamEventVariants::RawMessageStartEvent(var start) => start,
-            RawMessageStreamEventVariants::RawMessageDeltaEvent(var delta) => delta,
-            RawMessageStreamEventVariants::RawMessageStopEvent(var stop) => stop,
-            RawMessageStreamEventVariants::RawContentBlockStartEvent(var contentBlockStart) =>
-                contentBlockStart,
-            RawMessageStreamEventVariants::RawContentBlockDeltaEvent(var contentBlockDelta) =>
-                contentBlockDelta,
-            RawMessageStreamEventVariants::RawContentBlockStopEvent(var contentBlockStop) =>
-                contentBlockStop,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of RawMessageStreamEvent"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

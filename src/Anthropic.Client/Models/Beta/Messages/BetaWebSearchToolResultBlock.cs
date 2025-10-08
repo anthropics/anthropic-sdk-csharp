@@ -95,7 +95,7 @@ public sealed record class BetaWebSearchToolResultBlock
 
     public BetaWebSearchToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

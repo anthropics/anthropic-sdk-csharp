@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ContentBlockParamVariants = Anthropic.Client.Models.Messages.ContentBlockParamVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -12,91 +11,235 @@ namespace Anthropic.Client.Models.Messages;
 /// Regular text content.
 /// </summary>
 [JsonConverter(typeof(ContentBlockParamConverter))]
-public abstract record class ContentBlockParam
+public record class ContentBlockParam
 {
-    internal ContentBlockParam() { }
+    public object Value { get; private init; }
 
-    public static implicit operator ContentBlockParam(TextBlockParam value) =>
-        new ContentBlockParamVariants::TextBlockParam(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                text: (x) => x.Type,
+                image: (x) => x.Type,
+                document: (x) => x.Type,
+                searchResult: (x) => x.Type,
+                thinking: (x) => x.Type,
+                redactedThinking: (x) => x.Type,
+                toolUse: (x) => x.Type,
+                toolResult: (x) => x.Type,
+                serverToolUse: (x) => x.Type,
+                webSearchToolResult: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator ContentBlockParam(ImageBlockParam value) =>
-        new ContentBlockParamVariants::ImageBlockParam(value);
+    public CacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return Match<CacheControlEphemeral?>(
+                text: (x) => x.CacheControl,
+                image: (x) => x.CacheControl,
+                document: (x) => x.CacheControl,
+                searchResult: (x) => x.CacheControl,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.CacheControl,
+                toolResult: (x) => x.CacheControl,
+                serverToolUse: (x) => x.CacheControl,
+                webSearchToolResult: (x) => x.CacheControl
+            );
+        }
+    }
 
-    public static implicit operator ContentBlockParam(DocumentBlockParam value) =>
-        new ContentBlockParamVariants::DocumentBlockParam(value);
+    public string? Title
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                image: (_) => null,
+                document: (x) => x.Title,
+                searchResult: (x) => x.Title,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (_) => null,
+                toolResult: (_) => null,
+                serverToolUse: (_) => null,
+                webSearchToolResult: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator ContentBlockParam(SearchResultBlockParam value) =>
-        new ContentBlockParamVariants::SearchResultBlockParam(value);
+    public string? ID
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                image: (_) => null,
+                document: (_) => null,
+                searchResult: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.ID,
+                toolResult: (_) => null,
+                serverToolUse: (x) => x.ID,
+                webSearchToolResult: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator ContentBlockParam(ThinkingBlockParam value) =>
-        new ContentBlockParamVariants::ThinkingBlockParam(value);
+    public JsonElement? Input
+    {
+        get
+        {
+            return Match<JsonElement?>(
+                text: (_) => null,
+                image: (_) => null,
+                document: (_) => null,
+                searchResult: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.Input,
+                toolResult: (_) => null,
+                serverToolUse: (x) => x.Input,
+                webSearchToolResult: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator ContentBlockParam(RedactedThinkingBlockParam value) =>
-        new ContentBlockParamVariants::RedactedThinkingBlockParam(value);
+    public string? ToolUseID
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                image: (_) => null,
+                document: (_) => null,
+                searchResult: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (_) => null,
+                toolResult: (x) => x.ToolUseID,
+                serverToolUse: (_) => null,
+                webSearchToolResult: (x) => x.ToolUseID
+            );
+        }
+    }
 
-    public static implicit operator ContentBlockParam(ToolUseBlockParam value) =>
-        new ContentBlockParamVariants::ToolUseBlockParam(value);
+    public ContentBlockParam(TextBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ContentBlockParam(ToolResultBlockParam value) =>
-        new ContentBlockParamVariants::ToolResultBlockParam(value);
+    public ContentBlockParam(ImageBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ContentBlockParam(ServerToolUseBlockParam value) =>
-        new ContentBlockParamVariants::ServerToolUseBlockParam(value);
+    public ContentBlockParam(DocumentBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ContentBlockParam(WebSearchToolResultBlockParam value) =>
-        new ContentBlockParamVariants::WebSearchToolResultBlockParam(value);
+    public ContentBlockParam(SearchResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public ContentBlockParam(ThinkingBlockParam value)
+    {
+        Value = value;
+    }
+
+    public ContentBlockParam(RedactedThinkingBlockParam value)
+    {
+        Value = value;
+    }
+
+    public ContentBlockParam(ToolUseBlockParam value)
+    {
+        Value = value;
+    }
+
+    public ContentBlockParam(ToolResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public ContentBlockParam(ServerToolUseBlockParam value)
+    {
+        Value = value;
+    }
+
+    public ContentBlockParam(WebSearchToolResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    ContentBlockParam(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static ContentBlockParam CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickText([NotNullWhen(true)] out TextBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::TextBlockParam)?.Value;
+        value = this.Value as TextBlockParam;
         return value != null;
     }
 
     public bool TryPickImage([NotNullWhen(true)] out ImageBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::ImageBlockParam)?.Value;
+        value = this.Value as ImageBlockParam;
         return value != null;
     }
 
     public bool TryPickDocument([NotNullWhen(true)] out DocumentBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::DocumentBlockParam)?.Value;
+        value = this.Value as DocumentBlockParam;
         return value != null;
     }
 
     public bool TryPickSearchResult([NotNullWhen(true)] out SearchResultBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::SearchResultBlockParam)?.Value;
+        value = this.Value as SearchResultBlockParam;
         return value != null;
     }
 
     public bool TryPickThinking([NotNullWhen(true)] out ThinkingBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::ThinkingBlockParam)?.Value;
+        value = this.Value as ThinkingBlockParam;
         return value != null;
     }
 
     public bool TryPickRedactedThinking([NotNullWhen(true)] out RedactedThinkingBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::RedactedThinkingBlockParam)?.Value;
+        value = this.Value as RedactedThinkingBlockParam;
         return value != null;
     }
 
     public bool TryPickToolUse([NotNullWhen(true)] out ToolUseBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::ToolUseBlockParam)?.Value;
+        value = this.Value as ToolUseBlockParam;
         return value != null;
     }
 
     public bool TryPickToolResult([NotNullWhen(true)] out ToolResultBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::ToolResultBlockParam)?.Value;
+        value = this.Value as ToolResultBlockParam;
         return value != null;
     }
 
     public bool TryPickServerToolUse([NotNullWhen(true)] out ServerToolUseBlockParam? value)
     {
-        value = (this as ContentBlockParamVariants::ServerToolUseBlockParam)?.Value;
+        value = this.Value as ServerToolUseBlockParam;
         return value != null;
     }
 
@@ -104,54 +247,54 @@ public abstract record class ContentBlockParam
         [NotNullWhen(true)] out WebSearchToolResultBlockParam? value
     )
     {
-        value = (this as ContentBlockParamVariants::WebSearchToolResultBlockParam)?.Value;
+        value = this.Value as WebSearchToolResultBlockParam;
         return value != null;
     }
 
     public void Switch(
-        Action<ContentBlockParamVariants::TextBlockParam> text,
-        Action<ContentBlockParamVariants::ImageBlockParam> image,
-        Action<ContentBlockParamVariants::DocumentBlockParam> document,
-        Action<ContentBlockParamVariants::SearchResultBlockParam> searchResult,
-        Action<ContentBlockParamVariants::ThinkingBlockParam> thinking,
-        Action<ContentBlockParamVariants::RedactedThinkingBlockParam> redactedThinking,
-        Action<ContentBlockParamVariants::ToolUseBlockParam> toolUse,
-        Action<ContentBlockParamVariants::ToolResultBlockParam> toolResult,
-        Action<ContentBlockParamVariants::ServerToolUseBlockParam> serverToolUse,
-        Action<ContentBlockParamVariants::WebSearchToolResultBlockParam> webSearchToolResult
+        Action<TextBlockParam> text,
+        Action<ImageBlockParam> image,
+        Action<DocumentBlockParam> document,
+        Action<SearchResultBlockParam> searchResult,
+        Action<ThinkingBlockParam> thinking,
+        Action<RedactedThinkingBlockParam> redactedThinking,
+        Action<ToolUseBlockParam> toolUse,
+        Action<ToolResultBlockParam> toolResult,
+        Action<ServerToolUseBlockParam> serverToolUse,
+        Action<WebSearchToolResultBlockParam> webSearchToolResult
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ContentBlockParamVariants::TextBlockParam inner:
-                text(inner);
+            case TextBlockParam value:
+                text(value);
                 break;
-            case ContentBlockParamVariants::ImageBlockParam inner:
-                image(inner);
+            case ImageBlockParam value:
+                image(value);
                 break;
-            case ContentBlockParamVariants::DocumentBlockParam inner:
-                document(inner);
+            case DocumentBlockParam value:
+                document(value);
                 break;
-            case ContentBlockParamVariants::SearchResultBlockParam inner:
-                searchResult(inner);
+            case SearchResultBlockParam value:
+                searchResult(value);
                 break;
-            case ContentBlockParamVariants::ThinkingBlockParam inner:
-                thinking(inner);
+            case ThinkingBlockParam value:
+                thinking(value);
                 break;
-            case ContentBlockParamVariants::RedactedThinkingBlockParam inner:
-                redactedThinking(inner);
+            case RedactedThinkingBlockParam value:
+                redactedThinking(value);
                 break;
-            case ContentBlockParamVariants::ToolUseBlockParam inner:
-                toolUse(inner);
+            case ToolUseBlockParam value:
+                toolUse(value);
                 break;
-            case ContentBlockParamVariants::ToolResultBlockParam inner:
-                toolResult(inner);
+            case ToolResultBlockParam value:
+                toolResult(value);
                 break;
-            case ContentBlockParamVariants::ServerToolUseBlockParam inner:
-                serverToolUse(inner);
+            case ServerToolUseBlockParam value:
+                serverToolUse(value);
                 break;
-            case ContentBlockParamVariants::WebSearchToolResultBlockParam inner:
-                webSearchToolResult(inner);
+            case WebSearchToolResultBlockParam value:
+                webSearchToolResult(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -161,39 +304,47 @@ public abstract record class ContentBlockParam
     }
 
     public T Match<T>(
-        Func<ContentBlockParamVariants::TextBlockParam, T> text,
-        Func<ContentBlockParamVariants::ImageBlockParam, T> image,
-        Func<ContentBlockParamVariants::DocumentBlockParam, T> document,
-        Func<ContentBlockParamVariants::SearchResultBlockParam, T> searchResult,
-        Func<ContentBlockParamVariants::ThinkingBlockParam, T> thinking,
-        Func<ContentBlockParamVariants::RedactedThinkingBlockParam, T> redactedThinking,
-        Func<ContentBlockParamVariants::ToolUseBlockParam, T> toolUse,
-        Func<ContentBlockParamVariants::ToolResultBlockParam, T> toolResult,
-        Func<ContentBlockParamVariants::ServerToolUseBlockParam, T> serverToolUse,
-        Func<ContentBlockParamVariants::WebSearchToolResultBlockParam, T> webSearchToolResult
+        Func<TextBlockParam, T> text,
+        Func<ImageBlockParam, T> image,
+        Func<DocumentBlockParam, T> document,
+        Func<SearchResultBlockParam, T> searchResult,
+        Func<ThinkingBlockParam, T> thinking,
+        Func<RedactedThinkingBlockParam, T> redactedThinking,
+        Func<ToolUseBlockParam, T> toolUse,
+        Func<ToolResultBlockParam, T> toolResult,
+        Func<ServerToolUseBlockParam, T> serverToolUse,
+        Func<WebSearchToolResultBlockParam, T> webSearchToolResult
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ContentBlockParamVariants::TextBlockParam inner => text(inner),
-            ContentBlockParamVariants::ImageBlockParam inner => image(inner),
-            ContentBlockParamVariants::DocumentBlockParam inner => document(inner),
-            ContentBlockParamVariants::SearchResultBlockParam inner => searchResult(inner),
-            ContentBlockParamVariants::ThinkingBlockParam inner => thinking(inner),
-            ContentBlockParamVariants::RedactedThinkingBlockParam inner => redactedThinking(inner),
-            ContentBlockParamVariants::ToolUseBlockParam inner => toolUse(inner),
-            ContentBlockParamVariants::ToolResultBlockParam inner => toolResult(inner),
-            ContentBlockParamVariants::ServerToolUseBlockParam inner => serverToolUse(inner),
-            ContentBlockParamVariants::WebSearchToolResultBlockParam inner => webSearchToolResult(
-                inner
-            ),
+            TextBlockParam value => text(value),
+            ImageBlockParam value => image(value),
+            DocumentBlockParam value => document(value),
+            SearchResultBlockParam value => searchResult(value),
+            ThinkingBlockParam value => thinking(value),
+            RedactedThinkingBlockParam value => redactedThinking(value),
+            ToolUseBlockParam value => toolUse(value),
+            ToolResultBlockParam value => toolResult(value),
+            ServerToolUseBlockParam value => serverToolUse(value),
+            WebSearchToolResultBlockParam value => webSearchToolResult(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlockParam"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ContentBlockParam"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
@@ -226,14 +377,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::TextBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::TextBlockParam",
+                            "Data does not match union variant 'TextBlockParam'",
                             e
                         )
                     );
@@ -250,14 +402,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::ImageBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::ImageBlockParam",
+                            "Data does not match union variant 'ImageBlockParam'",
                             e
                         )
                     );
@@ -277,14 +430,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::DocumentBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::DocumentBlockParam",
+                            "Data does not match union variant 'DocumentBlockParam'",
                             e
                         )
                     );
@@ -304,14 +458,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::SearchResultBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::SearchResultBlockParam",
+                            "Data does not match union variant 'SearchResultBlockParam'",
                             e
                         )
                     );
@@ -331,14 +486,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::ThinkingBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::ThinkingBlockParam",
+                            "Data does not match union variant 'ThinkingBlockParam'",
                             e
                         )
                     );
@@ -358,16 +514,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::RedactedThinkingBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::RedactedThinkingBlockParam",
+                            "Data does not match union variant 'RedactedThinkingBlockParam'",
                             e
                         )
                     );
@@ -384,14 +539,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(json, options);
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::ToolUseBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::ToolUseBlockParam",
+                            "Data does not match union variant 'ToolUseBlockParam'",
                             e
                         )
                     );
@@ -411,14 +567,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::ToolResultBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::ToolResultBlockParam",
+                            "Data does not match union variant 'ToolResultBlockParam'",
                             e
                         )
                     );
@@ -438,14 +595,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::ServerToolUseBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::ServerToolUseBlockParam",
+                            "Data does not match union variant 'ServerToolUseBlockParam'",
                             e
                         )
                     );
@@ -465,16 +623,15 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                     if (deserialized != null)
                     {
-                        return new ContentBlockParamVariants::WebSearchToolResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockParamVariants::WebSearchToolResultBlockParam",
+                            "Data does not match union variant 'WebSearchToolResultBlockParam'",
                             e
                         )
                     );
@@ -497,24 +654,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            ContentBlockParamVariants::TextBlockParam(var text) => text,
-            ContentBlockParamVariants::ImageBlockParam(var image) => image,
-            ContentBlockParamVariants::DocumentBlockParam(var document) => document,
-            ContentBlockParamVariants::SearchResultBlockParam(var searchResult) => searchResult,
-            ContentBlockParamVariants::ThinkingBlockParam(var thinking) => thinking,
-            ContentBlockParamVariants::RedactedThinkingBlockParam(var redactedThinking) =>
-                redactedThinking,
-            ContentBlockParamVariants::ToolUseBlockParam(var toolUse) => toolUse,
-            ContentBlockParamVariants::ToolResultBlockParam(var toolResult) => toolResult,
-            ContentBlockParamVariants::ServerToolUseBlockParam(var serverToolUse) => serverToolUse,
-            ContentBlockParamVariants::WebSearchToolResultBlockParam(var webSearchToolResult) =>
-                webSearchToolResult,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentBlockParam"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

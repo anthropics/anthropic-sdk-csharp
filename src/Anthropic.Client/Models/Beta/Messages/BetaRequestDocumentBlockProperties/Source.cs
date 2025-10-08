@@ -4,84 +4,145 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using SourceVariants = Anthropic.Client.Models.Beta.Messages.BetaRequestDocumentBlockProperties.SourceVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaRequestDocumentBlockProperties;
 
 [JsonConverter(typeof(SourceConverter))]
-public abstract record class Source
+public record class Source
 {
-    internal Source() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Source(BetaBase64PDFSource value) =>
-        new SourceVariants::BetaBase64PDFSource(value);
+    public string? Data
+    {
+        get
+        {
+            return Match<string?>(
+                betaBase64PDF: (x) => x.Data,
+                betaPlainText: (x) => x.Data,
+                betaContentBlock: (_) => null,
+                betaURLPDF: (_) => null,
+                betaFileDocument: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator Source(BetaPlainTextSource value) =>
-        new SourceVariants::BetaPlainTextSource(value);
+    public JsonElement? MediaType
+    {
+        get
+        {
+            return Match<JsonElement?>(
+                betaBase64PDF: (x) => x.MediaType,
+                betaPlainText: (x) => x.MediaType,
+                betaContentBlock: (_) => null,
+                betaURLPDF: (_) => null,
+                betaFileDocument: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator Source(BetaContentBlockSource value) =>
-        new SourceVariants::BetaContentBlockSource(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                betaBase64PDF: (x) => x.Type,
+                betaPlainText: (x) => x.Type,
+                betaContentBlock: (x) => x.Type,
+                betaURLPDF: (x) => x.Type,
+                betaFileDocument: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator Source(BetaURLPDFSource value) =>
-        new SourceVariants::BetaURLPDFSource(value);
+    public Source(BetaBase64PDFSource value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator Source(BetaFileDocumentSource value) =>
-        new SourceVariants::BetaFileDocumentSource(value);
+    public Source(BetaPlainTextSource value)
+    {
+        Value = value;
+    }
+
+    public Source(BetaContentBlockSource value)
+    {
+        Value = value;
+    }
+
+    public Source(BetaURLPDFSource value)
+    {
+        Value = value;
+    }
+
+    public Source(BetaFileDocumentSource value)
+    {
+        Value = value;
+    }
+
+    Source(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Source CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBetaBase64PDF([NotNullWhen(true)] out BetaBase64PDFSource? value)
     {
-        value = (this as SourceVariants::BetaBase64PDFSource)?.Value;
+        value = this.Value as BetaBase64PDFSource;
         return value != null;
     }
 
     public bool TryPickBetaPlainText([NotNullWhen(true)] out BetaPlainTextSource? value)
     {
-        value = (this as SourceVariants::BetaPlainTextSource)?.Value;
+        value = this.Value as BetaPlainTextSource;
         return value != null;
     }
 
     public bool TryPickBetaContentBlock([NotNullWhen(true)] out BetaContentBlockSource? value)
     {
-        value = (this as SourceVariants::BetaContentBlockSource)?.Value;
+        value = this.Value as BetaContentBlockSource;
         return value != null;
     }
 
     public bool TryPickBetaURLPDF([NotNullWhen(true)] out BetaURLPDFSource? value)
     {
-        value = (this as SourceVariants::BetaURLPDFSource)?.Value;
+        value = this.Value as BetaURLPDFSource;
         return value != null;
     }
 
     public bool TryPickBetaFileDocument([NotNullWhen(true)] out BetaFileDocumentSource? value)
     {
-        value = (this as SourceVariants::BetaFileDocumentSource)?.Value;
+        value = this.Value as BetaFileDocumentSource;
         return value != null;
     }
 
     public void Switch(
-        Action<SourceVariants::BetaBase64PDFSource> betaBase64PDF,
-        Action<SourceVariants::BetaPlainTextSource> betaPlainText,
-        Action<SourceVariants::BetaContentBlockSource> betaContentBlock,
-        Action<SourceVariants::BetaURLPDFSource> betaURLPDF,
-        Action<SourceVariants::BetaFileDocumentSource> betaFileDocument
+        Action<BetaBase64PDFSource> betaBase64PDF,
+        Action<BetaPlainTextSource> betaPlainText,
+        Action<BetaContentBlockSource> betaContentBlock,
+        Action<BetaURLPDFSource> betaURLPDF,
+        Action<BetaFileDocumentSource> betaFileDocument
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case SourceVariants::BetaBase64PDFSource inner:
-                betaBase64PDF(inner);
+            case BetaBase64PDFSource value:
+                betaBase64PDF(value);
                 break;
-            case SourceVariants::BetaPlainTextSource inner:
-                betaPlainText(inner);
+            case BetaPlainTextSource value:
+                betaPlainText(value);
                 break;
-            case SourceVariants::BetaContentBlockSource inner:
-                betaContentBlock(inner);
+            case BetaContentBlockSource value:
+                betaContentBlock(value);
                 break;
-            case SourceVariants::BetaURLPDFSource inner:
-                betaURLPDF(inner);
+            case BetaURLPDFSource value:
+                betaURLPDF(value);
                 break;
-            case SourceVariants::BetaFileDocumentSource inner:
-                betaFileDocument(inner);
+            case BetaFileDocumentSource value:
+                betaFileDocument(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Source");
@@ -89,27 +150,35 @@ public abstract record class Source
     }
 
     public T Match<T>(
-        Func<SourceVariants::BetaBase64PDFSource, T> betaBase64PDF,
-        Func<SourceVariants::BetaPlainTextSource, T> betaPlainText,
-        Func<SourceVariants::BetaContentBlockSource, T> betaContentBlock,
-        Func<SourceVariants::BetaURLPDFSource, T> betaURLPDF,
-        Func<SourceVariants::BetaFileDocumentSource, T> betaFileDocument
+        Func<BetaBase64PDFSource, T> betaBase64PDF,
+        Func<BetaPlainTextSource, T> betaPlainText,
+        Func<BetaContentBlockSource, T> betaContentBlock,
+        Func<BetaURLPDFSource, T> betaURLPDF,
+        Func<BetaFileDocumentSource, T> betaFileDocument
     )
     {
-        return this switch
+        return this.Value switch
         {
-            SourceVariants::BetaBase64PDFSource inner => betaBase64PDF(inner),
-            SourceVariants::BetaPlainTextSource inner => betaPlainText(inner),
-            SourceVariants::BetaContentBlockSource inner => betaContentBlock(inner),
-            SourceVariants::BetaURLPDFSource inner => betaURLPDF(inner),
-            SourceVariants::BetaFileDocumentSource inner => betaFileDocument(inner),
+            BetaBase64PDFSource value => betaBase64PDF(value),
+            BetaPlainTextSource value => betaPlainText(value),
+            BetaContentBlockSource value => betaContentBlock(value),
+            BetaURLPDFSource value => betaURLPDF(value),
+            BetaFileDocumentSource value => betaFileDocument(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Source"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Source");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class SourceConverter : JsonConverter<Source>
@@ -145,14 +214,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     );
                     if (deserialized != null)
                     {
-                        return new SourceVariants::BetaBase64PDFSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::BetaBase64PDFSource",
+                            "Data does not match union variant 'BetaBase64PDFSource'",
                             e
                         )
                     );
@@ -172,14 +242,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     );
                     if (deserialized != null)
                     {
-                        return new SourceVariants::BetaPlainTextSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::BetaPlainTextSource",
+                            "Data does not match union variant 'BetaPlainTextSource'",
                             e
                         )
                     );
@@ -199,14 +270,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     );
                     if (deserialized != null)
                     {
-                        return new SourceVariants::BetaContentBlockSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::BetaContentBlockSource",
+                            "Data does not match union variant 'BetaContentBlockSource'",
                             e
                         )
                     );
@@ -223,14 +295,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     var deserialized = JsonSerializer.Deserialize<BetaURLPDFSource>(json, options);
                     if (deserialized != null)
                     {
-                        return new SourceVariants::BetaURLPDFSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::BetaURLPDFSource",
+                            "Data does not match union variant 'BetaURLPDFSource'",
                             e
                         )
                     );
@@ -250,14 +323,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     );
                     if (deserialized != null)
                     {
-                        return new SourceVariants::BetaFileDocumentSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::BetaFileDocumentSource",
+                            "Data does not match union variant 'BetaFileDocumentSource'",
                             e
                         )
                     );
@@ -276,17 +350,7 @@ sealed class SourceConverter : JsonConverter<Source>
 
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            SourceVariants::BetaBase64PDFSource(var betaBase64PDF) => betaBase64PDF,
-            SourceVariants::BetaPlainTextSource(var betaPlainText) => betaPlainText,
-            SourceVariants::BetaContentBlockSource(var betaContentBlock) => betaContentBlock,
-            SourceVariants::BetaURLPDFSource(var betaURLPDF) => betaURLPDF,
-            SourceVariants::BetaFileDocumentSource(var betaFileDocument) => betaFileDocument,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Source"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

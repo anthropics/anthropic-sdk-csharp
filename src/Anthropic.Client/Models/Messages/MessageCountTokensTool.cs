@@ -4,97 +4,133 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using MessageCountTokensToolVariants = Anthropic.Client.Models.Messages.MessageCountTokensToolVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
 [JsonConverter(typeof(MessageCountTokensToolConverter))]
-public abstract record class MessageCountTokensTool
+public record class MessageCountTokensTool
 {
-    internal MessageCountTokensTool() { }
+    public object Value { get; private init; }
 
-    public static implicit operator MessageCountTokensTool(Tool value) =>
-        new MessageCountTokensToolVariants::Tool(value);
+    public CacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return Match<CacheControlEphemeral?>(
+                tool: (x) => x.CacheControl,
+                toolBash20250124: (x) => x.CacheControl,
+                toolTextEditor20250124: (x) => x.CacheControl,
+                toolTextEditor20250429: (x) => x.CacheControl,
+                toolTextEditor20250728: (x) => x.CacheControl,
+                webSearchTool20250305: (x) => x.CacheControl
+            );
+        }
+    }
 
-    public static implicit operator MessageCountTokensTool(ToolBash20250124 value) =>
-        new MessageCountTokensToolVariants::ToolBash20250124(value);
+    public MessageCountTokensTool(Tool value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator MessageCountTokensTool(ToolTextEditor20250124 value) =>
-        new MessageCountTokensToolVariants::ToolTextEditor20250124(value);
+    public MessageCountTokensTool(ToolBash20250124 value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator MessageCountTokensTool(ToolTextEditor20250429 value) =>
-        new MessageCountTokensToolVariants::ToolTextEditor20250429(value);
+    public MessageCountTokensTool(ToolTextEditor20250124 value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator MessageCountTokensTool(ToolTextEditor20250728 value) =>
-        new MessageCountTokensToolVariants::ToolTextEditor20250728(value);
+    public MessageCountTokensTool(ToolTextEditor20250429 value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator MessageCountTokensTool(WebSearchTool20250305 value) =>
-        new MessageCountTokensToolVariants::WebSearchTool20250305(value);
+    public MessageCountTokensTool(ToolTextEditor20250728 value)
+    {
+        Value = value;
+    }
+
+    public MessageCountTokensTool(WebSearchTool20250305 value)
+    {
+        Value = value;
+    }
+
+    MessageCountTokensTool(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static MessageCountTokensTool CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickTool([NotNullWhen(true)] out Tool? value)
     {
-        value = (this as MessageCountTokensToolVariants::Tool)?.Value;
+        value = this.Value as Tool;
         return value != null;
     }
 
     public bool TryPickToolBash20250124([NotNullWhen(true)] out ToolBash20250124? value)
     {
-        value = (this as MessageCountTokensToolVariants::ToolBash20250124)?.Value;
+        value = this.Value as ToolBash20250124;
         return value != null;
     }
 
     public bool TryPickToolTextEditor20250124([NotNullWhen(true)] out ToolTextEditor20250124? value)
     {
-        value = (this as MessageCountTokensToolVariants::ToolTextEditor20250124)?.Value;
+        value = this.Value as ToolTextEditor20250124;
         return value != null;
     }
 
     public bool TryPickToolTextEditor20250429([NotNullWhen(true)] out ToolTextEditor20250429? value)
     {
-        value = (this as MessageCountTokensToolVariants::ToolTextEditor20250429)?.Value;
+        value = this.Value as ToolTextEditor20250429;
         return value != null;
     }
 
     public bool TryPickToolTextEditor20250728([NotNullWhen(true)] out ToolTextEditor20250728? value)
     {
-        value = (this as MessageCountTokensToolVariants::ToolTextEditor20250728)?.Value;
+        value = this.Value as ToolTextEditor20250728;
         return value != null;
     }
 
     public bool TryPickWebSearchTool20250305([NotNullWhen(true)] out WebSearchTool20250305? value)
     {
-        value = (this as MessageCountTokensToolVariants::WebSearchTool20250305)?.Value;
+        value = this.Value as WebSearchTool20250305;
         return value != null;
     }
 
     public void Switch(
-        Action<MessageCountTokensToolVariants::Tool> tool,
-        Action<MessageCountTokensToolVariants::ToolBash20250124> toolBash20250124,
-        Action<MessageCountTokensToolVariants::ToolTextEditor20250124> toolTextEditor20250124,
-        Action<MessageCountTokensToolVariants::ToolTextEditor20250429> toolTextEditor20250429,
-        Action<MessageCountTokensToolVariants::ToolTextEditor20250728> toolTextEditor20250728,
-        Action<MessageCountTokensToolVariants::WebSearchTool20250305> webSearchTool20250305
+        Action<Tool> tool,
+        Action<ToolBash20250124> toolBash20250124,
+        Action<ToolTextEditor20250124> toolTextEditor20250124,
+        Action<ToolTextEditor20250429> toolTextEditor20250429,
+        Action<ToolTextEditor20250728> toolTextEditor20250728,
+        Action<WebSearchTool20250305> webSearchTool20250305
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case MessageCountTokensToolVariants::Tool inner:
-                tool(inner);
+            case Tool value:
+                tool(value);
                 break;
-            case MessageCountTokensToolVariants::ToolBash20250124 inner:
-                toolBash20250124(inner);
+            case ToolBash20250124 value:
+                toolBash20250124(value);
                 break;
-            case MessageCountTokensToolVariants::ToolTextEditor20250124 inner:
-                toolTextEditor20250124(inner);
+            case ToolTextEditor20250124 value:
+                toolTextEditor20250124(value);
                 break;
-            case MessageCountTokensToolVariants::ToolTextEditor20250429 inner:
-                toolTextEditor20250429(inner);
+            case ToolTextEditor20250429 value:
+                toolTextEditor20250429(value);
                 break;
-            case MessageCountTokensToolVariants::ToolTextEditor20250728 inner:
-                toolTextEditor20250728(inner);
+            case ToolTextEditor20250728 value:
+                toolTextEditor20250728(value);
                 break;
-            case MessageCountTokensToolVariants::WebSearchTool20250305 inner:
-                webSearchTool20250305(inner);
+            case WebSearchTool20250305 value:
+                webSearchTool20250305(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -104,37 +140,39 @@ public abstract record class MessageCountTokensTool
     }
 
     public T Match<T>(
-        Func<MessageCountTokensToolVariants::Tool, T> tool,
-        Func<MessageCountTokensToolVariants::ToolBash20250124, T> toolBash20250124,
-        Func<MessageCountTokensToolVariants::ToolTextEditor20250124, T> toolTextEditor20250124,
-        Func<MessageCountTokensToolVariants::ToolTextEditor20250429, T> toolTextEditor20250429,
-        Func<MessageCountTokensToolVariants::ToolTextEditor20250728, T> toolTextEditor20250728,
-        Func<MessageCountTokensToolVariants::WebSearchTool20250305, T> webSearchTool20250305
+        Func<Tool, T> tool,
+        Func<ToolBash20250124, T> toolBash20250124,
+        Func<ToolTextEditor20250124, T> toolTextEditor20250124,
+        Func<ToolTextEditor20250429, T> toolTextEditor20250429,
+        Func<ToolTextEditor20250728, T> toolTextEditor20250728,
+        Func<WebSearchTool20250305, T> webSearchTool20250305
     )
     {
-        return this switch
+        return this.Value switch
         {
-            MessageCountTokensToolVariants::Tool inner => tool(inner),
-            MessageCountTokensToolVariants::ToolBash20250124 inner => toolBash20250124(inner),
-            MessageCountTokensToolVariants::ToolTextEditor20250124 inner => toolTextEditor20250124(
-                inner
-            ),
-            MessageCountTokensToolVariants::ToolTextEditor20250429 inner => toolTextEditor20250429(
-                inner
-            ),
-            MessageCountTokensToolVariants::ToolTextEditor20250728 inner => toolTextEditor20250728(
-                inner
-            ),
-            MessageCountTokensToolVariants::WebSearchTool20250305 inner => webSearchTool20250305(
-                inner
-            ),
+            Tool value => tool(value),
+            ToolBash20250124 value => toolBash20250124(value),
+            ToolTextEditor20250124 value => toolTextEditor20250124(value),
+            ToolTextEditor20250429 value => toolTextEditor20250429(value),
+            ToolTextEditor20250728 value => toolTextEditor20250728(value),
+            WebSearchTool20250305 value => webSearchTool20250305(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of MessageCountTokensTool"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of MessageCountTokensTool"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensTool>
@@ -152,16 +190,14 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
             var deserialized = JsonSerializer.Deserialize<Tool>(ref reader, options);
             if (deserialized != null)
             {
-                return new MessageCountTokensToolVariants::Tool(deserialized);
+                deserialized.Validate();
+                return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant MessageCountTokensToolVariants::Tool",
-                    e
-                )
+                new AnthropicInvalidDataException("Data does not match union variant 'Tool'", e)
             );
         }
 
@@ -170,14 +206,15 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
             var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(ref reader, options);
             if (deserialized != null)
             {
-                return new MessageCountTokensToolVariants::ToolBash20250124(deserialized);
+                deserialized.Validate();
+                return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant MessageCountTokensToolVariants::ToolBash20250124",
+                    "Data does not match union variant 'ToolBash20250124'",
                     e
                 )
             );
@@ -191,14 +228,15 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
             );
             if (deserialized != null)
             {
-                return new MessageCountTokensToolVariants::ToolTextEditor20250124(deserialized);
+                deserialized.Validate();
+                return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant MessageCountTokensToolVariants::ToolTextEditor20250124",
+                    "Data does not match union variant 'ToolTextEditor20250124'",
                     e
                 )
             );
@@ -212,14 +250,15 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
             );
             if (deserialized != null)
             {
-                return new MessageCountTokensToolVariants::ToolTextEditor20250429(deserialized);
+                deserialized.Validate();
+                return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant MessageCountTokensToolVariants::ToolTextEditor20250429",
+                    "Data does not match union variant 'ToolTextEditor20250429'",
                     e
                 )
             );
@@ -233,14 +272,15 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
             );
             if (deserialized != null)
             {
-                return new MessageCountTokensToolVariants::ToolTextEditor20250728(deserialized);
+                deserialized.Validate();
+                return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant MessageCountTokensToolVariants::ToolTextEditor20250728",
+                    "Data does not match union variant 'ToolTextEditor20250728'",
                     e
                 )
             );
@@ -254,14 +294,15 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
             );
             if (deserialized != null)
             {
-                return new MessageCountTokensToolVariants::WebSearchTool20250305(deserialized);
+                deserialized.Validate();
+                return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant MessageCountTokensToolVariants::WebSearchTool20250305",
+                    "Data does not match union variant 'WebSearchTool20250305'",
                     e
                 )
             );
@@ -276,23 +317,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            MessageCountTokensToolVariants::Tool(var tool) => tool,
-            MessageCountTokensToolVariants::ToolBash20250124(var toolBash20250124) =>
-                toolBash20250124,
-            MessageCountTokensToolVariants::ToolTextEditor20250124(var toolTextEditor20250124) =>
-                toolTextEditor20250124,
-            MessageCountTokensToolVariants::ToolTextEditor20250429(var toolTextEditor20250429) =>
-                toolTextEditor20250429,
-            MessageCountTokensToolVariants::ToolTextEditor20250728(var toolTextEditor20250728) =>
-                toolTextEditor20250728,
-            MessageCountTokensToolVariants::WebSearchTool20250305(var webSearchTool20250305) =>
-                webSearchTool20250305,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of MessageCountTokensTool"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

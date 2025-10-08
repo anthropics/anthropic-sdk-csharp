@@ -85,7 +85,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
 
     public InputSchema()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

@@ -90,7 +90,7 @@ public sealed record class BetaThinkingBlock : ModelBase, IFromRaw<BetaThinkingB
 
     public BetaThinkingBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

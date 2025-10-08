@@ -169,7 +169,7 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
 
     public SearchResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

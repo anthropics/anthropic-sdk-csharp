@@ -127,7 +127,7 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
 
     public ModelInfo()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

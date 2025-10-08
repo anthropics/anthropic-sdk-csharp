@@ -138,7 +138,7 @@ public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchR
 
     public WebSearchResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

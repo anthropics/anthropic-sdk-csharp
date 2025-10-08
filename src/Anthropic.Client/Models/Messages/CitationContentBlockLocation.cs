@@ -173,7 +173,7 @@ public sealed record class CitationContentBlockLocation
 
     public CitationContentBlockLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_location\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

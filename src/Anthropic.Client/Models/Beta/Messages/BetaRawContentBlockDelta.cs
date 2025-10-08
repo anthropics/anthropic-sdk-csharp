@@ -4,84 +4,117 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaRawContentBlockDeltaVariants = Anthropic.Client.Models.Beta.Messages.BetaRawContentBlockDeltaVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaRawContentBlockDeltaConverter))]
-public abstract record class BetaRawContentBlockDelta
+public record class BetaRawContentBlockDelta
 {
-    internal BetaRawContentBlockDelta() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaRawContentBlockDelta(BetaTextDelta value) =>
-        new BetaRawContentBlockDeltaVariants::BetaTextDelta(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                text: (x) => x.Type,
+                inputJSON: (x) => x.Type,
+                citations: (x) => x.Type,
+                thinking: (x) => x.Type,
+                signature: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator BetaRawContentBlockDelta(BetaInputJSONDelta value) =>
-        new BetaRawContentBlockDeltaVariants::BetaInputJSONDelta(value);
+    public BetaRawContentBlockDelta(BetaTextDelta value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaRawContentBlockDelta(BetaCitationsDelta value) =>
-        new BetaRawContentBlockDeltaVariants::BetaCitationsDelta(value);
+    public BetaRawContentBlockDelta(BetaInputJSONDelta value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaRawContentBlockDelta(BetaThinkingDelta value) =>
-        new BetaRawContentBlockDeltaVariants::BetaThinkingDelta(value);
+    public BetaRawContentBlockDelta(BetaCitationsDelta value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaRawContentBlockDelta(BetaSignatureDelta value) =>
-        new BetaRawContentBlockDeltaVariants::BetaSignatureDelta(value);
+    public BetaRawContentBlockDelta(BetaThinkingDelta value)
+    {
+        Value = value;
+    }
+
+    public BetaRawContentBlockDelta(BetaSignatureDelta value)
+    {
+        Value = value;
+    }
+
+    BetaRawContentBlockDelta(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaRawContentBlockDelta CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickText([NotNullWhen(true)] out BetaTextDelta? value)
     {
-        value = (this as BetaRawContentBlockDeltaVariants::BetaTextDelta)?.Value;
+        value = this.Value as BetaTextDelta;
         return value != null;
     }
 
     public bool TryPickInputJSON([NotNullWhen(true)] out BetaInputJSONDelta? value)
     {
-        value = (this as BetaRawContentBlockDeltaVariants::BetaInputJSONDelta)?.Value;
+        value = this.Value as BetaInputJSONDelta;
         return value != null;
     }
 
     public bool TryPickCitations([NotNullWhen(true)] out BetaCitationsDelta? value)
     {
-        value = (this as BetaRawContentBlockDeltaVariants::BetaCitationsDelta)?.Value;
+        value = this.Value as BetaCitationsDelta;
         return value != null;
     }
 
     public bool TryPickThinking([NotNullWhen(true)] out BetaThinkingDelta? value)
     {
-        value = (this as BetaRawContentBlockDeltaVariants::BetaThinkingDelta)?.Value;
+        value = this.Value as BetaThinkingDelta;
         return value != null;
     }
 
     public bool TryPickSignature([NotNullWhen(true)] out BetaSignatureDelta? value)
     {
-        value = (this as BetaRawContentBlockDeltaVariants::BetaSignatureDelta)?.Value;
+        value = this.Value as BetaSignatureDelta;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaRawContentBlockDeltaVariants::BetaTextDelta> text,
-        Action<BetaRawContentBlockDeltaVariants::BetaInputJSONDelta> inputJSON,
-        Action<BetaRawContentBlockDeltaVariants::BetaCitationsDelta> citations,
-        Action<BetaRawContentBlockDeltaVariants::BetaThinkingDelta> thinking,
-        Action<BetaRawContentBlockDeltaVariants::BetaSignatureDelta> signature
+        Action<BetaTextDelta> text,
+        Action<BetaInputJSONDelta> inputJSON,
+        Action<BetaCitationsDelta> citations,
+        Action<BetaThinkingDelta> thinking,
+        Action<BetaSignatureDelta> signature
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaRawContentBlockDeltaVariants::BetaTextDelta inner:
-                text(inner);
+            case BetaTextDelta value:
+                text(value);
                 break;
-            case BetaRawContentBlockDeltaVariants::BetaInputJSONDelta inner:
-                inputJSON(inner);
+            case BetaInputJSONDelta value:
+                inputJSON(value);
                 break;
-            case BetaRawContentBlockDeltaVariants::BetaCitationsDelta inner:
-                citations(inner);
+            case BetaCitationsDelta value:
+                citations(value);
                 break;
-            case BetaRawContentBlockDeltaVariants::BetaThinkingDelta inner:
-                thinking(inner);
+            case BetaThinkingDelta value:
+                thinking(value);
                 break;
-            case BetaRawContentBlockDeltaVariants::BetaSignatureDelta inner:
-                signature(inner);
+            case BetaSignatureDelta value:
+                signature(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -91,27 +124,37 @@ public abstract record class BetaRawContentBlockDelta
     }
 
     public T Match<T>(
-        Func<BetaRawContentBlockDeltaVariants::BetaTextDelta, T> text,
-        Func<BetaRawContentBlockDeltaVariants::BetaInputJSONDelta, T> inputJSON,
-        Func<BetaRawContentBlockDeltaVariants::BetaCitationsDelta, T> citations,
-        Func<BetaRawContentBlockDeltaVariants::BetaThinkingDelta, T> thinking,
-        Func<BetaRawContentBlockDeltaVariants::BetaSignatureDelta, T> signature
+        Func<BetaTextDelta, T> text,
+        Func<BetaInputJSONDelta, T> inputJSON,
+        Func<BetaCitationsDelta, T> citations,
+        Func<BetaThinkingDelta, T> thinking,
+        Func<BetaSignatureDelta, T> signature
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaRawContentBlockDeltaVariants::BetaTextDelta inner => text(inner),
-            BetaRawContentBlockDeltaVariants::BetaInputJSONDelta inner => inputJSON(inner),
-            BetaRawContentBlockDeltaVariants::BetaCitationsDelta inner => citations(inner),
-            BetaRawContentBlockDeltaVariants::BetaThinkingDelta inner => thinking(inner),
-            BetaRawContentBlockDeltaVariants::BetaSignatureDelta inner => signature(inner),
+            BetaTextDelta value => text(value),
+            BetaInputJSONDelta value => inputJSON(value),
+            BetaCitationsDelta value => citations(value),
+            BetaThinkingDelta value => thinking(value),
+            BetaSignatureDelta value => signature(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaRawContentBlockDelta"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaRawContentBlockDelta"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlockDelta>
@@ -144,14 +187,15 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     var deserialized = JsonSerializer.Deserialize<BetaTextDelta>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaRawContentBlockDeltaVariants::BetaTextDelta(deserialized);
+                        deserialized.Validate();
+                        return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawContentBlockDeltaVariants::BetaTextDelta",
+                            "Data does not match union variant 'BetaTextDelta'",
                             e
                         )
                     );
@@ -171,16 +215,15 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawContentBlockDeltaVariants::BetaInputJSONDelta(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawContentBlockDeltaVariants::BetaInputJSONDelta",
+                            "Data does not match union variant 'BetaInputJSONDelta'",
                             e
                         )
                     );
@@ -200,16 +243,15 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawContentBlockDeltaVariants::BetaCitationsDelta(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawContentBlockDeltaVariants::BetaCitationsDelta",
+                            "Data does not match union variant 'BetaCitationsDelta'",
                             e
                         )
                     );
@@ -226,16 +268,15 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaRawContentBlockDeltaVariants::BetaThinkingDelta(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawContentBlockDeltaVariants::BetaThinkingDelta",
+                            "Data does not match union variant 'BetaThinkingDelta'",
                             e
                         )
                     );
@@ -255,16 +296,15 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawContentBlockDeltaVariants::BetaSignatureDelta(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawContentBlockDeltaVariants::BetaSignatureDelta",
+                            "Data does not match union variant 'BetaSignatureDelta'",
                             e
                         )
                     );
@@ -287,17 +327,7 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaRawContentBlockDeltaVariants::BetaTextDelta(var text) => text,
-            BetaRawContentBlockDeltaVariants::BetaInputJSONDelta(var inputJSON) => inputJSON,
-            BetaRawContentBlockDeltaVariants::BetaCitationsDelta(var citations) => citations,
-            BetaRawContentBlockDeltaVariants::BetaThinkingDelta(var thinking) => thinking,
-            BetaRawContentBlockDeltaVariants::BetaSignatureDelta(var signature) => signature,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaRawContentBlockDelta"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

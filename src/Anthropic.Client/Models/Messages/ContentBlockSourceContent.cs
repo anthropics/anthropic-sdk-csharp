@@ -4,45 +4,74 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ContentBlockSourceContentVariants = Anthropic.Client.Models.Messages.ContentBlockSourceContentVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
 [JsonConverter(typeof(ContentBlockSourceContentConverter))]
-public abstract record class ContentBlockSourceContent
+public record class ContentBlockSourceContent
 {
-    internal ContentBlockSourceContent() { }
+    public object Value { get; private init; }
 
-    public static implicit operator ContentBlockSourceContent(TextBlockParam value) =>
-        new ContentBlockSourceContentVariants::TextBlockParam(value);
+    public JsonElement Type
+    {
+        get { return Match(textBlockParam: (x) => x.Type, imageBlockParam: (x) => x.Type); }
+    }
 
-    public static implicit operator ContentBlockSourceContent(ImageBlockParam value) =>
-        new ContentBlockSourceContentVariants::ImageBlockParam(value);
+    public CacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return Match<CacheControlEphemeral?>(
+                textBlockParam: (x) => x.CacheControl,
+                imageBlockParam: (x) => x.CacheControl
+            );
+        }
+    }
+
+    public ContentBlockSourceContent(TextBlockParam value)
+    {
+        Value = value;
+    }
+
+    public ContentBlockSourceContent(ImageBlockParam value)
+    {
+        Value = value;
+    }
+
+    ContentBlockSourceContent(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static ContentBlockSourceContent CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickTextBlockParam([NotNullWhen(true)] out TextBlockParam? value)
     {
-        value = (this as ContentBlockSourceContentVariants::TextBlockParam)?.Value;
+        value = this.Value as TextBlockParam;
         return value != null;
     }
 
     public bool TryPickImageBlockParam([NotNullWhen(true)] out ImageBlockParam? value)
     {
-        value = (this as ContentBlockSourceContentVariants::ImageBlockParam)?.Value;
+        value = this.Value as ImageBlockParam;
         return value != null;
     }
 
     public void Switch(
-        Action<ContentBlockSourceContentVariants::TextBlockParam> textBlockParam,
-        Action<ContentBlockSourceContentVariants::ImageBlockParam> imageBlockParam
+        Action<TextBlockParam> textBlockParam,
+        Action<ImageBlockParam> imageBlockParam
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ContentBlockSourceContentVariants::TextBlockParam inner:
-                textBlockParam(inner);
+            case TextBlockParam value:
+                textBlockParam(value);
                 break;
-            case ContentBlockSourceContentVariants::ImageBlockParam inner:
-                imageBlockParam(inner);
+            case ImageBlockParam value:
+                imageBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -52,21 +81,31 @@ public abstract record class ContentBlockSourceContent
     }
 
     public T Match<T>(
-        Func<ContentBlockSourceContentVariants::TextBlockParam, T> textBlockParam,
-        Func<ContentBlockSourceContentVariants::ImageBlockParam, T> imageBlockParam
+        Func<TextBlockParam, T> textBlockParam,
+        Func<ImageBlockParam, T> imageBlockParam
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ContentBlockSourceContentVariants::TextBlockParam inner => textBlockParam(inner),
-            ContentBlockSourceContentVariants::ImageBlockParam inner => imageBlockParam(inner),
+            TextBlockParam value => textBlockParam(value),
+            ImageBlockParam value => imageBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlockSourceContent"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ContentBlockSourceContent"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSourceContent>
@@ -99,14 +138,15 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
                     var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
                     if (deserialized != null)
                     {
-                        return new ContentBlockSourceContentVariants::TextBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockSourceContent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockSourceContentVariants::TextBlockParam",
+                            "Data does not match union variant 'TextBlockParam'",
                             e
                         )
                     );
@@ -123,14 +163,15 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
                     var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
                     if (deserialized != null)
                     {
-                        return new ContentBlockSourceContentVariants::ImageBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new ContentBlockSourceContent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ContentBlockSourceContentVariants::ImageBlockParam",
+                            "Data does not match union variant 'ImageBlockParam'",
                             e
                         )
                     );
@@ -153,15 +194,7 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            ContentBlockSourceContentVariants::TextBlockParam(var textBlockParam) => textBlockParam,
-            ContentBlockSourceContentVariants::ImageBlockParam(var imageBlockParam) =>
-                imageBlockParam,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ContentBlockSourceContent"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

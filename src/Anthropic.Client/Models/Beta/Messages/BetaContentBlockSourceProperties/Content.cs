@@ -4,23 +4,37 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ContentVariants = Anthropic.Client.Models.Beta.Messages.BetaContentBlockSourceProperties.ContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaContentBlockSourceProperties;
 
 [JsonConverter(typeof(ContentConverter))]
-public abstract record class Content
+public record class Content
 {
-    internal Content() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Content(string value) => new ContentVariants::String(value);
+    public Content(string value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator Content(List<BetaContentBlockSourceContent> value) =>
-        new ContentVariants::BetaContentBlockSourceContent(value);
+    public Content(List<BetaContentBlockSourceContent> value)
+    {
+        Value = value;
+    }
+
+    Content(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Content CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
     {
-        value = (this as ContentVariants::String)?.Value;
+        value = this.Value as string;
         return value != null;
     }
 
@@ -28,22 +42,22 @@ public abstract record class Content
         [NotNullWhen(true)] out List<BetaContentBlockSourceContent>? value
     )
     {
-        value = (this as ContentVariants::BetaContentBlockSourceContent)?.Value;
+        value = this.Value as List<BetaContentBlockSourceContent>;
         return value != null;
     }
 
     public void Switch(
-        Action<ContentVariants::String> @string,
-        Action<ContentVariants::BetaContentBlockSourceContent> betaContentBlockSourceContent
+        Action<string> @string,
+        Action<List<BetaContentBlockSourceContent>> betaContentBlockSourceContent
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ContentVariants::String inner:
-                @string(inner);
+            case string value:
+                @string(value);
                 break;
-            case ContentVariants::BetaContentBlockSourceContent inner:
-                betaContentBlockSourceContent(inner);
+            case List<BetaContentBlockSourceContent> value:
+                betaContentBlockSourceContent(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -53,23 +67,29 @@ public abstract record class Content
     }
 
     public T Match<T>(
-        Func<ContentVariants::String, T> @string,
-        Func<ContentVariants::BetaContentBlockSourceContent, T> betaContentBlockSourceContent
+        Func<string, T> @string,
+        Func<List<BetaContentBlockSourceContent>, T> betaContentBlockSourceContent
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ContentVariants::String inner => @string(inner),
-            ContentVariants::BetaContentBlockSourceContent inner => betaContentBlockSourceContent(
-                inner
-            ),
+            string value => @string(value),
+            List<BetaContentBlockSourceContent> value => betaContentBlockSourceContent(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Content"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Content");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentConverter : JsonConverter<Content>
@@ -87,16 +107,13 @@ sealed class ContentConverter : JsonConverter<Content>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new ContentVariants::String(deserialized);
+                return new Content(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant ContentVariants::String",
-                    e
-                )
+                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
             );
         }
 
@@ -108,14 +125,14 @@ sealed class ContentConverter : JsonConverter<Content>
             );
             if (deserialized != null)
             {
-                return new ContentVariants::BetaContentBlockSourceContent(deserialized);
+                return new Content(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ContentVariants::BetaContentBlockSourceContent",
+                    "Data does not match union variant 'List<BetaContentBlockSourceContent>'",
                     e
                 )
             );
@@ -126,15 +143,7 @@ sealed class ContentConverter : JsonConverter<Content>
 
     public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            ContentVariants::String(var @string) => @string,
-            ContentVariants::BetaContentBlockSourceContent(var betaContentBlockSourceContent) =>
-                betaContentBlockSourceContent,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

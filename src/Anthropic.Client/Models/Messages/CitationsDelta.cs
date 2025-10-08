@@ -65,7 +65,7 @@ public sealed record class CitationsDelta : ModelBase, IFromRaw<CitationsDelta>
 
     public CitationsDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

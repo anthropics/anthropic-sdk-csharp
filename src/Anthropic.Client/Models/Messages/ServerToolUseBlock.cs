@@ -107,8 +107,8 @@ public sealed record class ServerToolUseBlock : ModelBase, IFromRaw<ServerToolUs
 
     public ServerToolUseBlock()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Name = new();
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

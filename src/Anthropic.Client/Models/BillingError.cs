@@ -64,7 +64,7 @@ public sealed record class BillingError : ModelBase, IFromRaw<BillingError>
 
     public BillingError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

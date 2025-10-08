@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using MessageBatchResultVariants = Anthropic.Client.Models.Messages.Batches.MessageBatchResultVariants;
 
 namespace Anthropic.Client.Models.Messages.Batches;
 
@@ -16,66 +15,97 @@ namespace Anthropic.Client.Models.Messages.Batches;
 /// or expiration.
 /// </summary>
 [JsonConverter(typeof(MessageBatchResultConverter))]
-public abstract record class MessageBatchResult
+public record class MessageBatchResult
 {
-    internal MessageBatchResult() { }
+    public object Value { get; private init; }
 
-    public static implicit operator MessageBatchResult(MessageBatchSucceededResult value) =>
-        new MessageBatchResultVariants::MessageBatchSucceededResult(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                succeeded: (x) => x.Type,
+                errored: (x) => x.Type,
+                canceled: (x) => x.Type,
+                expired: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator MessageBatchResult(MessageBatchErroredResult value) =>
-        new MessageBatchResultVariants::MessageBatchErroredResult(value);
+    public MessageBatchResult(MessageBatchSucceededResult value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator MessageBatchResult(MessageBatchCanceledResult value) =>
-        new MessageBatchResultVariants::MessageBatchCanceledResult(value);
+    public MessageBatchResult(MessageBatchErroredResult value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator MessageBatchResult(MessageBatchExpiredResult value) =>
-        new MessageBatchResultVariants::MessageBatchExpiredResult(value);
+    public MessageBatchResult(MessageBatchCanceledResult value)
+    {
+        Value = value;
+    }
+
+    public MessageBatchResult(MessageBatchExpiredResult value)
+    {
+        Value = value;
+    }
+
+    MessageBatchResult(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static MessageBatchResult CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickSucceeded([NotNullWhen(true)] out MessageBatchSucceededResult? value)
     {
-        value = (this as MessageBatchResultVariants::MessageBatchSucceededResult)?.Value;
+        value = this.Value as MessageBatchSucceededResult;
         return value != null;
     }
 
     public bool TryPickErrored([NotNullWhen(true)] out MessageBatchErroredResult? value)
     {
-        value = (this as MessageBatchResultVariants::MessageBatchErroredResult)?.Value;
+        value = this.Value as MessageBatchErroredResult;
         return value != null;
     }
 
     public bool TryPickCanceled([NotNullWhen(true)] out MessageBatchCanceledResult? value)
     {
-        value = (this as MessageBatchResultVariants::MessageBatchCanceledResult)?.Value;
+        value = this.Value as MessageBatchCanceledResult;
         return value != null;
     }
 
     public bool TryPickExpired([NotNullWhen(true)] out MessageBatchExpiredResult? value)
     {
-        value = (this as MessageBatchResultVariants::MessageBatchExpiredResult)?.Value;
+        value = this.Value as MessageBatchExpiredResult;
         return value != null;
     }
 
     public void Switch(
-        Action<MessageBatchResultVariants::MessageBatchSucceededResult> succeeded,
-        Action<MessageBatchResultVariants::MessageBatchErroredResult> errored,
-        Action<MessageBatchResultVariants::MessageBatchCanceledResult> canceled,
-        Action<MessageBatchResultVariants::MessageBatchExpiredResult> expired
+        Action<MessageBatchSucceededResult> succeeded,
+        Action<MessageBatchErroredResult> errored,
+        Action<MessageBatchCanceledResult> canceled,
+        Action<MessageBatchExpiredResult> expired
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case MessageBatchResultVariants::MessageBatchSucceededResult inner:
-                succeeded(inner);
+            case MessageBatchSucceededResult value:
+                succeeded(value);
                 break;
-            case MessageBatchResultVariants::MessageBatchErroredResult inner:
-                errored(inner);
+            case MessageBatchErroredResult value:
+                errored(value);
                 break;
-            case MessageBatchResultVariants::MessageBatchCanceledResult inner:
-                canceled(inner);
+            case MessageBatchCanceledResult value:
+                canceled(value);
                 break;
-            case MessageBatchResultVariants::MessageBatchExpiredResult inner:
-                expired(inner);
+            case MessageBatchExpiredResult value:
+                expired(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -85,25 +115,35 @@ public abstract record class MessageBatchResult
     }
 
     public T Match<T>(
-        Func<MessageBatchResultVariants::MessageBatchSucceededResult, T> succeeded,
-        Func<MessageBatchResultVariants::MessageBatchErroredResult, T> errored,
-        Func<MessageBatchResultVariants::MessageBatchCanceledResult, T> canceled,
-        Func<MessageBatchResultVariants::MessageBatchExpiredResult, T> expired
+        Func<MessageBatchSucceededResult, T> succeeded,
+        Func<MessageBatchErroredResult, T> errored,
+        Func<MessageBatchCanceledResult, T> canceled,
+        Func<MessageBatchExpiredResult, T> expired
     )
     {
-        return this switch
+        return this.Value switch
         {
-            MessageBatchResultVariants::MessageBatchSucceededResult inner => succeeded(inner),
-            MessageBatchResultVariants::MessageBatchErroredResult inner => errored(inner),
-            MessageBatchResultVariants::MessageBatchCanceledResult inner => canceled(inner),
-            MessageBatchResultVariants::MessageBatchExpiredResult inner => expired(inner),
+            MessageBatchSucceededResult value => succeeded(value),
+            MessageBatchErroredResult value => errored(value),
+            MessageBatchCanceledResult value => canceled(value),
+            MessageBatchExpiredResult value => expired(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of MessageBatchResult"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of MessageBatchResult"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
@@ -139,16 +179,15 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                     if (deserialized != null)
                     {
-                        return new MessageBatchResultVariants::MessageBatchSucceededResult(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new MessageBatchResult(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant MessageBatchResultVariants::MessageBatchSucceededResult",
+                            "Data does not match union variant 'MessageBatchSucceededResult'",
                             e
                         )
                     );
@@ -168,16 +207,15 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                     if (deserialized != null)
                     {
-                        return new MessageBatchResultVariants::MessageBatchErroredResult(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new MessageBatchResult(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant MessageBatchResultVariants::MessageBatchErroredResult",
+                            "Data does not match union variant 'MessageBatchErroredResult'",
                             e
                         )
                     );
@@ -197,16 +235,15 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                     if (deserialized != null)
                     {
-                        return new MessageBatchResultVariants::MessageBatchCanceledResult(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new MessageBatchResult(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant MessageBatchResultVariants::MessageBatchCanceledResult",
+                            "Data does not match union variant 'MessageBatchCanceledResult'",
                             e
                         )
                     );
@@ -226,16 +263,15 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                     if (deserialized != null)
                     {
-                        return new MessageBatchResultVariants::MessageBatchExpiredResult(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new MessageBatchResult(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant MessageBatchResultVariants::MessageBatchExpiredResult",
+                            "Data does not match union variant 'MessageBatchExpiredResult'",
                             e
                         )
                     );
@@ -258,16 +294,7 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            MessageBatchResultVariants::MessageBatchSucceededResult(var succeeded) => succeeded,
-            MessageBatchResultVariants::MessageBatchErroredResult(var errored) => errored,
-            MessageBatchResultVariants::MessageBatchCanceledResult(var canceled) => canceled,
-            MessageBatchResultVariants::MessageBatchExpiredResult(var expired) => expired,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of MessageBatchResult"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

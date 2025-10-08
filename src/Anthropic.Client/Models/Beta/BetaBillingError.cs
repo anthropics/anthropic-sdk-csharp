@@ -64,7 +64,7 @@ public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingErr
 
     public BetaBillingError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

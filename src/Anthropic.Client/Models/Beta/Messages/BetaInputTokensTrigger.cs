@@ -60,7 +60,7 @@ public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInpu
 
     public BetaInputTokensTrigger()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

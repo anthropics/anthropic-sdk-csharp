@@ -90,7 +90,7 @@ public sealed record class ThinkingBlockParam : ModelBase, IFromRaw<ThinkingBloc
 
     public ThinkingBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

@@ -130,7 +130,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
 
     public BetaMemoryTool20250818StrReplaceCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
+        this.Command = new();
     }
 
 #pragma warning disable CS8618

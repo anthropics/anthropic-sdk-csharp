@@ -66,7 +66,7 @@ public sealed record class MessageBatchErroredResult
 
     public MessageBatchErroredResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

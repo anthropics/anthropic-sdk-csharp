@@ -113,7 +113,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
 
     public BetaMCPToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

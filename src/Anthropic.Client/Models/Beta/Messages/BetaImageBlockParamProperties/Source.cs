@@ -4,58 +4,85 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using SourceVariants = Anthropic.Client.Models.Beta.Messages.BetaImageBlockParamProperties.SourceVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaImageBlockParamProperties;
 
 [JsonConverter(typeof(SourceConverter))]
-public abstract record class Source
+public record class Source
 {
-    internal Source() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Source(BetaBase64ImageSource value) =>
-        new SourceVariants::BetaBase64ImageSource(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                betaBase64Image: (x) => x.Type,
+                betaURLImage: (x) => x.Type,
+                betaFileImage: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator Source(BetaURLImageSource value) =>
-        new SourceVariants::BetaURLImageSource(value);
+    public Source(BetaBase64ImageSource value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator Source(BetaFileImageSource value) =>
-        new SourceVariants::BetaFileImageSource(value);
+    public Source(BetaURLImageSource value)
+    {
+        Value = value;
+    }
+
+    public Source(BetaFileImageSource value)
+    {
+        Value = value;
+    }
+
+    Source(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Source CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBetaBase64Image([NotNullWhen(true)] out BetaBase64ImageSource? value)
     {
-        value = (this as SourceVariants::BetaBase64ImageSource)?.Value;
+        value = this.Value as BetaBase64ImageSource;
         return value != null;
     }
 
     public bool TryPickBetaURLImage([NotNullWhen(true)] out BetaURLImageSource? value)
     {
-        value = (this as SourceVariants::BetaURLImageSource)?.Value;
+        value = this.Value as BetaURLImageSource;
         return value != null;
     }
 
     public bool TryPickBetaFileImage([NotNullWhen(true)] out BetaFileImageSource? value)
     {
-        value = (this as SourceVariants::BetaFileImageSource)?.Value;
+        value = this.Value as BetaFileImageSource;
         return value != null;
     }
 
     public void Switch(
-        Action<SourceVariants::BetaBase64ImageSource> betaBase64Image,
-        Action<SourceVariants::BetaURLImageSource> betaURLImage,
-        Action<SourceVariants::BetaFileImageSource> betaFileImage
+        Action<BetaBase64ImageSource> betaBase64Image,
+        Action<BetaURLImageSource> betaURLImage,
+        Action<BetaFileImageSource> betaFileImage
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case SourceVariants::BetaBase64ImageSource inner:
-                betaBase64Image(inner);
+            case BetaBase64ImageSource value:
+                betaBase64Image(value);
                 break;
-            case SourceVariants::BetaURLImageSource inner:
-                betaURLImage(inner);
+            case BetaURLImageSource value:
+                betaURLImage(value);
                 break;
-            case SourceVariants::BetaFileImageSource inner:
-                betaFileImage(inner);
+            case BetaFileImageSource value:
+                betaFileImage(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Source");
@@ -63,23 +90,31 @@ public abstract record class Source
     }
 
     public T Match<T>(
-        Func<SourceVariants::BetaBase64ImageSource, T> betaBase64Image,
-        Func<SourceVariants::BetaURLImageSource, T> betaURLImage,
-        Func<SourceVariants::BetaFileImageSource, T> betaFileImage
+        Func<BetaBase64ImageSource, T> betaBase64Image,
+        Func<BetaURLImageSource, T> betaURLImage,
+        Func<BetaFileImageSource, T> betaFileImage
     )
     {
-        return this switch
+        return this.Value switch
         {
-            SourceVariants::BetaBase64ImageSource inner => betaBase64Image(inner),
-            SourceVariants::BetaURLImageSource inner => betaURLImage(inner),
-            SourceVariants::BetaFileImageSource inner => betaFileImage(inner),
+            BetaBase64ImageSource value => betaBase64Image(value),
+            BetaURLImageSource value => betaURLImage(value),
+            BetaFileImageSource value => betaFileImage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Source"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Source");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class SourceConverter : JsonConverter<Source>
@@ -115,14 +150,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     );
                     if (deserialized != null)
                     {
-                        return new SourceVariants::BetaBase64ImageSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::BetaBase64ImageSource",
+                            "Data does not match union variant 'BetaBase64ImageSource'",
                             e
                         )
                     );
@@ -142,14 +178,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     );
                     if (deserialized != null)
                     {
-                        return new SourceVariants::BetaURLImageSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::BetaURLImageSource",
+                            "Data does not match union variant 'BetaURLImageSource'",
                             e
                         )
                     );
@@ -169,14 +206,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     );
                     if (deserialized != null)
                     {
-                        return new SourceVariants::BetaFileImageSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::BetaFileImageSource",
+                            "Data does not match union variant 'BetaFileImageSource'",
                             e
                         )
                     );
@@ -195,15 +233,7 @@ sealed class SourceConverter : JsonConverter<Source>
 
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            SourceVariants::BetaBase64ImageSource(var betaBase64Image) => betaBase64Image,
-            SourceVariants::BetaURLImageSource(var betaURLImage) => betaURLImage,
-            SourceVariants::BetaFileImageSource(var betaFileImage) => betaFileImage,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Source"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

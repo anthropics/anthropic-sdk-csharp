@@ -164,7 +164,7 @@ public sealed record class BetaClearToolUses20250919Edit
 
     public BetaClearToolUses20250919Edit()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

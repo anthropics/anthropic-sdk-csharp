@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using SystemVariants = Anthropic.Client.Models.Messages.MessageCreateParamsProperties.SystemVariants;
 
 namespace Anthropic.Client.Models.Messages.MessageCreateParamsProperties;
 
@@ -15,39 +14,51 @@ namespace Anthropic.Client.Models.Messages.MessageCreateParamsProperties;
 /// as specifying a particular goal or role. See our [guide to system prompts](https://docs.anthropic.com/en/docs/system-prompts).
 /// </summary>
 [JsonConverter(typeof(SystemModelConverter))]
-public abstract record class SystemModel
+public record class SystemModel
 {
-    internal SystemModel() { }
+    public object Value { get; private init; }
 
-    public static implicit operator SystemModel(string value) => new SystemVariants::String(value);
+    public SystemModel(string value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator SystemModel(List<TextBlockParam> value) =>
-        new SystemVariants::TextBlockParams(value);
+    public SystemModel(List<TextBlockParam> value)
+    {
+        Value = value;
+    }
+
+    SystemModel(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static SystemModel CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
     {
-        value = (this as SystemVariants::String)?.Value;
+        value = this.Value as string;
         return value != null;
     }
 
     public bool TryPickTextBlockParams([NotNullWhen(true)] out List<TextBlockParam>? value)
     {
-        value = (this as SystemVariants::TextBlockParams)?.Value;
+        value = this.Value as List<TextBlockParam>;
         return value != null;
     }
 
-    public void Switch(
-        Action<SystemVariants::String> @string,
-        Action<SystemVariants::TextBlockParams> textBlockParams
-    )
+    public void Switch(Action<string> @string, Action<List<TextBlockParam>> textBlockParams)
     {
-        switch (this)
+        switch (this.Value)
         {
-            case SystemVariants::String inner:
-                @string(inner);
+            case string value:
+                @string(value);
                 break;
-            case SystemVariants::TextBlockParams inner:
-                textBlockParams(inner);
+            case List<TextBlockParam> value:
+                textBlockParams(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -56,22 +67,29 @@ public abstract record class SystemModel
         }
     }
 
-    public T Match<T>(
-        Func<SystemVariants::String, T> @string,
-        Func<SystemVariants::TextBlockParams, T> textBlockParams
-    )
+    public T Match<T>(Func<string, T> @string, Func<List<TextBlockParam>, T> textBlockParams)
     {
-        return this switch
+        return this.Value switch
         {
-            SystemVariants::String inner => @string(inner),
-            SystemVariants::TextBlockParams inner => textBlockParams(inner),
+            string value => @string(value),
+            List<TextBlockParam> value => textBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of SystemModel"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of SystemModel"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class SystemModelConverter : JsonConverter<SystemModel>
@@ -89,16 +107,13 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
             var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
             if (deserialized != null)
             {
-                return new SystemVariants::String(deserialized);
+                return new SystemModel(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant SystemVariants::String",
-                    e
-                )
+                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
             );
         }
 
@@ -110,14 +125,14 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
             );
             if (deserialized != null)
             {
-                return new SystemVariants::TextBlockParams(deserialized);
+                return new SystemModel(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant SystemVariants::TextBlockParams",
+                    "Data does not match union variant 'List<TextBlockParam>'",
                     e
                 )
             );
@@ -132,14 +147,7 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            SystemVariants::String(var @string) => @string,
-            SystemVariants::TextBlockParams(var textBlockParams) => textBlockParams,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SystemModel"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

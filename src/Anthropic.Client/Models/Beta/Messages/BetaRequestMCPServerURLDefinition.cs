@@ -133,7 +133,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
 
     public BetaRequestMCPServerURLDefinition()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

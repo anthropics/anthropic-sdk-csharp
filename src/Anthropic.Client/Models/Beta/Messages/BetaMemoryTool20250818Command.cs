@@ -4,46 +4,89 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaMemoryTool20250818CommandVariants = Anthropic.Client.Models.Beta.Messages.BetaMemoryTool20250818CommandVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaMemoryTool20250818CommandConverter))]
-public abstract record class BetaMemoryTool20250818Command
+public record class BetaMemoryTool20250818Command
 {
-    internal BetaMemoryTool20250818Command() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaMemoryTool20250818Command(
-        BetaMemoryTool20250818ViewCommand value
-    ) => new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand(value);
+    public JsonElement Command
+    {
+        get
+        {
+            return Match(
+                tool20250818View: (x) => x.Command,
+                tool20250818Create: (x) => x.Command,
+                tool20250818StrReplace: (x) => x.Command,
+                tool20250818Insert: (x) => x.Command,
+                tool20250818Delete: (x) => x.Command,
+                tool20250818Rename: (x) => x.Command
+            );
+        }
+    }
 
-    public static implicit operator BetaMemoryTool20250818Command(
-        BetaMemoryTool20250818CreateCommand value
-    ) => new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand(value);
+    public string? Path
+    {
+        get
+        {
+            return Match<string?>(
+                tool20250818View: (x) => x.Path,
+                tool20250818Create: (x) => x.Path,
+                tool20250818StrReplace: (x) => x.Path,
+                tool20250818Insert: (x) => x.Path,
+                tool20250818Delete: (x) => x.Path,
+                tool20250818Rename: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaMemoryTool20250818Command(
-        BetaMemoryTool20250818StrReplaceCommand value
-    ) => new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand(value);
+    public BetaMemoryTool20250818Command(BetaMemoryTool20250818ViewCommand value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaMemoryTool20250818Command(
-        BetaMemoryTool20250818InsertCommand value
-    ) => new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand(value);
+    public BetaMemoryTool20250818Command(BetaMemoryTool20250818CreateCommand value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaMemoryTool20250818Command(
-        BetaMemoryTool20250818DeleteCommand value
-    ) => new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand(value);
+    public BetaMemoryTool20250818Command(BetaMemoryTool20250818StrReplaceCommand value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaMemoryTool20250818Command(
-        BetaMemoryTool20250818RenameCommand value
-    ) => new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand(value);
+    public BetaMemoryTool20250818Command(BetaMemoryTool20250818InsertCommand value)
+    {
+        Value = value;
+    }
+
+    public BetaMemoryTool20250818Command(BetaMemoryTool20250818DeleteCommand value)
+    {
+        Value = value;
+    }
+
+    public BetaMemoryTool20250818Command(BetaMemoryTool20250818RenameCommand value)
+    {
+        Value = value;
+    }
+
+    BetaMemoryTool20250818Command(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaMemoryTool20250818Command CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickTool20250818View(
         [NotNullWhen(true)] out BetaMemoryTool20250818ViewCommand? value
     )
     {
-        value = (
-            this as BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand
-        )?.Value;
+        value = this.Value as BetaMemoryTool20250818ViewCommand;
         return value != null;
     }
 
@@ -51,9 +94,7 @@ public abstract record class BetaMemoryTool20250818Command
         [NotNullWhen(true)] out BetaMemoryTool20250818CreateCommand? value
     )
     {
-        value = (
-            this as BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand
-        )?.Value;
+        value = this.Value as BetaMemoryTool20250818CreateCommand;
         return value != null;
     }
 
@@ -61,9 +102,7 @@ public abstract record class BetaMemoryTool20250818Command
         [NotNullWhen(true)] out BetaMemoryTool20250818StrReplaceCommand? value
     )
     {
-        value = (
-            this as BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand
-        )?.Value;
+        value = this.Value as BetaMemoryTool20250818StrReplaceCommand;
         return value != null;
     }
 
@@ -71,9 +110,7 @@ public abstract record class BetaMemoryTool20250818Command
         [NotNullWhen(true)] out BetaMemoryTool20250818InsertCommand? value
     )
     {
-        value = (
-            this as BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand
-        )?.Value;
+        value = this.Value as BetaMemoryTool20250818InsertCommand;
         return value != null;
     }
 
@@ -81,9 +118,7 @@ public abstract record class BetaMemoryTool20250818Command
         [NotNullWhen(true)] out BetaMemoryTool20250818DeleteCommand? value
     )
     {
-        value = (
-            this as BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand
-        )?.Value;
+        value = this.Value as BetaMemoryTool20250818DeleteCommand;
         return value != null;
     }
 
@@ -91,40 +126,38 @@ public abstract record class BetaMemoryTool20250818Command
         [NotNullWhen(true)] out BetaMemoryTool20250818RenameCommand? value
     )
     {
-        value = (
-            this as BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand
-        )?.Value;
+        value = this.Value as BetaMemoryTool20250818RenameCommand;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand> tool20250818View,
-        Action<BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand> tool20250818Create,
-        Action<BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand> tool20250818StrReplace,
-        Action<BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand> tool20250818Insert,
-        Action<BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand> tool20250818Delete,
-        Action<BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand> tool20250818Rename
+        Action<BetaMemoryTool20250818ViewCommand> tool20250818View,
+        Action<BetaMemoryTool20250818CreateCommand> tool20250818Create,
+        Action<BetaMemoryTool20250818StrReplaceCommand> tool20250818StrReplace,
+        Action<BetaMemoryTool20250818InsertCommand> tool20250818Insert,
+        Action<BetaMemoryTool20250818DeleteCommand> tool20250818Delete,
+        Action<BetaMemoryTool20250818RenameCommand> tool20250818Rename
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand inner:
-                tool20250818View(inner);
+            case BetaMemoryTool20250818ViewCommand value:
+                tool20250818View(value);
                 break;
-            case BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand inner:
-                tool20250818Create(inner);
+            case BetaMemoryTool20250818CreateCommand value:
+                tool20250818Create(value);
                 break;
-            case BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand inner:
-                tool20250818StrReplace(inner);
+            case BetaMemoryTool20250818StrReplaceCommand value:
+                tool20250818StrReplace(value);
                 break;
-            case BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand inner:
-                tool20250818Insert(inner);
+            case BetaMemoryTool20250818InsertCommand value:
+                tool20250818Insert(value);
                 break;
-            case BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand inner:
-                tool20250818Delete(inner);
+            case BetaMemoryTool20250818DeleteCommand value:
+                tool20250818Delete(value);
                 break;
-            case BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand inner:
-                tool20250818Rename(inner);
+            case BetaMemoryTool20250818RenameCommand value:
+                tool20250818Rename(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -134,53 +167,39 @@ public abstract record class BetaMemoryTool20250818Command
     }
 
     public T Match<T>(
-        Func<
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand,
-            T
-        > tool20250818View,
-        Func<
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand,
-            T
-        > tool20250818Create,
-        Func<
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand,
-            T
-        > tool20250818StrReplace,
-        Func<
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand,
-            T
-        > tool20250818Insert,
-        Func<
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand,
-            T
-        > tool20250818Delete,
-        Func<
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand,
-            T
-        > tool20250818Rename
+        Func<BetaMemoryTool20250818ViewCommand, T> tool20250818View,
+        Func<BetaMemoryTool20250818CreateCommand, T> tool20250818Create,
+        Func<BetaMemoryTool20250818StrReplaceCommand, T> tool20250818StrReplace,
+        Func<BetaMemoryTool20250818InsertCommand, T> tool20250818Insert,
+        Func<BetaMemoryTool20250818DeleteCommand, T> tool20250818Delete,
+        Func<BetaMemoryTool20250818RenameCommand, T> tool20250818Rename
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand inner =>
-                tool20250818View(inner),
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand inner =>
-                tool20250818Create(inner),
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand inner =>
-                tool20250818StrReplace(inner),
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand inner =>
-                tool20250818Insert(inner),
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand inner =>
-                tool20250818Delete(inner),
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand inner =>
-                tool20250818Rename(inner),
+            BetaMemoryTool20250818ViewCommand value => tool20250818View(value),
+            BetaMemoryTool20250818CreateCommand value => tool20250818Create(value),
+            BetaMemoryTool20250818StrReplaceCommand value => tool20250818StrReplace(value),
+            BetaMemoryTool20250818InsertCommand value => tool20250818Insert(value),
+            BetaMemoryTool20250818DeleteCommand value => tool20250818Delete(value),
+            BetaMemoryTool20250818RenameCommand value => tool20250818Rename(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaMemoryTool20250818Command"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaMemoryTool20250818Command"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTool20250818Command>
@@ -217,16 +236,15 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         );
                     if (deserialized != null)
                     {
-                        return new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand",
+                            "Data does not match union variant 'BetaMemoryTool20250818ViewCommand'",
                             e
                         )
                     );
@@ -247,16 +265,15 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         );
                     if (deserialized != null)
                     {
-                        return new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand",
+                            "Data does not match union variant 'BetaMemoryTool20250818CreateCommand'",
                             e
                         )
                     );
@@ -277,16 +294,15 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         );
                     if (deserialized != null)
                     {
-                        return new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand",
+                            "Data does not match union variant 'BetaMemoryTool20250818StrReplaceCommand'",
                             e
                         )
                     );
@@ -307,16 +323,15 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         );
                     if (deserialized != null)
                     {
-                        return new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand",
+                            "Data does not match union variant 'BetaMemoryTool20250818InsertCommand'",
                             e
                         )
                     );
@@ -337,16 +352,15 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         );
                     if (deserialized != null)
                     {
-                        return new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand",
+                            "Data does not match union variant 'BetaMemoryTool20250818DeleteCommand'",
                             e
                         )
                     );
@@ -367,16 +381,15 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         );
                     if (deserialized != null)
                     {
-                        return new BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand",
+                            "Data does not match union variant 'BetaMemoryTool20250818RenameCommand'",
                             e
                         )
                     );
@@ -399,30 +412,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818ViewCommand(
-                var tool20250818View
-            ) => tool20250818View,
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818CreateCommand(
-                var tool20250818Create
-            ) => tool20250818Create,
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818StrReplaceCommand(
-                var tool20250818StrReplace
-            ) => tool20250818StrReplace,
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818InsertCommand(
-                var tool20250818Insert
-            ) => tool20250818Insert,
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818DeleteCommand(
-                var tool20250818Delete
-            ) => tool20250818Delete,
-            BetaMemoryTool20250818CommandVariants::BetaMemoryTool20250818RenameCommand(
-                var tool20250818Rename
-            ) => tool20250818Rename,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaMemoryTool20250818Command"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

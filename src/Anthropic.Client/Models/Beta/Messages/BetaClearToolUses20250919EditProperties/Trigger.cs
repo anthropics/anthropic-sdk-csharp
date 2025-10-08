@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using TriggerVariants = Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties.TriggerVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties;
 
@@ -12,40 +11,64 @@ namespace Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditPro
 /// Condition that triggers the context management strategy
 /// </summary>
 [JsonConverter(typeof(TriggerConverter))]
-public abstract record class Trigger
+public record class Trigger
 {
-    internal Trigger() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Trigger(BetaInputTokensTrigger value) =>
-        new TriggerVariants::BetaInputTokensTrigger(value);
+    public JsonElement Type
+    {
+        get { return Match(betaInputTokens: (x) => x.Type, betaToolUses: (x) => x.Type); }
+    }
 
-    public static implicit operator Trigger(BetaToolUsesTrigger value) =>
-        new TriggerVariants::BetaToolUsesTrigger(value);
+    public long Value1
+    {
+        get { return Match(betaInputTokens: (x) => x.Value, betaToolUses: (x) => x.Value); }
+    }
+
+    public Trigger(BetaInputTokensTrigger value)
+    {
+        Value = value;
+    }
+
+    public Trigger(BetaToolUsesTrigger value)
+    {
+        Value = value;
+    }
+
+    Trigger(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Trigger CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBetaInputTokens([NotNullWhen(true)] out BetaInputTokensTrigger? value)
     {
-        value = (this as TriggerVariants::BetaInputTokensTrigger)?.Value;
+        value = this.Value as BetaInputTokensTrigger;
         return value != null;
     }
 
     public bool TryPickBetaToolUses([NotNullWhen(true)] out BetaToolUsesTrigger? value)
     {
-        value = (this as TriggerVariants::BetaToolUsesTrigger)?.Value;
+        value = this.Value as BetaToolUsesTrigger;
         return value != null;
     }
 
     public void Switch(
-        Action<TriggerVariants::BetaInputTokensTrigger> betaInputTokens,
-        Action<TriggerVariants::BetaToolUsesTrigger> betaToolUses
+        Action<BetaInputTokensTrigger> betaInputTokens,
+        Action<BetaToolUsesTrigger> betaToolUses
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case TriggerVariants::BetaInputTokensTrigger inner:
-                betaInputTokens(inner);
+            case BetaInputTokensTrigger value:
+                betaInputTokens(value);
                 break;
-            case TriggerVariants::BetaToolUsesTrigger inner:
-                betaToolUses(inner);
+            case BetaToolUsesTrigger value:
+                betaToolUses(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -55,21 +78,29 @@ public abstract record class Trigger
     }
 
     public T Match<T>(
-        Func<TriggerVariants::BetaInputTokensTrigger, T> betaInputTokens,
-        Func<TriggerVariants::BetaToolUsesTrigger, T> betaToolUses
+        Func<BetaInputTokensTrigger, T> betaInputTokens,
+        Func<BetaToolUsesTrigger, T> betaToolUses
     )
     {
-        return this switch
+        return this.Value switch
         {
-            TriggerVariants::BetaInputTokensTrigger inner => betaInputTokens(inner),
-            TriggerVariants::BetaToolUsesTrigger inner => betaToolUses(inner),
+            BetaInputTokensTrigger value => betaInputTokens(value),
+            BetaToolUsesTrigger value => betaToolUses(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Trigger"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Trigger");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class TriggerConverter : JsonConverter<Trigger>
@@ -105,14 +136,15 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                     );
                     if (deserialized != null)
                     {
-                        return new TriggerVariants::BetaInputTokensTrigger(deserialized);
+                        deserialized.Validate();
+                        return new Trigger(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant TriggerVariants::BetaInputTokensTrigger",
+                            "Data does not match union variant 'BetaInputTokensTrigger'",
                             e
                         )
                     );
@@ -132,14 +164,15 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                     );
                     if (deserialized != null)
                     {
-                        return new TriggerVariants::BetaToolUsesTrigger(deserialized);
+                        deserialized.Validate();
+                        return new Trigger(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant TriggerVariants::BetaToolUsesTrigger",
+                            "Data does not match union variant 'BetaToolUsesTrigger'",
                             e
                         )
                     );
@@ -158,14 +191,7 @@ sealed class TriggerConverter : JsonConverter<Trigger>
 
     public override void Write(Utf8JsonWriter writer, Trigger value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            TriggerVariants::BetaInputTokensTrigger(var betaInputTokens) => betaInputTokens,
-            TriggerVariants::BetaToolUsesTrigger(var betaToolUses) => betaToolUses,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Trigger"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

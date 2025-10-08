@@ -101,7 +101,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
 
     public BetaMemoryTool20250818CreateCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"create\"");
+        this.Command = new();
     }
 
 #pragma warning disable CS8618

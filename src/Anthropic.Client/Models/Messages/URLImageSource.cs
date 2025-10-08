@@ -64,7 +64,7 @@ public sealed record class URLImageSource : ModelBase, IFromRaw<URLImageSource>
 
     public URLImageSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

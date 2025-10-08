@@ -4,39 +4,170 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using TextCitationVariants = Anthropic.Client.Models.Messages.TextCitationVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
 [JsonConverter(typeof(TextCitationConverter))]
-public abstract record class TextCitation
+public record class TextCitation
 {
-    internal TextCitation() { }
+    public object Value { get; private init; }
 
-    public static implicit operator TextCitation(CitationCharLocation value) =>
-        new TextCitationVariants::CitationCharLocation(value);
+    public string CitedText
+    {
+        get
+        {
+            return Match(
+                citationCharLocation: (x) => x.CitedText,
+                citationPageLocation: (x) => x.CitedText,
+                citationContentBlockLocation: (x) => x.CitedText,
+                citationsWebSearchResultLocation: (x) => x.CitedText,
+                citationsSearchResultLocation: (x) => x.CitedText
+            );
+        }
+    }
 
-    public static implicit operator TextCitation(CitationPageLocation value) =>
-        new TextCitationVariants::CitationPageLocation(value);
+    public long? DocumentIndex
+    {
+        get
+        {
+            return Match<long?>(
+                citationCharLocation: (x) => x.DocumentIndex,
+                citationPageLocation: (x) => x.DocumentIndex,
+                citationContentBlockLocation: (x) => x.DocumentIndex,
+                citationsWebSearchResultLocation: (_) => null,
+                citationsSearchResultLocation: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator TextCitation(CitationContentBlockLocation value) =>
-        new TextCitationVariants::CitationContentBlockLocation(value);
+    public string? DocumentTitle
+    {
+        get
+        {
+            return Match<string?>(
+                citationCharLocation: (x) => x.DocumentTitle,
+                citationPageLocation: (x) => x.DocumentTitle,
+                citationContentBlockLocation: (x) => x.DocumentTitle,
+                citationsWebSearchResultLocation: (_) => null,
+                citationsSearchResultLocation: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator TextCitation(CitationsWebSearchResultLocation value) =>
-        new TextCitationVariants::CitationsWebSearchResultLocation(value);
+    public string? FileID
+    {
+        get
+        {
+            return Match<string?>(
+                citationCharLocation: (x) => x.FileID,
+                citationPageLocation: (x) => x.FileID,
+                citationContentBlockLocation: (x) => x.FileID,
+                citationsWebSearchResultLocation: (_) => null,
+                citationsSearchResultLocation: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator TextCitation(CitationsSearchResultLocation value) =>
-        new TextCitationVariants::CitationsSearchResultLocation(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                citationCharLocation: (x) => x.Type,
+                citationPageLocation: (x) => x.Type,
+                citationContentBlockLocation: (x) => x.Type,
+                citationsWebSearchResultLocation: (x) => x.Type,
+                citationsSearchResultLocation: (x) => x.Type
+            );
+        }
+    }
+
+    public long? EndBlockIndex
+    {
+        get
+        {
+            return Match<long?>(
+                citationCharLocation: (_) => null,
+                citationPageLocation: (_) => null,
+                citationContentBlockLocation: (x) => x.EndBlockIndex,
+                citationsWebSearchResultLocation: (_) => null,
+                citationsSearchResultLocation: (x) => x.EndBlockIndex
+            );
+        }
+    }
+
+    public long? StartBlockIndex
+    {
+        get
+        {
+            return Match<long?>(
+                citationCharLocation: (_) => null,
+                citationPageLocation: (_) => null,
+                citationContentBlockLocation: (x) => x.StartBlockIndex,
+                citationsWebSearchResultLocation: (_) => null,
+                citationsSearchResultLocation: (x) => x.StartBlockIndex
+            );
+        }
+    }
+
+    public string? Title
+    {
+        get
+        {
+            return Match<string?>(
+                citationCharLocation: (_) => null,
+                citationPageLocation: (_) => null,
+                citationContentBlockLocation: (_) => null,
+                citationsWebSearchResultLocation: (x) => x.Title,
+                citationsSearchResultLocation: (x) => x.Title
+            );
+        }
+    }
+
+    public TextCitation(CitationCharLocation value)
+    {
+        Value = value;
+    }
+
+    public TextCitation(CitationPageLocation value)
+    {
+        Value = value;
+    }
+
+    public TextCitation(CitationContentBlockLocation value)
+    {
+        Value = value;
+    }
+
+    public TextCitation(CitationsWebSearchResultLocation value)
+    {
+        Value = value;
+    }
+
+    public TextCitation(CitationsSearchResultLocation value)
+    {
+        Value = value;
+    }
+
+    TextCitation(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static TextCitation CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickCitationCharLocation([NotNullWhen(true)] out CitationCharLocation? value)
     {
-        value = (this as TextCitationVariants::CitationCharLocation)?.Value;
+        value = this.Value as CitationCharLocation;
         return value != null;
     }
 
     public bool TryPickCitationPageLocation([NotNullWhen(true)] out CitationPageLocation? value)
     {
-        value = (this as TextCitationVariants::CitationPageLocation)?.Value;
+        value = this.Value as CitationPageLocation;
         return value != null;
     }
 
@@ -44,7 +175,7 @@ public abstract record class TextCitation
         [NotNullWhen(true)] out CitationContentBlockLocation? value
     )
     {
-        value = (this as TextCitationVariants::CitationContentBlockLocation)?.Value;
+        value = this.Value as CitationContentBlockLocation;
         return value != null;
     }
 
@@ -52,7 +183,7 @@ public abstract record class TextCitation
         [NotNullWhen(true)] out CitationsWebSearchResultLocation? value
     )
     {
-        value = (this as TextCitationVariants::CitationsWebSearchResultLocation)?.Value;
+        value = this.Value as CitationsWebSearchResultLocation;
         return value != null;
     }
 
@@ -60,34 +191,34 @@ public abstract record class TextCitation
         [NotNullWhen(true)] out CitationsSearchResultLocation? value
     )
     {
-        value = (this as TextCitationVariants::CitationsSearchResultLocation)?.Value;
+        value = this.Value as CitationsSearchResultLocation;
         return value != null;
     }
 
     public void Switch(
-        Action<TextCitationVariants::CitationCharLocation> citationCharLocation,
-        Action<TextCitationVariants::CitationPageLocation> citationPageLocation,
-        Action<TextCitationVariants::CitationContentBlockLocation> citationContentBlockLocation,
-        Action<TextCitationVariants::CitationsWebSearchResultLocation> citationsWebSearchResultLocation,
-        Action<TextCitationVariants::CitationsSearchResultLocation> citationsSearchResultLocation
+        Action<CitationCharLocation> citationCharLocation,
+        Action<CitationPageLocation> citationPageLocation,
+        Action<CitationContentBlockLocation> citationContentBlockLocation,
+        Action<CitationsWebSearchResultLocation> citationsWebSearchResultLocation,
+        Action<CitationsSearchResultLocation> citationsSearchResultLocation
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case TextCitationVariants::CitationCharLocation inner:
-                citationCharLocation(inner);
+            case CitationCharLocation value:
+                citationCharLocation(value);
                 break;
-            case TextCitationVariants::CitationPageLocation inner:
-                citationPageLocation(inner);
+            case CitationPageLocation value:
+                citationPageLocation(value);
                 break;
-            case TextCitationVariants::CitationContentBlockLocation inner:
-                citationContentBlockLocation(inner);
+            case CitationContentBlockLocation value:
+                citationContentBlockLocation(value);
                 break;
-            case TextCitationVariants::CitationsWebSearchResultLocation inner:
-                citationsWebSearchResultLocation(inner);
+            case CitationsWebSearchResultLocation value:
+                citationsWebSearchResultLocation(value);
                 break;
-            case TextCitationVariants::CitationsSearchResultLocation inner:
-                citationsSearchResultLocation(inner);
+            case CitationsSearchResultLocation value:
+                citationsSearchResultLocation(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -97,33 +228,37 @@ public abstract record class TextCitation
     }
 
     public T Match<T>(
-        Func<TextCitationVariants::CitationCharLocation, T> citationCharLocation,
-        Func<TextCitationVariants::CitationPageLocation, T> citationPageLocation,
-        Func<TextCitationVariants::CitationContentBlockLocation, T> citationContentBlockLocation,
-        Func<
-            TextCitationVariants::CitationsWebSearchResultLocation,
-            T
-        > citationsWebSearchResultLocation,
-        Func<TextCitationVariants::CitationsSearchResultLocation, T> citationsSearchResultLocation
+        Func<CitationCharLocation, T> citationCharLocation,
+        Func<CitationPageLocation, T> citationPageLocation,
+        Func<CitationContentBlockLocation, T> citationContentBlockLocation,
+        Func<CitationsWebSearchResultLocation, T> citationsWebSearchResultLocation,
+        Func<CitationsSearchResultLocation, T> citationsSearchResultLocation
     )
     {
-        return this switch
+        return this.Value switch
         {
-            TextCitationVariants::CitationCharLocation inner => citationCharLocation(inner),
-            TextCitationVariants::CitationPageLocation inner => citationPageLocation(inner),
-            TextCitationVariants::CitationContentBlockLocation inner =>
-                citationContentBlockLocation(inner),
-            TextCitationVariants::CitationsWebSearchResultLocation inner =>
-                citationsWebSearchResultLocation(inner),
-            TextCitationVariants::CitationsSearchResultLocation inner =>
-                citationsSearchResultLocation(inner),
+            CitationCharLocation value => citationCharLocation(value),
+            CitationPageLocation value => citationPageLocation(value),
+            CitationContentBlockLocation value => citationContentBlockLocation(value),
+            CitationsWebSearchResultLocation value => citationsWebSearchResultLocation(value),
+            CitationsSearchResultLocation value => citationsSearchResultLocation(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of TextCitation"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of TextCitation"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class TextCitationConverter : JsonConverter<TextCitation>
@@ -159,14 +294,15 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                     );
                     if (deserialized != null)
                     {
-                        return new TextCitationVariants::CitationCharLocation(deserialized);
+                        deserialized.Validate();
+                        return new TextCitation(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant TextCitationVariants::CitationCharLocation",
+                            "Data does not match union variant 'CitationCharLocation'",
                             e
                         )
                     );
@@ -186,14 +322,15 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                     );
                     if (deserialized != null)
                     {
-                        return new TextCitationVariants::CitationPageLocation(deserialized);
+                        deserialized.Validate();
+                        return new TextCitation(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant TextCitationVariants::CitationPageLocation",
+                            "Data does not match union variant 'CitationPageLocation'",
                             e
                         )
                     );
@@ -213,14 +350,15 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                     );
                     if (deserialized != null)
                     {
-                        return new TextCitationVariants::CitationContentBlockLocation(deserialized);
+                        deserialized.Validate();
+                        return new TextCitation(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant TextCitationVariants::CitationContentBlockLocation",
+                            "Data does not match union variant 'CitationContentBlockLocation'",
                             e
                         )
                     );
@@ -240,16 +378,15 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                     );
                     if (deserialized != null)
                     {
-                        return new TextCitationVariants::CitationsWebSearchResultLocation(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new TextCitation(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant TextCitationVariants::CitationsWebSearchResultLocation",
+                            "Data does not match union variant 'CitationsWebSearchResultLocation'",
                             e
                         )
                     );
@@ -269,16 +406,15 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
                     );
                     if (deserialized != null)
                     {
-                        return new TextCitationVariants::CitationsSearchResultLocation(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new TextCitation(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant TextCitationVariants::CitationsSearchResultLocation",
+                            "Data does not match union variant 'CitationsSearchResultLocation'",
                             e
                         )
                     );
@@ -301,24 +437,7 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            TextCitationVariants::CitationCharLocation(var citationCharLocation) =>
-                citationCharLocation,
-            TextCitationVariants::CitationPageLocation(var citationPageLocation) =>
-                citationPageLocation,
-            TextCitationVariants::CitationContentBlockLocation(var citationContentBlockLocation) =>
-                citationContentBlockLocation,
-            TextCitationVariants::CitationsWebSearchResultLocation(
-                var citationsWebSearchResultLocation
-            ) => citationsWebSearchResultLocation,
-            TextCitationVariants::CitationsSearchResultLocation(
-                var citationsSearchResultLocation
-            ) => citationsSearchResultLocation,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of TextCitation"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

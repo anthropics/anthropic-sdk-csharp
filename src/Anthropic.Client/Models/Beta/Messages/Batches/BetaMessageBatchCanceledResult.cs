@@ -38,7 +38,7 @@ public sealed record class BetaMessageBatchCanceledResult
 
     public BetaMessageBatchCanceledResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

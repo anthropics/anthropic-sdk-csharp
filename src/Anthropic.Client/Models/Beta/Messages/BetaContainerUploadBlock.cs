@@ -67,7 +67,7 @@ public sealed record class BetaContainerUploadBlock : ModelBase, IFromRaw<BetaCo
 
     public BetaContainerUploadBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties.ClearToolInputsVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties;
 
@@ -12,35 +11,51 @@ namespace Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditPro
 /// Whether to clear all tool inputs (bool) or specific tool inputs to clear (list)
 /// </summary>
 [JsonConverter(typeof(ClearToolInputsConverter))]
-public abstract record class ClearToolInputs
+public record class ClearToolInputs
 {
-    internal ClearToolInputs() { }
+    public object Value { get; private init; }
 
-    public static implicit operator ClearToolInputs(bool value) => new Bool(value);
+    public ClearToolInputs(bool value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ClearToolInputs(List<string> value) => new Strings(value);
+    public ClearToolInputs(List<string> value)
+    {
+        Value = value;
+    }
+
+    ClearToolInputs(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static ClearToolInputs CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBool([NotNullWhen(true)] out bool? value)
     {
-        value = (this as Bool)?.Value;
+        value = this.Value as bool?;
         return value != null;
     }
 
     public bool TryPickStrings([NotNullWhen(true)] out List<string>? value)
     {
-        value = (this as Strings)?.Value;
+        value = this.Value as List<string>;
         return value != null;
     }
 
-    public void Switch(Action<Bool> @bool, Action<Strings> strings)
+    public void Switch(Action<bool> @bool, Action<List<string>> strings)
     {
-        switch (this)
+        switch (this.Value)
         {
-            case Bool inner:
-                @bool(inner);
+            case bool value:
+                @bool(value);
                 break;
-            case Strings inner:
-                strings(inner);
+            case List<string> value:
+                strings(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -49,19 +64,29 @@ public abstract record class ClearToolInputs
         }
     }
 
-    public T Match<T>(Func<Bool, T> @bool, Func<Strings, T> strings)
+    public T Match<T>(Func<bool, T> @bool, Func<List<string>, T> strings)
     {
-        return this switch
+        return this.Value switch
         {
-            Bool inner => @bool(inner),
-            Strings inner => strings(inner),
+            bool value => @bool(value),
+            List<string> value => strings(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ClearToolInputs"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ClearToolInputs"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
@@ -76,12 +101,12 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
 
         try
         {
-            return new Bool(JsonSerializer.Deserialize<bool>(ref reader, options));
+            return new ClearToolInputs(JsonSerializer.Deserialize<bool>(ref reader, options));
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant Bool", e)
+                new AnthropicInvalidDataException("Data does not match union variant 'bool'", e)
             );
         }
 
@@ -90,13 +115,16 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
             var deserialized = JsonSerializer.Deserialize<List<string>>(ref reader, options);
             if (deserialized != null)
             {
-                return new Strings(deserialized);
+                return new ClearToolInputs(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant Strings", e)
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant 'List<string>'",
+                    e
+                )
             );
         }
 
@@ -109,15 +137,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         JsonSerializerOptions options
     )
     {
-        object? variant = value switch
-        {
-            null => null,
-            Bool(var @bool) => @bool,
-            Strings(var strings) => strings,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ClearToolInputs"
-            ),
-        };
+        object? variant = value?.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

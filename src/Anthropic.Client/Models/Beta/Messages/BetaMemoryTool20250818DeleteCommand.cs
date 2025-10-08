@@ -72,7 +72,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
 
     public BetaMemoryTool20250818DeleteCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"delete\"");
+        this.Command = new();
     }
 
 #pragma warning disable CS8618

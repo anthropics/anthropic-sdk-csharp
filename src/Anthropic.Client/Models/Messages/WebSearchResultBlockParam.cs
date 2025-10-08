@@ -140,7 +140,7 @@ public sealed record class WebSearchResultBlockParam
 
     public WebSearchResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

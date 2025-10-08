@@ -64,7 +64,7 @@ public sealed record class BetaInvalidRequestError : ModelBase, IFromRaw<BetaInv
 
     public BetaInvalidRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

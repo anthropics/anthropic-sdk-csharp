@@ -25,50 +25,58 @@ public class BatchServiceTest : TestBase
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                            Messages = [new() { Content = new("Hello, world"), Role = Role.User }],
                             Model = Model.Claude3_7SonnetLatest,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             ServiceTier = ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
-                            System = new List<TextBlockParam>()
-                            {
-                                new()
+                            System = new(
+                                new List<TextBlockParam>()
                                 {
-                                    Text = "Today's date is 2024-06-01.",
-                                    CacheControl = new() { TTL = TTL.TTL5m },
-                                    Citations =
-                                    [
-                                        new CitationCharLocationParam()
-                                        {
-                                            CitedText = "cited_text",
-                                            DocumentIndex = 0,
-                                            DocumentTitle = "x",
-                                            EndCharIndex = 0,
-                                            StartCharIndex = 0,
-                                        },
-                                    ],
-                                },
-                            },
+                                    new()
+                                    {
+                                        Text = "Today's date is 2024-06-01.",
+                                        CacheControl = new() { TTL = TTL.TTL5m },
+                                        Citations =
+                                        [
+                                            new(
+                                                new CitationCharLocationParam()
+                                                {
+                                                    CitedText = "cited_text",
+                                                    DocumentIndex = 0,
+                                                    DocumentTitle = "x",
+                                                    EndCharIndex = 0,
+                                                    StartCharIndex = 0,
+                                                }
+                                            ),
+                                        ],
+                                    },
+                                }
+                            ),
                             Temperature = 1,
-                            Thinking = new ThinkingConfigEnabled(1024),
-                            ToolChoice = new ToolChoiceAuto() { DisableParallelToolUse = true },
+                            Thinking = new(new ThinkingConfigEnabled(1024)),
+                            ToolChoice = new(
+                                new ToolChoiceAuto() { DisableParallelToolUse = true }
+                            ),
                             Tools =
                             [
-                                new Tool()
-                                {
-                                    InputSchema = new()
+                                new(
+                                    new Tool()
                                     {
-                                        Properties1 = JsonSerializer.Deserialize<JsonElement>(
-                                            "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
-                                        ),
-                                        Required = ["location"],
-                                    },
-                                    Name = "name",
-                                    CacheControl = new() { TTL = TTL.TTL5m },
-                                    Description = "Get the current weather in a given location",
-                                    Type = Type.Custom,
-                                },
+                                        InputSchema = new()
+                                        {
+                                            Properties1 = JsonSerializer.Deserialize<JsonElement>(
+                                                "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
+                                            ),
+                                            Required = ["location"],
+                                        },
+                                        Name = "name",
+                                        CacheControl = new() { TTL = TTL.TTL5m },
+                                        Description = "Get the current weather in a given location",
+                                        Type = Type.Custom,
+                                    }
+                                ),
                             ],
                             TopK = 5,
                             TopP = 0.7,

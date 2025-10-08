@@ -114,8 +114,8 @@ public sealed record class BetaToolTextEditor20250728
 
     public BetaToolTextEditor20250728()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_based_edit_tool\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250728\"");
+        this.Name = new();
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

@@ -204,7 +204,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
 
     public FileMetadata()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

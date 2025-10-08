@@ -4,67 +4,87 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using SourceVariants = Anthropic.Client.Models.Messages.ImageBlockParamProperties.SourceVariants;
 
 namespace Anthropic.Client.Models.Messages.ImageBlockParamProperties;
 
 [JsonConverter(typeof(SourceConverter))]
-public abstract record class Source
+public record class Source
 {
-    internal Source() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Source(Base64ImageSource value) =>
-        new SourceVariants::Base64ImageSource(value);
+    public JsonElement Type
+    {
+        get { return Match(base64Image: (x) => x.Type, urlImage: (x) => x.Type); }
+    }
 
-    public static implicit operator Source(URLImageSource value) =>
-        new SourceVariants::URLImageSource(value);
+    public Source(Base64ImageSource value)
+    {
+        Value = value;
+    }
+
+    public Source(URLImageSource value)
+    {
+        Value = value;
+    }
+
+    Source(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Source CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBase64Image([NotNullWhen(true)] out Base64ImageSource? value)
     {
-        value = (this as SourceVariants::Base64ImageSource)?.Value;
+        value = this.Value as Base64ImageSource;
         return value != null;
     }
 
     public bool TryPickURLImage([NotNullWhen(true)] out URLImageSource? value)
     {
-        value = (this as SourceVariants::URLImageSource)?.Value;
+        value = this.Value as URLImageSource;
         return value != null;
     }
 
-    public void Switch(
-        Action<SourceVariants::Base64ImageSource> base64Image,
-        Action<SourceVariants::URLImageSource> urlImage
-    )
+    public void Switch(Action<Base64ImageSource> base64Image, Action<URLImageSource> urlImage)
     {
-        switch (this)
+        switch (this.Value)
         {
-            case SourceVariants::Base64ImageSource inner:
-                base64Image(inner);
+            case Base64ImageSource value:
+                base64Image(value);
                 break;
-            case SourceVariants::URLImageSource inner:
-                urlImage(inner);
+            case URLImageSource value:
+                urlImage(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
     }
 
-    public T Match<T>(
-        Func<SourceVariants::Base64ImageSource, T> base64Image,
-        Func<SourceVariants::URLImageSource, T> urlImage
-    )
+    public T Match<T>(Func<Base64ImageSource, T> base64Image, Func<URLImageSource, T> urlImage)
     {
-        return this switch
+        return this.Value switch
         {
-            SourceVariants::Base64ImageSource inner => base64Image(inner),
-            SourceVariants::URLImageSource inner => urlImage(inner),
+            Base64ImageSource value => base64Image(value),
+            URLImageSource value => urlImage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Source"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Source");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class SourceConverter : JsonConverter<Source>
@@ -97,14 +117,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     var deserialized = JsonSerializer.Deserialize<Base64ImageSource>(json, options);
                     if (deserialized != null)
                     {
-                        return new SourceVariants::Base64ImageSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::Base64ImageSource",
+                            "Data does not match union variant 'Base64ImageSource'",
                             e
                         )
                     );
@@ -121,14 +142,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     var deserialized = JsonSerializer.Deserialize<URLImageSource>(json, options);
                     if (deserialized != null)
                     {
-                        return new SourceVariants::URLImageSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::URLImageSource",
+                            "Data does not match union variant 'URLImageSource'",
                             e
                         )
                     );
@@ -147,14 +169,7 @@ sealed class SourceConverter : JsonConverter<Source>
 
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            SourceVariants::Base64ImageSource(var base64Image) => base64Image,
-            SourceVariants::URLImageSource(var urlImage) => urlImage,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Source"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

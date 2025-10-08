@@ -137,7 +137,7 @@ public sealed record class BetaCitationWebSearchResultLocationParam
 
     public BetaCitationWebSearchResultLocationParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

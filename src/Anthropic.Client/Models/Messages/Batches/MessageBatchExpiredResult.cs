@@ -38,7 +38,7 @@ public sealed record class MessageBatchExpiredResult
 
     public MessageBatchExpiredResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

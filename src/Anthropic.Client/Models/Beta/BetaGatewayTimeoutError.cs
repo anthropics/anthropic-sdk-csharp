@@ -64,7 +64,7 @@ public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGat
 
     public BetaGatewayTimeoutError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

@@ -62,7 +62,7 @@ public sealed record class BetaRawContentBlockStopEvent
 
     public BetaRawContentBlockStopEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

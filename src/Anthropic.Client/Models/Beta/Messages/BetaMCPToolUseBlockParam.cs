@@ -166,7 +166,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
 
     public BetaMCPToolUseBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

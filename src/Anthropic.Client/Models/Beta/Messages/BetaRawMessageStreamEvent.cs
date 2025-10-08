@@ -4,50 +4,99 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaRawMessageStreamEventVariants = Anthropic.Client.Models.Beta.Messages.BetaRawMessageStreamEventVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaRawMessageStreamEventConverter))]
-public abstract record class BetaRawMessageStreamEvent
+public record class BetaRawMessageStreamEvent
 {
-    internal BetaRawMessageStreamEvent() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageStartEvent value) =>
-        new BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                start: (x) => x.Type,
+                delta: (x) => x.Type,
+                stop: (x) => x.Type,
+                contentBlockStart: (x) => x.Type,
+                contentBlockDelta: (x) => x.Type,
+                contentBlockStop: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value) =>
-        new BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent(value);
+    public long? Index
+    {
+        get
+        {
+            return Match<long?>(
+                start: (_) => null,
+                delta: (_) => null,
+                stop: (_) => null,
+                contentBlockStart: (x) => x.Index,
+                contentBlockDelta: (x) => x.Index,
+                contentBlockStop: (x) => x.Index
+            );
+        }
+    }
 
-    public static implicit operator BetaRawMessageStreamEvent(BetaRawMessageStopEvent value) =>
-        new BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent(value);
+    public BetaRawMessageStreamEvent(BetaRawMessageStartEvent value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaRawMessageStreamEvent(
-        BetaRawContentBlockStartEvent value
-    ) => new BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent(value);
+    public BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaRawMessageStreamEvent(
-        BetaRawContentBlockDeltaEvent value
-    ) => new BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent(value);
+    public BetaRawMessageStreamEvent(BetaRawMessageStopEvent value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value) =>
-        new BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(value);
+    public BetaRawMessageStreamEvent(BetaRawContentBlockStartEvent value)
+    {
+        Value = value;
+    }
+
+    public BetaRawMessageStreamEvent(BetaRawContentBlockDeltaEvent value)
+    {
+        Value = value;
+    }
+
+    public BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value)
+    {
+        Value = value;
+    }
+
+    BetaRawMessageStreamEvent(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaRawMessageStreamEvent CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickStart([NotNullWhen(true)] out BetaRawMessageStartEvent? value)
     {
-        value = (this as BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent)?.Value;
+        value = this.Value as BetaRawMessageStartEvent;
         return value != null;
     }
 
     public bool TryPickDelta([NotNullWhen(true)] out BetaRawMessageDeltaEvent? value)
     {
-        value = (this as BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent)?.Value;
+        value = this.Value as BetaRawMessageDeltaEvent;
         return value != null;
     }
 
     public bool TryPickStop([NotNullWhen(true)] out BetaRawMessageStopEvent? value)
     {
-        value = (this as BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent)?.Value;
+        value = this.Value as BetaRawMessageStopEvent;
         return value != null;
     }
 
@@ -55,7 +104,7 @@ public abstract record class BetaRawMessageStreamEvent
         [NotNullWhen(true)] out BetaRawContentBlockStartEvent? value
     )
     {
-        value = (this as BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent)?.Value;
+        value = this.Value as BetaRawContentBlockStartEvent;
         return value != null;
     }
 
@@ -63,44 +112,44 @@ public abstract record class BetaRawMessageStreamEvent
         [NotNullWhen(true)] out BetaRawContentBlockDeltaEvent? value
     )
     {
-        value = (this as BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent)?.Value;
+        value = this.Value as BetaRawContentBlockDeltaEvent;
         return value != null;
     }
 
     public bool TryPickContentBlockStop([NotNullWhen(true)] out BetaRawContentBlockStopEvent? value)
     {
-        value = (this as BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent)?.Value;
+        value = this.Value as BetaRawContentBlockStopEvent;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent> start,
-        Action<BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent> delta,
-        Action<BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent> stop,
-        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent> contentBlockStart,
-        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent> contentBlockDelta,
-        Action<BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent> contentBlockStop
+        Action<BetaRawMessageStartEvent> start,
+        Action<BetaRawMessageDeltaEvent> delta,
+        Action<BetaRawMessageStopEvent> stop,
+        Action<BetaRawContentBlockStartEvent> contentBlockStart,
+        Action<BetaRawContentBlockDeltaEvent> contentBlockDelta,
+        Action<BetaRawContentBlockStopEvent> contentBlockStop
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent inner:
-                start(inner);
+            case BetaRawMessageStartEvent value:
+                start(value);
                 break;
-            case BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent inner:
-                delta(inner);
+            case BetaRawMessageDeltaEvent value:
+                delta(value);
                 break;
-            case BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent inner:
-                stop(inner);
+            case BetaRawMessageStopEvent value:
+                stop(value);
                 break;
-            case BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent inner:
-                contentBlockStart(inner);
+            case BetaRawContentBlockStartEvent value:
+                contentBlockStart(value);
                 break;
-            case BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent inner:
-                contentBlockDelta(inner);
+            case BetaRawContentBlockDeltaEvent value:
+                contentBlockDelta(value);
                 break;
-            case BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent inner:
-                contentBlockStop(inner);
+            case BetaRawContentBlockStopEvent value:
+                contentBlockStop(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -110,32 +159,39 @@ public abstract record class BetaRawMessageStreamEvent
     }
 
     public T Match<T>(
-        Func<BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent, T> start,
-        Func<BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent, T> delta,
-        Func<BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent, T> stop,
-        Func<BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent, T> contentBlockStart,
-        Func<BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent, T> contentBlockDelta,
-        Func<BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent, T> contentBlockStop
+        Func<BetaRawMessageStartEvent, T> start,
+        Func<BetaRawMessageDeltaEvent, T> delta,
+        Func<BetaRawMessageStopEvent, T> stop,
+        Func<BetaRawContentBlockStartEvent, T> contentBlockStart,
+        Func<BetaRawContentBlockDeltaEvent, T> contentBlockDelta,
+        Func<BetaRawContentBlockStopEvent, T> contentBlockStop
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent inner => start(inner),
-            BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent inner => delta(inner),
-            BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent inner => stop(inner),
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent inner =>
-                contentBlockStart(inner),
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent inner =>
-                contentBlockDelta(inner),
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent inner =>
-                contentBlockStop(inner),
+            BetaRawMessageStartEvent value => start(value),
+            BetaRawMessageDeltaEvent value => delta(value),
+            BetaRawMessageStopEvent value => stop(value),
+            BetaRawContentBlockStartEvent value => contentBlockStart(value),
+            BetaRawContentBlockDeltaEvent value => contentBlockDelta(value),
+            BetaRawContentBlockStopEvent value => contentBlockStop(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaRawMessageStreamEvent"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaRawMessageStreamEvent"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageStreamEvent>
@@ -171,16 +227,15 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent",
+                            "Data does not match union variant 'BetaRawMessageStartEvent'",
                             e
                         )
                     );
@@ -200,16 +255,15 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent",
+                            "Data does not match union variant 'BetaRawMessageDeltaEvent'",
                             e
                         )
                     );
@@ -229,16 +283,15 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent",
+                            "Data does not match union variant 'BetaRawMessageStopEvent'",
                             e
                         )
                     );
@@ -258,16 +311,15 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent",
+                            "Data does not match union variant 'BetaRawContentBlockStartEvent'",
                             e
                         )
                     );
@@ -287,16 +339,15 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent",
+                            "Data does not match union variant 'BetaRawContentBlockDeltaEvent'",
                             e
                         )
                     );
@@ -316,16 +367,15 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                     if (deserialized != null)
                     {
-                        return new BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent",
+                            "Data does not match union variant 'BetaRawContentBlockStopEvent'",
                             e
                         )
                     );
@@ -348,23 +398,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaRawMessageStreamEventVariants::BetaRawMessageStartEvent(var start) => start,
-            BetaRawMessageStreamEventVariants::BetaRawMessageDeltaEvent(var delta) => delta,
-            BetaRawMessageStreamEventVariants::BetaRawMessageStopEvent(var stop) => stop,
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockStartEvent(
-                var contentBlockStart
-            ) => contentBlockStart,
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockDeltaEvent(
-                var contentBlockDelta
-            ) => contentBlockDelta,
-            BetaRawMessageStreamEventVariants::BetaRawContentBlockStopEvent(var contentBlockStop) =>
-                contentBlockStop,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaRawMessageStreamEvent"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

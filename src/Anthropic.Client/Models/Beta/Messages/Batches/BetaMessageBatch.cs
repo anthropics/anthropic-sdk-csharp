@@ -292,7 +292,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
 
     public BetaMessageBatch()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

@@ -90,7 +90,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
 
     public BetaBase64ImageSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

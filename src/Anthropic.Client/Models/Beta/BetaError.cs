@@ -4,136 +4,199 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaErrorVariants = Anthropic.Client.Models.Beta.BetaErrorVariants;
 
 namespace Anthropic.Client.Models.Beta;
 
 [JsonConverter(typeof(BetaErrorConverter))]
-public abstract record class BetaError
+public record class BetaError
 {
-    internal BetaError() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaError(BetaInvalidRequestError value) =>
-        new BetaErrorVariants::BetaInvalidRequestError(value);
+    public string Message
+    {
+        get
+        {
+            return Match(
+                invalidRequest: (x) => x.Message,
+                authentication: (x) => x.Message,
+                billing: (x) => x.Message,
+                permission: (x) => x.Message,
+                notFound: (x) => x.Message,
+                rateLimit: (x) => x.Message,
+                gatewayTimeout: (x) => x.Message,
+                api: (x) => x.Message,
+                overloaded: (x) => x.Message
+            );
+        }
+    }
 
-    public static implicit operator BetaError(BetaAuthenticationError value) =>
-        new BetaErrorVariants::BetaAuthenticationError(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                invalidRequest: (x) => x.Type,
+                authentication: (x) => x.Type,
+                billing: (x) => x.Type,
+                permission: (x) => x.Type,
+                notFound: (x) => x.Type,
+                rateLimit: (x) => x.Type,
+                gatewayTimeout: (x) => x.Type,
+                api: (x) => x.Type,
+                overloaded: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator BetaError(BetaBillingError value) =>
-        new BetaErrorVariants::BetaBillingError(value);
+    public BetaError(BetaInvalidRequestError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaError(BetaPermissionError value) =>
-        new BetaErrorVariants::BetaPermissionError(value);
+    public BetaError(BetaAuthenticationError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaError(BetaNotFoundError value) =>
-        new BetaErrorVariants::BetaNotFoundError(value);
+    public BetaError(BetaBillingError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaError(BetaRateLimitError value) =>
-        new BetaErrorVariants::BetaRateLimitError(value);
+    public BetaError(BetaPermissionError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaError(BetaGatewayTimeoutError value) =>
-        new BetaErrorVariants::BetaGatewayTimeoutError(value);
+    public BetaError(BetaNotFoundError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaError(BetaAPIError value) =>
-        new BetaErrorVariants::BetaAPIError(value);
+    public BetaError(BetaRateLimitError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaError(BetaOverloadedError value) =>
-        new BetaErrorVariants::BetaOverloadedError(value);
+    public BetaError(BetaGatewayTimeoutError value)
+    {
+        Value = value;
+    }
+
+    public BetaError(BetaAPIError value)
+    {
+        Value = value;
+    }
+
+    public BetaError(BetaOverloadedError value)
+    {
+        Value = value;
+    }
+
+    BetaError(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaError CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickInvalidRequest([NotNullWhen(true)] out BetaInvalidRequestError? value)
     {
-        value = (this as BetaErrorVariants::BetaInvalidRequestError)?.Value;
+        value = this.Value as BetaInvalidRequestError;
         return value != null;
     }
 
     public bool TryPickAuthentication([NotNullWhen(true)] out BetaAuthenticationError? value)
     {
-        value = (this as BetaErrorVariants::BetaAuthenticationError)?.Value;
+        value = this.Value as BetaAuthenticationError;
         return value != null;
     }
 
     public bool TryPickBilling([NotNullWhen(true)] out BetaBillingError? value)
     {
-        value = (this as BetaErrorVariants::BetaBillingError)?.Value;
+        value = this.Value as BetaBillingError;
         return value != null;
     }
 
     public bool TryPickPermission([NotNullWhen(true)] out BetaPermissionError? value)
     {
-        value = (this as BetaErrorVariants::BetaPermissionError)?.Value;
+        value = this.Value as BetaPermissionError;
         return value != null;
     }
 
     public bool TryPickNotFound([NotNullWhen(true)] out BetaNotFoundError? value)
     {
-        value = (this as BetaErrorVariants::BetaNotFoundError)?.Value;
+        value = this.Value as BetaNotFoundError;
         return value != null;
     }
 
     public bool TryPickRateLimit([NotNullWhen(true)] out BetaRateLimitError? value)
     {
-        value = (this as BetaErrorVariants::BetaRateLimitError)?.Value;
+        value = this.Value as BetaRateLimitError;
         return value != null;
     }
 
     public bool TryPickGatewayTimeout([NotNullWhen(true)] out BetaGatewayTimeoutError? value)
     {
-        value = (this as BetaErrorVariants::BetaGatewayTimeoutError)?.Value;
+        value = this.Value as BetaGatewayTimeoutError;
         return value != null;
     }
 
     public bool TryPickAPI([NotNullWhen(true)] out BetaAPIError? value)
     {
-        value = (this as BetaErrorVariants::BetaAPIError)?.Value;
+        value = this.Value as BetaAPIError;
         return value != null;
     }
 
     public bool TryPickOverloaded([NotNullWhen(true)] out BetaOverloadedError? value)
     {
-        value = (this as BetaErrorVariants::BetaOverloadedError)?.Value;
+        value = this.Value as BetaOverloadedError;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaErrorVariants::BetaInvalidRequestError> invalidRequest,
-        Action<BetaErrorVariants::BetaAuthenticationError> authentication,
-        Action<BetaErrorVariants::BetaBillingError> billing,
-        Action<BetaErrorVariants::BetaPermissionError> permission,
-        Action<BetaErrorVariants::BetaNotFoundError> notFound,
-        Action<BetaErrorVariants::BetaRateLimitError> rateLimit,
-        Action<BetaErrorVariants::BetaGatewayTimeoutError> gatewayTimeout,
-        Action<BetaErrorVariants::BetaAPIError> api,
-        Action<BetaErrorVariants::BetaOverloadedError> overloaded
+        Action<BetaInvalidRequestError> invalidRequest,
+        Action<BetaAuthenticationError> authentication,
+        Action<BetaBillingError> billing,
+        Action<BetaPermissionError> permission,
+        Action<BetaNotFoundError> notFound,
+        Action<BetaRateLimitError> rateLimit,
+        Action<BetaGatewayTimeoutError> gatewayTimeout,
+        Action<BetaAPIError> api,
+        Action<BetaOverloadedError> overloaded
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaErrorVariants::BetaInvalidRequestError inner:
-                invalidRequest(inner);
+            case BetaInvalidRequestError value:
+                invalidRequest(value);
                 break;
-            case BetaErrorVariants::BetaAuthenticationError inner:
-                authentication(inner);
+            case BetaAuthenticationError value:
+                authentication(value);
                 break;
-            case BetaErrorVariants::BetaBillingError inner:
-                billing(inner);
+            case BetaBillingError value:
+                billing(value);
                 break;
-            case BetaErrorVariants::BetaPermissionError inner:
-                permission(inner);
+            case BetaPermissionError value:
+                permission(value);
                 break;
-            case BetaErrorVariants::BetaNotFoundError inner:
-                notFound(inner);
+            case BetaNotFoundError value:
+                notFound(value);
                 break;
-            case BetaErrorVariants::BetaRateLimitError inner:
-                rateLimit(inner);
+            case BetaRateLimitError value:
+                rateLimit(value);
                 break;
-            case BetaErrorVariants::BetaGatewayTimeoutError inner:
-                gatewayTimeout(inner);
+            case BetaGatewayTimeoutError value:
+                gatewayTimeout(value);
                 break;
-            case BetaErrorVariants::BetaAPIError inner:
-                api(inner);
+            case BetaAPIError value:
+                api(value);
                 break;
-            case BetaErrorVariants::BetaOverloadedError inner:
-                overloaded(inner);
+            case BetaOverloadedError value:
+                overloaded(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -143,35 +206,43 @@ public abstract record class BetaError
     }
 
     public T Match<T>(
-        Func<BetaErrorVariants::BetaInvalidRequestError, T> invalidRequest,
-        Func<BetaErrorVariants::BetaAuthenticationError, T> authentication,
-        Func<BetaErrorVariants::BetaBillingError, T> billing,
-        Func<BetaErrorVariants::BetaPermissionError, T> permission,
-        Func<BetaErrorVariants::BetaNotFoundError, T> notFound,
-        Func<BetaErrorVariants::BetaRateLimitError, T> rateLimit,
-        Func<BetaErrorVariants::BetaGatewayTimeoutError, T> gatewayTimeout,
-        Func<BetaErrorVariants::BetaAPIError, T> api,
-        Func<BetaErrorVariants::BetaOverloadedError, T> overloaded
+        Func<BetaInvalidRequestError, T> invalidRequest,
+        Func<BetaAuthenticationError, T> authentication,
+        Func<BetaBillingError, T> billing,
+        Func<BetaPermissionError, T> permission,
+        Func<BetaNotFoundError, T> notFound,
+        Func<BetaRateLimitError, T> rateLimit,
+        Func<BetaGatewayTimeoutError, T> gatewayTimeout,
+        Func<BetaAPIError, T> api,
+        Func<BetaOverloadedError, T> overloaded
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaErrorVariants::BetaInvalidRequestError inner => invalidRequest(inner),
-            BetaErrorVariants::BetaAuthenticationError inner => authentication(inner),
-            BetaErrorVariants::BetaBillingError inner => billing(inner),
-            BetaErrorVariants::BetaPermissionError inner => permission(inner),
-            BetaErrorVariants::BetaNotFoundError inner => notFound(inner),
-            BetaErrorVariants::BetaRateLimitError inner => rateLimit(inner),
-            BetaErrorVariants::BetaGatewayTimeoutError inner => gatewayTimeout(inner),
-            BetaErrorVariants::BetaAPIError inner => api(inner),
-            BetaErrorVariants::BetaOverloadedError inner => overloaded(inner),
+            BetaInvalidRequestError value => invalidRequest(value),
+            BetaAuthenticationError value => authentication(value),
+            BetaBillingError value => billing(value),
+            BetaPermissionError value => permission(value),
+            BetaNotFoundError value => notFound(value),
+            BetaRateLimitError value => rateLimit(value),
+            BetaGatewayTimeoutError value => gatewayTimeout(value),
+            BetaAPIError value => api(value),
+            BetaOverloadedError value => overloaded(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaError"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of BetaError");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaErrorConverter : JsonConverter<BetaError>
@@ -207,14 +278,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaInvalidRequestError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaInvalidRequestError",
+                            "Data does not match union variant 'BetaInvalidRequestError'",
                             e
                         )
                     );
@@ -234,14 +306,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaAuthenticationError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaAuthenticationError",
+                            "Data does not match union variant 'BetaAuthenticationError'",
                             e
                         )
                     );
@@ -258,14 +331,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     var deserialized = JsonSerializer.Deserialize<BetaBillingError>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaBillingError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaBillingError",
+                            "Data does not match union variant 'BetaBillingError'",
                             e
                         )
                     );
@@ -285,14 +359,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaPermissionError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaPermissionError",
+                            "Data does not match union variant 'BetaPermissionError'",
                             e
                         )
                     );
@@ -309,14 +384,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     var deserialized = JsonSerializer.Deserialize<BetaNotFoundError>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaNotFoundError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaNotFoundError",
+                            "Data does not match union variant 'BetaNotFoundError'",
                             e
                         )
                     );
@@ -336,14 +412,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaRateLimitError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaRateLimitError",
+                            "Data does not match union variant 'BetaRateLimitError'",
                             e
                         )
                     );
@@ -363,14 +440,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaGatewayTimeoutError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaGatewayTimeoutError",
+                            "Data does not match union variant 'BetaGatewayTimeoutError'",
                             e
                         )
                     );
@@ -387,14 +465,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     var deserialized = JsonSerializer.Deserialize<BetaAPIError>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaAPIError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaAPIError",
+                            "Data does not match union variant 'BetaAPIError'",
                             e
                         )
                     );
@@ -414,14 +493,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaErrorVariants::BetaOverloadedError(deserialized);
+                        deserialized.Validate();
+                        return new BetaError(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaErrorVariants::BetaOverloadedError",
+                            "Data does not match union variant 'BetaOverloadedError'",
                             e
                         )
                     );
@@ -444,21 +524,7 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaErrorVariants::BetaInvalidRequestError(var invalidRequest) => invalidRequest,
-            BetaErrorVariants::BetaAuthenticationError(var authentication) => authentication,
-            BetaErrorVariants::BetaBillingError(var billing) => billing,
-            BetaErrorVariants::BetaPermissionError(var permission) => permission,
-            BetaErrorVariants::BetaNotFoundError(var notFound) => notFound,
-            BetaErrorVariants::BetaRateLimitError(var rateLimit) => rateLimit,
-            BetaErrorVariants::BetaGatewayTimeoutError(var gatewayTimeout) => gatewayTimeout,
-            BetaErrorVariants::BetaAPIError(var api) => api,
-            BetaErrorVariants::BetaOverloadedError(var overloaded) => overloaded,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaError"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

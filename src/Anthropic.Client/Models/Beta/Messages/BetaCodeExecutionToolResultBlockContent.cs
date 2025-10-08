@@ -4,55 +4,63 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaCodeExecutionToolResultBlockContentVariants = Anthropic.Client.Models.Beta.Messages.BetaCodeExecutionToolResultBlockContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaCodeExecutionToolResultBlockContentConverter))]
-public abstract record class BetaCodeExecutionToolResultBlockContent
+public record class BetaCodeExecutionToolResultBlockContent
 {
-    internal BetaCodeExecutionToolResultBlockContent() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaCodeExecutionToolResultBlockContent(
-        BetaCodeExecutionToolResultError value
-    ) =>
-        new BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError(
-            value
-        );
+    public JsonElement Type
+    {
+        get { return Match(error: (x) => x.Type, resultBlock: (x) => x.Type); }
+    }
 
-    public static implicit operator BetaCodeExecutionToolResultBlockContent(
-        BetaCodeExecutionResultBlock value
-    ) => new BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock(value);
+    public BetaCodeExecutionToolResultBlockContent(BetaCodeExecutionToolResultError value)
+    {
+        Value = value;
+    }
+
+    public BetaCodeExecutionToolResultBlockContent(BetaCodeExecutionResultBlock value)
+    {
+        Value = value;
+    }
+
+    BetaCodeExecutionToolResultBlockContent(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaCodeExecutionToolResultBlockContent CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickError([NotNullWhen(true)] out BetaCodeExecutionToolResultError? value)
     {
-        value = (
-            this
-            as BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError
-        )?.Value;
+        value = this.Value as BetaCodeExecutionToolResultError;
         return value != null;
     }
 
     public bool TryPickResultBlock([NotNullWhen(true)] out BetaCodeExecutionResultBlock? value)
     {
-        value = (
-            this as BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock
-        )?.Value;
+        value = this.Value as BetaCodeExecutionResultBlock;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError> error,
-        Action<BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock> resultBlock
+        Action<BetaCodeExecutionToolResultError> error,
+        Action<BetaCodeExecutionResultBlock> resultBlock
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError inner:
-                error(inner);
+            case BetaCodeExecutionToolResultError value:
+                error(value);
                 break;
-            case BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock inner:
-                resultBlock(inner);
+            case BetaCodeExecutionResultBlock value:
+                resultBlock(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -62,29 +70,31 @@ public abstract record class BetaCodeExecutionToolResultBlockContent
     }
 
     public T Match<T>(
-        Func<
-            BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError,
-            T
-        > error,
-        Func<
-            BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock,
-            T
-        > resultBlock
+        Func<BetaCodeExecutionToolResultError, T> error,
+        Func<BetaCodeExecutionResultBlock, T> resultBlock
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError inner =>
-                error(inner),
-            BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock inner =>
-                resultBlock(inner),
+            BetaCodeExecutionToolResultError value => error(value),
+            BetaCodeExecutionResultBlock value => resultBlock(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaCodeExecutionToolResultBlockContent"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaCodeExecutionToolResultBlockContent"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaCodeExecutionToolResultBlockContentConverter
@@ -106,16 +116,15 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
             );
             if (deserialized != null)
             {
-                return new BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError(
-                    deserialized
-                );
+                deserialized.Validate();
+                return new BetaCodeExecutionToolResultBlockContent(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError",
+                    "Data does not match union variant 'BetaCodeExecutionToolResultError'",
                     e
                 )
             );
@@ -129,16 +138,15 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
             );
             if (deserialized != null)
             {
-                return new BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock(
-                    deserialized
-                );
+                deserialized.Validate();
+                return new BetaCodeExecutionToolResultBlockContent(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock",
+                    "Data does not match union variant 'BetaCodeExecutionResultBlock'",
                     e
                 )
             );
@@ -153,18 +161,7 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionToolResultError(
-                var error
-            ) => error,
-            BetaCodeExecutionToolResultBlockContentVariants::BetaCodeExecutionResultBlock(
-                var resultBlock
-            ) => resultBlock,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaCodeExecutionToolResultBlockContent"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

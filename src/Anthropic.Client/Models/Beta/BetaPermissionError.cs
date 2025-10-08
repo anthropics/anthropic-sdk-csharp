@@ -64,7 +64,7 @@ public sealed record class BetaPermissionError : ModelBase, IFromRaw<BetaPermiss
 
     public BetaPermissionError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

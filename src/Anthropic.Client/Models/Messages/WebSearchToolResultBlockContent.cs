@@ -4,26 +4,37 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using WebSearchToolResultBlockContentVariants = Anthropic.Client.Models.Messages.WebSearchToolResultBlockContentVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
 [JsonConverter(typeof(WebSearchToolResultBlockContentConverter))]
-public abstract record class WebSearchToolResultBlockContent
+public record class WebSearchToolResultBlockContent
 {
-    internal WebSearchToolResultBlockContent() { }
+    public object Value { get; private init; }
 
-    public static implicit operator WebSearchToolResultBlockContent(
-        WebSearchToolResultError value
-    ) => new WebSearchToolResultBlockContentVariants::WebSearchToolResultError(value);
+    public WebSearchToolResultBlockContent(WebSearchToolResultError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator WebSearchToolResultBlockContent(
-        List<WebSearchResultBlock> value
-    ) => new WebSearchToolResultBlockContentVariants::WebSearchResultBlocks(value);
+    public WebSearchToolResultBlockContent(List<WebSearchResultBlock> value)
+    {
+        Value = value;
+    }
+
+    WebSearchToolResultBlockContent(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static WebSearchToolResultBlockContent CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickError([NotNullWhen(true)] out WebSearchToolResultError? value)
     {
-        value = (this as WebSearchToolResultBlockContentVariants::WebSearchToolResultError)?.Value;
+        value = this.Value as WebSearchToolResultError;
         return value != null;
     }
 
@@ -31,22 +42,22 @@ public abstract record class WebSearchToolResultBlockContent
         [NotNullWhen(true)] out List<WebSearchResultBlock>? value
     )
     {
-        value = (this as WebSearchToolResultBlockContentVariants::WebSearchResultBlocks)?.Value;
+        value = this.Value as List<WebSearchResultBlock>;
         return value != null;
     }
 
     public void Switch(
-        Action<WebSearchToolResultBlockContentVariants::WebSearchToolResultError> error,
-        Action<WebSearchToolResultBlockContentVariants::WebSearchResultBlocks> webSearchResultBlocks
+        Action<WebSearchToolResultError> error,
+        Action<List<WebSearchResultBlock>> webSearchResultBlocks
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case WebSearchToolResultBlockContentVariants::WebSearchToolResultError inner:
-                error(inner);
+            case WebSearchToolResultError value:
+                error(value);
                 break;
-            case WebSearchToolResultBlockContentVariants::WebSearchResultBlocks inner:
-                webSearchResultBlocks(inner);
+            case List<WebSearchResultBlock> value:
+                webSearchResultBlocks(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -56,25 +67,31 @@ public abstract record class WebSearchToolResultBlockContent
     }
 
     public T Match<T>(
-        Func<WebSearchToolResultBlockContentVariants::WebSearchToolResultError, T> error,
-        Func<
-            WebSearchToolResultBlockContentVariants::WebSearchResultBlocks,
-            T
-        > webSearchResultBlocks
+        Func<WebSearchToolResultError, T> error,
+        Func<List<WebSearchResultBlock>, T> webSearchResultBlocks
     )
     {
-        return this switch
+        return this.Value switch
         {
-            WebSearchToolResultBlockContentVariants::WebSearchToolResultError inner => error(inner),
-            WebSearchToolResultBlockContentVariants::WebSearchResultBlocks inner =>
-                webSearchResultBlocks(inner),
+            WebSearchToolResultError value => error(value),
+            List<WebSearchResultBlock> value => webSearchResultBlocks(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of WebSearchToolResultBlockContent"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of WebSearchToolResultBlockContent"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class WebSearchToolResultBlockContentConverter
@@ -96,16 +113,15 @@ sealed class WebSearchToolResultBlockContentConverter
             );
             if (deserialized != null)
             {
-                return new WebSearchToolResultBlockContentVariants::WebSearchToolResultError(
-                    deserialized
-                );
+                deserialized.Validate();
+                return new WebSearchToolResultBlockContent(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant WebSearchToolResultBlockContentVariants::WebSearchToolResultError",
+                    "Data does not match union variant 'WebSearchToolResultError'",
                     e
                 )
             );
@@ -119,16 +135,14 @@ sealed class WebSearchToolResultBlockContentConverter
             );
             if (deserialized != null)
             {
-                return new WebSearchToolResultBlockContentVariants::WebSearchResultBlocks(
-                    deserialized
-                );
+                return new WebSearchToolResultBlockContent(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant WebSearchToolResultBlockContentVariants::WebSearchResultBlocks",
+                    "Data does not match union variant 'List<WebSearchResultBlock>'",
                     e
                 )
             );
@@ -143,16 +157,7 @@ sealed class WebSearchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            WebSearchToolResultBlockContentVariants::WebSearchToolResultError(var error) => error,
-            WebSearchToolResultBlockContentVariants::WebSearchResultBlocks(
-                var webSearchResultBlocks
-            ) => webSearchResultBlocks,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of WebSearchToolResultBlockContent"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

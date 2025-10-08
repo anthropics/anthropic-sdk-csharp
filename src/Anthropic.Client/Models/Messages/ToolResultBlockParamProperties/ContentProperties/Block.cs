@@ -4,71 +4,127 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BlockVariants = Anthropic.Client.Models.Messages.ToolResultBlockParamProperties.ContentProperties.BlockVariants;
 
 namespace Anthropic.Client.Models.Messages.ToolResultBlockParamProperties.ContentProperties;
 
 [JsonConverter(typeof(BlockConverter))]
-public abstract record class Block
+public record class Block
 {
-    internal Block() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Block(TextBlockParam value) =>
-        new BlockVariants::TextBlockParam(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                textBlockParam: (x) => x.Type,
+                imageBlockParam: (x) => x.Type,
+                searchResultBlockParam: (x) => x.Type,
+                documentBlockParam: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator Block(ImageBlockParam value) =>
-        new BlockVariants::ImageBlockParam(value);
+    public CacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return Match<CacheControlEphemeral?>(
+                textBlockParam: (x) => x.CacheControl,
+                imageBlockParam: (x) => x.CacheControl,
+                searchResultBlockParam: (x) => x.CacheControl,
+                documentBlockParam: (x) => x.CacheControl
+            );
+        }
+    }
 
-    public static implicit operator Block(SearchResultBlockParam value) =>
-        new BlockVariants::SearchResultBlockParam(value);
+    public string? Title
+    {
+        get
+        {
+            return Match<string?>(
+                textBlockParam: (_) => null,
+                imageBlockParam: (_) => null,
+                searchResultBlockParam: (x) => x.Title,
+                documentBlockParam: (x) => x.Title
+            );
+        }
+    }
 
-    public static implicit operator Block(DocumentBlockParam value) =>
-        new BlockVariants::DocumentBlockParam(value);
+    public Block(TextBlockParam value)
+    {
+        Value = value;
+    }
+
+    public Block(ImageBlockParam value)
+    {
+        Value = value;
+    }
+
+    public Block(SearchResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public Block(DocumentBlockParam value)
+    {
+        Value = value;
+    }
+
+    Block(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Block CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickTextBlockParam([NotNullWhen(true)] out TextBlockParam? value)
     {
-        value = (this as BlockVariants::TextBlockParam)?.Value;
+        value = this.Value as TextBlockParam;
         return value != null;
     }
 
     public bool TryPickImageBlockParam([NotNullWhen(true)] out ImageBlockParam? value)
     {
-        value = (this as BlockVariants::ImageBlockParam)?.Value;
+        value = this.Value as ImageBlockParam;
         return value != null;
     }
 
     public bool TryPickSearchResultBlockParam([NotNullWhen(true)] out SearchResultBlockParam? value)
     {
-        value = (this as BlockVariants::SearchResultBlockParam)?.Value;
+        value = this.Value as SearchResultBlockParam;
         return value != null;
     }
 
     public bool TryPickDocumentBlockParam([NotNullWhen(true)] out DocumentBlockParam? value)
     {
-        value = (this as BlockVariants::DocumentBlockParam)?.Value;
+        value = this.Value as DocumentBlockParam;
         return value != null;
     }
 
     public void Switch(
-        Action<BlockVariants::TextBlockParam> textBlockParam,
-        Action<BlockVariants::ImageBlockParam> imageBlockParam,
-        Action<BlockVariants::SearchResultBlockParam> searchResultBlockParam,
-        Action<BlockVariants::DocumentBlockParam> documentBlockParam
+        Action<TextBlockParam> textBlockParam,
+        Action<ImageBlockParam> imageBlockParam,
+        Action<SearchResultBlockParam> searchResultBlockParam,
+        Action<DocumentBlockParam> documentBlockParam
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BlockVariants::TextBlockParam inner:
-                textBlockParam(inner);
+            case TextBlockParam value:
+                textBlockParam(value);
                 break;
-            case BlockVariants::ImageBlockParam inner:
-                imageBlockParam(inner);
+            case ImageBlockParam value:
+                imageBlockParam(value);
                 break;
-            case BlockVariants::SearchResultBlockParam inner:
-                searchResultBlockParam(inner);
+            case SearchResultBlockParam value:
+                searchResultBlockParam(value);
                 break;
-            case BlockVariants::DocumentBlockParam inner:
-                documentBlockParam(inner);
+            case DocumentBlockParam value:
+                documentBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Block");
@@ -76,23 +132,31 @@ public abstract record class Block
     }
 
     public T Match<T>(
-        Func<BlockVariants::TextBlockParam, T> textBlockParam,
-        Func<BlockVariants::ImageBlockParam, T> imageBlockParam,
-        Func<BlockVariants::SearchResultBlockParam, T> searchResultBlockParam,
-        Func<BlockVariants::DocumentBlockParam, T> documentBlockParam
+        Func<TextBlockParam, T> textBlockParam,
+        Func<ImageBlockParam, T> imageBlockParam,
+        Func<SearchResultBlockParam, T> searchResultBlockParam,
+        Func<DocumentBlockParam, T> documentBlockParam
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BlockVariants::TextBlockParam inner => textBlockParam(inner),
-            BlockVariants::ImageBlockParam inner => imageBlockParam(inner),
-            BlockVariants::SearchResultBlockParam inner => searchResultBlockParam(inner),
-            BlockVariants::DocumentBlockParam inner => documentBlockParam(inner),
+            TextBlockParam value => textBlockParam(value),
+            ImageBlockParam value => imageBlockParam(value),
+            SearchResultBlockParam value => searchResultBlockParam(value),
+            DocumentBlockParam value => documentBlockParam(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Block");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BlockConverter : JsonConverter<Block>
@@ -125,14 +189,15 @@ sealed class BlockConverter : JsonConverter<Block>
                     var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
                     if (deserialized != null)
                     {
-                        return new BlockVariants::TextBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new Block(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BlockVariants::TextBlockParam",
+                            "Data does not match union variant 'TextBlockParam'",
                             e
                         )
                     );
@@ -149,14 +214,15 @@ sealed class BlockConverter : JsonConverter<Block>
                     var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
                     if (deserialized != null)
                     {
-                        return new BlockVariants::ImageBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new Block(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BlockVariants::ImageBlockParam",
+                            "Data does not match union variant 'ImageBlockParam'",
                             e
                         )
                     );
@@ -176,14 +242,15 @@ sealed class BlockConverter : JsonConverter<Block>
                     );
                     if (deserialized != null)
                     {
-                        return new BlockVariants::SearchResultBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new Block(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BlockVariants::SearchResultBlockParam",
+                            "Data does not match union variant 'SearchResultBlockParam'",
                             e
                         )
                     );
@@ -203,14 +270,15 @@ sealed class BlockConverter : JsonConverter<Block>
                     );
                     if (deserialized != null)
                     {
-                        return new BlockVariants::DocumentBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new Block(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BlockVariants::DocumentBlockParam",
+                            "Data does not match union variant 'DocumentBlockParam'",
                             e
                         )
                     );
@@ -229,15 +297,7 @@ sealed class BlockConverter : JsonConverter<Block>
 
     public override void Write(Utf8JsonWriter writer, Block value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            BlockVariants::TextBlockParam(var textBlockParam) => textBlockParam,
-            BlockVariants::ImageBlockParam(var imageBlockParam) => imageBlockParam,
-            BlockVariants::SearchResultBlockParam(var searchResultBlockParam) =>
-                searchResultBlockParam,
-            BlockVariants::DocumentBlockParam(var documentBlockParam) => documentBlockParam,
-            _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

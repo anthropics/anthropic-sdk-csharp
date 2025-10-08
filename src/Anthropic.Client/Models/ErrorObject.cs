@@ -4,136 +4,199 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ErrorObjectVariants = Anthropic.Client.Models.ErrorObjectVariants;
 
 namespace Anthropic.Client.Models;
 
 [JsonConverter(typeof(ErrorObjectConverter))]
-public abstract record class ErrorObject
+public record class ErrorObject
 {
-    internal ErrorObject() { }
+    public object Value { get; private init; }
 
-    public static implicit operator ErrorObject(InvalidRequestError value) =>
-        new ErrorObjectVariants::InvalidRequestError(value);
+    public string Message
+    {
+        get
+        {
+            return Match(
+                invalidRequestError: (x) => x.Message,
+                authenticationError: (x) => x.Message,
+                billingError: (x) => x.Message,
+                permissionError: (x) => x.Message,
+                notFoundError: (x) => x.Message,
+                rateLimitError: (x) => x.Message,
+                gatewayTimeoutError: (x) => x.Message,
+                api: (x) => x.Message,
+                overloadedError: (x) => x.Message
+            );
+        }
+    }
 
-    public static implicit operator ErrorObject(AuthenticationError value) =>
-        new ErrorObjectVariants::AuthenticationError(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                invalidRequestError: (x) => x.Type,
+                authenticationError: (x) => x.Type,
+                billingError: (x) => x.Type,
+                permissionError: (x) => x.Type,
+                notFoundError: (x) => x.Type,
+                rateLimitError: (x) => x.Type,
+                gatewayTimeoutError: (x) => x.Type,
+                api: (x) => x.Type,
+                overloadedError: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator ErrorObject(BillingError value) =>
-        new ErrorObjectVariants::BillingError(value);
+    public ErrorObject(InvalidRequestError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ErrorObject(PermissionError value) =>
-        new ErrorObjectVariants::PermissionError(value);
+    public ErrorObject(AuthenticationError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ErrorObject(NotFoundError value) =>
-        new ErrorObjectVariants::NotFoundError(value);
+    public ErrorObject(BillingError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ErrorObject(RateLimitError value) =>
-        new ErrorObjectVariants::RateLimitError(value);
+    public ErrorObject(PermissionError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ErrorObject(GatewayTimeoutError value) =>
-        new ErrorObjectVariants::GatewayTimeoutError(value);
+    public ErrorObject(NotFoundError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ErrorObject(APIErrorObject value) =>
-        new ErrorObjectVariants::APIErrorObject(value);
+    public ErrorObject(RateLimitError value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ErrorObject(OverloadedError value) =>
-        new ErrorObjectVariants::OverloadedError(value);
+    public ErrorObject(GatewayTimeoutError value)
+    {
+        Value = value;
+    }
+
+    public ErrorObject(APIErrorObject value)
+    {
+        Value = value;
+    }
+
+    public ErrorObject(OverloadedError value)
+    {
+        Value = value;
+    }
+
+    ErrorObject(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static ErrorObject CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickInvalidRequestError([NotNullWhen(true)] out InvalidRequestError? value)
     {
-        value = (this as ErrorObjectVariants::InvalidRequestError)?.Value;
+        value = this.Value as InvalidRequestError;
         return value != null;
     }
 
     public bool TryPickAuthenticationError([NotNullWhen(true)] out AuthenticationError? value)
     {
-        value = (this as ErrorObjectVariants::AuthenticationError)?.Value;
+        value = this.Value as AuthenticationError;
         return value != null;
     }
 
     public bool TryPickBillingError([NotNullWhen(true)] out BillingError? value)
     {
-        value = (this as ErrorObjectVariants::BillingError)?.Value;
+        value = this.Value as BillingError;
         return value != null;
     }
 
     public bool TryPickPermissionError([NotNullWhen(true)] out PermissionError? value)
     {
-        value = (this as ErrorObjectVariants::PermissionError)?.Value;
+        value = this.Value as PermissionError;
         return value != null;
     }
 
     public bool TryPickNotFoundError([NotNullWhen(true)] out NotFoundError? value)
     {
-        value = (this as ErrorObjectVariants::NotFoundError)?.Value;
+        value = this.Value as NotFoundError;
         return value != null;
     }
 
     public bool TryPickRateLimitError([NotNullWhen(true)] out RateLimitError? value)
     {
-        value = (this as ErrorObjectVariants::RateLimitError)?.Value;
+        value = this.Value as RateLimitError;
         return value != null;
     }
 
     public bool TryPickGatewayTimeoutError([NotNullWhen(true)] out GatewayTimeoutError? value)
     {
-        value = (this as ErrorObjectVariants::GatewayTimeoutError)?.Value;
+        value = this.Value as GatewayTimeoutError;
         return value != null;
     }
 
     public bool TryPickAPI([NotNullWhen(true)] out APIErrorObject? value)
     {
-        value = (this as ErrorObjectVariants::APIErrorObject)?.Value;
+        value = this.Value as APIErrorObject;
         return value != null;
     }
 
     public bool TryPickOverloadedError([NotNullWhen(true)] out OverloadedError? value)
     {
-        value = (this as ErrorObjectVariants::OverloadedError)?.Value;
+        value = this.Value as OverloadedError;
         return value != null;
     }
 
     public void Switch(
-        Action<ErrorObjectVariants::InvalidRequestError> invalidRequestError,
-        Action<ErrorObjectVariants::AuthenticationError> authenticationError,
-        Action<ErrorObjectVariants::BillingError> billingError,
-        Action<ErrorObjectVariants::PermissionError> permissionError,
-        Action<ErrorObjectVariants::NotFoundError> notFoundError,
-        Action<ErrorObjectVariants::RateLimitError> rateLimitError,
-        Action<ErrorObjectVariants::GatewayTimeoutError> gatewayTimeoutError,
-        Action<ErrorObjectVariants::APIErrorObject> api,
-        Action<ErrorObjectVariants::OverloadedError> overloadedError
+        Action<InvalidRequestError> invalidRequestError,
+        Action<AuthenticationError> authenticationError,
+        Action<BillingError> billingError,
+        Action<PermissionError> permissionError,
+        Action<NotFoundError> notFoundError,
+        Action<RateLimitError> rateLimitError,
+        Action<GatewayTimeoutError> gatewayTimeoutError,
+        Action<APIErrorObject> api,
+        Action<OverloadedError> overloadedError
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ErrorObjectVariants::InvalidRequestError inner:
-                invalidRequestError(inner);
+            case InvalidRequestError value:
+                invalidRequestError(value);
                 break;
-            case ErrorObjectVariants::AuthenticationError inner:
-                authenticationError(inner);
+            case AuthenticationError value:
+                authenticationError(value);
                 break;
-            case ErrorObjectVariants::BillingError inner:
-                billingError(inner);
+            case BillingError value:
+                billingError(value);
                 break;
-            case ErrorObjectVariants::PermissionError inner:
-                permissionError(inner);
+            case PermissionError value:
+                permissionError(value);
                 break;
-            case ErrorObjectVariants::NotFoundError inner:
-                notFoundError(inner);
+            case NotFoundError value:
+                notFoundError(value);
                 break;
-            case ErrorObjectVariants::RateLimitError inner:
-                rateLimitError(inner);
+            case RateLimitError value:
+                rateLimitError(value);
                 break;
-            case ErrorObjectVariants::GatewayTimeoutError inner:
-                gatewayTimeoutError(inner);
+            case GatewayTimeoutError value:
+                gatewayTimeoutError(value);
                 break;
-            case ErrorObjectVariants::APIErrorObject inner:
-                api(inner);
+            case APIErrorObject value:
+                api(value);
                 break;
-            case ErrorObjectVariants::OverloadedError inner:
-                overloadedError(inner);
+            case OverloadedError value:
+                overloadedError(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -143,35 +206,45 @@ public abstract record class ErrorObject
     }
 
     public T Match<T>(
-        Func<ErrorObjectVariants::InvalidRequestError, T> invalidRequestError,
-        Func<ErrorObjectVariants::AuthenticationError, T> authenticationError,
-        Func<ErrorObjectVariants::BillingError, T> billingError,
-        Func<ErrorObjectVariants::PermissionError, T> permissionError,
-        Func<ErrorObjectVariants::NotFoundError, T> notFoundError,
-        Func<ErrorObjectVariants::RateLimitError, T> rateLimitError,
-        Func<ErrorObjectVariants::GatewayTimeoutError, T> gatewayTimeoutError,
-        Func<ErrorObjectVariants::APIErrorObject, T> api,
-        Func<ErrorObjectVariants::OverloadedError, T> overloadedError
+        Func<InvalidRequestError, T> invalidRequestError,
+        Func<AuthenticationError, T> authenticationError,
+        Func<BillingError, T> billingError,
+        Func<PermissionError, T> permissionError,
+        Func<NotFoundError, T> notFoundError,
+        Func<RateLimitError, T> rateLimitError,
+        Func<GatewayTimeoutError, T> gatewayTimeoutError,
+        Func<APIErrorObject, T> api,
+        Func<OverloadedError, T> overloadedError
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ErrorObjectVariants::InvalidRequestError inner => invalidRequestError(inner),
-            ErrorObjectVariants::AuthenticationError inner => authenticationError(inner),
-            ErrorObjectVariants::BillingError inner => billingError(inner),
-            ErrorObjectVariants::PermissionError inner => permissionError(inner),
-            ErrorObjectVariants::NotFoundError inner => notFoundError(inner),
-            ErrorObjectVariants::RateLimitError inner => rateLimitError(inner),
-            ErrorObjectVariants::GatewayTimeoutError inner => gatewayTimeoutError(inner),
-            ErrorObjectVariants::APIErrorObject inner => api(inner),
-            ErrorObjectVariants::OverloadedError inner => overloadedError(inner),
+            InvalidRequestError value => invalidRequestError(value),
+            AuthenticationError value => authenticationError(value),
+            BillingError value => billingError(value),
+            PermissionError value => permissionError(value),
+            NotFoundError value => notFoundError(value),
+            RateLimitError value => rateLimitError(value),
+            GatewayTimeoutError value => gatewayTimeoutError(value),
+            APIErrorObject value => api(value),
+            OverloadedError value => overloadedError(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ErrorObject"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ErrorObject"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
@@ -207,14 +280,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     );
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::InvalidRequestError(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::InvalidRequestError",
+                            "Data does not match union variant 'InvalidRequestError'",
                             e
                         )
                     );
@@ -234,14 +308,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     );
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::AuthenticationError(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::AuthenticationError",
+                            "Data does not match union variant 'AuthenticationError'",
                             e
                         )
                     );
@@ -258,14 +333,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<BillingError>(json, options);
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::BillingError(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::BillingError",
+                            "Data does not match union variant 'BillingError'",
                             e
                         )
                     );
@@ -282,14 +358,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<PermissionError>(json, options);
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::PermissionError(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::PermissionError",
+                            "Data does not match union variant 'PermissionError'",
                             e
                         )
                     );
@@ -306,14 +383,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<NotFoundError>(json, options);
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::NotFoundError(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::NotFoundError",
+                            "Data does not match union variant 'NotFoundError'",
                             e
                         )
                     );
@@ -330,14 +408,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<RateLimitError>(json, options);
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::RateLimitError(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::RateLimitError",
+                            "Data does not match union variant 'RateLimitError'",
                             e
                         )
                     );
@@ -357,14 +436,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     );
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::GatewayTimeoutError(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::GatewayTimeoutError",
+                            "Data does not match union variant 'GatewayTimeoutError'",
                             e
                         )
                     );
@@ -381,14 +461,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<APIErrorObject>(json, options);
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::APIErrorObject(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::APIErrorObject",
+                            "Data does not match union variant 'APIErrorObject'",
                             e
                         )
                     );
@@ -405,14 +486,15 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     var deserialized = JsonSerializer.Deserialize<OverloadedError>(json, options);
                     if (deserialized != null)
                     {
-                        return new ErrorObjectVariants::OverloadedError(deserialized);
+                        deserialized.Validate();
+                        return new ErrorObject(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ErrorObjectVariants::OverloadedError",
+                            "Data does not match union variant 'OverloadedError'",
                             e
                         )
                     );
@@ -435,24 +517,7 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            ErrorObjectVariants::InvalidRequestError(var invalidRequestError) =>
-                invalidRequestError,
-            ErrorObjectVariants::AuthenticationError(var authenticationError) =>
-                authenticationError,
-            ErrorObjectVariants::BillingError(var billingError) => billingError,
-            ErrorObjectVariants::PermissionError(var permissionError) => permissionError,
-            ErrorObjectVariants::NotFoundError(var notFoundError) => notFoundError,
-            ErrorObjectVariants::RateLimitError(var rateLimitError) => rateLimitError,
-            ErrorObjectVariants::GatewayTimeoutError(var gatewayTimeoutError) =>
-                gatewayTimeoutError,
-            ErrorObjectVariants::APIErrorObject(var api) => api,
-            ErrorObjectVariants::OverloadedError(var overloadedError) => overloadedError,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ErrorObject"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

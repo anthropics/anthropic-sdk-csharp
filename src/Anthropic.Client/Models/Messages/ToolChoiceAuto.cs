@@ -65,7 +65,7 @@ public sealed record class ToolChoiceAuto : ModelBase, IFromRaw<ToolChoiceAuto>
 
     public ToolChoiceAuto()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

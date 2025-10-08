@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaContentBlockParamVariants = Anthropic.Client.Models.Beta.Messages.BetaContentBlockParamVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -12,93 +11,314 @@ namespace Anthropic.Client.Models.Beta.Messages;
 /// Regular text content.
 /// </summary>
 [JsonConverter(typeof(BetaContentBlockParamConverter))]
-public abstract record class BetaContentBlockParam
+public record class BetaContentBlockParam
 {
-    internal BetaContentBlockParam() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaContentBlockParam(BetaTextBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaTextBlockParam(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                text: (x) => x.Type,
+                image: (x) => x.Type,
+                requestDocumentBlock: (x) => x.Type,
+                searchResult: (x) => x.Type,
+                thinking: (x) => x.Type,
+                redactedThinking: (x) => x.Type,
+                toolUse: (x) => x.Type,
+                toolResult: (x) => x.Type,
+                serverToolUse: (x) => x.Type,
+                webSearchToolResult: (x) => x.Type,
+                webFetchToolResult: (x) => x.Type,
+                codeExecutionToolResult: (x) => x.Type,
+                bashCodeExecutionToolResult: (x) => x.Type,
+                textEditorCodeExecutionToolResult: (x) => x.Type,
+                mcpToolUse: (x) => x.Type,
+                requestMCPToolResult: (x) => x.Type,
+                containerUpload: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaImageBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaImageBlockParam(value);
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return Match<BetaCacheControlEphemeral?>(
+                text: (x) => x.CacheControl,
+                image: (x) => x.CacheControl,
+                requestDocumentBlock: (x) => x.CacheControl,
+                searchResult: (x) => x.CacheControl,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.CacheControl,
+                toolResult: (x) => x.CacheControl,
+                serverToolUse: (x) => x.CacheControl,
+                webSearchToolResult: (x) => x.CacheControl,
+                webFetchToolResult: (x) => x.CacheControl,
+                codeExecutionToolResult: (x) => x.CacheControl,
+                bashCodeExecutionToolResult: (x) => x.CacheControl,
+                textEditorCodeExecutionToolResult: (x) => x.CacheControl,
+                mcpToolUse: (x) => x.CacheControl,
+                requestMCPToolResult: (x) => x.CacheControl,
+                containerUpload: (x) => x.CacheControl
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaRequestDocumentBlock value) =>
-        new BetaContentBlockParamVariants::BetaRequestDocumentBlock(value);
+    public string? Title
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                image: (_) => null,
+                requestDocumentBlock: (x) => x.Title,
+                searchResult: (x) => x.Title,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (_) => null,
+                toolResult: (_) => null,
+                serverToolUse: (_) => null,
+                webSearchToolResult: (_) => null,
+                webFetchToolResult: (_) => null,
+                codeExecutionToolResult: (_) => null,
+                bashCodeExecutionToolResult: (_) => null,
+                textEditorCodeExecutionToolResult: (_) => null,
+                mcpToolUse: (_) => null,
+                requestMCPToolResult: (_) => null,
+                containerUpload: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaSearchResultBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaSearchResultBlockParam(value);
+    public string? ID
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                image: (_) => null,
+                requestDocumentBlock: (_) => null,
+                searchResult: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.ID,
+                toolResult: (_) => null,
+                serverToolUse: (x) => x.ID,
+                webSearchToolResult: (_) => null,
+                webFetchToolResult: (_) => null,
+                codeExecutionToolResult: (_) => null,
+                bashCodeExecutionToolResult: (_) => null,
+                textEditorCodeExecutionToolResult: (_) => null,
+                mcpToolUse: (x) => x.ID,
+                requestMCPToolResult: (_) => null,
+                containerUpload: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaThinkingBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaThinkingBlockParam(value);
+    public JsonElement? Input
+    {
+        get
+        {
+            return Match<JsonElement?>(
+                text: (_) => null,
+                image: (_) => null,
+                requestDocumentBlock: (_) => null,
+                searchResult: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.Input,
+                toolResult: (_) => null,
+                serverToolUse: (x) => x.Input,
+                webSearchToolResult: (_) => null,
+                webFetchToolResult: (_) => null,
+                codeExecutionToolResult: (_) => null,
+                bashCodeExecutionToolResult: (_) => null,
+                textEditorCodeExecutionToolResult: (_) => null,
+                mcpToolUse: (x) => x.Input,
+                requestMCPToolResult: (_) => null,
+                containerUpload: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaRedactedThinkingBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam(value);
+    public string? ToolUseID
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                image: (_) => null,
+                requestDocumentBlock: (_) => null,
+                searchResult: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (_) => null,
+                toolResult: (x) => x.ToolUseID,
+                serverToolUse: (_) => null,
+                webSearchToolResult: (x) => x.ToolUseID,
+                webFetchToolResult: (x) => x.ToolUseID,
+                codeExecutionToolResult: (x) => x.ToolUseID,
+                bashCodeExecutionToolResult: (x) => x.ToolUseID,
+                textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
+                mcpToolUse: (_) => null,
+                requestMCPToolResult: (x) => x.ToolUseID,
+                containerUpload: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaToolUseBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaToolUseBlockParam(value);
+    public bool? IsError
+    {
+        get
+        {
+            return Match<bool?>(
+                text: (_) => null,
+                image: (_) => null,
+                requestDocumentBlock: (_) => null,
+                searchResult: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (_) => null,
+                toolResult: (x) => x.IsError,
+                serverToolUse: (_) => null,
+                webSearchToolResult: (_) => null,
+                webFetchToolResult: (_) => null,
+                codeExecutionToolResult: (_) => null,
+                bashCodeExecutionToolResult: (_) => null,
+                textEditorCodeExecutionToolResult: (_) => null,
+                mcpToolUse: (_) => null,
+                requestMCPToolResult: (x) => x.IsError,
+                containerUpload: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaToolResultBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaToolResultBlockParam(value);
+    public BetaContentBlockParam(BetaTextBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaServerToolUseBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaServerToolUseBlockParam(value);
+    public BetaContentBlockParam(BetaImageBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(
-        BetaWebSearchToolResultBlockParam value
-    ) => new BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam(value);
+    public BetaContentBlockParam(BetaRequestDocumentBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaWebFetchToolResultBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam(value);
+    public BetaContentBlockParam(BetaSearchResultBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(
-        BetaCodeExecutionToolResultBlockParam value
-    ) => new BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam(value);
+    public BetaContentBlockParam(BetaThinkingBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(
-        BetaBashCodeExecutionToolResultBlockParam value
-    ) => new BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam(value);
+    public BetaContentBlockParam(BetaRedactedThinkingBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(
-        BetaTextEditorCodeExecutionToolResultBlockParam value
-    ) => new BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam(value);
+    public BetaContentBlockParam(BetaToolUseBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaMCPToolUseBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaMCPToolUseBlockParam(value);
+    public BetaContentBlockParam(BetaToolResultBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(
-        BetaRequestMCPToolResultBlockParam value
-    ) => new BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam(value);
+    public BetaContentBlockParam(BetaServerToolUseBlockParam value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlockParam(BetaContainerUploadBlockParam value) =>
-        new BetaContentBlockParamVariants::BetaContainerUploadBlockParam(value);
+    public BetaContentBlockParam(BetaWebSearchToolResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlockParam(BetaWebFetchToolResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlockParam(BetaCodeExecutionToolResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlockParam(BetaBashCodeExecutionToolResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlockParam(BetaTextEditorCodeExecutionToolResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlockParam(BetaMCPToolUseBlockParam value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlockParam(BetaRequestMCPToolResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlockParam(BetaContainerUploadBlockParam value)
+    {
+        Value = value;
+    }
+
+    BetaContentBlockParam(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaContentBlockParam CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickText([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaTextBlockParam)?.Value;
+        value = this.Value as BetaTextBlockParam;
         return value != null;
     }
 
     public bool TryPickImage([NotNullWhen(true)] out BetaImageBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaImageBlockParam)?.Value;
+        value = this.Value as BetaImageBlockParam;
         return value != null;
     }
 
     public bool TryPickRequestDocumentBlock([NotNullWhen(true)] out BetaRequestDocumentBlock? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaRequestDocumentBlock)?.Value;
+        value = this.Value as BetaRequestDocumentBlock;
         return value != null;
     }
 
     public bool TryPickSearchResult([NotNullWhen(true)] out BetaSearchResultBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaSearchResultBlockParam)?.Value;
+        value = this.Value as BetaSearchResultBlockParam;
         return value != null;
     }
 
     public bool TryPickThinking([NotNullWhen(true)] out BetaThinkingBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaThinkingBlockParam)?.Value;
+        value = this.Value as BetaThinkingBlockParam;
         return value != null;
     }
 
@@ -106,25 +326,25 @@ public abstract record class BetaContentBlockParam
         [NotNullWhen(true)] out BetaRedactedThinkingBlockParam? value
     )
     {
-        value = (this as BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam)?.Value;
+        value = this.Value as BetaRedactedThinkingBlockParam;
         return value != null;
     }
 
     public bool TryPickToolUse([NotNullWhen(true)] out BetaToolUseBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaToolUseBlockParam)?.Value;
+        value = this.Value as BetaToolUseBlockParam;
         return value != null;
     }
 
     public bool TryPickToolResult([NotNullWhen(true)] out BetaToolResultBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaToolResultBlockParam)?.Value;
+        value = this.Value as BetaToolResultBlockParam;
         return value != null;
     }
 
     public bool TryPickServerToolUse([NotNullWhen(true)] out BetaServerToolUseBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaServerToolUseBlockParam)?.Value;
+        value = this.Value as BetaServerToolUseBlockParam;
         return value != null;
     }
 
@@ -132,7 +352,7 @@ public abstract record class BetaContentBlockParam
         [NotNullWhen(true)] out BetaWebSearchToolResultBlockParam? value
     )
     {
-        value = (this as BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam)?.Value;
+        value = this.Value as BetaWebSearchToolResultBlockParam;
         return value != null;
     }
 
@@ -140,7 +360,7 @@ public abstract record class BetaContentBlockParam
         [NotNullWhen(true)] out BetaWebFetchToolResultBlockParam? value
     )
     {
-        value = (this as BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam)?.Value;
+        value = this.Value as BetaWebFetchToolResultBlockParam;
         return value != null;
     }
 
@@ -148,9 +368,7 @@ public abstract record class BetaContentBlockParam
         [NotNullWhen(true)] out BetaCodeExecutionToolResultBlockParam? value
     )
     {
-        value = (
-            this as BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam
-        )?.Value;
+        value = this.Value as BetaCodeExecutionToolResultBlockParam;
         return value != null;
     }
 
@@ -158,9 +376,7 @@ public abstract record class BetaContentBlockParam
         [NotNullWhen(true)] out BetaBashCodeExecutionToolResultBlockParam? value
     )
     {
-        value = (
-            this as BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam
-        )?.Value;
+        value = this.Value as BetaBashCodeExecutionToolResultBlockParam;
         return value != null;
     }
 
@@ -168,15 +384,13 @@ public abstract record class BetaContentBlockParam
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionToolResultBlockParam? value
     )
     {
-        value = (
-            this as BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam
-        )?.Value;
+        value = this.Value as BetaTextEditorCodeExecutionToolResultBlockParam;
         return value != null;
     }
 
     public bool TryPickMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaMCPToolUseBlockParam)?.Value;
+        value = this.Value as BetaMCPToolUseBlockParam;
         return value != null;
     }
 
@@ -184,88 +398,88 @@ public abstract record class BetaContentBlockParam
         [NotNullWhen(true)] out BetaRequestMCPToolResultBlockParam? value
     )
     {
-        value = (this as BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam)?.Value;
+        value = this.Value as BetaRequestMCPToolResultBlockParam;
         return value != null;
     }
 
     public bool TryPickContainerUpload([NotNullWhen(true)] out BetaContainerUploadBlockParam? value)
     {
-        value = (this as BetaContentBlockParamVariants::BetaContainerUploadBlockParam)?.Value;
+        value = this.Value as BetaContainerUploadBlockParam;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaContentBlockParamVariants::BetaTextBlockParam> text,
-        Action<BetaContentBlockParamVariants::BetaImageBlockParam> image,
-        Action<BetaContentBlockParamVariants::BetaRequestDocumentBlock> requestDocumentBlock,
-        Action<BetaContentBlockParamVariants::BetaSearchResultBlockParam> searchResult,
-        Action<BetaContentBlockParamVariants::BetaThinkingBlockParam> thinking,
-        Action<BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam> redactedThinking,
-        Action<BetaContentBlockParamVariants::BetaToolUseBlockParam> toolUse,
-        Action<BetaContentBlockParamVariants::BetaToolResultBlockParam> toolResult,
-        Action<BetaContentBlockParamVariants::BetaServerToolUseBlockParam> serverToolUse,
-        Action<BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam> webSearchToolResult,
-        Action<BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam> webFetchToolResult,
-        Action<BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam> codeExecutionToolResult,
-        Action<BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
-        Action<BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
-        Action<BetaContentBlockParamVariants::BetaMCPToolUseBlockParam> mcpToolUse,
-        Action<BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam> requestMCPToolResult,
-        Action<BetaContentBlockParamVariants::BetaContainerUploadBlockParam> containerUpload
+        Action<BetaTextBlockParam> text,
+        Action<BetaImageBlockParam> image,
+        Action<BetaRequestDocumentBlock> requestDocumentBlock,
+        Action<BetaSearchResultBlockParam> searchResult,
+        Action<BetaThinkingBlockParam> thinking,
+        Action<BetaRedactedThinkingBlockParam> redactedThinking,
+        Action<BetaToolUseBlockParam> toolUse,
+        Action<BetaToolResultBlockParam> toolResult,
+        Action<BetaServerToolUseBlockParam> serverToolUse,
+        Action<BetaWebSearchToolResultBlockParam> webSearchToolResult,
+        Action<BetaWebFetchToolResultBlockParam> webFetchToolResult,
+        Action<BetaCodeExecutionToolResultBlockParam> codeExecutionToolResult,
+        Action<BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
+        Action<BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
+        Action<BetaMCPToolUseBlockParam> mcpToolUse,
+        Action<BetaRequestMCPToolResultBlockParam> requestMCPToolResult,
+        Action<BetaContainerUploadBlockParam> containerUpload
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaContentBlockParamVariants::BetaTextBlockParam inner:
-                text(inner);
+            case BetaTextBlockParam value:
+                text(value);
                 break;
-            case BetaContentBlockParamVariants::BetaImageBlockParam inner:
-                image(inner);
+            case BetaImageBlockParam value:
+                image(value);
                 break;
-            case BetaContentBlockParamVariants::BetaRequestDocumentBlock inner:
-                requestDocumentBlock(inner);
+            case BetaRequestDocumentBlock value:
+                requestDocumentBlock(value);
                 break;
-            case BetaContentBlockParamVariants::BetaSearchResultBlockParam inner:
-                searchResult(inner);
+            case BetaSearchResultBlockParam value:
+                searchResult(value);
                 break;
-            case BetaContentBlockParamVariants::BetaThinkingBlockParam inner:
-                thinking(inner);
+            case BetaThinkingBlockParam value:
+                thinking(value);
                 break;
-            case BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam inner:
-                redactedThinking(inner);
+            case BetaRedactedThinkingBlockParam value:
+                redactedThinking(value);
                 break;
-            case BetaContentBlockParamVariants::BetaToolUseBlockParam inner:
-                toolUse(inner);
+            case BetaToolUseBlockParam value:
+                toolUse(value);
                 break;
-            case BetaContentBlockParamVariants::BetaToolResultBlockParam inner:
-                toolResult(inner);
+            case BetaToolResultBlockParam value:
+                toolResult(value);
                 break;
-            case BetaContentBlockParamVariants::BetaServerToolUseBlockParam inner:
-                serverToolUse(inner);
+            case BetaServerToolUseBlockParam value:
+                serverToolUse(value);
                 break;
-            case BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam inner:
-                webSearchToolResult(inner);
+            case BetaWebSearchToolResultBlockParam value:
+                webSearchToolResult(value);
                 break;
-            case BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam inner:
-                webFetchToolResult(inner);
+            case BetaWebFetchToolResultBlockParam value:
+                webFetchToolResult(value);
                 break;
-            case BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam inner:
-                codeExecutionToolResult(inner);
+            case BetaCodeExecutionToolResultBlockParam value:
+                codeExecutionToolResult(value);
                 break;
-            case BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam inner:
-                bashCodeExecutionToolResult(inner);
+            case BetaBashCodeExecutionToolResultBlockParam value:
+                bashCodeExecutionToolResult(value);
                 break;
-            case BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam inner:
-                textEditorCodeExecutionToolResult(inner);
+            case BetaTextEditorCodeExecutionToolResultBlockParam value:
+                textEditorCodeExecutionToolResult(value);
                 break;
-            case BetaContentBlockParamVariants::BetaMCPToolUseBlockParam inner:
-                mcpToolUse(inner);
+            case BetaMCPToolUseBlockParam value:
+                mcpToolUse(value);
                 break;
-            case BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam inner:
-                requestMCPToolResult(inner);
+            case BetaRequestMCPToolResultBlockParam value:
+                requestMCPToolResult(value);
                 break;
-            case BetaContentBlockParamVariants::BetaContainerUploadBlockParam inner:
-                containerUpload(inner);
+            case BetaContainerUploadBlockParam value:
+                containerUpload(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -275,80 +489,62 @@ public abstract record class BetaContentBlockParam
     }
 
     public T Match<T>(
-        Func<BetaContentBlockParamVariants::BetaTextBlockParam, T> text,
-        Func<BetaContentBlockParamVariants::BetaImageBlockParam, T> image,
-        Func<BetaContentBlockParamVariants::BetaRequestDocumentBlock, T> requestDocumentBlock,
-        Func<BetaContentBlockParamVariants::BetaSearchResultBlockParam, T> searchResult,
-        Func<BetaContentBlockParamVariants::BetaThinkingBlockParam, T> thinking,
-        Func<BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam, T> redactedThinking,
-        Func<BetaContentBlockParamVariants::BetaToolUseBlockParam, T> toolUse,
-        Func<BetaContentBlockParamVariants::BetaToolResultBlockParam, T> toolResult,
-        Func<BetaContentBlockParamVariants::BetaServerToolUseBlockParam, T> serverToolUse,
-        Func<
-            BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam,
-            T
-        > webSearchToolResult,
-        Func<BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam, T> webFetchToolResult,
-        Func<
-            BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam,
-            T
-        > codeExecutionToolResult,
-        Func<
-            BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam,
-            T
-        > bashCodeExecutionToolResult,
-        Func<
-            BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam,
-            T
-        > textEditorCodeExecutionToolResult,
-        Func<BetaContentBlockParamVariants::BetaMCPToolUseBlockParam, T> mcpToolUse,
-        Func<
-            BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam,
-            T
-        > requestMCPToolResult,
-        Func<BetaContentBlockParamVariants::BetaContainerUploadBlockParam, T> containerUpload
+        Func<BetaTextBlockParam, T> text,
+        Func<BetaImageBlockParam, T> image,
+        Func<BetaRequestDocumentBlock, T> requestDocumentBlock,
+        Func<BetaSearchResultBlockParam, T> searchResult,
+        Func<BetaThinkingBlockParam, T> thinking,
+        Func<BetaRedactedThinkingBlockParam, T> redactedThinking,
+        Func<BetaToolUseBlockParam, T> toolUse,
+        Func<BetaToolResultBlockParam, T> toolResult,
+        Func<BetaServerToolUseBlockParam, T> serverToolUse,
+        Func<BetaWebSearchToolResultBlockParam, T> webSearchToolResult,
+        Func<BetaWebFetchToolResultBlockParam, T> webFetchToolResult,
+        Func<BetaCodeExecutionToolResultBlockParam, T> codeExecutionToolResult,
+        Func<BetaBashCodeExecutionToolResultBlockParam, T> bashCodeExecutionToolResult,
+        Func<BetaTextEditorCodeExecutionToolResultBlockParam, T> textEditorCodeExecutionToolResult,
+        Func<BetaMCPToolUseBlockParam, T> mcpToolUse,
+        Func<BetaRequestMCPToolResultBlockParam, T> requestMCPToolResult,
+        Func<BetaContainerUploadBlockParam, T> containerUpload
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaContentBlockParamVariants::BetaTextBlockParam inner => text(inner),
-            BetaContentBlockParamVariants::BetaImageBlockParam inner => image(inner),
-            BetaContentBlockParamVariants::BetaRequestDocumentBlock inner => requestDocumentBlock(
-                inner
-            ),
-            BetaContentBlockParamVariants::BetaSearchResultBlockParam inner => searchResult(inner),
-            BetaContentBlockParamVariants::BetaThinkingBlockParam inner => thinking(inner),
-            BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam inner => redactedThinking(
-                inner
-            ),
-            BetaContentBlockParamVariants::BetaToolUseBlockParam inner => toolUse(inner),
-            BetaContentBlockParamVariants::BetaToolResultBlockParam inner => toolResult(inner),
-            BetaContentBlockParamVariants::BetaServerToolUseBlockParam inner => serverToolUse(
-                inner
-            ),
-            BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam inner =>
-                webSearchToolResult(inner),
-            BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam inner =>
-                webFetchToolResult(inner),
-            BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam inner =>
-                codeExecutionToolResult(inner),
-            BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam inner =>
-                bashCodeExecutionToolResult(inner),
-            BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam inner =>
-                textEditorCodeExecutionToolResult(inner),
-            BetaContentBlockParamVariants::BetaMCPToolUseBlockParam inner => mcpToolUse(inner),
-            BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam inner =>
-                requestMCPToolResult(inner),
-            BetaContentBlockParamVariants::BetaContainerUploadBlockParam inner => containerUpload(
-                inner
-            ),
+            BetaTextBlockParam value => text(value),
+            BetaImageBlockParam value => image(value),
+            BetaRequestDocumentBlock value => requestDocumentBlock(value),
+            BetaSearchResultBlockParam value => searchResult(value),
+            BetaThinkingBlockParam value => thinking(value),
+            BetaRedactedThinkingBlockParam value => redactedThinking(value),
+            BetaToolUseBlockParam value => toolUse(value),
+            BetaToolResultBlockParam value => toolResult(value),
+            BetaServerToolUseBlockParam value => serverToolUse(value),
+            BetaWebSearchToolResultBlockParam value => webSearchToolResult(value),
+            BetaWebFetchToolResultBlockParam value => webFetchToolResult(value),
+            BetaCodeExecutionToolResultBlockParam value => codeExecutionToolResult(value),
+            BetaBashCodeExecutionToolResultBlockParam value => bashCodeExecutionToolResult(value),
+            BetaTextEditorCodeExecutionToolResultBlockParam value =>
+                textEditorCodeExecutionToolResult(value),
+            BetaMCPToolUseBlockParam value => mcpToolUse(value),
+            BetaRequestMCPToolResultBlockParam value => requestMCPToolResult(value),
+            BetaContainerUploadBlockParam value => containerUpload(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockParam"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaContentBlockParam"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockParam>
@@ -384,14 +580,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaTextBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaTextBlockParam",
+                            "Data does not match union variant 'BetaTextBlockParam'",
                             e
                         )
                     );
@@ -411,14 +608,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaImageBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaImageBlockParam",
+                            "Data does not match union variant 'BetaImageBlockParam'",
                             e
                         )
                     );
@@ -438,16 +636,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaRequestDocumentBlock(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaRequestDocumentBlock",
+                            "Data does not match union variant 'BetaRequestDocumentBlock'",
                             e
                         )
                     );
@@ -467,16 +664,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaSearchResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaSearchResultBlockParam",
+                            "Data does not match union variant 'BetaSearchResultBlockParam'",
                             e
                         )
                     );
@@ -496,16 +692,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaThinkingBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaThinkingBlockParam",
+                            "Data does not match union variant 'BetaThinkingBlockParam'",
                             e
                         )
                     );
@@ -525,16 +720,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam",
+                            "Data does not match union variant 'BetaRedactedThinkingBlockParam'",
                             e
                         )
                     );
@@ -554,16 +748,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaToolUseBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaToolUseBlockParam",
+                            "Data does not match union variant 'BetaToolUseBlockParam'",
                             e
                         )
                     );
@@ -583,16 +776,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaToolResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaToolResultBlockParam",
+                            "Data does not match union variant 'BetaToolResultBlockParam'",
                             e
                         )
                     );
@@ -612,16 +804,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaServerToolUseBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaServerToolUseBlockParam",
+                            "Data does not match union variant 'BetaServerToolUseBlockParam'",
                             e
                         )
                     );
@@ -642,16 +833,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam",
+                            "Data does not match union variant 'BetaWebSearchToolResultBlockParam'",
                             e
                         )
                     );
@@ -671,16 +861,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam",
+                            "Data does not match union variant 'BetaWebFetchToolResultBlockParam'",
                             e
                         )
                     );
@@ -701,16 +890,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam",
+                            "Data does not match union variant 'BetaCodeExecutionToolResultBlockParam'",
                             e
                         )
                     );
@@ -731,16 +919,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam",
+                            "Data does not match union variant 'BetaBashCodeExecutionToolResultBlockParam'",
                             e
                         )
                     );
@@ -761,16 +948,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam",
+                            "Data does not match union variant 'BetaTextEditorCodeExecutionToolResultBlockParam'",
                             e
                         )
                     );
@@ -790,16 +976,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaMCPToolUseBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaMCPToolUseBlockParam",
+                            "Data does not match union variant 'BetaMCPToolUseBlockParam'",
                             e
                         )
                     );
@@ -820,16 +1005,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam",
+                            "Data does not match union variant 'BetaRequestMCPToolResultBlockParam'",
                             e
                         )
                     );
@@ -849,16 +1033,15 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockParamVariants::BetaContainerUploadBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockParamVariants::BetaContainerUploadBlockParam",
+                            "Data does not match union variant 'BetaContainerUploadBlockParam'",
                             e
                         )
                     );
@@ -881,46 +1064,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaContentBlockParamVariants::BetaTextBlockParam(var text) => text,
-            BetaContentBlockParamVariants::BetaImageBlockParam(var image) => image,
-            BetaContentBlockParamVariants::BetaRequestDocumentBlock(var requestDocumentBlock) =>
-                requestDocumentBlock,
-            BetaContentBlockParamVariants::BetaSearchResultBlockParam(var searchResult) =>
-                searchResult,
-            BetaContentBlockParamVariants::BetaThinkingBlockParam(var thinking) => thinking,
-            BetaContentBlockParamVariants::BetaRedactedThinkingBlockParam(var redactedThinking) =>
-                redactedThinking,
-            BetaContentBlockParamVariants::BetaToolUseBlockParam(var toolUse) => toolUse,
-            BetaContentBlockParamVariants::BetaToolResultBlockParam(var toolResult) => toolResult,
-            BetaContentBlockParamVariants::BetaServerToolUseBlockParam(var serverToolUse) =>
-                serverToolUse,
-            BetaContentBlockParamVariants::BetaWebSearchToolResultBlockParam(
-                var webSearchToolResult
-            ) => webSearchToolResult,
-            BetaContentBlockParamVariants::BetaWebFetchToolResultBlockParam(
-                var webFetchToolResult
-            ) => webFetchToolResult,
-            BetaContentBlockParamVariants::BetaCodeExecutionToolResultBlockParam(
-                var codeExecutionToolResult
-            ) => codeExecutionToolResult,
-            BetaContentBlockParamVariants::BetaBashCodeExecutionToolResultBlockParam(
-                var bashCodeExecutionToolResult
-            ) => bashCodeExecutionToolResult,
-            BetaContentBlockParamVariants::BetaTextEditorCodeExecutionToolResultBlockParam(
-                var textEditorCodeExecutionToolResult
-            ) => textEditorCodeExecutionToolResult,
-            BetaContentBlockParamVariants::BetaMCPToolUseBlockParam(var mcpToolUse) => mcpToolUse,
-            BetaContentBlockParamVariants::BetaRequestMCPToolResultBlockParam(
-                var requestMCPToolResult
-            ) => requestMCPToolResult,
-            BetaContentBlockParamVariants::BetaContainerUploadBlockParam(var containerUpload) =>
-                containerUpload,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaContentBlockParam"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

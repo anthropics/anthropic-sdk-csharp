@@ -4,36 +4,92 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BlockVariants = Anthropic.Client.Models.Beta.Messages.BetaToolResultBlockParamProperties.ContentProperties.BlockVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaToolResultBlockParamProperties.ContentProperties;
 
 [JsonConverter(typeof(BlockConverter))]
-public abstract record class Block
+public record class Block
 {
-    internal Block() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Block(BetaTextBlockParam value) =>
-        new BlockVariants::BetaTextBlockParam(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                betaTextBlockParam: (x) => x.Type,
+                betaImageBlockParam: (x) => x.Type,
+                betaSearchResultBlockParam: (x) => x.Type,
+                betaRequestDocument: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator Block(BetaImageBlockParam value) =>
-        new BlockVariants::BetaImageBlockParam(value);
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return Match<BetaCacheControlEphemeral?>(
+                betaTextBlockParam: (x) => x.CacheControl,
+                betaImageBlockParam: (x) => x.CacheControl,
+                betaSearchResultBlockParam: (x) => x.CacheControl,
+                betaRequestDocument: (x) => x.CacheControl
+            );
+        }
+    }
 
-    public static implicit operator Block(BetaSearchResultBlockParam value) =>
-        new BlockVariants::BetaSearchResultBlockParam(value);
+    public string? Title
+    {
+        get
+        {
+            return Match<string?>(
+                betaTextBlockParam: (_) => null,
+                betaImageBlockParam: (_) => null,
+                betaSearchResultBlockParam: (x) => x.Title,
+                betaRequestDocument: (x) => x.Title
+            );
+        }
+    }
 
-    public static implicit operator Block(BetaRequestDocumentBlock value) =>
-        new BlockVariants::BetaRequestDocumentBlock(value);
+    public Block(BetaTextBlockParam value)
+    {
+        Value = value;
+    }
+
+    public Block(BetaImageBlockParam value)
+    {
+        Value = value;
+    }
+
+    public Block(BetaSearchResultBlockParam value)
+    {
+        Value = value;
+    }
+
+    public Block(BetaRequestDocumentBlock value)
+    {
+        Value = value;
+    }
+
+    Block(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Block CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBetaTextBlockParam([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
-        value = (this as BlockVariants::BetaTextBlockParam)?.Value;
+        value = this.Value as BetaTextBlockParam;
         return value != null;
     }
 
     public bool TryPickBetaImageBlockParam([NotNullWhen(true)] out BetaImageBlockParam? value)
     {
-        value = (this as BlockVariants::BetaImageBlockParam)?.Value;
+        value = this.Value as BetaImageBlockParam;
         return value != null;
     }
 
@@ -41,36 +97,36 @@ public abstract record class Block
         [NotNullWhen(true)] out BetaSearchResultBlockParam? value
     )
     {
-        value = (this as BlockVariants::BetaSearchResultBlockParam)?.Value;
+        value = this.Value as BetaSearchResultBlockParam;
         return value != null;
     }
 
     public bool TryPickBetaRequestDocument([NotNullWhen(true)] out BetaRequestDocumentBlock? value)
     {
-        value = (this as BlockVariants::BetaRequestDocumentBlock)?.Value;
+        value = this.Value as BetaRequestDocumentBlock;
         return value != null;
     }
 
     public void Switch(
-        Action<BlockVariants::BetaTextBlockParam> betaTextBlockParam,
-        Action<BlockVariants::BetaImageBlockParam> betaImageBlockParam,
-        Action<BlockVariants::BetaSearchResultBlockParam> betaSearchResultBlockParam,
-        Action<BlockVariants::BetaRequestDocumentBlock> betaRequestDocument
+        Action<BetaTextBlockParam> betaTextBlockParam,
+        Action<BetaImageBlockParam> betaImageBlockParam,
+        Action<BetaSearchResultBlockParam> betaSearchResultBlockParam,
+        Action<BetaRequestDocumentBlock> betaRequestDocument
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BlockVariants::BetaTextBlockParam inner:
-                betaTextBlockParam(inner);
+            case BetaTextBlockParam value:
+                betaTextBlockParam(value);
                 break;
-            case BlockVariants::BetaImageBlockParam inner:
-                betaImageBlockParam(inner);
+            case BetaImageBlockParam value:
+                betaImageBlockParam(value);
                 break;
-            case BlockVariants::BetaSearchResultBlockParam inner:
-                betaSearchResultBlockParam(inner);
+            case BetaSearchResultBlockParam value:
+                betaSearchResultBlockParam(value);
                 break;
-            case BlockVariants::BetaRequestDocumentBlock inner:
-                betaRequestDocument(inner);
+            case BetaRequestDocumentBlock value:
+                betaRequestDocument(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Block");
@@ -78,23 +134,31 @@ public abstract record class Block
     }
 
     public T Match<T>(
-        Func<BlockVariants::BetaTextBlockParam, T> betaTextBlockParam,
-        Func<BlockVariants::BetaImageBlockParam, T> betaImageBlockParam,
-        Func<BlockVariants::BetaSearchResultBlockParam, T> betaSearchResultBlockParam,
-        Func<BlockVariants::BetaRequestDocumentBlock, T> betaRequestDocument
+        Func<BetaTextBlockParam, T> betaTextBlockParam,
+        Func<BetaImageBlockParam, T> betaImageBlockParam,
+        Func<BetaSearchResultBlockParam, T> betaSearchResultBlockParam,
+        Func<BetaRequestDocumentBlock, T> betaRequestDocument
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BlockVariants::BetaTextBlockParam inner => betaTextBlockParam(inner),
-            BlockVariants::BetaImageBlockParam inner => betaImageBlockParam(inner),
-            BlockVariants::BetaSearchResultBlockParam inner => betaSearchResultBlockParam(inner),
-            BlockVariants::BetaRequestDocumentBlock inner => betaRequestDocument(inner),
+            BetaTextBlockParam value => betaTextBlockParam(value),
+            BetaImageBlockParam value => betaImageBlockParam(value),
+            BetaSearchResultBlockParam value => betaSearchResultBlockParam(value),
+            BetaRequestDocumentBlock value => betaRequestDocument(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Block");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BlockConverter : JsonConverter<Block>
@@ -130,14 +194,15 @@ sealed class BlockConverter : JsonConverter<Block>
                     );
                     if (deserialized != null)
                     {
-                        return new BlockVariants::BetaTextBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new Block(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BlockVariants::BetaTextBlockParam",
+                            "Data does not match union variant 'BetaTextBlockParam'",
                             e
                         )
                     );
@@ -157,14 +222,15 @@ sealed class BlockConverter : JsonConverter<Block>
                     );
                     if (deserialized != null)
                     {
-                        return new BlockVariants::BetaImageBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new Block(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BlockVariants::BetaImageBlockParam",
+                            "Data does not match union variant 'BetaImageBlockParam'",
                             e
                         )
                     );
@@ -184,14 +250,15 @@ sealed class BlockConverter : JsonConverter<Block>
                     );
                     if (deserialized != null)
                     {
-                        return new BlockVariants::BetaSearchResultBlockParam(deserialized);
+                        deserialized.Validate();
+                        return new Block(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BlockVariants::BetaSearchResultBlockParam",
+                            "Data does not match union variant 'BetaSearchResultBlockParam'",
                             e
                         )
                     );
@@ -211,14 +278,15 @@ sealed class BlockConverter : JsonConverter<Block>
                     );
                     if (deserialized != null)
                     {
-                        return new BlockVariants::BetaRequestDocumentBlock(deserialized);
+                        deserialized.Validate();
+                        return new Block(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BlockVariants::BetaRequestDocumentBlock",
+                            "Data does not match union variant 'BetaRequestDocumentBlock'",
                             e
                         )
                     );
@@ -237,15 +305,7 @@ sealed class BlockConverter : JsonConverter<Block>
 
     public override void Write(Utf8JsonWriter writer, Block value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            BlockVariants::BetaTextBlockParam(var betaTextBlockParam) => betaTextBlockParam,
-            BlockVariants::BetaImageBlockParam(var betaImageBlockParam) => betaImageBlockParam,
-            BlockVariants::BetaSearchResultBlockParam(var betaSearchResultBlockParam) =>
-                betaSearchResultBlockParam,
-            BlockVariants::BetaRequestDocumentBlock(var betaRequestDocument) => betaRequestDocument,
-            _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

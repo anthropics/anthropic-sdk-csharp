@@ -64,7 +64,7 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
 
     public BetaAPIError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

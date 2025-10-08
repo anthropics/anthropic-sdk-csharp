@@ -92,7 +92,7 @@ public sealed record class BetaRawContentBlockStartEvent
 
     public BetaRawContentBlockStartEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

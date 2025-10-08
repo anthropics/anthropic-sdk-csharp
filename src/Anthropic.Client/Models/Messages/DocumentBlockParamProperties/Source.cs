@@ -4,71 +4,127 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using SourceVariants = Anthropic.Client.Models.Messages.DocumentBlockParamProperties.SourceVariants;
 
 namespace Anthropic.Client.Models.Messages.DocumentBlockParamProperties;
 
 [JsonConverter(typeof(SourceConverter))]
-public abstract record class Source
+public record class Source
 {
-    internal Source() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Source(Base64PDFSource value) =>
-        new SourceVariants::Base64PDFSource(value);
+    public string? Data
+    {
+        get
+        {
+            return Match<string?>(
+                base64PDF: (x) => x.Data,
+                plainText: (x) => x.Data,
+                contentBlock: (_) => null,
+                urlPDF: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator Source(PlainTextSource value) =>
-        new SourceVariants::PlainTextSource(value);
+    public JsonElement? MediaType
+    {
+        get
+        {
+            return Match<JsonElement?>(
+                base64PDF: (x) => x.MediaType,
+                plainText: (x) => x.MediaType,
+                contentBlock: (_) => null,
+                urlPDF: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator Source(ContentBlockSource value) =>
-        new SourceVariants::ContentBlockSource(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                base64PDF: (x) => x.Type,
+                plainText: (x) => x.Type,
+                contentBlock: (x) => x.Type,
+                urlPDF: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator Source(URLPDFSource value) =>
-        new SourceVariants::URLPDFSource(value);
+    public Source(Base64PDFSource value)
+    {
+        Value = value;
+    }
+
+    public Source(PlainTextSource value)
+    {
+        Value = value;
+    }
+
+    public Source(ContentBlockSource value)
+    {
+        Value = value;
+    }
+
+    public Source(URLPDFSource value)
+    {
+        Value = value;
+    }
+
+    Source(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Source CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBase64PDF([NotNullWhen(true)] out Base64PDFSource? value)
     {
-        value = (this as SourceVariants::Base64PDFSource)?.Value;
+        value = this.Value as Base64PDFSource;
         return value != null;
     }
 
     public bool TryPickPlainText([NotNullWhen(true)] out PlainTextSource? value)
     {
-        value = (this as SourceVariants::PlainTextSource)?.Value;
+        value = this.Value as PlainTextSource;
         return value != null;
     }
 
     public bool TryPickContentBlock([NotNullWhen(true)] out ContentBlockSource? value)
     {
-        value = (this as SourceVariants::ContentBlockSource)?.Value;
+        value = this.Value as ContentBlockSource;
         return value != null;
     }
 
     public bool TryPickURLPDF([NotNullWhen(true)] out URLPDFSource? value)
     {
-        value = (this as SourceVariants::URLPDFSource)?.Value;
+        value = this.Value as URLPDFSource;
         return value != null;
     }
 
     public void Switch(
-        Action<SourceVariants::Base64PDFSource> base64PDF,
-        Action<SourceVariants::PlainTextSource> plainText,
-        Action<SourceVariants::ContentBlockSource> contentBlock,
-        Action<SourceVariants::URLPDFSource> urlPDF
+        Action<Base64PDFSource> base64PDF,
+        Action<PlainTextSource> plainText,
+        Action<ContentBlockSource> contentBlock,
+        Action<URLPDFSource> urlPDF
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case SourceVariants::Base64PDFSource inner:
-                base64PDF(inner);
+            case Base64PDFSource value:
+                base64PDF(value);
                 break;
-            case SourceVariants::PlainTextSource inner:
-                plainText(inner);
+            case PlainTextSource value:
+                plainText(value);
                 break;
-            case SourceVariants::ContentBlockSource inner:
-                contentBlock(inner);
+            case ContentBlockSource value:
+                contentBlock(value);
                 break;
-            case SourceVariants::URLPDFSource inner:
-                urlPDF(inner);
+            case URLPDFSource value:
+                urlPDF(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Source");
@@ -76,25 +132,33 @@ public abstract record class Source
     }
 
     public T Match<T>(
-        Func<SourceVariants::Base64PDFSource, T> base64PDF,
-        Func<SourceVariants::PlainTextSource, T> plainText,
-        Func<SourceVariants::ContentBlockSource, T> contentBlock,
-        Func<SourceVariants::URLPDFSource, T> urlPDF
+        Func<Base64PDFSource, T> base64PDF,
+        Func<PlainTextSource, T> plainText,
+        Func<ContentBlockSource, T> contentBlock,
+        Func<URLPDFSource, T> urlPDF
     )
     {
-        return this switch
+        return this.Value switch
         {
-            SourceVariants::Base64PDFSource inner => base64PDF(inner),
-            SourceVariants::PlainTextSource inner => plainText(inner),
-            SourceVariants::ContentBlockSource inner => contentBlock(inner),
-            SourceVariants::URLPDFSource inner => urlPDF(inner),
+            Base64PDFSource value => base64PDF(value),
+            PlainTextSource value => plainText(value),
+            ContentBlockSource value => contentBlock(value),
+            URLPDFSource value => urlPDF(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Source"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Source");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class SourceConverter : JsonConverter<Source>
@@ -127,14 +191,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     var deserialized = JsonSerializer.Deserialize<Base64PDFSource>(json, options);
                     if (deserialized != null)
                     {
-                        return new SourceVariants::Base64PDFSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::Base64PDFSource",
+                            "Data does not match union variant 'Base64PDFSource'",
                             e
                         )
                     );
@@ -151,14 +216,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     var deserialized = JsonSerializer.Deserialize<PlainTextSource>(json, options);
                     if (deserialized != null)
                     {
-                        return new SourceVariants::PlainTextSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::PlainTextSource",
+                            "Data does not match union variant 'PlainTextSource'",
                             e
                         )
                     );
@@ -178,14 +244,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     );
                     if (deserialized != null)
                     {
-                        return new SourceVariants::ContentBlockSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::ContentBlockSource",
+                            "Data does not match union variant 'ContentBlockSource'",
                             e
                         )
                     );
@@ -202,14 +269,15 @@ sealed class SourceConverter : JsonConverter<Source>
                     var deserialized = JsonSerializer.Deserialize<URLPDFSource>(json, options);
                     if (deserialized != null)
                     {
-                        return new SourceVariants::URLPDFSource(deserialized);
+                        deserialized.Validate();
+                        return new Source(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant SourceVariants::URLPDFSource",
+                            "Data does not match union variant 'URLPDFSource'",
                             e
                         )
                     );
@@ -228,16 +296,7 @@ sealed class SourceConverter : JsonConverter<Source>
 
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            SourceVariants::Base64PDFSource(var base64PDF) => base64PDF,
-            SourceVariants::PlainTextSource(var plainText) => plainText,
-            SourceVariants::ContentBlockSource(var contentBlock) => contentBlock,
-            SourceVariants::URLPDFSource(var urlPDF) => urlPDF,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Source"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

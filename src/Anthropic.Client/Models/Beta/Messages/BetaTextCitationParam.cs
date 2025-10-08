@@ -4,38 +4,152 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaTextCitationParamVariants = Anthropic.Client.Models.Beta.Messages.BetaTextCitationParamVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaTextCitationParamConverter))]
-public abstract record class BetaTextCitationParam
+public record class BetaTextCitationParam
 {
-    internal BetaTextCitationParam() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaTextCitationParam(BetaCitationCharLocationParam value) =>
-        new BetaTextCitationParamVariants::BetaCitationCharLocationParam(value);
+    public string CitedText
+    {
+        get
+        {
+            return Match(
+                citationCharLocation: (x) => x.CitedText,
+                citationPageLocation: (x) => x.CitedText,
+                citationContentBlockLocation: (x) => x.CitedText,
+                citationWebSearchResultLocation: (x) => x.CitedText,
+                citationSearchResultLocation: (x) => x.CitedText
+            );
+        }
+    }
 
-    public static implicit operator BetaTextCitationParam(BetaCitationPageLocationParam value) =>
-        new BetaTextCitationParamVariants::BetaCitationPageLocationParam(value);
+    public long? DocumentIndex
+    {
+        get
+        {
+            return Match<long?>(
+                citationCharLocation: (x) => x.DocumentIndex,
+                citationPageLocation: (x) => x.DocumentIndex,
+                citationContentBlockLocation: (x) => x.DocumentIndex,
+                citationWebSearchResultLocation: (_) => null,
+                citationSearchResultLocation: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaTextCitationParam(
-        BetaCitationContentBlockLocationParam value
-    ) => new BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam(value);
+    public string? DocumentTitle
+    {
+        get
+        {
+            return Match<string?>(
+                citationCharLocation: (x) => x.DocumentTitle,
+                citationPageLocation: (x) => x.DocumentTitle,
+                citationContentBlockLocation: (x) => x.DocumentTitle,
+                citationWebSearchResultLocation: (_) => null,
+                citationSearchResultLocation: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaTextCitationParam(
-        BetaCitationWebSearchResultLocationParam value
-    ) => new BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                citationCharLocation: (x) => x.Type,
+                citationPageLocation: (x) => x.Type,
+                citationContentBlockLocation: (x) => x.Type,
+                citationWebSearchResultLocation: (x) => x.Type,
+                citationSearchResultLocation: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator BetaTextCitationParam(
-        BetaCitationSearchResultLocationParam value
-    ) => new BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam(value);
+    public long? EndBlockIndex
+    {
+        get
+        {
+            return Match<long?>(
+                citationCharLocation: (_) => null,
+                citationPageLocation: (_) => null,
+                citationContentBlockLocation: (x) => x.EndBlockIndex,
+                citationWebSearchResultLocation: (_) => null,
+                citationSearchResultLocation: (x) => x.EndBlockIndex
+            );
+        }
+    }
+
+    public long? StartBlockIndex
+    {
+        get
+        {
+            return Match<long?>(
+                citationCharLocation: (_) => null,
+                citationPageLocation: (_) => null,
+                citationContentBlockLocation: (x) => x.StartBlockIndex,
+                citationWebSearchResultLocation: (_) => null,
+                citationSearchResultLocation: (x) => x.StartBlockIndex
+            );
+        }
+    }
+
+    public string? Title
+    {
+        get
+        {
+            return Match<string?>(
+                citationCharLocation: (_) => null,
+                citationPageLocation: (_) => null,
+                citationContentBlockLocation: (_) => null,
+                citationWebSearchResultLocation: (x) => x.Title,
+                citationSearchResultLocation: (x) => x.Title
+            );
+        }
+    }
+
+    public BetaTextCitationParam(BetaCitationCharLocationParam value)
+    {
+        Value = value;
+    }
+
+    public BetaTextCitationParam(BetaCitationPageLocationParam value)
+    {
+        Value = value;
+    }
+
+    public BetaTextCitationParam(BetaCitationContentBlockLocationParam value)
+    {
+        Value = value;
+    }
+
+    public BetaTextCitationParam(BetaCitationWebSearchResultLocationParam value)
+    {
+        Value = value;
+    }
+
+    public BetaTextCitationParam(BetaCitationSearchResultLocationParam value)
+    {
+        Value = value;
+    }
+
+    BetaTextCitationParam(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaTextCitationParam CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickCitationCharLocation(
         [NotNullWhen(true)] out BetaCitationCharLocationParam? value
     )
     {
-        value = (this as BetaTextCitationParamVariants::BetaCitationCharLocationParam)?.Value;
+        value = this.Value as BetaCitationCharLocationParam;
         return value != null;
     }
 
@@ -43,7 +157,7 @@ public abstract record class BetaTextCitationParam
         [NotNullWhen(true)] out BetaCitationPageLocationParam? value
     )
     {
-        value = (this as BetaTextCitationParamVariants::BetaCitationPageLocationParam)?.Value;
+        value = this.Value as BetaCitationPageLocationParam;
         return value != null;
     }
 
@@ -51,9 +165,7 @@ public abstract record class BetaTextCitationParam
         [NotNullWhen(true)] out BetaCitationContentBlockLocationParam? value
     )
     {
-        value = (
-            this as BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam
-        )?.Value;
+        value = this.Value as BetaCitationContentBlockLocationParam;
         return value != null;
     }
 
@@ -61,9 +173,7 @@ public abstract record class BetaTextCitationParam
         [NotNullWhen(true)] out BetaCitationWebSearchResultLocationParam? value
     )
     {
-        value = (
-            this as BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam
-        )?.Value;
+        value = this.Value as BetaCitationWebSearchResultLocationParam;
         return value != null;
     }
 
@@ -71,36 +181,34 @@ public abstract record class BetaTextCitationParam
         [NotNullWhen(true)] out BetaCitationSearchResultLocationParam? value
     )
     {
-        value = (
-            this as BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam
-        )?.Value;
+        value = this.Value as BetaCitationSearchResultLocationParam;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaTextCitationParamVariants::BetaCitationCharLocationParam> citationCharLocation,
-        Action<BetaTextCitationParamVariants::BetaCitationPageLocationParam> citationPageLocation,
-        Action<BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam> citationContentBlockLocation,
-        Action<BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam> citationWebSearchResultLocation,
-        Action<BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam> citationSearchResultLocation
+        Action<BetaCitationCharLocationParam> citationCharLocation,
+        Action<BetaCitationPageLocationParam> citationPageLocation,
+        Action<BetaCitationContentBlockLocationParam> citationContentBlockLocation,
+        Action<BetaCitationWebSearchResultLocationParam> citationWebSearchResultLocation,
+        Action<BetaCitationSearchResultLocationParam> citationSearchResultLocation
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaTextCitationParamVariants::BetaCitationCharLocationParam inner:
-                citationCharLocation(inner);
+            case BetaCitationCharLocationParam value:
+                citationCharLocation(value);
                 break;
-            case BetaTextCitationParamVariants::BetaCitationPageLocationParam inner:
-                citationPageLocation(inner);
+            case BetaCitationPageLocationParam value:
+                citationPageLocation(value);
                 break;
-            case BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam inner:
-                citationContentBlockLocation(inner);
+            case BetaCitationContentBlockLocationParam value:
+                citationContentBlockLocation(value);
                 break;
-            case BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam inner:
-                citationWebSearchResultLocation(inner);
+            case BetaCitationWebSearchResultLocationParam value:
+                citationWebSearchResultLocation(value);
                 break;
-            case BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam inner:
-                citationSearchResultLocation(inner);
+            case BetaCitationSearchResultLocationParam value:
+                citationSearchResultLocation(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -110,41 +218,39 @@ public abstract record class BetaTextCitationParam
     }
 
     public T Match<T>(
-        Func<BetaTextCitationParamVariants::BetaCitationCharLocationParam, T> citationCharLocation,
-        Func<BetaTextCitationParamVariants::BetaCitationPageLocationParam, T> citationPageLocation,
-        Func<
-            BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam,
-            T
-        > citationContentBlockLocation,
-        Func<
-            BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam,
-            T
-        > citationWebSearchResultLocation,
-        Func<
-            BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam,
-            T
-        > citationSearchResultLocation
+        Func<BetaCitationCharLocationParam, T> citationCharLocation,
+        Func<BetaCitationPageLocationParam, T> citationPageLocation,
+        Func<BetaCitationContentBlockLocationParam, T> citationContentBlockLocation,
+        Func<BetaCitationWebSearchResultLocationParam, T> citationWebSearchResultLocation,
+        Func<BetaCitationSearchResultLocationParam, T> citationSearchResultLocation
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaTextCitationParamVariants::BetaCitationCharLocationParam inner =>
-                citationCharLocation(inner),
-            BetaTextCitationParamVariants::BetaCitationPageLocationParam inner =>
-                citationPageLocation(inner),
-            BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam inner =>
-                citationContentBlockLocation(inner),
-            BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam inner =>
-                citationWebSearchResultLocation(inner),
-            BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam inner =>
-                citationSearchResultLocation(inner),
+            BetaCitationCharLocationParam value => citationCharLocation(value),
+            BetaCitationPageLocationParam value => citationPageLocation(value),
+            BetaCitationContentBlockLocationParam value => citationContentBlockLocation(value),
+            BetaCitationWebSearchResultLocationParam value => citationWebSearchResultLocation(
+                value
+            ),
+            BetaCitationSearchResultLocationParam value => citationSearchResultLocation(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaTextCitationParam"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaTextCitationParam"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationParam>
@@ -180,16 +286,15 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaTextCitationParamVariants::BetaCitationCharLocationParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationCharLocationParam",
+                            "Data does not match union variant 'BetaCitationCharLocationParam'",
                             e
                         )
                     );
@@ -209,16 +314,15 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     );
                     if (deserialized != null)
                     {
-                        return new BetaTextCitationParamVariants::BetaCitationPageLocationParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationPageLocationParam",
+                            "Data does not match union variant 'BetaCitationPageLocationParam'",
                             e
                         )
                     );
@@ -239,16 +343,15 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                         );
                     if (deserialized != null)
                     {
-                        return new BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam",
+                            "Data does not match union variant 'BetaCitationContentBlockLocationParam'",
                             e
                         )
                     );
@@ -269,16 +372,15 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                         );
                     if (deserialized != null)
                     {
-                        return new BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam",
+                            "Data does not match union variant 'BetaCitationWebSearchResultLocationParam'",
                             e
                         )
                     );
@@ -299,16 +401,15 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                         );
                     if (deserialized != null)
                     {
-                        return new BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam",
+                            "Data does not match union variant 'BetaCitationSearchResultLocationParam'",
                             e
                         )
                     );
@@ -331,27 +432,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaTextCitationParamVariants::BetaCitationCharLocationParam(
-                var citationCharLocation
-            ) => citationCharLocation,
-            BetaTextCitationParamVariants::BetaCitationPageLocationParam(
-                var citationPageLocation
-            ) => citationPageLocation,
-            BetaTextCitationParamVariants::BetaCitationContentBlockLocationParam(
-                var citationContentBlockLocation
-            ) => citationContentBlockLocation,
-            BetaTextCitationParamVariants::BetaCitationWebSearchResultLocationParam(
-                var citationWebSearchResultLocation
-            ) => citationWebSearchResultLocation,
-            BetaTextCitationParamVariants::BetaCitationSearchResultLocationParam(
-                var citationSearchResultLocation
-            ) => citationSearchResultLocation,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaTextCitationParam"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

@@ -93,7 +93,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
 
     public BetaBashCodeExecutionToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

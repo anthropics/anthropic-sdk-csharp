@@ -90,7 +90,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
 
     public ImageBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

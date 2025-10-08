@@ -90,7 +90,7 @@ public sealed record class Base64ImageSource : ModelBase, IFromRaw<Base64ImageSo
 
     public Base64ImageSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

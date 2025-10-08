@@ -64,7 +64,7 @@ public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSO
 
     public BetaInputJSONDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

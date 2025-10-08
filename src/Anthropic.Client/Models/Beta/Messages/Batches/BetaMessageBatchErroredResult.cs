@@ -69,7 +69,7 @@ public sealed record class BetaMessageBatchErroredResult
 
     public BetaMessageBatchErroredResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

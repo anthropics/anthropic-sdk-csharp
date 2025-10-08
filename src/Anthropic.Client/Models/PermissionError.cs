@@ -64,7 +64,7 @@ public sealed record class PermissionError : ModelBase, IFromRaw<PermissionError
 
     public PermissionError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

@@ -83,7 +83,7 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
 
     public ErrorResponse()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

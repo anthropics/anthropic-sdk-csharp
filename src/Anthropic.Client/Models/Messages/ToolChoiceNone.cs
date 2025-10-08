@@ -39,7 +39,7 @@ public sealed record class ToolChoiceNone : ModelBase, IFromRaw<ToolChoiceNone>
 
     public ToolChoiceNone()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

@@ -4,51 +4,60 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaWebSearchToolResultBlockParamContentVariants = Anthropic.Client.Models.Beta.Messages.BetaWebSearchToolResultBlockParamContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaWebSearchToolResultBlockParamContentConverter))]
-public abstract record class BetaWebSearchToolResultBlockParamContent
+public record class BetaWebSearchToolResultBlockParamContent
 {
-    internal BetaWebSearchToolResultBlockParamContent() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaWebSearchToolResultBlockParamContent(
-        List<BetaWebSearchResultBlockParam> value
-    ) => new BetaWebSearchToolResultBlockParamContentVariants::ResultBlock(value);
+    public BetaWebSearchToolResultBlockParamContent(List<BetaWebSearchResultBlockParam> value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaWebSearchToolResultBlockParamContent(
-        BetaWebSearchToolRequestError value
-    ) => new BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError(value);
+    public BetaWebSearchToolResultBlockParamContent(BetaWebSearchToolRequestError value)
+    {
+        Value = value;
+    }
+
+    BetaWebSearchToolResultBlockParamContent(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaWebSearchToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickResultBlock(
         [NotNullWhen(true)] out List<BetaWebSearchResultBlockParam>? value
     )
     {
-        value = (this as BetaWebSearchToolResultBlockParamContentVariants::ResultBlock)?.Value;
+        value = this.Value as List<BetaWebSearchResultBlockParam>;
         return value != null;
     }
 
     public bool TryPickRequestError([NotNullWhen(true)] out BetaWebSearchToolRequestError? value)
     {
-        value = (
-            this as BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError
-        )?.Value;
+        value = this.Value as BetaWebSearchToolRequestError;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaWebSearchToolResultBlockParamContentVariants::ResultBlock> resultBlock,
-        Action<BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError> requestError
+        Action<List<BetaWebSearchResultBlockParam>> resultBlock,
+        Action<BetaWebSearchToolRequestError> requestError
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaWebSearchToolResultBlockParamContentVariants::ResultBlock inner:
-                resultBlock(inner);
+            case List<BetaWebSearchResultBlockParam> value:
+                resultBlock(value);
                 break;
-            case BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError inner:
-                requestError(inner);
+            case BetaWebSearchToolRequestError value:
+                requestError(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -58,27 +67,31 @@ public abstract record class BetaWebSearchToolResultBlockParamContent
     }
 
     public T Match<T>(
-        Func<BetaWebSearchToolResultBlockParamContentVariants::ResultBlock, T> resultBlock,
-        Func<
-            BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError,
-            T
-        > requestError
+        Func<List<BetaWebSearchResultBlockParam>, T> resultBlock,
+        Func<BetaWebSearchToolRequestError, T> requestError
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaWebSearchToolResultBlockParamContentVariants::ResultBlock inner => resultBlock(
-                inner
-            ),
-            BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError inner =>
-                requestError(inner),
+            List<BetaWebSearchResultBlockParam> value => resultBlock(value),
+            BetaWebSearchToolRequestError value => requestError(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebSearchToolResultBlockParamContent"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaWebSearchToolResultBlockParamContent"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaWebSearchToolResultBlockParamContentConverter
@@ -100,16 +113,15 @@ sealed class BetaWebSearchToolResultBlockParamContentConverter
             );
             if (deserialized != null)
             {
-                return new BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError(
-                    deserialized
-                );
+                deserialized.Validate();
+                return new BetaWebSearchToolResultBlockParamContent(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError",
+                    "Data does not match union variant 'BetaWebSearchToolRequestError'",
                     e
                 )
             );
@@ -123,16 +135,14 @@ sealed class BetaWebSearchToolResultBlockParamContentConverter
             );
             if (deserialized != null)
             {
-                return new BetaWebSearchToolResultBlockParamContentVariants::ResultBlock(
-                    deserialized
-                );
+                return new BetaWebSearchToolResultBlockParamContent(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant BetaWebSearchToolResultBlockParamContentVariants::ResultBlock",
+                    "Data does not match union variant 'List<BetaWebSearchResultBlockParam>'",
                     e
                 )
             );
@@ -147,17 +157,7 @@ sealed class BetaWebSearchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaWebSearchToolResultBlockParamContentVariants::ResultBlock(var resultBlock) =>
-                resultBlock,
-            BetaWebSearchToolResultBlockParamContentVariants::BetaWebSearchToolRequestError(
-                var requestError
-            ) => requestError,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaWebSearchToolResultBlockParamContent"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

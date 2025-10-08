@@ -64,7 +64,7 @@ public sealed record class BetaRawMessageStartEvent : ModelBase, IFromRaw<BetaRa
 
     public BetaRawMessageStartEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

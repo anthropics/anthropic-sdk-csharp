@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaContentBlockVariants = Anthropic.Client.Models.Beta.Messages.BetaContentBlockVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -12,77 +11,200 @@ namespace Anthropic.Client.Models.Beta.Messages;
 /// Response model for a file uploaded to the container.
 /// </summary>
 [JsonConverter(typeof(BetaContentBlockConverter))]
-public abstract record class BetaContentBlock
+public record class BetaContentBlock
 {
-    internal BetaContentBlock() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaContentBlock(BetaTextBlock value) =>
-        new BetaContentBlockVariants::BetaTextBlock(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                text: (x) => x.Type,
+                thinking: (x) => x.Type,
+                redactedThinking: (x) => x.Type,
+                toolUse: (x) => x.Type,
+                serverToolUse: (x) => x.Type,
+                webSearchToolResult: (x) => x.Type,
+                webFetchToolResult: (x) => x.Type,
+                codeExecutionToolResult: (x) => x.Type,
+                bashCodeExecutionToolResult: (x) => x.Type,
+                textEditorCodeExecutionToolResult: (x) => x.Type,
+                mcpToolUse: (x) => x.Type,
+                mcpToolResult: (x) => x.Type,
+                containerUpload: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlock(BetaThinkingBlock value) =>
-        new BetaContentBlockVariants::BetaThinkingBlock(value);
+    public string? ID
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.ID,
+                serverToolUse: (x) => x.ID,
+                webSearchToolResult: (_) => null,
+                webFetchToolResult: (_) => null,
+                codeExecutionToolResult: (_) => null,
+                bashCodeExecutionToolResult: (_) => null,
+                textEditorCodeExecutionToolResult: (_) => null,
+                mcpToolUse: (x) => x.ID,
+                mcpToolResult: (_) => null,
+                containerUpload: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlock(BetaRedactedThinkingBlock value) =>
-        new BetaContentBlockVariants::BetaRedactedThinkingBlock(value);
+    public JsonElement? Input
+    {
+        get
+        {
+            return Match<JsonElement?>(
+                text: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (x) => x.Input,
+                serverToolUse: (x) => x.Input,
+                webSearchToolResult: (_) => null,
+                webFetchToolResult: (_) => null,
+                codeExecutionToolResult: (_) => null,
+                bashCodeExecutionToolResult: (_) => null,
+                textEditorCodeExecutionToolResult: (_) => null,
+                mcpToolUse: (x) => x.Input,
+                mcpToolResult: (_) => null,
+                containerUpload: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlock(BetaToolUseBlock value) =>
-        new BetaContentBlockVariants::BetaToolUseBlock(value);
+    public string? ToolUseID
+    {
+        get
+        {
+            return Match<string?>(
+                text: (_) => null,
+                thinking: (_) => null,
+                redactedThinking: (_) => null,
+                toolUse: (_) => null,
+                serverToolUse: (_) => null,
+                webSearchToolResult: (x) => x.ToolUseID,
+                webFetchToolResult: (x) => x.ToolUseID,
+                codeExecutionToolResult: (x) => x.ToolUseID,
+                bashCodeExecutionToolResult: (x) => x.ToolUseID,
+                textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
+                mcpToolUse: (_) => null,
+                mcpToolResult: (x) => x.ToolUseID,
+                containerUpload: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaContentBlock(BetaServerToolUseBlock value) =>
-        new BetaContentBlockVariants::BetaServerToolUseBlock(value);
+    public BetaContentBlock(BetaTextBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlock(BetaWebSearchToolResultBlock value) =>
-        new BetaContentBlockVariants::BetaWebSearchToolResultBlock(value);
+    public BetaContentBlock(BetaThinkingBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlock(BetaWebFetchToolResultBlock value) =>
-        new BetaContentBlockVariants::BetaWebFetchToolResultBlock(value);
+    public BetaContentBlock(BetaRedactedThinkingBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlock(BetaCodeExecutionToolResultBlock value) =>
-        new BetaContentBlockVariants::BetaCodeExecutionToolResultBlock(value);
+    public BetaContentBlock(BetaToolUseBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlock(BetaBashCodeExecutionToolResultBlock value) =>
-        new BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock(value);
+    public BetaContentBlock(BetaServerToolUseBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlock(
-        BetaTextEditorCodeExecutionToolResultBlock value
-    ) => new BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock(value);
+    public BetaContentBlock(BetaWebSearchToolResultBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlock(BetaMCPToolUseBlock value) =>
-        new BetaContentBlockVariants::BetaMCPToolUseBlock(value);
+    public BetaContentBlock(BetaWebFetchToolResultBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlock(BetaMCPToolResultBlock value) =>
-        new BetaContentBlockVariants::BetaMCPToolResultBlock(value);
+    public BetaContentBlock(BetaCodeExecutionToolResultBlock value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaContentBlock(BetaContainerUploadBlock value) =>
-        new BetaContentBlockVariants::BetaContainerUploadBlock(value);
+    public BetaContentBlock(BetaBashCodeExecutionToolResultBlock value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlock(BetaTextEditorCodeExecutionToolResultBlock value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlock(BetaMCPToolUseBlock value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlock(BetaMCPToolResultBlock value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlock(BetaContainerUploadBlock value)
+    {
+        Value = value;
+    }
+
+    BetaContentBlock(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaContentBlock CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickText([NotNullWhen(true)] out BetaTextBlock? value)
     {
-        value = (this as BetaContentBlockVariants::BetaTextBlock)?.Value;
+        value = this.Value as BetaTextBlock;
         return value != null;
     }
 
     public bool TryPickThinking([NotNullWhen(true)] out BetaThinkingBlock? value)
     {
-        value = (this as BetaContentBlockVariants::BetaThinkingBlock)?.Value;
+        value = this.Value as BetaThinkingBlock;
         return value != null;
     }
 
     public bool TryPickRedactedThinking([NotNullWhen(true)] out BetaRedactedThinkingBlock? value)
     {
-        value = (this as BetaContentBlockVariants::BetaRedactedThinkingBlock)?.Value;
+        value = this.Value as BetaRedactedThinkingBlock;
         return value != null;
     }
 
     public bool TryPickToolUse([NotNullWhen(true)] out BetaToolUseBlock? value)
     {
-        value = (this as BetaContentBlockVariants::BetaToolUseBlock)?.Value;
+        value = this.Value as BetaToolUseBlock;
         return value != null;
     }
 
     public bool TryPickServerToolUse([NotNullWhen(true)] out BetaServerToolUseBlock? value)
     {
-        value = (this as BetaContentBlockVariants::BetaServerToolUseBlock)?.Value;
+        value = this.Value as BetaServerToolUseBlock;
         return value != null;
     }
 
@@ -90,7 +212,7 @@ public abstract record class BetaContentBlock
         [NotNullWhen(true)] out BetaWebSearchToolResultBlock? value
     )
     {
-        value = (this as BetaContentBlockVariants::BetaWebSearchToolResultBlock)?.Value;
+        value = this.Value as BetaWebSearchToolResultBlock;
         return value != null;
     }
 
@@ -98,7 +220,7 @@ public abstract record class BetaContentBlock
         [NotNullWhen(true)] out BetaWebFetchToolResultBlock? value
     )
     {
-        value = (this as BetaContentBlockVariants::BetaWebFetchToolResultBlock)?.Value;
+        value = this.Value as BetaWebFetchToolResultBlock;
         return value != null;
     }
 
@@ -106,7 +228,7 @@ public abstract record class BetaContentBlock
         [NotNullWhen(true)] out BetaCodeExecutionToolResultBlock? value
     )
     {
-        value = (this as BetaContentBlockVariants::BetaCodeExecutionToolResultBlock)?.Value;
+        value = this.Value as BetaCodeExecutionToolResultBlock;
         return value != null;
     }
 
@@ -114,7 +236,7 @@ public abstract record class BetaContentBlock
         [NotNullWhen(true)] out BetaBashCodeExecutionToolResultBlock? value
     )
     {
-        value = (this as BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock)?.Value;
+        value = this.Value as BetaBashCodeExecutionToolResultBlock;
         return value != null;
     }
 
@@ -122,86 +244,84 @@ public abstract record class BetaContentBlock
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionToolResultBlock? value
     )
     {
-        value = (
-            this as BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock
-        )?.Value;
+        value = this.Value as BetaTextEditorCodeExecutionToolResultBlock;
         return value != null;
     }
 
     public bool TryPickMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlock? value)
     {
-        value = (this as BetaContentBlockVariants::BetaMCPToolUseBlock)?.Value;
+        value = this.Value as BetaMCPToolUseBlock;
         return value != null;
     }
 
     public bool TryPickMCPToolResult([NotNullWhen(true)] out BetaMCPToolResultBlock? value)
     {
-        value = (this as BetaContentBlockVariants::BetaMCPToolResultBlock)?.Value;
+        value = this.Value as BetaMCPToolResultBlock;
         return value != null;
     }
 
     public bool TryPickContainerUpload([NotNullWhen(true)] out BetaContainerUploadBlock? value)
     {
-        value = (this as BetaContentBlockVariants::BetaContainerUploadBlock)?.Value;
+        value = this.Value as BetaContainerUploadBlock;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaContentBlockVariants::BetaTextBlock> text,
-        Action<BetaContentBlockVariants::BetaThinkingBlock> thinking,
-        Action<BetaContentBlockVariants::BetaRedactedThinkingBlock> redactedThinking,
-        Action<BetaContentBlockVariants::BetaToolUseBlock> toolUse,
-        Action<BetaContentBlockVariants::BetaServerToolUseBlock> serverToolUse,
-        Action<BetaContentBlockVariants::BetaWebSearchToolResultBlock> webSearchToolResult,
-        Action<BetaContentBlockVariants::BetaWebFetchToolResultBlock> webFetchToolResult,
-        Action<BetaContentBlockVariants::BetaCodeExecutionToolResultBlock> codeExecutionToolResult,
-        Action<BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock> bashCodeExecutionToolResult,
-        Action<BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock> textEditorCodeExecutionToolResult,
-        Action<BetaContentBlockVariants::BetaMCPToolUseBlock> mcpToolUse,
-        Action<BetaContentBlockVariants::BetaMCPToolResultBlock> mcpToolResult,
-        Action<BetaContentBlockVariants::BetaContainerUploadBlock> containerUpload
+        Action<BetaTextBlock> text,
+        Action<BetaThinkingBlock> thinking,
+        Action<BetaRedactedThinkingBlock> redactedThinking,
+        Action<BetaToolUseBlock> toolUse,
+        Action<BetaServerToolUseBlock> serverToolUse,
+        Action<BetaWebSearchToolResultBlock> webSearchToolResult,
+        Action<BetaWebFetchToolResultBlock> webFetchToolResult,
+        Action<BetaCodeExecutionToolResultBlock> codeExecutionToolResult,
+        Action<BetaBashCodeExecutionToolResultBlock> bashCodeExecutionToolResult,
+        Action<BetaTextEditorCodeExecutionToolResultBlock> textEditorCodeExecutionToolResult,
+        Action<BetaMCPToolUseBlock> mcpToolUse,
+        Action<BetaMCPToolResultBlock> mcpToolResult,
+        Action<BetaContainerUploadBlock> containerUpload
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaContentBlockVariants::BetaTextBlock inner:
-                text(inner);
+            case BetaTextBlock value:
+                text(value);
                 break;
-            case BetaContentBlockVariants::BetaThinkingBlock inner:
-                thinking(inner);
+            case BetaThinkingBlock value:
+                thinking(value);
                 break;
-            case BetaContentBlockVariants::BetaRedactedThinkingBlock inner:
-                redactedThinking(inner);
+            case BetaRedactedThinkingBlock value:
+                redactedThinking(value);
                 break;
-            case BetaContentBlockVariants::BetaToolUseBlock inner:
-                toolUse(inner);
+            case BetaToolUseBlock value:
+                toolUse(value);
                 break;
-            case BetaContentBlockVariants::BetaServerToolUseBlock inner:
-                serverToolUse(inner);
+            case BetaServerToolUseBlock value:
+                serverToolUse(value);
                 break;
-            case BetaContentBlockVariants::BetaWebSearchToolResultBlock inner:
-                webSearchToolResult(inner);
+            case BetaWebSearchToolResultBlock value:
+                webSearchToolResult(value);
                 break;
-            case BetaContentBlockVariants::BetaWebFetchToolResultBlock inner:
-                webFetchToolResult(inner);
+            case BetaWebFetchToolResultBlock value:
+                webFetchToolResult(value);
                 break;
-            case BetaContentBlockVariants::BetaCodeExecutionToolResultBlock inner:
-                codeExecutionToolResult(inner);
+            case BetaCodeExecutionToolResultBlock value:
+                codeExecutionToolResult(value);
                 break;
-            case BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock inner:
-                bashCodeExecutionToolResult(inner);
+            case BetaBashCodeExecutionToolResultBlock value:
+                bashCodeExecutionToolResult(value);
                 break;
-            case BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock inner:
-                textEditorCodeExecutionToolResult(inner);
+            case BetaTextEditorCodeExecutionToolResultBlock value:
+                textEditorCodeExecutionToolResult(value);
                 break;
-            case BetaContentBlockVariants::BetaMCPToolUseBlock inner:
-                mcpToolUse(inner);
+            case BetaMCPToolUseBlock value:
+                mcpToolUse(value);
                 break;
-            case BetaContentBlockVariants::BetaMCPToolResultBlock inner:
-                mcpToolResult(inner);
+            case BetaMCPToolResultBlock value:
+                mcpToolResult(value);
                 break;
-            case BetaContentBlockVariants::BetaContainerUploadBlock inner:
-                containerUpload(inner);
+            case BetaContainerUploadBlock value:
+                containerUpload(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -211,56 +331,55 @@ public abstract record class BetaContentBlock
     }
 
     public T Match<T>(
-        Func<BetaContentBlockVariants::BetaTextBlock, T> text,
-        Func<BetaContentBlockVariants::BetaThinkingBlock, T> thinking,
-        Func<BetaContentBlockVariants::BetaRedactedThinkingBlock, T> redactedThinking,
-        Func<BetaContentBlockVariants::BetaToolUseBlock, T> toolUse,
-        Func<BetaContentBlockVariants::BetaServerToolUseBlock, T> serverToolUse,
-        Func<BetaContentBlockVariants::BetaWebSearchToolResultBlock, T> webSearchToolResult,
-        Func<BetaContentBlockVariants::BetaWebFetchToolResultBlock, T> webFetchToolResult,
-        Func<BetaContentBlockVariants::BetaCodeExecutionToolResultBlock, T> codeExecutionToolResult,
-        Func<
-            BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock,
-            T
-        > bashCodeExecutionToolResult,
-        Func<
-            BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock,
-            T
-        > textEditorCodeExecutionToolResult,
-        Func<BetaContentBlockVariants::BetaMCPToolUseBlock, T> mcpToolUse,
-        Func<BetaContentBlockVariants::BetaMCPToolResultBlock, T> mcpToolResult,
-        Func<BetaContentBlockVariants::BetaContainerUploadBlock, T> containerUpload
+        Func<BetaTextBlock, T> text,
+        Func<BetaThinkingBlock, T> thinking,
+        Func<BetaRedactedThinkingBlock, T> redactedThinking,
+        Func<BetaToolUseBlock, T> toolUse,
+        Func<BetaServerToolUseBlock, T> serverToolUse,
+        Func<BetaWebSearchToolResultBlock, T> webSearchToolResult,
+        Func<BetaWebFetchToolResultBlock, T> webFetchToolResult,
+        Func<BetaCodeExecutionToolResultBlock, T> codeExecutionToolResult,
+        Func<BetaBashCodeExecutionToolResultBlock, T> bashCodeExecutionToolResult,
+        Func<BetaTextEditorCodeExecutionToolResultBlock, T> textEditorCodeExecutionToolResult,
+        Func<BetaMCPToolUseBlock, T> mcpToolUse,
+        Func<BetaMCPToolResultBlock, T> mcpToolResult,
+        Func<BetaContainerUploadBlock, T> containerUpload
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaContentBlockVariants::BetaTextBlock inner => text(inner),
-            BetaContentBlockVariants::BetaThinkingBlock inner => thinking(inner),
-            BetaContentBlockVariants::BetaRedactedThinkingBlock inner => redactedThinking(inner),
-            BetaContentBlockVariants::BetaToolUseBlock inner => toolUse(inner),
-            BetaContentBlockVariants::BetaServerToolUseBlock inner => serverToolUse(inner),
-            BetaContentBlockVariants::BetaWebSearchToolResultBlock inner => webSearchToolResult(
-                inner
+            BetaTextBlock value => text(value),
+            BetaThinkingBlock value => thinking(value),
+            BetaRedactedThinkingBlock value => redactedThinking(value),
+            BetaToolUseBlock value => toolUse(value),
+            BetaServerToolUseBlock value => serverToolUse(value),
+            BetaWebSearchToolResultBlock value => webSearchToolResult(value),
+            BetaWebFetchToolResultBlock value => webFetchToolResult(value),
+            BetaCodeExecutionToolResultBlock value => codeExecutionToolResult(value),
+            BetaBashCodeExecutionToolResultBlock value => bashCodeExecutionToolResult(value),
+            BetaTextEditorCodeExecutionToolResultBlock value => textEditorCodeExecutionToolResult(
+                value
             ),
-            BetaContentBlockVariants::BetaWebFetchToolResultBlock inner => webFetchToolResult(
-                inner
-            ),
-            BetaContentBlockVariants::BetaCodeExecutionToolResultBlock inner =>
-                codeExecutionToolResult(inner),
-            BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock inner =>
-                bashCodeExecutionToolResult(inner),
-            BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock inner =>
-                textEditorCodeExecutionToolResult(inner),
-            BetaContentBlockVariants::BetaMCPToolUseBlock inner => mcpToolUse(inner),
-            BetaContentBlockVariants::BetaMCPToolResultBlock inner => mcpToolResult(inner),
-            BetaContentBlockVariants::BetaContainerUploadBlock inner => containerUpload(inner),
+            BetaMCPToolUseBlock value => mcpToolUse(value),
+            BetaMCPToolResultBlock value => mcpToolResult(value),
+            BetaContainerUploadBlock value => containerUpload(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlock"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaContentBlock"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
@@ -293,14 +412,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     var deserialized = JsonSerializer.Deserialize<BetaTextBlock>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaTextBlock(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaTextBlock",
+                            "Data does not match union variant 'BetaTextBlock'",
                             e
                         )
                     );
@@ -317,14 +437,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingBlock>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaThinkingBlock(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaThinkingBlock",
+                            "Data does not match union variant 'BetaThinkingBlock'",
                             e
                         )
                     );
@@ -344,16 +465,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaRedactedThinkingBlock(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaRedactedThinkingBlock",
+                            "Data does not match union variant 'BetaRedactedThinkingBlock'",
                             e
                         )
                     );
@@ -370,14 +490,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     var deserialized = JsonSerializer.Deserialize<BetaToolUseBlock>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaToolUseBlock(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaToolUseBlock",
+                            "Data does not match union variant 'BetaToolUseBlock'",
                             e
                         )
                     );
@@ -397,14 +518,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaServerToolUseBlock(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaServerToolUseBlock",
+                            "Data does not match union variant 'BetaServerToolUseBlock'",
                             e
                         )
                     );
@@ -424,16 +546,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaWebSearchToolResultBlock(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaWebSearchToolResultBlock",
+                            "Data does not match union variant 'BetaWebSearchToolResultBlock'",
                             e
                         )
                     );
@@ -453,16 +574,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaWebFetchToolResultBlock(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaWebFetchToolResultBlock",
+                            "Data does not match union variant 'BetaWebFetchToolResultBlock'",
                             e
                         )
                     );
@@ -482,16 +602,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaCodeExecutionToolResultBlock(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaCodeExecutionToolResultBlock",
+                            "Data does not match union variant 'BetaCodeExecutionToolResultBlock'",
                             e
                         )
                     );
@@ -512,16 +631,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                         );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock",
+                            "Data does not match union variant 'BetaBashCodeExecutionToolResultBlock'",
                             e
                         )
                     );
@@ -542,16 +660,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                         );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock",
+                            "Data does not match union variant 'BetaTextEditorCodeExecutionToolResultBlock'",
                             e
                         )
                     );
@@ -571,14 +688,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaMCPToolUseBlock(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaMCPToolUseBlock",
+                            "Data does not match union variant 'BetaMCPToolUseBlock'",
                             e
                         )
                     );
@@ -598,14 +716,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaMCPToolResultBlock(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaMCPToolResultBlock",
+                            "Data does not match union variant 'BetaMCPToolResultBlock'",
                             e
                         )
                     );
@@ -625,14 +744,15 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockVariants::BetaContainerUploadBlock(deserialized);
+                        deserialized.Validate();
+                        return new BetaContentBlock(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockVariants::BetaContainerUploadBlock",
+                            "Data does not match union variant 'BetaContainerUploadBlock'",
                             e
                         )
                     );
@@ -655,35 +775,7 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaContentBlockVariants::BetaTextBlock(var text) => text,
-            BetaContentBlockVariants::BetaThinkingBlock(var thinking) => thinking,
-            BetaContentBlockVariants::BetaRedactedThinkingBlock(var redactedThinking) =>
-                redactedThinking,
-            BetaContentBlockVariants::BetaToolUseBlock(var toolUse) => toolUse,
-            BetaContentBlockVariants::BetaServerToolUseBlock(var serverToolUse) => serverToolUse,
-            BetaContentBlockVariants::BetaWebSearchToolResultBlock(var webSearchToolResult) =>
-                webSearchToolResult,
-            BetaContentBlockVariants::BetaWebFetchToolResultBlock(var webFetchToolResult) =>
-                webFetchToolResult,
-            BetaContentBlockVariants::BetaCodeExecutionToolResultBlock(
-                var codeExecutionToolResult
-            ) => codeExecutionToolResult,
-            BetaContentBlockVariants::BetaBashCodeExecutionToolResultBlock(
-                var bashCodeExecutionToolResult
-            ) => bashCodeExecutionToolResult,
-            BetaContentBlockVariants::BetaTextEditorCodeExecutionToolResultBlock(
-                var textEditorCodeExecutionToolResult
-            ) => textEditorCodeExecutionToolResult,
-            BetaContentBlockVariants::BetaMCPToolUseBlock(var mcpToolUse) => mcpToolUse,
-            BetaContentBlockVariants::BetaMCPToolResultBlock(var mcpToolResult) => mcpToolResult,
-            BetaContentBlockVariants::BetaContainerUploadBlock(var containerUpload) =>
-                containerUpload,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaContentBlock"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

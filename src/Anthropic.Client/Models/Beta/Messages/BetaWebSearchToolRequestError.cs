@@ -65,7 +65,7 @@ public sealed record class BetaWebSearchToolRequestError
 
     public BetaWebSearchToolRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

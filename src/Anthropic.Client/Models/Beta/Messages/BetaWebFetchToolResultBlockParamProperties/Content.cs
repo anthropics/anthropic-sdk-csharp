@@ -4,47 +4,71 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ContentVariants = Anthropic.Client.Models.Beta.Messages.BetaWebFetchToolResultBlockParamProperties.ContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages.BetaWebFetchToolResultBlockParamProperties;
 
 [JsonConverter(typeof(ContentConverter))]
-public abstract record class Content
+public record class Content
 {
-    internal Content() { }
+    public object Value { get; private init; }
 
-    public static implicit operator Content(BetaWebFetchToolResultErrorBlockParam value) =>
-        new ContentVariants::BetaWebFetchToolResultErrorBlockParam(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                betaWebFetchToolResultErrorBlockParam: (x) => x.Type,
+                betaWebFetchBlockParam: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator Content(BetaWebFetchBlockParam value) =>
-        new ContentVariants::BetaWebFetchBlockParam(value);
+    public Content(BetaWebFetchToolResultErrorBlockParam value)
+    {
+        Value = value;
+    }
+
+    public Content(BetaWebFetchBlockParam value)
+    {
+        Value = value;
+    }
+
+    Content(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Content CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickBetaWebFetchToolResultErrorBlockParam(
         [NotNullWhen(true)] out BetaWebFetchToolResultErrorBlockParam? value
     )
     {
-        value = (this as ContentVariants::BetaWebFetchToolResultErrorBlockParam)?.Value;
+        value = this.Value as BetaWebFetchToolResultErrorBlockParam;
         return value != null;
     }
 
     public bool TryPickBetaWebFetchBlockParam([NotNullWhen(true)] out BetaWebFetchBlockParam? value)
     {
-        value = (this as ContentVariants::BetaWebFetchBlockParam)?.Value;
+        value = this.Value as BetaWebFetchBlockParam;
         return value != null;
     }
 
     public void Switch(
-        Action<ContentVariants::BetaWebFetchToolResultErrorBlockParam> betaWebFetchToolResultErrorBlockParam,
-        Action<ContentVariants::BetaWebFetchBlockParam> betaWebFetchBlockParam
+        Action<BetaWebFetchToolResultErrorBlockParam> betaWebFetchToolResultErrorBlockParam,
+        Action<BetaWebFetchBlockParam> betaWebFetchBlockParam
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ContentVariants::BetaWebFetchToolResultErrorBlockParam inner:
-                betaWebFetchToolResultErrorBlockParam(inner);
+            case BetaWebFetchToolResultErrorBlockParam value:
+                betaWebFetchToolResultErrorBlockParam(value);
                 break;
-            case ContentVariants::BetaWebFetchBlockParam inner:
-                betaWebFetchBlockParam(inner);
+            case BetaWebFetchBlockParam value:
+                betaWebFetchBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -54,25 +78,31 @@ public abstract record class Content
     }
 
     public T Match<T>(
-        Func<
-            ContentVariants::BetaWebFetchToolResultErrorBlockParam,
-            T
-        > betaWebFetchToolResultErrorBlockParam,
-        Func<ContentVariants::BetaWebFetchBlockParam, T> betaWebFetchBlockParam
+        Func<BetaWebFetchToolResultErrorBlockParam, T> betaWebFetchToolResultErrorBlockParam,
+        Func<BetaWebFetchBlockParam, T> betaWebFetchBlockParam
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ContentVariants::BetaWebFetchToolResultErrorBlockParam inner =>
-                betaWebFetchToolResultErrorBlockParam(inner),
-            ContentVariants::BetaWebFetchBlockParam inner => betaWebFetchBlockParam(inner),
+            BetaWebFetchToolResultErrorBlockParam value => betaWebFetchToolResultErrorBlockParam(
+                value
+            ),
+            BetaWebFetchBlockParam value => betaWebFetchBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Content"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Content");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentConverter : JsonConverter<Content>
@@ -93,14 +123,15 @@ sealed class ContentConverter : JsonConverter<Content>
             );
             if (deserialized != null)
             {
-                return new ContentVariants::BetaWebFetchToolResultErrorBlockParam(deserialized);
+                deserialized.Validate();
+                return new Content(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ContentVariants::BetaWebFetchToolResultErrorBlockParam",
+                    "Data does not match union variant 'BetaWebFetchToolResultErrorBlockParam'",
                     e
                 )
             );
@@ -114,14 +145,15 @@ sealed class ContentConverter : JsonConverter<Content>
             );
             if (deserialized != null)
             {
-                return new ContentVariants::BetaWebFetchBlockParam(deserialized);
+                deserialized.Validate();
+                return new Content(deserialized);
             }
         }
-        catch (JsonException e)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
-                    "Data does not match union variant ContentVariants::BetaWebFetchBlockParam",
+                    "Data does not match union variant 'BetaWebFetchBlockParam'",
                     e
                 )
             );
@@ -132,17 +164,7 @@ sealed class ContentConverter : JsonConverter<Content>
 
     public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)
     {
-        object variant = value switch
-        {
-            ContentVariants::BetaWebFetchToolResultErrorBlockParam(
-                var betaWebFetchToolResultErrorBlockParam
-            ) => betaWebFetchToolResultErrorBlockParam,
-            ContentVariants::BetaWebFetchBlockParam(var betaWebFetchBlockParam) =>
-                betaWebFetchBlockParam,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of Content"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

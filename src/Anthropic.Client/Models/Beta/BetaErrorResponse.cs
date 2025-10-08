@@ -83,7 +83,7 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
 
     public BetaErrorResponse()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+        this.Type = new();
     }
 
 #pragma warning disable CS8618

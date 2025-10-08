@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaToolChoiceVariants = Anthropic.Client.Models.Beta.Messages.BetaToolChoiceVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -13,66 +12,110 @@ namespace Anthropic.Client.Models.Beta.Messages;
 /// any available tool, decide by itself, or not use tools at all.
 /// </summary>
 [JsonConverter(typeof(BetaToolChoiceConverter))]
-public abstract record class BetaToolChoice
+public record class BetaToolChoice
 {
-    internal BetaToolChoice() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaToolChoice(BetaToolChoiceAuto value) =>
-        new BetaToolChoiceVariants::BetaToolChoiceAuto(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                auto: (x) => x.Type,
+                any: (x) => x.Type,
+                tool: (x) => x.Type,
+                none: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator BetaToolChoice(BetaToolChoiceAny value) =>
-        new BetaToolChoiceVariants::BetaToolChoiceAny(value);
+    public bool? DisableParallelToolUse
+    {
+        get
+        {
+            return Match<bool?>(
+                auto: (x) => x.DisableParallelToolUse,
+                any: (x) => x.DisableParallelToolUse,
+                tool: (x) => x.DisableParallelToolUse,
+                none: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator BetaToolChoice(BetaToolChoiceTool value) =>
-        new BetaToolChoiceVariants::BetaToolChoiceTool(value);
+    public BetaToolChoice(BetaToolChoiceAuto value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator BetaToolChoice(BetaToolChoiceNone value) =>
-        new BetaToolChoiceVariants::BetaToolChoiceNone(value);
+    public BetaToolChoice(BetaToolChoiceAny value)
+    {
+        Value = value;
+    }
+
+    public BetaToolChoice(BetaToolChoiceTool value)
+    {
+        Value = value;
+    }
+
+    public BetaToolChoice(BetaToolChoiceNone value)
+    {
+        Value = value;
+    }
+
+    BetaToolChoice(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaToolChoice CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickAuto([NotNullWhen(true)] out BetaToolChoiceAuto? value)
     {
-        value = (this as BetaToolChoiceVariants::BetaToolChoiceAuto)?.Value;
+        value = this.Value as BetaToolChoiceAuto;
         return value != null;
     }
 
     public bool TryPickAny([NotNullWhen(true)] out BetaToolChoiceAny? value)
     {
-        value = (this as BetaToolChoiceVariants::BetaToolChoiceAny)?.Value;
+        value = this.Value as BetaToolChoiceAny;
         return value != null;
     }
 
     public bool TryPickTool([NotNullWhen(true)] out BetaToolChoiceTool? value)
     {
-        value = (this as BetaToolChoiceVariants::BetaToolChoiceTool)?.Value;
+        value = this.Value as BetaToolChoiceTool;
         return value != null;
     }
 
     public bool TryPickNone([NotNullWhen(true)] out BetaToolChoiceNone? value)
     {
-        value = (this as BetaToolChoiceVariants::BetaToolChoiceNone)?.Value;
+        value = this.Value as BetaToolChoiceNone;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaToolChoiceVariants::BetaToolChoiceAuto> auto,
-        Action<BetaToolChoiceVariants::BetaToolChoiceAny> any,
-        Action<BetaToolChoiceVariants::BetaToolChoiceTool> tool,
-        Action<BetaToolChoiceVariants::BetaToolChoiceNone> none
+        Action<BetaToolChoiceAuto> auto,
+        Action<BetaToolChoiceAny> any,
+        Action<BetaToolChoiceTool> tool,
+        Action<BetaToolChoiceNone> none
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaToolChoiceVariants::BetaToolChoiceAuto inner:
-                auto(inner);
+            case BetaToolChoiceAuto value:
+                auto(value);
                 break;
-            case BetaToolChoiceVariants::BetaToolChoiceAny inner:
-                any(inner);
+            case BetaToolChoiceAny value:
+                any(value);
                 break;
-            case BetaToolChoiceVariants::BetaToolChoiceTool inner:
-                tool(inner);
+            case BetaToolChoiceTool value:
+                tool(value);
                 break;
-            case BetaToolChoiceVariants::BetaToolChoiceNone inner:
-                none(inner);
+            case BetaToolChoiceNone value:
+                none(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -82,25 +125,35 @@ public abstract record class BetaToolChoice
     }
 
     public T Match<T>(
-        Func<BetaToolChoiceVariants::BetaToolChoiceAuto, T> auto,
-        Func<BetaToolChoiceVariants::BetaToolChoiceAny, T> any,
-        Func<BetaToolChoiceVariants::BetaToolChoiceTool, T> tool,
-        Func<BetaToolChoiceVariants::BetaToolChoiceNone, T> none
+        Func<BetaToolChoiceAuto, T> auto,
+        Func<BetaToolChoiceAny, T> any,
+        Func<BetaToolChoiceTool, T> tool,
+        Func<BetaToolChoiceNone, T> none
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaToolChoiceVariants::BetaToolChoiceAuto inner => auto(inner),
-            BetaToolChoiceVariants::BetaToolChoiceAny inner => any(inner),
-            BetaToolChoiceVariants::BetaToolChoiceTool inner => tool(inner),
-            BetaToolChoiceVariants::BetaToolChoiceNone inner => none(inner),
+            BetaToolChoiceAuto value => auto(value),
+            BetaToolChoiceAny value => any(value),
+            BetaToolChoiceTool value => tool(value),
+            BetaToolChoiceNone value => none(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaToolChoice"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaToolChoice"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
@@ -136,14 +189,15 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaToolChoiceVariants::BetaToolChoiceAuto(deserialized);
+                        deserialized.Validate();
+                        return new BetaToolChoice(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaToolChoiceVariants::BetaToolChoiceAuto",
+                            "Data does not match union variant 'BetaToolChoiceAuto'",
                             e
                         )
                     );
@@ -160,14 +214,15 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAny>(json, options);
                     if (deserialized != null)
                     {
-                        return new BetaToolChoiceVariants::BetaToolChoiceAny(deserialized);
+                        deserialized.Validate();
+                        return new BetaToolChoice(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaToolChoiceVariants::BetaToolChoiceAny",
+                            "Data does not match union variant 'BetaToolChoiceAny'",
                             e
                         )
                     );
@@ -187,14 +242,15 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaToolChoiceVariants::BetaToolChoiceTool(deserialized);
+                        deserialized.Validate();
+                        return new BetaToolChoice(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaToolChoiceVariants::BetaToolChoiceTool",
+                            "Data does not match union variant 'BetaToolChoiceTool'",
                             e
                         )
                     );
@@ -214,14 +270,15 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     );
                     if (deserialized != null)
                     {
-                        return new BetaToolChoiceVariants::BetaToolChoiceNone(deserialized);
+                        deserialized.Validate();
+                        return new BetaToolChoice(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaToolChoiceVariants::BetaToolChoiceNone",
+                            "Data does not match union variant 'BetaToolChoiceNone'",
                             e
                         )
                     );
@@ -244,16 +301,7 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaToolChoiceVariants::BetaToolChoiceAuto(var auto) => auto,
-            BetaToolChoiceVariants::BetaToolChoiceAny(var any) => any,
-            BetaToolChoiceVariants::BetaToolChoiceTool(var tool) => tool,
-            BetaToolChoiceVariants::BetaToolChoiceNone(var none) => none,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaToolChoice"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

@@ -4,45 +4,74 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using BetaContentBlockSourceContentVariants = Anthropic.Client.Models.Beta.Messages.BetaContentBlockSourceContentVariants;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaContentBlockSourceContentConverter))]
-public abstract record class BetaContentBlockSourceContent
+public record class BetaContentBlockSourceContent
 {
-    internal BetaContentBlockSourceContent() { }
+    public object Value { get; private init; }
 
-    public static implicit operator BetaContentBlockSourceContent(BetaTextBlockParam value) =>
-        new BetaContentBlockSourceContentVariants::BetaTextBlockParam(value);
+    public JsonElement Type
+    {
+        get { return Match(textBlockParam: (x) => x.Type, imageBlockParam: (x) => x.Type); }
+    }
 
-    public static implicit operator BetaContentBlockSourceContent(BetaImageBlockParam value) =>
-        new BetaContentBlockSourceContentVariants::BetaImageBlockParam(value);
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            return Match<BetaCacheControlEphemeral?>(
+                textBlockParam: (x) => x.CacheControl,
+                imageBlockParam: (x) => x.CacheControl
+            );
+        }
+    }
+
+    public BetaContentBlockSourceContent(BetaTextBlockParam value)
+    {
+        Value = value;
+    }
+
+    public BetaContentBlockSourceContent(BetaImageBlockParam value)
+    {
+        Value = value;
+    }
+
+    BetaContentBlockSourceContent(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static BetaContentBlockSourceContent CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickTextBlockParam([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
-        value = (this as BetaContentBlockSourceContentVariants::BetaTextBlockParam)?.Value;
+        value = this.Value as BetaTextBlockParam;
         return value != null;
     }
 
     public bool TryPickImageBlockParam([NotNullWhen(true)] out BetaImageBlockParam? value)
     {
-        value = (this as BetaContentBlockSourceContentVariants::BetaImageBlockParam)?.Value;
+        value = this.Value as BetaImageBlockParam;
         return value != null;
     }
 
     public void Switch(
-        Action<BetaContentBlockSourceContentVariants::BetaTextBlockParam> textBlockParam,
-        Action<BetaContentBlockSourceContentVariants::BetaImageBlockParam> imageBlockParam
+        Action<BetaTextBlockParam> textBlockParam,
+        Action<BetaImageBlockParam> imageBlockParam
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case BetaContentBlockSourceContentVariants::BetaTextBlockParam inner:
-                textBlockParam(inner);
+            case BetaTextBlockParam value:
+                textBlockParam(value);
                 break;
-            case BetaContentBlockSourceContentVariants::BetaImageBlockParam inner:
-                imageBlockParam(inner);
+            case BetaImageBlockParam value:
+                imageBlockParam(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -52,25 +81,31 @@ public abstract record class BetaContentBlockSourceContent
     }
 
     public T Match<T>(
-        Func<BetaContentBlockSourceContentVariants::BetaTextBlockParam, T> textBlockParam,
-        Func<BetaContentBlockSourceContentVariants::BetaImageBlockParam, T> imageBlockParam
+        Func<BetaTextBlockParam, T> textBlockParam,
+        Func<BetaImageBlockParam, T> imageBlockParam
     )
     {
-        return this switch
+        return this.Value switch
         {
-            BetaContentBlockSourceContentVariants::BetaTextBlockParam inner => textBlockParam(
-                inner
-            ),
-            BetaContentBlockSourceContentVariants::BetaImageBlockParam inner => imageBlockParam(
-                inner
-            ),
+            BetaTextBlockParam value => textBlockParam(value),
+            BetaImageBlockParam value => imageBlockParam(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockSourceContent"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of BetaContentBlockSourceContent"
+            );
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentBlockSourceContent>
@@ -106,16 +141,15 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockSourceContentVariants::BetaTextBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockSourceContent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockSourceContentVariants::BetaTextBlockParam",
+                            "Data does not match union variant 'BetaTextBlockParam'",
                             e
                         )
                     );
@@ -135,16 +169,15 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                     );
                     if (deserialized != null)
                     {
-                        return new BetaContentBlockSourceContentVariants::BetaImageBlockParam(
-                            deserialized
-                        );
+                        deserialized.Validate();
+                        return new BetaContentBlockSourceContent(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant BetaContentBlockSourceContentVariants::BetaImageBlockParam",
+                            "Data does not match union variant 'BetaImageBlockParam'",
                             e
                         )
                     );
@@ -167,16 +200,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            BetaContentBlockSourceContentVariants::BetaTextBlockParam(var textBlockParam) =>
-                textBlockParam,
-            BetaContentBlockSourceContentVariants::BetaImageBlockParam(var imageBlockParam) =>
-                imageBlockParam,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaContentBlockSourceContent"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }

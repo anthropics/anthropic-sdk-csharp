@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
-using ToolChoiceVariants = Anthropic.Client.Models.Messages.ToolChoiceVariants;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -13,66 +12,110 @@ namespace Anthropic.Client.Models.Messages;
 /// any available tool, decide by itself, or not use tools at all.
 /// </summary>
 [JsonConverter(typeof(ToolChoiceConverter))]
-public abstract record class ToolChoice
+public record class ToolChoice
 {
-    internal ToolChoice() { }
+    public object Value { get; private init; }
 
-    public static implicit operator ToolChoice(ToolChoiceAuto value) =>
-        new ToolChoiceVariants::ToolChoiceAuto(value);
+    public JsonElement Type
+    {
+        get
+        {
+            return Match(
+                auto: (x) => x.Type,
+                any: (x) => x.Type,
+                tool: (x) => x.Type,
+                none: (x) => x.Type
+            );
+        }
+    }
 
-    public static implicit operator ToolChoice(ToolChoiceAny value) =>
-        new ToolChoiceVariants::ToolChoiceAny(value);
+    public bool? DisableParallelToolUse
+    {
+        get
+        {
+            return Match<bool?>(
+                auto: (x) => x.DisableParallelToolUse,
+                any: (x) => x.DisableParallelToolUse,
+                tool: (x) => x.DisableParallelToolUse,
+                none: (_) => null
+            );
+        }
+    }
 
-    public static implicit operator ToolChoice(ToolChoiceTool value) =>
-        new ToolChoiceVariants::ToolChoiceTool(value);
+    public ToolChoice(ToolChoiceAuto value)
+    {
+        Value = value;
+    }
 
-    public static implicit operator ToolChoice(ToolChoiceNone value) =>
-        new ToolChoiceVariants::ToolChoiceNone(value);
+    public ToolChoice(ToolChoiceAny value)
+    {
+        Value = value;
+    }
+
+    public ToolChoice(ToolChoiceTool value)
+    {
+        Value = value;
+    }
+
+    public ToolChoice(ToolChoiceNone value)
+    {
+        Value = value;
+    }
+
+    ToolChoice(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static ToolChoice CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
 
     public bool TryPickAuto([NotNullWhen(true)] out ToolChoiceAuto? value)
     {
-        value = (this as ToolChoiceVariants::ToolChoiceAuto)?.Value;
+        value = this.Value as ToolChoiceAuto;
         return value != null;
     }
 
     public bool TryPickAny([NotNullWhen(true)] out ToolChoiceAny? value)
     {
-        value = (this as ToolChoiceVariants::ToolChoiceAny)?.Value;
+        value = this.Value as ToolChoiceAny;
         return value != null;
     }
 
     public bool TryPickTool([NotNullWhen(true)] out ToolChoiceTool? value)
     {
-        value = (this as ToolChoiceVariants::ToolChoiceTool)?.Value;
+        value = this.Value as ToolChoiceTool;
         return value != null;
     }
 
     public bool TryPickNone([NotNullWhen(true)] out ToolChoiceNone? value)
     {
-        value = (this as ToolChoiceVariants::ToolChoiceNone)?.Value;
+        value = this.Value as ToolChoiceNone;
         return value != null;
     }
 
     public void Switch(
-        Action<ToolChoiceVariants::ToolChoiceAuto> auto,
-        Action<ToolChoiceVariants::ToolChoiceAny> any,
-        Action<ToolChoiceVariants::ToolChoiceTool> tool,
-        Action<ToolChoiceVariants::ToolChoiceNone> none
+        Action<ToolChoiceAuto> auto,
+        Action<ToolChoiceAny> any,
+        Action<ToolChoiceTool> tool,
+        Action<ToolChoiceNone> none
     )
     {
-        switch (this)
+        switch (this.Value)
         {
-            case ToolChoiceVariants::ToolChoiceAuto inner:
-                auto(inner);
+            case ToolChoiceAuto value:
+                auto(value);
                 break;
-            case ToolChoiceVariants::ToolChoiceAny inner:
-                any(inner);
+            case ToolChoiceAny value:
+                any(value);
                 break;
-            case ToolChoiceVariants::ToolChoiceTool inner:
-                tool(inner);
+            case ToolChoiceTool value:
+                tool(value);
                 break;
-            case ToolChoiceVariants::ToolChoiceNone inner:
-                none(inner);
+            case ToolChoiceNone value:
+                none(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -82,25 +125,33 @@ public abstract record class ToolChoice
     }
 
     public T Match<T>(
-        Func<ToolChoiceVariants::ToolChoiceAuto, T> auto,
-        Func<ToolChoiceVariants::ToolChoiceAny, T> any,
-        Func<ToolChoiceVariants::ToolChoiceTool, T> tool,
-        Func<ToolChoiceVariants::ToolChoiceNone, T> none
+        Func<ToolChoiceAuto, T> auto,
+        Func<ToolChoiceAny, T> any,
+        Func<ToolChoiceTool, T> tool,
+        Func<ToolChoiceNone, T> none
     )
     {
-        return this switch
+        return this.Value switch
         {
-            ToolChoiceVariants::ToolChoiceAuto inner => auto(inner),
-            ToolChoiceVariants::ToolChoiceAny inner => any(inner),
-            ToolChoiceVariants::ToolChoiceTool inner => tool(inner),
-            ToolChoiceVariants::ToolChoiceNone inner => none(inner),
+            ToolChoiceAuto value => auto(value),
+            ToolChoiceAny value => any(value),
+            ToolChoiceTool value => tool(value),
+            ToolChoiceNone value => none(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ToolChoice"
             ),
         };
     }
 
-    public abstract void Validate();
+    public void Validate()
+    {
+        if (this.Value is not UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of ToolChoice");
+        }
+    }
+
+    private record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
@@ -133,14 +184,15 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceAuto>(json, options);
                     if (deserialized != null)
                     {
-                        return new ToolChoiceVariants::ToolChoiceAuto(deserialized);
+                        deserialized.Validate();
+                        return new ToolChoice(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ToolChoiceVariants::ToolChoiceAuto",
+                            "Data does not match union variant 'ToolChoiceAuto'",
                             e
                         )
                     );
@@ -157,14 +209,15 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(json, options);
                     if (deserialized != null)
                     {
-                        return new ToolChoiceVariants::ToolChoiceAny(deserialized);
+                        deserialized.Validate();
+                        return new ToolChoice(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ToolChoiceVariants::ToolChoiceAny",
+                            "Data does not match union variant 'ToolChoiceAny'",
                             e
                         )
                     );
@@ -181,14 +234,15 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(json, options);
                     if (deserialized != null)
                     {
-                        return new ToolChoiceVariants::ToolChoiceTool(deserialized);
+                        deserialized.Validate();
+                        return new ToolChoice(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ToolChoiceVariants::ToolChoiceTool",
+                            "Data does not match union variant 'ToolChoiceTool'",
                             e
                         )
                     );
@@ -205,14 +259,15 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(json, options);
                     if (deserialized != null)
                     {
-                        return new ToolChoiceVariants::ToolChoiceNone(deserialized);
+                        deserialized.Validate();
+                        return new ToolChoice(deserialized);
                     }
                 }
-                catch (JsonException e)
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
-                            "Data does not match union variant ToolChoiceVariants::ToolChoiceNone",
+                            "Data does not match union variant 'ToolChoiceNone'",
                             e
                         )
                     );
@@ -235,16 +290,7 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
         JsonSerializerOptions options
     )
     {
-        object variant = value switch
-        {
-            ToolChoiceVariants::ToolChoiceAuto(var auto) => auto,
-            ToolChoiceVariants::ToolChoiceAny(var any) => any,
-            ToolChoiceVariants::ToolChoiceTool(var tool) => tool,
-            ToolChoiceVariants::ToolChoiceNone(var none) => none,
-            _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of ToolChoice"
-            ),
-        };
+        object variant = value.Value;
         JsonSerializer.Serialize(writer, variant, options);
     }
 }
