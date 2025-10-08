@@ -89,4 +89,7 @@ sealed class SseState
         && _data.Count == 0
         && (_lastId == null || _lastId.Length == 0)
         && _retry == null;
+
+    public override string ToString() =>
+        string.Format("SseState: event={0}, data={1}", _event, string.Join('\n', _data));
 }
