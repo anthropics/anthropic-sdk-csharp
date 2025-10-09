@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Client.Models.Messages;
@@ -32,8 +31,7 @@ public class BatchServiceTest : TestBase
                             StopSequences = ["string"],
                             Stream = true,
                             System = new(
-                                new List<TextBlockParam>()
-                                {
+                                [
                                     new()
                                     {
                                         Text = "Today's date is 2024-06-01.",
@@ -52,7 +50,7 @@ public class BatchServiceTest : TestBase
                                             ),
                                         ],
                                     },
-                                }
+                                ]
                             ),
                             Temperature = 1,
                             Thinking = new(new ThinkingConfigEnabled(1024)),
