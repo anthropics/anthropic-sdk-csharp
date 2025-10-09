@@ -35,13 +35,11 @@ public class BatchServiceTest : TestBase
                                 [
                                     new()
                                     {
-                                        STAINLESS_FIXME_ClearAtLeast = new(0),
-                                        STAINLESS_FIXME_ClearToolInputs = new(true),
-                                        STAINLESS_FIXME_ExcludeTools = ["string"],
-                                        STAINLESS_FIXME_Keep = new(0),
-                                        STAINLESS_FIXME_Trigger = new(
-                                            new BetaInputTokensTrigger(1)
-                                        ),
+                                        ClearAtLeast = new(0),
+                                        ClearToolInputs = new(true),
+                                        ExcludeTools = ["string"],
+                                        Keep = new(0),
+                                        Trigger = new(new BetaInputTokensTrigger(1)),
                                     },
                                 ],
                             },
