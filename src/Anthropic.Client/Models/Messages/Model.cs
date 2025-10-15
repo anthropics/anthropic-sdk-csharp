@@ -33,6 +33,16 @@ public enum Model
     Claude3_5Haiku20241022,
 
     /// <summary>
+    /// Hybrid model, capable of near-instant responses and extended thinking
+    /// </summary>
+    ClaudeHaiku4_5,
+
+    /// <summary>
+    /// Hybrid model, capable of near-instant responses and extended thinking
+    /// </summary>
+    ClaudeHaiku4_5_20251001,
+
+    /// <summary>
     /// High-performance model with extended thinking
     /// </summary>
     ClaudeSonnet4_20250514,
@@ -118,6 +128,8 @@ sealed class ModelConverter1 : JsonConverter<Model>
             "claude-3-7-sonnet-20250219" => Model.Claude3_7Sonnet20250219,
             "claude-3-5-haiku-latest" => Model.Claude3_5HaikuLatest,
             "claude-3-5-haiku-20241022" => Model.Claude3_5Haiku20241022,
+            "claude-haiku-4-5" => Model.ClaudeHaiku4_5,
+            "claude-haiku-4-5-20251001" => Model.ClaudeHaiku4_5_20251001,
             "claude-sonnet-4-20250514" => Model.ClaudeSonnet4_20250514,
             "claude-sonnet-4-0" => Model.ClaudeSonnet4_0,
             "claude-4-sonnet-20250514" => Model.Claude4Sonnet20250514,
@@ -147,6 +159,8 @@ sealed class ModelConverter1 : JsonConverter<Model>
                 Model.Claude3_7Sonnet20250219 => "claude-3-7-sonnet-20250219",
                 Model.Claude3_5HaikuLatest => "claude-3-5-haiku-latest",
                 Model.Claude3_5Haiku20241022 => "claude-3-5-haiku-20241022",
+                Model.ClaudeHaiku4_5 => "claude-haiku-4-5",
+                Model.ClaudeHaiku4_5_20251001 => "claude-haiku-4-5-20251001",
                 Model.ClaudeSonnet4_20250514 => "claude-sonnet-4-20250514",
                 Model.ClaudeSonnet4_0 => "claude-sonnet-4-0",
                 Model.Claude4Sonnet20250514 => "claude-4-sonnet-20250514",
