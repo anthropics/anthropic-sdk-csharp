@@ -6,9 +6,6 @@ using Anthropic.Client.Core;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
-/// <summary>
-/// Configuration for context management operations.
-/// </summary>
 [JsonConverter(typeof(ModelConverter<BetaContextManagementConfig>))]
 public sealed record class BetaContextManagementConfig
     : ModelBase,

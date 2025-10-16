@@ -66,10 +66,38 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
         }
     }
 
+    /// <summary>
+    /// Skills loaded in the container
+    /// </summary>
+    public required List<BetaSkill>? Skills
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("skills", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<List<BetaSkill>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        set
+        {
+            this.Properties["skills"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
     public override void Validate()
     {
         _ = this.ID;
         _ = this.ExpiresAt;
+        foreach (var item in this.Skills ?? [])
+        {
+            item.Validate();
+        }
     }
 
     public BetaContainer() { }

@@ -14,7 +14,7 @@ namespace Anthropic.Client.Models.Beta.Messages;
 /// process before the final answer. Requires a minimum budget of 1,024 tokens and
 /// counts towards your `max_tokens` limit.
 ///
-/// See [extended thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking)
+/// See [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
 /// for details.
 /// </summary>
 [JsonConverter(typeof(BetaThinkingConfigParamConverter))]

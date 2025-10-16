@@ -11,7 +11,7 @@ namespace Anthropic.Client.Models.Beta.Messages.Batches.BatchCreateParamsPropert
 /// System prompt.
 ///
 /// A system prompt is a way of providing context and instructions to Claude, such
-/// as specifying a particular goal or role. See our [guide to system prompts](https://docs.anthropic.com/en/docs/system-prompts).
+/// as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).
 /// </summary>
 [JsonConverter(typeof(SystemModelConverter))]
 public record class SystemModel

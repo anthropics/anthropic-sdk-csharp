@@ -18,6 +18,8 @@ using BetaCacheControlEphemeralProperties = Anthropic.Client.Models.Beta.Message
 using BetaMessageBatchProperties = Anthropic.Client.Models.Beta.Messages.Batches.BetaMessageBatchProperties;
 using BetaMessageParamProperties = Anthropic.Client.Models.Beta.Messages.BetaMessageParamProperties;
 using BetaServerToolUseBlockParamProperties = Anthropic.Client.Models.Beta.Messages.BetaServerToolUseBlockParamProperties;
+using BetaSkillParamsProperties = Anthropic.Client.Models.Beta.Messages.BetaSkillParamsProperties;
+using BetaSkillProperties = Anthropic.Client.Models.Beta.Messages.BetaSkillProperties;
 using BetaTextEditorCodeExecutionToolResultErrorParamProperties = Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionToolResultErrorParamProperties;
 using BetaTextEditorCodeExecutionToolResultErrorProperties = Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionToolResultErrorProperties;
 using BetaTextEditorCodeExecutionViewResultBlockParamProperties = Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionViewResultBlockParamProperties;
@@ -66,6 +68,8 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, BetaMessageParamProperties::Role>(),
             new ApiEnumConverter<string, Name>(),
             new ApiEnumConverter<string, BetaServerToolUseBlockParamProperties::Name>(),
+            new ApiEnumConverter<string, BetaSkillProperties::Type>(),
+            new ApiEnumConverter<string, BetaSkillParamsProperties::Type>(),
             new ApiEnumConverter<string, BetaStopReason>(),
             new ApiEnumConverter<
                 string,

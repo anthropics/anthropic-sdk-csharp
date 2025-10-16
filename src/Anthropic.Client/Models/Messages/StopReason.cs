@@ -14,7 +14,6 @@ public enum StopReason
     ToolUse,
     PauseTurn,
     Refusal,
-    ModelContextWindowExceeded,
 }
 
 sealed class StopReasonConverter : JsonConverter<StopReason>
@@ -33,7 +32,6 @@ sealed class StopReasonConverter : JsonConverter<StopReason>
             "tool_use" => StopReason.ToolUse,
             "pause_turn" => StopReason.PauseTurn,
             "refusal" => StopReason.Refusal,
-            "model_context_window_exceeded" => StopReason.ModelContextWindowExceeded,
             _ => (StopReason)(-1),
         };
     }
@@ -54,7 +52,6 @@ sealed class StopReasonConverter : JsonConverter<StopReason>
                 StopReason.ToolUse => "tool_use",
                 StopReason.PauseTurn => "pause_turn",
                 StopReason.Refusal => "refusal",
-                StopReason.ModelContextWindowExceeded => "model_context_window_exceeded",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

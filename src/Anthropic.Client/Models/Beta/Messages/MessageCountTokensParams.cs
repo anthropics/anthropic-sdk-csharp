@@ -64,9 +64,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
     ///
     /// ```json {"role": "user", "content": [{"type": "text", "text": "Hello, Claude"}]} ```
     ///
-    /// See [input examples](https://docs.anthropic.com/en/api/messages-examples).
+    /// See [input examples](https://docs.claude.com/en/api/messages-examples).
     ///
-    /// Note that if you want to include a [system prompt](https://docs.anthropic.com/en/docs/system-prompts),
+    /// Note that if you want to include a [system prompt](https://docs.claude.com/en/docs/system-prompts),
     /// you can use the top-level `system` parameter — there is no `"system"` role
     /// for input messages in the Messages API.
     ///
@@ -129,7 +129,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
     }
 
     /// <summary>
-    /// Configuration for context management operations.
+    /// Context management configuration.
+    ///
+    /// This allows you to control how Claude manages context across multiple requests,
+    /// such as whether to clear function results or not.
     /// </summary>
     public BetaContextManagementConfig? ContextManagement
     {
@@ -180,7 +183,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// System prompt.
     ///
     /// A system prompt is a way of providing context and instructions to Claude,
-    /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.anthropic.com/en/docs/system-prompts).
+    /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).
     /// </summary>
     public SystemModel? System
     {
@@ -207,7 +210,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// thinking process before the final answer. Requires a minimum budget of 1,024
     /// tokens and counts towards your `max_tokens` limit.
     ///
-    /// See [extended thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking)
+    /// See [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
     /// for details.
     /// </summary>
     public BetaThinkingConfigParam? Thinking
@@ -265,9 +268,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// return results back to the model using `tool_result` content blocks.
     ///
     /// There are two types of tools: **client tools** and **server tools**. The behavior
-    /// described below applies to client tools. For [server tools](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview\#server-tools),
+    /// described below applies to client tools. For [server tools](https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview\#server-tools),
     /// see their individual documentation as each has its own behavior (e.g., the
-    /// [web search tool](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool)).
+    /// [web search tool](https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool)).
     ///
     /// Each tool definition includes:
     ///
@@ -300,7 +303,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// functions, or more generally whenever you want the model to produce a particular
     /// JSON structure of output.
     ///
-    /// See our [guide](https://docs.anthropic.com/en/docs/tool-use) for more details.
+    /// See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.
     /// </summary>
     public List<Tool>? Tools
     {

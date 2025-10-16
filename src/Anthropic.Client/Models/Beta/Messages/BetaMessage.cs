@@ -114,7 +114,9 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     }
 
     /// <summary>
-    /// Information about context management operations applied during the request.
+    /// Context management response.
+    ///
+    /// Information about context management strategies applied during the request.
     /// </summary>
     public required BetaContextManagementResponse? ContextManagement
     {

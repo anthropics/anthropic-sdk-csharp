@@ -2,6 +2,7 @@ using System;
 using Anthropic.Client.Services.Beta.Files;
 using Anthropic.Client.Services.Beta.Messages;
 using Anthropic.Client.Services.Beta.Models;
+using Anthropic.Client.Services.Beta.Skills;
 
 namespace Anthropic.Client.Services.Beta;
 
@@ -12,6 +13,7 @@ public sealed class BetaService : IBetaService
         _models = new(() => new ModelService(client));
         _messages = new(() => new MessageService(client));
         _files = new(() => new FileService(client));
+        _skills = new(() => new SkillService(client));
     }
 
     readonly Lazy<IModelService> _models;
@@ -30,5 +32,11 @@ public sealed class BetaService : IBetaService
     public IFileService Files
     {
         get { return _files.Value; }
+    }
+
+    readonly Lazy<ISkillService> _skills;
+    public ISkillService Skills
+    {
+        get { return _skills.Value; }
     }
 }

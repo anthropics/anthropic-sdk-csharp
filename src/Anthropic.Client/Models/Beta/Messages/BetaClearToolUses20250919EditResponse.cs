@@ -8,9 +8,6 @@ using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
-/// <summary>
-/// Results for clear_tool_uses_20250919 edit.
-/// </summary>
 [JsonConverter(typeof(ModelConverter<BetaClearToolUses20250919EditResponse>))]
 public sealed record class BetaClearToolUses20250919EditResponse
     : ModelBase,

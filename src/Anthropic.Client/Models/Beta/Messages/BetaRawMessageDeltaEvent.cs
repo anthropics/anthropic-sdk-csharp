@@ -13,7 +13,7 @@ namespace Anthropic.Client.Models.Beta.Messages;
 public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRawMessageDeltaEvent>
 {
     /// <summary>
-    /// Information about context management operations applied during the request.
+    /// Information about context management strategies applied during the request
     /// </summary>
     public required BetaContextManagementResponse? ContextManagement
     {

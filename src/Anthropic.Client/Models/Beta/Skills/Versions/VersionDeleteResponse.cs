@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Anthropic.Client.Core;
+using Anthropic.Client.Exceptions;
+
+namespace Anthropic.Client.Models.Beta.Skills.Versions;
+
+[JsonConverter(typeof(ModelConverter<VersionDeleteResponse>))]
+public sealed record class VersionDeleteResponse : ModelBase, IFromRaw<VersionDeleteResponse>
+{
+    /// <summary>
+    /// Version identifier for the skill.
+    ///
+    /// Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").
+    /// </summary>
+    public required string ID
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("id", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'id' cannot be null",
+                    new ArgumentOutOfRangeException("id", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'id' cannot be null",
+                    new ArgumentNullException("id")
+                );
+        }
+        set
+        {
+            this.Properties["id"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// Deleted object type.
+    ///
+    /// For Skill Versions, this is always `"skill_version_deleted"`.
+    /// </summary>
+    public required string Type
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentNullException("type")
+                );
+        }
+        set
+        {
+            this.Properties["type"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public override void Validate()
+    {
+        _ = this.ID;
+        _ = this.Type;
+    }
+
+    public VersionDeleteResponse() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    VersionDeleteResponse(Dictionary<string, JsonElement> properties)
+    {
+        Properties = properties;
+    }
+#pragma warning restore CS8618
+
+    public static VersionDeleteResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    {
+        return new(properties);
+    }
+}

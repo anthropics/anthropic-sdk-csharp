@@ -8,9 +8,6 @@ using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
-/// <summary>
-/// Information about context management operations applied during the request.
-/// </summary>
 [JsonConverter(typeof(ModelConverter<BetaContextManagementResponse>))]
 public sealed record class BetaContextManagementResponse
     : ModelBase,
