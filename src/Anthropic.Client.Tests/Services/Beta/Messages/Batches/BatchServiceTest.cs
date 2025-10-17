@@ -36,10 +36,10 @@ public class BatchServiceTest : TestBase
                                     new()
                                     {
                                         ClearAtLeast = new(0),
-                                        ClearToolInputs = true,
+                                        ClearToolInputs = new(true),
                                         ExcludeTools = ["string"],
                                         Keep = new(0),
-                                        Trigger = new BetaInputTokensTrigger(1),
+                                        Trigger = new(new BetaInputTokensTrigger(1)),
                                     },
                                 ],
                             },
