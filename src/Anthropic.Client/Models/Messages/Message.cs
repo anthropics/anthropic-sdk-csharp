@@ -287,8 +287,8 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
 
     public Message()
     {
-        this.Role = new();
-        this.Type = new();
+        this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
     }
 
 #pragma warning disable CS8618

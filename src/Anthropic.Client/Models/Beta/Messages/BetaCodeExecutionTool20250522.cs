@@ -91,8 +91,8 @@ public sealed record class BetaCodeExecutionTool20250522
 
     public BetaCodeExecutionTool20250522()
     {
-        this.Name = new();
-        this.Type = new();
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250522\"");
     }
 
 #pragma warning disable CS8618

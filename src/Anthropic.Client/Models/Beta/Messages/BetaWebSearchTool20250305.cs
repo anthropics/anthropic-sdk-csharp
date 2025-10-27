@@ -187,8 +187,8 @@ public sealed record class BetaWebSearchTool20250305
 
     public BetaWebSearchTool20250305()
     {
-        this.Name = new();
-        this.Type = new();
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"");
     }
 
 #pragma warning disable CS8618

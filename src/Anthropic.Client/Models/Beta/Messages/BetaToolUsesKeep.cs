@@ -60,7 +60,7 @@ public sealed record class BetaToolUsesKeep : ModelBase, IFromRaw<BetaToolUsesKe
 
     public BetaToolUsesKeep()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
     }
 
 #pragma warning disable CS8618

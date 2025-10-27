@@ -64,7 +64,7 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
 
     public AuthenticationError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
     }
 
 #pragma warning disable CS8618

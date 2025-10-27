@@ -66,7 +66,7 @@ public sealed record class WebSearchToolRequestError
 
     public WebSearchToolRequestError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
 #pragma warning disable CS8618

@@ -64,7 +64,7 @@ public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSea
 
     public WebSearchToolResultError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
 #pragma warning disable CS8618

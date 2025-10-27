@@ -66,7 +66,7 @@ public sealed record class BetaMessageBatchSucceededResult
 
     public BetaMessageBatchSucceededResult()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
     }
 
 #pragma warning disable CS8618

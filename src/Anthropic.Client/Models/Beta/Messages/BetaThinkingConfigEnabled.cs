@@ -72,7 +72,7 @@ public sealed record class BetaThinkingConfigEnabled
 
     public BetaThinkingConfigEnabled()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
     }
 
 #pragma warning disable CS8618

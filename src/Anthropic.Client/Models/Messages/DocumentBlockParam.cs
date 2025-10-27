@@ -150,7 +150,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
 
     public DocumentBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
 
 #pragma warning disable CS8618

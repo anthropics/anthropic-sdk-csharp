@@ -114,7 +114,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
 
     public BetaTextBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
 #pragma warning disable CS8618

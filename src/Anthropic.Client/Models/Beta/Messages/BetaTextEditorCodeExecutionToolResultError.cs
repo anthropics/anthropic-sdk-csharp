@@ -85,7 +85,9 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
 
     public BetaTextEditorCodeExecutionToolResultError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>(
+            "\"text_editor_code_execution_tool_result_error\""
+        );
     }
 
 #pragma warning disable CS8618

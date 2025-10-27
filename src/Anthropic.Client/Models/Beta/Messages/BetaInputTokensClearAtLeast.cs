@@ -62,7 +62,7 @@ public sealed record class BetaInputTokensClearAtLeast
 
     public BetaInputTokensClearAtLeast()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
     }
 
 #pragma warning disable CS8618

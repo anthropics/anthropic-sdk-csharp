@@ -64,7 +64,7 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
 
     public ThinkingDelta()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
     }
 
 #pragma warning disable CS8618

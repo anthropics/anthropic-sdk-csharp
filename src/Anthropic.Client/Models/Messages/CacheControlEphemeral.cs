@@ -68,7 +68,7 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
 
     public CacheControlEphemeral()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
 #pragma warning disable CS8618

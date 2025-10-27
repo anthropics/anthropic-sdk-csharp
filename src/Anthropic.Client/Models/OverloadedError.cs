@@ -64,7 +64,7 @@ public sealed record class OverloadedError : ModelBase, IFromRaw<OverloadedError
 
     public OverloadedError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"");
     }
 
 #pragma warning disable CS8618

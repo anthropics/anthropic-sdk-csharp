@@ -66,7 +66,7 @@ public sealed record class ToolChoiceAny : ModelBase, IFromRaw<ToolChoiceAny>
 
     public ToolChoiceAny()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"any\"");
     }
 
 #pragma warning disable CS8618

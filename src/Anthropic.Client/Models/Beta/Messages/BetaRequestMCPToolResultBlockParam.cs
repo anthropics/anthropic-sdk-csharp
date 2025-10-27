@@ -130,7 +130,7 @@ public sealed record class BetaRequestMCPToolResultBlockParam
 
     public BetaRequestMCPToolResultBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
     }
 
 #pragma warning disable CS8618

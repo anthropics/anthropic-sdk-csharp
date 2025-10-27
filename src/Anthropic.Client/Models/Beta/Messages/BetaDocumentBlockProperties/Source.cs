@@ -94,7 +94,7 @@ public record class Source
 
     public void Validate()
     {
-        if (this.Value is not UnknownVariant)
+        if (this.Value is UnknownVariant)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }

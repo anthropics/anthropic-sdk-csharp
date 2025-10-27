@@ -60,7 +60,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
 
     public RawContentBlockStopEvent()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
     }
 
 #pragma warning disable CS8618

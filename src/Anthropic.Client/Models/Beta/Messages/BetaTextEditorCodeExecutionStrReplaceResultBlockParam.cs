@@ -138,7 +138,9 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 
     public BetaTextEditorCodeExecutionStrReplaceResultBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>(
+            "\"text_editor_code_execution_str_replace_result\""
+        );
     }
 
 #pragma warning disable CS8618

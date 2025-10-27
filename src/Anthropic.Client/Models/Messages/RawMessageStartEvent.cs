@@ -64,7 +64,7 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
 
     public RawMessageStartEvent()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
     }
 
 #pragma warning disable CS8618

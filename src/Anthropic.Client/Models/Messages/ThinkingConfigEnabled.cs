@@ -70,7 +70,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
 
     public ThinkingConfigEnabled()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
     }
 
 #pragma warning disable CS8618

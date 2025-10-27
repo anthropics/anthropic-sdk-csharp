@@ -89,8 +89,8 @@ public sealed record class ToolTextEditor20250124 : ModelBase, IFromRaw<ToolText
 
     public ToolTextEditor20250124()
     {
-        this.Name = new();
-        this.Type = new();
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_editor\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250124\"");
     }
 
 #pragma warning disable CS8618

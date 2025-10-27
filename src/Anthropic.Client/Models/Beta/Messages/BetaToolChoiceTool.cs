@@ -95,7 +95,7 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
 
     public BetaToolChoiceTool()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
     }
 
 #pragma warning disable CS8618

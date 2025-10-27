@@ -64,7 +64,7 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
 
     public RedactedThinkingBlock()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
     }
 
 #pragma warning disable CS8618

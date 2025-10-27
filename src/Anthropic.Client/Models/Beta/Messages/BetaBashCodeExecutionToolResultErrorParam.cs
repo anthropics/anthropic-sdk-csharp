@@ -66,7 +66,9 @@ public sealed record class BetaBashCodeExecutionToolResultErrorParam
 
     public BetaBashCodeExecutionToolResultErrorParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>(
+            "\"bash_code_execution_tool_result_error\""
+        );
     }
 
 #pragma warning disable CS8618

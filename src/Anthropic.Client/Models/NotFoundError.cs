@@ -64,7 +64,7 @@ public sealed record class NotFoundError : ModelBase, IFromRaw<NotFoundError>
 
     public NotFoundError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
     }
 
 #pragma warning disable CS8618

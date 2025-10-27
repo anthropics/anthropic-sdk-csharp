@@ -185,8 +185,8 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
 
     public WebSearchTool20250305()
     {
-        this.Name = new();
-        this.Type = new();
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"");
     }
 
 #pragma warning disable CS8618

@@ -64,7 +64,7 @@ public sealed record class BetaSignatureDelta : ModelBase, IFromRaw<BetaSignatur
 
     public BetaSignatureDelta()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"");
     }
 
 #pragma warning disable CS8618

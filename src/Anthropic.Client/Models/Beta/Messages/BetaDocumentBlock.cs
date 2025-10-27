@@ -112,7 +112,7 @@ public sealed record class BetaDocumentBlock : ModelBase, IFromRaw<BetaDocumentB
 
     public BetaDocumentBlock()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
 
 #pragma warning disable CS8618

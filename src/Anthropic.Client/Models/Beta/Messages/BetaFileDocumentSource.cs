@@ -64,7 +64,7 @@ public sealed record class BetaFileDocumentSource : ModelBase, IFromRaw<BetaFile
 
     public BetaFileDocumentSource()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
     }
 
 #pragma warning disable CS8618

@@ -64,7 +64,7 @@ public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimi
 
     public BetaRateLimitError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
     }
 
 #pragma warning disable CS8618

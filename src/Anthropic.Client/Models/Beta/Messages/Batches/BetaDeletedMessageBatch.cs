@@ -72,7 +72,7 @@ public sealed record class BetaDeletedMessageBatch : ModelBase, IFromRaw<BetaDel
 
     public BetaDeletedMessageBatch()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
     }
 
 #pragma warning disable CS8618

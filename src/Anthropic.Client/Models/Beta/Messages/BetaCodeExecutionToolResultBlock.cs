@@ -95,7 +95,7 @@ public sealed record class BetaCodeExecutionToolResultBlock
 
     public BetaCodeExecutionToolResultBlock()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result\"");
     }
 
 #pragma warning disable CS8618

@@ -95,7 +95,7 @@ public sealed record class BetaContainerUploadBlockParam
 
     public BetaContainerUploadBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
     }
 
 #pragma warning disable CS8618

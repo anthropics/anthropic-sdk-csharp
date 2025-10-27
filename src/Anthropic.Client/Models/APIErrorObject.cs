@@ -64,7 +64,7 @@ public sealed record class APIErrorObject : ModelBase, IFromRaw<APIErrorObject>
 
     public APIErrorObject()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
     }
 
 #pragma warning disable CS8618

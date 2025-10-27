@@ -36,7 +36,7 @@ public sealed record class ThinkingConfigDisabled : ModelBase, IFromRaw<Thinking
 
     public ThinkingConfigDisabled()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
     }
 
 #pragma warning disable CS8618

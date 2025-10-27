@@ -171,7 +171,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
 
     public CitationPageLocation()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
     }
 
 #pragma warning disable CS8618

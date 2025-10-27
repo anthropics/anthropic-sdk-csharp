@@ -36,7 +36,7 @@ public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRaw
 
     public BetaRawMessageStopEvent()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
     }
 
 #pragma warning disable CS8618

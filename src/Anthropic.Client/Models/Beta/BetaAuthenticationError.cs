@@ -64,7 +64,7 @@ public sealed record class BetaAuthenticationError : ModelBase, IFromRaw<BetaAut
 
     public BetaAuthenticationError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
     }
 
 #pragma warning disable CS8618

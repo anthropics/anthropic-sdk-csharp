@@ -64,7 +64,7 @@ public sealed record class BetaNotFoundError : ModelBase, IFromRaw<BetaNotFoundE
 
     public BetaNotFoundError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
     }
 
 #pragma warning disable CS8618

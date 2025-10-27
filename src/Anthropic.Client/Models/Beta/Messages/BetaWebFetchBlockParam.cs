@@ -118,7 +118,7 @@ public sealed record class BetaWebFetchBlockParam : ModelBase, IFromRaw<BetaWebF
 
     public BetaWebFetchBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
     }
 
 #pragma warning disable CS8618

@@ -92,7 +92,7 @@ public sealed record class RawContentBlockStartEvent
 
     public RawContentBlockStartEvent()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
 #pragma warning disable CS8618

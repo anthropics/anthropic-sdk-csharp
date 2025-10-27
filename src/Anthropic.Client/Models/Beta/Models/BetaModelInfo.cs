@@ -127,7 +127,7 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
 
     public BetaModelInfo()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
     }
 
 #pragma warning disable CS8618

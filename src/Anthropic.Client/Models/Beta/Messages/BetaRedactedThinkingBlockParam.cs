@@ -66,7 +66,7 @@ public sealed record class BetaRedactedThinkingBlockParam
 
     public BetaRedactedThinkingBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
     }
 
 #pragma warning disable CS8618

@@ -85,8 +85,8 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
 
     public BetaBase64PDFSource()
     {
-        this.MediaType = new();
-        this.Type = new();
+        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"application/pdf\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
     }
 
 #pragma warning disable CS8618

@@ -89,8 +89,8 @@ public sealed record class BetaMemoryTool20250818 : ModelBase, IFromRaw<BetaMemo
 
     public BetaMemoryTool20250818()
     {
-        this.Name = new();
-        this.Type = new();
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
     }
 
 #pragma warning disable CS8618

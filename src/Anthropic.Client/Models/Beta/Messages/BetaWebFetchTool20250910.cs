@@ -209,8 +209,8 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
 
     public BetaWebFetchTool20250910()
     {
-        this.Name = new();
-        this.Type = new();
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_20250910\"");
     }
 
 #pragma warning disable CS8618

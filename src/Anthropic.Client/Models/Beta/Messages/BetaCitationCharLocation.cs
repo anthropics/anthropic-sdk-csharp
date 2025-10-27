@@ -168,7 +168,7 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
 
     public BetaCitationCharLocation()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
     }
 
 #pragma warning disable CS8618

@@ -70,7 +70,7 @@ public sealed record class BetaCacheControlEphemeral
 
     public BetaCacheControlEphemeral()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
 #pragma warning disable CS8618

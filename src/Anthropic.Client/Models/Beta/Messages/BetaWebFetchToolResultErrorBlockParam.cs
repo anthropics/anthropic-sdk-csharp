@@ -65,7 +65,7 @@ public sealed record class BetaWebFetchToolResultErrorBlockParam
 
     public BetaWebFetchToolResultErrorBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result_error\"");
     }
 
 #pragma warning disable CS8618

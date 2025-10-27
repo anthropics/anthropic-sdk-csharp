@@ -64,7 +64,7 @@ public sealed record class InvalidRequestError : ModelBase, IFromRaw<InvalidRequ
 
     public InvalidRequestError()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
     }
 
 #pragma warning disable CS8618

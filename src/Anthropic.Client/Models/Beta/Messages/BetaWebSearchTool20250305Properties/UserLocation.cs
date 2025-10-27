@@ -130,7 +130,7 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
 
     public UserLocation()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
     }
 
 #pragma warning disable CS8618

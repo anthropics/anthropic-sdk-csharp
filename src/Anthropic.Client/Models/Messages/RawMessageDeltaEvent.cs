@@ -111,7 +111,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
 
     public RawMessageDeltaEvent()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
     }
 
 #pragma warning disable CS8618

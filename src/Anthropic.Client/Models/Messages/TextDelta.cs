@@ -64,7 +64,7 @@ public sealed record class TextDelta : ModelBase, IFromRaw<TextDelta>
 
     public TextDelta()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
     }
 
 #pragma warning disable CS8618

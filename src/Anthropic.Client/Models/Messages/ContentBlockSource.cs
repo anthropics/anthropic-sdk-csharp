@@ -65,7 +65,7 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
 
     public ContentBlockSource()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
 #pragma warning disable CS8618

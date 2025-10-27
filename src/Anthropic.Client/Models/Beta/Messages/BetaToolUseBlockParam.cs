@@ -137,7 +137,7 @@ public sealed record class BetaToolUseBlockParam : ModelBase, IFromRaw<BetaToolU
 
     public BetaToolUseBlockParam()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
     }
 
 #pragma warning disable CS8618

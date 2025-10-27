@@ -89,8 +89,8 @@ public sealed record class BetaToolBash20250124 : ModelBase, IFromRaw<BetaToolBa
 
     public BetaToolBash20250124()
     {
-        this.Name = new();
-        this.Type = new();
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
     }
 
 #pragma warning disable CS8618

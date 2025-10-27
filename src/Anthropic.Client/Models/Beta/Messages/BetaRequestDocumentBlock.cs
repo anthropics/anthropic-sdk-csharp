@@ -150,7 +150,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
 
     public BetaRequestDocumentBlock()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
 
 #pragma warning disable CS8618

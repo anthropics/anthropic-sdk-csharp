@@ -66,7 +66,7 @@ public sealed record class BetaCodeExecutionOutputBlock
 
     public BetaCodeExecutionOutputBlock()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_output\"");
     }
 
 #pragma warning disable CS8618

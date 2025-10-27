@@ -138,7 +138,7 @@ public sealed record class BetaWebSearchResultBlock : ModelBase, IFromRaw<BetaWe
 
     public BetaWebSearchResultBlock()
     {
-        this.Type = new();
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
     }
 
 #pragma warning disable CS8618
