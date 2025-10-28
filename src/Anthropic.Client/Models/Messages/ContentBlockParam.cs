@@ -91,25 +91,6 @@ public record class ContentBlockParam
         }
     }
 
-    public JsonElement? Input
-    {
-        get
-        {
-            return Match<JsonElement?>(
-                text: (_) => null,
-                image: (_) => null,
-                document: (_) => null,
-                searchResult: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (x) => x.Input,
-                toolResult: (_) => null,
-                serverToolUse: (x) => x.Input,
-                webSearchToolResult: (_) => null
-            );
-        }
-    }
-
     public string? ToolUseID
     {
         get

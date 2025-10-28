@@ -59,28 +59,6 @@ public record class ContentBlock
         }
     }
 
-    public JsonElement? Input
-    {
-        get
-        {
-            return Match<JsonElement?>(
-                betaText: (_) => null,
-                betaThinking: (_) => null,
-                betaRedactedThinking: (_) => null,
-                betaToolUse: (x) => x.Input,
-                betaServerToolUse: (x) => x.Input,
-                betaWebSearchToolResult: (_) => null,
-                betaWebFetchToolResult: (_) => null,
-                betaCodeExecutionToolResult: (_) => null,
-                betaBashCodeExecutionToolResult: (_) => null,
-                betaTextEditorCodeExecutionToolResult: (_) => null,
-                betaMCPToolUse: (x) => x.Input,
-                betaMCPToolResult: (_) => null,
-                betaContainerUpload: (_) => null
-            );
-        }
-    }
-
     public string? ToolUseID
     {
         get

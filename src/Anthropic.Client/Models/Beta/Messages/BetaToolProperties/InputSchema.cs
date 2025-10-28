@@ -38,14 +38,17 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
         }
     }
 
-    public JsonElement? Properties1
+    public Dictionary<string, JsonElement>? Properties1
     {
         get
         {
             if (!this.Properties.TryGetValue("properties", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<Dictionary<string, JsonElement>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -76,7 +79,13 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
 
     public override void Validate()
     {
-        _ = this.Properties1;
+        if (this.Properties1 != null)
+        {
+            foreach (var item in this.Properties1.Values)
+            {
+                _ = item;
+            }
+        }
         foreach (var item in this.Required ?? [])
         {
             _ = item;

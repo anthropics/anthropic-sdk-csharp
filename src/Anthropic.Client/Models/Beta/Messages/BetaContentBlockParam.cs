@@ -119,32 +119,6 @@ public record class BetaContentBlockParam
         }
     }
 
-    public JsonElement? Input
-    {
-        get
-        {
-            return Match<JsonElement?>(
-                text: (_) => null,
-                image: (_) => null,
-                requestDocumentBlock: (_) => null,
-                searchResult: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (x) => x.Input,
-                toolResult: (_) => null,
-                serverToolUse: (x) => x.Input,
-                webSearchToolResult: (_) => null,
-                webFetchToolResult: (_) => null,
-                codeExecutionToolResult: (_) => null,
-                bashCodeExecutionToolResult: (_) => null,
-                textEditorCodeExecutionToolResult: (_) => null,
-                mcpToolUse: (x) => x.Input,
-                requestMCPToolResult: (_) => null,
-                containerUpload: (_) => null
-            );
-        }
-    }
-
     public string? ToolUseID
     {
         get

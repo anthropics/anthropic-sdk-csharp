@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Client.Models.Beta.Messages;
@@ -47,14 +48,16 @@ public class BatchServiceTest : TestBase
                             {
                                 Edits =
                                 [
-                                    new()
-                                    {
-                                        ClearAtLeast = new(0),
-                                        ClearToolInputs = new(true),
-                                        ExcludeTools = ["string"],
-                                        Keep = new(0),
-                                        Trigger = new(new BetaInputTokensTrigger(1)),
-                                    },
+                                    new(
+                                        new BetaClearToolUses20250919Edit()
+                                        {
+                                            ClearAtLeast = new(0),
+                                            ClearToolInputs = new(true),
+                                            ExcludeTools = ["string"],
+                                            Keep = new(0),
+                                            Trigger = new(new BetaInputTokensTrigger(1)),
+                                        }
+                                    ),
                                 ],
                             },
                             MCPServers =
@@ -109,9 +112,17 @@ public class BatchServiceTest : TestBase
                                     {
                                         InputSchema = new()
                                         {
-                                            Properties1 = JsonSerializer.Deserialize<JsonElement>(
-                                                "{\"location\":{\"description\":\"The city and state, e.g. San Francisco, CA\",\"type\":\"string\"},\"unit\":{\"description\":\"Unit for the output - one of (celsius, fahrenheit)\",\"type\":\"string\"}}"
-                                            ),
+                                            Properties1 = new Dictionary<string, JsonElement>()
+                                            {
+                                                {
+                                                    "location",
+                                                    JsonSerializer.SerializeToElement("bar")
+                                                },
+                                                {
+                                                    "unit",
+                                                    JsonSerializer.SerializeToElement("bar")
+                                                },
+                                            },
                                             Required = ["location"],
                                         },
                                         Name = "name",

@@ -42,21 +42,6 @@ public record class ContentBlock
         }
     }
 
-    public JsonElement? Input
-    {
-        get
-        {
-            return Match<JsonElement?>(
-                text: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (x) => x.Input,
-                serverToolUse: (x) => x.Input,
-                webSearchToolResult: (_) => null
-            );
-        }
-    }
-
     public ContentBlock(TextBlock value)
     {
         Value = value;
