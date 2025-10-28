@@ -68,17 +68,6 @@ public enum Model
     ClaudeSonnet4_5_20250929,
 
     /// <summary>
-    /// Our previous most intelligent model
-    /// </summary>
-    Claude3_5SonnetLatest,
-
-    /// <summary>
-    /// Our previous most intelligent model
-    /// </summary>
-    Claude3_5Sonnet20241022,
-    Claude_3_5_Sonnet_20240620,
-
-    /// <summary>
     /// Our most capable model
     /// </summary>
     ClaudeOpus4_0,
@@ -135,9 +124,6 @@ sealed class ModelConverter1 : JsonConverter<Model>
             "claude-4-sonnet-20250514" => Model.Claude4Sonnet20250514,
             "claude-sonnet-4-5" => Model.ClaudeSonnet4_5,
             "claude-sonnet-4-5-20250929" => Model.ClaudeSonnet4_5_20250929,
-            "claude-3-5-sonnet-latest" => Model.Claude3_5SonnetLatest,
-            "claude-3-5-sonnet-20241022" => Model.Claude3_5Sonnet20241022,
-            "claude-3-5-sonnet-20240620" => Model.Claude_3_5_Sonnet_20240620,
             "claude-opus-4-0" => Model.ClaudeOpus4_0,
             "claude-opus-4-20250514" => Model.ClaudeOpus4_20250514,
             "claude-4-opus-20250514" => Model.Claude4Opus20250514,
@@ -166,9 +152,6 @@ sealed class ModelConverter1 : JsonConverter<Model>
                 Model.Claude4Sonnet20250514 => "claude-4-sonnet-20250514",
                 Model.ClaudeSonnet4_5 => "claude-sonnet-4-5",
                 Model.ClaudeSonnet4_5_20250929 => "claude-sonnet-4-5-20250929",
-                Model.Claude3_5SonnetLatest => "claude-3-5-sonnet-latest",
-                Model.Claude3_5Sonnet20241022 => "claude-3-5-sonnet-20241022",
-                Model.Claude_3_5_Sonnet_20240620 => "claude-3-5-sonnet-20240620",
                 Model.ClaudeOpus4_0 => "claude-opus-4-0",
                 Model.ClaudeOpus4_20250514 => "claude-opus-4-20250514",
                 Model.Claude4Opus20250514 => "claude-4-opus-20250514",
