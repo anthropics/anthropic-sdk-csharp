@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Anthropic.Client.Models.Messages;
@@ -7,12 +6,19 @@ using RawMessageStreamEventVariants = Anthropic.Client.Models.Messages.RawMessag
 
 namespace Anthropic.Client.Services.Messages;
 
-public class MessageAggregator : SseAggregator<RawMessageStreamEvent, MessageAggregationResult>
+/// <summary>
+/// An implementaion of the <see cref="SseAggregator{TMessage, TResult}"/> for aggregating BlockDeltaEvents from the <see cref="IMessageService.CreateStreaming(MessageCreateParams)"/> method.
+/// </summary>
+public class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, MessageAggregationResult>
 {
-    public MessageAggregator(IAsyncEnumerable<RawMessageStreamEvent> messages) : base(messages)
+    /// <summary>
+    /// Creates a new instance of the <see cref="MessageContentAggregator"/>.
+    /// </summary>
+    /// <param name="messages">The async enumerable representing a stream of messages.</param>
+    public MessageContentAggregator(IAsyncEnumerable<RawMessageStreamEvent> messages) : base(messages)
     {
     }
-
+    
     protected override MessageAggregationResult GetResult(IReadOnlyCollection<RawMessageStreamEvent> messages)
     {
         var aggregation = new MessageAggregationResult();
@@ -29,16 +35,41 @@ public class MessageAggregator : SseAggregator<RawMessageStreamEvent, MessageAgg
         return aggregation;
     }
 
-    protected override bool Filter(RawMessageStreamEvent message)
+    protected override FilterResult Filter(RawMessageStreamEvent message) => message switch
     {
-        return message is RawMessageStreamEventVariants::RawContentBlockDeltaEvent;
-    }
+        RawMessageStreamEventVariants::RawContentBlockStartEvent _ => FilterResult.StartMessage,
+        RawMessageStreamEventVariants::RawContentBlockStopEvent _ => FilterResult.EndMessage,
+        RawMessageStreamEventVariants::RawContentBlockDeltaEvent _ => FilterResult.Content,
+        RawMessageStreamEventVariants::RawMessageStopEvent _ => FilterResult.EndMessage,
+        _ => FilterResult.Ignore
+    };
 }
 
+/// <summary>
+/// The aggregation model for a stream of <see cref="RawContentBlockDeltaEvent"/>
+/// </summary>
 public class MessageAggregationResult
 {
+    /// <summary>
+    /// Gets or sets the aggregated Text from an <see cref="TextDelta"/>
+    /// </summary>
     public string? Text { get; set; }
+
+    
+    /// <summary>
+    /// Gets or sets the aggregated Text from an <see cref="InputJSONDelta"/>
+    /// </summary>
     public string? PartialJson { get; set; }
+
+
+    /// <summary>
+    /// Gets or sets the aggregated Text from an <see cref="CitationsDelta"/>
+    /// </summary>
     public IList<Citation> Citations { get; set; } = [];
+    
+    
+    /// <summary>
+    /// Gets or sets the aggregated Text from an <see cref="ThinkingDelta"/>
+    /// </summary>
     public string? Thinking { get; internal set; }
 }
