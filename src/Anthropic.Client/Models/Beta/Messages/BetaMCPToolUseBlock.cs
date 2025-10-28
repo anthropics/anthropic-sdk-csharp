@@ -36,7 +36,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
         }
     }
 
-    public required JsonElement Input
+    public required Dictionary<string, JsonElement> Input
     {
         get
         {
@@ -46,7 +46,14 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
                     new ArgumentOutOfRangeException("input", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'input' cannot be null",
+                    new ArgumentNullException("input")
+                );
         }
         set
         {
@@ -137,7 +144,10 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
     public override void Validate()
     {
         _ = this.ID;
-        _ = this.Input;
+        foreach (var item in this.Input.Values)
+        {
+            _ = item;
+        }
         _ = this.Name;
         _ = this.ServerName;
     }

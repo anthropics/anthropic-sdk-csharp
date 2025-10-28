@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
+using Anthropic.Client.Models.Beta.Messages.BetaContextManagementConfigProperties;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -14,17 +15,14 @@ public sealed record class BetaContextManagementConfig
     /// <summary>
     /// List of context management edits to apply
     /// </summary>
-    public List<BetaClearToolUses20250919Edit>? Edits
+    public List<Edit>? Edits
     {
         get
         {
             if (!this.Properties.TryGetValue("edits", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<BetaClearToolUses20250919Edit>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return JsonSerializer.Deserialize<List<Edit>?>(element, ModelBase.SerializerOptions);
         }
         set
         {

@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using Anthropic.Client.Models.Beta.Messages.BetaContextManagementResponseProperties;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -16,7 +17,7 @@ public sealed record class BetaContextManagementResponse
     /// <summary>
     /// List of context management edits that were applied.
     /// </summary>
-    public required List<BetaClearToolUses20250919EditResponse> AppliedEdits
+    public required List<AppliedEdit> AppliedEdits
     {
         get
         {
@@ -26,7 +27,7 @@ public sealed record class BetaContextManagementResponse
                     new ArgumentOutOfRangeException("applied_edits", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<List<BetaClearToolUses20250919EditResponse>>(
+            return JsonSerializer.Deserialize<List<AppliedEdit>>(
                     element,
                     ModelBase.SerializerOptions
                 )
@@ -70,7 +71,7 @@ public sealed record class BetaContextManagementResponse
     }
 
     [SetsRequiredMembers]
-    public BetaContextManagementResponse(List<BetaClearToolUses20250919EditResponse> appliedEdits)
+    public BetaContextManagementResponse(List<AppliedEdit> appliedEdits)
         : this()
     {
         this.AppliedEdits = appliedEdits;

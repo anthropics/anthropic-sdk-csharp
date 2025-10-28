@@ -59,28 +59,6 @@ public record class BetaContentBlock
         }
     }
 
-    public JsonElement? Input
-    {
-        get
-        {
-            return Match<JsonElement?>(
-                text: (_) => null,
-                thinking: (_) => null,
-                redactedThinking: (_) => null,
-                toolUse: (x) => x.Input,
-                serverToolUse: (x) => x.Input,
-                webSearchToolResult: (_) => null,
-                webFetchToolResult: (_) => null,
-                codeExecutionToolResult: (_) => null,
-                bashCodeExecutionToolResult: (_) => null,
-                textEditorCodeExecutionToolResult: (_) => null,
-                mcpToolUse: (x) => x.Input,
-                mcpToolResult: (_) => null,
-                containerUpload: (_) => null
-            );
-        }
-    }
-
     public string? ToolUseID
     {
         get
