@@ -28,7 +28,7 @@ public class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Mes
                 e => aggregation.PartialJson += e.PartialJSON,
                 e => aggregation.Citations.Add(e.Citation),
                 e => aggregation.Thinking += e.Thinking,
-                e => aggregation.Thinking += e.Signature);
+                e => aggregation.Signature += e.Signature);
         }
 
         return aggregation;
@@ -71,4 +71,9 @@ public class MessageAggregationResult
     /// Gets or sets the aggregated Text from an <see cref="ThinkingDelta"/>
     /// </summary>
     public string? Thinking { get; internal set; }
+    
+    /// <summary>
+    /// Gets or sets the aggregated Signature from an <see cref="SignatureDelta"/>
+    /// </summary>
+    public string? Signature { get; internal set; }    
 }
