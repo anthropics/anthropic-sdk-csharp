@@ -7,7 +7,9 @@ using Anthropic.Client.Exceptions;
 
 namespace Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties;
 
-[JsonConverter(typeof(ContentBlockConverter))]
+[JsonConverter(
+    typeof(global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlockConverter)
+)]
 public record class ContentBlock
 {
     public object Value { get; private init; }
@@ -77,7 +79,9 @@ public record class ContentBlock
         Value = value;
     }
 
-    public static ContentBlock CreateUnknownVariant(JsonElement value)
+    public static global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock CreateUnknownVariant(
+        JsonElement value
+    )
     {
         return new(new UnknownVariant(value));
     }
@@ -190,9 +194,10 @@ public record class ContentBlock
     private record struct UnknownVariant(JsonElement value);
 }
 
-sealed class ContentBlockConverter : JsonConverter<ContentBlock>
+sealed class ContentBlockConverter
+    : JsonConverter<global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock>
 {
-    public override ContentBlock? Read(
+    public override global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock? Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options
@@ -221,7 +226,9 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock(
+                            deserialized
+                        );
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -246,7 +253,9 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock(
+                            deserialized
+                        );
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -274,7 +283,9 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock(
+                            deserialized
+                        );
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -299,7 +310,9 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock(
+                            deserialized
+                        );
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -327,7 +340,9 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock(
+                            deserialized
+                        );
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -355,7 +370,9 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlock(deserialized);
+                        return new global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock(
+                            deserialized
+                        );
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -381,7 +398,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
 
     public override void Write(
         Utf8JsonWriter writer,
-        ContentBlock value,
+        global::Anthropic.Client.Models.Messages.RawContentBlockStartEventProperties.ContentBlock value,
         JsonSerializerOptions options
     )
     {
