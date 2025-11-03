@@ -258,7 +258,7 @@ public record class TextCitation
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class TextCitationConverter : JsonConverter<TextCitation>

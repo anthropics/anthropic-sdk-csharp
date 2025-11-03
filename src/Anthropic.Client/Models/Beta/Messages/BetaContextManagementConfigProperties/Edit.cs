@@ -98,7 +98,7 @@ public record class Edit
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class EditConverter : JsonConverter<Edit>

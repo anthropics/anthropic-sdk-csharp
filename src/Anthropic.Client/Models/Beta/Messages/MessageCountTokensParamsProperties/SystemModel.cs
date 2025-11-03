@@ -92,7 +92,7 @@ public record class SystemModel
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class SystemModelConverter : JsonConverter<SystemModel>

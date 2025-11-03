@@ -86,7 +86,7 @@ public record class ClearToolInputs
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>

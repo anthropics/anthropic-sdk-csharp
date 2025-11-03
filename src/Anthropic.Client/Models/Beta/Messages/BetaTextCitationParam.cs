@@ -250,7 +250,7 @@ public record class BetaTextCitationParam
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationParam>

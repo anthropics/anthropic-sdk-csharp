@@ -172,7 +172,7 @@ public record class MessageCountTokensTool
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensTool>
