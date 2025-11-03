@@ -18,6 +18,8 @@ public struct ClientOptions()
         set { _baseUrl = new(() => value); }
     }
 
+    public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(10);
+
     Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"));
     public string? APIKey
     {

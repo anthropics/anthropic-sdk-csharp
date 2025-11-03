@@ -14,6 +14,8 @@ public interface IAnthropicClient
 
     Uri BaseUrl { get; init; }
 
+    TimeSpan Timeout { get; init; }
+
     string? APIKey { get; init; }
 
     string? AuthToken { get; init; }
