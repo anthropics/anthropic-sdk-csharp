@@ -114,7 +114,7 @@ public record class Source
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class SourceConverter : JsonConverter<Source>

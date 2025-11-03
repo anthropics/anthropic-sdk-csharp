@@ -154,7 +154,7 @@ public record class RawContentBlockDelta
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>

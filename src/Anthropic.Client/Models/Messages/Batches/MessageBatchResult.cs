@@ -143,7 +143,7 @@ public record class MessageBatchResult
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>

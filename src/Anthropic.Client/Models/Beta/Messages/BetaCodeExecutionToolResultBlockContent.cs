@@ -94,7 +94,7 @@ public record class BetaCodeExecutionToolResultBlockContent
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaCodeExecutionToolResultBlockContentConverter

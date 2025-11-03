@@ -100,7 +100,7 @@ public record class Trigger
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class TriggerConverter : JsonConverter<Trigger>

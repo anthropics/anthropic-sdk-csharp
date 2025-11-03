@@ -170,7 +170,7 @@ public record class ToolUnion
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ToolUnionConverter : JsonConverter<ToolUnion>

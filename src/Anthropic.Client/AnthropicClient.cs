@@ -11,32 +11,30 @@ namespace Anthropic.Client;
 
 public sealed class AnthropicClient : IAnthropicClient
 {
-    public HttpClient HttpClient { get; init; } = new();
+    readonly ClientOptions _options = new();
 
-    Lazy<Uri> _baseUrl = new(() =>
-        new Uri(
-            Environment.GetEnvironmentVariable("ANTHROPIC_BASE_URL") ?? "https://api.anthropic.com"
-        )
-    );
+    public HttpClient HttpClient
+    {
+        get { return this._options.HttpClient; }
+        init { this._options.HttpClient = value; }
+    }
+
     public Uri BaseUrl
     {
-        get { return _baseUrl.Value; }
-        init { _baseUrl = new(() => value); }
+        get { return this._options.BaseUrl; }
+        init { this._options.BaseUrl = value; }
     }
 
-    Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"));
     public string? APIKey
     {
-        get { return _apiKey.Value; }
-        init { _apiKey = new(() => value); }
+        get { return this._options.APIKey; }
+        init { this._options.APIKey = value; }
     }
 
-    Lazy<string?> _authToken = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN")
-    );
     public string? AuthToken
     {
-        get { return _authToken.Value; }
-        init { _authToken = new(() => value); }
+        get { return this._options.AuthToken; }
+        init { this._options.AuthToken = value; }
     }
 
     readonly Lazy<IMessageService> _messages;

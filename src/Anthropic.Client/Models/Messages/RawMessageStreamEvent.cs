@@ -187,7 +187,7 @@ public record class RawMessageStreamEvent
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEvent>

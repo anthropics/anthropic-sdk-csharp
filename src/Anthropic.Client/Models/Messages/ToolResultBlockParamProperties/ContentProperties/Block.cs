@@ -156,7 +156,7 @@ public record class Block
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BlockConverter : JsonConverter<Block>

@@ -153,7 +153,7 @@ public record class BetaToolChoice
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>

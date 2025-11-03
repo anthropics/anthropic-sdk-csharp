@@ -242,7 +242,7 @@ public record class BetaError
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaErrorConverter : JsonConverter<BetaError>

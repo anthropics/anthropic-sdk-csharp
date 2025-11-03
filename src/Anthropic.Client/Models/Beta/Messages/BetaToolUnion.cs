@@ -418,7 +418,7 @@ public record class BetaToolUnion
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>

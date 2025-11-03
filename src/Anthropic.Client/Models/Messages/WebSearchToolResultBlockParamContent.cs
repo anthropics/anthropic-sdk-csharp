@@ -89,7 +89,7 @@ public record class WebSearchToolResultBlockParamContent
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class WebSearchToolResultBlockParamContentConverter

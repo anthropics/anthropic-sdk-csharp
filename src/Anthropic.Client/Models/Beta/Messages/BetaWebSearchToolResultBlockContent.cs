@@ -91,7 +91,7 @@ public record class BetaWebSearchToolResultBlockContent
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaWebSearchToolResultBlockContentConverter

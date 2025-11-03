@@ -119,7 +119,7 @@ public record class AppliedEdit
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class AppliedEditConverter : JsonConverter<AppliedEdit>

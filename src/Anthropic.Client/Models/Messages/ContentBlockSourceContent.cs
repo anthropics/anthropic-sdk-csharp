@@ -105,7 +105,7 @@ public record class ContentBlockSourceContent
         }
     }
 
-    private record struct UnknownVariant(JsonElement value);
+    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSourceContent>
