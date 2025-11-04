@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Anthropic.Client.Core;
 using Anthropic.Client.Models.Messages;
 using Anthropic.Client.Services.Messages.Batches;
 
@@ -7,6 +9,8 @@ namespace Anthropic.Client.Services.Messages;
 
 public interface IMessageService
 {
+    IMessageService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     IBatchService Batches { get; }
 
     /// <summary>

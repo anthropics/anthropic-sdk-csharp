@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
@@ -7,6 +8,11 @@ namespace Anthropic.Client.Services.Beta.Files;
 
 public sealed class FileService : IFileService
 {
+    public IFileService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new FileService(this._client.WithOptions(modifier));
+    }
+
     readonly IAnthropicClient _client;
 
     public FileService(IAnthropicClient client)

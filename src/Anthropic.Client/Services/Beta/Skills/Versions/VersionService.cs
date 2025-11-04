@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
@@ -7,6 +8,11 @@ namespace Anthropic.Client.Services.Beta.Skills.Versions;
 
 public sealed class VersionService : IVersionService
 {
+    public IVersionService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new VersionService(this._client.WithOptions(modifier));
+    }
+
     readonly IAnthropicClient _client;
 
     public VersionService(IAnthropicClient client)

@@ -22,6 +22,8 @@ public interface IAnthropicClient
 
     string? AuthToken { get; init; }
 
+    IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     IMessageService Messages { get; }
 
     IModelService Models { get; }

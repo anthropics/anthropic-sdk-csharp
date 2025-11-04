@@ -1,10 +1,14 @@
+using System;
 using System.Threading.Tasks;
+using Anthropic.Client.Core;
 using Anthropic.Client.Models.Models;
 
 namespace Anthropic.Client.Services.Models;
 
 public interface IModelService
 {
+    IModelService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     /// <summary>
     /// Get a specific model.
     ///

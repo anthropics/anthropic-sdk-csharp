@@ -1,4 +1,5 @@
 using System;
+using Anthropic.Client.Core;
 using Anthropic.Client.Services.Beta.Files;
 using Anthropic.Client.Services.Beta.Messages;
 using Anthropic.Client.Services.Beta.Models;
@@ -8,8 +9,16 @@ namespace Anthropic.Client.Services.Beta;
 
 public sealed class BetaService : IBetaService
 {
+    public IBetaService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new BetaService(this._client.WithOptions(modifier));
+    }
+
+    readonly IAnthropicClient _client;
+
     public BetaService(IAnthropicClient client)
     {
+        _client = client;
         _models = new(() => new ModelService(client));
         _messages = new(() => new MessageService(client));
         _files = new(() => new FileService(client));

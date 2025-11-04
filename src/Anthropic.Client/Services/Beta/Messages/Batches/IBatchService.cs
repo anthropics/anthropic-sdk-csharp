@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Messages.Batches;
 
 namespace Anthropic.Client.Services.Beta.Messages.Batches;
 
 public interface IBatchService
 {
+    IBatchService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     /// <summary>
     /// Send a batch of Message creation requests.
     ///

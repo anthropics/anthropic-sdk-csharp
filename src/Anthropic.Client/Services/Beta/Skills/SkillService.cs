@@ -9,6 +9,11 @@ namespace Anthropic.Client.Services.Beta.Skills;
 
 public sealed class SkillService : ISkillService
 {
+    public ISkillService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new SkillService(this._client.WithOptions(modifier));
+    }
+
     readonly IAnthropicClient _client;
 
     public SkillService(IAnthropicClient client)

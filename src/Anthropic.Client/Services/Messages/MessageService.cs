@@ -11,6 +11,11 @@ namespace Anthropic.Client.Services.Messages;
 
 public sealed class MessageService : IMessageService
 {
+    public IMessageService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new MessageService(this._client.WithOptions(modifier));
+    }
+
     readonly IAnthropicClient _client;
 
     public MessageService(IAnthropicClient client)

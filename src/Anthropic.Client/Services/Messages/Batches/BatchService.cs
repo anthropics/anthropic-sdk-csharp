@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,6 +9,11 @@ namespace Anthropic.Client.Services.Messages.Batches;
 
 public sealed class BatchService : IBatchService
 {
+    public IBatchService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new BatchService(this._client.WithOptions(modifier));
+    }
+
     readonly IAnthropicClient _client;
 
     public BatchService(IAnthropicClient client)

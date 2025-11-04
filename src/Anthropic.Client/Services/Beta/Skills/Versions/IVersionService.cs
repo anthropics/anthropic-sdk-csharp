@@ -1,10 +1,14 @@
+using System;
 using System.Threading.Tasks;
+using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Skills.Versions;
 
 namespace Anthropic.Client.Services.Beta.Skills.Versions;
 
 public interface IVersionService
 {
+    IVersionService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     /// <summary>
     /// Create Skill Version
     /// </summary>

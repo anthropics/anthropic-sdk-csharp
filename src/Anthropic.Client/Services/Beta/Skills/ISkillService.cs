@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Skills;
 using Anthropic.Client.Services.Beta.Skills.Versions;
 
@@ -6,6 +8,8 @@ namespace Anthropic.Client.Services.Beta.Skills;
 
 public interface ISkillService
 {
+    ISkillService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     IVersionService Versions { get; }
 
     /// <summary>
