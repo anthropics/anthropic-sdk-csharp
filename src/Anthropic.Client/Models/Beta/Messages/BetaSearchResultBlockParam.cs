@@ -165,6 +165,7 @@ public sealed record class BetaSearchResultBlockParam
         }
         _ = this.Source;
         _ = this.Title;
+        _ = this.Type;
         this.CacheControl?.Validate();
         this.Citations?.Validate();
     }

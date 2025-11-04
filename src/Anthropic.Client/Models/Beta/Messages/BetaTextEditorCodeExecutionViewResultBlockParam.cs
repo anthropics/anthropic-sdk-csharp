@@ -142,6 +142,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam
     {
         _ = this.Content;
         this.FileType.Validate();
+        _ = this.Type;
         _ = this.NumLines;
         _ = this.StartLine;
         _ = this.TotalLines;

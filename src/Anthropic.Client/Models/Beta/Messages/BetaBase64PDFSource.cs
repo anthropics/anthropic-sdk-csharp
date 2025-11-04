@@ -81,6 +81,8 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
     public override void Validate()
     {
         _ = this.Data;
+        _ = this.MediaType;
+        _ = this.Type;
     }
 
     public BetaBase64PDFSource()

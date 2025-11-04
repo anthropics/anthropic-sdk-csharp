@@ -61,6 +61,7 @@ public sealed record class BetaWebSearchToolRequestError
     public override void Validate()
     {
         this.ErrorCode.Validate();
+        _ = this.Type;
     }
 
     public BetaWebSearchToolRequestError()

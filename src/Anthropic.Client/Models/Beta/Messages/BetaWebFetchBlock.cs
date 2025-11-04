@@ -113,6 +113,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
     {
         this.Content.Validate();
         _ = this.RetrievedAt;
+        _ = this.Type;
         _ = this.URL;
     }
 

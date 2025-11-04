@@ -123,6 +123,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
 
     public override void Validate()
     {
+        _ = this.Command;
         _ = this.NewStr;
         _ = this.OldStr;
         _ = this.Path;

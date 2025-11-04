@@ -80,6 +80,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam
     public override void Validate()
     {
         this.ErrorCode.Validate();
+        _ = this.Type;
         _ = this.ErrorMessage;
     }
 

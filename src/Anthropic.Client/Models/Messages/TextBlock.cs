@@ -92,6 +92,7 @@ public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
             item.Validate();
         }
         _ = this.Text;
+        _ = this.Type;
     }
 
     public TextBlock()

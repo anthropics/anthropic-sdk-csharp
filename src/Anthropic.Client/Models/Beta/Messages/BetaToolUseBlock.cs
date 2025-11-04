@@ -113,11 +113,9 @@ public sealed record class BetaToolUseBlock : ModelBase, IFromRaw<BetaToolUseBlo
     public override void Validate()
     {
         _ = this.ID;
-        foreach (var item in this.Input.Values)
-        {
-            _ = item;
-        }
+        _ = this.Input;
         _ = this.Name;
+        _ = this.Type;
     }
 
     public BetaToolUseBlock()

@@ -60,6 +60,7 @@ public sealed record class ToolChoiceAuto : ModelBase, IFromRaw<ToolChoiceAuto>
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.DisableParallelToolUse;
     }
 

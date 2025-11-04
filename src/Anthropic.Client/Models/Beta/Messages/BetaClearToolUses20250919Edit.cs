@@ -152,12 +152,10 @@ public sealed record class BetaClearToolUses20250919Edit
 
     public override void Validate()
     {
+        _ = this.Type;
         this.ClearAtLeast?.Validate();
         this.ClearToolInputs?.Validate();
-        foreach (var item in this.ExcludeTools ?? [])
-        {
-            _ = item;
-        }
+        _ = this.ExcludeTools;
         this.Keep?.Validate();
         this.Trigger?.Validate();
     }

@@ -121,6 +121,7 @@ public sealed record class ToolResultBlockParam : ModelBase, IFromRaw<ToolResult
     public override void Validate()
     {
         _ = this.ToolUseID;
+        _ = this.Type;
         this.CacheControl?.Validate();
         this.Content?.Validate();
         _ = this.IsError;

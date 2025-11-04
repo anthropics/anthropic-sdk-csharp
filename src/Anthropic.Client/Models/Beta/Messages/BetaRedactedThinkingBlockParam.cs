@@ -62,6 +62,7 @@ public sealed record class BetaRedactedThinkingBlockParam
     public override void Validate()
     {
         _ = this.Data;
+        _ = this.Type;
     }
 
     public BetaRedactedThinkingBlockParam()

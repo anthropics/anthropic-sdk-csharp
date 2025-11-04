@@ -123,6 +123,7 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
+        _ = this.Type;
     }
 
     public BetaModelInfo()

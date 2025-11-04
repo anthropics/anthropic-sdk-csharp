@@ -22,7 +22,12 @@ public sealed class VersionService : IVersionService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<VersionCreateResponse>().ConfigureAwait(false);
+        var version = await response.Deserialize<VersionCreateResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            version.Validate();
+        }
+        return version;
     }
 
     public async Task<VersionRetrieveResponse> Retrieve(VersionRetrieveParams parameters)
@@ -33,7 +38,12 @@ public sealed class VersionService : IVersionService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<VersionRetrieveResponse>().ConfigureAwait(false);
+        var version = await response.Deserialize<VersionRetrieveResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            version.Validate();
+        }
+        return version;
     }
 
     public async Task<VersionListPageResponse> List(VersionListParams parameters)
@@ -44,7 +54,12 @@ public sealed class VersionService : IVersionService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<VersionListPageResponse>().ConfigureAwait(false);
+        var page = await response.Deserialize<VersionListPageResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            page.Validate();
+        }
+        return page;
     }
 
     public async Task<VersionDeleteResponse> Delete(VersionDeleteParams parameters)
@@ -55,6 +70,11 @@ public sealed class VersionService : IVersionService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<VersionDeleteResponse>().ConfigureAwait(false);
+        var version = await response.Deserialize<VersionDeleteResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            version.Validate();
+        }
+        return version;
     }
 }

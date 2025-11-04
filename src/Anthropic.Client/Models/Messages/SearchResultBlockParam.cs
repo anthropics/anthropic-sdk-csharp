@@ -163,6 +163,7 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
         }
         _ = this.Source;
         _ = this.Title;
+        _ = this.Type;
         this.CacheControl?.Validate();
         this.Citations?.Validate();
     }

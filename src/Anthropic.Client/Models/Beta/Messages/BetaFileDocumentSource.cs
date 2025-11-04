@@ -60,6 +60,7 @@ public sealed record class BetaFileDocumentSource : ModelBase, IFromRaw<BetaFile
     public override void Validate()
     {
         _ = this.FileID;
+        _ = this.Type;
     }
 
     public BetaFileDocumentSource()

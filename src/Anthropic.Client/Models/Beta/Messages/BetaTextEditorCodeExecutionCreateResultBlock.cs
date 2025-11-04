@@ -58,6 +58,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
     public override void Validate()
     {
         _ = this.IsFileUpdate;
+        _ = this.Type;
     }
 
     public BetaTextEditorCodeExecutionCreateResultBlock()

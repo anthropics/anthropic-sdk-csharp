@@ -60,6 +60,7 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
     public override void Validate()
     {
         _ = this.Thinking;
+        _ = this.Type;
     }
 
     public ThinkingDelta()

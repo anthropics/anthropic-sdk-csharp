@@ -95,6 +95,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand
 
     public override void Validate()
     {
+        _ = this.Command;
         _ = this.NewPath;
         _ = this.OldPath;
     }

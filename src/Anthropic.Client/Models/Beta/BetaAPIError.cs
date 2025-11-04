@@ -60,6 +60,7 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BetaAPIError()

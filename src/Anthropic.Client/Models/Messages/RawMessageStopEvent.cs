@@ -32,7 +32,10 @@ public sealed record class RawMessageStopEvent : ModelBase, IFromRaw<RawMessageS
         }
     }
 
-    public override void Validate() { }
+    public override void Validate()
+    {
+        _ = this.Type;
+    }
 
     public RawMessageStopEvent()
     {

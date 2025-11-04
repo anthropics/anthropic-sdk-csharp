@@ -35,7 +35,10 @@ public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoi
         }
     }
 
-    public override void Validate() { }
+    public override void Validate()
+    {
+        _ = this.Type;
+    }
 
     public BetaToolChoiceNone()
     {

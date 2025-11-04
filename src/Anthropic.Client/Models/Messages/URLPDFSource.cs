@@ -59,6 +59,7 @@ public sealed record class URLPDFSource : ModelBase, IFromRaw<URLPDFSource>
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.URL;
     }
 

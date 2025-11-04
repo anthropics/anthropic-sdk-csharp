@@ -150,6 +150,7 @@ public sealed record class BetaCitationPageLocationParam
         _ = this.DocumentTitle;
         _ = this.EndPageNumber;
         _ = this.StartPageNumber;
+        _ = this.Type;
     }
 
     public BetaCitationPageLocationParam()

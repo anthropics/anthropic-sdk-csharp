@@ -60,6 +60,7 @@ public sealed record class APIErrorObject : ModelBase, IFromRaw<APIErrorObject>
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public APIErrorObject()

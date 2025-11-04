@@ -85,6 +85,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     public override void Validate()
     {
         this.Source.Validate();
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

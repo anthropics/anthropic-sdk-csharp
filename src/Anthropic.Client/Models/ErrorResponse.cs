@@ -79,6 +79,7 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
     {
         this.Error.Validate();
         _ = this.RequestID;
+        _ = this.Type;
     }
 
     public ErrorResponse()

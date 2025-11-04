@@ -60,6 +60,7 @@ public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGat
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BetaGatewayTimeoutError()

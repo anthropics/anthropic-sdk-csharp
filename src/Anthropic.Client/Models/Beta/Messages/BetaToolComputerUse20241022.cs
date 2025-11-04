@@ -160,6 +160,8 @@ public sealed record class BetaToolComputerUse20241022
     {
         _ = this.DisplayHeightPx;
         _ = this.DisplayWidthPx;
+        _ = this.Name;
+        _ = this.Type;
         this.CacheControl?.Validate();
         _ = this.DisplayNumber;
     }

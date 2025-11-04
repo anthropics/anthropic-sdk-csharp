@@ -131,6 +131,7 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
     {
         this.ContextManagement?.Validate();
         this.Delta.Validate();
+        _ = this.Type;
         this.Usage.Validate();
     }
 

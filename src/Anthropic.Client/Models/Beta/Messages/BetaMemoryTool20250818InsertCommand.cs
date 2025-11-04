@@ -119,6 +119,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand
 
     public override void Validate()
     {
+        _ = this.Command;
         _ = this.InsertLine;
         _ = this.InsertText;
         _ = this.Path;

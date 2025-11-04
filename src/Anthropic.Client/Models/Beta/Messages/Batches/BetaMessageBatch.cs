@@ -288,6 +288,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
         _ = this.ResultsURL;
+        _ = this.Type;
     }
 
     public BetaMessageBatch()

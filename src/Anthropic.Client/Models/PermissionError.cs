@@ -60,6 +60,7 @@ public sealed record class PermissionError : ModelBase, IFromRaw<PermissionError
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public PermissionError()

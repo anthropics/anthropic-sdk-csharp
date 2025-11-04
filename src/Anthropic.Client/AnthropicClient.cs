@@ -26,6 +26,12 @@ public sealed class AnthropicClient : IAnthropicClient
         init { this._options.BaseUrl = value; }
     }
 
+    public bool ResponseValidation
+    {
+        get { return this._options.ResponseValidation; }
+        init { this._options.ResponseValidation = value; }
+    }
+
     public TimeSpan Timeout
     {
         get { return this._options.Timeout; }

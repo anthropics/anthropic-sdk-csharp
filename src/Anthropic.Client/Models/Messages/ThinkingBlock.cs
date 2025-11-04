@@ -86,6 +86,7 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
     {
         _ = this.Signature;
         _ = this.Thinking;
+        _ = this.Type;
     }
 
     public ThinkingBlock()

@@ -126,10 +126,8 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 
     public override void Validate()
     {
-        foreach (var item in this.Lines ?? [])
-        {
-            _ = item;
-        }
+        _ = this.Type;
+        _ = this.Lines;
         _ = this.NewLines;
         _ = this.NewStart;
         _ = this.OldLines;

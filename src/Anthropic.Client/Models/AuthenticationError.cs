@@ -60,6 +60,7 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public AuthenticationError()

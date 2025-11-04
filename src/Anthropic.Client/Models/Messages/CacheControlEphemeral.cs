@@ -63,6 +63,7 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
 
     public override void Validate()
     {
+        _ = this.Type;
         this.TTL?.Validate();
     }
 

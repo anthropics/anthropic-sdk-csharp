@@ -60,6 +60,7 @@ public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSO
     public override void Validate()
     {
         _ = this.PartialJSON;
+        _ = this.Type;
     }
 
     public BetaInputJSONDelta()

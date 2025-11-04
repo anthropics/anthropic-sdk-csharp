@@ -84,6 +84,8 @@ public sealed record class ToolTextEditor20250124 : ModelBase, IFromRaw<ToolText
 
     public override void Validate()
     {
+        _ = this.Name;
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

@@ -60,6 +60,7 @@ public sealed record class BetaRawMessageStartEvent : ModelBase, IFromRaw<BetaRa
     public override void Validate()
     {
         this.Message.Validate();
+        _ = this.Type;
     }
 
     public BetaRawMessageStartEvent()

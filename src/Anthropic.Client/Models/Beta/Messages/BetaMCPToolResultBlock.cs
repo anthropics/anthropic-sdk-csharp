@@ -109,6 +109,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase, IFromRaw<BetaMCPT
         this.Content.Validate();
         _ = this.IsError;
         _ = this.ToolUseID;
+        _ = this.Type;
     }
 
     public BetaMCPToolResultBlock()

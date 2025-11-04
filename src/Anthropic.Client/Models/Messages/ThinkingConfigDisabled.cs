@@ -32,7 +32,10 @@ public sealed record class ThinkingConfigDisabled : ModelBase, IFromRaw<Thinking
         }
     }
 
-    public override void Validate() { }
+    public override void Validate()
+    {
+        _ = this.Type;
+    }
 
     public ThinkingConfigDisabled()
     {

@@ -60,6 +60,7 @@ public sealed record class OverloadedError : ModelBase, IFromRaw<OverloadedError
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public OverloadedError()

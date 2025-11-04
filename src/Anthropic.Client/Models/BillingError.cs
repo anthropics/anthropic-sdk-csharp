@@ -60,6 +60,7 @@ public sealed record class BillingError : ModelBase, IFromRaw<BillingError>
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BillingError()

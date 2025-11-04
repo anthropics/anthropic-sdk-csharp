@@ -55,6 +55,7 @@ public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInpu
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.Value;
     }
 

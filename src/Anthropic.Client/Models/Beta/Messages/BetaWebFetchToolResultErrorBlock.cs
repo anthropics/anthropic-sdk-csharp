@@ -61,6 +61,7 @@ public sealed record class BetaWebFetchToolResultErrorBlock
     public override void Validate()
     {
         this.ErrorCode.Validate();
+        _ = this.Type;
     }
 
     public BetaWebFetchToolResultErrorBlock()

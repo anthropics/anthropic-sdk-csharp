@@ -56,6 +56,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
     public override void Validate()
     {
         _ = this.Index;
+        _ = this.Type;
     }
 
     public RawContentBlockStopEvent()

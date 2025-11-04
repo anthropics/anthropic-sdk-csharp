@@ -58,6 +58,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlockParam
     public override void Validate()
     {
         _ = this.IsFileUpdate;
+        _ = this.Type;
     }
 
     public BetaTextEditorCodeExecutionCreateResultBlockParam()

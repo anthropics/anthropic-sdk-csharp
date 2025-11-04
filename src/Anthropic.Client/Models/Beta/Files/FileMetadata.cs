@@ -199,6 +199,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         _ = this.Filename;
         _ = this.MimeType;
         _ = this.SizeBytes;
+        _ = this.Type;
         _ = this.Downloadable;
     }
 

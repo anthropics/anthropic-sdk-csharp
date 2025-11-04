@@ -115,6 +115,7 @@ public sealed record class BetaCodeExecutionToolResultBlockParam
     {
         this.Content.Validate();
         _ = this.ToolUseID;
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

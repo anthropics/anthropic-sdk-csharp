@@ -147,6 +147,7 @@ public sealed record class BetaCitationCharLocationParam
         _ = this.DocumentTitle;
         _ = this.EndCharIndex;
         _ = this.StartCharIndex;
+        _ = this.Type;
     }
 
     public BetaCitationCharLocationParam()

@@ -61,6 +61,7 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
     public override void Validate()
     {
         this.Citation.Validate();
+        _ = this.Type;
     }
 
     public BetaCitationsDelta()

@@ -85,6 +85,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     public override void Validate()
     {
         this.Source.Validate();
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

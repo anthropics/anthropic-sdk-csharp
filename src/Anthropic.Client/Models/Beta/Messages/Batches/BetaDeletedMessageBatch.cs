@@ -68,6 +68,7 @@ public sealed record class BetaDeletedMessageBatch : ModelBase, IFromRaw<BetaDel
     public override void Validate()
     {
         _ = this.ID;
+        _ = this.Type;
     }
 
     public BetaDeletedMessageBatch()

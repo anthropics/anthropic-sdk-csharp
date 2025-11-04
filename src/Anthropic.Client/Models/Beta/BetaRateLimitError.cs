@@ -60,6 +60,7 @@ public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimi
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BetaRateLimitError()

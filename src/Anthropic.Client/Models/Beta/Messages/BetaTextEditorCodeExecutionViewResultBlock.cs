@@ -145,6 +145,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
         _ = this.NumLines;
         _ = this.StartLine;
         _ = this.TotalLines;
+        _ = this.Type;
     }
 
     public BetaTextEditorCodeExecutionViewResultBlock()

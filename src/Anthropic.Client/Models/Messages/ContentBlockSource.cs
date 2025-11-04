@@ -61,6 +61,7 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
     public override void Validate()
     {
         this.Content.Validate();
+        _ = this.Type;
     }
 
     public ContentBlockSource()

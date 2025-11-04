@@ -65,6 +65,7 @@ public sealed record class BetaCacheControlEphemeral
 
     public override void Validate()
     {
+        _ = this.Type;
         this.TTL?.Validate();
     }
 

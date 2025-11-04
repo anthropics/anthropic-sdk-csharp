@@ -133,6 +133,7 @@ public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchR
         _ = this.EncryptedContent;
         _ = this.PageAge;
         _ = this.Title;
+        _ = this.Type;
         _ = this.URL;
     }
 

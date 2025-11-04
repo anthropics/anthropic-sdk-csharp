@@ -86,6 +86,8 @@ public sealed record class BetaToolTextEditor20250429
 
     public override void Validate()
     {
+        _ = this.Name;
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

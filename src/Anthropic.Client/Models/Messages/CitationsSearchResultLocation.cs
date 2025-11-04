@@ -179,6 +179,7 @@ public sealed record class CitationsSearchResultLocation
         _ = this.Source;
         _ = this.StartBlockIndex;
         _ = this.Title;
+        _ = this.Type;
     }
 
     public CitationsSearchResultLocation()

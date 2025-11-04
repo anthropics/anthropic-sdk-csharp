@@ -61,6 +61,7 @@ public sealed record class CitationsDelta : ModelBase, IFromRaw<CitationsDelta>
     public override void Validate()
     {
         this.Citation.Validate();
+        _ = this.Type;
     }
 
     public CitationsDelta()

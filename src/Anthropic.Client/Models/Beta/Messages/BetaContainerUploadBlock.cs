@@ -63,6 +63,7 @@ public sealed record class BetaContainerUploadBlock : ModelBase, IFromRaw<BetaCo
     public override void Validate()
     {
         _ = this.FileID;
+        _ = this.Type;
     }
 
     public BetaContainerUploadBlock()

@@ -57,6 +57,7 @@ public sealed record class BetaInputTokensClearAtLeast
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.Value;
     }
 

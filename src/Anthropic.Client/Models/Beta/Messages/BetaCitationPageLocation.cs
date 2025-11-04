@@ -167,6 +167,7 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
         _ = this.EndPageNumber;
         _ = this.FileID;
         _ = this.StartPageNumber;
+        _ = this.Type;
     }
 
     public BetaCitationPageLocation()

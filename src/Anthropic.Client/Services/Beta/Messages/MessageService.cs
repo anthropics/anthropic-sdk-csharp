@@ -33,7 +33,12 @@ public sealed class MessageService : IMessageService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<BetaMessage>().ConfigureAwait(false);
+        var betaMessage = await response.Deserialize<BetaMessage>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            betaMessage.Validate();
+        }
+        return betaMessage;
     }
 
     public async IAsyncEnumerable<BetaRawMessageStreamEvent> CreateStreaming(
@@ -49,7 +54,12 @@ public sealed class MessageService : IMessageService
         using var response = await this._client.Execute(request).ConfigureAwait(false);
         await foreach (var message in SseMessage.GetEnumerable(response.Message))
         {
-            yield return message.MessageDeserializeMethod<BetaRawMessageStreamEvent>();
+            var betaMessage = message.Deserialize<BetaRawMessageStreamEvent>();
+            if (this._client.ResponseValidation)
+            {
+                betaMessage.Validate();
+            }
+            yield return betaMessage;
         }
     }
 
@@ -61,6 +71,13 @@ public sealed class MessageService : IMessageService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<BetaMessageTokensCount>().ConfigureAwait(false);
+        var betaMessageTokensCount = await response
+            .Deserialize<BetaMessageTokensCount>()
+            .ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            betaMessageTokensCount.Validate();
+        }
+        return betaMessageTokensCount;
     }
 }

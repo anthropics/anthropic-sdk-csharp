@@ -79,17 +79,9 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
 
     public override void Validate()
     {
-        if (this.Properties1 != null)
-        {
-            foreach (var item in this.Properties1.Values)
-            {
-                _ = item;
-            }
-        }
-        foreach (var item in this.Required ?? [])
-        {
-            _ = item;
-        }
+        _ = this.Type;
+        _ = this.Properties1;
+        _ = this.Required;
     }
 
     public InputSchema()

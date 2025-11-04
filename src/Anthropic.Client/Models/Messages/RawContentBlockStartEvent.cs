@@ -88,6 +88,7 @@ public sealed record class RawContentBlockStartEvent
     {
         this.ContentBlock.Validate();
         _ = this.Index;
+        _ = this.Type;
     }
 
     public RawContentBlockStartEvent()

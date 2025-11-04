@@ -95,6 +95,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
 
     public override void Validate()
     {
+        _ = this.Command;
         _ = this.FileText;
         _ = this.Path;
     }

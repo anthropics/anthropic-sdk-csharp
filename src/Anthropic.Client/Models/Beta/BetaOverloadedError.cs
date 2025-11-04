@@ -60,6 +60,7 @@ public sealed record class BetaOverloadedError : ModelBase, IFromRaw<BetaOverloa
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BetaOverloadedError()

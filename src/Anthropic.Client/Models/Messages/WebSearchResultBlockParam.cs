@@ -134,6 +134,7 @@ public sealed record class WebSearchResultBlockParam
     {
         _ = this.EncryptedContent;
         _ = this.Title;
+        _ = this.Type;
         _ = this.URL;
         _ = this.PageAge;
     }

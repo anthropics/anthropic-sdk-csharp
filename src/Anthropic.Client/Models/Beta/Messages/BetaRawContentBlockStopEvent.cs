@@ -58,6 +58,7 @@ public sealed record class BetaRawContentBlockStopEvent
     public override void Validate()
     {
         _ = this.Index;
+        _ = this.Type;
     }
 
     public BetaRawContentBlockStopEvent()

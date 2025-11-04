@@ -59,6 +59,7 @@ public sealed record class BetaURLImageSource : ModelBase, IFromRaw<BetaURLImage
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.URL;
     }
 

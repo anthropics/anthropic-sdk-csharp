@@ -24,7 +24,12 @@ public sealed class FileService : IFileService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<FileListPageResponse>().ConfigureAwait(false);
+        var page = await response.Deserialize<FileListPageResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            page.Validate();
+        }
+        return page;
     }
 
     public async Task<DeletedFile> Delete(FileDeleteParams parameters)
@@ -35,7 +40,12 @@ public sealed class FileService : IFileService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<DeletedFile>().ConfigureAwait(false);
+        var deletedFile = await response.Deserialize<DeletedFile>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            deletedFile.Validate();
+        }
+        return deletedFile;
     }
 
     public async Task<FileMetadata> RetrieveMetadata(FileRetrieveMetadataParams parameters)
@@ -46,6 +56,11 @@ public sealed class FileService : IFileService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<FileMetadata>().ConfigureAwait(false);
+        var fileMetadata = await response.Deserialize<FileMetadata>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            fileMetadata.Validate();
+        }
+        return fileMetadata;
     }
 }

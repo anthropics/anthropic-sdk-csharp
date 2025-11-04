@@ -126,6 +126,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
     public override void Validate()
     {
         _ = this.Name;
+        _ = this.Type;
         _ = this.URL;
         _ = this.AuthorizationToken;
         this.ToolConfiguration?.Validate();

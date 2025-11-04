@@ -164,6 +164,7 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
         _ = this.EndCharIndex;
         _ = this.FileID;
         _ = this.StartCharIndex;
+        _ = this.Type;
     }
 
     public BetaCitationCharLocation()

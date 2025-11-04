@@ -33,7 +33,12 @@ public sealed class MessageService : IMessageService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<Message>().ConfigureAwait(false);
+        var message = await response.Deserialize<Message>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            message.Validate();
+        }
+        return message;
     }
 
     public async IAsyncEnumerable<RawMessageStreamEvent> CreateStreaming(
@@ -49,7 +54,12 @@ public sealed class MessageService : IMessageService
         using var response = await this._client.Execute(request).ConfigureAwait(false);
         await foreach (var message in SseMessage.GetEnumerable(response.Message))
         {
-            yield return message.MessageDeserializeMethod<RawMessageStreamEvent>();
+            var deserializedMessage = message.Deserialize<RawMessageStreamEvent>();
+            if (this._client.ResponseValidation)
+            {
+                deserializedMessage.Validate();
+            }
+            yield return deserializedMessage;
         }
     }
 
@@ -61,6 +71,13 @@ public sealed class MessageService : IMessageService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<MessageTokensCount>().ConfigureAwait(false);
+        var messageTokensCount = await response
+            .Deserialize<MessageTokensCount>()
+            .ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            messageTokensCount.Validate();
+        }
+        return messageTokensCount;
     }
 }

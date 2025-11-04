@@ -60,6 +60,7 @@ public sealed record class BetaAuthenticationError : ModelBase, IFromRaw<BetaAut
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BetaAuthenticationError()

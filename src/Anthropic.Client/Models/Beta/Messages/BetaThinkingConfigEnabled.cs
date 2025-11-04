@@ -68,6 +68,7 @@ public sealed record class BetaThinkingConfigEnabled
     public override void Validate()
     {
         _ = this.BudgetTokens;
+        _ = this.Type;
     }
 
     public BetaThinkingConfigEnabled()

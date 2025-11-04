@@ -170,14 +170,10 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
 
     public override void Validate()
     {
-        foreach (var item in this.AllowedDomains ?? [])
-        {
-            _ = item;
-        }
-        foreach (var item in this.BlockedDomains ?? [])
-        {
-            _ = item;
-        }
+        _ = this.Name;
+        _ = this.Type;
+        _ = this.AllowedDomains;
+        _ = this.BlockedDomains;
         this.CacheControl?.Validate();
         _ = this.MaxUses;
         this.UserLocation?.Validate();

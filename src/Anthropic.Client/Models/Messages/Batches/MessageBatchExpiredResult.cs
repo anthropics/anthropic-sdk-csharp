@@ -34,7 +34,10 @@ public sealed record class MessageBatchExpiredResult
         }
     }
 
-    public override void Validate() { }
+    public override void Validate()
+    {
+        _ = this.Type;
+    }
 
     public MessageBatchExpiredResult()
     {

@@ -95,6 +95,7 @@ public sealed record class BetaClearToolUses20250919EditResponse
     {
         _ = this.ClearedInputTokens;
         _ = this.ClearedToolUses;
+        _ = this.Type;
     }
 
     public BetaClearToolUses20250919EditResponse()

@@ -150,6 +150,7 @@ public sealed record class BetaCitationContentBlockLocationParam
         _ = this.DocumentTitle;
         _ = this.EndBlockIndex;
         _ = this.StartBlockIndex;
+        _ = this.Type;
     }
 
     public BetaCitationContentBlockLocationParam()

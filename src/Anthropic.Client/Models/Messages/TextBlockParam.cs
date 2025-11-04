@@ -105,6 +105,7 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
     public override void Validate()
     {
         _ = this.Text;
+        _ = this.Type;
         this.CacheControl?.Validate();
         foreach (var item in this.Citations ?? [])
         {

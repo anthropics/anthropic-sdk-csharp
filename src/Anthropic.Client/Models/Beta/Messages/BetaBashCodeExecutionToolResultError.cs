@@ -62,6 +62,7 @@ public sealed record class BetaBashCodeExecutionToolResultError
     public override void Validate()
     {
         this.ErrorCode.Validate();
+        _ = this.Type;
     }
 
     public BetaBashCodeExecutionToolResultError()

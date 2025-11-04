@@ -60,6 +60,7 @@ public sealed record class BetaPermissionError : ModelBase, IFromRaw<BetaPermiss
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BetaPermissionError()

@@ -66,6 +66,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
     public override void Validate()
     {
         _ = this.BudgetTokens;
+        _ = this.Type;
     }
 
     public ThinkingConfigEnabled()

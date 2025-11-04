@@ -142,6 +142,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     public override void Validate()
     {
         this.Source.Validate();
+        _ = this.Type;
         this.CacheControl?.Validate();
         this.Citations?.Validate();
         _ = this.Context;

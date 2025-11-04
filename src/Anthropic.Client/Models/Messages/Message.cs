@@ -280,8 +280,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
             item.Validate();
         }
         this.Model.Validate();
+        _ = this.Role;
         this.StopReason?.Validate();
         _ = this.StopSequence;
+        _ = this.Type;
         this.Usage.Validate();
     }
 

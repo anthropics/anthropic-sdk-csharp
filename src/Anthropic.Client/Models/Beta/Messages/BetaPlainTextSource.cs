@@ -81,6 +81,8 @@ public sealed record class BetaPlainTextSource : ModelBase, IFromRaw<BetaPlainTe
     public override void Validate()
     {
         _ = this.Data;
+        _ = this.MediaType;
+        _ = this.Type;
     }
 
     public BetaPlainTextSource()

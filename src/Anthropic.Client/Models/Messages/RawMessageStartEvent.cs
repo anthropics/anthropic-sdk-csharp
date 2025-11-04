@@ -60,6 +60,7 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
     public override void Validate()
     {
         this.Message.Validate();
+        _ = this.Type;
     }
 
     public RawMessageStartEvent()

@@ -59,6 +59,7 @@ public sealed record class BetaClearThinking20251015Edit
 
     public override void Validate()
     {
+        _ = this.Type;
         this.Keep?.Validate();
     }
 

@@ -49,10 +49,7 @@ public sealed record class BetaRequestMCPServerToolConfiguration
 
     public override void Validate()
     {
-        foreach (var item in this.AllowedTools ?? [])
-        {
-            _ = item;
-        }
+        _ = this.AllowedTools;
         _ = this.Enabled;
     }
 

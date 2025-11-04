@@ -61,6 +61,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
     public override void Validate()
     {
         this.Content.Validate();
+        _ = this.Type;
     }
 
     public BetaContentBlockSource()

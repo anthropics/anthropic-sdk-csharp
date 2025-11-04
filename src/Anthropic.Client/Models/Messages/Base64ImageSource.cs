@@ -86,6 +86,7 @@ public sealed record class Base64ImageSource : ModelBase, IFromRaw<Base64ImageSo
     {
         _ = this.Data;
         this.MediaType.Validate();
+        _ = this.Type;
     }
 
     public Base64ImageSource()

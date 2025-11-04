@@ -106,6 +106,8 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
 
     public override void Validate()
     {
+        _ = this.Name;
+        _ = this.Type;
         this.CacheControl?.Validate();
         _ = this.MaxCharacters;
     }

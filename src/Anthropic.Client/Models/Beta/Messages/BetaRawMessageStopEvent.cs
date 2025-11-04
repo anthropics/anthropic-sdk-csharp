@@ -32,7 +32,10 @@ public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRaw
         }
     }
 
-    public override void Validate() { }
+    public override void Validate()
+    {
+        _ = this.Type;
+    }
 
     public BetaRawMessageStopEvent()
     {

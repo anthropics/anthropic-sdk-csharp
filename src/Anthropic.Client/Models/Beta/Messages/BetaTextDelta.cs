@@ -60,6 +60,7 @@ public sealed record class BetaTextDelta : ModelBase, IFromRaw<BetaTextDelta>
     public override void Validate()
     {
         _ = this.Text;
+        _ = this.Type;
     }
 
     public BetaTextDelta()

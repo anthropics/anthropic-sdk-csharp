@@ -60,6 +60,7 @@ public sealed record class InvalidRequestError : ModelBase, IFromRaw<InvalidRequ
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public InvalidRequestError()

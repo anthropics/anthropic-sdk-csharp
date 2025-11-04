@@ -61,6 +61,7 @@ public sealed record class ToolChoiceAny : ModelBase, IFromRaw<ToolChoiceAny>
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.DisableParallelToolUse;
     }
 

@@ -123,6 +123,7 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
+        _ = this.Type;
     }
 
     public ModelInfo()

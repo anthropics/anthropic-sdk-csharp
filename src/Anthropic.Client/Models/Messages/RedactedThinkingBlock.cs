@@ -60,6 +60,7 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
     public override void Validate()
     {
         _ = this.Data;
+        _ = this.Type;
     }
 
     public RedactedThinkingBlock()

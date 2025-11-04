@@ -165,12 +165,10 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
     public override void Validate()
     {
         _ = this.ID;
-        foreach (var item in this.Input.Values)
-        {
-            _ = item;
-        }
+        _ = this.Input;
         _ = this.Name;
         _ = this.ServerName;
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

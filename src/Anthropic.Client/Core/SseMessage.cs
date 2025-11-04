@@ -70,7 +70,7 @@ sealed record class SseMessage(string? Event, string Data, string? ID, int? Retr
         }
     }
 
-    internal T MessageDeserializeMethod<T>()
+    internal T Deserialize<T>()
     {
         return JsonSerializer.Deserialize<T>(this.Data)
             ?? throw new AnthropicInvalidDataException("Message cannot be null");

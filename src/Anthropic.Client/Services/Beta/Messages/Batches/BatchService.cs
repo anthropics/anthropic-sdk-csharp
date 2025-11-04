@@ -23,7 +23,12 @@ public sealed class BatchService : IBatchService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<BetaMessageBatch>().ConfigureAwait(false);
+        var betaMessageBatch = await response.Deserialize<BetaMessageBatch>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            betaMessageBatch.Validate();
+        }
+        return betaMessageBatch;
     }
 
     public async Task<BetaMessageBatch> Retrieve(BatchRetrieveParams parameters)
@@ -34,7 +39,12 @@ public sealed class BatchService : IBatchService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<BetaMessageBatch>().ConfigureAwait(false);
+        var betaMessageBatch = await response.Deserialize<BetaMessageBatch>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            betaMessageBatch.Validate();
+        }
+        return betaMessageBatch;
     }
 
     public async Task<BatchListPageResponse> List(BatchListParams? parameters = null)
@@ -47,7 +57,12 @@ public sealed class BatchService : IBatchService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<BatchListPageResponse>().ConfigureAwait(false);
+        var page = await response.Deserialize<BatchListPageResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            page.Validate();
+        }
+        return page;
     }
 
     public async Task<BetaDeletedMessageBatch> Delete(BatchDeleteParams parameters)
@@ -58,7 +73,14 @@ public sealed class BatchService : IBatchService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<BetaDeletedMessageBatch>().ConfigureAwait(false);
+        var betaDeletedMessageBatch = await response
+            .Deserialize<BetaDeletedMessageBatch>()
+            .ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            betaDeletedMessageBatch.Validate();
+        }
+        return betaDeletedMessageBatch;
     }
 
     public async Task<BetaMessageBatch> Cancel(BatchCancelParams parameters)
@@ -69,7 +91,12 @@ public sealed class BatchService : IBatchService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<BetaMessageBatch>().ConfigureAwait(false);
+        var betaMessageBatch = await response.Deserialize<BetaMessageBatch>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            betaMessageBatch.Validate();
+        }
+        return betaMessageBatch;
     }
 
     public async IAsyncEnumerable<BetaMessageBatchIndividualResponse> ResultsStreaming(
@@ -84,7 +111,13 @@ public sealed class BatchService : IBatchService
         using var response = await this._client.Execute(request).ConfigureAwait(false);
         await foreach (var message in SseMessage.GetEnumerable(response.Message))
         {
-            yield return message.MessageDeserializeMethod<BetaMessageBatchIndividualResponse>();
+            var betaMessageBatchIndividualResponse =
+                message.Deserialize<BetaMessageBatchIndividualResponse>();
+            if (this._client.ResponseValidation)
+            {
+                betaMessageBatchIndividualResponse.Validate();
+            }
+            yield return betaMessageBatchIndividualResponse;
         }
     }
 }

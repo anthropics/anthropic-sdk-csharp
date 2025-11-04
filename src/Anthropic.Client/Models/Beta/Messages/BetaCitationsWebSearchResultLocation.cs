@@ -132,6 +132,7 @@ public sealed record class BetaCitationsWebSearchResultLocation
         _ = this.CitedText;
         _ = this.EncryptedIndex;
         _ = this.Title;
+        _ = this.Type;
         _ = this.URL;
     }
 

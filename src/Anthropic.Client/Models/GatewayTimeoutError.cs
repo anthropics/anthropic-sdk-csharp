@@ -60,6 +60,7 @@ public sealed record class GatewayTimeoutError : ModelBase, IFromRaw<GatewayTime
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public GatewayTimeoutError()

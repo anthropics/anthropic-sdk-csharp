@@ -60,6 +60,7 @@ public sealed record class BetaBillingError : ModelBase, IFromRaw<BetaBillingErr
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BetaBillingError()

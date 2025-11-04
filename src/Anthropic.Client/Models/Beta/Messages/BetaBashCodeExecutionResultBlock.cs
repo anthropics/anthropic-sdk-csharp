@@ -142,6 +142,7 @@ public sealed record class BetaBashCodeExecutionResultBlock
         _ = this.ReturnCode;
         _ = this.Stderr;
         _ = this.Stdout;
+        _ = this.Type;
     }
 
     public BetaBashCodeExecutionResultBlock()

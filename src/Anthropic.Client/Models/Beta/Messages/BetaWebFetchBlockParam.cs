@@ -112,6 +112,7 @@ public sealed record class BetaWebFetchBlockParam : ModelBase, IFromRaw<BetaWebF
     public override void Validate()
     {
         this.Content.Validate();
+        _ = this.Type;
         _ = this.URL;
         _ = this.RetrievedAt;
     }

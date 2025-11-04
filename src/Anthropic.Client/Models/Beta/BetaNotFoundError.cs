@@ -60,6 +60,7 @@ public sealed record class BetaNotFoundError : ModelBase, IFromRaw<BetaNotFoundE
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public BetaNotFoundError()

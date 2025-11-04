@@ -95,6 +95,7 @@ public sealed record class BetaClearThinking20251015EditResponse
     {
         _ = this.ClearedInputTokens;
         _ = this.ClearedThinkingTurns;
+        _ = this.Type;
     }
 
     public BetaClearThinking20251015EditResponse()

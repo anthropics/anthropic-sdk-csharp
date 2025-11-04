@@ -22,7 +22,12 @@ public sealed class ModelService : IModelService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<BetaModelInfo>().ConfigureAwait(false);
+        var betaModelInfo = await response.Deserialize<BetaModelInfo>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            betaModelInfo.Validate();
+        }
+        return betaModelInfo;
     }
 
     public async Task<ModelListPageResponse> List(ModelListParams? parameters = null)
@@ -35,6 +40,11 @@ public sealed class ModelService : IModelService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<ModelListPageResponse>().ConfigureAwait(false);
+        var page = await response.Deserialize<ModelListPageResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            page.Validate();
+        }
+        return page;
     }
 }

@@ -87,6 +87,7 @@ public sealed record class RawContentBlockDeltaEvent
     {
         this.Delta.Validate();
         _ = this.Index;
+        _ = this.Type;
     }
 
     public RawContentBlockDeltaEvent()

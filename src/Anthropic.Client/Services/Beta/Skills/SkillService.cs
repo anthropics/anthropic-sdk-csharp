@@ -33,7 +33,12 @@ public sealed class SkillService : ISkillService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<SkillCreateResponse>().ConfigureAwait(false);
+        var skill = await response.Deserialize<SkillCreateResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            skill.Validate();
+        }
+        return skill;
     }
 
     public async Task<SkillRetrieveResponse> Retrieve(SkillRetrieveParams parameters)
@@ -44,7 +49,12 @@ public sealed class SkillService : ISkillService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<SkillRetrieveResponse>().ConfigureAwait(false);
+        var skill = await response.Deserialize<SkillRetrieveResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            skill.Validate();
+        }
+        return skill;
     }
 
     public async Task<SkillListPageResponse> List(SkillListParams? parameters = null)
@@ -57,7 +67,12 @@ public sealed class SkillService : ISkillService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<SkillListPageResponse>().ConfigureAwait(false);
+        var page = await response.Deserialize<SkillListPageResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            page.Validate();
+        }
+        return page;
     }
 
     public async Task<SkillDeleteResponse> Delete(SkillDeleteParams parameters)
@@ -68,6 +83,11 @@ public sealed class SkillService : ISkillService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<SkillDeleteResponse>().ConfigureAwait(false);
+        var skill = await response.Deserialize<SkillDeleteResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            skill.Validate();
+        }
+        return skill;
     }
 }

@@ -68,6 +68,7 @@ public sealed record class DeletedMessageBatch : ModelBase, IFromRaw<DeletedMess
     public override void Validate()
     {
         _ = this.ID;
+        _ = this.Type;
     }
 
     public DeletedMessageBatch()

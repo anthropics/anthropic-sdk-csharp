@@ -86,6 +86,7 @@ public sealed record class BetaThinkingBlock : ModelBase, IFromRaw<BetaThinkingB
     {
         _ = this.Signature;
         _ = this.Thinking;
+        _ = this.Type;
     }
 
     public BetaThinkingBlock()

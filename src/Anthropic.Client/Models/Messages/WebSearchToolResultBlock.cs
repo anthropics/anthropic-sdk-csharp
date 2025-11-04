@@ -89,6 +89,7 @@ public sealed record class WebSearchToolResultBlock : ModelBase, IFromRaw<WebSea
     {
         this.Content.Validate();
         _ = this.ToolUseID;
+        _ = this.Type;
     }
 
     public WebSearchToolResultBlock()

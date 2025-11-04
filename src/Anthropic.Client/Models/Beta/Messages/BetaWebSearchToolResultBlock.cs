@@ -91,6 +91,7 @@ public sealed record class BetaWebSearchToolResultBlock
     {
         this.Content.Validate();
         _ = this.ToolUseID;
+        _ = this.Type;
     }
 
     public BetaWebSearchToolResultBlock()

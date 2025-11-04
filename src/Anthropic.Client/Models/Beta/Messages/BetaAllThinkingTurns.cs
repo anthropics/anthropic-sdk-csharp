@@ -32,7 +32,10 @@ public sealed record class BetaAllThinkingTurns : ModelBase, IFromRaw<BetaAllThi
         }
     }
 
-    public override void Validate() { }
+    public override void Validate()
+    {
+        _ = this.Type;
+    }
 
     public BetaAllThinkingTurns()
     {

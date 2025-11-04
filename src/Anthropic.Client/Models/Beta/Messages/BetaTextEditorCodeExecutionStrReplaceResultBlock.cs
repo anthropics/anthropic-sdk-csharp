@@ -126,14 +126,12 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock
 
     public override void Validate()
     {
-        foreach (var item in this.Lines ?? [])
-        {
-            _ = item;
-        }
+        _ = this.Lines;
         _ = this.NewLines;
         _ = this.NewStart;
         _ = this.OldLines;
         _ = this.OldStart;
+        _ = this.Type;
     }
 
     public BetaTextEditorCodeExecutionStrReplaceResultBlock()

@@ -55,6 +55,7 @@ public sealed record class BetaToolUsesKeep : ModelBase, IFromRaw<BetaToolUsesKe
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.Value;
     }
 

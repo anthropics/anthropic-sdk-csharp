@@ -60,6 +60,7 @@ public sealed record class BetaThinkingDelta : ModelBase, IFromRaw<BetaThinkingD
     public override void Validate()
     {
         _ = this.Thinking;
+        _ = this.Type;
     }
 
     public BetaThinkingDelta()

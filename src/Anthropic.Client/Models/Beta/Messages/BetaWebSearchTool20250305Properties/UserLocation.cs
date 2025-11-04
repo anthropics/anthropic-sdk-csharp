@@ -122,6 +122,7 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.City;
         _ = this.Country;
         _ = this.Region;

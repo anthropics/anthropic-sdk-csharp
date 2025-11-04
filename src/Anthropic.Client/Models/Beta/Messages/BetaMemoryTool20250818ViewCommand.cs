@@ -88,11 +88,9 @@ public sealed record class BetaMemoryTool20250818ViewCommand
 
     public override void Validate()
     {
+        _ = this.Command;
         _ = this.Path;
-        foreach (var item in this.ViewRange ?? [])
-        {
-            _ = item;
-        }
+        _ = this.ViewRange;
     }
 
     public BetaMemoryTool20250818ViewCommand()

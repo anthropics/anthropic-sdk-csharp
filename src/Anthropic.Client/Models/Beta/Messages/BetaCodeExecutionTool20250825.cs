@@ -86,6 +86,8 @@ public sealed record class BetaCodeExecutionTool20250825
 
     public override void Validate()
     {
+        _ = this.Name;
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

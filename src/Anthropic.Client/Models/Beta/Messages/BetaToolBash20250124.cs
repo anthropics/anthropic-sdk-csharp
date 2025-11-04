@@ -84,6 +84,8 @@ public sealed record class BetaToolBash20250124 : ModelBase, IFromRaw<BetaToolBa
 
     public override void Validate()
     {
+        _ = this.Name;
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

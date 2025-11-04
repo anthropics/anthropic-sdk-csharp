@@ -81,6 +81,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
     {
         this.ErrorCode.Validate();
         _ = this.ErrorMessage;
+        _ = this.Type;
     }
 
     public BetaTextEditorCodeExecutionToolResultError()

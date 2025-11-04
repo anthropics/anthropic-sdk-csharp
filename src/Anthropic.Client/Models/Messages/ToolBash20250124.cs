@@ -84,6 +84,8 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
 
     public override void Validate()
     {
+        _ = this.Name;
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

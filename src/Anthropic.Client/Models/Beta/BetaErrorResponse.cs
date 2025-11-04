@@ -79,6 +79,7 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
     {
         this.Error.Validate();
         _ = this.RequestID;
+        _ = this.Type;
     }
 
     public BetaErrorResponse()

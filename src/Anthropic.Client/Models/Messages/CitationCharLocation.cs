@@ -164,6 +164,7 @@ public sealed record class CitationCharLocation : ModelBase, IFromRaw<CitationCh
         _ = this.EndCharIndex;
         _ = this.FileID;
         _ = this.StartCharIndex;
+        _ = this.Type;
     }
 
     public CitationCharLocation()

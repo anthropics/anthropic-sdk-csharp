@@ -55,6 +55,7 @@ public sealed record class BetaThinkingTurns : ModelBase, IFromRaw<BetaThinkingT
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.Value;
     }
 

@@ -59,6 +59,7 @@ public sealed record class BetaURLPDFSource : ModelBase, IFromRaw<BetaURLPDFSour
 
     public override void Validate()
     {
+        _ = this.Type;
         _ = this.URL;
     }
 

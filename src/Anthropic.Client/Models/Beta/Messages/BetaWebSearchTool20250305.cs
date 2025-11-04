@@ -172,14 +172,10 @@ public sealed record class BetaWebSearchTool20250305
 
     public override void Validate()
     {
-        foreach (var item in this.AllowedDomains ?? [])
-        {
-            _ = item;
-        }
-        foreach (var item in this.BlockedDomains ?? [])
-        {
-            _ = item;
-        }
+        _ = this.Name;
+        _ = this.Type;
+        _ = this.AllowedDomains;
+        _ = this.BlockedDomains;
         this.CacheControl?.Validate();
         _ = this.MaxUses;
         this.UserLocation?.Validate();

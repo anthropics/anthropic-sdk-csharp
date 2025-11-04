@@ -108,6 +108,7 @@ public sealed record class BetaDocumentBlock : ModelBase, IFromRaw<BetaDocumentB
         this.Citations?.Validate();
         this.Source.Validate();
         _ = this.Title;
+        _ = this.Type;
     }
 
     public BetaDocumentBlock()

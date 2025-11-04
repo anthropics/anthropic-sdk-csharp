@@ -179,6 +179,7 @@ public sealed record class BetaCitationSearchResultLocationParam
         _ = this.Source;
         _ = this.StartBlockIndex;
         _ = this.Title;
+        _ = this.Type;
     }
 
     public BetaCitationSearchResultLocationParam()

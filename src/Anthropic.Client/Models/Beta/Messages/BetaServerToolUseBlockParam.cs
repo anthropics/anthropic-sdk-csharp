@@ -139,11 +139,9 @@ public sealed record class BetaServerToolUseBlockParam
     public override void Validate()
     {
         _ = this.ID;
-        foreach (var item in this.Input.Values)
-        {
-            _ = item;
-        }
+        _ = this.Input;
         this.Name.Validate();
+        _ = this.Type;
         this.CacheControl?.Validate();
     }
 

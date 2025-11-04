@@ -35,7 +35,10 @@ public sealed record class ToolChoiceNone : ModelBase, IFromRaw<ToolChoiceNone>
         }
     }
 
-    public override void Validate() { }
+    public override void Validate()
+    {
+        _ = this.Type;
+    }
 
     public ToolChoiceNone()
     {

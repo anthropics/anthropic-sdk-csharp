@@ -60,6 +60,7 @@ public sealed record class BetaSignatureDelta : ModelBase, IFromRaw<BetaSignatur
     public override void Validate()
     {
         _ = this.Signature;
+        _ = this.Type;
     }
 
     public BetaSignatureDelta()

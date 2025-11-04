@@ -572,10 +572,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         this.Metadata?.Validate();
         this.ServiceTier?.Validate();
-        foreach (var item in this.StopSequences ?? [])
-        {
-            _ = item;
-        }
+        _ = this.StopSequences;
         _ = this.Stream;
         this.System?.Validate();
         _ = this.Temperature;

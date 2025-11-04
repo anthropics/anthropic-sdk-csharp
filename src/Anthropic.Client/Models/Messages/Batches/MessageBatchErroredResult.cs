@@ -62,6 +62,7 @@ public sealed record class MessageBatchErroredResult
     public override void Validate()
     {
         this.Error.Validate();
+        _ = this.Type;
     }
 
     public MessageBatchErroredResult()

@@ -330,8 +330,10 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
         }
         this.ContextManagement?.Validate();
         this.Model.Validate();
+        _ = this.Role;
         this.StopReason?.Validate();
         _ = this.StopSequence;
+        _ = this.Type;
         this.Usage.Validate();
     }
 

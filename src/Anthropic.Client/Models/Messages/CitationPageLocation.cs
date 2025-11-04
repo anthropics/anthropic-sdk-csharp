@@ -167,6 +167,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
         _ = this.EndPageNumber;
         _ = this.FileID;
         _ = this.StartPageNumber;
+        _ = this.Type;
     }
 
     public CitationPageLocation()

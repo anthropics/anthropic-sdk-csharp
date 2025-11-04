@@ -67,6 +67,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
 
     public override void Validate()
     {
+        _ = this.Command;
         _ = this.Path;
     }
 

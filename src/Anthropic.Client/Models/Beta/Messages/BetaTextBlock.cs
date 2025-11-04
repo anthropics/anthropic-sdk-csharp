@@ -92,6 +92,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
             item.Validate();
         }
         _ = this.Text;
+        _ = this.Type;
     }
 
     public BetaTextBlock()

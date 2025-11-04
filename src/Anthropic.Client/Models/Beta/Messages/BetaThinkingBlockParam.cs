@@ -86,6 +86,7 @@ public sealed record class BetaThinkingBlockParam : ModelBase, IFromRaw<BetaThin
     {
         _ = this.Signature;
         _ = this.Thinking;
+        _ = this.Type;
     }
 
     public BetaThinkingBlockParam()

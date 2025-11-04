@@ -106,6 +106,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
     public override void Validate()
     {
         this.Delta.Validate();
+        _ = this.Type;
         this.Usage.Validate();
     }
 

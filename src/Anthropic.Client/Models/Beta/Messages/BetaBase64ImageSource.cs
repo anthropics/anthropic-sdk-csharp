@@ -86,6 +86,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
     {
         _ = this.Data;
         this.MediaType.Validate();
+        _ = this.Type;
     }
 
     public BetaBase64ImageSource()

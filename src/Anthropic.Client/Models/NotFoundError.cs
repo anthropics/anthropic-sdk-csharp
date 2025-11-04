@@ -60,6 +60,7 @@ public sealed record class NotFoundError : ModelBase, IFromRaw<NotFoundError>
     public override void Validate()
     {
         _ = this.Message;
+        _ = this.Type;
     }
 
     public NotFoundError()

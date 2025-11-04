@@ -89,6 +89,7 @@ public sealed record class BetaBashCodeExecutionToolResultBlock
     {
         this.Content.Validate();
         _ = this.ToolUseID;
+        _ = this.Type;
     }
 
     public BetaBashCodeExecutionToolResultBlock()
