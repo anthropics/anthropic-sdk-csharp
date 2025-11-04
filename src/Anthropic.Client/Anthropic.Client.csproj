@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>
       The official .NET library for the Anthropic C# service API.
@@ -30,6 +30,6 @@
     <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="9.0.9"/>
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="9.10.2" />
   </ItemGroup>
 </Project>
