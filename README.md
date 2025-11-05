@@ -35,7 +35,6 @@ using Anthropic.Client;
 using Anthropic.Client.Models.Messages;
 using Anthropic.Client.Models.Messages.MessageParamProperties;
 
-// Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
 
 MessageCreateParams parameters = new()
@@ -57,7 +56,7 @@ var message = await client.Messages.Create(parameters);
 Console.WriteLine(message);
 ```
 
-## Client Configuration
+## Client configuration
 
 Configure the client using environment variables:
 
@@ -92,15 +91,18 @@ To temporarily use a modified client configuration, while reusing the same conne
 
 ```csharp
 using System;
-using Anthropic.Client;
 
-IAnthropicClient clientWithOptions = client.WithOptions(options =>
-    options with
-    {
-        BaseUrl = new("https://example.com"),
-        Timeout = TimeSpan.FromSeconds(42),
-    }
-);
+var message = await client
+    .WithOptions(options =>
+        options with
+        {
+            BaseUrl = new("https://example.com"),
+            Timeout = TimeSpan.FromSeconds(42),
+        }
+    )
+    .Messages.Create(parameters);
+
+Console.WriteLine(message);
 ```
 
 Using a [`with` expression](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/with-expression) makes it easy to construct the modified options.
@@ -172,6 +174,38 @@ Additionally, all 4xx errors inherit from `Anthropic4xxException`.
 - `AnthropicInvalidDataException`: Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
 - `AnthropicException`: Base class for all exceptions.
+
+## Network options
+
+### Timeouts
+
+Requests time out after 10 minutes by default.
+
+To set a custom timeout, configure the client using the `Timeout` option:
+
+```csharp
+using System;
+using Anthropic.Client;
+
+AnthropicClient client = new() { Timeout = TimeSpan.FromSeconds(42) };
+```
+
+Or configure a single method call using [`WithOptions`](#modifying-configuration):
+
+```csharp
+using System;
+
+var message = await client
+    .WithOptions(options =>
+        options with
+        {
+            Timeout = TimeSpan.FromSeconds(42)
+        }
+    )
+    .Messages.Create(parameters);
+
+Console.WriteLine(message);
+```
 
 ## Semantic versioning
 
