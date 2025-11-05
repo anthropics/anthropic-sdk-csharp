@@ -1,7 +1,7 @@
-using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta;
 
@@ -32,7 +32,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
 {
     public override AnthropicBeta Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {

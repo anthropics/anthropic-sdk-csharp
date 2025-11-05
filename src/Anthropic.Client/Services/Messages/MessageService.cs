@@ -4,8 +4,8 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
-using Anthropic.Client.Models.Messages;
 using Anthropic.Client.Services.Messages.Batches;
+using Messages = Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Services.Messages;
 
@@ -30,15 +30,15 @@ public sealed class MessageService : IMessageService
         get { return _batches.Value; }
     }
 
-    public async Task<Message> Create(MessageCreateParams parameters)
+    public async Task<Messages::Message> Create(Messages::MessageCreateParams parameters)
     {
-        HttpRequest<MessageCreateParams> request = new()
+        HttpRequest<Messages::MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var message = await response.Deserialize<Message>().ConfigureAwait(false);
+        var message = await response.Deserialize<Messages::Message>().ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             message.Validate();
@@ -46,12 +46,12 @@ public sealed class MessageService : IMessageService
         return message;
     }
 
-    public async IAsyncEnumerable<RawMessageStreamEvent> CreateStreaming(
-        MessageCreateParams parameters
+    public async IAsyncEnumerable<Messages::RawMessageStreamEvent> CreateStreaming(
+        Messages::MessageCreateParams parameters
     )
     {
         parameters.BodyProperties["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
-        HttpRequest<MessageCreateParams> request = new()
+        HttpRequest<Messages::MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
@@ -59,7 +59,7 @@ public sealed class MessageService : IMessageService
         using var response = await this._client.Execute(request).ConfigureAwait(false);
         await foreach (var message in SseMessage.GetEnumerable(response.Message))
         {
-            var deserializedMessage = message.Deserialize<RawMessageStreamEvent>();
+            var deserializedMessage = message.Deserialize<Messages::RawMessageStreamEvent>();
             if (this._client.ResponseValidation)
             {
                 deserializedMessage.Validate();
@@ -68,16 +68,18 @@ public sealed class MessageService : IMessageService
         }
     }
 
-    public async Task<MessageTokensCount> CountTokens(MessageCountTokensParams parameters)
+    public async Task<Messages::MessageTokensCount> CountTokens(
+        Messages::MessageCountTokensParams parameters
+    )
     {
-        HttpRequest<MessageCountTokensParams> request = new()
+        HttpRequest<Messages::MessageCountTokensParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
         var messageTokensCount = await response
-            .Deserialize<MessageTokensCount>()
+            .Deserialize<Messages::MessageTokensCount>()
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

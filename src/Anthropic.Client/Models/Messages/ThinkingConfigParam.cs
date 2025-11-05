@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -60,8 +60,8 @@ public record class ThinkingConfigParam
     }
 
     public void Switch(
-        Action<ThinkingConfigEnabled> enabled,
-        Action<ThinkingConfigDisabled> disabled
+        System::Action<ThinkingConfigEnabled> enabled,
+        System::Action<ThinkingConfigDisabled> disabled
     )
     {
         switch (this.Value)
@@ -80,8 +80,8 @@ public record class ThinkingConfigParam
     }
 
     public T Match<T>(
-        Func<ThinkingConfigEnabled, T> enabled,
-        Func<ThinkingConfigDisabled, T> disabled
+        System::Func<ThinkingConfigEnabled, T> enabled,
+        System::Func<ThinkingConfigDisabled, T> disabled
     )
     {
         return this.Value switch
@@ -111,7 +111,7 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
 {
     public override ThinkingConfigParam? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -144,7 +144,8 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                         return new ThinkingConfigParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -154,7 +155,7 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "disabled":
             {
@@ -172,7 +173,8 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                         return new ThinkingConfigParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -182,7 +184,7 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

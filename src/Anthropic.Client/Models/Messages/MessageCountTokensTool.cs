@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -104,12 +104,12 @@ public record class MessageCountTokensTool
     }
 
     public void Switch(
-        Action<Tool> tool,
-        Action<ToolBash20250124> toolBash20250124,
-        Action<ToolTextEditor20250124> toolTextEditor20250124,
-        Action<ToolTextEditor20250429> toolTextEditor20250429,
-        Action<ToolTextEditor20250728> toolTextEditor20250728,
-        Action<WebSearchTool20250305> webSearchTool20250305
+        System::Action<Tool> tool,
+        System::Action<ToolBash20250124> toolBash20250124,
+        System::Action<ToolTextEditor20250124> toolTextEditor20250124,
+        System::Action<ToolTextEditor20250429> toolTextEditor20250429,
+        System::Action<ToolTextEditor20250728> toolTextEditor20250728,
+        System::Action<WebSearchTool20250305> webSearchTool20250305
     )
     {
         switch (this.Value)
@@ -140,12 +140,12 @@ public record class MessageCountTokensTool
     }
 
     public T Match<T>(
-        Func<Tool, T> tool,
-        Func<ToolBash20250124, T> toolBash20250124,
-        Func<ToolTextEditor20250124, T> toolTextEditor20250124,
-        Func<ToolTextEditor20250429, T> toolTextEditor20250429,
-        Func<ToolTextEditor20250728, T> toolTextEditor20250728,
-        Func<WebSearchTool20250305, T> webSearchTool20250305
+        System::Func<Tool, T> tool,
+        System::Func<ToolBash20250124, T> toolBash20250124,
+        System::Func<ToolTextEditor20250124, T> toolTextEditor20250124,
+        System::Func<ToolTextEditor20250429, T> toolTextEditor20250429,
+        System::Func<ToolTextEditor20250728, T> toolTextEditor20250728,
+        System::Func<WebSearchTool20250305, T> webSearchTool20250305
     )
     {
         return this.Value switch
@@ -179,7 +179,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
 {
     public override MessageCountTokensTool? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -194,7 +194,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
                 return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException("Data does not match union variant 'Tool'", e)
@@ -210,7 +210,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
                 return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -232,7 +232,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
                 return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -254,7 +254,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
                 return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -276,7 +276,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
                 return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -298,7 +298,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
                 return new MessageCountTokensTool(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -308,7 +308,7 @@ sealed class MessageCountTokensToolConverter : JsonConverter<MessageCountTokensT
             );
         }
 
-        throw new AggregateException(exceptions);
+        throw new System::AggregateException(exceptions);
     }
 
     public override void Write(

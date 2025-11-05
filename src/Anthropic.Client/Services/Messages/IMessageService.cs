@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
-using Anthropic.Client.Models.Messages;
 using Anthropic.Client.Services.Messages.Batches;
+using Messages = Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Services.Messages;
 
@@ -21,7 +21,7 @@ public interface IMessageService
     ///
     /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
     /// </summary>
-    Task<Message> Create(MessageCreateParams parameters);
+    Task<Messages::Message> Create(Messages::MessageCreateParams parameters);
 
     /// <summary>
     /// Send a structured list of input messages with text and/or image content, and
@@ -31,7 +31,9 @@ public interface IMessageService
     ///
     /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
     /// </summary>
-    IAsyncEnumerable<RawMessageStreamEvent> CreateStreaming(MessageCreateParams parameters);
+    IAsyncEnumerable<Messages::RawMessageStreamEvent> CreateStreaming(
+        Messages::MessageCreateParams parameters
+    );
 
     /// <summary>
     /// Count the number of tokens in a Message.
@@ -41,5 +43,5 @@ public interface IMessageService
     ///
     /// Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)
     /// </summary>
-    Task<MessageTokensCount> CountTokens(MessageCountTokensParams parameters);
+    Task<Messages::MessageTokensCount> CountTokens(Messages::MessageCountTokensParams parameters);
 }

@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -56,8 +56,8 @@ public record class BetaCodeExecutionToolResultBlockParamContent
     }
 
     public void Switch(
-        Action<BetaCodeExecutionToolResultErrorParam> errorParam,
-        Action<BetaCodeExecutionResultBlockParam> resultBlockParam
+        System::Action<BetaCodeExecutionToolResultErrorParam> errorParam,
+        System::Action<BetaCodeExecutionResultBlockParam> resultBlockParam
     )
     {
         switch (this.Value)
@@ -76,8 +76,8 @@ public record class BetaCodeExecutionToolResultBlockParamContent
     }
 
     public T Match<T>(
-        Func<BetaCodeExecutionToolResultErrorParam, T> errorParam,
-        Func<BetaCodeExecutionResultBlockParam, T> resultBlockParam
+        System::Func<BetaCodeExecutionToolResultErrorParam, T> errorParam,
+        System::Func<BetaCodeExecutionResultBlockParam, T> resultBlockParam
     )
     {
         return this.Value switch
@@ -108,7 +108,7 @@ sealed class BetaCodeExecutionToolResultBlockParamContentConverter
 {
     public override BetaCodeExecutionToolResultBlockParamContent? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -126,7 +126,7 @@ sealed class BetaCodeExecutionToolResultBlockParamContentConverter
                 return new BetaCodeExecutionToolResultBlockParamContent(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -148,7 +148,7 @@ sealed class BetaCodeExecutionToolResultBlockParamContentConverter
                 return new BetaCodeExecutionToolResultBlockParamContent(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -158,7 +158,7 @@ sealed class BetaCodeExecutionToolResultBlockParamContentConverter
             );
         }
 
-        throw new AggregateException(exceptions);
+        throw new System::AggregateException(exceptions);
     }
 
     public override void Write(

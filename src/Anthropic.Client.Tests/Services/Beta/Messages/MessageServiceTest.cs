@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Anthropic.Client.Models.Beta.Messages.BetaMessageParamProperties;
-using Anthropic.Client.Models.Messages;
+using Anthropic.Client.Models.Beta.Messages;
+using Messages = Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Tests.Services.Beta.Messages;
 
@@ -14,7 +14,7 @@ public class MessageServiceTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = new("Hello, world"), Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
+                Model = Messages::Model.Claude3_7SonnetLatest,
             }
         );
         betaMessage.Validate();
@@ -28,7 +28,7 @@ public class MessageServiceTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = new("Hello, world"), Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
+                Model = Messages::Model.Claude3_7SonnetLatest,
             }
         );
 
@@ -45,7 +45,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 Messages = [new() { Content = new("string"), Role = Role.User }],
-                Model = Model.Claude3_7SonnetLatest,
+                Model = Messages::Model.Claude3_7SonnetLatest,
             }
         );
         betaMessageTokensCount.Validate();

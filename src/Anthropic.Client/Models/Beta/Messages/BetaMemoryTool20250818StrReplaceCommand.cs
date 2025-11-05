@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -23,7 +23,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
             if (!this.Properties.TryGetValue("command", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'command' cannot be null",
-                    new ArgumentOutOfRangeException("command", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("command", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -47,13 +47,13 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
             if (!this.Properties.TryGetValue("new_str", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'new_str' cannot be null",
-                    new ArgumentOutOfRangeException("new_str", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("new_str", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'new_str' cannot be null",
-                    new ArgumentNullException("new_str")
+                    new System::ArgumentNullException("new_str")
                 );
         }
         set
@@ -75,13 +75,13 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
             if (!this.Properties.TryGetValue("old_str", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'old_str' cannot be null",
-                    new ArgumentOutOfRangeException("old_str", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("old_str", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'old_str' cannot be null",
-                    new ArgumentNullException("old_str")
+                    new System::ArgumentNullException("old_str")
                 );
         }
         set
@@ -103,13 +103,13 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
             if (!this.Properties.TryGetValue("path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
-                    new ArgumentOutOfRangeException("path", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("path", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
-                    new ArgumentNullException("path")
+                    new System::ArgumentNullException("path")
                 );
         }
         set

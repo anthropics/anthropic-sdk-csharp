@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -97,10 +97,10 @@ public record class BetaToolChoice
     }
 
     public void Switch(
-        Action<BetaToolChoiceAuto> auto,
-        Action<BetaToolChoiceAny> any,
-        Action<BetaToolChoiceTool> tool,
-        Action<BetaToolChoiceNone> none
+        System::Action<BetaToolChoiceAuto> auto,
+        System::Action<BetaToolChoiceAny> any,
+        System::Action<BetaToolChoiceTool> tool,
+        System::Action<BetaToolChoiceNone> none
     )
     {
         switch (this.Value)
@@ -125,10 +125,10 @@ public record class BetaToolChoice
     }
 
     public T Match<T>(
-        Func<BetaToolChoiceAuto, T> auto,
-        Func<BetaToolChoiceAny, T> any,
-        Func<BetaToolChoiceTool, T> tool,
-        Func<BetaToolChoiceNone, T> none
+        System::Func<BetaToolChoiceAuto, T> auto,
+        System::Func<BetaToolChoiceAny, T> any,
+        System::Func<BetaToolChoiceTool, T> tool,
+        System::Func<BetaToolChoiceNone, T> none
     )
     {
         return this.Value switch
@@ -160,7 +160,7 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
 {
     public override BetaToolChoice? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -193,7 +193,8 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                         return new BetaToolChoice(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -203,7 +204,7 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "any":
             {
@@ -218,7 +219,8 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                         return new BetaToolChoice(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -228,7 +230,7 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "tool":
             {
@@ -246,7 +248,8 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                         return new BetaToolChoice(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -256,7 +259,7 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "none":
             {
@@ -274,7 +277,8 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                         return new BetaToolChoice(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -284,7 +288,7 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

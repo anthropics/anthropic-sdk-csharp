@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -60,8 +60,8 @@ public record class BetaThinkingConfigParam
     }
 
     public void Switch(
-        Action<BetaThinkingConfigEnabled> enabled,
-        Action<BetaThinkingConfigDisabled> disabled
+        System::Action<BetaThinkingConfigEnabled> enabled,
+        System::Action<BetaThinkingConfigDisabled> disabled
     )
     {
         switch (this.Value)
@@ -80,8 +80,8 @@ public record class BetaThinkingConfigParam
     }
 
     public T Match<T>(
-        Func<BetaThinkingConfigEnabled, T> enabled,
-        Func<BetaThinkingConfigDisabled, T> disabled
+        System::Func<BetaThinkingConfigEnabled, T> enabled,
+        System::Func<BetaThinkingConfigDisabled, T> disabled
     )
     {
         return this.Value switch
@@ -111,7 +111,7 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
 {
     public override BetaThinkingConfigParam? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -144,7 +144,8 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                         return new BetaThinkingConfigParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -154,7 +155,7 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "disabled":
             {
@@ -172,7 +173,8 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                         return new BetaThinkingConfigParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -182,7 +184,7 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

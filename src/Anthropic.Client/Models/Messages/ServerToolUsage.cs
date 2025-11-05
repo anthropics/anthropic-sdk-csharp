@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -21,7 +21,7 @@ public sealed record class ServerToolUsage : ModelBase, IFromRaw<ServerToolUsage
             if (!this.Properties.TryGetValue("web_search_requests", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'web_search_requests' cannot be null",
-                    new ArgumentOutOfRangeException(
+                    new System::ArgumentOutOfRangeException(
                         "web_search_requests",
                         "Missing required argument"
                     )

@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -92,11 +92,11 @@ public record class BetaRawContentBlockDelta
     }
 
     public void Switch(
-        Action<BetaTextDelta> text,
-        Action<BetaInputJSONDelta> inputJSON,
-        Action<BetaCitationsDelta> citations,
-        Action<BetaThinkingDelta> thinking,
-        Action<BetaSignatureDelta> signature
+        System::Action<BetaTextDelta> text,
+        System::Action<BetaInputJSONDelta> inputJSON,
+        System::Action<BetaCitationsDelta> citations,
+        System::Action<BetaThinkingDelta> thinking,
+        System::Action<BetaSignatureDelta> signature
     )
     {
         switch (this.Value)
@@ -124,11 +124,11 @@ public record class BetaRawContentBlockDelta
     }
 
     public T Match<T>(
-        Func<BetaTextDelta, T> text,
-        Func<BetaInputJSONDelta, T> inputJSON,
-        Func<BetaCitationsDelta, T> citations,
-        Func<BetaThinkingDelta, T> thinking,
-        Func<BetaSignatureDelta, T> signature
+        System::Func<BetaTextDelta, T> text,
+        System::Func<BetaInputJSONDelta, T> inputJSON,
+        System::Func<BetaCitationsDelta, T> citations,
+        System::Func<BetaThinkingDelta, T> thinking,
+        System::Func<BetaSignatureDelta, T> signature
     )
     {
         return this.Value switch
@@ -161,7 +161,7 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
 {
     public override BetaRawContentBlockDelta? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -191,7 +191,8 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                         return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -201,7 +202,7 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "input_json_delta":
             {
@@ -219,7 +220,8 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                         return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -229,7 +231,7 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "citations_delta":
             {
@@ -247,7 +249,8 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                         return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -257,7 +260,7 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "thinking_delta":
             {
@@ -272,7 +275,8 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                         return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -282,7 +286,7 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "signature_delta":
             {
@@ -300,7 +304,8 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                         return new BetaRawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -310,7 +315,7 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

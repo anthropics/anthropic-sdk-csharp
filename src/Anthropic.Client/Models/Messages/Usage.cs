@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Messages.UsageProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -87,7 +86,10 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
             if (!this.Properties.TryGetValue("input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input_tokens' cannot be null",
-                    new ArgumentOutOfRangeException("input_tokens", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "input_tokens",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -111,7 +113,10 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
             if (!this.Properties.TryGetValue("output_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'output_tokens' cannot be null",
-                    new ArgumentOutOfRangeException("output_tokens", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "output_tokens",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -152,14 +157,14 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     /// <summary>
     /// If the request used the priority, standard, or batch tier.
     /// </summary>
-    public required ApiEnum<string, ServiceTier>? ServiceTier
+    public required ApiEnum<string, ServiceTierModel>? ServiceTier
     {
         get
         {
             if (!this.Properties.TryGetValue("service_tier", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>?>(
+            return JsonSerializer.Deserialize<ApiEnum<string, ServiceTierModel>?>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -197,5 +202,55 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     public static Usage FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
+    }
+}
+
+/// <summary>
+/// If the request used the priority, standard, or batch tier.
+/// </summary>
+[JsonConverter(typeof(ServiceTierModelConverter))]
+public enum ServiceTierModel
+{
+    Standard,
+    Priority,
+    Batch,
+}
+
+sealed class ServiceTierModelConverter : JsonConverter<ServiceTierModel>
+{
+    public override ServiceTierModel Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "standard" => ServiceTierModel.Standard,
+            "priority" => ServiceTierModel.Priority,
+            "batch" => ServiceTierModel.Batch,
+            _ => (ServiceTierModel)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ServiceTierModel value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ServiceTierModel.Standard => "standard",
+                ServiceTierModel.Priority => "priority",
+                ServiceTierModel.Batch => "batch",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

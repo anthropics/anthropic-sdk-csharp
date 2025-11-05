@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches;
 
@@ -87,10 +87,10 @@ public record class BetaMessageBatchResult
     }
 
     public void Switch(
-        Action<BetaMessageBatchSucceededResult> succeeded,
-        Action<BetaMessageBatchErroredResult> errored,
-        Action<BetaMessageBatchCanceledResult> canceled,
-        Action<BetaMessageBatchExpiredResult> expired
+        System::Action<BetaMessageBatchSucceededResult> succeeded,
+        System::Action<BetaMessageBatchErroredResult> errored,
+        System::Action<BetaMessageBatchCanceledResult> canceled,
+        System::Action<BetaMessageBatchExpiredResult> expired
     )
     {
         switch (this.Value)
@@ -115,10 +115,10 @@ public record class BetaMessageBatchResult
     }
 
     public T Match<T>(
-        Func<BetaMessageBatchSucceededResult, T> succeeded,
-        Func<BetaMessageBatchErroredResult, T> errored,
-        Func<BetaMessageBatchCanceledResult, T> canceled,
-        Func<BetaMessageBatchExpiredResult, T> expired
+        System::Func<BetaMessageBatchSucceededResult, T> succeeded,
+        System::Func<BetaMessageBatchErroredResult, T> errored,
+        System::Func<BetaMessageBatchCanceledResult, T> canceled,
+        System::Func<BetaMessageBatchExpiredResult, T> expired
     )
     {
         return this.Value switch
@@ -150,7 +150,7 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
 {
     public override BetaMessageBatchResult? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -183,7 +183,8 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                         return new BetaMessageBatchResult(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -193,7 +194,7 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "errored":
             {
@@ -211,7 +212,8 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                         return new BetaMessageBatchResult(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -221,7 +223,7 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "canceled":
             {
@@ -239,7 +241,8 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                         return new BetaMessageBatchResult(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -249,7 +252,7 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "expired":
             {
@@ -267,7 +270,8 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                         return new BetaMessageBatchResult(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -277,7 +281,7 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

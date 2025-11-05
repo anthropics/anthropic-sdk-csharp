@@ -1,12 +1,13 @@
-using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Messages.MessageCreateParamsProperties;
 using Messages = Anthropic.Client.Models.Messages;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -38,7 +39,10 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("max_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'max_tokens' cannot be null",
-                    new ArgumentOutOfRangeException("max_tokens", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "max_tokens",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
@@ -109,7 +113,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("messages", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
-                    new ArgumentOutOfRangeException("messages", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("messages", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<List<BetaMessageParam>>(
@@ -118,7 +122,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
-                    new ArgumentNullException("messages")
+                    new System::ArgumentNullException("messages")
                 );
         }
         set
@@ -141,7 +145,7 @@ public sealed record class MessageCreateParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
-                    new ArgumentOutOfRangeException("model", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("model", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Messages::Model>>(
@@ -560,9 +564,11 @@ public sealed record class MessageCreateParams : ParamsBase
         }
     }
 
-    public override Uri Url(IAnthropicClient client)
+    public override System::Uri Url(IAnthropicClient client)
     {
-        return new UriBuilder(client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages?beta=true")
+        return new System::UriBuilder(
+            client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages?beta=true"
+        )
         {
             Query = this.QueryString(client),
         }.Uri;
@@ -584,5 +590,351 @@ public sealed record class MessageCreateParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+}
+
+/// <summary>
+/// Container identifier for reuse across requests.
+/// </summary>
+[JsonConverter(typeof(ContainerConverter))]
+public record class Container
+{
+    public object Value { get; private init; }
+
+    public Container(BetaContainerParams value)
+    {
+        Value = value;
+    }
+
+    public Container(string value)
+    {
+        Value = value;
+    }
+
+    Container(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Container CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
+
+    public bool TryPickBetaContainerParams([NotNullWhen(true)] out BetaContainerParams? value)
+    {
+        value = this.Value as BetaContainerParams;
+        return value != null;
+    }
+
+    public bool TryPickString([NotNullWhen(true)] out string? value)
+    {
+        value = this.Value as string;
+        return value != null;
+    }
+
+    public void Switch(
+        System::Action<BetaContainerParams> betaContainerParams,
+        System::Action<string> @string
+    )
+    {
+        switch (this.Value)
+        {
+            case BetaContainerParams value:
+                betaContainerParams(value);
+                break;
+            case string value:
+                @string(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of Container"
+                );
+        }
+    }
+
+    public T Match<T>(
+        System::Func<BetaContainerParams, T> betaContainerParams,
+        System::Func<string, T> @string
+    )
+    {
+        return this.Value switch
+        {
+            BetaContainerParams value => betaContainerParams(value),
+            string value => @string(value),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Container"
+            ),
+        };
+    }
+
+    public void Validate()
+    {
+        if (this.Value is UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Container");
+        }
+    }
+
+    record struct UnknownVariant(JsonElement value);
+}
+
+sealed class ContainerConverter : JsonConverter<Container?>
+{
+    public override Container? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<AnthropicInvalidDataException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaContainerParams>(ref reader, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new Container(deserialized);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant 'BetaContainerParams'",
+                    e
+                )
+            );
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new Container(deserialized);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            exceptions.Add(
+                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
+            );
+        }
+
+        throw new System::AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        Container? value,
+        JsonSerializerOptions options
+    )
+    {
+        object? variant = value?.Value;
+        JsonSerializer.Serialize(writer, variant, options);
+    }
+}
+
+/// <summary>
+/// Determines whether to use priority capacity (if available) or standard capacity
+/// for this request.
+///
+/// Anthropic offers different levels of service for your API requests. See [service-tiers](https://docs.claude.com/en/api/service-tiers)
+/// for details.
+/// </summary>
+[JsonConverter(typeof(ServiceTierConverter))]
+public enum ServiceTier
+{
+    Auto,
+    StandardOnly,
+}
+
+sealed class ServiceTierConverter : JsonConverter<ServiceTier>
+{
+    public override ServiceTier Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "auto" => ServiceTier.Auto,
+            "standard_only" => ServiceTier.StandardOnly,
+            _ => (ServiceTier)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ServiceTier value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ServiceTier.Auto => "auto",
+                ServiceTier.StandardOnly => "standard_only",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// System prompt.
+///
+/// A system prompt is a way of providing context and instructions to Claude, such
+/// as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).
+/// </summary>
+[JsonConverter(typeof(SystemModelConverter))]
+public record class SystemModel
+{
+    public object Value { get; private init; }
+
+    public SystemModel(string value)
+    {
+        Value = value;
+    }
+
+    public SystemModel(List<BetaTextBlockParam> value)
+    {
+        Value = value;
+    }
+
+    SystemModel(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static SystemModel CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
+
+    public bool TryPickString([NotNullWhen(true)] out string? value)
+    {
+        value = this.Value as string;
+        return value != null;
+    }
+
+    public bool TryPickBetaTextBlockParams([NotNullWhen(true)] out List<BetaTextBlockParam>? value)
+    {
+        value = this.Value as List<BetaTextBlockParam>;
+        return value != null;
+    }
+
+    public void Switch(
+        System::Action<string> @string,
+        System::Action<List<BetaTextBlockParam>> betaTextBlockParams
+    )
+    {
+        switch (this.Value)
+        {
+            case string value:
+                @string(value);
+                break;
+            case List<BetaTextBlockParam> value:
+                betaTextBlockParams(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of SystemModel"
+                );
+        }
+    }
+
+    public T Match<T>(
+        System::Func<string, T> @string,
+        System::Func<List<BetaTextBlockParam>, T> betaTextBlockParams
+    )
+    {
+        return this.Value switch
+        {
+            string value => @string(value),
+            List<BetaTextBlockParam> value => betaTextBlockParams(value),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of SystemModel"
+            ),
+        };
+    }
+
+    public void Validate()
+    {
+        if (this.Value is UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of SystemModel"
+            );
+        }
+    }
+
+    record struct UnknownVariant(JsonElement value);
+}
+
+sealed class SystemModelConverter : JsonConverter<SystemModel>
+{
+    public override SystemModel? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<AnthropicInvalidDataException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new SystemModel(deserialized);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            exceptions.Add(
+                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
+            );
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new SystemModel(deserialized);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant 'List<BetaTextBlockParam>'",
+                    e
+                )
+            );
+        }
+
+        throw new System::AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        SystemModel value,
+        JsonSerializerOptions options
+    )
+    {
+        object variant = value.Value;
+        JsonSerializer.Serialize(writer, variant, options);
     }
 }

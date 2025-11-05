@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Messages.RawMessageDeltaEventProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -19,13 +18,13 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
             if (!this.Properties.TryGetValue("delta", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'delta' cannot be null",
-                    new ArgumentOutOfRangeException("delta", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("delta", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<Delta>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'delta' cannot be null",
-                    new ArgumentNullException("delta")
+                    new System::ArgumentNullException("delta")
                 );
         }
         set
@@ -44,7 +43,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -82,7 +81,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
             if (!this.Properties.TryGetValue("usage", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
-                    new ArgumentOutOfRangeException("usage", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("usage", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<MessageDeltaUsage>(
@@ -91,7 +90,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
-                    new ArgumentNullException("usage")
+                    new System::ArgumentNullException("usage")
                 );
         }
         set
@@ -124,6 +123,70 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
 #pragma warning restore CS8618
 
     public static RawMessageDeltaEvent FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    {
+        return new(properties);
+    }
+}
+
+[JsonConverter(typeof(ModelConverter<Delta>))]
+public sealed record class Delta : ModelBase, IFromRaw<Delta>
+{
+    public required ApiEnum<string, StopReason>? StopReason
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("stop_reason", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<ApiEnum<string, StopReason>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        set
+        {
+            this.Properties["stop_reason"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public required string? StopSequence
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("stop_sequence", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+        }
+        set
+        {
+            this.Properties["stop_sequence"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public override void Validate()
+    {
+        this.StopReason?.Validate();
+        _ = this.StopSequence;
+    }
+
+    public Delta() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    Delta(Dictionary<string, JsonElement> properties)
+    {
+        Properties = properties;
+    }
+#pragma warning restore CS8618
+
+    public static Delta FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -20,13 +20,16 @@ public sealed record class CitationWebSearchResultLocationParam
             if (!this.Properties.TryGetValue("cited_text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cited_text' cannot be null",
-                    new ArgumentOutOfRangeException("cited_text", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "cited_text",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'cited_text' cannot be null",
-                    new ArgumentNullException("cited_text")
+                    new System::ArgumentNullException("cited_text")
                 );
         }
         set
@@ -45,13 +48,16 @@ public sealed record class CitationWebSearchResultLocationParam
             if (!this.Properties.TryGetValue("encrypted_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'encrypted_index' cannot be null",
-                    new ArgumentOutOfRangeException("encrypted_index", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "encrypted_index",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'encrypted_index' cannot be null",
-                    new ArgumentNullException("encrypted_index")
+                    new System::ArgumentNullException("encrypted_index")
                 );
         }
         set
@@ -88,7 +94,7 @@ public sealed record class CitationWebSearchResultLocationParam
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -109,13 +115,13 @@ public sealed record class CitationWebSearchResultLocationParam
             if (!this.Properties.TryGetValue("url", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
-                    new ArgumentOutOfRangeException("url", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("url", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
-                    new ArgumentNullException("url")
+                    new System::ArgumentNullException("url")
                 );
         }
         set

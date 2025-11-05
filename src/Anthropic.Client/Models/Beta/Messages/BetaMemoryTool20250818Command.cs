@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -131,12 +131,12 @@ public record class BetaMemoryTool20250818Command
     }
 
     public void Switch(
-        Action<BetaMemoryTool20250818ViewCommand> tool20250818View,
-        Action<BetaMemoryTool20250818CreateCommand> tool20250818Create,
-        Action<BetaMemoryTool20250818StrReplaceCommand> tool20250818StrReplace,
-        Action<BetaMemoryTool20250818InsertCommand> tool20250818Insert,
-        Action<BetaMemoryTool20250818DeleteCommand> tool20250818Delete,
-        Action<BetaMemoryTool20250818RenameCommand> tool20250818Rename
+        System::Action<BetaMemoryTool20250818ViewCommand> tool20250818View,
+        System::Action<BetaMemoryTool20250818CreateCommand> tool20250818Create,
+        System::Action<BetaMemoryTool20250818StrReplaceCommand> tool20250818StrReplace,
+        System::Action<BetaMemoryTool20250818InsertCommand> tool20250818Insert,
+        System::Action<BetaMemoryTool20250818DeleteCommand> tool20250818Delete,
+        System::Action<BetaMemoryTool20250818RenameCommand> tool20250818Rename
     )
     {
         switch (this.Value)
@@ -167,12 +167,12 @@ public record class BetaMemoryTool20250818Command
     }
 
     public T Match<T>(
-        Func<BetaMemoryTool20250818ViewCommand, T> tool20250818View,
-        Func<BetaMemoryTool20250818CreateCommand, T> tool20250818Create,
-        Func<BetaMemoryTool20250818StrReplaceCommand, T> tool20250818StrReplace,
-        Func<BetaMemoryTool20250818InsertCommand, T> tool20250818Insert,
-        Func<BetaMemoryTool20250818DeleteCommand, T> tool20250818Delete,
-        Func<BetaMemoryTool20250818RenameCommand, T> tool20250818Rename
+        System::Func<BetaMemoryTool20250818ViewCommand, T> tool20250818View,
+        System::Func<BetaMemoryTool20250818CreateCommand, T> tool20250818Create,
+        System::Func<BetaMemoryTool20250818StrReplaceCommand, T> tool20250818StrReplace,
+        System::Func<BetaMemoryTool20250818InsertCommand, T> tool20250818Insert,
+        System::Func<BetaMemoryTool20250818DeleteCommand, T> tool20250818Delete,
+        System::Func<BetaMemoryTool20250818RenameCommand, T> tool20250818Rename
     )
     {
         return this.Value switch
@@ -206,7 +206,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
 {
     public override BetaMemoryTool20250818Command? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -240,7 +240,8 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -250,7 +251,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "create":
             {
@@ -269,7 +270,8 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -279,7 +281,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "str_replace":
             {
@@ -298,7 +300,8 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -308,7 +311,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "insert":
             {
@@ -327,7 +330,8 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -337,7 +341,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "delete":
             {
@@ -356,7 +360,8 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -366,7 +371,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "rename":
             {
@@ -385,7 +390,8 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                         return new BetaMemoryTool20250818Command(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -395,7 +401,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

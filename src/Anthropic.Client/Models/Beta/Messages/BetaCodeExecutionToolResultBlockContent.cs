@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -50,8 +50,8 @@ public record class BetaCodeExecutionToolResultBlockContent
     }
 
     public void Switch(
-        Action<BetaCodeExecutionToolResultError> error,
-        Action<BetaCodeExecutionResultBlock> resultBlock
+        System::Action<BetaCodeExecutionToolResultError> error,
+        System::Action<BetaCodeExecutionResultBlock> resultBlock
     )
     {
         switch (this.Value)
@@ -70,8 +70,8 @@ public record class BetaCodeExecutionToolResultBlockContent
     }
 
     public T Match<T>(
-        Func<BetaCodeExecutionToolResultError, T> error,
-        Func<BetaCodeExecutionResultBlock, T> resultBlock
+        System::Func<BetaCodeExecutionToolResultError, T> error,
+        System::Func<BetaCodeExecutionResultBlock, T> resultBlock
     )
     {
         return this.Value switch
@@ -102,7 +102,7 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
 {
     public override BetaCodeExecutionToolResultBlockContent? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -120,7 +120,7 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
                 return new BetaCodeExecutionToolResultBlockContent(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -142,7 +142,7 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
                 return new BetaCodeExecutionToolResultBlockContent(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -152,7 +152,7 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
             );
         }
 
-        throw new AggregateException(exceptions);
+        throw new System::AggregateException(exceptions);
     }
 
     public override void Write(

@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -18,13 +18,16 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
             if (!this.Properties.TryGetValue("partial_json", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'partial_json' cannot be null",
-                    new ArgumentOutOfRangeException("partial_json", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "partial_json",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'partial_json' cannot be null",
-                    new ArgumentNullException("partial_json")
+                    new System::ArgumentNullException("partial_json")
                 );
         }
         set
@@ -43,7 +46,7 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

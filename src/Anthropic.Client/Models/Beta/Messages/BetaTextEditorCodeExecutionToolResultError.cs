@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionToolResultErrorProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -14,17 +13,20 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
     : ModelBase,
         IFromRaw<BetaTextEditorCodeExecutionToolResultError>
 {
-    public required ApiEnum<string, ErrorCode> ErrorCode
+    public required ApiEnum<string, ErrorCode1> ErrorCode
     {
         get
         {
             if (!this.Properties.TryGetValue("error_code", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'error_code' cannot be null",
-                    new ArgumentOutOfRangeException("error_code", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "error_code",
+                        "Missing required argument"
+                    )
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
+            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCode1>>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -63,7 +65,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -104,5 +106,58 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
     )
     {
         return new(properties);
+    }
+}
+
+[JsonConverter(typeof(ErrorCode1Converter))]
+public enum ErrorCode1
+{
+    InvalidToolInput,
+    Unavailable,
+    TooManyRequests,
+    ExecutionTimeExceeded,
+    FileNotFound,
+}
+
+sealed class ErrorCode1Converter : JsonConverter<ErrorCode1>
+{
+    public override ErrorCode1 Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "invalid_tool_input" => ErrorCode1.InvalidToolInput,
+            "unavailable" => ErrorCode1.Unavailable,
+            "too_many_requests" => ErrorCode1.TooManyRequests,
+            "execution_time_exceeded" => ErrorCode1.ExecutionTimeExceeded,
+            "file_not_found" => ErrorCode1.FileNotFound,
+            _ => (ErrorCode1)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ErrorCode1 value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ErrorCode1.InvalidToolInput => "invalid_tool_input",
+                ErrorCode1.Unavailable => "unavailable",
+                ErrorCode1.TooManyRequests => "too_many_requests",
+                ErrorCode1.ExecutionTimeExceeded => "execution_time_exceeded",
+                ErrorCode1.FileNotFound => "file_not_found",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

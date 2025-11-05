@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -119,12 +119,12 @@ public record class ContentBlock
     }
 
     public void Switch(
-        Action<TextBlock> text,
-        Action<ThinkingBlock> thinking,
-        Action<RedactedThinkingBlock> redactedThinking,
-        Action<ToolUseBlock> toolUse,
-        Action<ServerToolUseBlock> serverToolUse,
-        Action<WebSearchToolResultBlock> webSearchToolResult
+        System::Action<TextBlock> text,
+        System::Action<ThinkingBlock> thinking,
+        System::Action<RedactedThinkingBlock> redactedThinking,
+        System::Action<ToolUseBlock> toolUse,
+        System::Action<ServerToolUseBlock> serverToolUse,
+        System::Action<WebSearchToolResultBlock> webSearchToolResult
     )
     {
         switch (this.Value)
@@ -155,12 +155,12 @@ public record class ContentBlock
     }
 
     public T Match<T>(
-        Func<TextBlock, T> text,
-        Func<ThinkingBlock, T> thinking,
-        Func<RedactedThinkingBlock, T> redactedThinking,
-        Func<ToolUseBlock, T> toolUse,
-        Func<ServerToolUseBlock, T> serverToolUse,
-        Func<WebSearchToolResultBlock, T> webSearchToolResult
+        System::Func<TextBlock, T> text,
+        System::Func<ThinkingBlock, T> thinking,
+        System::Func<RedactedThinkingBlock, T> redactedThinking,
+        System::Func<ToolUseBlock, T> toolUse,
+        System::Func<ServerToolUseBlock, T> serverToolUse,
+        System::Func<WebSearchToolResultBlock, T> webSearchToolResult
     )
     {
         return this.Value switch
@@ -194,7 +194,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
 {
     public override ContentBlock? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -224,7 +224,8 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                         return new ContentBlock(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -234,7 +235,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "thinking":
             {
@@ -249,7 +250,8 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                         return new ContentBlock(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -259,7 +261,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "redacted_thinking":
             {
@@ -277,7 +279,8 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                         return new ContentBlock(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -287,7 +290,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "tool_use":
             {
@@ -302,7 +305,8 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                         return new ContentBlock(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -312,7 +316,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "server_tool_use":
             {
@@ -330,7 +334,8 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                         return new ContentBlock(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -340,7 +345,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "web_search_tool_result":
             {
@@ -358,7 +363,8 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                         return new ContentBlock(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -368,7 +374,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

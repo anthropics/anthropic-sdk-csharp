@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionViewResultBlockProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -21,13 +20,13 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
             if (!this.Properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new ArgumentOutOfRangeException("content", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new ArgumentNullException("content")
+                    new System::ArgumentNullException("content")
                 );
         }
         set
@@ -46,7 +45,10 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
             if (!this.Properties.TryGetValue("file_type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'file_type' cannot be null",
-                    new ArgumentOutOfRangeException("file_type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "file_type",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
@@ -124,7 +126,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -168,5 +170,48 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
     )
     {
         return new(properties);
+    }
+}
+
+[JsonConverter(typeof(FileTypeConverter))]
+public enum FileType
+{
+    Text,
+    Image,
+    PDF,
+}
+
+sealed class FileTypeConverter : JsonConverter<FileType>
+{
+    public override FileType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => FileType.Text,
+            "image" => FileType.Image,
+            "pdf" => FileType.PDF,
+            _ => (FileType)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, FileType value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                FileType.Text => "text",
+                FileType.Image => "image",
+                FileType.PDF => "pdf",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

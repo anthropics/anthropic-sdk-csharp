@@ -2,11 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Client.Models.Beta.Messages;
-using Anthropic.Client.Models.Beta.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties;
-using Anthropic.Client.Models.Beta.Messages.BetaCacheControlEphemeralProperties;
-using Anthropic.Client.Models.Beta.Messages.BetaMessageParamProperties;
-using Anthropic.Client.Models.Beta.Messages.BetaSkillParamsProperties;
-using BetaToolProperties = Anthropic.Client.Models.Beta.Messages.BetaToolProperties;
+using Batches = Anthropic.Client.Models.Beta.Messages.Batches;
 using Messages = Anthropic.Client.Models.Messages;
 
 namespace Anthropic.Client.Tests.Services.Beta.Messages.Batches;
@@ -38,7 +34,7 @@ public class BatchServiceTest : TestBase
                                         new()
                                         {
                                             SkillID = "x",
-                                            Type = Type.Anthropic,
+                                            Type = TypeModel.Anthropic,
                                             Version = "x",
                                         },
                                     ],
@@ -75,7 +71,7 @@ public class BatchServiceTest : TestBase
                                 },
                             ],
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                            ServiceTier = ServiceTier.Auto,
+                            ServiceTier = Batches::ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
                             System = new(
@@ -128,7 +124,7 @@ public class BatchServiceTest : TestBase
                                         Name = "name",
                                         CacheControl = new() { TTL = TTL.TTL5m },
                                         Description = "Get the current weather in a given location",
-                                        Type = BetaToolProperties::Type.Custom,
+                                        Type = Type1.Custom,
                                     }
                                 ),
                             ],

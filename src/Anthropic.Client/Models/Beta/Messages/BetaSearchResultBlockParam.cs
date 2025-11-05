@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -20,7 +20,7 @@ public sealed record class BetaSearchResultBlockParam
             if (!this.Properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new ArgumentOutOfRangeException("content", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
@@ -29,7 +29,7 @@ public sealed record class BetaSearchResultBlockParam
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new ArgumentNullException("content")
+                    new System::ArgumentNullException("content")
                 );
         }
         set
@@ -48,13 +48,13 @@ public sealed record class BetaSearchResultBlockParam
             if (!this.Properties.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
-                    new ArgumentOutOfRangeException("source", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("source", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
-                    new ArgumentNullException("source")
+                    new System::ArgumentNullException("source")
                 );
         }
         set
@@ -73,13 +73,13 @@ public sealed record class BetaSearchResultBlockParam
             if (!this.Properties.TryGetValue("title", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'title' cannot be null",
-                    new ArgumentOutOfRangeException("title", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("title", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'title' cannot be null",
-                    new ArgumentNullException("title")
+                    new System::ArgumentNullException("title")
                 );
         }
         set
@@ -98,7 +98,7 @@ public sealed record class BetaSearchResultBlockParam
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

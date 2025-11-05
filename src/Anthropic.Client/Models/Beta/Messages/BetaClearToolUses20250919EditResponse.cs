@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -23,7 +23,7 @@ public sealed record class BetaClearToolUses20250919EditResponse
             if (!this.Properties.TryGetValue("cleared_input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cleared_input_tokens' cannot be null",
-                    new ArgumentOutOfRangeException(
+                    new System::ArgumentOutOfRangeException(
                         "cleared_input_tokens",
                         "Missing required argument"
                     )
@@ -50,7 +50,7 @@ public sealed record class BetaClearToolUses20250919EditResponse
             if (!this.Properties.TryGetValue("cleared_tool_uses", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cleared_tool_uses' cannot be null",
-                    new ArgumentOutOfRangeException(
+                    new System::ArgumentOutOfRangeException(
                         "cleared_tool_uses",
                         "Missing required argument"
                     )
@@ -77,7 +77,7 @@ public sealed record class BetaClearToolUses20250919EditResponse
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

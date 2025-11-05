@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -196,11 +196,11 @@ public record class BetaTextCitation
     }
 
     public void Switch(
-        Action<BetaCitationCharLocation> citationCharLocation,
-        Action<BetaCitationPageLocation> citationPageLocation,
-        Action<BetaCitationContentBlockLocation> citationContentBlockLocation,
-        Action<BetaCitationsWebSearchResultLocation> citationsWebSearchResultLocation,
-        Action<BetaCitationSearchResultLocation> citationSearchResultLocation
+        System::Action<BetaCitationCharLocation> citationCharLocation,
+        System::Action<BetaCitationPageLocation> citationPageLocation,
+        System::Action<BetaCitationContentBlockLocation> citationContentBlockLocation,
+        System::Action<BetaCitationsWebSearchResultLocation> citationsWebSearchResultLocation,
+        System::Action<BetaCitationSearchResultLocation> citationSearchResultLocation
     )
     {
         switch (this.Value)
@@ -228,11 +228,11 @@ public record class BetaTextCitation
     }
 
     public T Match<T>(
-        Func<BetaCitationCharLocation, T> citationCharLocation,
-        Func<BetaCitationPageLocation, T> citationPageLocation,
-        Func<BetaCitationContentBlockLocation, T> citationContentBlockLocation,
-        Func<BetaCitationsWebSearchResultLocation, T> citationsWebSearchResultLocation,
-        Func<BetaCitationSearchResultLocation, T> citationSearchResultLocation
+        System::Func<BetaCitationCharLocation, T> citationCharLocation,
+        System::Func<BetaCitationPageLocation, T> citationPageLocation,
+        System::Func<BetaCitationContentBlockLocation, T> citationContentBlockLocation,
+        System::Func<BetaCitationsWebSearchResultLocation, T> citationsWebSearchResultLocation,
+        System::Func<BetaCitationSearchResultLocation, T> citationSearchResultLocation
     )
     {
         return this.Value switch
@@ -265,7 +265,7 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
 {
     public override BetaTextCitation? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -298,7 +298,8 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                         return new BetaTextCitation(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -308,7 +309,7 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "page_location":
             {
@@ -326,7 +327,8 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                         return new BetaTextCitation(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -336,7 +338,7 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_location":
             {
@@ -354,7 +356,8 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                         return new BetaTextCitation(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -364,7 +367,7 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "web_search_result_location":
             {
@@ -383,7 +386,8 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                         return new BetaTextCitation(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -393,7 +397,7 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "search_result_location":
             {
@@ -411,7 +415,8 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                         return new BetaTextCitation(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -421,7 +426,7 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

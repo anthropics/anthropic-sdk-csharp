@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -61,8 +61,8 @@ public record class ContentBlockSourceContent
     }
 
     public void Switch(
-        Action<TextBlockParam> textBlockParam,
-        Action<ImageBlockParam> imageBlockParam
+        System::Action<TextBlockParam> textBlockParam,
+        System::Action<ImageBlockParam> imageBlockParam
     )
     {
         switch (this.Value)
@@ -81,8 +81,8 @@ public record class ContentBlockSourceContent
     }
 
     public T Match<T>(
-        Func<TextBlockParam, T> textBlockParam,
-        Func<ImageBlockParam, T> imageBlockParam
+        System::Func<TextBlockParam, T> textBlockParam,
+        System::Func<ImageBlockParam, T> imageBlockParam
     )
     {
         return this.Value switch
@@ -112,7 +112,7 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
 {
     public override ContentBlockSourceContent? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -142,7 +142,8 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
                         return new ContentBlockSourceContent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -152,7 +153,7 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "image":
             {
@@ -167,7 +168,8 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
                         return new ContentBlockSourceContent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -177,7 +179,7 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

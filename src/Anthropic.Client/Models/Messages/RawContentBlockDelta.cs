@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -92,11 +92,11 @@ public record class RawContentBlockDelta
     }
 
     public void Switch(
-        Action<TextDelta> text,
-        Action<InputJSONDelta> inputJSON,
-        Action<CitationsDelta> citations,
-        Action<ThinkingDelta> thinking,
-        Action<SignatureDelta> signature
+        System::Action<TextDelta> text,
+        System::Action<InputJSONDelta> inputJSON,
+        System::Action<CitationsDelta> citations,
+        System::Action<ThinkingDelta> thinking,
+        System::Action<SignatureDelta> signature
     )
     {
         switch (this.Value)
@@ -124,11 +124,11 @@ public record class RawContentBlockDelta
     }
 
     public T Match<T>(
-        Func<TextDelta, T> text,
-        Func<InputJSONDelta, T> inputJSON,
-        Func<CitationsDelta, T> citations,
-        Func<ThinkingDelta, T> thinking,
-        Func<SignatureDelta, T> signature
+        System::Func<TextDelta, T> text,
+        System::Func<InputJSONDelta, T> inputJSON,
+        System::Func<CitationsDelta, T> citations,
+        System::Func<ThinkingDelta, T> thinking,
+        System::Func<SignatureDelta, T> signature
     )
     {
         return this.Value switch
@@ -161,7 +161,7 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
 {
     public override RawContentBlockDelta? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -191,7 +191,8 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                         return new RawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -201,7 +202,7 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "input_json_delta":
             {
@@ -216,7 +217,8 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                         return new RawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -226,7 +228,7 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "citations_delta":
             {
@@ -241,7 +243,8 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                         return new RawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -251,7 +254,7 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "thinking_delta":
             {
@@ -266,7 +269,8 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                         return new RawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -276,7 +280,7 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "signature_delta":
             {
@@ -291,7 +295,8 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                         return new RawContentBlockDelta(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -301,7 +306,7 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

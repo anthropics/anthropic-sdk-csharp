@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages.Batches;
 
@@ -87,10 +87,10 @@ public record class MessageBatchResult
     }
 
     public void Switch(
-        Action<MessageBatchSucceededResult> succeeded,
-        Action<MessageBatchErroredResult> errored,
-        Action<MessageBatchCanceledResult> canceled,
-        Action<MessageBatchExpiredResult> expired
+        System::Action<MessageBatchSucceededResult> succeeded,
+        System::Action<MessageBatchErroredResult> errored,
+        System::Action<MessageBatchCanceledResult> canceled,
+        System::Action<MessageBatchExpiredResult> expired
     )
     {
         switch (this.Value)
@@ -115,10 +115,10 @@ public record class MessageBatchResult
     }
 
     public T Match<T>(
-        Func<MessageBatchSucceededResult, T> succeeded,
-        Func<MessageBatchErroredResult, T> errored,
-        Func<MessageBatchCanceledResult, T> canceled,
-        Func<MessageBatchExpiredResult, T> expired
+        System::Func<MessageBatchSucceededResult, T> succeeded,
+        System::Func<MessageBatchErroredResult, T> errored,
+        System::Func<MessageBatchCanceledResult, T> canceled,
+        System::Func<MessageBatchExpiredResult, T> expired
     )
     {
         return this.Value switch
@@ -150,7 +150,7 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
 {
     public override MessageBatchResult? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -183,7 +183,8 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                         return new MessageBatchResult(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -193,7 +194,7 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "errored":
             {
@@ -211,7 +212,8 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                         return new MessageBatchResult(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -221,7 +223,7 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "canceled":
             {
@@ -239,7 +241,8 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                         return new MessageBatchResult(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -249,7 +252,7 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "expired":
             {
@@ -267,7 +270,8 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                         return new MessageBatchResult(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -277,7 +281,7 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {
