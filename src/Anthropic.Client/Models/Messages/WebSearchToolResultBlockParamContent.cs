@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -45,8 +45,8 @@ public record class WebSearchToolResultBlockParamContent
     }
 
     public void Switch(
-        Action<List<WebSearchResultBlockParam>> webSearchToolResultBlockItem,
-        Action<WebSearchToolRequestError> requestError
+        System::Action<List<WebSearchResultBlockParam>> webSearchToolResultBlockItem,
+        System::Action<WebSearchToolRequestError> requestError
     )
     {
         switch (this.Value)
@@ -65,8 +65,8 @@ public record class WebSearchToolResultBlockParamContent
     }
 
     public T Match<T>(
-        Func<List<WebSearchResultBlockParam>, T> webSearchToolResultBlockItem,
-        Func<WebSearchToolRequestError, T> requestError
+        System::Func<List<WebSearchResultBlockParam>, T> webSearchToolResultBlockItem,
+        System::Func<WebSearchToolRequestError, T> requestError
     )
     {
         return this.Value switch
@@ -97,7 +97,7 @@ sealed class WebSearchToolResultBlockParamContentConverter
 {
     public override WebSearchToolResultBlockParamContent? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -115,7 +115,7 @@ sealed class WebSearchToolResultBlockParamContentConverter
                 return new WebSearchToolResultBlockParamContent(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -136,7 +136,7 @@ sealed class WebSearchToolResultBlockParamContentConverter
                 return new WebSearchToolResultBlockParamContent(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -146,7 +146,7 @@ sealed class WebSearchToolResultBlockParamContentConverter
             );
         }
 
-        throw new AggregateException(exceptions);
+        throw new System::AggregateException(exceptions);
     }
 
     public override void Write(

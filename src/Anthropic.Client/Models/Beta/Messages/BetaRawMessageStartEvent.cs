@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -18,13 +18,13 @@ public sealed record class BetaRawMessageStartEvent : ModelBase, IFromRaw<BetaRa
             if (!this.Properties.TryGetValue("message", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("message", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<BetaMessage>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'message' cannot be null",
-                    new ArgumentNullException("message")
+                    new System::ArgumentNullException("message")
                 );
         }
         set
@@ -43,7 +43,7 @@ public sealed record class BetaRawMessageStartEvent : ModelBase, IFromRaw<BetaRa
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);

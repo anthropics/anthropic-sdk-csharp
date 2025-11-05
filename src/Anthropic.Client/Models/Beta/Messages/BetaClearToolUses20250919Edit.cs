@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Messages.BetaClearToolUses20250919EditProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -21,7 +20,7 @@ public sealed record class BetaClearToolUses20250919Edit
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -178,5 +177,331 @@ public sealed record class BetaClearToolUses20250919Edit
     )
     {
         return new(properties);
+    }
+}
+
+/// <summary>
+/// Whether to clear all tool inputs (bool) or specific tool inputs to clear (list)
+/// </summary>
+[JsonConverter(typeof(ClearToolInputsConverter))]
+public record class ClearToolInputs
+{
+    public object Value { get; private init; }
+
+    public ClearToolInputs(bool value)
+    {
+        Value = value;
+    }
+
+    public ClearToolInputs(List<string> value)
+    {
+        Value = value;
+    }
+
+    ClearToolInputs(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static ClearToolInputs CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
+
+    public bool TryPickBool([NotNullWhen(true)] out bool? value)
+    {
+        value = this.Value as bool?;
+        return value != null;
+    }
+
+    public bool TryPickStrings([NotNullWhen(true)] out List<string>? value)
+    {
+        value = this.Value as List<string>;
+        return value != null;
+    }
+
+    public void Switch(System::Action<bool> @bool, System::Action<List<string>> strings)
+    {
+        switch (this.Value)
+        {
+            case bool value:
+                @bool(value);
+                break;
+            case List<string> value:
+                strings(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of ClearToolInputs"
+                );
+        }
+    }
+
+    public T Match<T>(System::Func<bool, T> @bool, System::Func<List<string>, T> strings)
+    {
+        return this.Value switch
+        {
+            bool value => @bool(value),
+            List<string> value => strings(value),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ClearToolInputs"
+            ),
+        };
+    }
+
+    public void Validate()
+    {
+        if (this.Value is UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of ClearToolInputs"
+            );
+        }
+    }
+
+    record struct UnknownVariant(JsonElement value);
+}
+
+sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
+{
+    public override ClearToolInputs? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<AnthropicInvalidDataException> exceptions = [];
+
+        try
+        {
+            return new ClearToolInputs(JsonSerializer.Deserialize<bool>(ref reader, options));
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            exceptions.Add(
+                new AnthropicInvalidDataException("Data does not match union variant 'bool'", e)
+            );
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<List<string>>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new ClearToolInputs(deserialized);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant 'List<string>'",
+                    e
+                )
+            );
+        }
+
+        throw new System::AggregateException(exceptions);
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ClearToolInputs? value,
+        JsonSerializerOptions options
+    )
+    {
+        object? variant = value?.Value;
+        JsonSerializer.Serialize(writer, variant, options);
+    }
+}
+
+/// <summary>
+/// Condition that triggers the context management strategy
+/// </summary>
+[JsonConverter(typeof(TriggerConverter))]
+public record class Trigger
+{
+    public object Value { get; private init; }
+
+    public JsonElement Type
+    {
+        get { return Match(betaInputTokens: (x) => x.Type, betaToolUses: (x) => x.Type); }
+    }
+
+    public long Value1
+    {
+        get { return Match(betaInputTokens: (x) => x.Value, betaToolUses: (x) => x.Value); }
+    }
+
+    public Trigger(BetaInputTokensTrigger value)
+    {
+        Value = value;
+    }
+
+    public Trigger(BetaToolUsesTrigger value)
+    {
+        Value = value;
+    }
+
+    Trigger(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static Trigger CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
+
+    public bool TryPickBetaInputTokens([NotNullWhen(true)] out BetaInputTokensTrigger? value)
+    {
+        value = this.Value as BetaInputTokensTrigger;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolUses([NotNullWhen(true)] out BetaToolUsesTrigger? value)
+    {
+        value = this.Value as BetaToolUsesTrigger;
+        return value != null;
+    }
+
+    public void Switch(
+        System::Action<BetaInputTokensTrigger> betaInputTokens,
+        System::Action<BetaToolUsesTrigger> betaToolUses
+    )
+    {
+        switch (this.Value)
+        {
+            case BetaInputTokensTrigger value:
+                betaInputTokens(value);
+                break;
+            case BetaToolUsesTrigger value:
+                betaToolUses(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of Trigger"
+                );
+        }
+    }
+
+    public T Match<T>(
+        System::Func<BetaInputTokensTrigger, T> betaInputTokens,
+        System::Func<BetaToolUsesTrigger, T> betaToolUses
+    )
+    {
+        return this.Value switch
+        {
+            BetaInputTokensTrigger value => betaInputTokens(value),
+            BetaToolUsesTrigger value => betaToolUses(value),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of Trigger"
+            ),
+        };
+    }
+
+    public void Validate()
+    {
+        if (this.Value is UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Trigger");
+        }
+    }
+
+    record struct UnknownVariant(JsonElement value);
+}
+
+sealed class TriggerConverter : JsonConverter<Trigger>
+{
+    public override Trigger? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
+        try
+        {
+            type = json.GetProperty("type").GetString();
+        }
+        catch
+        {
+            type = null;
+        }
+
+        switch (type)
+        {
+            case "input_tokens":
+            {
+                List<AnthropicInvalidDataException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new Trigger(deserialized);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant 'BetaInputTokensTrigger'",
+                            e
+                        )
+                    );
+                }
+
+                throw new System::AggregateException(exceptions);
+            }
+            case "tool_uses":
+            {
+                List<AnthropicInvalidDataException> exceptions = [];
+
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolUsesTrigger>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new Trigger(deserialized);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    exceptions.Add(
+                        new AnthropicInvalidDataException(
+                            "Data does not match union variant 'BetaToolUsesTrigger'",
+                            e
+                        )
+                    );
+                }
+
+                throw new System::AggregateException(exceptions);
+            }
+            default:
+            {
+                throw new AnthropicInvalidDataException(
+                    "Could not find valid union variant to represent data"
+                );
+            }
+        }
+    }
+
+    public override void Write(Utf8JsonWriter writer, Trigger value, JsonSerializerOptions options)
+    {
+        object variant = value.Value;
+        JsonSerializer.Serialize(writer, variant, options);
     }
 }

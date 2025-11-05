@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Messages.CacheControlEphemeralProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -19,7 +18,7 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -83,5 +82,52 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
     public static CacheControlEphemeral FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
+    }
+}
+
+/// <summary>
+/// The time-to-live for the cache control breakpoint.
+///
+/// This may be one the following values: - `5m`: 5 minutes - `1h`: 1 hour
+///
+/// Defaults to `5m`.
+/// </summary>
+[JsonConverter(typeof(TTLConverter))]
+public enum TTL
+{
+    TTL5m,
+    TTL1h,
+}
+
+sealed class TTLConverter : JsonConverter<TTL>
+{
+    public override TTL Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "5m" => TTL.TTL5m,
+            "1h" => TTL.TTL1h,
+            _ => (TTL)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, TTL value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                TTL.TTL5m => "5m",
+                TTL.TTL1h => "1h",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

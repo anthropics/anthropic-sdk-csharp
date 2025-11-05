@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -23,13 +23,13 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
             if (!this.Properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new ArgumentNullException("id")
+                    new System::ArgumentNullException("id")
                 );
         }
         set
@@ -70,7 +70,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
             if (!this.Properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new ArgumentOutOfRangeException("content", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("content", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<List<ContentBlock>>(
@@ -79,7 +79,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
-                    new ArgumentNullException("content")
+                    new System::ArgumentNullException("content")
                 );
         }
         set
@@ -102,7 +102,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
             if (!this.Properties.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
-                    new ArgumentOutOfRangeException("model", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("model", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
@@ -131,7 +131,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
             if (!this.Properties.TryGetValue("role", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'role' cannot be null",
-                    new ArgumentOutOfRangeException("role", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("role", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -216,7 +216,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -254,13 +254,13 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
             if (!this.Properties.TryGetValue("usage", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
-                    new ArgumentOutOfRangeException("usage", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("usage", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<Usage>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
-                    new ArgumentNullException("usage")
+                    new System::ArgumentNullException("usage")
                 );
         }
         set

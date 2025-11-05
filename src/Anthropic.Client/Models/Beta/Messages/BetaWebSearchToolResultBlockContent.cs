@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -47,8 +47,8 @@ public record class BetaWebSearchToolResultBlockContent
     }
 
     public void Switch(
-        Action<BetaWebSearchToolResultError> error,
-        Action<List<BetaWebSearchResultBlock>> betaWebSearchResultBlocks
+        System::Action<BetaWebSearchToolResultError> error,
+        System::Action<List<BetaWebSearchResultBlock>> betaWebSearchResultBlocks
     )
     {
         switch (this.Value)
@@ -67,8 +67,8 @@ public record class BetaWebSearchToolResultBlockContent
     }
 
     public T Match<T>(
-        Func<BetaWebSearchToolResultError, T> error,
-        Func<List<BetaWebSearchResultBlock>, T> betaWebSearchResultBlocks
+        System::Func<BetaWebSearchToolResultError, T> error,
+        System::Func<List<BetaWebSearchResultBlock>, T> betaWebSearchResultBlocks
     )
     {
         return this.Value switch
@@ -99,7 +99,7 @@ sealed class BetaWebSearchToolResultBlockContentConverter
 {
     public override BetaWebSearchToolResultBlockContent? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -117,7 +117,7 @@ sealed class BetaWebSearchToolResultBlockContentConverter
                 return new BetaWebSearchToolResultBlockContent(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -138,7 +138,7 @@ sealed class BetaWebSearchToolResultBlockContentConverter
                 return new BetaWebSearchToolResultBlockContent(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -148,7 +148,7 @@ sealed class BetaWebSearchToolResultBlockContentConverter
             );
         }
 
-        throw new AggregateException(exceptions);
+        throw new System::AggregateException(exceptions);
     }
 
     public override void Write(

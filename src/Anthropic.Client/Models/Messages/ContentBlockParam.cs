@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -233,16 +233,16 @@ public record class ContentBlockParam
     }
 
     public void Switch(
-        Action<TextBlockParam> text,
-        Action<ImageBlockParam> image,
-        Action<DocumentBlockParam> document,
-        Action<SearchResultBlockParam> searchResult,
-        Action<ThinkingBlockParam> thinking,
-        Action<RedactedThinkingBlockParam> redactedThinking,
-        Action<ToolUseBlockParam> toolUse,
-        Action<ToolResultBlockParam> toolResult,
-        Action<ServerToolUseBlockParam> serverToolUse,
-        Action<WebSearchToolResultBlockParam> webSearchToolResult
+        System::Action<TextBlockParam> text,
+        System::Action<ImageBlockParam> image,
+        System::Action<DocumentBlockParam> document,
+        System::Action<SearchResultBlockParam> searchResult,
+        System::Action<ThinkingBlockParam> thinking,
+        System::Action<RedactedThinkingBlockParam> redactedThinking,
+        System::Action<ToolUseBlockParam> toolUse,
+        System::Action<ToolResultBlockParam> toolResult,
+        System::Action<ServerToolUseBlockParam> serverToolUse,
+        System::Action<WebSearchToolResultBlockParam> webSearchToolResult
     )
     {
         switch (this.Value)
@@ -285,16 +285,16 @@ public record class ContentBlockParam
     }
 
     public T Match<T>(
-        Func<TextBlockParam, T> text,
-        Func<ImageBlockParam, T> image,
-        Func<DocumentBlockParam, T> document,
-        Func<SearchResultBlockParam, T> searchResult,
-        Func<ThinkingBlockParam, T> thinking,
-        Func<RedactedThinkingBlockParam, T> redactedThinking,
-        Func<ToolUseBlockParam, T> toolUse,
-        Func<ToolResultBlockParam, T> toolResult,
-        Func<ServerToolUseBlockParam, T> serverToolUse,
-        Func<WebSearchToolResultBlockParam, T> webSearchToolResult
+        System::Func<TextBlockParam, T> text,
+        System::Func<ImageBlockParam, T> image,
+        System::Func<DocumentBlockParam, T> document,
+        System::Func<SearchResultBlockParam, T> searchResult,
+        System::Func<ThinkingBlockParam, T> thinking,
+        System::Func<RedactedThinkingBlockParam, T> redactedThinking,
+        System::Func<ToolUseBlockParam, T> toolUse,
+        System::Func<ToolResultBlockParam, T> toolResult,
+        System::Func<ServerToolUseBlockParam, T> serverToolUse,
+        System::Func<WebSearchToolResultBlockParam, T> webSearchToolResult
     )
     {
         return this.Value switch
@@ -332,7 +332,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
 {
     public override ContentBlockParam? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -362,7 +362,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -372,7 +373,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "image":
             {
@@ -387,7 +388,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -397,7 +399,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "document":
             {
@@ -415,7 +417,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -425,7 +428,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "search_result":
             {
@@ -443,7 +446,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -453,7 +457,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "thinking":
             {
@@ -471,7 +475,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -481,7 +486,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "redacted_thinking":
             {
@@ -499,7 +504,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -509,7 +515,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "tool_use":
             {
@@ -524,7 +530,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -534,7 +541,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "tool_result":
             {
@@ -552,7 +559,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -562,7 +570,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "server_tool_use":
             {
@@ -580,7 +588,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -590,7 +599,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "web_search_tool_result":
             {
@@ -608,7 +617,8 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                         return new ContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -618,7 +628,7 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

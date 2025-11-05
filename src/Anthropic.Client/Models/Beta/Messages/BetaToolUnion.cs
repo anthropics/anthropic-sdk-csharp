@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -302,20 +302,20 @@ public record class BetaToolUnion
     }
 
     public void Switch(
-        Action<BetaTool> betaTool,
-        Action<BetaToolBash20241022> bash20241022,
-        Action<BetaToolBash20250124> bash20250124,
-        Action<BetaCodeExecutionTool20250522> codeExecutionTool20250522,
-        Action<BetaCodeExecutionTool20250825> codeExecutionTool20250825,
-        Action<BetaToolComputerUse20241022> computerUse20241022,
-        Action<BetaMemoryTool20250818> memoryTool20250818,
-        Action<BetaToolComputerUse20250124> computerUse20250124,
-        Action<BetaToolTextEditor20241022> textEditor20241022,
-        Action<BetaToolTextEditor20250124> textEditor20250124,
-        Action<BetaToolTextEditor20250429> textEditor20250429,
-        Action<BetaToolTextEditor20250728> textEditor20250728,
-        Action<BetaWebSearchTool20250305> webSearchTool20250305,
-        Action<BetaWebFetchTool20250910> webFetchTool20250910
+        System::Action<BetaTool> betaTool,
+        System::Action<BetaToolBash20241022> bash20241022,
+        System::Action<BetaToolBash20250124> bash20250124,
+        System::Action<BetaCodeExecutionTool20250522> codeExecutionTool20250522,
+        System::Action<BetaCodeExecutionTool20250825> codeExecutionTool20250825,
+        System::Action<BetaToolComputerUse20241022> computerUse20241022,
+        System::Action<BetaMemoryTool20250818> memoryTool20250818,
+        System::Action<BetaToolComputerUse20250124> computerUse20250124,
+        System::Action<BetaToolTextEditor20241022> textEditor20241022,
+        System::Action<BetaToolTextEditor20250124> textEditor20250124,
+        System::Action<BetaToolTextEditor20250429> textEditor20250429,
+        System::Action<BetaToolTextEditor20250728> textEditor20250728,
+        System::Action<BetaWebSearchTool20250305> webSearchTool20250305,
+        System::Action<BetaWebFetchTool20250910> webFetchTool20250910
     )
     {
         switch (this.Value)
@@ -370,20 +370,20 @@ public record class BetaToolUnion
     }
 
     public T Match<T>(
-        Func<BetaTool, T> betaTool,
-        Func<BetaToolBash20241022, T> bash20241022,
-        Func<BetaToolBash20250124, T> bash20250124,
-        Func<BetaCodeExecutionTool20250522, T> codeExecutionTool20250522,
-        Func<BetaCodeExecutionTool20250825, T> codeExecutionTool20250825,
-        Func<BetaToolComputerUse20241022, T> computerUse20241022,
-        Func<BetaMemoryTool20250818, T> memoryTool20250818,
-        Func<BetaToolComputerUse20250124, T> computerUse20250124,
-        Func<BetaToolTextEditor20241022, T> textEditor20241022,
-        Func<BetaToolTextEditor20250124, T> textEditor20250124,
-        Func<BetaToolTextEditor20250429, T> textEditor20250429,
-        Func<BetaToolTextEditor20250728, T> textEditor20250728,
-        Func<BetaWebSearchTool20250305, T> webSearchTool20250305,
-        Func<BetaWebFetchTool20250910, T> webFetchTool20250910
+        System::Func<BetaTool, T> betaTool,
+        System::Func<BetaToolBash20241022, T> bash20241022,
+        System::Func<BetaToolBash20250124, T> bash20250124,
+        System::Func<BetaCodeExecutionTool20250522, T> codeExecutionTool20250522,
+        System::Func<BetaCodeExecutionTool20250825, T> codeExecutionTool20250825,
+        System::Func<BetaToolComputerUse20241022, T> computerUse20241022,
+        System::Func<BetaMemoryTool20250818, T> memoryTool20250818,
+        System::Func<BetaToolComputerUse20250124, T> computerUse20250124,
+        System::Func<BetaToolTextEditor20241022, T> textEditor20241022,
+        System::Func<BetaToolTextEditor20250124, T> textEditor20250124,
+        System::Func<BetaToolTextEditor20250429, T> textEditor20250429,
+        System::Func<BetaToolTextEditor20250728, T> textEditor20250728,
+        System::Func<BetaWebSearchTool20250305, T> webSearchTool20250305,
+        System::Func<BetaWebFetchTool20250910, T> webFetchTool20250910
     )
     {
         return this.Value switch
@@ -425,7 +425,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
 {
     public override BetaToolUnion? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -440,7 +440,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException("Data does not match union variant 'BetaTool'", e)
@@ -459,7 +459,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -481,7 +481,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -503,7 +503,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -525,7 +525,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -547,7 +547,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -569,7 +569,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -591,7 +591,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -613,7 +613,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -635,7 +635,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -657,7 +657,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -679,7 +679,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -701,7 +701,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -723,7 +723,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
                 return new BetaToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -733,7 +733,7 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
             );
         }
 
-        throw new AggregateException(exceptions);
+        throw new System::AggregateException(exceptions);
     }
 
     public override void Write(

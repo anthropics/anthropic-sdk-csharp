@@ -2,10 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic.Client.Models.Messages;
-using Anthropic.Client.Models.Messages.Batches.BatchCreateParamsProperties.RequestProperties.ParamsProperties;
-using Anthropic.Client.Models.Messages.CacheControlEphemeralProperties;
-using Anthropic.Client.Models.Messages.MessageParamProperties;
-using Anthropic.Client.Models.Messages.ToolProperties;
+using Batches = Anthropic.Client.Models.Messages.Batches;
 
 namespace Anthropic.Client.Tests.Services.Messages.Batches;
 
@@ -28,7 +25,7 @@ public class BatchServiceTest : TestBase
                             Messages = [new() { Content = new("Hello, world"), Role = Role.User }],
                             Model = Model.Claude3_7SonnetLatest,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                            ServiceTier = ServiceTier.Auto,
+                            ServiceTier = Batches::ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
                             System = new(

@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Messages.Batches.BetaMessageBatchProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches;
 
@@ -24,13 +23,13 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
             if (!this.Properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new ArgumentNullException("id")
+                    new System::ArgumentNullException("id")
                 );
         }
         set
@@ -46,14 +45,17 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     /// RFC 3339 datetime string representing the time at which the Message Batch
     /// was archived and its results became unavailable.
     /// </summary>
-    public required DateTime? ArchivedAt
+    public required System::DateTime? ArchivedAt
     {
         get
         {
             if (!this.Properties.TryGetValue("archived_at", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<DateTime?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<System::DateTime?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -68,14 +70,17 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     /// RFC 3339 datetime string representing the time at which cancellation was
     /// initiated for the Message Batch. Specified only if cancellation was initiated.
     /// </summary>
-    public required DateTime? CancelInitiatedAt
+    public required System::DateTime? CancelInitiatedAt
     {
         get
         {
             if (!this.Properties.TryGetValue("cancel_initiated_at", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<DateTime?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<System::DateTime?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -90,17 +95,23 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     /// RFC 3339 datetime string representing the time at which the Message Batch
     /// was created.
     /// </summary>
-    public required DateTime CreatedAt
+    public required System::DateTime CreatedAt
     {
         get
         {
             if (!this.Properties.TryGetValue("created_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'created_at' cannot be null",
-                    new ArgumentOutOfRangeException("created_at", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "created_at",
+                        "Missing required argument"
+                    )
                 );
 
-            return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<System::DateTime>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -118,14 +129,17 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     /// Processing ends when every request in a Message Batch has either succeeded,
     /// errored, canceled, or expired.
     /// </summary>
-    public required DateTime? EndedAt
+    public required System::DateTime? EndedAt
     {
         get
         {
             if (!this.Properties.TryGetValue("ended_at", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<DateTime?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<System::DateTime?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -140,17 +154,23 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     /// RFC 3339 datetime string representing the time at which the Message Batch
     /// will expire and end processing, which is 24 hours after creation.
     /// </summary>
-    public required DateTime ExpiresAt
+    public required System::DateTime ExpiresAt
     {
         get
         {
             if (!this.Properties.TryGetValue("expires_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'expires_at' cannot be null",
-                    new ArgumentOutOfRangeException("expires_at", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "expires_at",
+                        "Missing required argument"
+                    )
                 );
 
-            return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<System::DateTime>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -171,7 +191,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
             if (!this.Properties.TryGetValue("processing_status", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'processing_status' cannot be null",
-                    new ArgumentOutOfRangeException(
+                    new System::ArgumentOutOfRangeException(
                         "processing_status",
                         "Missing required argument"
                     )
@@ -205,7 +225,10 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
             if (!this.Properties.TryGetValue("request_counts", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'request_counts' cannot be null",
-                    new ArgumentOutOfRangeException("request_counts", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "request_counts",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<BetaMessageBatchRequestCounts>(
@@ -214,7 +237,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'request_counts' cannot be null",
-                    new ArgumentNullException("request_counts")
+                    new System::ArgumentNullException("request_counts")
                 );
         }
         set
@@ -263,7 +286,7 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -307,5 +330,55 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     public static BetaMessageBatch FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
+    }
+}
+
+/// <summary>
+/// Processing status of the Message Batch.
+/// </summary>
+[JsonConverter(typeof(ProcessingStatusConverter))]
+public enum ProcessingStatus
+{
+    InProgress,
+    Canceling,
+    Ended,
+}
+
+sealed class ProcessingStatusConverter : JsonConverter<ProcessingStatus>
+{
+    public override ProcessingStatus Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "in_progress" => ProcessingStatus.InProgress,
+            "canceling" => ProcessingStatus.Canceling,
+            "ended" => ProcessingStatus.Ended,
+            _ => (ProcessingStatus)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ProcessingStatus value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ProcessingStatus.InProgress => "in_progress",
+                ProcessingStatus.Canceling => "canceling",
+                ProcessingStatus.Ended => "ended",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

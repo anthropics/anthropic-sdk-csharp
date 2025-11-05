@@ -1,11 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Messages.MessageCountTokensParamsProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -78,7 +79,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("messages", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
-                    new ArgumentOutOfRangeException("messages", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("messages", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<List<MessageParam>>(
@@ -87,7 +88,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
-                    new ArgumentNullException("messages")
+                    new System::ArgumentNullException("messages")
                 );
         }
         set
@@ -110,7 +111,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
-                    new ArgumentOutOfRangeException("model", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("model", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
@@ -133,14 +134,14 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// A system prompt is a way of providing context and instructions to Claude,
     /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).
     /// </summary>
-    public SystemModel? System
+    public System1? System
     {
         get
         {
             if (!this.BodyProperties.TryGetValue("system", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<SystemModel?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<System1?>(element, ModelBase.SerializerOptions);
         }
         set
         {
@@ -271,9 +272,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
     }
 
-    public override Uri Url(IAnthropicClient client)
+    public override System::Uri Url(IAnthropicClient client)
     {
-        return new UriBuilder(client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages/count_tokens")
+        return new System::UriBuilder(
+            client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages/count_tokens"
+        )
         {
             Query = this.QueryString(client),
         }.Uri;
@@ -295,5 +298,150 @@ public sealed record class MessageCountTokensParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+}
+
+/// <summary>
+/// System prompt.
+///
+/// A system prompt is a way of providing context and instructions to Claude, such
+/// as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).
+/// </summary>
+[JsonConverter(typeof(System1Converter))]
+public record class System1
+{
+    public object Value { get; private init; }
+
+    public System1(string value)
+    {
+        Value = value;
+    }
+
+    public System1(List<TextBlockParam> value)
+    {
+        Value = value;
+    }
+
+    System1(UnknownVariant value)
+    {
+        Value = value;
+    }
+
+    public static System1 CreateUnknownVariant(JsonElement value)
+    {
+        return new(new UnknownVariant(value));
+    }
+
+    public bool TryPickString([NotNullWhen(true)] out string? value)
+    {
+        value = this.Value as string;
+        return value != null;
+    }
+
+    public bool TryPickTextBlockParams([NotNullWhen(true)] out List<TextBlockParam>? value)
+    {
+        value = this.Value as List<TextBlockParam>;
+        return value != null;
+    }
+
+    public void Switch(
+        System::Action<string> @string,
+        System::Action<List<TextBlockParam>> textBlockParams
+    )
+    {
+        switch (this.Value)
+        {
+            case string value:
+                @string(value);
+                break;
+            case List<TextBlockParam> value:
+                textBlockParams(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException(
+                    "Data did not match any variant of System1"
+                );
+        }
+    }
+
+    public T Match<T>(
+        System::Func<string, T> @string,
+        System::Func<List<TextBlockParam>, T> textBlockParams
+    )
+    {
+        return this.Value switch
+        {
+            string value => @string(value),
+            List<TextBlockParam> value => textBlockParams(value),
+            _ => throw new AnthropicInvalidDataException(
+                "Data did not match any variant of System1"
+            ),
+        };
+    }
+
+    public void Validate()
+    {
+        if (this.Value is UnknownVariant)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of System1");
+        }
+    }
+
+    record struct UnknownVariant(JsonElement value);
+}
+
+sealed class System1Converter : JsonConverter<System1>
+{
+    public override System1? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        List<AnthropicInvalidDataException> exceptions = [];
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            if (deserialized != null)
+            {
+                return new System1(deserialized);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            exceptions.Add(
+                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
+            );
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(
+                ref reader,
+                options
+            );
+            if (deserialized != null)
+            {
+                return new System1(deserialized);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            exceptions.Add(
+                new AnthropicInvalidDataException(
+                    "Data does not match union variant 'List<TextBlockParam>'",
+                    e
+                )
+            );
+        }
+
+        throw new System::AggregateException(exceptions);
+    }
+
+    public override void Write(Utf8JsonWriter writer, System1 value, JsonSerializerOptions options)
+    {
+        object variant = value.Value;
+        JsonSerializer.Serialize(writer, variant, options);
     }
 }

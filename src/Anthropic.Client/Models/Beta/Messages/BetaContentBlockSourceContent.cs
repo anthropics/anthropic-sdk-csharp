@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -61,8 +61,8 @@ public record class BetaContentBlockSourceContent
     }
 
     public void Switch(
-        Action<BetaTextBlockParam> textBlockParam,
-        Action<BetaImageBlockParam> imageBlockParam
+        System::Action<BetaTextBlockParam> textBlockParam,
+        System::Action<BetaImageBlockParam> imageBlockParam
     )
     {
         switch (this.Value)
@@ -81,8 +81,8 @@ public record class BetaContentBlockSourceContent
     }
 
     public T Match<T>(
-        Func<BetaTextBlockParam, T> textBlockParam,
-        Func<BetaImageBlockParam, T> imageBlockParam
+        System::Func<BetaTextBlockParam, T> textBlockParam,
+        System::Func<BetaImageBlockParam, T> imageBlockParam
     )
     {
         return this.Value switch
@@ -112,7 +112,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
 {
     public override BetaContentBlockSourceContent? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -145,7 +145,8 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                         return new BetaContentBlockSourceContent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -155,7 +156,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "image":
             {
@@ -173,7 +174,8 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                         return new BetaContentBlockSourceContent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -183,7 +185,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

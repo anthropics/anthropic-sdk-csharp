@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -119,12 +119,12 @@ public record class RawMessageStreamEvent
     }
 
     public void Switch(
-        Action<RawMessageStartEvent> start,
-        Action<RawMessageDeltaEvent> delta,
-        Action<RawMessageStopEvent> stop,
-        Action<RawContentBlockStartEvent> contentBlockStart,
-        Action<RawContentBlockDeltaEvent> contentBlockDelta,
-        Action<RawContentBlockStopEvent> contentBlockStop
+        System::Action<RawMessageStartEvent> start,
+        System::Action<RawMessageDeltaEvent> delta,
+        System::Action<RawMessageStopEvent> stop,
+        System::Action<RawContentBlockStartEvent> contentBlockStart,
+        System::Action<RawContentBlockDeltaEvent> contentBlockDelta,
+        System::Action<RawContentBlockStopEvent> contentBlockStop
     )
     {
         switch (this.Value)
@@ -155,12 +155,12 @@ public record class RawMessageStreamEvent
     }
 
     public T Match<T>(
-        Func<RawMessageStartEvent, T> start,
-        Func<RawMessageDeltaEvent, T> delta,
-        Func<RawMessageStopEvent, T> stop,
-        Func<RawContentBlockStartEvent, T> contentBlockStart,
-        Func<RawContentBlockDeltaEvent, T> contentBlockDelta,
-        Func<RawContentBlockStopEvent, T> contentBlockStop
+        System::Func<RawMessageStartEvent, T> start,
+        System::Func<RawMessageDeltaEvent, T> delta,
+        System::Func<RawMessageStopEvent, T> stop,
+        System::Func<RawContentBlockStartEvent, T> contentBlockStart,
+        System::Func<RawContentBlockDeltaEvent, T> contentBlockDelta,
+        System::Func<RawContentBlockStopEvent, T> contentBlockStop
     )
     {
         return this.Value switch
@@ -194,7 +194,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
 {
     public override RawMessageStreamEvent? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -227,7 +227,8 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                         return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -237,7 +238,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "message_delta":
             {
@@ -255,7 +256,8 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                         return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -265,7 +267,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "message_stop":
             {
@@ -283,7 +285,8 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                         return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -293,7 +296,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_start":
             {
@@ -311,7 +314,8 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                         return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -321,7 +325,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_delta":
             {
@@ -339,7 +343,8 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                         return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -349,7 +354,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_stop":
             {
@@ -367,7 +372,8 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                         return new RawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -377,7 +383,7 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

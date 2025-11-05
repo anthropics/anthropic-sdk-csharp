@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Anthropic.Client.Models.Messages;
-using Anthropic.Client.Models.Messages.MessageParamProperties;
 
 namespace Anthropic.Client.Tests.Services.Messages;
 

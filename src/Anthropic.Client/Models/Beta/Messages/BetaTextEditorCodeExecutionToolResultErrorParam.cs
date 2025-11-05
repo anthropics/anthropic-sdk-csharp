@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Messages.BetaTextEditorCodeExecutionToolResultErrorParamProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -14,17 +13,20 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam
     : ModelBase,
         IFromRaw<BetaTextEditorCodeExecutionToolResultErrorParam>
 {
-    public required ApiEnum<string, ErrorCode> ErrorCode
+    public required ApiEnum<string, ErrorCode2> ErrorCode
     {
         get
         {
             if (!this.Properties.TryGetValue("error_code", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'error_code' cannot be null",
-                    new ArgumentOutOfRangeException("error_code", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "error_code",
+                        "Missing required argument"
+                    )
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
+            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCode2>>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +47,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -107,9 +109,62 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam
     }
 
     [SetsRequiredMembers]
-    public BetaTextEditorCodeExecutionToolResultErrorParam(ApiEnum<string, ErrorCode> errorCode)
+    public BetaTextEditorCodeExecutionToolResultErrorParam(ApiEnum<string, ErrorCode2> errorCode)
         : this()
     {
         this.ErrorCode = errorCode;
+    }
+}
+
+[JsonConverter(typeof(ErrorCode2Converter))]
+public enum ErrorCode2
+{
+    InvalidToolInput,
+    Unavailable,
+    TooManyRequests,
+    ExecutionTimeExceeded,
+    FileNotFound,
+}
+
+sealed class ErrorCode2Converter : JsonConverter<ErrorCode2>
+{
+    public override ErrorCode2 Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "invalid_tool_input" => ErrorCode2.InvalidToolInput,
+            "unavailable" => ErrorCode2.Unavailable,
+            "too_many_requests" => ErrorCode2.TooManyRequests,
+            "execution_time_exceeded" => ErrorCode2.ExecutionTimeExceeded,
+            "file_not_found" => ErrorCode2.FileNotFound,
+            _ => (ErrorCode2)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ErrorCode2 value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ErrorCode2.InvalidToolInput => "invalid_tool_input",
+                ErrorCode2.Unavailable => "unavailable",
+                ErrorCode2.TooManyRequests => "too_many_requests",
+                ErrorCode2.ExecutionTimeExceeded => "execution_time_exceeded",
+                ErrorCode2.FileNotFound => "file_not_found",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Client.Core;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Files;
 
@@ -37,9 +37,9 @@ public sealed record class FileRetrieveMetadataParams : ParamsBase
         }
     }
 
-    public override Uri Url(IAnthropicClient client)
+    public override System::Uri Url(IAnthropicClient client)
     {
-        return new UriBuilder(
+        return new System::UriBuilder(
             client.BaseUrl.ToString().TrimEnd('/')
                 + string.Format("/v1/files/{0}?beta=true", this.FileID)
         )

@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -23,7 +23,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
             if (!this.Properties.TryGetValue("command", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'command' cannot be null",
-                    new ArgumentOutOfRangeException("command", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("command", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -47,13 +47,16 @@ public sealed record class BetaMemoryTool20250818CreateCommand
             if (!this.Properties.TryGetValue("file_text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'file_text' cannot be null",
-                    new ArgumentOutOfRangeException("file_text", "Missing required argument")
+                    new System::ArgumentOutOfRangeException(
+                        "file_text",
+                        "Missing required argument"
+                    )
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'file_text' cannot be null",
-                    new ArgumentNullException("file_text")
+                    new System::ArgumentNullException("file_text")
                 );
         }
         set
@@ -75,13 +78,13 @@ public sealed record class BetaMemoryTool20250818CreateCommand
             if (!this.Properties.TryGetValue("path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
-                    new ArgumentOutOfRangeException("path", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("path", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
-                    new ArgumentNullException("path")
+                    new System::ArgumentNullException("path")
                 );
         }
         set

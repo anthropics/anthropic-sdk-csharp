@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -18,7 +18,7 @@ public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchR
             if (!this.Properties.TryGetValue("encrypted_content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'encrypted_content' cannot be null",
-                    new ArgumentOutOfRangeException(
+                    new System::ArgumentOutOfRangeException(
                         "encrypted_content",
                         "Missing required argument"
                     )
@@ -27,7 +27,7 @@ public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchR
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'encrypted_content' cannot be null",
-                    new ArgumentNullException("encrypted_content")
+                    new System::ArgumentNullException("encrypted_content")
                 );
         }
         set
@@ -64,13 +64,13 @@ public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchR
             if (!this.Properties.TryGetValue("title", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'title' cannot be null",
-                    new ArgumentOutOfRangeException("title", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("title", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'title' cannot be null",
-                    new ArgumentNullException("title")
+                    new System::ArgumentNullException("title")
                 );
         }
         set
@@ -89,7 +89,7 @@ public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchR
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -110,13 +110,13 @@ public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchR
             if (!this.Properties.TryGetValue("url", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
-                    new ArgumentOutOfRangeException("url", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("url", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
-                    new ArgumentNullException("url")
+                    new System::ArgumentNullException("url")
                 );
         }
         set

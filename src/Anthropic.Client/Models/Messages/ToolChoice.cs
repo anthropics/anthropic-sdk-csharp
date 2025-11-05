@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -97,10 +97,10 @@ public record class ToolChoice
     }
 
     public void Switch(
-        Action<ToolChoiceAuto> auto,
-        Action<ToolChoiceAny> any,
-        Action<ToolChoiceTool> tool,
-        Action<ToolChoiceNone> none
+        System::Action<ToolChoiceAuto> auto,
+        System::Action<ToolChoiceAny> any,
+        System::Action<ToolChoiceTool> tool,
+        System::Action<ToolChoiceNone> none
     )
     {
         switch (this.Value)
@@ -125,10 +125,10 @@ public record class ToolChoice
     }
 
     public T Match<T>(
-        Func<ToolChoiceAuto, T> auto,
-        Func<ToolChoiceAny, T> any,
-        Func<ToolChoiceTool, T> tool,
-        Func<ToolChoiceNone, T> none
+        System::Func<ToolChoiceAuto, T> auto,
+        System::Func<ToolChoiceAny, T> any,
+        System::Func<ToolChoiceTool, T> tool,
+        System::Func<ToolChoiceNone, T> none
     )
     {
         return this.Value switch
@@ -158,7 +158,7 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
 {
     public override ToolChoice? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -188,7 +188,8 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                         return new ToolChoice(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -198,7 +199,7 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "any":
             {
@@ -213,7 +214,8 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                         return new ToolChoice(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -223,7 +225,7 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "tool":
             {
@@ -238,7 +240,8 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                         return new ToolChoice(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -248,7 +251,7 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "none":
             {
@@ -263,7 +266,8 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                         return new ToolChoice(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -273,7 +277,7 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

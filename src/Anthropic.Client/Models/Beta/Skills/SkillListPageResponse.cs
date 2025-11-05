@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Skills.SkillListPageResponseProperties;
 
 namespace Anthropic.Client.Models.Beta.Skills;
 
@@ -111,6 +110,230 @@ public sealed record class SkillListPageResponse : ModelBase, IFromRaw<SkillList
 #pragma warning restore CS8618
 
     public static SkillListPageResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    {
+        return new(properties);
+    }
+}
+
+[JsonConverter(typeof(ModelConverter<Data>))]
+public sealed record class Data : ModelBase, IFromRaw<Data>
+{
+    /// <summary>
+    /// Unique identifier for the skill.
+    ///
+    /// The format and length of IDs may change over time.
+    /// </summary>
+    public required string ID
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("id", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'id' cannot be null",
+                    new ArgumentOutOfRangeException("id", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'id' cannot be null",
+                    new ArgumentNullException("id")
+                );
+        }
+        set
+        {
+            this.Properties["id"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// ISO 8601 timestamp of when the skill was created.
+    /// </summary>
+    public required string CreatedAt
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("created_at", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'created_at' cannot be null",
+                    new ArgumentOutOfRangeException("created_at", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'created_at' cannot be null",
+                    new ArgumentNullException("created_at")
+                );
+        }
+        set
+        {
+            this.Properties["created_at"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// Display title for the skill.
+    ///
+    /// This is a human-readable label that is not included in the prompt sent to
+    /// the model.
+    /// </summary>
+    public required string? DisplayTitle
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("display_title", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+        }
+        set
+        {
+            this.Properties["display_title"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// The latest version identifier for the skill.
+    ///
+    /// This represents the most recent version of the skill that has been created.
+    /// </summary>
+    public required string? LatestVersion
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("latest_version", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+        }
+        set
+        {
+            this.Properties["latest_version"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// Source of the skill.
+    ///
+    /// This may be one of the following values: * `"custom"`: the skill was created
+    /// by a user * `"anthropic"`: the skill was created by Anthropic
+    /// </summary>
+    public required string Source
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("source", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'source' cannot be null",
+                    new ArgumentOutOfRangeException("source", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'source' cannot be null",
+                    new ArgumentNullException("source")
+                );
+        }
+        set
+        {
+            this.Properties["source"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// Object type.
+    ///
+    /// For Skills, this is always `"skill"`.
+    /// </summary>
+    public required string Type
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("type", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new ArgumentNullException("type")
+                );
+        }
+        set
+        {
+            this.Properties["type"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// ISO 8601 timestamp of when the skill was last updated.
+    /// </summary>
+    public required string UpdatedAt
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("updated_at", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'updated_at' cannot be null",
+                    new ArgumentOutOfRangeException("updated_at", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'updated_at' cannot be null",
+                    new ArgumentNullException("updated_at")
+                );
+        }
+        set
+        {
+            this.Properties["updated_at"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public override void Validate()
+    {
+        _ = this.ID;
+        _ = this.CreatedAt;
+        _ = this.DisplayTitle;
+        _ = this.LatestVersion;
+        _ = this.Source;
+        _ = this.Type;
+        _ = this.UpdatedAt;
+    }
+
+    public Data() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    Data(Dictionary<string, JsonElement> properties)
+    {
+        Properties = properties;
+    }
+#pragma warning restore CS8618
+
+    public static Data FromRawUnchecked(Dictionary<string, JsonElement> properties)
     {
         return new(properties);
     }

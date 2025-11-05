@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
-using Anthropic.Client.Models.Beta.Messages.BetaServerToolUseBlockParamProperties;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -21,13 +20,13 @@ public sealed record class BetaServerToolUseBlockParam
             if (!this.Properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
-                    new ArgumentNullException("id")
+                    new System::ArgumentNullException("id")
                 );
         }
         set
@@ -46,7 +45,7 @@ public sealed record class BetaServerToolUseBlockParam
             if (!this.Properties.TryGetValue("input", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input' cannot be null",
-                    new ArgumentOutOfRangeException("input", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("input", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -55,7 +54,7 @@ public sealed record class BetaServerToolUseBlockParam
                 )
                 ?? throw new AnthropicInvalidDataException(
                     "'input' cannot be null",
-                    new ArgumentNullException("input")
+                    new System::ArgumentNullException("input")
                 );
         }
         set
@@ -67,17 +66,17 @@ public sealed record class BetaServerToolUseBlockParam
         }
     }
 
-    public required ApiEnum<string, Name> Name
+    public required ApiEnum<string, NameModel> Name
     {
         get
         {
             if (!this.Properties.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
-                    new ArgumentOutOfRangeException("name", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<ApiEnum<string, Name>>(
+            return JsonSerializer.Deserialize<ApiEnum<string, NameModel>>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -98,7 +97,7 @@ public sealed record class BetaServerToolUseBlockParam
             if (!this.Properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
@@ -163,5 +162,58 @@ public sealed record class BetaServerToolUseBlockParam
     )
     {
         return new(properties);
+    }
+}
+
+[JsonConverter(typeof(NameModelConverter))]
+public enum NameModel
+{
+    WebSearch,
+    WebFetch,
+    CodeExecution,
+    BashCodeExecution,
+    TextEditorCodeExecution,
+}
+
+sealed class NameModelConverter : JsonConverter<NameModel>
+{
+    public override NameModel Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "web_search" => NameModel.WebSearch,
+            "web_fetch" => NameModel.WebFetch,
+            "code_execution" => NameModel.CodeExecution,
+            "bash_code_execution" => NameModel.BashCodeExecution,
+            "text_editor_code_execution" => NameModel.TextEditorCodeExecution,
+            _ => (NameModel)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        NameModel value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                NameModel.WebSearch => "web_search",
+                NameModel.WebFetch => "web_fetch",
+                NameModel.CodeExecution => "code_execution",
+                NameModel.BashCodeExecution => "bash_code_execution",
+                NameModel.TextEditorCodeExecution => "text_editor_code_execution",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

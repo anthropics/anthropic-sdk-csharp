@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -383,23 +383,23 @@ public record class BetaContentBlockParam
     }
 
     public void Switch(
-        Action<BetaTextBlockParam> text,
-        Action<BetaImageBlockParam> image,
-        Action<BetaRequestDocumentBlock> requestDocumentBlock,
-        Action<BetaSearchResultBlockParam> searchResult,
-        Action<BetaThinkingBlockParam> thinking,
-        Action<BetaRedactedThinkingBlockParam> redactedThinking,
-        Action<BetaToolUseBlockParam> toolUse,
-        Action<BetaToolResultBlockParam> toolResult,
-        Action<BetaServerToolUseBlockParam> serverToolUse,
-        Action<BetaWebSearchToolResultBlockParam> webSearchToolResult,
-        Action<BetaWebFetchToolResultBlockParam> webFetchToolResult,
-        Action<BetaCodeExecutionToolResultBlockParam> codeExecutionToolResult,
-        Action<BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
-        Action<BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
-        Action<BetaMCPToolUseBlockParam> mcpToolUse,
-        Action<BetaRequestMCPToolResultBlockParam> requestMCPToolResult,
-        Action<BetaContainerUploadBlockParam> containerUpload
+        System::Action<BetaTextBlockParam> text,
+        System::Action<BetaImageBlockParam> image,
+        System::Action<BetaRequestDocumentBlock> requestDocumentBlock,
+        System::Action<BetaSearchResultBlockParam> searchResult,
+        System::Action<BetaThinkingBlockParam> thinking,
+        System::Action<BetaRedactedThinkingBlockParam> redactedThinking,
+        System::Action<BetaToolUseBlockParam> toolUse,
+        System::Action<BetaToolResultBlockParam> toolResult,
+        System::Action<BetaServerToolUseBlockParam> serverToolUse,
+        System::Action<BetaWebSearchToolResultBlockParam> webSearchToolResult,
+        System::Action<BetaWebFetchToolResultBlockParam> webFetchToolResult,
+        System::Action<BetaCodeExecutionToolResultBlockParam> codeExecutionToolResult,
+        System::Action<BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
+        System::Action<BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
+        System::Action<BetaMCPToolUseBlockParam> mcpToolUse,
+        System::Action<BetaRequestMCPToolResultBlockParam> requestMCPToolResult,
+        System::Action<BetaContainerUploadBlockParam> containerUpload
     )
     {
         switch (this.Value)
@@ -463,23 +463,26 @@ public record class BetaContentBlockParam
     }
 
     public T Match<T>(
-        Func<BetaTextBlockParam, T> text,
-        Func<BetaImageBlockParam, T> image,
-        Func<BetaRequestDocumentBlock, T> requestDocumentBlock,
-        Func<BetaSearchResultBlockParam, T> searchResult,
-        Func<BetaThinkingBlockParam, T> thinking,
-        Func<BetaRedactedThinkingBlockParam, T> redactedThinking,
-        Func<BetaToolUseBlockParam, T> toolUse,
-        Func<BetaToolResultBlockParam, T> toolResult,
-        Func<BetaServerToolUseBlockParam, T> serverToolUse,
-        Func<BetaWebSearchToolResultBlockParam, T> webSearchToolResult,
-        Func<BetaWebFetchToolResultBlockParam, T> webFetchToolResult,
-        Func<BetaCodeExecutionToolResultBlockParam, T> codeExecutionToolResult,
-        Func<BetaBashCodeExecutionToolResultBlockParam, T> bashCodeExecutionToolResult,
-        Func<BetaTextEditorCodeExecutionToolResultBlockParam, T> textEditorCodeExecutionToolResult,
-        Func<BetaMCPToolUseBlockParam, T> mcpToolUse,
-        Func<BetaRequestMCPToolResultBlockParam, T> requestMCPToolResult,
-        Func<BetaContainerUploadBlockParam, T> containerUpload
+        System::Func<BetaTextBlockParam, T> text,
+        System::Func<BetaImageBlockParam, T> image,
+        System::Func<BetaRequestDocumentBlock, T> requestDocumentBlock,
+        System::Func<BetaSearchResultBlockParam, T> searchResult,
+        System::Func<BetaThinkingBlockParam, T> thinking,
+        System::Func<BetaRedactedThinkingBlockParam, T> redactedThinking,
+        System::Func<BetaToolUseBlockParam, T> toolUse,
+        System::Func<BetaToolResultBlockParam, T> toolResult,
+        System::Func<BetaServerToolUseBlockParam, T> serverToolUse,
+        System::Func<BetaWebSearchToolResultBlockParam, T> webSearchToolResult,
+        System::Func<BetaWebFetchToolResultBlockParam, T> webFetchToolResult,
+        System::Func<BetaCodeExecutionToolResultBlockParam, T> codeExecutionToolResult,
+        System::Func<BetaBashCodeExecutionToolResultBlockParam, T> bashCodeExecutionToolResult,
+        System::Func<
+            BetaTextEditorCodeExecutionToolResultBlockParam,
+            T
+        > textEditorCodeExecutionToolResult,
+        System::Func<BetaMCPToolUseBlockParam, T> mcpToolUse,
+        System::Func<BetaRequestMCPToolResultBlockParam, T> requestMCPToolResult,
+        System::Func<BetaContainerUploadBlockParam, T> containerUpload
     )
     {
         return this.Value switch
@@ -525,7 +528,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
 {
     public override BetaContentBlockParam? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -558,7 +561,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -568,7 +572,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "image":
             {
@@ -586,7 +590,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -596,7 +601,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "document":
             {
@@ -614,7 +619,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -624,7 +630,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "search_result":
             {
@@ -642,7 +648,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -652,7 +659,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "thinking":
             {
@@ -670,7 +677,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -680,7 +688,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "redacted_thinking":
             {
@@ -698,7 +706,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -708,7 +717,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "tool_use":
             {
@@ -726,7 +735,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -736,7 +746,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "tool_result":
             {
@@ -754,7 +764,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -764,7 +775,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "server_tool_use":
             {
@@ -782,7 +793,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -792,7 +804,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "web_search_tool_result":
             {
@@ -811,7 +823,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -821,7 +834,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "web_fetch_tool_result":
             {
@@ -839,7 +852,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -849,7 +863,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "code_execution_tool_result":
             {
@@ -868,7 +882,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -878,7 +893,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "bash_code_execution_tool_result":
             {
@@ -897,7 +912,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -907,7 +923,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "text_editor_code_execution_tool_result":
             {
@@ -926,7 +942,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -936,7 +953,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "mcp_tool_use":
             {
@@ -954,7 +971,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -964,7 +982,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "mcp_tool_result":
             {
@@ -983,7 +1001,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -993,7 +1012,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "container_upload":
             {
@@ -1011,7 +1030,8 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                         return new BetaContentBlockParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -1021,7 +1041,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

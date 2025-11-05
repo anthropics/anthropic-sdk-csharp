@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -123,12 +123,12 @@ public record class BetaRawMessageStreamEvent
     }
 
     public void Switch(
-        Action<BetaRawMessageStartEvent> start,
-        Action<BetaRawMessageDeltaEvent> delta,
-        Action<BetaRawMessageStopEvent> stop,
-        Action<BetaRawContentBlockStartEvent> contentBlockStart,
-        Action<BetaRawContentBlockDeltaEvent> contentBlockDelta,
-        Action<BetaRawContentBlockStopEvent> contentBlockStop
+        System::Action<BetaRawMessageStartEvent> start,
+        System::Action<BetaRawMessageDeltaEvent> delta,
+        System::Action<BetaRawMessageStopEvent> stop,
+        System::Action<BetaRawContentBlockStartEvent> contentBlockStart,
+        System::Action<BetaRawContentBlockDeltaEvent> contentBlockDelta,
+        System::Action<BetaRawContentBlockStopEvent> contentBlockStop
     )
     {
         switch (this.Value)
@@ -159,12 +159,12 @@ public record class BetaRawMessageStreamEvent
     }
 
     public T Match<T>(
-        Func<BetaRawMessageStartEvent, T> start,
-        Func<BetaRawMessageDeltaEvent, T> delta,
-        Func<BetaRawMessageStopEvent, T> stop,
-        Func<BetaRawContentBlockStartEvent, T> contentBlockStart,
-        Func<BetaRawContentBlockDeltaEvent, T> contentBlockDelta,
-        Func<BetaRawContentBlockStopEvent, T> contentBlockStop
+        System::Func<BetaRawMessageStartEvent, T> start,
+        System::Func<BetaRawMessageDeltaEvent, T> delta,
+        System::Func<BetaRawMessageStopEvent, T> stop,
+        System::Func<BetaRawContentBlockStartEvent, T> contentBlockStart,
+        System::Func<BetaRawContentBlockDeltaEvent, T> contentBlockDelta,
+        System::Func<BetaRawContentBlockStopEvent, T> contentBlockStop
     )
     {
         return this.Value switch
@@ -198,7 +198,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
 {
     public override BetaRawMessageStreamEvent? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -231,7 +231,8 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                         return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -241,7 +242,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "message_delta":
             {
@@ -259,7 +260,8 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                         return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -269,7 +271,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "message_stop":
             {
@@ -287,7 +289,8 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                         return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -297,7 +300,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_start":
             {
@@ -315,7 +318,8 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                         return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -325,7 +329,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_delta":
             {
@@ -343,7 +347,8 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                         return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -353,7 +358,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_stop":
             {
@@ -371,7 +376,8 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                         return new BetaRawMessageStreamEvent(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -381,7 +387,7 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

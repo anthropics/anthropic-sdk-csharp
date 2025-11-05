@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
-using Anthropic.Client.Models.Beta.Files;
+using Files = Anthropic.Client.Models.Beta.Files;
 
 namespace Anthropic.Client.Services.Beta.Files;
 
@@ -20,17 +20,17 @@ public sealed class FileService : IFileService
         _client = client;
     }
 
-    public async Task<FileListPageResponse> List(FileListParams? parameters = null)
+    public async Task<Files::FileListPageResponse> List(Files::FileListParams? parameters = null)
     {
         parameters ??= new();
 
-        HttpRequest<FileListParams> request = new()
+        HttpRequest<Files::FileListParams> request = new()
         {
             Method = HttpMethod.Get,
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var page = await response.Deserialize<FileListPageResponse>().ConfigureAwait(false);
+        var page = await response.Deserialize<Files::FileListPageResponse>().ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             page.Validate();
@@ -38,15 +38,15 @@ public sealed class FileService : IFileService
         return page;
     }
 
-    public async Task<DeletedFile> Delete(FileDeleteParams parameters)
+    public async Task<Files::DeletedFile> Delete(Files::FileDeleteParams parameters)
     {
-        HttpRequest<FileDeleteParams> request = new()
+        HttpRequest<Files::FileDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var deletedFile = await response.Deserialize<DeletedFile>().ConfigureAwait(false);
+        var deletedFile = await response.Deserialize<Files::DeletedFile>().ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             deletedFile.Validate();
@@ -54,15 +54,17 @@ public sealed class FileService : IFileService
         return deletedFile;
     }
 
-    public async Task<FileMetadata> RetrieveMetadata(FileRetrieveMetadataParams parameters)
+    public async Task<Files::FileMetadata> RetrieveMetadata(
+        Files::FileRetrieveMetadataParams parameters
+    )
     {
-        HttpRequest<FileRetrieveMetadataParams> request = new()
+        HttpRequest<Files::FileRetrieveMetadataParams> request = new()
         {
             Method = HttpMethod.Get,
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var fileMetadata = await response.Deserialize<FileMetadata>().ConfigureAwait(false);
+        var fileMetadata = await response.Deserialize<Files::FileMetadata>().ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             fileMetadata.Validate();

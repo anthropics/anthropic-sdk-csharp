@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -186,11 +186,11 @@ public record class TextCitationParam
     }
 
     public void Switch(
-        Action<CitationCharLocationParam> citationCharLocation,
-        Action<CitationPageLocationParam> citationPageLocation,
-        Action<CitationContentBlockLocationParam> citationContentBlockLocation,
-        Action<CitationWebSearchResultLocationParam> citationWebSearchResultLocation,
-        Action<CitationSearchResultLocationParam> citationSearchResultLocation
+        System::Action<CitationCharLocationParam> citationCharLocation,
+        System::Action<CitationPageLocationParam> citationPageLocation,
+        System::Action<CitationContentBlockLocationParam> citationContentBlockLocation,
+        System::Action<CitationWebSearchResultLocationParam> citationWebSearchResultLocation,
+        System::Action<CitationSearchResultLocationParam> citationSearchResultLocation
     )
     {
         switch (this.Value)
@@ -218,11 +218,11 @@ public record class TextCitationParam
     }
 
     public T Match<T>(
-        Func<CitationCharLocationParam, T> citationCharLocation,
-        Func<CitationPageLocationParam, T> citationPageLocation,
-        Func<CitationContentBlockLocationParam, T> citationContentBlockLocation,
-        Func<CitationWebSearchResultLocationParam, T> citationWebSearchResultLocation,
-        Func<CitationSearchResultLocationParam, T> citationSearchResultLocation
+        System::Func<CitationCharLocationParam, T> citationCharLocation,
+        System::Func<CitationPageLocationParam, T> citationPageLocation,
+        System::Func<CitationContentBlockLocationParam, T> citationContentBlockLocation,
+        System::Func<CitationWebSearchResultLocationParam, T> citationWebSearchResultLocation,
+        System::Func<CitationSearchResultLocationParam, T> citationSearchResultLocation
     )
     {
         return this.Value switch
@@ -255,7 +255,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
 {
     public override TextCitationParam? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -288,7 +288,8 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                         return new TextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -298,7 +299,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "page_location":
             {
@@ -316,7 +317,8 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                         return new TextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -326,7 +328,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_location":
             {
@@ -345,7 +347,8 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                         return new TextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -355,7 +358,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "web_search_result_location":
             {
@@ -374,7 +377,8 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                         return new TextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -384,7 +388,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "search_result_location":
             {
@@ -403,7 +407,8 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                         return new TextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -413,7 +418,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages;
 
@@ -186,11 +186,11 @@ public record class BetaTextCitationParam
     }
 
     public void Switch(
-        Action<BetaCitationCharLocationParam> citationCharLocation,
-        Action<BetaCitationPageLocationParam> citationPageLocation,
-        Action<BetaCitationContentBlockLocationParam> citationContentBlockLocation,
-        Action<BetaCitationWebSearchResultLocationParam> citationWebSearchResultLocation,
-        Action<BetaCitationSearchResultLocationParam> citationSearchResultLocation
+        System::Action<BetaCitationCharLocationParam> citationCharLocation,
+        System::Action<BetaCitationPageLocationParam> citationPageLocation,
+        System::Action<BetaCitationContentBlockLocationParam> citationContentBlockLocation,
+        System::Action<BetaCitationWebSearchResultLocationParam> citationWebSearchResultLocation,
+        System::Action<BetaCitationSearchResultLocationParam> citationSearchResultLocation
     )
     {
         switch (this.Value)
@@ -218,11 +218,11 @@ public record class BetaTextCitationParam
     }
 
     public T Match<T>(
-        Func<BetaCitationCharLocationParam, T> citationCharLocation,
-        Func<BetaCitationPageLocationParam, T> citationPageLocation,
-        Func<BetaCitationContentBlockLocationParam, T> citationContentBlockLocation,
-        Func<BetaCitationWebSearchResultLocationParam, T> citationWebSearchResultLocation,
-        Func<BetaCitationSearchResultLocationParam, T> citationSearchResultLocation
+        System::Func<BetaCitationCharLocationParam, T> citationCharLocation,
+        System::Func<BetaCitationPageLocationParam, T> citationPageLocation,
+        System::Func<BetaCitationContentBlockLocationParam, T> citationContentBlockLocation,
+        System::Func<BetaCitationWebSearchResultLocationParam, T> citationWebSearchResultLocation,
+        System::Func<BetaCitationSearchResultLocationParam, T> citationSearchResultLocation
     )
     {
         return this.Value switch
@@ -257,7 +257,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
 {
     public override BetaTextCitationParam? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -290,7 +290,8 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                         return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -300,7 +301,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "page_location":
             {
@@ -318,7 +319,8 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                         return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -328,7 +330,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "content_block_location":
             {
@@ -347,7 +349,8 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                         return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -357,7 +360,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "web_search_result_location":
             {
@@ -376,7 +379,8 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                         return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -386,7 +390,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             case "search_result_location":
             {
@@ -405,7 +409,8 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                         return new BetaTextCitationParam(deserialized);
                     }
                 }
-                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
                 {
                     exceptions.Add(
                         new AnthropicInvalidDataException(
@@ -415,7 +420,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     );
                 }
 
-                throw new AggregateException(exceptions);
+                throw new System::AggregateException(exceptions);
             }
             default:
             {

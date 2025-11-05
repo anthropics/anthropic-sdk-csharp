@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Client.Exceptions;
+using System = System;
 
 namespace Anthropic.Client.Models.Messages;
 
@@ -104,12 +104,12 @@ public record class ToolUnion
     }
 
     public void Switch(
-        Action<Tool> tool,
-        Action<ToolBash20250124> bash20250124,
-        Action<ToolTextEditor20250124> textEditor20250124,
-        Action<ToolTextEditor20250429> textEditor20250429,
-        Action<ToolTextEditor20250728> textEditor20250728,
-        Action<WebSearchTool20250305> webSearchTool20250305
+        System::Action<Tool> tool,
+        System::Action<ToolBash20250124> bash20250124,
+        System::Action<ToolTextEditor20250124> textEditor20250124,
+        System::Action<ToolTextEditor20250429> textEditor20250429,
+        System::Action<ToolTextEditor20250728> textEditor20250728,
+        System::Action<WebSearchTool20250305> webSearchTool20250305
     )
     {
         switch (this.Value)
@@ -140,12 +140,12 @@ public record class ToolUnion
     }
 
     public T Match<T>(
-        Func<Tool, T> tool,
-        Func<ToolBash20250124, T> bash20250124,
-        Func<ToolTextEditor20250124, T> textEditor20250124,
-        Func<ToolTextEditor20250429, T> textEditor20250429,
-        Func<ToolTextEditor20250728, T> textEditor20250728,
-        Func<WebSearchTool20250305, T> webSearchTool20250305
+        System::Func<Tool, T> tool,
+        System::Func<ToolBash20250124, T> bash20250124,
+        System::Func<ToolTextEditor20250124, T> textEditor20250124,
+        System::Func<ToolTextEditor20250429, T> textEditor20250429,
+        System::Func<ToolTextEditor20250728, T> textEditor20250728,
+        System::Func<WebSearchTool20250305, T> webSearchTool20250305
     )
     {
         return this.Value switch
@@ -177,7 +177,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
 {
     public override ToolUnion? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -192,7 +192,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
                 return new ToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException("Data does not match union variant 'Tool'", e)
@@ -208,7 +208,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
                 return new ToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -230,7 +230,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
                 return new ToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -252,7 +252,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
                 return new ToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -274,7 +274,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
                 return new ToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -296,7 +296,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
                 return new ToolUnion(deserialized);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             exceptions.Add(
                 new AnthropicInvalidDataException(
@@ -306,7 +306,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             );
         }
 
-        throw new AggregateException(exceptions);
+        throw new System::AggregateException(exceptions);
     }
 
     public override void Write(
