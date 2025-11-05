@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.2.0 (2025-11-05)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v0.1.0...v0.2.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** make models immutable
+
+### Features
+
+* **api:** add ability to clear thinking in context management ([05d2ce6](https://github.com/anthropics/anthropic-sdk-csharp/commit/05d2ce6bc64fe547fe7bc695d383af89caf7a45d))
+* **client:** add response validation option ([6130f1b](https://github.com/anthropics/anthropic-sdk-csharp/commit/6130f1bc759bcc6c54cac411f69dd237c7fb40ce))
+* **client:** add support for option modification ([e105fba](https://github.com/anthropics/anthropic-sdk-csharp/commit/e105fbad5f26c737c57ce23ad2cbcd81b89bd07e))
+* **client:** make models immutable ([f55629c](https://github.com/anthropics/anthropic-sdk-csharp/commit/f55629c40cf51fc43cf3a64ec87e53051f88fee6))
+* **client:** support request timeout ([7411046](https://github.com/anthropics/anthropic-sdk-csharp/commit/7411046b4bc02671bd805d96a6c2745df0af4fcc))
+
+
+### Chores
+
+* **api:** mark older sonnet models as deprecated ([fc00d2b](https://github.com/anthropics/anthropic-sdk-csharp/commit/fc00d2b1dd5f100e523acf6f440e7a32c2452576))
+* **client:** simplify field validations ([6130f1b](https://github.com/anthropics/anthropic-sdk-csharp/commit/6130f1bc759bcc6c54cac411f69dd237c7fb40ce))
+* **internal:** codegen related update ([2798e0a](https://github.com/anthropics/anthropic-sdk-csharp/commit/2798e0a5fdc81a6076d449a73e8e880eb451b500))
+* **internal:** extract `ClientOptions` struct ([7e906c8](https://github.com/anthropics/anthropic-sdk-csharp/commit/7e906c854b0b68e981565df411407039dc6486e9))
+* **internal:** full qualify some references ([8a52868](https://github.com/anthropics/anthropic-sdk-csharp/commit/8a528685fbb605a06427773868638ebdcecb97b6))
+
+
+### Documentation
+
+* **client:** document `WithOptions` ([38352b0](https://github.com/anthropics/anthropic-sdk-csharp/commit/38352b0ec8b3b1d1f98ef08e83437875440cb9ba))
+* **client:** document response validation ([0e9f728](https://github.com/anthropics/anthropic-sdk-csharp/commit/0e9f72869c1c85f3e116c17eae5422847e2615fb))
+* **client:** document timeout option ([80d8d7f](https://github.com/anthropics/anthropic-sdk-csharp/commit/80d8d7fa0f2251892ee6c17e99c9a8db04334321))
+* **client:** improve snippet formatting ([94dc213](https://github.com/anthropics/anthropic-sdk-csharp/commit/94dc21334c5caeb106f5d07971c92c8b4a45aa1a))
+
 ## 0.1.0 (2025-10-27)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v0.0.1...v0.1.0)
