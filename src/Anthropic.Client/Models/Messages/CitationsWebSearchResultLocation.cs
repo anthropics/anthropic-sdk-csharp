@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class CitationsWebSearchResultLocation
     {
         get
         {
-            if (!this.Properties.TryGetValue("cited_text", out JsonElement element))
+            if (!this._properties.TryGetValue("cited_text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cited_text' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -32,9 +33,9 @@ public sealed record class CitationsWebSearchResultLocation
                     new System::ArgumentNullException("cited_text")
                 );
         }
-        set
+        init
         {
-            this.Properties["cited_text"] = JsonSerializer.SerializeToElement(
+            this._properties["cited_text"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +46,7 @@ public sealed record class CitationsWebSearchResultLocation
     {
         get
         {
-            if (!this.Properties.TryGetValue("encrypted_index", out JsonElement element))
+            if (!this._properties.TryGetValue("encrypted_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'encrypted_index' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -60,9 +61,9 @@ public sealed record class CitationsWebSearchResultLocation
                     new System::ArgumentNullException("encrypted_index")
                 );
         }
-        set
+        init
         {
-            this.Properties["encrypted_index"] = JsonSerializer.SerializeToElement(
+            this._properties["encrypted_index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -73,14 +74,14 @@ public sealed record class CitationsWebSearchResultLocation
     {
         get
         {
-            if (!this.Properties.TryGetValue("title", out JsonElement element))
+            if (!this._properties.TryGetValue("title", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["title"] = JsonSerializer.SerializeToElement(
+            this._properties["title"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -91,7 +92,7 @@ public sealed record class CitationsWebSearchResultLocation
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -99,9 +100,9 @@ public sealed record class CitationsWebSearchResultLocation
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -112,7 +113,7 @@ public sealed record class CitationsWebSearchResultLocation
     {
         get
         {
-            if (!this.Properties.TryGetValue("url", out JsonElement element))
+            if (!this._properties.TryGetValue("url", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
                     new System::ArgumentOutOfRangeException("url", "Missing required argument")
@@ -124,9 +125,9 @@ public sealed record class CitationsWebSearchResultLocation
                     new System::ArgumentNullException("url")
                 );
         }
-        set
+        init
         {
-            this.Properties["url"] = JsonSerializer.SerializeToElement(
+            this._properties["url"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -147,18 +148,25 @@ public sealed record class CitationsWebSearchResultLocation
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
     }
 
+    public CitationsWebSearchResultLocation(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    CitationsWebSearchResultLocation(Dictionary<string, JsonElement> properties)
+    CitationsWebSearchResultLocation(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static CitationsWebSearchResultLocation FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

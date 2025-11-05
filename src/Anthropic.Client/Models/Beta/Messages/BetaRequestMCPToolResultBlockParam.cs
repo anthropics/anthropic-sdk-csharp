@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,7 +19,7 @@ public sealed record class BetaRequestMCPToolResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -32,9 +34,9 @@ public sealed record class BetaRequestMCPToolResultBlockParam
                     new System::ArgumentNullException("tool_use_id")
                 );
         }
-        set
+        init
         {
-            this.Properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +47,7 @@ public sealed record class BetaRequestMCPToolResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -53,9 +55,9 @@ public sealed record class BetaRequestMCPToolResultBlockParam
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,7 +71,7 @@ public sealed record class BetaRequestMCPToolResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -77,9 +79,9 @@ public sealed record class BetaRequestMCPToolResultBlockParam
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -90,14 +92,14 @@ public sealed record class BetaRequestMCPToolResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out JsonElement element))
+            if (!this._properties.TryGetValue("content", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Content4?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["content"] = JsonSerializer.SerializeToElement(
+            this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,14 +110,14 @@ public sealed record class BetaRequestMCPToolResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("is_error", out JsonElement element))
+            if (!this._properties.TryGetValue("is_error", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["is_error"] = JsonSerializer.SerializeToElement(
+            this._properties["is_error"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -136,19 +138,26 @@ public sealed record class BetaRequestMCPToolResultBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
     }
 
+    public BetaRequestMCPToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRequestMCPToolResultBlockParam(Dictionary<string, JsonElement> properties)
+    BetaRequestMCPToolResultBlockParam(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaRequestMCPToolResultBlockParam FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]
@@ -169,9 +178,9 @@ public record class Content4
         Value = value;
     }
 
-    public Content4(List<BetaTextBlockParam> value)
+    public Content4(IReadOnlyList<BetaTextBlockParam> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     Content4(UnknownVariant value)
@@ -191,16 +200,16 @@ public record class Content4
     }
 
     public bool TryPickBetaMCPToolResultBlockParam(
-        [NotNullWhen(true)] out List<BetaTextBlockParam>? value
+        [NotNullWhen(true)] out IReadOnlyList<BetaTextBlockParam>? value
     )
     {
-        value = this.Value as List<BetaTextBlockParam>;
+        value = this.Value as IReadOnlyList<BetaTextBlockParam>;
         return value != null;
     }
 
     public void Switch(
         System::Action<string> @string,
-        System::Action<List<BetaTextBlockParam>> betaMCPToolResultBlockParamContent
+        System::Action<IReadOnlyList<BetaTextBlockParam>> betaMCPToolResultBlockParamContent
     )
     {
         switch (this.Value)
@@ -220,13 +229,13 @@ public record class Content4
 
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<List<BetaTextBlockParam>, T> betaMCPToolResultBlockParamContent
+        System::Func<IReadOnlyList<BetaTextBlockParam>, T> betaMCPToolResultBlockParamContent
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            List<BetaTextBlockParam> value => betaMCPToolResultBlockParamContent(value),
+            IReadOnlyList<BetaTextBlockParam> value => betaMCPToolResultBlockParamContent(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Content4"
             ),

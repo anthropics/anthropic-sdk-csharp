@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -18,7 +19,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out JsonElement element))
+            if (!this._properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new System::ArgumentOutOfRangeException("id", "Missing required argument")
@@ -30,9 +31,9 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
                     new System::ArgumentNullException("id")
                 );
         }
-        set
+        init
         {
-            this.Properties["id"] = JsonSerializer.SerializeToElement(
+            this._properties["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -48,7 +49,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<
@@ -56,9 +57,9 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
                 global::Anthropic.Client.Models.Beta.Files.Type
             >?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -73,17 +74,22 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
 
     public DeletedFile() { }
 
+    public DeletedFile(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    DeletedFile(Dictionary<string, JsonElement> properties)
+    DeletedFile(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static DeletedFile FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

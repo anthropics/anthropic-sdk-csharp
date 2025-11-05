@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class BetaBashCodeExecutionOutputBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("file_id", out JsonElement element))
+            if (!this._properties.TryGetValue("file_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'file_id' cannot be null",
                     new System::ArgumentOutOfRangeException("file_id", "Missing required argument")
@@ -29,9 +30,9 @@ public sealed record class BetaBashCodeExecutionOutputBlock
                     new System::ArgumentNullException("file_id")
                 );
         }
-        set
+        init
         {
-            this.Properties["file_id"] = JsonSerializer.SerializeToElement(
+            this._properties["file_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,7 +43,7 @@ public sealed record class BetaBashCodeExecutionOutputBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -50,9 +51,9 @@ public sealed record class BetaBashCodeExecutionOutputBlock
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -70,19 +71,26 @@ public sealed record class BetaBashCodeExecutionOutputBlock
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_output\"");
     }
 
+    public BetaBashCodeExecutionOutputBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_output\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBashCodeExecutionOutputBlock(Dictionary<string, JsonElement> properties)
+    BetaBashCodeExecutionOutputBlock(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaBashCodeExecutionOutputBlock FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

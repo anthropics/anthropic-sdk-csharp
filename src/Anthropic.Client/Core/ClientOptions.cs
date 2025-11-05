@@ -29,7 +29,8 @@ public struct ClientOptions()
         set { _apiKey = new(() => value); }
     }
 
-    Lazy<string?> _authToken = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN")
+    Lazy<string?> _authToken = new(() =>
+        Environment.GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN")
     );
     public string? AuthToken
     {

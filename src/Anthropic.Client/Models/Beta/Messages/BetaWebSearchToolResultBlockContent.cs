@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,9 +18,9 @@ public record class BetaWebSearchToolResultBlockContent
         Value = value;
     }
 
-    public BetaWebSearchToolResultBlockContent(List<BetaWebSearchResultBlock> value)
+    public BetaWebSearchToolResultBlockContent(IReadOnlyList<BetaWebSearchResultBlock> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     BetaWebSearchToolResultBlockContent(UnknownVariant value)
@@ -39,16 +40,16 @@ public record class BetaWebSearchToolResultBlockContent
     }
 
     public bool TryPickBetaWebSearchResultBlocks(
-        [NotNullWhen(true)] out List<BetaWebSearchResultBlock>? value
+        [NotNullWhen(true)] out IReadOnlyList<BetaWebSearchResultBlock>? value
     )
     {
-        value = this.Value as List<BetaWebSearchResultBlock>;
+        value = this.Value as IReadOnlyList<BetaWebSearchResultBlock>;
         return value != null;
     }
 
     public void Switch(
         System::Action<BetaWebSearchToolResultError> error,
-        System::Action<List<BetaWebSearchResultBlock>> betaWebSearchResultBlocks
+        System::Action<IReadOnlyList<BetaWebSearchResultBlock>> betaWebSearchResultBlocks
     )
     {
         switch (this.Value)
@@ -68,13 +69,13 @@ public record class BetaWebSearchToolResultBlockContent
 
     public T Match<T>(
         System::Func<BetaWebSearchToolResultError, T> error,
-        System::Func<List<BetaWebSearchResultBlock>, T> betaWebSearchResultBlocks
+        System::Func<IReadOnlyList<BetaWebSearchResultBlock>, T> betaWebSearchResultBlocks
     )
     {
         return this.Value switch
         {
             BetaWebSearchToolResultError value => error(value),
-            List<BetaWebSearchResultBlock> value => betaWebSearchResultBlocks(value),
+            IReadOnlyList<BetaWebSearchResultBlock> value => betaWebSearchResultBlocks(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebSearchToolResultBlockContent"
             ),

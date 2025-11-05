@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -18,7 +19,7 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out JsonElement element))
+            if (!this._properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new ArgumentOutOfRangeException("id", "Missing required argument")
@@ -30,9 +31,9 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
                     new ArgumentNullException("id")
                 );
         }
-        set
+        init
         {
-            this.Properties["id"] = JsonSerializer.SerializeToElement(
+            this._properties["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -47,7 +48,7 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
     {
         get
         {
-            if (!this.Properties.TryGetValue("created_at", out JsonElement element))
+            if (!this._properties.TryGetValue("created_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'created_at' cannot be null",
                     new ArgumentOutOfRangeException("created_at", "Missing required argument")
@@ -55,9 +56,9 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
 
             return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["created_at"] = JsonSerializer.SerializeToElement(
+            this._properties["created_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -71,7 +72,7 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
     {
         get
         {
-            if (!this.Properties.TryGetValue("display_name", out JsonElement element))
+            if (!this._properties.TryGetValue("display_name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'display_name' cannot be null",
                     new ArgumentOutOfRangeException("display_name", "Missing required argument")
@@ -83,9 +84,9 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
                     new ArgumentNullException("display_name")
                 );
         }
-        set
+        init
         {
-            this.Properties["display_name"] = JsonSerializer.SerializeToElement(
+            this._properties["display_name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -101,7 +102,7 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -109,9 +110,9 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -131,16 +132,23 @@ public sealed record class ModelInfo : ModelBase, IFromRaw<ModelInfo>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
     }
 
+    public ModelInfo(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ModelInfo(Dictionary<string, JsonElement> properties)
+    ModelInfo(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static ModelInfo FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static ModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

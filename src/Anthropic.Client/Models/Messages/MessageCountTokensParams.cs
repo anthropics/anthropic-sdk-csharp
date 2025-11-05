@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
@@ -20,7 +22,11 @@ namespace Anthropic.Client.Models.Messages;
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
-    public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
+    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
+    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    {
+        get { return this._bodyProperties.Freeze(); }
+    }
 
     /// <summary>
     /// Input messages.
@@ -76,7 +82,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("messages", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("messages", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
                     new System::ArgumentOutOfRangeException("messages", "Missing required argument")
@@ -91,9 +97,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
                     new System::ArgumentNullException("messages")
                 );
         }
-        set
+        init
         {
-            this.BodyProperties["messages"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["messages"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,7 +114,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("model", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
                     new System::ArgumentOutOfRangeException("model", "Missing required argument")
@@ -119,9 +125,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.BodyProperties["model"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["model"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -138,14 +144,14 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("system", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("system", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<System1?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["system"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["system"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -166,7 +172,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("thinking", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("thinking", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ThinkingConfigParam?>(
@@ -174,9 +180,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.BodyProperties["thinking"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -191,14 +197,14 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("tool_choice", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ToolChoice?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -255,7 +261,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("tools", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<MessageCountTokensTool>?>(
@@ -263,13 +269,53 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.BodyProperties["tools"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
         }
+    }
+
+    public MessageCountTokensParams() { }
+
+    public MessageCountTokensParams(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties,
+        IReadOnlyDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+        this._bodyProperties = [.. bodyProperties];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    MessageCountTokensParams(
+        FrozenDictionary<string, JsonElement> headerProperties,
+        FrozenDictionary<string, JsonElement> queryProperties,
+        FrozenDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+        this._bodyProperties = [.. bodyProperties];
+    }
+#pragma warning restore CS8618
+
+    public static MessageCountTokensParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties,
+        IReadOnlyDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(headerProperties),
+            FrozenDictionary.ToFrozenDictionary(queryProperties),
+            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+        );
     }
 
     public override System::Uri Url(IAnthropicClient client)
@@ -317,9 +363,9 @@ public record class System1
         Value = value;
     }
 
-    public System1(List<TextBlockParam> value)
+    public System1(IReadOnlyList<TextBlockParam> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     System1(UnknownVariant value)
@@ -338,15 +384,15 @@ public record class System1
         return value != null;
     }
 
-    public bool TryPickTextBlockParams([NotNullWhen(true)] out List<TextBlockParam>? value)
+    public bool TryPickTextBlockParams([NotNullWhen(true)] out IReadOnlyList<TextBlockParam>? value)
     {
-        value = this.Value as List<TextBlockParam>;
+        value = this.Value as IReadOnlyList<TextBlockParam>;
         return value != null;
     }
 
     public void Switch(
         System::Action<string> @string,
-        System::Action<List<TextBlockParam>> textBlockParams
+        System::Action<IReadOnlyList<TextBlockParam>> textBlockParams
     )
     {
         switch (this.Value)
@@ -366,13 +412,13 @@ public record class System1
 
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<List<TextBlockParam>, T> textBlockParams
+        System::Func<IReadOnlyList<TextBlockParam>, T> textBlockParams
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            List<TextBlockParam> value => textBlockParams(value),
+            IReadOnlyList<TextBlockParam> value => textBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of System1"
             ),

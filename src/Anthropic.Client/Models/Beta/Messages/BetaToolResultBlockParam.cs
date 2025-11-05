@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,7 +17,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this.Properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -30,9 +32,9 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                     new System::ArgumentNullException("tool_use_id")
                 );
         }
-        set
+        init
         {
-            this.Properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,7 +45,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,9 +53,9 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -67,7 +69,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -75,9 +77,9 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -88,14 +90,14 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out JsonElement element))
+            if (!this._properties.TryGetValue("content", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Content7?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["content"] = JsonSerializer.SerializeToElement(
+            this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -106,14 +108,14 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this.Properties.TryGetValue("is_error", out JsonElement element))
+            if (!this._properties.TryGetValue("is_error", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["is_error"] = JsonSerializer.SerializeToElement(
+            this._properties["is_error"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -134,19 +136,26 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
     }
 
+    public BetaToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaToolResultBlockParam(Dictionary<string, JsonElement> properties)
+    BetaToolResultBlockParam(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaToolResultBlockParam FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]
@@ -167,9 +176,9 @@ public record class Content7
         Value = value;
     }
 
-    public Content7(List<Block> value)
+    public Content7(IReadOnlyList<Block> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     Content7(UnknownVariant value)
@@ -188,13 +197,13 @@ public record class Content7
         return value != null;
     }
 
-    public bool TryPickBlocks([NotNullWhen(true)] out List<Block>? value)
+    public bool TryPickBlocks([NotNullWhen(true)] out IReadOnlyList<Block>? value)
     {
-        value = this.Value as List<Block>;
+        value = this.Value as IReadOnlyList<Block>;
         return value != null;
     }
 
-    public void Switch(System::Action<string> @string, System::Action<List<Block>> blocks)
+    public void Switch(System::Action<string> @string, System::Action<IReadOnlyList<Block>> blocks)
     {
         switch (this.Value)
         {
@@ -211,12 +220,12 @@ public record class Content7
         }
     }
 
-    public T Match<T>(System::Func<string, T> @string, System::Func<List<Block>, T> blocks)
+    public T Match<T>(System::Func<string, T> @string, System::Func<IReadOnlyList<Block>, T> blocks)
     {
         return this.Value switch
         {
             string value => @string(value),
-            List<Block> value => blocks(value),
+            IReadOnlyList<Block> value => blocks(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Content7"
             ),

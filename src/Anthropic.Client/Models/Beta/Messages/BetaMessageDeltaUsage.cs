@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -19,15 +20,18 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
         get
         {
             if (
-                !this.Properties.TryGetValue("cache_creation_input_tokens", out JsonElement element)
+                !this._properties.TryGetValue(
+                    "cache_creation_input_tokens",
+                    out JsonElement element
+                )
             )
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["cache_creation_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_creation_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,14 +45,14 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_read_input_tokens", out JsonElement element))
+            if (!this._properties.TryGetValue("cache_read_input_tokens", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["cache_read_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_read_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -62,14 +66,14 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
     {
         get
         {
-            if (!this.Properties.TryGetValue("input_tokens", out JsonElement element))
+            if (!this._properties.TryGetValue("input_tokens", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(
+            this._properties["input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -83,7 +87,7 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
     {
         get
         {
-            if (!this.Properties.TryGetValue("output_tokens", out JsonElement element))
+            if (!this._properties.TryGetValue("output_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'output_tokens' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -94,9 +98,9 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["output_tokens"] = JsonSerializer.SerializeToElement(
+            this._properties["output_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -110,7 +114,7 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
     {
         get
         {
-            if (!this.Properties.TryGetValue("server_tool_use", out JsonElement element))
+            if (!this._properties.TryGetValue("server_tool_use", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaServerToolUsage?>(
@@ -118,9 +122,9 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["server_tool_use"] = JsonSerializer.SerializeToElement(
+            this._properties["server_tool_use"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -138,16 +142,23 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
 
     public BetaMessageDeltaUsage() { }
 
+    public BetaMessageDeltaUsage(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageDeltaUsage(Dictionary<string, JsonElement> properties)
+    BetaMessageDeltaUsage(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaMessageDeltaUsage FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaMessageDeltaUsage FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

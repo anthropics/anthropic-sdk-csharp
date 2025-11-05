@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
@@ -20,7 +22,11 @@ namespace Anthropic.Client.Models.Messages;
 /// </summary>
 public sealed record class MessageCreateParams : ParamsBase
 {
-    public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
+    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
+    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    {
+        get { return this._bodyProperties.Freeze(); }
+    }
 
     /// <summary>
     /// The maximum number of tokens to generate before stopping.
@@ -35,7 +41,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("max_tokens", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("max_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'max_tokens' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -46,9 +52,9 @@ public sealed record class MessageCreateParams : ParamsBase
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["max_tokens"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["max_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -109,7 +115,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("messages", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("messages", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
                     new System::ArgumentOutOfRangeException("messages", "Missing required argument")
@@ -124,9 +130,9 @@ public sealed record class MessageCreateParams : ParamsBase
                     new System::ArgumentNullException("messages")
                 );
         }
-        set
+        init
         {
-            this.BodyProperties["messages"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["messages"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -141,7 +147,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("model", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
                     new System::ArgumentOutOfRangeException("model", "Missing required argument")
@@ -152,9 +158,9 @@ public sealed record class MessageCreateParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.BodyProperties["model"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["model"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -168,14 +174,14 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("metadata", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("metadata", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Metadata?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["metadata"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["metadata"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -193,7 +199,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("service_tier", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("service_tier", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>?>(
@@ -201,9 +207,9 @@ public sealed record class MessageCreateParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.BodyProperties["service_tier"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["service_tier"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -225,14 +231,14 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("stop_sequences", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("stop_sequences", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["stop_sequences"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["stop_sequences"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -249,14 +255,14 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("system", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("system", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<SystemModel?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["system"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["system"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -276,14 +282,14 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("temperature", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("temperature", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["temperature"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["temperature"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -304,7 +310,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("thinking", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("thinking", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ThinkingConfigParam?>(
@@ -312,9 +318,9 @@ public sealed record class MessageCreateParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.BodyProperties["thinking"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -329,14 +335,14 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("tool_choice", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ToolChoice?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -393,7 +399,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("tools", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ToolUnion>?>(
@@ -401,9 +407,9 @@ public sealed record class MessageCreateParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.BodyProperties["tools"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -422,14 +428,14 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("top_k", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("top_k", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["top_k"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["top_k"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -450,18 +456,58 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("top_p", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("top_p", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["top_p"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["top_p"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
         }
+    }
+
+    public MessageCreateParams() { }
+
+    public MessageCreateParams(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties,
+        IReadOnlyDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+        this._bodyProperties = [.. bodyProperties];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    MessageCreateParams(
+        FrozenDictionary<string, JsonElement> headerProperties,
+        FrozenDictionary<string, JsonElement> queryProperties,
+        FrozenDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+        this._bodyProperties = [.. bodyProperties];
+    }
+#pragma warning restore CS8618
+
+    public static MessageCreateParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties,
+        IReadOnlyDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(headerProperties),
+            FrozenDictionary.ToFrozenDictionary(queryProperties),
+            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+        );
     }
 
     public override System::Uri Url(IAnthropicClient client)
@@ -558,9 +604,9 @@ public record class SystemModel
         Value = value;
     }
 
-    public SystemModel(List<TextBlockParam> value)
+    public SystemModel(IReadOnlyList<TextBlockParam> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     SystemModel(UnknownVariant value)
@@ -579,15 +625,15 @@ public record class SystemModel
         return value != null;
     }
 
-    public bool TryPickTextBlockParams([NotNullWhen(true)] out List<TextBlockParam>? value)
+    public bool TryPickTextBlockParams([NotNullWhen(true)] out IReadOnlyList<TextBlockParam>? value)
     {
-        value = this.Value as List<TextBlockParam>;
+        value = this.Value as IReadOnlyList<TextBlockParam>;
         return value != null;
     }
 
     public void Switch(
         System::Action<string> @string,
-        System::Action<List<TextBlockParam>> textBlockParams
+        System::Action<IReadOnlyList<TextBlockParam>> textBlockParams
     )
     {
         switch (this.Value)
@@ -607,13 +653,13 @@ public record class SystemModel
 
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<List<TextBlockParam>, T> textBlockParams
+        System::Func<IReadOnlyList<TextBlockParam>, T> textBlockParams
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            List<TextBlockParam> value => textBlockParams(value),
+            IReadOnlyList<TextBlockParam> value => textBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of SystemModel"
             ),

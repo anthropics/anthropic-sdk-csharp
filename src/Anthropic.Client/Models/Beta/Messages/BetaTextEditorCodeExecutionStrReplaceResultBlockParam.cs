@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -25,9 +26,9 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -38,14 +39,14 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("lines", out JsonElement element))
+            if (!this._properties.TryGetValue("lines", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["lines"] = JsonSerializer.SerializeToElement(
+            this._properties["lines"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -56,14 +57,14 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("new_lines", out JsonElement element))
+            if (!this._properties.TryGetValue("new_lines", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["new_lines"] = JsonSerializer.SerializeToElement(
+            this._properties["new_lines"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -74,14 +75,14 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("new_start", out JsonElement element))
+            if (!this._properties.TryGetValue("new_start", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["new_start"] = JsonSerializer.SerializeToElement(
+            this._properties["new_start"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -92,14 +93,14 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("old_lines", out JsonElement element))
+            if (!this._properties.TryGetValue("old_lines", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["old_lines"] = JsonSerializer.SerializeToElement(
+            this._properties["old_lines"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -110,14 +111,14 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("old_start", out JsonElement element))
+            if (!this._properties.TryGetValue("old_start", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["old_start"] = JsonSerializer.SerializeToElement(
+            this._properties["old_start"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -141,20 +142,31 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
         );
     }
 
+    public BetaTextEditorCodeExecutionStrReplaceResultBlockParam(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>(
+            "\"text_editor_code_execution_str_replace_result\""
+        );
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionStrReplaceResultBlockParam(
-        Dictionary<string, JsonElement> properties
+        FrozenDictionary<string, JsonElement> properties
     )
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaTextEditorCodeExecutionStrReplaceResultBlockParam FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

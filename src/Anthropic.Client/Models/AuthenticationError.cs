@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
     {
         get
         {
-            if (!this.Properties.TryGetValue("message", out JsonElement element))
+            if (!this._properties.TryGetValue("message", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'message' cannot be null",
                     new ArgumentOutOfRangeException("message", "Missing required argument")
@@ -27,9 +28,9 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
                     new ArgumentNullException("message")
                 );
         }
-        set
+        init
         {
-            this.Properties["message"] = JsonSerializer.SerializeToElement(
+            this._properties["message"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,7 +41,7 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -48,9 +49,9 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,17 +69,26 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
     }
 
+    public AuthenticationError(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    AuthenticationError(Dictionary<string, JsonElement> properties)
+    AuthenticationError(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static AuthenticationError FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static AuthenticationError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("command", out JsonElement element))
+            if (!this._properties.TryGetValue("command", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'command' cannot be null",
                     new System::ArgumentOutOfRangeException("command", "Missing required argument")
@@ -28,9 +29,9 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["command"] = JsonSerializer.SerializeToElement(
+            this._properties["command"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +45,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("new_str", out JsonElement element))
+            if (!this._properties.TryGetValue("new_str", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'new_str' cannot be null",
                     new System::ArgumentOutOfRangeException("new_str", "Missing required argument")
@@ -56,9 +57,9 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
                     new System::ArgumentNullException("new_str")
                 );
         }
-        set
+        init
         {
-            this.Properties["new_str"] = JsonSerializer.SerializeToElement(
+            this._properties["new_str"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -72,7 +73,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("old_str", out JsonElement element))
+            if (!this._properties.TryGetValue("old_str", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'old_str' cannot be null",
                     new System::ArgumentOutOfRangeException("old_str", "Missing required argument")
@@ -84,9 +85,9 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
                     new System::ArgumentNullException("old_str")
                 );
         }
-        set
+        init
         {
-            this.Properties["old_str"] = JsonSerializer.SerializeToElement(
+            this._properties["old_str"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -100,7 +101,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("path", out JsonElement element))
+            if (!this._properties.TryGetValue("path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
                     new System::ArgumentOutOfRangeException("path", "Missing required argument")
@@ -112,9 +113,9 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
                     new System::ArgumentNullException("path")
                 );
         }
-        set
+        init
         {
-            this.Properties["path"] = JsonSerializer.SerializeToElement(
+            this._properties["path"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -134,18 +135,27 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
     }
 
+    public BetaMemoryTool20250818StrReplaceCommand(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
+    {
+        this._properties = [.. properties];
+
+        this.Command = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMemoryTool20250818StrReplaceCommand(Dictionary<string, JsonElement> properties)
+    BetaMemoryTool20250818StrReplaceCommand(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaMemoryTool20250818StrReplaceCommand FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

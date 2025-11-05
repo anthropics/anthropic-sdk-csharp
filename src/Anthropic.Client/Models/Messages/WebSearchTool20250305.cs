@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     {
         get
         {
-            if (!this.Properties.TryGetValue("name", out JsonElement element))
+            if (!this._properties.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new System::ArgumentOutOfRangeException("name", "Missing required argument")
@@ -28,9 +29,9 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["name"] = JsonSerializer.SerializeToElement(
+            this._properties["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +42,7 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -49,9 +50,9 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -66,14 +67,14 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     {
         get
         {
-            if (!this.Properties.TryGetValue("allowed_domains", out JsonElement element))
+            if (!this._properties.TryGetValue("allowed_domains", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["allowed_domains"] = JsonSerializer.SerializeToElement(
+            this._properties["allowed_domains"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -87,14 +88,14 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     {
         get
         {
-            if (!this.Properties.TryGetValue("blocked_domains", out JsonElement element))
+            if (!this._properties.TryGetValue("blocked_domains", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["blocked_domains"] = JsonSerializer.SerializeToElement(
+            this._properties["blocked_domains"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,7 +109,7 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -116,9 +117,9 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -132,14 +133,14 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     {
         get
         {
-            if (!this.Properties.TryGetValue("max_uses", out JsonElement element))
+            if (!this._properties.TryGetValue("max_uses", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["max_uses"] = JsonSerializer.SerializeToElement(
+            this._properties["max_uses"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -153,14 +154,14 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     {
         get
         {
-            if (!this.Properties.TryGetValue("user_location", out JsonElement element))
+            if (!this._properties.TryGetValue("user_location", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<UserLocation?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["user_location"] = JsonSerializer.SerializeToElement(
+            this._properties["user_location"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -184,17 +185,27 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"");
     }
 
+    public WebSearchTool20250305(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    WebSearchTool20250305(Dictionary<string, JsonElement> properties)
+    WebSearchTool20250305(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static WebSearchTool20250305 FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static WebSearchTool20250305 FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -208,7 +219,7 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -216,9 +227,9 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -232,14 +243,14 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
     {
         get
         {
-            if (!this.Properties.TryGetValue("city", out JsonElement element))
+            if (!this._properties.TryGetValue("city", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["city"] = JsonSerializer.SerializeToElement(
+            this._properties["city"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -254,14 +265,14 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
     {
         get
         {
-            if (!this.Properties.TryGetValue("country", out JsonElement element))
+            if (!this._properties.TryGetValue("country", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["country"] = JsonSerializer.SerializeToElement(
+            this._properties["country"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -275,14 +286,14 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
     {
         get
         {
-            if (!this.Properties.TryGetValue("region", out JsonElement element))
+            if (!this._properties.TryGetValue("region", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["region"] = JsonSerializer.SerializeToElement(
+            this._properties["region"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -296,14 +307,14 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
     {
         get
         {
-            if (!this.Properties.TryGetValue("timezone", out JsonElement element))
+            if (!this._properties.TryGetValue("timezone", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["timezone"] = JsonSerializer.SerializeToElement(
+            this._properties["timezone"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -324,16 +335,23 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
     }
 
+    public UserLocation(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    UserLocation(Dictionary<string, JsonElement> properties)
+    UserLocation(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static UserLocation FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static UserLocation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

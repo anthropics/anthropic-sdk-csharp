@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,9 +18,9 @@ public record class WebSearchToolResultBlockContent
         Value = value;
     }
 
-    public WebSearchToolResultBlockContent(List<WebSearchResultBlock> value)
+    public WebSearchToolResultBlockContent(IReadOnlyList<WebSearchResultBlock> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     WebSearchToolResultBlockContent(UnknownVariant value)
@@ -39,16 +40,16 @@ public record class WebSearchToolResultBlockContent
     }
 
     public bool TryPickWebSearchResultBlocks(
-        [NotNullWhen(true)] out List<WebSearchResultBlock>? value
+        [NotNullWhen(true)] out IReadOnlyList<WebSearchResultBlock>? value
     )
     {
-        value = this.Value as List<WebSearchResultBlock>;
+        value = this.Value as IReadOnlyList<WebSearchResultBlock>;
         return value != null;
     }
 
     public void Switch(
         System::Action<WebSearchToolResultError> error,
-        System::Action<List<WebSearchResultBlock>> webSearchResultBlocks
+        System::Action<IReadOnlyList<WebSearchResultBlock>> webSearchResultBlocks
     )
     {
         switch (this.Value)
@@ -68,13 +69,13 @@ public record class WebSearchToolResultBlockContent
 
     public T Match<T>(
         System::Func<WebSearchToolResultError, T> error,
-        System::Func<List<WebSearchResultBlock>, T> webSearchResultBlocks
+        System::Func<IReadOnlyList<WebSearchResultBlock>, T> webSearchResultBlocks
     )
     {
         return this.Value switch
         {
             WebSearchToolResultError value => error(value),
-            List<WebSearchResultBlock> value => webSearchResultBlocks(value),
+            IReadOnlyList<WebSearchResultBlock> value => webSearchResultBlocks(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of WebSearchToolResultBlockContent"
             ),

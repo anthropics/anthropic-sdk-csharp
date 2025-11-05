@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,7 +17,7 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out JsonElement element))
+            if (!this._properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -27,9 +29,9 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
                     new System::ArgumentNullException("content")
                 );
         }
-        set
+        init
         {
-            this.Properties["content"] = JsonSerializer.SerializeToElement(
+            this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,7 +42,7 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -48,9 +50,9 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,17 +70,26 @@ public sealed record class ContentBlockSource : ModelBase, IFromRaw<ContentBlock
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
+    public ContentBlockSource(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ContentBlockSource(Dictionary<string, JsonElement> properties)
+    ContentBlockSource(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static ContentBlockSource FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static ContentBlockSource FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]
@@ -99,9 +110,9 @@ public record class Content
         Value = value;
     }
 
-    public Content(List<ContentBlockSourceContent> value)
+    public Content(IReadOnlyList<ContentBlockSourceContent> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     Content(UnknownVariant value)
@@ -120,15 +131,17 @@ public record class Content
         return value != null;
     }
 
-    public bool TryPickBlockSource([NotNullWhen(true)] out List<ContentBlockSourceContent>? value)
+    public bool TryPickBlockSource(
+        [NotNullWhen(true)] out IReadOnlyList<ContentBlockSourceContent>? value
+    )
     {
-        value = this.Value as List<ContentBlockSourceContent>;
+        value = this.Value as IReadOnlyList<ContentBlockSourceContent>;
         return value != null;
     }
 
     public void Switch(
         System::Action<string> @string,
-        System::Action<List<ContentBlockSourceContent>> contentBlockSourceContent
+        System::Action<IReadOnlyList<ContentBlockSourceContent>> contentBlockSourceContent
     )
     {
         switch (this.Value)
@@ -148,13 +161,13 @@ public record class Content
 
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<List<ContentBlockSourceContent>, T> contentBlockSourceContent
+        System::Func<IReadOnlyList<ContentBlockSourceContent>, T> contentBlockSourceContent
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            List<ContentBlockSourceContent> value => contentBlockSourceContent(value),
+            IReadOnlyList<ContentBlockSourceContent> value => contentBlockSourceContent(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Content"
             ),

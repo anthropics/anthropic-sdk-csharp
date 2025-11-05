@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -21,7 +22,7 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out JsonElement element))
+            if (!this._properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new System::ArgumentOutOfRangeException("id", "Missing required argument")
@@ -33,9 +34,9 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
                     new System::ArgumentNullException("id")
                 );
         }
-        set
+        init
         {
-            this.Properties["id"] = JsonSerializer.SerializeToElement(
+            this._properties["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -49,7 +50,7 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
     {
         get
         {
-            if (!this.Properties.TryGetValue("expires_at", out JsonElement element))
+            if (!this._properties.TryGetValue("expires_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'expires_at' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -63,9 +64,9 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["expires_at"] = JsonSerializer.SerializeToElement(
+            this._properties["expires_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -79,7 +80,7 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
     {
         get
         {
-            if (!this.Properties.TryGetValue("skills", out JsonElement element))
+            if (!this._properties.TryGetValue("skills", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<BetaSkill>?>(
@@ -87,9 +88,9 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["skills"] = JsonSerializer.SerializeToElement(
+            this._properties["skills"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,16 +109,23 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
 
     public BetaContainer() { }
 
+    public BetaContainer(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContainer(Dictionary<string, JsonElement> properties)
+    BetaContainer(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaContainer FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaContainer FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

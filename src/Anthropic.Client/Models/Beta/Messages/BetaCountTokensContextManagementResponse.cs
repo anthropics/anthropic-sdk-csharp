@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public sealed record class BetaCountTokensContextManagementResponse
     {
         get
         {
-            if (!this.Properties.TryGetValue("original_input_tokens", out JsonElement element))
+            if (!this._properties.TryGetValue("original_input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'original_input_tokens' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -31,9 +32,9 @@ public sealed record class BetaCountTokensContextManagementResponse
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["original_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._properties["original_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -47,19 +48,26 @@ public sealed record class BetaCountTokensContextManagementResponse
 
     public BetaCountTokensContextManagementResponse() { }
 
+    public BetaCountTokensContextManagementResponse(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCountTokensContextManagementResponse(Dictionary<string, JsonElement> properties)
+    BetaCountTokensContextManagementResponse(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaCountTokensContextManagementResponse FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

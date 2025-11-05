@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class BetaThinkingTurns : ModelBase, IFromRaw<BetaThinkingT
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -23,9 +24,9 @@ public sealed record class BetaThinkingTurns : ModelBase, IFromRaw<BetaThinkingT
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -36,7 +37,7 @@ public sealed record class BetaThinkingTurns : ModelBase, IFromRaw<BetaThinkingT
     {
         get
         {
-            if (!this.Properties.TryGetValue("value", out JsonElement element))
+            if (!this._properties.TryGetValue("value", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'value' cannot be null",
                     new System::ArgumentOutOfRangeException("value", "Missing required argument")
@@ -44,9 +45,9 @@ public sealed record class BetaThinkingTurns : ModelBase, IFromRaw<BetaThinkingT
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["value"] = JsonSerializer.SerializeToElement(
+            this._properties["value"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -64,17 +65,26 @@ public sealed record class BetaThinkingTurns : ModelBase, IFromRaw<BetaThinkingT
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_turns\"");
     }
 
+    public BetaThinkingTurns(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_turns\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaThinkingTurns(Dictionary<string, JsonElement> properties)
+    BetaThinkingTurns(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaThinkingTurns FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaThinkingTurns FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

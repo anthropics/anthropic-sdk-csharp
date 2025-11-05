@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("command", out JsonElement element))
+            if (!this._properties.TryGetValue("command", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'command' cannot be null",
                     new System::ArgumentOutOfRangeException("command", "Missing required argument")
@@ -28,9 +29,9 @@ public sealed record class BetaMemoryTool20250818RenameCommand
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["command"] = JsonSerializer.SerializeToElement(
+            this._properties["command"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +45,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("new_path", out JsonElement element))
+            if (!this._properties.TryGetValue("new_path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'new_path' cannot be null",
                     new System::ArgumentOutOfRangeException("new_path", "Missing required argument")
@@ -56,9 +57,9 @@ public sealed record class BetaMemoryTool20250818RenameCommand
                     new System::ArgumentNullException("new_path")
                 );
         }
-        set
+        init
         {
-            this.Properties["new_path"] = JsonSerializer.SerializeToElement(
+            this._properties["new_path"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -72,7 +73,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("old_path", out JsonElement element))
+            if (!this._properties.TryGetValue("old_path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'old_path' cannot be null",
                     new System::ArgumentOutOfRangeException("old_path", "Missing required argument")
@@ -84,9 +85,9 @@ public sealed record class BetaMemoryTool20250818RenameCommand
                     new System::ArgumentNullException("old_path")
                 );
         }
-        set
+        init
         {
-            this.Properties["old_path"] = JsonSerializer.SerializeToElement(
+            this._properties["old_path"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -105,18 +106,25 @@ public sealed record class BetaMemoryTool20250818RenameCommand
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
     }
 
+    public BetaMemoryTool20250818RenameCommand(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Command = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMemoryTool20250818RenameCommand(Dictionary<string, JsonElement> properties)
+    BetaMemoryTool20250818RenameCommand(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaMemoryTool20250818RenameCommand FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

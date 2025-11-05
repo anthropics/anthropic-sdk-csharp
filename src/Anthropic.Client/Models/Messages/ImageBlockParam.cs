@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("source", out JsonElement element))
+            if (!this._properties.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
@@ -27,9 +28,9 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
                     new System::ArgumentNullException("source")
                 );
         }
-        set
+        init
         {
-            this.Properties["source"] = JsonSerializer.SerializeToElement(
+            this._properties["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,7 +41,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -48,9 +49,9 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -64,7 +65,7 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -72,9 +73,9 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -93,17 +94,26 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
 
+    public ImageBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ImageBlockParam(Dictionary<string, JsonElement> properties)
+    ImageBlockParam(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static ImageBlockParam FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static ImageBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

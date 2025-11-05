@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,7 +17,7 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out JsonElement element))
+            if (!this._properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -27,9 +29,9 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
                     new System::ArgumentNullException("content")
                 );
         }
-        set
+        init
         {
-            this.Properties["content"] = JsonSerializer.SerializeToElement(
+            this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,7 +42,7 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
     {
         get
         {
-            if (!this.Properties.TryGetValue("role", out JsonElement element))
+            if (!this._properties.TryGetValue("role", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'role' cannot be null",
                     new System::ArgumentOutOfRangeException("role", "Missing required argument")
@@ -51,9 +53,9 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["role"] = JsonSerializer.SerializeToElement(
+            this._properties["role"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,17 +70,24 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
 
     public BetaMessageParam() { }
 
+    public BetaMessageParam(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageParam(Dictionary<string, JsonElement> properties)
+    BetaMessageParam(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaMessageParam FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaMessageParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -92,9 +101,9 @@ public record class Content3
         Value = value;
     }
 
-    public Content3(List<BetaContentBlockParam> value)
+    public Content3(IReadOnlyList<BetaContentBlockParam> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     Content3(UnknownVariant value)
@@ -114,16 +123,16 @@ public record class Content3
     }
 
     public bool TryPickBetaContentBlockParams(
-        [NotNullWhen(true)] out List<BetaContentBlockParam>? value
+        [NotNullWhen(true)] out IReadOnlyList<BetaContentBlockParam>? value
     )
     {
-        value = this.Value as List<BetaContentBlockParam>;
+        value = this.Value as IReadOnlyList<BetaContentBlockParam>;
         return value != null;
     }
 
     public void Switch(
         System::Action<string> @string,
-        System::Action<List<BetaContentBlockParam>> betaContentBlockParams
+        System::Action<IReadOnlyList<BetaContentBlockParam>> betaContentBlockParams
     )
     {
         switch (this.Value)
@@ -143,13 +152,13 @@ public record class Content3
 
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<List<BetaContentBlockParam>, T> betaContentBlockParams
+        System::Func<IReadOnlyList<BetaContentBlockParam>, T> betaContentBlockParams
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            List<BetaContentBlockParam> value => betaContentBlockParams(value),
+            IReadOnlyList<BetaContentBlockParam> value => betaContentBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Content3"
             ),

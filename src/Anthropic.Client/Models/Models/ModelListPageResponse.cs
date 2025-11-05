@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
     {
         get
         {
-            if (!this.Properties.TryGetValue("data", out JsonElement element))
+            if (!this._properties.TryGetValue("data", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'data' cannot be null",
                     new ArgumentOutOfRangeException("data", "Missing required argument")
@@ -27,9 +28,9 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
                     new ArgumentNullException("data")
                 );
         }
-        set
+        init
         {
-            this.Properties["data"] = JsonSerializer.SerializeToElement(
+            this._properties["data"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,14 +44,14 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
     {
         get
         {
-            if (!this.Properties.TryGetValue("first_id", out JsonElement element))
+            if (!this._properties.TryGetValue("first_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["first_id"] = JsonSerializer.SerializeToElement(
+            this._properties["first_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -64,7 +65,7 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
     {
         get
         {
-            if (!this.Properties.TryGetValue("has_more", out JsonElement element))
+            if (!this._properties.TryGetValue("has_more", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'has_more' cannot be null",
                     new ArgumentOutOfRangeException("has_more", "Missing required argument")
@@ -72,9 +73,9 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
 
             return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["has_more"] = JsonSerializer.SerializeToElement(
+            this._properties["has_more"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -88,14 +89,14 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
     {
         get
         {
-            if (!this.Properties.TryGetValue("last_id", out JsonElement element))
+            if (!this._properties.TryGetValue("last_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["last_id"] = JsonSerializer.SerializeToElement(
+            this._properties["last_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -115,16 +116,23 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
 
     public ModelListPageResponse() { }
 
+    public ModelListPageResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ModelListPageResponse(Dictionary<string, JsonElement> properties)
+    ModelListPageResponse(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static ModelListPageResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static ModelListPageResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

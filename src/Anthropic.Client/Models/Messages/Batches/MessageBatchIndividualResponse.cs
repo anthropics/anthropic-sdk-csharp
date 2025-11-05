@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -27,7 +28,7 @@ public sealed record class MessageBatchIndividualResponse
     {
         get
         {
-            if (!this.Properties.TryGetValue("custom_id", out JsonElement element))
+            if (!this._properties.TryGetValue("custom_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'custom_id' cannot be null",
                     new ArgumentOutOfRangeException("custom_id", "Missing required argument")
@@ -39,9 +40,9 @@ public sealed record class MessageBatchIndividualResponse
                     new ArgumentNullException("custom_id")
                 );
         }
-        set
+        init
         {
-            this.Properties["custom_id"] = JsonSerializer.SerializeToElement(
+            this._properties["custom_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -59,7 +60,7 @@ public sealed record class MessageBatchIndividualResponse
     {
         get
         {
-            if (!this.Properties.TryGetValue("result", out JsonElement element))
+            if (!this._properties.TryGetValue("result", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'result' cannot be null",
                     new ArgumentOutOfRangeException("result", "Missing required argument")
@@ -74,9 +75,9 @@ public sealed record class MessageBatchIndividualResponse
                     new ArgumentNullException("result")
                 );
         }
-        set
+        init
         {
-            this.Properties["result"] = JsonSerializer.SerializeToElement(
+            this._properties["result"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -91,18 +92,23 @@ public sealed record class MessageBatchIndividualResponse
 
     public MessageBatchIndividualResponse() { }
 
+    public MessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageBatchIndividualResponse(Dictionary<string, JsonElement> properties)
+    MessageBatchIndividualResponse(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static MessageBatchIndividualResponse FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

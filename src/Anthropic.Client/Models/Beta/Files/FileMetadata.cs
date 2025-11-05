@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out JsonElement element))
+            if (!this._properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new System::ArgumentOutOfRangeException("id", "Missing required argument")
@@ -32,9 +33,9 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                     new System::ArgumentNullException("id")
                 );
         }
-        set
+        init
         {
-            this.Properties["id"] = JsonSerializer.SerializeToElement(
+            this._properties["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -48,7 +49,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     {
         get
         {
-            if (!this.Properties.TryGetValue("created_at", out JsonElement element))
+            if (!this._properties.TryGetValue("created_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'created_at' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -62,9 +63,9 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["created_at"] = JsonSerializer.SerializeToElement(
+            this._properties["created_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -78,7 +79,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     {
         get
         {
-            if (!this.Properties.TryGetValue("filename", out JsonElement element))
+            if (!this._properties.TryGetValue("filename", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'filename' cannot be null",
                     new System::ArgumentOutOfRangeException("filename", "Missing required argument")
@@ -90,9 +91,9 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                     new System::ArgumentNullException("filename")
                 );
         }
-        set
+        init
         {
-            this.Properties["filename"] = JsonSerializer.SerializeToElement(
+            this._properties["filename"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -106,7 +107,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     {
         get
         {
-            if (!this.Properties.TryGetValue("mime_type", out JsonElement element))
+            if (!this._properties.TryGetValue("mime_type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'mime_type' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -121,9 +122,9 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                     new System::ArgumentNullException("mime_type")
                 );
         }
-        set
+        init
         {
-            this.Properties["mime_type"] = JsonSerializer.SerializeToElement(
+            this._properties["mime_type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -137,7 +138,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     {
         get
         {
-            if (!this.Properties.TryGetValue("size_bytes", out JsonElement element))
+            if (!this._properties.TryGetValue("size_bytes", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'size_bytes' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -148,9 +149,9 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["size_bytes"] = JsonSerializer.SerializeToElement(
+            this._properties["size_bytes"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -166,7 +167,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -174,9 +175,9 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -190,14 +191,14 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     {
         get
         {
-            if (!this.Properties.TryGetValue("downloadable", out JsonElement element))
+            if (!this._properties.TryGetValue("downloadable", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["downloadable"] = JsonSerializer.SerializeToElement(
+            this._properties["downloadable"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -220,16 +221,23 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
     }
 
+    public FileMetadata(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    FileMetadata(Dictionary<string, JsonElement> properties)
+    FileMetadata(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static FileMetadata FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static FileMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

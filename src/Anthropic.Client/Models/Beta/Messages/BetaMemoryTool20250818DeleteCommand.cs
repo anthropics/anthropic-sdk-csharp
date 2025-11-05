@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("command", out JsonElement element))
+            if (!this._properties.TryGetValue("command", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'command' cannot be null",
                     new System::ArgumentOutOfRangeException("command", "Missing required argument")
@@ -28,9 +29,9 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["command"] = JsonSerializer.SerializeToElement(
+            this._properties["command"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +45,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
     {
         get
         {
-            if (!this.Properties.TryGetValue("path", out JsonElement element))
+            if (!this._properties.TryGetValue("path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
                     new System::ArgumentOutOfRangeException("path", "Missing required argument")
@@ -56,9 +57,9 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
                     new System::ArgumentNullException("path")
                 );
         }
-        set
+        init
         {
-            this.Properties["path"] = JsonSerializer.SerializeToElement(
+            this._properties["path"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -76,19 +77,26 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"delete\"");
     }
 
+    public BetaMemoryTool20250818DeleteCommand(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Command = JsonSerializer.Deserialize<JsonElement>("\"delete\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMemoryTool20250818DeleteCommand(Dictionary<string, JsonElement> properties)
+    BetaMemoryTool20250818DeleteCommand(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaMemoryTool20250818DeleteCommand FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

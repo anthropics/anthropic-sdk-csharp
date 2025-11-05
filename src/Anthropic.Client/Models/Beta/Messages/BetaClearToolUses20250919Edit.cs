@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,7 +19,7 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -25,9 +27,9 @@ public sealed record class BetaClearToolUses20250919Edit
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,7 +44,7 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this.Properties.TryGetValue("clear_at_least", out JsonElement element))
+            if (!this._properties.TryGetValue("clear_at_least", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaInputTokensClearAtLeast?>(
@@ -50,9 +52,9 @@ public sealed record class BetaClearToolUses20250919Edit
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["clear_at_least"] = JsonSerializer.SerializeToElement(
+            this._properties["clear_at_least"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -66,7 +68,7 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this.Properties.TryGetValue("clear_tool_inputs", out JsonElement element))
+            if (!this._properties.TryGetValue("clear_tool_inputs", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ClearToolInputs?>(
@@ -74,9 +76,9 @@ public sealed record class BetaClearToolUses20250919Edit
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["clear_tool_inputs"] = JsonSerializer.SerializeToElement(
+            this._properties["clear_tool_inputs"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -90,14 +92,14 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this.Properties.TryGetValue("exclude_tools", out JsonElement element))
+            if (!this._properties.TryGetValue("exclude_tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["exclude_tools"] = JsonSerializer.SerializeToElement(
+            this._properties["exclude_tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -111,7 +113,7 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this.Properties.TryGetValue("keep", out JsonElement element))
+            if (!this._properties.TryGetValue("keep", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaToolUsesKeep?>(
@@ -119,9 +121,9 @@ public sealed record class BetaClearToolUses20250919Edit
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["keep"] = JsonSerializer.SerializeToElement(
+            this._properties["keep"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -135,14 +137,14 @@ public sealed record class BetaClearToolUses20250919Edit
     {
         get
         {
-            if (!this.Properties.TryGetValue("trigger", out JsonElement element))
+            if (!this._properties.TryGetValue("trigger", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Trigger?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["trigger"] = JsonSerializer.SerializeToElement(
+            this._properties["trigger"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -164,19 +166,26 @@ public sealed record class BetaClearToolUses20250919Edit
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
     }
 
+    public BetaClearToolUses20250919Edit(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaClearToolUses20250919Edit(Dictionary<string, JsonElement> properties)
+    BetaClearToolUses20250919Edit(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaClearToolUses20250919Edit FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -193,9 +202,9 @@ public record class ClearToolInputs
         Value = value;
     }
 
-    public ClearToolInputs(List<string> value)
+    public ClearToolInputs(IReadOnlyList<string> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     ClearToolInputs(UnknownVariant value)
@@ -214,13 +223,13 @@ public record class ClearToolInputs
         return value != null;
     }
 
-    public bool TryPickStrings([NotNullWhen(true)] out List<string>? value)
+    public bool TryPickStrings([NotNullWhen(true)] out IReadOnlyList<string>? value)
     {
-        value = this.Value as List<string>;
+        value = this.Value as IReadOnlyList<string>;
         return value != null;
     }
 
-    public void Switch(System::Action<bool> @bool, System::Action<List<string>> strings)
+    public void Switch(System::Action<bool> @bool, System::Action<IReadOnlyList<string>> strings)
     {
         switch (this.Value)
         {
@@ -237,12 +246,12 @@ public record class ClearToolInputs
         }
     }
 
-    public T Match<T>(System::Func<bool, T> @bool, System::Func<List<string>, T> strings)
+    public T Match<T>(System::Func<bool, T> @bool, System::Func<IReadOnlyList<string>, T> strings)
     {
         return this.Value switch
         {
             bool value => @bool(value),
-            List<string> value => strings(value),
+            IReadOnlyList<string> value => strings(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ClearToolInputs"
             ),

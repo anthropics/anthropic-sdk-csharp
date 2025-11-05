@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -22,7 +23,7 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("canceled", out JsonElement element))
+            if (!this._properties.TryGetValue("canceled", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'canceled' cannot be null",
                     new ArgumentOutOfRangeException("canceled", "Missing required argument")
@@ -30,9 +31,9 @@ public sealed record class MessageBatchRequestCounts
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["canceled"] = JsonSerializer.SerializeToElement(
+            this._properties["canceled"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -48,7 +49,7 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("errored", out JsonElement element))
+            if (!this._properties.TryGetValue("errored", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'errored' cannot be null",
                     new ArgumentOutOfRangeException("errored", "Missing required argument")
@@ -56,9 +57,9 @@ public sealed record class MessageBatchRequestCounts
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["errored"] = JsonSerializer.SerializeToElement(
+            this._properties["errored"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -74,7 +75,7 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("expired", out JsonElement element))
+            if (!this._properties.TryGetValue("expired", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'expired' cannot be null",
                     new ArgumentOutOfRangeException("expired", "Missing required argument")
@@ -82,9 +83,9 @@ public sealed record class MessageBatchRequestCounts
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["expired"] = JsonSerializer.SerializeToElement(
+            this._properties["expired"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -98,7 +99,7 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("processing", out JsonElement element))
+            if (!this._properties.TryGetValue("processing", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'processing' cannot be null",
                     new ArgumentOutOfRangeException("processing", "Missing required argument")
@@ -106,9 +107,9 @@ public sealed record class MessageBatchRequestCounts
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["processing"] = JsonSerializer.SerializeToElement(
+            this._properties["processing"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -124,7 +125,7 @@ public sealed record class MessageBatchRequestCounts
     {
         get
         {
-            if (!this.Properties.TryGetValue("succeeded", out JsonElement element))
+            if (!this._properties.TryGetValue("succeeded", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'succeeded' cannot be null",
                     new ArgumentOutOfRangeException("succeeded", "Missing required argument")
@@ -132,9 +133,9 @@ public sealed record class MessageBatchRequestCounts
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["succeeded"] = JsonSerializer.SerializeToElement(
+            this._properties["succeeded"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -152,18 +153,23 @@ public sealed record class MessageBatchRequestCounts
 
     public MessageBatchRequestCounts() { }
 
+    public MessageBatchRequestCounts(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageBatchRequestCounts(Dictionary<string, JsonElement> properties)
+    MessageBatchRequestCounts(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static MessageBatchRequestCounts FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

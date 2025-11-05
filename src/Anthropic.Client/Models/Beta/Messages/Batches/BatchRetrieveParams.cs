@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Client.Core;
@@ -15,7 +17,7 @@ namespace Anthropic.Client.Models.Beta.Messages.Batches;
 /// </summary>
 public sealed record class BatchRetrieveParams : ParamsBase
 {
-    public required string MessageBatchID;
+    public required string MessageBatchID { get; init; }
 
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
@@ -24,7 +26,7 @@ public sealed record class BatchRetrieveParams : ParamsBase
     {
         get
         {
-            if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
+            if (!this._headerProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
@@ -32,13 +34,47 @@ public sealed record class BatchRetrieveParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(
+            this._headerProperties["betas"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
         }
+    }
+
+    public BatchRetrieveParams() { }
+
+    public BatchRetrieveParams(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    BatchRetrieveParams(
+        FrozenDictionary<string, JsonElement> headerProperties,
+        FrozenDictionary<string, JsonElement> queryProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+    }
+#pragma warning restore CS8618
+
+    public static BatchRetrieveParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(headerProperties),
+            FrozenDictionary.ToFrozenDictionary(queryProperties)
+        );
     }
 
     public override Uri Url(IAnthropicClient client)

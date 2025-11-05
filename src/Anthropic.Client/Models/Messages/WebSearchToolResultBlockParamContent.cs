@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -12,9 +13,9 @@ public record class WebSearchToolResultBlockParamContent
 {
     public object Value { get; private init; }
 
-    public WebSearchToolResultBlockParamContent(List<WebSearchResultBlockParam> value)
+    public WebSearchToolResultBlockParamContent(IReadOnlyList<WebSearchResultBlockParam> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     public WebSearchToolResultBlockParamContent(WebSearchToolRequestError value)
@@ -32,9 +33,9 @@ public record class WebSearchToolResultBlockParamContent
         return new(new UnknownVariant(value));
     }
 
-    public bool TryPickItem([NotNullWhen(true)] out List<WebSearchResultBlockParam>? value)
+    public bool TryPickItem([NotNullWhen(true)] out IReadOnlyList<WebSearchResultBlockParam>? value)
     {
-        value = this.Value as List<WebSearchResultBlockParam>;
+        value = this.Value as IReadOnlyList<WebSearchResultBlockParam>;
         return value != null;
     }
 
@@ -45,7 +46,7 @@ public record class WebSearchToolResultBlockParamContent
     }
 
     public void Switch(
-        System::Action<List<WebSearchResultBlockParam>> webSearchToolResultBlockItem,
+        System::Action<IReadOnlyList<WebSearchResultBlockParam>> webSearchToolResultBlockItem,
         System::Action<WebSearchToolRequestError> requestError
     )
     {
@@ -65,13 +66,13 @@ public record class WebSearchToolResultBlockParamContent
     }
 
     public T Match<T>(
-        System::Func<List<WebSearchResultBlockParam>, T> webSearchToolResultBlockItem,
+        System::Func<IReadOnlyList<WebSearchResultBlockParam>, T> webSearchToolResultBlockItem,
         System::Func<WebSearchToolRequestError, T> requestError
     )
     {
         return this.Value switch
         {
-            List<WebSearchResultBlockParam> value => webSearchToolResultBlockItem(value),
+            IReadOnlyList<WebSearchResultBlockParam> value => webSearchToolResultBlockItem(value),
             WebSearchToolRequestError value => requestError(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of WebSearchToolResultBlockParamContent"

@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,14 +21,14 @@ public sealed record class BetaContextManagementConfig
     {
         get
         {
-            if (!this.Properties.TryGetValue("edits", out JsonElement element))
+            if (!this._properties.TryGetValue("edits", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<Edit>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["edits"] = JsonSerializer.SerializeToElement(
+            this._properties["edits"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,19 +45,24 @@ public sealed record class BetaContextManagementConfig
 
     public BetaContextManagementConfig() { }
 
+    public BetaContextManagementConfig(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContextManagementConfig(Dictionary<string, JsonElement> properties)
+    BetaContextManagementConfig(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaContextManagementConfig FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 

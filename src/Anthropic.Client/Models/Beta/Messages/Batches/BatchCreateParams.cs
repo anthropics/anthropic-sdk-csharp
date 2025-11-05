@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
@@ -22,7 +24,11 @@ namespace Anthropic.Client.Models.Beta.Messages.Batches;
 /// </summary>
 public sealed record class BatchCreateParams : ParamsBase
 {
-    public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
+    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
+    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    {
+        get { return this._bodyProperties.Freeze(); }
+    }
 
     /// <summary>
     /// List of requests for prompt completion. Each is an individual request to create
@@ -32,7 +38,7 @@ public sealed record class BatchCreateParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("requests", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("requests", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'requests' cannot be null",
                     new System::ArgumentOutOfRangeException("requests", "Missing required argument")
@@ -44,9 +50,9 @@ public sealed record class BatchCreateParams : ParamsBase
                     new System::ArgumentNullException("requests")
                 );
         }
-        set
+        init
         {
-            this.BodyProperties["requests"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["requests"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -60,7 +66,7 @@ public sealed record class BatchCreateParams : ParamsBase
     {
         get
         {
-            if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
+            if (!this._headerProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
@@ -68,13 +74,53 @@ public sealed record class BatchCreateParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(
+            this._headerProperties["betas"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
         }
+    }
+
+    public BatchCreateParams() { }
+
+    public BatchCreateParams(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties,
+        IReadOnlyDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+        this._bodyProperties = [.. bodyProperties];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    BatchCreateParams(
+        FrozenDictionary<string, JsonElement> headerProperties,
+        FrozenDictionary<string, JsonElement> queryProperties,
+        FrozenDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+        this._bodyProperties = [.. bodyProperties];
+    }
+#pragma warning restore CS8618
+
+    public static BatchCreateParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties,
+        IReadOnlyDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(headerProperties),
+            FrozenDictionary.ToFrozenDictionary(queryProperties),
+            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+        );
     }
 
     public override System::Uri Url(IAnthropicClient client)
@@ -119,7 +165,7 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
     {
         get
         {
-            if (!this.Properties.TryGetValue("custom_id", out JsonElement element))
+            if (!this._properties.TryGetValue("custom_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'custom_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -134,9 +180,9 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
                     new System::ArgumentNullException("custom_id")
                 );
         }
-        set
+        init
         {
-            this.Properties["custom_id"] = JsonSerializer.SerializeToElement(
+            this._properties["custom_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -153,7 +199,7 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
     {
         get
         {
-            if (!this.Properties.TryGetValue("params", out JsonElement element))
+            if (!this._properties.TryGetValue("params", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'params' cannot be null",
                     new System::ArgumentOutOfRangeException("params", "Missing required argument")
@@ -165,9 +211,9 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
                     new System::ArgumentNullException("params")
                 );
         }
-        set
+        init
         {
-            this.Properties["params"] = JsonSerializer.SerializeToElement(
+            this._properties["params"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -182,17 +228,22 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
 
     public Request() { }
 
+    public Request(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Request(Dictionary<string, JsonElement> properties)
+    Request(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static Request FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static Request FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -218,7 +269,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("max_tokens", out JsonElement element))
+            if (!this._properties.TryGetValue("max_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'max_tokens' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -229,9 +280,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["max_tokens"] = JsonSerializer.SerializeToElement(
+            this._properties["max_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -292,7 +343,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("messages", out JsonElement element))
+            if (!this._properties.TryGetValue("messages", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
                     new System::ArgumentOutOfRangeException("messages", "Missing required argument")
@@ -307,9 +358,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                     new System::ArgumentNullException("messages")
                 );
         }
-        set
+        init
         {
-            this.Properties["messages"] = JsonSerializer.SerializeToElement(
+            this._properties["messages"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -324,7 +375,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("model", out JsonElement element))
+            if (!this._properties.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
                     new System::ArgumentOutOfRangeException("model", "Missing required argument")
@@ -335,9 +386,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["model"] = JsonSerializer.SerializeToElement(
+            this._properties["model"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -351,7 +402,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("container", out JsonElement element))
+            if (!this._properties.TryGetValue("container", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<global::Anthropic.Client.Models.Beta.Messages.Batches.Container?>(
@@ -359,9 +410,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["container"] = JsonSerializer.SerializeToElement(
+            this._properties["container"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -378,7 +429,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("context_management", out JsonElement element))
+            if (!this._properties.TryGetValue("context_management", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaContextManagementConfig?>(
@@ -386,9 +437,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["context_management"] = JsonSerializer.SerializeToElement(
+            this._properties["context_management"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -402,7 +453,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("mcp_servers", out JsonElement element))
+            if (!this._properties.TryGetValue("mcp_servers", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>?>(
@@ -410,9 +461,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["mcp_servers"] = JsonSerializer.SerializeToElement(
+            this._properties["mcp_servers"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -426,14 +477,14 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("metadata", out JsonElement element))
+            if (!this._properties.TryGetValue("metadata", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaMetadata?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["metadata"] = JsonSerializer.SerializeToElement(
+            this._properties["metadata"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -454,7 +505,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("service_tier", out JsonElement element))
+            if (!this._properties.TryGetValue("service_tier", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<
@@ -462,9 +513,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 global::Anthropic.Client.Models.Beta.Messages.Batches.ServiceTier
             >?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["service_tier"] = JsonSerializer.SerializeToElement(
+            this._properties["service_tier"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -486,14 +537,14 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("stop_sequences", out JsonElement element))
+            if (!this._properties.TryGetValue("stop_sequences", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["stop_sequences"] = JsonSerializer.SerializeToElement(
+            this._properties["stop_sequences"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -509,14 +560,14 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("stream", out JsonElement element))
+            if (!this._properties.TryGetValue("stream", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["stream"] = JsonSerializer.SerializeToElement(
+            this._properties["stream"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -533,7 +584,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("system", out JsonElement element))
+            if (!this._properties.TryGetValue("system", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<global::Anthropic.Client.Models.Beta.Messages.Batches.SystemModel?>(
@@ -541,9 +592,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["system"] = JsonSerializer.SerializeToElement(
+            this._properties["system"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -563,14 +614,14 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("temperature", out JsonElement element))
+            if (!this._properties.TryGetValue("temperature", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["temperature"] = JsonSerializer.SerializeToElement(
+            this._properties["temperature"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -591,7 +642,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("thinking", out JsonElement element))
+            if (!this._properties.TryGetValue("thinking", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaThinkingConfigParam?>(
@@ -599,9 +650,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["thinking"] = JsonSerializer.SerializeToElement(
+            this._properties["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -616,7 +667,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("tool_choice", out JsonElement element))
+            if (!this._properties.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaToolChoice?>(
@@ -624,9 +675,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["tool_choice"] = JsonSerializer.SerializeToElement(
+            this._properties["tool_choice"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -683,7 +734,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("tools", out JsonElement element))
+            if (!this._properties.TryGetValue("tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<BetaToolUnion>?>(
@@ -691,9 +742,9 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["tools"] = JsonSerializer.SerializeToElement(
+            this._properties["tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -712,14 +763,14 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("top_k", out JsonElement element))
+            if (!this._properties.TryGetValue("top_k", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["top_k"] = JsonSerializer.SerializeToElement(
+            this._properties["top_k"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -740,14 +791,14 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         get
         {
-            if (!this.Properties.TryGetValue("top_p", out JsonElement element))
+            if (!this._properties.TryGetValue("top_p", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["top_p"] = JsonSerializer.SerializeToElement(
+            this._properties["top_p"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -786,17 +837,22 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
 
     public Params() { }
 
+    public Params(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Params(Dictionary<string, JsonElement> properties)
+    Params(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static Params FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static Params FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -1027,9 +1083,9 @@ public record class SystemModel
         Value = value;
     }
 
-    public SystemModel(List<BetaTextBlockParam> value)
+    public SystemModel(IReadOnlyList<BetaTextBlockParam> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     SystemModel(UnknownVariant value)
@@ -1050,15 +1106,17 @@ public record class SystemModel
         return value != null;
     }
 
-    public bool TryPickBetaTextBlockParams([NotNullWhen(true)] out List<BetaTextBlockParam>? value)
+    public bool TryPickBetaTextBlockParams(
+        [NotNullWhen(true)] out IReadOnlyList<BetaTextBlockParam>? value
+    )
     {
-        value = this.Value as List<BetaTextBlockParam>;
+        value = this.Value as IReadOnlyList<BetaTextBlockParam>;
         return value != null;
     }
 
     public void Switch(
         System::Action<string> @string,
-        System::Action<List<BetaTextBlockParam>> betaTextBlockParams
+        System::Action<IReadOnlyList<BetaTextBlockParam>> betaTextBlockParams
     )
     {
         switch (this.Value)
@@ -1078,13 +1136,13 @@ public record class SystemModel
 
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<List<BetaTextBlockParam>, T> betaTextBlockParams
+        System::Func<IReadOnlyList<BetaTextBlockParam>, T> betaTextBlockParams
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            List<BetaTextBlockParam> value => betaTextBlockParams(value),
+            IReadOnlyList<BetaTextBlockParam> value => betaTextBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of SystemModel"
             ),

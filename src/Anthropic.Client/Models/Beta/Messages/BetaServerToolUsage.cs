@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -18,7 +19,7 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
     {
         get
         {
-            if (!this.Properties.TryGetValue("web_fetch_requests", out JsonElement element))
+            if (!this._properties.TryGetValue("web_fetch_requests", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'web_fetch_requests' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -29,9 +30,9 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["web_fetch_requests"] = JsonSerializer.SerializeToElement(
+            this._properties["web_fetch_requests"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +46,7 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
     {
         get
         {
-            if (!this.Properties.TryGetValue("web_search_requests", out JsonElement element))
+            if (!this._properties.TryGetValue("web_search_requests", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'web_search_requests' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -56,9 +57,9 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["web_search_requests"] = JsonSerializer.SerializeToElement(
+            this._properties["web_search_requests"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -73,16 +74,23 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
 
     public BetaServerToolUsage() { }
 
+    public BetaServerToolUsage(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaServerToolUsage(Dictionary<string, JsonElement> properties)
+    BetaServerToolUsage(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaServerToolUsage FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaServerToolUsage FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class BetaInputTokensClearAtLeast
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -25,9 +26,9 @@ public sealed record class BetaInputTokensClearAtLeast
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -38,7 +39,7 @@ public sealed record class BetaInputTokensClearAtLeast
     {
         get
         {
-            if (!this.Properties.TryGetValue("value", out JsonElement element))
+            if (!this._properties.TryGetValue("value", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'value' cannot be null",
                     new System::ArgumentOutOfRangeException("value", "Missing required argument")
@@ -46,9 +47,9 @@ public sealed record class BetaInputTokensClearAtLeast
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["value"] = JsonSerializer.SerializeToElement(
+            this._properties["value"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -66,19 +67,26 @@ public sealed record class BetaInputTokensClearAtLeast
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
     }
 
+    public BetaInputTokensClearAtLeast(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaInputTokensClearAtLeast(Dictionary<string, JsonElement> properties)
+    BetaInputTokensClearAtLeast(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaInputTokensClearAtLeast FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

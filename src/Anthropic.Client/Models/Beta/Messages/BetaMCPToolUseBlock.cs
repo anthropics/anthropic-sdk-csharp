@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
     {
         get
         {
-            if (!this.Properties.TryGetValue("id", out JsonElement element))
+            if (!this._properties.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new System::ArgumentOutOfRangeException("id", "Missing required argument")
@@ -27,9 +28,9 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
                     new System::ArgumentNullException("id")
                 );
         }
-        set
+        init
         {
-            this.Properties["id"] = JsonSerializer.SerializeToElement(
+            this._properties["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,7 +41,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
     {
         get
         {
-            if (!this.Properties.TryGetValue("input", out JsonElement element))
+            if (!this._properties.TryGetValue("input", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input' cannot be null",
                     new System::ArgumentOutOfRangeException("input", "Missing required argument")
@@ -55,9 +56,9 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
                     new System::ArgumentNullException("input")
                 );
         }
-        set
+        init
         {
-            this.Properties["input"] = JsonSerializer.SerializeToElement(
+            this._properties["input"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -71,7 +72,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
     {
         get
         {
-            if (!this.Properties.TryGetValue("name", out JsonElement element))
+            if (!this._properties.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new System::ArgumentOutOfRangeException("name", "Missing required argument")
@@ -83,9 +84,9 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
                     new System::ArgumentNullException("name")
                 );
         }
-        set
+        init
         {
-            this.Properties["name"] = JsonSerializer.SerializeToElement(
+            this._properties["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -99,7 +100,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
     {
         get
         {
-            if (!this.Properties.TryGetValue("server_name", out JsonElement element))
+            if (!this._properties.TryGetValue("server_name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'server_name' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -114,9 +115,9 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
                     new System::ArgumentNullException("server_name")
                 );
         }
-        set
+        init
         {
-            this.Properties["server_name"] = JsonSerializer.SerializeToElement(
+            this._properties["server_name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -127,7 +128,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -135,9 +136,9 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -158,16 +159,25 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
     }
 
+    public BetaMCPToolUseBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMCPToolUseBlock(Dictionary<string, JsonElement> properties)
+    BetaMCPToolUseBlock(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaMCPToolUseBlock FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaMCPToolUseBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

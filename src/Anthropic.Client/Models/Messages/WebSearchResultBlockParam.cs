@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class WebSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("encrypted_content", out JsonElement element))
+            if (!this._properties.TryGetValue("encrypted_content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'encrypted_content' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -32,9 +33,9 @@ public sealed record class WebSearchResultBlockParam
                     new System::ArgumentNullException("encrypted_content")
                 );
         }
-        set
+        init
         {
-            this.Properties["encrypted_content"] = JsonSerializer.SerializeToElement(
+            this._properties["encrypted_content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +46,7 @@ public sealed record class WebSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("title", out JsonElement element))
+            if (!this._properties.TryGetValue("title", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'title' cannot be null",
                     new System::ArgumentOutOfRangeException("title", "Missing required argument")
@@ -57,9 +58,9 @@ public sealed record class WebSearchResultBlockParam
                     new System::ArgumentNullException("title")
                 );
         }
-        set
+        init
         {
-            this.Properties["title"] = JsonSerializer.SerializeToElement(
+            this._properties["title"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -70,7 +71,7 @@ public sealed record class WebSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -78,9 +79,9 @@ public sealed record class WebSearchResultBlockParam
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -91,7 +92,7 @@ public sealed record class WebSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("url", out JsonElement element))
+            if (!this._properties.TryGetValue("url", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
                     new System::ArgumentOutOfRangeException("url", "Missing required argument")
@@ -103,9 +104,9 @@ public sealed record class WebSearchResultBlockParam
                     new System::ArgumentNullException("url")
                 );
         }
-        set
+        init
         {
-            this.Properties["url"] = JsonSerializer.SerializeToElement(
+            this._properties["url"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -116,14 +117,14 @@ public sealed record class WebSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("page_age", out JsonElement element))
+            if (!this._properties.TryGetValue("page_age", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["page_age"] = JsonSerializer.SerializeToElement(
+            this._properties["page_age"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -144,18 +145,25 @@ public sealed record class WebSearchResultBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
     }
 
+    public WebSearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    WebSearchResultBlockParam(Dictionary<string, JsonElement> properties)
+    WebSearchResultBlockParam(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static WebSearchResultBlockParam FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

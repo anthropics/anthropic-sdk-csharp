@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class BetaURLPDFSource : ModelBase, IFromRaw<BetaURLPDFSour
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -23,9 +24,9 @@ public sealed record class BetaURLPDFSource : ModelBase, IFromRaw<BetaURLPDFSour
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -36,7 +37,7 @@ public sealed record class BetaURLPDFSource : ModelBase, IFromRaw<BetaURLPDFSour
     {
         get
         {
-            if (!this.Properties.TryGetValue("url", out JsonElement element))
+            if (!this._properties.TryGetValue("url", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
                     new System::ArgumentOutOfRangeException("url", "Missing required argument")
@@ -48,9 +49,9 @@ public sealed record class BetaURLPDFSource : ModelBase, IFromRaw<BetaURLPDFSour
                     new System::ArgumentNullException("url")
                 );
         }
-        set
+        init
         {
-            this.Properties["url"] = JsonSerializer.SerializeToElement(
+            this._properties["url"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,17 +69,26 @@ public sealed record class BetaURLPDFSource : ModelBase, IFromRaw<BetaURLPDFSour
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
 
+    public BetaURLPDFSource(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaURLPDFSource(Dictionary<string, JsonElement> properties)
+    BetaURLPDFSource(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaURLPDFSource FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaURLPDFSource FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

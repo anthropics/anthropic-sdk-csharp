@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out JsonElement element))
+            if (!this._properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -32,9 +33,9 @@ public sealed record class BetaSearchResultBlockParam
                     new System::ArgumentNullException("content")
                 );
         }
-        set
+        init
         {
-            this.Properties["content"] = JsonSerializer.SerializeToElement(
+            this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +46,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("source", out JsonElement element))
+            if (!this._properties.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
@@ -57,9 +58,9 @@ public sealed record class BetaSearchResultBlockParam
                     new System::ArgumentNullException("source")
                 );
         }
-        set
+        init
         {
-            this.Properties["source"] = JsonSerializer.SerializeToElement(
+            this._properties["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -70,7 +71,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("title", out JsonElement element))
+            if (!this._properties.TryGetValue("title", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'title' cannot be null",
                     new System::ArgumentOutOfRangeException("title", "Missing required argument")
@@ -82,9 +83,9 @@ public sealed record class BetaSearchResultBlockParam
                     new System::ArgumentNullException("title")
                 );
         }
-        set
+        init
         {
-            this.Properties["title"] = JsonSerializer.SerializeToElement(
+            this._properties["title"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -95,7 +96,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -103,9 +104,9 @@ public sealed record class BetaSearchResultBlockParam
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -119,7 +120,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -127,9 +128,9 @@ public sealed record class BetaSearchResultBlockParam
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -140,7 +141,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this.Properties.TryGetValue("citations", out JsonElement element))
+            if (!this._properties.TryGetValue("citations", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
@@ -148,9 +149,9 @@ public sealed record class BetaSearchResultBlockParam
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["citations"] = JsonSerializer.SerializeToElement(
+            this._properties["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -175,18 +176,25 @@ public sealed record class BetaSearchResultBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
     }
 
+    public BetaSearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaSearchResultBlockParam(Dictionary<string, JsonElement> properties)
+    BetaSearchResultBlockParam(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaSearchResultBlockParam FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,7 +17,7 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out JsonElement element))
+            if (!this._properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -27,9 +29,9 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
                     new System::ArgumentNullException("content")
                 );
         }
-        set
+        init
         {
-            this.Properties["content"] = JsonSerializer.SerializeToElement(
+            this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,7 +42,7 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
     {
         get
         {
-            if (!this.Properties.TryGetValue("role", out JsonElement element))
+            if (!this._properties.TryGetValue("role", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'role' cannot be null",
                     new System::ArgumentOutOfRangeException("role", "Missing required argument")
@@ -51,9 +53,9 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["role"] = JsonSerializer.SerializeToElement(
+            this._properties["role"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,17 +70,22 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
 
     public MessageParam() { }
 
+    public MessageParam(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageParam(Dictionary<string, JsonElement> properties)
+    MessageParam(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static MessageParam FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static MessageParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -92,9 +99,9 @@ public record class ContentModel
         Value = value;
     }
 
-    public ContentModel(List<ContentBlockParam> value)
+    public ContentModel(IReadOnlyList<ContentBlockParam> value)
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     ContentModel(UnknownVariant value)
@@ -113,15 +120,17 @@ public record class ContentModel
         return value != null;
     }
 
-    public bool TryPickContentBlockParams([NotNullWhen(true)] out List<ContentBlockParam>? value)
+    public bool TryPickContentBlockParams(
+        [NotNullWhen(true)] out IReadOnlyList<ContentBlockParam>? value
+    )
     {
-        value = this.Value as List<ContentBlockParam>;
+        value = this.Value as IReadOnlyList<ContentBlockParam>;
         return value != null;
     }
 
     public void Switch(
         System::Action<string> @string,
-        System::Action<List<ContentBlockParam>> contentBlockParams
+        System::Action<IReadOnlyList<ContentBlockParam>> contentBlockParams
     )
     {
         switch (this.Value)
@@ -141,13 +150,13 @@ public record class ContentModel
 
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<List<ContentBlockParam>, T> contentBlockParams
+        System::Func<IReadOnlyList<ContentBlockParam>, T> contentBlockParams
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            List<ContentBlockParam> value => contentBlockParams(value),
+            IReadOnlyList<ContentBlockParam> value => contentBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentModel"
             ),

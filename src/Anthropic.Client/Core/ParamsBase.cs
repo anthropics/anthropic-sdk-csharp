@@ -11,9 +11,19 @@ namespace Anthropic.Client.Core;
 
 public abstract record class ParamsBase
 {
-    public Dictionary<string, JsonElement> QueryProperties { get; set; } = [];
+    private protected FreezableDictionary<string, JsonElement> _queryProperties = [];
 
-    public Dictionary<string, JsonElement> HeaderProperties { get; set; } = [];
+    public IReadOnlyDictionary<string, JsonElement> QueryProperties
+    {
+        get { return this._queryProperties.Freeze(); }
+    }
+
+    private protected FreezableDictionary<string, JsonElement> _headerProperties = [];
+
+    public IReadOnlyDictionary<string, JsonElement> HeaderProperties
+    {
+        get { return this._headerProperties.Freeze(); }
+    }
 
     public abstract Uri Url(IAnthropicClient client);
 

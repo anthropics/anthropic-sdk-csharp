@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -12,9 +13,11 @@ public record class BetaWebSearchToolResultBlockParamContent
 {
     public object Value { get; private init; }
 
-    public BetaWebSearchToolResultBlockParamContent(List<BetaWebSearchResultBlockParam> value)
+    public BetaWebSearchToolResultBlockParamContent(
+        IReadOnlyList<BetaWebSearchResultBlockParam> value
+    )
     {
-        Value = value;
+        Value = ImmutableArray.ToImmutableArray(value);
     }
 
     public BetaWebSearchToolResultBlockParamContent(BetaWebSearchToolRequestError value)
@@ -33,10 +36,10 @@ public record class BetaWebSearchToolResultBlockParamContent
     }
 
     public bool TryPickResultBlock(
-        [NotNullWhen(true)] out List<BetaWebSearchResultBlockParam>? value
+        [NotNullWhen(true)] out IReadOnlyList<BetaWebSearchResultBlockParam>? value
     )
     {
-        value = this.Value as List<BetaWebSearchResultBlockParam>;
+        value = this.Value as IReadOnlyList<BetaWebSearchResultBlockParam>;
         return value != null;
     }
 
@@ -47,7 +50,7 @@ public record class BetaWebSearchToolResultBlockParamContent
     }
 
     public void Switch(
-        System::Action<List<BetaWebSearchResultBlockParam>> resultBlock,
+        System::Action<IReadOnlyList<BetaWebSearchResultBlockParam>> resultBlock,
         System::Action<BetaWebSearchToolRequestError> requestError
     )
     {
@@ -67,13 +70,13 @@ public record class BetaWebSearchToolResultBlockParamContent
     }
 
     public T Match<T>(
-        System::Func<List<BetaWebSearchResultBlockParam>, T> resultBlock,
+        System::Func<IReadOnlyList<BetaWebSearchResultBlockParam>, T> resultBlock,
         System::Func<BetaWebSearchToolRequestError, T> requestError
     )
     {
         return this.Value switch
         {
-            List<BetaWebSearchResultBlockParam> value => resultBlock(value),
+            IReadOnlyList<BetaWebSearchResultBlockParam> value => resultBlock(value),
             BetaWebSearchToolRequestError value => requestError(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebSearchToolResultBlockParamContent"

@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out JsonElement element))
+            if (!this._properties.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -29,9 +30,9 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
                     new System::ArgumentNullException("content")
                 );
         }
-        set
+        init
         {
-            this.Properties["content"] = JsonSerializer.SerializeToElement(
+            this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,7 +43,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("file_type", out JsonElement element))
+            if (!this._properties.TryGetValue("file_type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'file_type' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -56,9 +57,9 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["file_type"] = JsonSerializer.SerializeToElement(
+            this._properties["file_type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,14 +70,14 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("num_lines", out JsonElement element))
+            if (!this._properties.TryGetValue("num_lines", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["num_lines"] = JsonSerializer.SerializeToElement(
+            this._properties["num_lines"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -87,14 +88,14 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("start_line", out JsonElement element))
+            if (!this._properties.TryGetValue("start_line", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["start_line"] = JsonSerializer.SerializeToElement(
+            this._properties["start_line"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -105,14 +106,14 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("total_lines", out JsonElement element))
+            if (!this._properties.TryGetValue("total_lines", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["total_lines"] = JsonSerializer.SerializeToElement(
+            this._properties["total_lines"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -123,7 +124,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -131,9 +132,9 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -157,19 +158,30 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
         );
     }
 
+    public BetaTextEditorCodeExecutionViewResultBlock(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>(
+            "\"text_editor_code_execution_view_result\""
+        );
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaTextEditorCodeExecutionViewResultBlock(Dictionary<string, JsonElement> properties)
+    BetaTextEditorCodeExecutionViewResultBlock(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaTextEditorCodeExecutionViewResultBlock FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 

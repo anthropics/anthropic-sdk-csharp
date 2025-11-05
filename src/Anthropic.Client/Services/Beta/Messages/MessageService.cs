@@ -50,7 +50,15 @@ public sealed class MessageService : IMessageService
         Messages::MessageCreateParams parameters
     )
     {
-        parameters.BodyProperties["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
+        Dictionary<string, JsonElement> bodyProperties = new(parameters.BodyProperties)
+        {
+            ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
+        };
+        parameters = Messages::MessageCreateParams.FromRawUnchecked(
+            parameters.HeaderProperties,
+            parameters.QueryProperties,
+            bodyProperties
+        );
         HttpRequest<Messages::MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,

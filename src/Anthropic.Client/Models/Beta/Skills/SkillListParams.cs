@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Client.Core;
@@ -20,14 +22,14 @@ public sealed record class SkillListParams : ParamsBase
     {
         get
         {
-            if (!this.QueryProperties.TryGetValue("limit", out JsonElement element))
+            if (!this._queryProperties.TryGetValue("limit", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.QueryProperties["limit"] = JsonSerializer.SerializeToElement(
+            this._queryProperties["limit"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,14 +46,14 @@ public sealed record class SkillListParams : ParamsBase
     {
         get
         {
-            if (!this.QueryProperties.TryGetValue("page", out JsonElement element))
+            if (!this._queryProperties.TryGetValue("page", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.QueryProperties["page"] = JsonSerializer.SerializeToElement(
+            this._queryProperties["page"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,14 +70,14 @@ public sealed record class SkillListParams : ParamsBase
     {
         get
         {
-            if (!this.QueryProperties.TryGetValue("source", out JsonElement element))
+            if (!this._queryProperties.TryGetValue("source", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.QueryProperties["source"] = JsonSerializer.SerializeToElement(
+            this._queryProperties["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -89,7 +91,7 @@ public sealed record class SkillListParams : ParamsBase
     {
         get
         {
-            if (!this.HeaderProperties.TryGetValue("betas", out JsonElement element))
+            if (!this._headerProperties.TryGetValue("betas", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
@@ -97,13 +99,47 @@ public sealed record class SkillListParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.HeaderProperties["betas"] = JsonSerializer.SerializeToElement(
+            this._headerProperties["betas"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
         }
+    }
+
+    public SkillListParams() { }
+
+    public SkillListParams(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    SkillListParams(
+        FrozenDictionary<string, JsonElement> headerProperties,
+        FrozenDictionary<string, JsonElement> queryProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+    }
+#pragma warning restore CS8618
+
+    public static SkillListParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(headerProperties),
+            FrozenDictionary.ToFrozenDictionary(queryProperties)
+        );
     }
 
     public override Uri Url(IAnthropicClient client)

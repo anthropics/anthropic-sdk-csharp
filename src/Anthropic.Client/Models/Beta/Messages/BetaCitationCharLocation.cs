@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
     {
         get
         {
-            if (!this.Properties.TryGetValue("cited_text", out JsonElement element))
+            if (!this._properties.TryGetValue("cited_text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cited_text' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -30,9 +31,9 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
                     new System::ArgumentNullException("cited_text")
                 );
         }
-        set
+        init
         {
-            this.Properties["cited_text"] = JsonSerializer.SerializeToElement(
+            this._properties["cited_text"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,7 +44,7 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
     {
         get
         {
-            if (!this.Properties.TryGetValue("document_index", out JsonElement element))
+            if (!this._properties.TryGetValue("document_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'document_index' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -54,9 +55,9 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["document_index"] = JsonSerializer.SerializeToElement(
+            this._properties["document_index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -67,14 +68,14 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
     {
         get
         {
-            if (!this.Properties.TryGetValue("document_title", out JsonElement element))
+            if (!this._properties.TryGetValue("document_title", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["document_title"] = JsonSerializer.SerializeToElement(
+            this._properties["document_title"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -85,7 +86,7 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
     {
         get
         {
-            if (!this.Properties.TryGetValue("end_char_index", out JsonElement element))
+            if (!this._properties.TryGetValue("end_char_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'end_char_index' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -96,9 +97,9 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["end_char_index"] = JsonSerializer.SerializeToElement(
+            this._properties["end_char_index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -109,14 +110,14 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
     {
         get
         {
-            if (!this.Properties.TryGetValue("file_id", out JsonElement element))
+            if (!this._properties.TryGetValue("file_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["file_id"] = JsonSerializer.SerializeToElement(
+            this._properties["file_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -127,7 +128,7 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
     {
         get
         {
-            if (!this.Properties.TryGetValue("start_char_index", out JsonElement element))
+            if (!this._properties.TryGetValue("start_char_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'start_char_index' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -138,9 +139,9 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["start_char_index"] = JsonSerializer.SerializeToElement(
+            this._properties["start_char_index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -151,7 +152,7 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -159,9 +160,9 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -184,18 +185,25 @@ public sealed record class BetaCitationCharLocation : ModelBase, IFromRaw<BetaCi
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
     }
 
+    public BetaCitationCharLocation(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCitationCharLocation(Dictionary<string, JsonElement> properties)
+    BetaCitationCharLocation(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaCitationCharLocation FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

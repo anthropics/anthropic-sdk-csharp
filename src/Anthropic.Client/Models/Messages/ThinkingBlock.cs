@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
     {
         get
         {
-            if (!this.Properties.TryGetValue("signature", out JsonElement element))
+            if (!this._properties.TryGetValue("signature", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'signature' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -30,9 +31,9 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
                     new System::ArgumentNullException("signature")
                 );
         }
-        set
+        init
         {
-            this.Properties["signature"] = JsonSerializer.SerializeToElement(
+            this._properties["signature"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,7 +44,7 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
     {
         get
         {
-            if (!this.Properties.TryGetValue("thinking", out JsonElement element))
+            if (!this._properties.TryGetValue("thinking", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'thinking' cannot be null",
                     new System::ArgumentOutOfRangeException("thinking", "Missing required argument")
@@ -55,9 +56,9 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
                     new System::ArgumentNullException("thinking")
                 );
         }
-        set
+        init
         {
-            this.Properties["thinking"] = JsonSerializer.SerializeToElement(
+            this._properties["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +69,7 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -76,9 +77,9 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -97,16 +98,25 @@ public sealed record class ThinkingBlock : ModelBase, IFromRaw<ThinkingBlock>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
     }
 
+    public ThinkingBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ThinkingBlock(Dictionary<string, JsonElement> properties)
+    ThinkingBlock(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static ThinkingBlock FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static ThinkingBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

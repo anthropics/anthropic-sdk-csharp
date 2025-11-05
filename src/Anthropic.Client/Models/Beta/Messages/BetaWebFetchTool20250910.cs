@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
     {
         get
         {
-            if (!this.Properties.TryGetValue("name", out JsonElement element))
+            if (!this._properties.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new System::ArgumentOutOfRangeException("name", "Missing required argument")
@@ -28,9 +29,9 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["name"] = JsonSerializer.SerializeToElement(
+            this._properties["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +42,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -49,9 +50,9 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -65,14 +66,14 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
     {
         get
         {
-            if (!this.Properties.TryGetValue("allowed_domains", out JsonElement element))
+            if (!this._properties.TryGetValue("allowed_domains", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["allowed_domains"] = JsonSerializer.SerializeToElement(
+            this._properties["allowed_domains"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -86,14 +87,14 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
     {
         get
         {
-            if (!this.Properties.TryGetValue("blocked_domains", out JsonElement element))
+            if (!this._properties.TryGetValue("blocked_domains", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["blocked_domains"] = JsonSerializer.SerializeToElement(
+            this._properties["blocked_domains"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -107,7 +108,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -115,9 +116,9 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -131,7 +132,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
     {
         get
         {
-            if (!this.Properties.TryGetValue("citations", out JsonElement element))
+            if (!this._properties.TryGetValue("citations", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
@@ -139,9 +140,9 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["citations"] = JsonSerializer.SerializeToElement(
+            this._properties["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -156,14 +157,14 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
     {
         get
         {
-            if (!this.Properties.TryGetValue("max_content_tokens", out JsonElement element))
+            if (!this._properties.TryGetValue("max_content_tokens", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["max_content_tokens"] = JsonSerializer.SerializeToElement(
+            this._properties["max_content_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -177,14 +178,14 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
     {
         get
         {
-            if (!this.Properties.TryGetValue("max_uses", out JsonElement element))
+            if (!this._properties.TryGetValue("max_uses", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["max_uses"] = JsonSerializer.SerializeToElement(
+            this._properties["max_uses"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -209,18 +210,26 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase, IFromRaw<BetaWe
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_20250910\"");
     }
 
+    public BetaWebFetchTool20250910(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_20250910\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaWebFetchTool20250910(Dictionary<string, JsonElement> properties)
+    BetaWebFetchTool20250910(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaWebFetchTool20250910 FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

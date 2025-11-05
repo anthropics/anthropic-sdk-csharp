@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class BetaRawContentBlockStopEvent
     {
         get
         {
-            if (!this.Properties.TryGetValue("index", out JsonElement element))
+            if (!this._properties.TryGetValue("index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'index' cannot be null",
                     new System::ArgumentOutOfRangeException("index", "Missing required argument")
@@ -25,9 +26,9 @@ public sealed record class BetaRawContentBlockStopEvent
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["index"] = JsonSerializer.SerializeToElement(
+            this._properties["index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -38,7 +39,7 @@ public sealed record class BetaRawContentBlockStopEvent
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -46,9 +47,9 @@ public sealed record class BetaRawContentBlockStopEvent
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -66,19 +67,26 @@ public sealed record class BetaRawContentBlockStopEvent
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
     }
 
+    public BetaRawContentBlockStopEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRawContentBlockStopEvent(Dictionary<string, JsonElement> properties)
+    BetaRawContentBlockStopEvent(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaRawContentBlockStopEvent FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

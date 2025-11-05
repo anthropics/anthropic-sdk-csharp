@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRaw
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -23,9 +24,9 @@ public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRaw
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,18 +43,25 @@ public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRaw
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
     }
 
+    public BetaRawMessageStopEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRawMessageStopEvent(Dictionary<string, JsonElement> properties)
+    BetaRawMessageStopEvent(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaRawMessageStopEvent FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

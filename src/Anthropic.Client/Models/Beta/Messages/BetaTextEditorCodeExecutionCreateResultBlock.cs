@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("is_file_update", out JsonElement element))
+            if (!this._properties.TryGetValue("is_file_update", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'is_file_update' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -28,9 +29,9 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
 
             return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["is_file_update"] = JsonSerializer.SerializeToElement(
+            this._properties["is_file_update"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +42,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -49,9 +50,9 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -71,19 +72,30 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock
         );
     }
 
+    public BetaTextEditorCodeExecutionCreateResultBlock(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>(
+            "\"text_editor_code_execution_create_result\""
+        );
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaTextEditorCodeExecutionCreateResultBlock(Dictionary<string, JsonElement> properties)
+    BetaTextEditorCodeExecutionCreateResultBlock(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaTextEditorCodeExecutionCreateResultBlock FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

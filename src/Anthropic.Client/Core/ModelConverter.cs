@@ -14,9 +14,10 @@ sealed class ModelConverter<TModel> : JsonConverter<TModel>
         JsonSerializerOptions options
     )
     {
-        Dictionary<string, JsonElement>? properties = JsonSerializer.Deserialize<
-            Dictionary<string, JsonElement>
-        >(ref reader, options);
+        var properties = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+            ref reader,
+            options
+        );
         if (properties == null)
             return null;
 

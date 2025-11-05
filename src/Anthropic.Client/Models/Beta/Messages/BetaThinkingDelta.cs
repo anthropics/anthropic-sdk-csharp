@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class BetaThinkingDelta : ModelBase, IFromRaw<BetaThinkingD
     {
         get
         {
-            if (!this.Properties.TryGetValue("thinking", out JsonElement element))
+            if (!this._properties.TryGetValue("thinking", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'thinking' cannot be null",
                     new System::ArgumentOutOfRangeException("thinking", "Missing required argument")
@@ -27,9 +28,9 @@ public sealed record class BetaThinkingDelta : ModelBase, IFromRaw<BetaThinkingD
                     new System::ArgumentNullException("thinking")
                 );
         }
-        set
+        init
         {
-            this.Properties["thinking"] = JsonSerializer.SerializeToElement(
+            this._properties["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,7 +41,7 @@ public sealed record class BetaThinkingDelta : ModelBase, IFromRaw<BetaThinkingD
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -48,9 +49,9 @@ public sealed record class BetaThinkingDelta : ModelBase, IFromRaw<BetaThinkingD
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,17 +69,26 @@ public sealed record class BetaThinkingDelta : ModelBase, IFromRaw<BetaThinkingD
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
     }
 
+    public BetaThinkingDelta(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaThinkingDelta(Dictionary<string, JsonElement> properties)
+    BetaThinkingDelta(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaThinkingDelta FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaThinkingDelta FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]

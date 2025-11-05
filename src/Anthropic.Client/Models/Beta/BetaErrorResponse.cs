@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -15,7 +16,7 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
     {
         get
         {
-            if (!this.Properties.TryGetValue("error", out JsonElement element))
+            if (!this._properties.TryGetValue("error", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'error' cannot be null",
                     new ArgumentOutOfRangeException("error", "Missing required argument")
@@ -27,9 +28,9 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
                     new ArgumentNullException("error")
                 );
         }
-        set
+        init
         {
-            this.Properties["error"] = JsonSerializer.SerializeToElement(
+            this._properties["error"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,14 +41,14 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
     {
         get
         {
-            if (!this.Properties.TryGetValue("request_id", out JsonElement element))
+            if (!this._properties.TryGetValue("request_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["request_id"] = JsonSerializer.SerializeToElement(
+            this._properties["request_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -58,7 +59,7 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -66,9 +67,9 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -87,16 +88,25 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
     }
 
+    public BetaErrorResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaErrorResponse(Dictionary<string, JsonElement> properties)
+    BetaErrorResponse(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaErrorResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaErrorResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

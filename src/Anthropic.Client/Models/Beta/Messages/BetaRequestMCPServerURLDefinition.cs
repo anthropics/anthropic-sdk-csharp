@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -17,7 +18,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
     {
         get
         {
-            if (!this.Properties.TryGetValue("name", out JsonElement element))
+            if (!this._properties.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new System::ArgumentOutOfRangeException("name", "Missing required argument")
@@ -29,9 +30,9 @@ public sealed record class BetaRequestMCPServerURLDefinition
                     new System::ArgumentNullException("name")
                 );
         }
-        set
+        init
         {
-            this.Properties["name"] = JsonSerializer.SerializeToElement(
+            this._properties["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,7 +43,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -50,9 +51,9 @@ public sealed record class BetaRequestMCPServerURLDefinition
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -63,7 +64,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
     {
         get
         {
-            if (!this.Properties.TryGetValue("url", out JsonElement element))
+            if (!this._properties.TryGetValue("url", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
                     new System::ArgumentOutOfRangeException("url", "Missing required argument")
@@ -75,9 +76,9 @@ public sealed record class BetaRequestMCPServerURLDefinition
                     new System::ArgumentNullException("url")
                 );
         }
-        set
+        init
         {
-            this.Properties["url"] = JsonSerializer.SerializeToElement(
+            this._properties["url"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -88,14 +89,14 @@ public sealed record class BetaRequestMCPServerURLDefinition
     {
         get
         {
-            if (!this.Properties.TryGetValue("authorization_token", out JsonElement element))
+            if (!this._properties.TryGetValue("authorization_token", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["authorization_token"] = JsonSerializer.SerializeToElement(
+            this._properties["authorization_token"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -106,7 +107,7 @@ public sealed record class BetaRequestMCPServerURLDefinition
     {
         get
         {
-            if (!this.Properties.TryGetValue("tool_configuration", out JsonElement element))
+            if (!this._properties.TryGetValue("tool_configuration", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaRequestMCPServerToolConfiguration?>(
@@ -114,9 +115,9 @@ public sealed record class BetaRequestMCPServerURLDefinition
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["tool_configuration"] = JsonSerializer.SerializeToElement(
+            this._properties["tool_configuration"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -137,18 +138,25 @@ public sealed record class BetaRequestMCPServerURLDefinition
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
 
+    public BetaRequestMCPServerURLDefinition(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRequestMCPServerURLDefinition(Dictionary<string, JsonElement> properties)
+    BetaRequestMCPServerURLDefinition(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaRequestMCPServerURLDefinition FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

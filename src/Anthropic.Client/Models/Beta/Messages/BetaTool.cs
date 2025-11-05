@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -21,7 +22,7 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
     {
         get
         {
-            if (!this.Properties.TryGetValue("input_schema", out JsonElement element))
+            if (!this._properties.TryGetValue("input_schema", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input_schema' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -36,9 +37,9 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
                     new System::ArgumentNullException("input_schema")
                 );
         }
-        set
+        init
         {
-            this.Properties["input_schema"] = JsonSerializer.SerializeToElement(
+            this._properties["input_schema"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -54,7 +55,7 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
     {
         get
         {
-            if (!this.Properties.TryGetValue("name", out JsonElement element))
+            if (!this._properties.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new System::ArgumentOutOfRangeException("name", "Missing required argument")
@@ -66,9 +67,9 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
                     new System::ArgumentNullException("name")
                 );
         }
-        set
+        init
         {
-            this.Properties["name"] = JsonSerializer.SerializeToElement(
+            this._properties["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -82,7 +83,7 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
     {
         get
         {
-            if (!this.Properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -90,9 +91,9 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -111,14 +112,14 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
     {
         get
         {
-            if (!this.Properties.TryGetValue("description", out JsonElement element))
+            if (!this._properties.TryGetValue("description", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["description"] = JsonSerializer.SerializeToElement(
+            this._properties["description"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -129,7 +130,7 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, Type1>?>(
@@ -137,9 +138,9 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -157,17 +158,22 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
 
     public BetaTool() { }
 
+    public BetaTool(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaTool(Dictionary<string, JsonElement> properties)
+    BetaTool(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaTool FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -184,7 +190,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -192,9 +198,9 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -205,7 +211,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
     {
         get
         {
-            if (!this.Properties.TryGetValue("properties", out JsonElement element))
+            if (!this._properties.TryGetValue("properties", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Dictionary<string, JsonElement>?>(
@@ -213,9 +219,9 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["properties"] = JsonSerializer.SerializeToElement(
+            this._properties["properties"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -226,14 +232,14 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
     {
         get
         {
-            if (!this.Properties.TryGetValue("required", out JsonElement element))
+            if (!this._properties.TryGetValue("required", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["required"] = JsonSerializer.SerializeToElement(
+            this._properties["required"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -252,17 +258,24 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
     }
 
+    public InputSchema(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    InputSchema(Dictionary<string, JsonElement> properties)
+    InputSchema(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static InputSchema FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 

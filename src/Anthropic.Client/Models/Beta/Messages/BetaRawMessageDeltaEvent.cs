@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -18,7 +19,7 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
     {
         get
         {
-            if (!this.Properties.TryGetValue("context_management", out JsonElement element))
+            if (!this._properties.TryGetValue("context_management", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaContextManagementResponse?>(
@@ -26,9 +27,9 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["context_management"] = JsonSerializer.SerializeToElement(
+            this._properties["context_management"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -39,7 +40,7 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
     {
         get
         {
-            if (!this.Properties.TryGetValue("delta", out JsonElement element))
+            if (!this._properties.TryGetValue("delta", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'delta' cannot be null",
                     new System::ArgumentOutOfRangeException("delta", "Missing required argument")
@@ -51,9 +52,9 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
                     new System::ArgumentNullException("delta")
                 );
         }
-        set
+        init
         {
-            this.Properties["delta"] = JsonSerializer.SerializeToElement(
+            this._properties["delta"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -64,7 +65,7 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -72,9 +73,9 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -102,7 +103,7 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
     {
         get
         {
-            if (!this.Properties.TryGetValue("usage", out JsonElement element))
+            if (!this._properties.TryGetValue("usage", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
                     new System::ArgumentOutOfRangeException("usage", "Missing required argument")
@@ -117,9 +118,9 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
                     new System::ArgumentNullException("usage")
                 );
         }
-        set
+        init
         {
-            this.Properties["usage"] = JsonSerializer.SerializeToElement(
+            this._properties["usage"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -139,19 +140,26 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
     }
 
+    public BetaRawMessageDeltaEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRawMessageDeltaEvent(Dictionary<string, JsonElement> properties)
+    BetaRawMessageDeltaEvent(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
     public static BetaRawMessageDeltaEvent FromRawUnchecked(
-        Dictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> properties
     )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -165,14 +173,14 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
     {
         get
         {
-            if (!this.Properties.TryGetValue("container", out JsonElement element))
+            if (!this._properties.TryGetValue("container", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaContainer?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["container"] = JsonSerializer.SerializeToElement(
+            this._properties["container"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -183,7 +191,7 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
     {
         get
         {
-            if (!this.Properties.TryGetValue("stop_reason", out JsonElement element))
+            if (!this._properties.TryGetValue("stop_reason", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, BetaStopReason>?>(
@@ -191,9 +199,9 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["stop_reason"] = JsonSerializer.SerializeToElement(
+            this._properties["stop_reason"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -204,14 +212,14 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
     {
         get
         {
-            if (!this.Properties.TryGetValue("stop_sequence", out JsonElement element))
+            if (!this._properties.TryGetValue("stop_sequence", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["stop_sequence"] = JsonSerializer.SerializeToElement(
+            this._properties["stop_sequence"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -227,16 +235,21 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
 
     public Delta() { }
 
+    public Delta(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Delta(Dictionary<string, JsonElement> properties)
+    Delta(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static Delta FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

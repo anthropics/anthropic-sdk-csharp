@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -22,7 +23,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
     {
         get
         {
-            if (!this.Properties.TryGetValue("citations", out JsonElement element))
+            if (!this._properties.TryGetValue("citations", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<BetaTextCitation>?>(
@@ -30,9 +31,9 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["citations"] = JsonSerializer.SerializeToElement(
+            this._properties["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,7 +44,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
     {
         get
         {
-            if (!this.Properties.TryGetValue("text", out JsonElement element))
+            if (!this._properties.TryGetValue("text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'text' cannot be null",
                     new System::ArgumentOutOfRangeException("text", "Missing required argument")
@@ -55,9 +56,9 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
                     new System::ArgumentNullException("text")
                 );
         }
-        set
+        init
         {
-            this.Properties["text"] = JsonSerializer.SerializeToElement(
+            this._properties["text"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +69,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
     {
         get
         {
-            if (!this.Properties.TryGetValue("type", out JsonElement element))
+            if (!this._properties.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -76,9 +77,9 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
 
             return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["type"] = JsonSerializer.SerializeToElement(
+            this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -100,16 +101,25 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
+    public BetaTextBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+
+        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaTextBlock(Dictionary<string, JsonElement> properties)
+    BetaTextBlock(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static BetaTextBlock FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static BetaTextBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -19,7 +20,7 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
     {
         get
         {
-            if (!this.Properties.TryGetValue("input_tokens", out JsonElement element))
+            if (!this._properties.TryGetValue("input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input_tokens' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -30,9 +31,9 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
 
             return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["input_tokens"] = JsonSerializer.SerializeToElement(
+            this._properties["input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,17 +47,24 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
 
     public MessageTokensCount() { }
 
+    public MessageTokensCount(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageTokensCount(Dictionary<string, JsonElement> properties)
+    MessageTokensCount(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static MessageTokensCount FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static MessageTokensCount FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 
     [SetsRequiredMembers]
