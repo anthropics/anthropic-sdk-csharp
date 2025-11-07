@@ -1,7 +1,6 @@
 using Anthropic.Client;
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Messages;
-using Anthropic.Client.Models.Messages.MessageParamProperties;
 using Anthropic.Client.Services.Messages;
 using System;
 using System.Collections.Generic;
@@ -52,26 +51,28 @@ public static class AnthropicClientExtensions
         void IDisposable.Dispose() { }
 
         /// <inheritdoc />
-        public object? GetService(Type serviceType, object? serviceKey = null)
+        public object? GetService(System.Type serviceType, object? serviceKey = null)
         {
             ArgumentNullException.ThrowIfNull(serviceType);
 
-            if (serviceKey is null)
+            if (serviceKey is not null)
             {
-                if (serviceType == typeof(ChatClientMetadata))
-                {
-                    return _metadata ??= new ChatClientMetadata("anthropic", _messageService is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId);
-                }
+                return null;
+            }
 
-                if (serviceType.IsInstanceOfType(_messageService))
-                {
-                    return _messageService;
-                }
+            if (serviceType == typeof(ChatClientMetadata))
+            {
+                return _metadata ??= new ChatClientMetadata("anthropic", _messageService is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId);
+            }
 
-                if (serviceType.IsInstanceOfType(this))
-                {
-                    return this;
-                }
+            if (serviceType.IsInstanceOfType(_messageService))
+            {
+                return _messageService;
+            }
+
+            if (serviceType.IsInstanceOfType(this))
+            {
+                return this;
             }
 
             return null;
@@ -341,7 +342,7 @@ public static class AnthropicClientExtensions
                             {
                                 ID = fcc.CallId,
                                 Name = fcc.Name,
-                                Input = JsonSerializer.SerializeToElement(fcc.Arguments, AIJsonUtilities.DefaultOptions),
+                                Input = fcc.Arguments?.ToDictionary(e => e.Key, e => e.Value is JsonElement je ? je : JsonSerializer.SerializeToElement(e.Value, AIJsonUtilities.DefaultOptions)) ?? [],
                             }));
                             break;
 
@@ -378,14 +379,46 @@ public static class AnthropicClientExtensions
 
         private MessageCreateParams GetMessageCreateParams(List<MessageParam> messages, List<TextBlockParam>? systemMessages, ChatOptions? options)
         {
-            MessageCreateParams createParams =
-                options?.RawRepresentationFactory?.Invoke(this) as MessageCreateParams ??
-                new MessageCreateParams()
+            // MessageCreateParams exposes all of its properties as init-only. It also always initializes elements in those init members even
+            // when assigning null. And as init-only members can't be conditionally assigned, it's impossible for to create the MessageCreateParams
+            // here in the way we need to. Instead, we populate a dictionary, and then use that dictionary to populate the MessageCreateParams
+            // in one go.
+
+            Dictionary<string, JsonElement>? bodyProperties = null;
+
+            if (options?.RawRepresentationFactory?.Invoke(this) is MessageCreateParams rawMcp)
+            {
+                bodyProperties = new(rawMcp.BodyProperties);
+
+                // Merge existing messages if there were any in the raw representation
+                if (bodyProperties.TryGetValue("messages", out JsonElement existingMessageJson) &&
+                    JsonSerializer.Deserialize<List<MessageParam>>(existingMessageJson, ModelBase.SerializerOptions) is { } existingMessages)
                 {
-                    MaxTokens = options?.MaxOutputTokens ?? DefaultMaxTokens,
-                    Model = options?.ModelId ?? _defaultModelId ?? throw new InvalidOperationException("Model ID must be specified either in ChatOptions or as the default for the client."),
-                    Messages = messages,
-                };
+                    messages.InsertRange(0, existingMessages);
+                }
+            }
+            else
+            {
+                bodyProperties = [];
+            }
+
+            // MessageCreateParams.Messages
+            bodyProperties["messages"] = JsonSerializer.SerializeToElement(messages, ModelBase.SerializerOptions);
+
+            // MessageCreateParams.Model
+            string? modelId = bodyProperties.TryGetValue("model", out JsonElement existingModelJson) ?
+                JsonSerializer.Deserialize<string>(existingModelJson, ModelBase.SerializerOptions) :
+                null;
+            modelId ??= options?.ModelId ?? _defaultModelId;
+            bodyProperties["model"] = !string.IsNullOrWhiteSpace(modelId) ?
+                JsonSerializer.SerializeToElement(modelId, ModelBase.SerializerOptions) :
+                throw new InvalidOperationException("Model ID must be specified either in ChatOptions or as the default for the client.");
+
+            // MessageCreateParams.MaxTokens
+            if (!bodyProperties.TryGetValue("max_tokens", out _))
+            {
+                bodyProperties["max_tokens"] = JsonSerializer.SerializeToElement(options?.MaxOutputTokens ?? DefaultMaxTokens, ModelBase.SerializerOptions);
+            }
 
             if (options is not null)
             {
@@ -394,31 +427,44 @@ public static class AnthropicClientExtensions
                     (systemMessages ??= []).Add(new TextBlockParam() { Text = instructions });
                 }
 
+                // MessageCreateParams.StopSequences
                 if (options.StopSequences is { } stopSequences)
                 {
-                    createParams.StopSequences = createParams.StopSequences is not null ?
-                        [.. createParams.StopSequences, .. stopSequences] :
+                    List<string>? existingStopSequences = bodyProperties.TryGetValue("stop_sequences", out JsonElement stopSequencesJson) ?
+                        JsonSerializer.Deserialize<List<string>>(stopSequencesJson, ModelBase.SerializerOptions) :
+                        null;
+
+                    existingStopSequences = existingStopSequences is not null ?
+                        [.. existingStopSequences, .. stopSequences] :
                         [.. stopSequences];
+
+                    bodyProperties["stop_sequences"] = JsonSerializer.SerializeToElement(existingStopSequences, ModelBase.SerializerOptions);
                 }
 
-                if (options.Temperature is { } temperature)
+                // MessageCreateParams.Temperature
+                if (options.Temperature is { } temperature && !bodyProperties.ContainsKey("temperature"))
                 {
-                    createParams.Temperature ??= temperature;
+                    bodyProperties["temperature"] = JsonSerializer.SerializeToElement((double)temperature, ModelBase.SerializerOptions);
                 }
 
-                if (options.TopK is { } topK)
+                // MessageCreateParams.TopK
+                if (options.TopK is { } topK && !bodyProperties.ContainsKey("top_k"))
                 {
-                    createParams.TopK ??= topK;
+                    bodyProperties["top_k"] = JsonSerializer.SerializeToElement(topK, ModelBase.SerializerOptions);
                 }
 
-                if (options.TopP is { } topP)
+                // MessageCreateParams.TopP
+                if (options.TopP is { } topP && !bodyProperties.ContainsKey("top_p"))
                 {
-                    createParams.TopP ??= topP;
+                    bodyProperties["top_p"] = JsonSerializer.SerializeToElement((double)topP, ModelBase.SerializerOptions);
                 }
 
+                // MessageCreateParams.Tools
+                List<ToolUnion>? createdTools = bodyProperties.TryGetValue("tools", out JsonElement toolsJson) ?
+                    JsonSerializer.Deserialize<List<ToolUnion>>(toolsJson, ModelBase.SerializerOptions) :
+                    null;
                 if (options.Tools is { } tools)
                 {
-                    List<ToolUnion> createdTools = createParams.Tools ?? [];
                     foreach (var tool in tools)
                     {
                         switch (tool)
@@ -445,13 +491,12 @@ public static class AnthropicClientExtensions
                                         }
                                     }
 
-                                    createdTools.Add(new ToolUnion(new Tool()
+                                    (createdTools ??= []).Add(new ToolUnion(new Tool()
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new()
+                                        InputSchema = new(properties)
                                         {
-                                            Properties = properties,
                                             Required = required,
                                         },
                                     }));
@@ -459,45 +504,54 @@ public static class AnthropicClientExtensions
                                 break;
 
                             case HostedWebSearchTool:
-                                createdTools.Add(new ToolUnion(new WebSearchTool20250305()));
+                                (createdTools ??= []).Add(new ToolUnion(new WebSearchTool20250305()));
                                 break;
                         }
                     }
 
-                    if (createdTools.Count > 0)
+                    if (createdTools?.Count > 0)
                     {
-                        createParams.Tools = createdTools;
+                        bodyProperties["tools"] = JsonSerializer.SerializeToElement(createdTools, ModelBase.SerializerOptions);
                     }
                 }
 
-                if (createParams.ToolChoice is null &&
-                    createParams.Tools is { Count: > 0 } &&
+                if (!bodyProperties.ContainsKey("tool_choice") &&
+                    createdTools is { Count: > 0 } &&
                     options.ToolMode is { } toolMode)
                 {
-                    if (toolMode is AutoChatToolMode)
+                    ToolChoice? toolChoice =
+                        toolMode is AutoChatToolMode ? new ToolChoice(new ToolChoiceAuto() { DisableParallelToolUse = !options.AllowMultipleToolCalls }) :
+                        toolMode is NoneChatToolMode ? new ToolChoice(new ToolChoiceNone()) :
+                        toolMode is RequiredChatToolMode ? new ToolChoice(new ToolChoiceAny() { DisableParallelToolUse = !options.AllowMultipleToolCalls }) :
+                        null;
+                    if (toolChoice is not null)
                     {
-                        createParams.ToolChoice = new ToolChoice(new ToolChoiceAuto() { DisableParallelToolUse = !options.AllowMultipleToolCalls });
-                    }
-                    else if (toolMode is NoneChatToolMode)
-                    {
-                        createParams.ToolChoice = new ToolChoice(new ToolChoiceNone());
-                    }
-                    else if (toolMode is RequiredChatToolMode)
-                    {
-                        createParams.ToolChoice = new ToolChoice(new ToolChoiceAny() { DisableParallelToolUse = !options.AllowMultipleToolCalls });
+                        bodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(toolChoice, ModelBase.SerializerOptions);
                     }
                 }
             }
 
             if (systemMessages is not null)
             {
-                createParams.System = new(
-                    createParams.System?.Value is string existingSystemMessage ? [new TextBlockParam() { Text = existingSystemMessage }, .. systemMessages] :
-                    createParams.System?.Value is IEnumerable<TextBlockParam> existingSystemMessages ? [.. existingSystemMessages, .. systemMessages] :
-                    systemMessages);
+                if (bodyProperties.TryGetValue("system", out JsonElement systemJson))
+                {
+                    if (systemJson.ValueKind is JsonValueKind.String)
+                    {
+                        systemMessages.Insert(0, new TextBlockParam() { Text = systemJson.GetString() ?? string.Empty });
+                    }
+                    else if (systemJson.ValueKind is JsonValueKind.Array)
+                    {
+                        systemMessages.AddRange(JsonSerializer.Deserialize<List<TextBlockParam>>(systemJson, ModelBase.SerializerOptions)!);
+                    }
+                }
+
+                bodyProperties["system"] = JsonSerializer.SerializeToElement(systemMessages, ModelBase.SerializerOptions);
             }
 
-            return createParams;
+            return MessageCreateParams.FromRawUnchecked(
+                new Dictionary<string, JsonElement>(), 
+                new Dictionary<string, JsonElement>(), 
+                bodyProperties);
         }
 
         private static UsageDetails ToUsageDetails(Usage usage) =>
@@ -512,7 +566,7 @@ public static class AnthropicClientExtensions
             {
                 InputTokenCount = inputTokens,
                 OutputTokenCount = outputTokens,
-                TotalTokenCount = (inputTokens ?? 0) + (outputTokens ?? 0),
+                TotalTokenCount = (inputTokens is not null || outputTokens is not null) ? (inputTokens ?? 0) + (outputTokens ?? 0) : null,
             };
 
             if (cacheCreationInputTokens is not null)
@@ -558,7 +612,12 @@ public static class AnthropicClientExtensions
                     return new TextReasoningContent(string.Empty) { ProtectedData = redactedThinking.Data };
 
                 case ToolUseBlock toolUse:
-                    return new FunctionCallContent(toolUse.ID, toolUse.Name, toolUse.Input.Deserialize<Dictionary<string, object?>>(AIJsonUtilities.DefaultOptions));
+                    return new FunctionCallContent(
+                        toolUse.ID,
+                        toolUse.Name,
+                        toolUse.Properties.TryGetValue("input", out JsonElement element) ?
+                            JsonSerializer.Deserialize<Dictionary<string, object?>>(element, AIJsonUtilities.DefaultOptions) :
+                            null);
             }
          
             return null;

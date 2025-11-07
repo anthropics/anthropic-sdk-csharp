@@ -1,6 +1,5 @@
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Messages;
-using Anthropic.Client.Models.Beta.Messages.BetaMessageParamProperties;
 using Anthropic.Client.Services.Beta;
 using Anthropic.Client.Services.Beta.Messages;
 using System;
@@ -54,26 +53,28 @@ public static class AnthropicClientBetaExtensions
         void IDisposable.Dispose() { }
 
         /// <inheritdoc />
-        public object? GetService(Type serviceType, object? serviceKey = null)
+        public object? GetService(System.Type serviceType, object? serviceKey = null)
         {
             ArgumentNullException.ThrowIfNull(serviceType);
 
-            if (serviceKey is null)
+            if (serviceKey is not null)
             {
-                if (serviceType == typeof(ChatClientMetadata))
-                {
-                    return _metadata ??= new ChatClientMetadata("anthropic", _messageService is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId);
-                }
+                return null;
+            }
 
-                if (serviceType.IsInstanceOfType(_messageService))
-                {
-                    return _messageService;
-                }
+            if (serviceType == typeof(ChatClientMetadata))
+            {
+                return _metadata ??= new ChatClientMetadata("anthropic", _messageService is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId);
+            }
 
-                if (serviceType.IsInstanceOfType(this))
-                {
-                    return this;
-                }
+            if (serviceType.IsInstanceOfType(_messageService))
+            {
+                return _messageService;
+            }
+
+            if (serviceType.IsInstanceOfType(this))
+            {
+                return this;
             }
 
             return null;
@@ -343,7 +344,7 @@ public static class AnthropicClientBetaExtensions
                             {
                                 ID = fcc.CallId,
                                 Name = fcc.Name,
-                                Input = JsonSerializer.SerializeToElement(fcc.Arguments, AIJsonUtilities.DefaultOptions),
+                                Input = fcc.Arguments?.ToDictionary(e => e.Key, e => e.Value is JsonElement je ? je : JsonSerializer.SerializeToElement(e.Value, AIJsonUtilities.DefaultOptions)) ?? [],
                             }));
                             break;
 
@@ -380,14 +381,46 @@ public static class AnthropicClientBetaExtensions
 
         private MessageCreateParams GetMessageCreateParams(List<BetaMessageParam> messages, List<BetaTextBlockParam>? systemMessages, ChatOptions? options)
         {
-            MessageCreateParams createParams =
-                options?.RawRepresentationFactory?.Invoke(this) as MessageCreateParams ??
-                new MessageCreateParams()
+            // MessageCreateParams exposes all of its properties as init-only. It also always initializes elements in those init members even
+            // when assigning null. And as init-only members can't be conditionally assigned, it's impossible for to create the MessageCreateParams
+            // here in the way we need to. Instead, we populate a dictionary, and then use that dictionary to populate the MessageCreateParams
+            // in one go.
+
+            Dictionary<string, JsonElement>? bodyProperties = null;
+
+            if (options?.RawRepresentationFactory?.Invoke(this) is MessageCreateParams rawMcp)
+            {
+                bodyProperties = new(rawMcp.BodyProperties);
+
+                // Merge existing messages if there were any in the raw representation
+                if (bodyProperties.TryGetValue("messages", out JsonElement existingMessageJson) &&
+                    JsonSerializer.Deserialize<List<BetaMessageParam>>(existingMessageJson, ModelBase.SerializerOptions) is { } existingMessages)
                 {
-                    MaxTokens = options?.MaxOutputTokens ?? DefaultMaxTokens,
-                    Model = options?.ModelId ?? _defaultModelId ?? throw new InvalidOperationException("Model ID must be specified either in ChatOptions or as the default for the client."),
-                    Messages = messages,
-                };
+                    messages.InsertRange(0, existingMessages);
+                }
+            }
+            else
+            {
+                bodyProperties = [];
+            }
+
+            // MessageCreateParams.Messages
+            bodyProperties["messages"] = JsonSerializer.SerializeToElement(messages, ModelBase.SerializerOptions);
+
+            // MessageCreateParams.Model
+            string? modelId = bodyProperties.TryGetValue("model", out JsonElement existingModelJson) ?
+                JsonSerializer.Deserialize<string>(existingModelJson, ModelBase.SerializerOptions) :
+                null;
+            modelId ??= options?.ModelId ?? _defaultModelId;
+            bodyProperties["model"] = !string.IsNullOrWhiteSpace(modelId) ?
+                JsonSerializer.SerializeToElement(modelId, ModelBase.SerializerOptions) :
+                throw new InvalidOperationException("Model ID must be specified either in ChatOptions or as the default for the client.");
+
+            // MessageCreateParams.MaxTokens
+            if (!bodyProperties.TryGetValue("max_tokens", out _))
+            {
+                bodyProperties["max_tokens"] = JsonSerializer.SerializeToElement(options?.MaxOutputTokens ?? DefaultMaxTokens, ModelBase.SerializerOptions);
+            }
 
             if (options is not null)
             {
@@ -396,32 +429,47 @@ public static class AnthropicClientBetaExtensions
                     (systemMessages ??= []).Add(new BetaTextBlockParam() { Text = instructions });
                 }
 
+                // MessageCreateParams.StopSequences
                 if (options.StopSequences is { } stopSequences)
                 {
-                    createParams.StopSequences = createParams.StopSequences is not null ?
-                        [.. createParams.StopSequences, .. stopSequences] :
+                    List<string>? existingStopSequences = bodyProperties.TryGetValue("stop_sequences", out JsonElement stopSequencesJson) ?
+                        JsonSerializer.Deserialize<List<string>>(stopSequencesJson, ModelBase.SerializerOptions) :
+                        null;
+
+                    existingStopSequences = existingStopSequences is not null ?
+                        [.. existingStopSequences, .. stopSequences] :
                         [.. stopSequences];
+
+                    bodyProperties["stop_sequences"] = JsonSerializer.SerializeToElement(existingStopSequences, ModelBase.SerializerOptions);
                 }
 
-                if (options.Temperature is { } temperature)
+                // MessageCreateParams.Temperature
+                if (options.Temperature is { } temperature && !bodyProperties.ContainsKey("temperature"))
                 {
-                    createParams.Temperature ??= temperature;
+                    bodyProperties["temperature"] = JsonSerializer.SerializeToElement((double)temperature, ModelBase.SerializerOptions);
                 }
 
-                if (options.TopK is { } topK)
+                // MessageCreateParams.TopK
+                if (options.TopK is { } topK && !bodyProperties.ContainsKey("top_k"))
                 {
-                    createParams.TopK ??= topK;
+                    bodyProperties["top_k"] = JsonSerializer.SerializeToElement(topK, ModelBase.SerializerOptions);
                 }
 
-                if (options.TopP is { } topP)
+                // MessageCreateParams.TopP
+                if (options.TopP is { } topP && !bodyProperties.ContainsKey("top_p"))
                 {
-                    createParams.TopP ??= topP;
+                    bodyProperties["top_p"] = JsonSerializer.SerializeToElement((double)topP, ModelBase.SerializerOptions);
                 }
 
+                // MessageCreateParams.Tools
+                List<BetaToolUnion>? createdTools = bodyProperties.TryGetValue("tools", out JsonElement toolsJson) ?
+                    JsonSerializer.Deserialize<List<BetaToolUnion>>(toolsJson, ModelBase.SerializerOptions) :
+                    null;
+                List<BetaRequestMCPServerURLDefinition>? mcpServers = bodyProperties.TryGetValue("mcp_servers", out JsonElement mcpServersJson) ?
+                    JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>>(mcpServersJson, ModelBase.SerializerOptions) :
+                    null;
                 if (options.Tools is { } tools)
                 {
-                    List<BetaToolUnion> createdTools = createParams.Tools ?? [];
-                    List<BetaRequestMCPServerURLDefinition> mcpServers = createParams.MCPServers ?? [];
                     foreach (var tool in tools)
                     {
                         switch (tool)
@@ -448,13 +496,12 @@ public static class AnthropicClientBetaExtensions
                                         }
                                     }
 
-                                    createdTools.Add(new BetaToolUnion(new BetaTool()
+                                    (createdTools ??= []).Add(new BetaToolUnion(new BetaTool()
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new()
+                                        InputSchema = new(properties)
                                         {
-                                            Properties = properties,
                                             Required = required,
                                         },
                                     }));
@@ -462,73 +509,82 @@ public static class AnthropicClientBetaExtensions
                                 break;
 
                             case HostedWebSearchTool:
-                                createdTools.Add(new BetaToolUnion(new BetaWebSearchTool20250305()));
+                                (createdTools ??= []).Add(new BetaToolUnion(new BetaWebSearchTool20250305()));
                                 break;
 
                             case HostedCodeInterpreterTool:
-                                createdTools.Add(new BetaToolUnion(new BetaCodeExecutionTool20250825()));
+                                (createdTools ??= []).Add(new BetaToolUnion(new BetaCodeExecutionTool20250825()));
                                 break;
 
                             case HostedMcpServerTool mcp:
-                                BetaRequestMCPServerURLDefinition mcpDef = new()
-                                {
-                                    Name = mcp.Name,
-                                    URL = mcp.ServerAddress,
-                                };
-
-                                if (mcp.AllowedTools is { Count: > 0 } allowedTools)
-                                {
-                                    mcpDef.ToolConfiguration = new()
+                                (mcpServers ??= []).Add(mcp.AllowedTools is { Count: > 0 } allowedTools ?
+                                    new()
                                     {
-                                        AllowedTools = [.. allowedTools],
-                                        Enabled = true,
-                                    };
-                                }
-
-                                mcpServers.Add(mcpDef);
+                                        Name = mcp.Name,
+                                        URL = mcp.ServerAddress,
+                                        ToolConfiguration = new()
+                                        {
+                                            AllowedTools = [.. allowedTools],
+                                            Enabled = true,
+                                        }
+                                    } :
+                                    new()
+                                    {
+                                        Name = mcp.Name,
+                                        URL = mcp.ServerAddress,
+                                    });
                                 break;
                         }
+                    }
 
-                        if (createdTools.Count > 0)
-                        {
-                            createParams.Tools = createdTools;
-                        }
+                    if (createdTools?.Count > 0)
+                    {
+                        bodyProperties["tools"] = JsonSerializer.SerializeToElement(createdTools, ModelBase.SerializerOptions);
+                    }
 
-                        if (mcpServers.Count > 0)
-                        {
-                            createParams.MCPServers = mcpServers;
-                        }
+                    if (mcpServers?.Count > 0)
+                    {
+                        bodyProperties["mcp_servers"] = JsonSerializer.SerializeToElement(mcpServers, ModelBase.SerializerOptions);
                     }
                 }
 
-                if (createParams.ToolChoice is null &&
-                    createParams.Tools is { Count: > 0 } &&
+                if (!bodyProperties.ContainsKey("tool_choice") &&
+                    createdTools is { Count: > 0 } &&
                     options.ToolMode is { } toolMode)
                 {
-                    if (toolMode is AutoChatToolMode)
+                    BetaToolChoice? toolChoice =
+                        toolMode is AutoChatToolMode ? new BetaToolChoice(new BetaToolChoiceAuto() { DisableParallelToolUse = !options.AllowMultipleToolCalls }) :
+                        toolMode is NoneChatToolMode ? new BetaToolChoice(new BetaToolChoiceNone()) :
+                        toolMode is RequiredChatToolMode ? new BetaToolChoice(new BetaToolChoiceAny() { DisableParallelToolUse = !options.AllowMultipleToolCalls }) :
+                        null;
+                    if (toolChoice is not null)
                     {
-                        createParams.ToolChoice = new BetaToolChoice(new BetaToolChoiceAuto() { DisableParallelToolUse = !options.AllowMultipleToolCalls });
-                    }
-                    else if (toolMode is NoneChatToolMode)
-                    {
-                        createParams.ToolChoice = new BetaToolChoice(new BetaToolChoiceNone());
-                    }
-                    else if (toolMode is RequiredChatToolMode)
-                    {
-                        createParams.ToolChoice = new BetaToolChoice(new BetaToolChoiceAny() { DisableParallelToolUse = !options.AllowMultipleToolCalls });
+                        bodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(toolChoice, ModelBase.SerializerOptions);
                     }
                 }
             }
 
             if (systemMessages is not null)
             {
-                createParams.System = new(
-                    createParams.System?.Value is string existingSystemMessage ? [new BetaTextBlockParam() { Text = existingSystemMessage }, .. systemMessages] :
-                    createParams.System?.Value is IEnumerable<BetaTextBlockParam> existingSystemMessages ? [.. existingSystemMessages, .. systemMessages] :
-                    systemMessages);
+                if (bodyProperties.TryGetValue("system", out JsonElement systemJson))
+                {
+                    if (systemJson.ValueKind is JsonValueKind.String)
+                    {
+                        systemMessages.Insert(0, new BetaTextBlockParam() { Text = systemJson.GetString() ?? string.Empty });
+                    }
+                    else if (systemJson.ValueKind is JsonValueKind.Array)
+                    {
+                        systemMessages.AddRange(JsonSerializer.Deserialize<List<BetaTextBlockParam>>(systemJson, ModelBase.SerializerOptions)!);
+                    }
+                }
+
+                bodyProperties["system"] = JsonSerializer.SerializeToElement(systemMessages, ModelBase.SerializerOptions);
             }
 
-            return createParams;
+            return MessageCreateParams.FromRawUnchecked(
+                new Dictionary<string, JsonElement>(),
+                new Dictionary<string, JsonElement>(),
+                bodyProperties);
         }
 
         private static UsageDetails ToUsageDetails(BetaUsage usage) =>
@@ -543,7 +599,7 @@ public static class AnthropicClientBetaExtensions
             {
                 InputTokenCount = inputTokens,
                 OutputTokenCount = outputTokens,
-                TotalTokenCount = (inputTokens ?? 0) + (outputTokens ?? 0),
+                TotalTokenCount = (inputTokens is not null || outputTokens is not null) ? (inputTokens ?? 0) + (outputTokens ?? 0) : null,
             };
 
             if (cacheCreationInputTokens is not null)
@@ -589,7 +645,12 @@ public static class AnthropicClientBetaExtensions
                     return new TextReasoningContent(string.Empty) { ProtectedData = redactedThinking.Data };
 
                 case BetaToolUseBlock toolUse:
-                    return new FunctionCallContent(toolUse.ID, toolUse.Name, toolUse.Input.Deserialize<Dictionary<string, object?>>(AIJsonUtilities.DefaultOptions));
+                    return new FunctionCallContent(
+                        toolUse.ID,
+                        toolUse.Name,
+                        toolUse.Properties.TryGetValue("input", out JsonElement element) ?
+                            JsonSerializer.Deserialize<Dictionary<string, object?>>(element, AIJsonUtilities.DefaultOptions) :
+                            null);
             }
          
             return null;

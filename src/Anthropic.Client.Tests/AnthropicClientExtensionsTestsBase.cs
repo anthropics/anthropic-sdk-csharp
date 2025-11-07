@@ -587,6 +587,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "name": "get_weather",
                     "description": "Get the current weather for a location",
                     "input_schema": {
+                        "type": "object",
                         "location": { "type": "string", "description": "The city and state" },
                         "unit": { "type": "string", "description": "Temperature unit" },
                         "required": ["location", "unit"]
@@ -1011,6 +1012,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "name": "get_weather",
                     "description": "Get weather",
                     "input_schema": {
+                        "type": "object",
                         "location": { "type": "string", "description": "The location" },
                         "required": ["location"]
                     }
@@ -1083,6 +1085,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "name": "get_weather",
                     "description": "Get weather",
                     "input_schema": {
+                        "type": "object",
                         "location": { "type": "string", "description": "The location" },
                         "required": ["location"]
                     }
@@ -1156,6 +1159,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "name": "get_weather",
                     "description": "Get weather",
                     "input_schema": {
+                        "type": "object",
                         "location": { "type": "string", "description": "The location" },
                         "required": ["location"]
                     }
@@ -1224,9 +1228,8 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "name": "get_weather",
                     "description": "",
                     "input_schema": {
-                        "location": {
-                            "type": "string"
-                        },
+                        "type": "object",
+                        "location": { "type": "string" },
                         "required": ["location"]
                     }
                 }]
