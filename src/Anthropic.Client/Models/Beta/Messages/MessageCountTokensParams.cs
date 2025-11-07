@@ -424,13 +424,13 @@ public sealed record class MessageCountTokensParams : ParamsBase
         );
     }
 
-    public override System::Uri Url(IAnthropicClient client)
+    public override System::Uri Url(ClientOptions options)
     {
         return new System::UriBuilder(
-            client.BaseUrl.ToString().TrimEnd('/') + "/v1/messages/count_tokens?beta=true"
+            options.BaseUrl.ToString().TrimEnd('/') + "/v1/messages/count_tokens?beta=true"
         )
         {
-            Query = this.QueryString(client),
+            Query = this.QueryString(options),
         }.Uri;
     }
 
@@ -443,9 +443,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
         );
     }
 
-    internal override void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client)
+    internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
-        ParamsBase.AddDefaultHeaders(request, client);
+        ParamsBase.AddDefaultHeaders(request, options);
         foreach (var item in this.HeaderProperties)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

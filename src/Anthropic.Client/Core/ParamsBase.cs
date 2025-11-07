@@ -25,7 +25,7 @@ public abstract record class ParamsBase
         get { return this._headerProperties.Freeze(); }
     }
 
-    public abstract Uri Url(IAnthropicClient client);
+    public abstract Uri Url(ClientOptions options);
 
     protected static void AddQueryElementToCollection(
         NameValueCollection collection,
@@ -131,7 +131,7 @@ public abstract record class ParamsBase
         }
     }
 
-    protected string QueryString(IAnthropicClient client)
+    protected string QueryString(ClientOptions options)
     {
         NameValueCollection collection = [];
         foreach (var item in this.QueryProperties)
@@ -157,22 +157,22 @@ public abstract record class ParamsBase
         return sb.ToString();
     }
 
-    internal abstract void AddHeadersToRequest(HttpRequestMessage request, IAnthropicClient client);
+    internal abstract void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options);
 
     internal virtual StringContent? BodyContent()
     {
         return null;
     }
 
-    protected static void AddDefaultHeaders(HttpRequestMessage request, IAnthropicClient client)
+    protected static void AddDefaultHeaders(HttpRequestMessage request, ClientOptions options)
     {
-        if (client.APIKey != null)
+        if (options.APIKey != null)
         {
-            request.Headers.Add("X-Api-Key", client.APIKey);
+            request.Headers.Add("X-Api-Key", options.APIKey);
         }
-        if (client.AuthToken != null)
+        if (options.AuthToken != null)
         {
-            request.Headers.Add("Authorization", string.Format("Bearer {0}", client.AuthToken));
+            request.Headers.Add("Authorization", string.Format("Bearer {0}", options.AuthToken));
         }
         request.Headers.Add("anthropic-version", "2023-06-01");
     }
