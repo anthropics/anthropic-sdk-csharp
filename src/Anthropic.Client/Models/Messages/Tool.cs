@@ -119,6 +119,11 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["description"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

@@ -384,6 +384,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["metadata"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -415,6 +420,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["service_tier"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -444,6 +454,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["stop_sequences"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -467,6 +482,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["stream"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -494,6 +514,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["system"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -521,6 +546,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["temperature"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -552,6 +582,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -574,6 +609,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["tool_choice"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -641,6 +681,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -667,6 +712,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["top_k"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -695,6 +745,11 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["top_p"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

@@ -34,6 +34,11 @@ public sealed record class VersionDeleteParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._headerProperties["betas"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

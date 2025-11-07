@@ -59,6 +59,11 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

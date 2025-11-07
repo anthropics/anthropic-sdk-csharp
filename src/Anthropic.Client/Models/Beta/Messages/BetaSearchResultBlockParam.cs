@@ -151,6 +151,11 @@ public sealed record class BetaSearchResultBlockParam
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

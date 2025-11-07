@@ -149,6 +149,11 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

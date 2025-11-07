@@ -50,6 +50,11 @@ public sealed record class BetaClearThinking20251015Edit
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["keep"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

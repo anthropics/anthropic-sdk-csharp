@@ -123,6 +123,11 @@ public sealed record class BetaClearToolUses20250919Edit
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["keep"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -144,6 +149,11 @@ public sealed record class BetaClearToolUses20250919Edit
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["trigger"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

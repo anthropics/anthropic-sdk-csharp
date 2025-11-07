@@ -80,6 +80,11 @@ public sealed record class BetaMemoryTool20250818ViewCommand
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["view_range"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

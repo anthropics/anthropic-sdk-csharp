@@ -84,6 +84,11 @@ public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["version"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

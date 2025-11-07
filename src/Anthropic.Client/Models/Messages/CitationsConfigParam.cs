@@ -21,6 +21,11 @@ public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsC
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["enabled"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

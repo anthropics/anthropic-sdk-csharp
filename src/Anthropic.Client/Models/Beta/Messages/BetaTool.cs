@@ -119,6 +119,11 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["description"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

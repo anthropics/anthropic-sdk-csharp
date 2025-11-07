@@ -56,6 +56,11 @@ public sealed record class BetaCacheControlEphemeral
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["ttl"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

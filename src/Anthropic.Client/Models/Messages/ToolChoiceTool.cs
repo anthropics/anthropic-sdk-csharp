@@ -81,6 +81,11 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["disable_parallel_tool_use"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

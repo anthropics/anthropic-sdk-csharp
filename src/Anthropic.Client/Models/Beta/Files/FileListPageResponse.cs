@@ -78,6 +78,11 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["has_more"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

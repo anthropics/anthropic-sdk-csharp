@@ -21,6 +21,11 @@ public sealed record class BetaCitationsConfigParam : ModelBase, IFromRaw<BetaCi
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["enabled"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

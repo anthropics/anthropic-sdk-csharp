@@ -53,6 +53,11 @@ public sealed record class BetaToolChoiceAny : ModelBase, IFromRaw<BetaToolChoic
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["disable_parallel_tool_use"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

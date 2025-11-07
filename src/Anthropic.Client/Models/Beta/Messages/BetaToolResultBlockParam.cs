@@ -97,6 +97,11 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -115,6 +120,11 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["is_error"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

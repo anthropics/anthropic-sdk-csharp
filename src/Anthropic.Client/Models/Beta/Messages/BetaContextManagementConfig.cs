@@ -28,6 +28,11 @@ public sealed record class BetaContextManagementConfig
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["edits"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

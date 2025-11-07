@@ -198,6 +198,11 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["downloadable"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
