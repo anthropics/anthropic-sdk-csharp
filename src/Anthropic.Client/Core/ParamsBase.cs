@@ -168,6 +168,8 @@ public abstract record class ParamsBase
     protected static void AddDefaultHeaders(HttpRequestMessage request, ClientOptions options)
     {
         request.Headers.Add("X-Stainless-Arch", GetOSArch());
+        request.Headers.Add("X-Stainless-Lang", "csharp");
+        request.Headers.Add("X-Stainless-OS", GetOS());
 
         if (options.APIKey != null)
         {
@@ -193,4 +195,21 @@ public abstract record class ParamsBase
             or Architecture.Ppc64le => $"other:{RuntimeInformation.OSArchitecture}",
             _ => "unknown",
         };
+
+    static string GetOS()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            return "Windows";
+        }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            return "MacOS";
+        }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            return "Linux";
+        }
+        return $"Other:{RuntimeInformation.OSDescription}";
+    }
 }
