@@ -4,5 +4,9 @@
     "name": "C# (.NET)",
     "image": "mcr.microsoft.com/devcontainers/dotnet:1-9.0-noble",
     "postAttachCommand": "cat .vscode/extensions.json | jq -r .recommendations[] | xargs -n 1 code --install-extension",
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "features": {
+        // For the Prism mock server.
+        "ghcr.io/devcontainers/features/node:1": {}
+    }
 }
