@@ -22,6 +22,8 @@ public struct ClientOptions()
 
     public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(10);
 
+    public int MaxRetries { get; set; } = 2;
+
     Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"));
     public string? APIKey
     {

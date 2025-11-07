@@ -19,6 +19,8 @@ public interface IAnthropicClient
 
     TimeSpan Timeout { get; init; }
 
+    int MaxRetries { get; init; }
+
     string? APIKey { get; init; }
 
     string? AuthToken { get; init; }

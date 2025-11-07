@@ -32,6 +32,15 @@ public sealed class HttpResponse : IDisposable
         }
     }
 
+    public async Task<string> ReadAsString(CancellationToken cancellationToken = default)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(
+            this.CancellationToken,
+            cancellationToken
+        );
+        return await Message.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false);
+    }
+
     public void Dispose()
     {
         this.Message.Dispose();
