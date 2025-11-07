@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Messages.Batches;
@@ -19,7 +20,10 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<MessageBatch> Create(BatchCreateParams parameters);
+    Task<MessageBatch> Create(
+        BatchCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// This endpoint is idempotent and can be used to poll for Message Batch completion.
@@ -28,7 +32,10 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<MessageBatch> Retrieve(BatchRetrieveParams parameters);
+    Task<MessageBatch> Retrieve(
+        BatchRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// List all Message Batches within a Workspace. Most recently created batches
@@ -36,7 +43,10 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<BatchListPageResponse> List(BatchListParams? parameters = null);
+    Task<BatchListPageResponse> List(
+        BatchListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Delete a Message Batch.
@@ -46,7 +56,10 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<DeletedMessageBatch> Delete(BatchDeleteParams parameters);
+    Task<DeletedMessageBatch> Delete(
+        BatchDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Batches may be canceled any time before processing ends. Once cancellation
@@ -59,7 +72,10 @@ public interface IBatchService
     ///
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
-    Task<MessageBatch> Cancel(BatchCancelParams parameters);
+    Task<MessageBatch> Cancel(
+        BatchCancelParams parameters,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Streams the results of a Message Batch as a `.jsonl` file.
@@ -71,6 +87,7 @@ public interface IBatchService
     /// Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)
     /// </summary>
     IAsyncEnumerable<MessageBatchIndividualResponse> ResultsStreaming(
-        BatchResultsParams parameters
+        BatchResultsParams parameters,
+        CancellationToken cancellationToken = default
     );
 }

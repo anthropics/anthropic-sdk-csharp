@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Messages.Batches;
@@ -21,15 +23,22 @@ public sealed class BatchService : IBatchService
         _client = client;
     }
 
-    public async Task<MessageBatch> Create(BatchCreateParams parameters)
+    public async Task<MessageBatch> Create(
+        BatchCreateParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<BatchCreateParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var messageBatch = await response.Deserialize<MessageBatch>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var messageBatch = await response
+            .Deserialize<MessageBatch>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             messageBatch.Validate();
@@ -37,15 +46,22 @@ public sealed class BatchService : IBatchService
         return messageBatch;
     }
 
-    public async Task<MessageBatch> Retrieve(BatchRetrieveParams parameters)
+    public async Task<MessageBatch> Retrieve(
+        BatchRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<BatchRetrieveParams> request = new()
         {
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var messageBatch = await response.Deserialize<MessageBatch>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var messageBatch = await response
+            .Deserialize<MessageBatch>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             messageBatch.Validate();
@@ -53,7 +69,10 @@ public sealed class BatchService : IBatchService
         return messageBatch;
     }
 
-    public async Task<BatchListPageResponse> List(BatchListParams? parameters = null)
+    public async Task<BatchListPageResponse> List(
+        BatchListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -62,8 +81,12 @@ public sealed class BatchService : IBatchService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var page = await response.Deserialize<BatchListPageResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var page = await response
+            .Deserialize<BatchListPageResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             page.Validate();
@@ -71,16 +94,21 @@ public sealed class BatchService : IBatchService
         return page;
     }
 
-    public async Task<DeletedMessageBatch> Delete(BatchDeleteParams parameters)
+    public async Task<DeletedMessageBatch> Delete(
+        BatchDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<BatchDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
         var deletedMessageBatch = await response
-            .Deserialize<DeletedMessageBatch>()
+            .Deserialize<DeletedMessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -89,15 +117,22 @@ public sealed class BatchService : IBatchService
         return deletedMessageBatch;
     }
 
-    public async Task<MessageBatch> Cancel(BatchCancelParams parameters)
+    public async Task<MessageBatch> Cancel(
+        BatchCancelParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<BatchCancelParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var messageBatch = await response.Deserialize<MessageBatch>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var messageBatch = await response
+            .Deserialize<MessageBatch>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             messageBatch.Validate();
@@ -106,7 +141,8 @@ public sealed class BatchService : IBatchService
     }
 
     public async IAsyncEnumerable<MessageBatchIndividualResponse> ResultsStreaming(
-        BatchResultsParams parameters
+        BatchResultsParams parameters,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
         HttpRequest<BatchResultsParams> request = new()
@@ -114,8 +150,10 @@ public sealed class BatchService : IBatchService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        await foreach (var message in SseMessage.GetEnumerable(response.Message))
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
         {
             var messageBatchIndividualResponse =
                 message.Deserialize<MessageBatchIndividualResponse>();

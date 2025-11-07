@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Services.Beta;
@@ -30,6 +31,9 @@ public interface IAnthropicClient
 
     IBetaService Beta { get; }
 
-    Task<HttpResponse> Execute<T>(HttpRequest<T> request)
+    Task<HttpResponse> Execute<T>(
+        HttpRequest<T> request,
+        CancellationToken cancellationToken = default
+    )
         where T : ParamsBase;
 }

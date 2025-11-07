@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Services.Beta.Messages.Batches;
@@ -21,7 +22,10 @@ public interface IMessageService
     ///
     /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
     /// </summary>
-    Task<Messages::BetaMessage> Create(Messages::MessageCreateParams parameters);
+    Task<Messages::BetaMessage> Create(
+        Messages::MessageCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Send a structured list of input messages with text and/or image content, and
@@ -32,7 +36,8 @@ public interface IMessageService
     /// Learn more about the Messages API in our [user guide](/en/docs/initial-setup)
     /// </summary>
     IAsyncEnumerable<Messages::BetaRawMessageStreamEvent> CreateStreaming(
-        Messages::MessageCreateParams parameters
+        Messages::MessageCreateParams parameters,
+        CancellationToken cancellationToken = default
     );
 
     /// <summary>
@@ -44,6 +49,7 @@ public interface IMessageService
     /// Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)
     /// </summary>
     Task<Messages::BetaMessageTokensCount> CountTokens(
-        Messages::MessageCountTokensParams parameters
+        Messages::MessageCountTokensParams parameters,
+        CancellationToken cancellationToken = default
     );
 }

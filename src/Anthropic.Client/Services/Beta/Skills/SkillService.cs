@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Skills;
@@ -28,7 +29,10 @@ public sealed class SkillService : ISkillService
         get { return _versions.Value; }
     }
 
-    public async Task<SkillCreateResponse> Create(SkillCreateParams? parameters = null)
+    public async Task<SkillCreateResponse> Create(
+        SkillCreateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -37,8 +41,12 @@ public sealed class SkillService : ISkillService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var skill = await response.Deserialize<SkillCreateResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var skill = await response
+            .Deserialize<SkillCreateResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             skill.Validate();
@@ -46,15 +54,22 @@ public sealed class SkillService : ISkillService
         return skill;
     }
 
-    public async Task<SkillRetrieveResponse> Retrieve(SkillRetrieveParams parameters)
+    public async Task<SkillRetrieveResponse> Retrieve(
+        SkillRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<SkillRetrieveParams> request = new()
         {
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var skill = await response.Deserialize<SkillRetrieveResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var skill = await response
+            .Deserialize<SkillRetrieveResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             skill.Validate();
@@ -62,7 +77,10 @@ public sealed class SkillService : ISkillService
         return skill;
     }
 
-    public async Task<SkillListPageResponse> List(SkillListParams? parameters = null)
+    public async Task<SkillListPageResponse> List(
+        SkillListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -71,8 +89,12 @@ public sealed class SkillService : ISkillService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var page = await response.Deserialize<SkillListPageResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var page = await response
+            .Deserialize<SkillListPageResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             page.Validate();
@@ -80,15 +102,22 @@ public sealed class SkillService : ISkillService
         return page;
     }
 
-    public async Task<SkillDeleteResponse> Delete(SkillDeleteParams parameters)
+    public async Task<SkillDeleteResponse> Delete(
+        SkillDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<SkillDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var skill = await response.Deserialize<SkillDeleteResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var skill = await response
+            .Deserialize<SkillDeleteResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             skill.Validate();

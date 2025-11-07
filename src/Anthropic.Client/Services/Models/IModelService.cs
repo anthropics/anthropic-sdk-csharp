@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Models;
@@ -15,7 +16,10 @@ public interface IModelService
     /// The Models API response can be used to determine information about a specific
     /// model or resolve a model alias to a model ID.
     /// </summary>
-    Task<ModelInfo> Retrieve(ModelRetrieveParams parameters);
+    Task<ModelInfo> Retrieve(
+        ModelRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// List available models.
@@ -23,5 +27,8 @@ public interface IModelService
     /// The Models API response can be used to determine which models are available
     /// for use in the API. More recently released models are listed first.
     /// </summary>
-    Task<ModelListPageResponse> List(ModelListParams? parameters = null);
+    Task<ModelListPageResponse> List(
+        ModelListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
 }

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Services.Beta.Messages.Batches;
@@ -30,15 +32,22 @@ public sealed class MessageService : IMessageService
         get { return _batches.Value; }
     }
 
-    public async Task<Messages::BetaMessage> Create(Messages::MessageCreateParams parameters)
+    public async Task<Messages::BetaMessage> Create(
+        Messages::MessageCreateParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<Messages::MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var betaMessage = await response.Deserialize<Messages::BetaMessage>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var betaMessage = await response
+            .Deserialize<Messages::BetaMessage>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             betaMessage.Validate();
@@ -47,7 +56,8 @@ public sealed class MessageService : IMessageService
     }
 
     public async IAsyncEnumerable<Messages::BetaRawMessageStreamEvent> CreateStreaming(
-        Messages::MessageCreateParams parameters
+        Messages::MessageCreateParams parameters,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
         Dictionary<string, JsonElement> bodyProperties = new(parameters.BodyProperties)
@@ -64,8 +74,10 @@ public sealed class MessageService : IMessageService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        await foreach (var message in SseMessage.GetEnumerable(response.Message))
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
         {
             var betaMessage = message.Deserialize<Messages::BetaRawMessageStreamEvent>();
             if (this._client.ResponseValidation)
@@ -77,7 +89,8 @@ public sealed class MessageService : IMessageService
     }
 
     public async Task<Messages::BetaMessageTokensCount> CountTokens(
-        Messages::MessageCountTokensParams parameters
+        Messages::MessageCountTokensParams parameters,
+        CancellationToken cancellationToken = default
     )
     {
         HttpRequest<Messages::MessageCountTokensParams> request = new()
@@ -85,9 +98,11 @@ public sealed class MessageService : IMessageService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
         var betaMessageTokensCount = await response
-            .Deserialize<Messages::BetaMessageTokensCount>()
+            .Deserialize<Messages::BetaMessageTokensCount>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

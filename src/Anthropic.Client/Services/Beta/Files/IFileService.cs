@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Files = Anthropic.Client.Models.Beta.Files;
@@ -12,15 +13,24 @@ public interface IFileService
     /// <summary>
     /// List Files
     /// </summary>
-    Task<Files::FileListPageResponse> List(Files::FileListParams? parameters = null);
+    Task<Files::FileListPageResponse> List(
+        Files::FileListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Delete File
     /// </summary>
-    Task<Files::DeletedFile> Delete(Files::FileDeleteParams parameters);
+    Task<Files::DeletedFile> Delete(
+        Files::FileDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Get File Metadata
     /// </summary>
-    Task<Files::FileMetadata> RetrieveMetadata(Files::FileRetrieveMetadataParams parameters);
+    Task<Files::FileMetadata> RetrieveMetadata(
+        Files::FileRetrieveMetadataParams parameters,
+        CancellationToken cancellationToken = default
+    );
 }

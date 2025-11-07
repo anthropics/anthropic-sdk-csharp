@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Exceptions;
 
@@ -10,12 +11,18 @@ public sealed class HttpResponse : IDisposable
 {
     public required HttpResponseMessage Message { get; init; }
 
-    public async Task<T> Deserialize<T>()
+    public CancellationToken CancellationToken { get; init; } = default;
+
+    public async Task<T> Deserialize<T>(CancellationToken cancellationToken = default)
     {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(
+            this.CancellationToken,
+            cancellationToken
+        );
         try
         {
             return JsonSerializer.Deserialize<T>(
-                    await Message.Content.ReadAsStreamAsync().ConfigureAwait(false),
+                    await Message.Content.ReadAsStreamAsync(cts.Token).ConfigureAwait(false),
                     ModelBase.SerializerOptions
                 ) ?? throw new AnthropicInvalidDataException("Response cannot be null");
         }

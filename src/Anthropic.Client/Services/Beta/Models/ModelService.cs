@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Models;
@@ -20,15 +21,22 @@ public sealed class ModelService : IModelService
         _client = client;
     }
 
-    public async Task<BetaModelInfo> Retrieve(ModelRetrieveParams parameters)
+    public async Task<BetaModelInfo> Retrieve(
+        ModelRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<ModelRetrieveParams> request = new()
         {
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var betaModelInfo = await response.Deserialize<BetaModelInfo>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var betaModelInfo = await response
+            .Deserialize<BetaModelInfo>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             betaModelInfo.Validate();
@@ -36,7 +44,10 @@ public sealed class ModelService : IModelService
         return betaModelInfo;
     }
 
-    public async Task<ModelListPageResponse> List(ModelListParams? parameters = null)
+    public async Task<ModelListPageResponse> List(
+        ModelListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -45,8 +56,12 @@ public sealed class ModelService : IModelService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var page = await response.Deserialize<ModelListPageResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var page = await response
+            .Deserialize<ModelListPageResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             page.Validate();
