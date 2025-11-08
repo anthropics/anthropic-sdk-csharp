@@ -172,6 +172,9 @@ public abstract record class ParamsBase
         request.Headers.Add("X-Stainless-Lang", "csharp");
         request.Headers.Add("X-Stainless-OS", GetOS());
         request.Headers.Add("X-Stainless-Package-Version", GetPackageVersion());
+        var (runtimeName, runtimeVersion) = GetRuntime();
+        request.Headers.Add("X-Stainless-Runtime", runtimeName);
+        request.Headers.Add("X-Stainless-Runtime-Version", runtimeVersion);
 
         if (options.APIKey != null)
         {
@@ -221,4 +224,24 @@ public abstract record class ParamsBase
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
             ?.InformationalVersion
         ?? "unknown";
+
+    static Runtime GetRuntime()
+    {
+        var runtimeDescription = RuntimeInformation.FrameworkDescription;
+        var lastSpaceIndex = runtimeDescription.LastIndexOf(' ');
+        if (lastSpaceIndex == -1)
+        {
+            return new() { Name = runtimeDescription, Version = "unknown" };
+        }
+
+        var name = runtimeDescription[..lastSpaceIndex].Trim();
+        var version = runtimeDescription[(lastSpaceIndex + 1)..].Trim();
+        return new()
+        {
+            Name = name.Length == 0 ? "unknown" : name,
+            Version = version.Length == 0 ? "unknown" : version,
+        };
+    }
+
+    readonly record struct Runtime(string Name, string Version);
 }
