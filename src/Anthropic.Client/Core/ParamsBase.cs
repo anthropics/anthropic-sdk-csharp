@@ -13,6 +13,23 @@ namespace Anthropic.Client.Core;
 
 public abstract record class ParamsBase
 {
+    static readonly IReadOnlyDictionary<string, string> s_defaultHeaders;
+
+    static ParamsBase()
+    {
+        var runtime = GetRuntime();
+        s_defaultHeaders = new Dictionary<string, string>
+        {
+            ["X-Stainless-Arch"] = GetOSArch(),
+            ["X-Stainless-Lang"] = "csharp",
+            ["X-Stainless-OS"] = GetOS(),
+            ["X-Stainless-Package-Version"] = GetPackageVersion(),
+            ["X-Stainless-Runtime"] = runtime.Name,
+            ["X-Stainless-Runtime-Version"] = runtime.Version,
+            ["anthropic-version"] = "2023-06-01",
+        };
+    }
+
     private protected FreezableDictionary<string, JsonElement> _queryProperties = [];
 
     public IReadOnlyDictionary<string, JsonElement> QueryProperties
@@ -168,13 +185,10 @@ public abstract record class ParamsBase
 
     protected static void AddDefaultHeaders(HttpRequestMessage request, ClientOptions options)
     {
-        request.Headers.Add("X-Stainless-Arch", GetOSArch());
-        request.Headers.Add("X-Stainless-Lang", "csharp");
-        request.Headers.Add("X-Stainless-OS", GetOS());
-        request.Headers.Add("X-Stainless-Package-Version", GetPackageVersion());
-        var (runtimeName, runtimeVersion) = GetRuntime();
-        request.Headers.Add("X-Stainless-Runtime", runtimeName);
-        request.Headers.Add("X-Stainless-Runtime-Version", runtimeVersion);
+        foreach (var header in s_defaultHeaders)
+        {
+            request.Headers.Add(header.Key, header.Value);
+        }
 
         if (options.APIKey != null)
         {
@@ -184,7 +198,6 @@ public abstract record class ParamsBase
         {
             request.Headers.Add("Authorization", string.Format("Bearer {0}", options.AuthToken));
         }
-        request.Headers.Add("anthropic-version", "2023-06-01");
     }
 
     static string GetOSArch() =>
