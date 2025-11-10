@@ -161,8 +161,24 @@ public sealed record class BetaToolComputerUse20250124
     {
         _ = this.DisplayHeightPx;
         _ = this.DisplayWidthPx;
-        _ = this.Name;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Name,
+                JsonSerializer.Deserialize<JsonElement>("\"computer\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"computer_20250124\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
         _ = this.DisplayNumber;
     }

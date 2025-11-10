@@ -253,7 +253,15 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"object\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Properties1;
         _ = this.Required;
     }

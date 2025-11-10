@@ -61,7 +61,15 @@ public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSO
     public override void Validate()
     {
         _ = this.PartialJSON;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaInputJSONDelta()

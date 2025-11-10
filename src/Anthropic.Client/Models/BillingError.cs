@@ -61,7 +61,15 @@ public sealed record class BillingError : ModelBase, IFromRaw<BillingError>
     public override void Validate()
     {
         _ = this.Message;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"billing_error\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BillingError()

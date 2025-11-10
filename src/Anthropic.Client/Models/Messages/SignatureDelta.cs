@@ -61,7 +61,15 @@ public sealed record class SignatureDelta : ModelBase, IFromRaw<SignatureDelta>
     public override void Validate()
     {
         _ = this.Signature;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public SignatureDelta()

@@ -106,7 +106,15 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
     public override void Validate()
     {
         this.Delta.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"message_delta\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.Usage.Validate();
     }
 

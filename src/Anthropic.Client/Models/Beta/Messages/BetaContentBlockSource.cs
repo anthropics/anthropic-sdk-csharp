@@ -62,7 +62,15 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
     public override void Validate()
     {
         this.Content.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"content\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaContentBlockSource()

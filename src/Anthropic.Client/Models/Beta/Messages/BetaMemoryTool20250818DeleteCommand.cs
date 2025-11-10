@@ -68,7 +68,15 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
 
     public override void Validate()
     {
-        _ = this.Command;
+        if (
+            !JsonElement.DeepEquals(
+                this.Command,
+                JsonSerializer.Deserialize<JsonElement>("\"delete\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Path;
     }
 

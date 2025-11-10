@@ -148,7 +148,17 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock
         _ = this.NumLines;
         _ = this.StartLine;
         _ = this.TotalLines;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>(
+                    "\"text_editor_code_execution_view_result\""
+                )
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaTextEditorCodeExecutionViewResultBlock()

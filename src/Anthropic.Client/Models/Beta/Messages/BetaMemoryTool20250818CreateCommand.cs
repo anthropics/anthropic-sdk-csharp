@@ -96,7 +96,15 @@ public sealed record class BetaMemoryTool20250818CreateCommand
 
     public override void Validate()
     {
-        _ = this.Command;
+        if (
+            !JsonElement.DeepEquals(
+                this.Command,
+                JsonSerializer.Deserialize<JsonElement>("\"create\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.FileText;
         _ = this.Path;
     }

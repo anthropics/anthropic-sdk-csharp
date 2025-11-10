@@ -92,7 +92,15 @@ public sealed record class BetaWebSearchToolResultBlock
     {
         this.Content.Validate();
         _ = this.ToolUseID;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaWebSearchToolResultBlock()

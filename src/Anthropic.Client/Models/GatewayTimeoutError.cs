@@ -61,7 +61,15 @@ public sealed record class GatewayTimeoutError : ModelBase, IFromRaw<GatewayTime
     public override void Validate()
     {
         _ = this.Message;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public GatewayTimeoutError()

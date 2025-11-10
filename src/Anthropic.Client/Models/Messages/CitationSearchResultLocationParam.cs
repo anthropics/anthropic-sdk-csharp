@@ -180,7 +180,15 @@ public sealed record class CitationSearchResultLocationParam
         _ = this.Source;
         _ = this.StartBlockIndex;
         _ = this.Title;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"search_result_location\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public CitationSearchResultLocationParam()

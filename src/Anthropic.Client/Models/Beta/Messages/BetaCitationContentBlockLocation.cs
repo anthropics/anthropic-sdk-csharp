@@ -170,7 +170,15 @@ public sealed record class BetaCitationContentBlockLocation
         _ = this.EndBlockIndex;
         _ = this.FileID;
         _ = this.StartBlockIndex;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"content_block_location\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaCitationContentBlockLocation()

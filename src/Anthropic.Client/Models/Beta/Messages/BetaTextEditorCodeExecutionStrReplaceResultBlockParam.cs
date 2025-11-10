@@ -127,7 +127,17 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>(
+                    "\"text_editor_code_execution_str_replace_result\""
+                )
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Lines;
         _ = this.NewLines;
         _ = this.NewStart;

@@ -168,7 +168,15 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
         _ = this.EndPageNumber;
         _ = this.FileID;
         _ = this.StartPageNumber;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"page_location\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaCitationPageLocation()

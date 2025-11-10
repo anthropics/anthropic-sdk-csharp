@@ -87,8 +87,24 @@ public sealed record class BetaToolTextEditor20241022
 
     public override void Validate()
     {
-        _ = this.Name;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Name,
+                JsonSerializer.Deserialize<JsonElement>("\"str_replace_editor\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"text_editor_20241022\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
     }
 

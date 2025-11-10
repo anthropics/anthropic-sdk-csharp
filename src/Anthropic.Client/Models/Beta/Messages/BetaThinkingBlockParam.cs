@@ -87,7 +87,15 @@ public sealed record class BetaThinkingBlockParam : ModelBase, IFromRaw<BetaThin
     {
         _ = this.Signature;
         _ = this.Thinking;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"thinking\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaThinkingBlockParam()

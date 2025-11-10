@@ -62,7 +62,15 @@ public sealed record class BetaWebSearchToolRequestError
     public override void Validate()
     {
         this.ErrorCode.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaWebSearchToolRequestError()

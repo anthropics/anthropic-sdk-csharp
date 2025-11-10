@@ -61,7 +61,15 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
     public override void Validate()
     {
         this.Message.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"message_start\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public RawMessageStartEvent()

@@ -135,7 +135,15 @@ public sealed record class BetaWebSearchResultBlockParam
     {
         _ = this.EncryptedContent;
         _ = this.Title;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.URL;
         _ = this.PageAge;
     }

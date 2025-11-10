@@ -61,7 +61,10 @@ public sealed record class BetaFileDocumentSource : ModelBase, IFromRaw<BetaFile
     public override void Validate()
     {
         _ = this.FileID;
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"file\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaFileDocumentSource()

@@ -85,7 +85,12 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     public override void Validate()
     {
         this.Source.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"image\""))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
     }
 

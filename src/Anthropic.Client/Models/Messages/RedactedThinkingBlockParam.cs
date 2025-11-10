@@ -63,7 +63,15 @@ public sealed record class RedactedThinkingBlockParam
     public override void Validate()
     {
         _ = this.Data;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public RedactedThinkingBlockParam()

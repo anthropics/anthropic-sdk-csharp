@@ -113,7 +113,15 @@ public sealed record class BetaWebFetchBlockParam : ModelBase, IFromRaw<BetaWebF
     public override void Validate()
     {
         this.Content.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.URL;
         _ = this.RetrievedAt;
     }

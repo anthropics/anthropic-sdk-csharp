@@ -82,8 +82,24 @@ public sealed record class Base64PDFSource : ModelBase, IFromRaw<Base64PDFSource
     public override void Validate()
     {
         _ = this.Data;
-        _ = this.MediaType;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.MediaType,
+                JsonSerializer.Deserialize<JsonElement>("\"application/pdf\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"base64\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public Base64PDFSource()

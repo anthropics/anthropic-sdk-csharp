@@ -148,7 +148,15 @@ public sealed record class BetaMCPToolUseBlock : ModelBase, IFromRaw<BetaMCPTool
         _ = this.Input;
         _ = this.Name;
         _ = this.ServerName;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaMCPToolUseBlock()

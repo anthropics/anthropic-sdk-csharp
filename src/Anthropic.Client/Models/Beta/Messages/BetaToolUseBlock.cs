@@ -116,7 +116,15 @@ public sealed record class BetaToolUseBlock : ModelBase, IFromRaw<BetaToolUseBlo
         _ = this.ID;
         _ = this.Input;
         _ = this.Name;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"tool_use\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaToolUseBlock()

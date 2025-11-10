@@ -141,7 +141,15 @@ public sealed record class BetaServerToolUseBlockParam
         _ = this.ID;
         _ = this.Input;
         this.Name.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
     }
 

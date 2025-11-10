@@ -56,7 +56,15 @@ public sealed record class BetaInputTokensTrigger : ModelBase, IFromRaw<BetaInpu
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Value;
     }
 

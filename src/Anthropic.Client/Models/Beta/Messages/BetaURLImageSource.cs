@@ -60,7 +60,10 @@ public sealed record class BetaURLImageSource : ModelBase, IFromRaw<BetaURLImage
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"url\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.URL;
     }
 

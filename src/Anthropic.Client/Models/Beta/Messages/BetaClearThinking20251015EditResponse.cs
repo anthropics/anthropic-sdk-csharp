@@ -96,7 +96,15 @@ public sealed record class BetaClearThinking20251015EditResponse
     {
         _ = this.ClearedInputTokens;
         _ = this.ClearedThinkingTurns;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaClearThinking20251015EditResponse()

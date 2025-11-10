@@ -133,7 +133,15 @@ public sealed record class BetaCitationWebSearchResultLocationParam
         _ = this.CitedText;
         _ = this.EncryptedIndex;
         _ = this.Title;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.URL;
     }
 

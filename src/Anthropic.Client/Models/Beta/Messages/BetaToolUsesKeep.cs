@@ -56,7 +56,15 @@ public sealed record class BetaToolUsesKeep : ModelBase, IFromRaw<BetaToolUsesKe
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Value;
     }
 

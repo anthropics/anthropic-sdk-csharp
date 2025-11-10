@@ -35,7 +35,10 @@ public sealed record class BetaAllThinkingTurns : ModelBase, IFromRaw<BetaAllThi
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"all\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaAllThinkingTurns()

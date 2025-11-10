@@ -87,8 +87,24 @@ public sealed record class BetaCodeExecutionTool20250522
 
     public override void Validate()
     {
-        _ = this.Name;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Name,
+                JsonSerializer.Deserialize<JsonElement>("\"code_execution\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250522\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
     }
 

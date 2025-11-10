@@ -124,7 +124,12 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"model\""))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaModelInfo()

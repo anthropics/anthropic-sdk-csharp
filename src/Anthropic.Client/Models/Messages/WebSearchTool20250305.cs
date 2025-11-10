@@ -170,8 +170,24 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
 
     public override void Validate()
     {
-        _ = this.Name;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Name,
+                JsonSerializer.Deserialize<JsonElement>("\"web_search\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.AllowedDomains;
         _ = this.BlockedDomains;
         this.CacheControl?.Validate();
@@ -323,7 +339,15 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"approximate\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.City;
         _ = this.Country;
         _ = this.Region;

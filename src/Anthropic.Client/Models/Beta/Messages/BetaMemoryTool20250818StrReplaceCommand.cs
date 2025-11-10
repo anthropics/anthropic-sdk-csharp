@@ -124,7 +124,15 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand
 
     public override void Validate()
     {
-        _ = this.Command;
+        if (
+            !JsonElement.DeepEquals(
+                this.Command,
+                JsonSerializer.Deserialize<JsonElement>("\"str_replace\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.NewStr;
         _ = this.OldStr;
         _ = this.Path;

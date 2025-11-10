@@ -35,7 +35,15 @@ public sealed record class BetaRawMessageStopEvent : ModelBase, IFromRaw<BetaRaw
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"message_stop\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaRawMessageStopEvent()

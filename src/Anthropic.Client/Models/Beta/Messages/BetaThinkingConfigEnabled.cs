@@ -69,7 +69,15 @@ public sealed record class BetaThinkingConfigEnabled
     public override void Validate()
     {
         _ = this.BudgetTokens;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"enabled\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaThinkingConfigEnabled()

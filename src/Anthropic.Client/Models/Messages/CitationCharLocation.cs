@@ -165,7 +165,15 @@ public sealed record class CitationCharLocation : ModelBase, IFromRaw<CitationCh
         _ = this.EndCharIndex;
         _ = this.FileID;
         _ = this.StartCharIndex;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"char_location\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public CitationCharLocation()

@@ -61,7 +61,15 @@ public sealed record class InvalidRequestError : ModelBase, IFromRaw<InvalidRequ
     public override void Validate()
     {
         _ = this.Message;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public InvalidRequestError()

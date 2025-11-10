@@ -281,10 +281,26 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
             item.Validate();
         }
         this.Model.Validate();
-        _ = this.Role;
+        if (
+            !JsonElement.DeepEquals(
+                this.Role,
+                JsonSerializer.Deserialize<JsonElement>("\"assistant\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.StopReason?.Validate();
         _ = this.StopSequence;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"message\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.Usage.Validate();
     }
 

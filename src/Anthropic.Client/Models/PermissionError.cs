@@ -61,7 +61,15 @@ public sealed record class PermissionError : ModelBase, IFromRaw<PermissionError
     public override void Validate()
     {
         _ = this.Message;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"permission_error\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public PermissionError()

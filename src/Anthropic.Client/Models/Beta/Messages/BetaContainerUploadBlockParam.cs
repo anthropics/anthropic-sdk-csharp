@@ -91,7 +91,15 @@ public sealed record class BetaContainerUploadBlockParam
     public override void Validate()
     {
         _ = this.FileID;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"container_upload\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
     }
 

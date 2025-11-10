@@ -80,7 +80,12 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
     {
         this.Error.Validate();
         _ = this.RequestID;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"error\""))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public ErrorResponse()

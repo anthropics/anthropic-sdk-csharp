@@ -93,7 +93,10 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
             item.Validate();
         }
         _ = this.Text;
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaTextBlock()

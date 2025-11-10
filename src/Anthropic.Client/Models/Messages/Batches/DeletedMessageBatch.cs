@@ -69,7 +69,15 @@ public sealed record class DeletedMessageBatch : ModelBase, IFromRaw<DeletedMess
     public override void Validate()
     {
         _ = this.ID;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public DeletedMessageBatch()

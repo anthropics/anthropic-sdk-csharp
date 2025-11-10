@@ -61,7 +61,15 @@ public sealed record class BetaThinkingDelta : ModelBase, IFromRaw<BetaThinkingD
     public override void Validate()
     {
         _ = this.Thinking;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaThinkingDelta()

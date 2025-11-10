@@ -148,7 +148,15 @@ public sealed record class BetaCitationCharLocationParam
         _ = this.DocumentTitle;
         _ = this.EndCharIndex;
         _ = this.StartCharIndex;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"char_location\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaCitationCharLocationParam()

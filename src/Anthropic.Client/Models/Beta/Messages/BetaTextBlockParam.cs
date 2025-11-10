@@ -106,7 +106,10 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
     public override void Validate()
     {
         _ = this.Text;
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
         foreach (var item in this.Citations ?? [])
         {

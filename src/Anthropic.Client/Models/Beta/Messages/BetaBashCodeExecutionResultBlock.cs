@@ -143,7 +143,15 @@ public sealed record class BetaBashCodeExecutionResultBlock
         _ = this.ReturnCode;
         _ = this.Stderr;
         _ = this.Stdout;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_result\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaBashCodeExecutionResultBlock()

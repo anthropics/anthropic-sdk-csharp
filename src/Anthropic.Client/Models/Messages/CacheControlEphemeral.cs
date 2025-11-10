@@ -68,7 +68,15 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.TTL?.Validate();
     }
 

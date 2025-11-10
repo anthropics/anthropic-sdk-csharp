@@ -61,7 +61,15 @@ public sealed record class CitationsDelta : ModelBase, IFromRaw<CitationsDelta>
     public override void Validate()
     {
         this.Citation.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public CitationsDelta()

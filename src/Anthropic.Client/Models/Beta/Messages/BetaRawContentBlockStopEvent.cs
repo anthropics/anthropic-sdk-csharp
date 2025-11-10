@@ -59,7 +59,15 @@ public sealed record class BetaRawContentBlockStopEvent
     public override void Validate()
     {
         _ = this.Index;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaRawContentBlockStopEvent()

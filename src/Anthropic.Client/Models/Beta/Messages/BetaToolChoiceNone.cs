@@ -38,7 +38,10 @@ public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoi
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"none\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaToolChoiceNone()

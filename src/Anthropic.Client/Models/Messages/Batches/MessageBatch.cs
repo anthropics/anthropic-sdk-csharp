@@ -312,7 +312,15 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
         _ = this.ResultsURL;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"message_batch\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public MessageBatch()

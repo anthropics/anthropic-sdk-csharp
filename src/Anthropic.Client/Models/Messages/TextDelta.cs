@@ -61,7 +61,15 @@ public sealed record class TextDelta : ModelBase, IFromRaw<TextDelta>
     public override void Validate()
     {
         _ = this.Text;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"text_delta\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public TextDelta()

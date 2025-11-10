@@ -114,7 +114,15 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
     {
         this.Content.Validate();
         _ = this.RetrievedAt;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.URL;
     }
 

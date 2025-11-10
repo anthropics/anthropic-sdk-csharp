@@ -82,8 +82,19 @@ public sealed record class BetaPlainTextSource : ModelBase, IFromRaw<BetaPlainTe
     public override void Validate()
     {
         _ = this.Data;
-        _ = this.MediaType;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.MediaType,
+                JsonSerializer.Deserialize<JsonElement>("\"text/plain\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaPlainTextSource()

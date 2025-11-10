@@ -61,7 +61,15 @@ public sealed record class BetaCodeExecutionToolResultError
     public override void Validate()
     {
         this.ErrorCode.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaCodeExecutionToolResultError()

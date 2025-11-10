@@ -132,7 +132,17 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock
         _ = this.NewStart;
         _ = this.OldLines;
         _ = this.OldStart;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>(
+                    "\"text_editor_code_execution_str_replace_result\""
+                )
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaTextEditorCodeExecutionStrReplaceResultBlock()

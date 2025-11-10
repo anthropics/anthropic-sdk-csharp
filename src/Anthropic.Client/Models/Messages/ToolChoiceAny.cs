@@ -67,7 +67,10 @@ public sealed record class ToolChoiceAny : ModelBase, IFromRaw<ToolChoiceAny>
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"any\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.DisableParallelToolUse;
     }
 

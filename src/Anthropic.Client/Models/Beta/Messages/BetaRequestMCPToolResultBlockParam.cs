@@ -137,7 +137,15 @@ public sealed record class BetaRequestMCPToolResultBlockParam
     public override void Validate()
     {
         _ = this.ToolUseID;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
         this.Content?.Validate();
         _ = this.IsError;

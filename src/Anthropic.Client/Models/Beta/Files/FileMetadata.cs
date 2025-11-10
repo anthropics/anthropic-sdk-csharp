@@ -205,7 +205,10 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
         _ = this.Filename;
         _ = this.MimeType;
         _ = this.SizeBytes;
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"file\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Downloadable;
     }
 

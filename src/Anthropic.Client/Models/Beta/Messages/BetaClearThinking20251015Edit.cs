@@ -64,7 +64,15 @@ public sealed record class BetaClearThinking20251015Edit
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.Keep?.Validate();
     }
 
@@ -313,7 +321,7 @@ public class UnionMember2
     {
         if (JsonElement.DeepEquals(this.Json, new UnionMember2().Json))
         {
-            throw new AnthropicInvalidDataException("Invalid constant given for 'UnionMember2'");
+            throw new AnthropicInvalidDataException("Invalid value given for 'UnionMember2'");
         }
     }
 

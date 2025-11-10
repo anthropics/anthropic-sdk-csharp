@@ -142,7 +142,15 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     public override void Validate()
     {
         this.Source.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"document\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
         this.Citations?.Validate();
         _ = this.Context;

@@ -63,7 +63,15 @@ public sealed record class BetaCodeExecutionOutputBlock
     public override void Validate()
     {
         _ = this.FileID;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"code_execution_output\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaCodeExecutionOutputBlock()

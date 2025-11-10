@@ -108,7 +108,15 @@ public sealed record class BetaDocumentBlock : ModelBase, IFromRaw<BetaDocumentB
         this.Citations?.Validate();
         this.Source.Validate();
         _ = this.Title;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"document\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaDocumentBlock()

@@ -143,7 +143,15 @@ public sealed record class BetaCodeExecutionResultBlock
         _ = this.ReturnCode;
         _ = this.Stderr;
         _ = this.Stdout;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"code_execution_result\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaCodeExecutionResultBlock()

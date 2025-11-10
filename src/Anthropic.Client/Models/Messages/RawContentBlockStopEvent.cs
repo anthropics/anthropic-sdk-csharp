@@ -57,7 +57,15 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
     public override void Validate()
     {
         _ = this.Index;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public RawContentBlockStopEvent()

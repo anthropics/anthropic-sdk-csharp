@@ -61,7 +61,15 @@ public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimi
     public override void Validate()
     {
         _ = this.Message;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaRateLimitError()

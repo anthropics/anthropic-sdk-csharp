@@ -63,7 +63,15 @@ public sealed record class BetaMessageBatchSucceededResult
     public override void Validate()
     {
         this.Message.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"succeeded\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaMessageBatchSucceededResult()

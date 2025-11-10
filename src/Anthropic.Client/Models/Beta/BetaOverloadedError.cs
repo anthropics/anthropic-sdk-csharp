@@ -61,7 +61,15 @@ public sealed record class BetaOverloadedError : ModelBase, IFromRaw<BetaOverloa
     public override void Validate()
     {
         _ = this.Message;
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaOverloadedError()

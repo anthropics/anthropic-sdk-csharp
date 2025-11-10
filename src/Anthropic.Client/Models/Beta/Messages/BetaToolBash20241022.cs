@@ -85,8 +85,19 @@ public sealed record class BetaToolBash20241022 : ModelBase, IFromRaw<BetaToolBa
 
     public override void Validate()
     {
-        _ = this.Name;
-        _ = this.Type;
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.Deserialize<JsonElement>("\"bash\"")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"bash_20241022\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.CacheControl?.Validate();
     }
 

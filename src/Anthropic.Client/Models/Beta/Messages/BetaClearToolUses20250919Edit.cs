@@ -163,7 +163,15 @@ public sealed record class BetaClearToolUses20250919Edit
 
     public override void Validate()
     {
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.ClearAtLeast?.Validate();
         this.ClearToolInputs?.Validate();
         _ = this.ExcludeTools;

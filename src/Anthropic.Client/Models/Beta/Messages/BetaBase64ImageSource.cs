@@ -89,7 +89,15 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
     {
         _ = this.Data;
         this.MediaType.Validate();
-        _ = this.Type;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.Deserialize<JsonElement>("\"base64\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
     public BetaBase64ImageSource()
