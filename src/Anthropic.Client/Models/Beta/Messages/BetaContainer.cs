@@ -46,7 +46,7 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
     /// <summary>
     /// The time at which the container will expire.
     /// </summary>
-    public required DateTime ExpiresAt
+    public required DateTimeOffset ExpiresAt
     {
         get
         {
@@ -56,7 +56,7 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
                     new ArgumentOutOfRangeException("expires_at", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<DateTimeOffset>(element, ModelBase.SerializerOptions);
         }
         init
         {

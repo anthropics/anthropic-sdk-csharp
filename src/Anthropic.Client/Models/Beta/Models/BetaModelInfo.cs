@@ -44,7 +44,7 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
     /// RFC 3339 datetime string representing the time at which the model was released.
     /// May be set to an epoch value if the release date is unknown.
     /// </summary>
-    public required DateTime CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
@@ -54,7 +54,7 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
                     new ArgumentOutOfRangeException("created_at", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<DateTimeOffset>(element, ModelBase.SerializerOptions);
         }
         init
         {

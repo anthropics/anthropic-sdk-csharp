@@ -45,7 +45,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     /// <summary>
     /// RFC 3339 datetime string representing when the file was created.
     /// </summary>
-    public required DateTime CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
@@ -55,7 +55,7 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
                     new ArgumentOutOfRangeException("created_at", "Missing required argument")
                 );
 
-            return JsonSerializer.Deserialize<DateTime>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<DateTimeOffset>(element, ModelBase.SerializerOptions);
         }
         init
         {

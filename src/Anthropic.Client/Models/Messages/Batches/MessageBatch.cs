@@ -46,14 +46,14 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// RFC 3339 datetime string representing the time at which the Message Batch
     /// was archived and its results became unavailable.
     /// </summary>
-    public required System::DateTime? ArchivedAt
+    public required System::DateTimeOffset? ArchivedAt
     {
         get
         {
             if (!this._properties.TryGetValue("archived_at", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<System::DateTime?>(
+            return JsonSerializer.Deserialize<System::DateTimeOffset?>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -71,14 +71,14 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// RFC 3339 datetime string representing the time at which cancellation was initiated
     /// for the Message Batch. Specified only if cancellation was initiated.
     /// </summary>
-    public required System::DateTime? CancelInitiatedAt
+    public required System::DateTimeOffset? CancelInitiatedAt
     {
         get
         {
             if (!this._properties.TryGetValue("cancel_initiated_at", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<System::DateTime?>(
+            return JsonSerializer.Deserialize<System::DateTimeOffset?>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -96,7 +96,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// RFC 3339 datetime string representing the time at which the Message Batch
     /// was created.
     /// </summary>
-    public required System::DateTime CreatedAt
+    public required System::DateTimeOffset CreatedAt
     {
         get
         {
@@ -109,7 +109,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     )
                 );
 
-            return JsonSerializer.Deserialize<System::DateTime>(
+            return JsonSerializer.Deserialize<System::DateTimeOffset>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -130,14 +130,14 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// <para>Processing ends when every request in a Message Batch has either succeeded,
     /// errored, canceled, or expired.</para>
     /// </summary>
-    public required System::DateTime? EndedAt
+    public required System::DateTimeOffset? EndedAt
     {
         get
         {
             if (!this._properties.TryGetValue("ended_at", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<System::DateTime?>(
+            return JsonSerializer.Deserialize<System::DateTimeOffset?>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -155,7 +155,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     /// RFC 3339 datetime string representing the time at which the Message Batch
     /// will expire and end processing, which is 24 hours after creation.
     /// </summary>
-    public required System::DateTime ExpiresAt
+    public required System::DateTimeOffset ExpiresAt
     {
         get
         {
@@ -168,7 +168,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
                     )
                 );
 
-            return JsonSerializer.Deserialize<System::DateTime>(
+            return JsonSerializer.Deserialize<System::DateTimeOffset>(
                 element,
                 ModelBase.SerializerOptions
             );
