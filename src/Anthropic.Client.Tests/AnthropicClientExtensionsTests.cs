@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Anthropic.Client;
+using Anthropic.Client.Services;
 
 #nullable enable
 
@@ -38,7 +39,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
         AnthropicClient client = new() { APIKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
-        var messageService = chatClient.GetService<Anthropic.Client.Services.Messages.IMessageService>();
+        var messageService = chatClient.GetService<IMessageService>();
 
         Assert.NotNull(messageService);
         Assert.Same(client.Messages, messageService);

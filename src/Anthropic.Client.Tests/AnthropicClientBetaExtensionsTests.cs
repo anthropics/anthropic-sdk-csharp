@@ -31,7 +31,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public void AsIChatClient_ThrowsOnNullClient()
     {
-        IBetaService client = null!;
+        Anthropic.Client.Services.IBetaService client = null!;
         Assert.Throws<ArgumentNullException>(() => client.AsIChatClient());
     }
 

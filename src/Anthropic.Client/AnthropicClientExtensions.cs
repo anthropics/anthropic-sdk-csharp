@@ -1,6 +1,7 @@
 using Anthropic.Client;
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Messages;
+using Anthropic.Client.Services;
 using Anthropic.Client.Services.Messages;
 using System;
 using System.Collections.Generic;

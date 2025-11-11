@@ -1,7 +1,6 @@
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Beta.Messages;
 using Anthropic.Client.Services.Beta;
-using Anthropic.Client.Services.Beta.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +21,7 @@ public static class AnthropicClientBetaExtensions
     /// <param name="defaultModelId">The default ID of the model to use. If <see langword="null"/>, it must be provided per request via <see cref="ChatOptions.ModelId"/>.</param>
     /// <returns>An <see cref="IChatClient"/> that can be used to converse via the <see cref="IBetaService"/>.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="betaService"/> is <see langword="null"/>.</exception>
-    public static IChatClient AsIChatClient(this IBetaService betaService, string? defaultModelId = null)
+    public static IChatClient AsIChatClient(this Anthropic.Client.Services.IBetaService betaService, string? defaultModelId = null)
     {
         ArgumentNullException.ThrowIfNull(betaService);
 

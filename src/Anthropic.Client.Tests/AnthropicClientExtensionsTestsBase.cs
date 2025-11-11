@@ -995,7 +995,6 @@ public abstract class AnthropicClientExtensionsTestsBase
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
-                "model": "claude-haiku-4-5",
                 "messages": [{
                     "role": "user",
                     "content": [{
@@ -1003,10 +1002,10 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "text": "What's the weather?"
                     }]
                 }],
+                "model": "claude-haiku-4-5",
                 "max_tokens": 1024,
                 "tool_choice": {
-                    "type": "auto",
-                    "disable_parallel_tool_use": null
+                    "type": "auto"
                 },
                 "tools": [{
                     "name": "get_weather",
@@ -1078,8 +1077,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                 }],
                 "max_tokens": 1024,
                 "tool_choice": {
-                    "type": "any",
-                    "disable_parallel_tool_use": null
+                    "type": "any"
                 },
                 "tools": [{
                     "name": "get_weather",
