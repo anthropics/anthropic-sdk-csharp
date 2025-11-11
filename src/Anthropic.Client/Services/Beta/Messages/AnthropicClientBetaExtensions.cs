@@ -3,6 +3,7 @@ using Anthropic.Client.Models.Beta.Messages;
 using Anthropic.Client.Services.Beta;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.AI;
 
-public static class AnthropicClientBetaExtensions
+public static class AnthropicBetaClientExtensions
 {
     /// <summary>Gets an <see cref="IChatClient"/> for use with this <see cref="IBetaService"/>.</summary>
     /// <param name="betaService">The beta service.</param>
@@ -25,26 +26,14 @@ public static class AnthropicClientBetaExtensions
     {
         ArgumentNullException.ThrowIfNull(betaService);
 
-        return new AnthropicChatClient(betaService.Messages, defaultModelId);
+        return new AnthropicChatClient(betaService, defaultModelId);
     }
 
-    /// <summary>Gets an <see cref="IChatClient"/> for use with this <see cref="IMessageService"/>.</summary>
-    /// <param name="messageService">The message service.</param>
-    /// <param name="defaultModelId">The default ID of the model to use. If <see langword="null"/>, it must be provided per request via <see cref="ChatOptions.ModelId"/>.</param>
-    /// <returns>An <see cref="IChatClient"/> that can be used to converse via the <see cref="IMessageService"/>.</returns>
-    /// <exception cref="ArgumentNullException"><paramref name="messageService"/> is <see langword="null"/>.</exception>
-    public static IChatClient AsIChatClient(this IMessageService messageService, string? defaultModelId = null)
-    {
-        ArgumentNullException.ThrowIfNull(messageService);
-
-        return new AnthropicChatClient(messageService, defaultModelId);
-    }
-
-    private sealed class AnthropicChatClient(IMessageService messageService, string? defaultModelId) : IChatClient
+    private sealed class AnthropicChatClient(Anthropic.Client.Services.IBetaService betaService, string? defaultModelId) : IChatClient
     {
         private const int DefaultMaxTokens = 1024;
 
-        private readonly IMessageService _messageService = messageService;
+        private readonly Anthropic.Client.Services.IBetaService _betaService = betaService;
         private readonly string? _defaultModelId = defaultModelId;
         private ChatClientMetadata? _metadata;
 
@@ -56,27 +45,12 @@ public static class AnthropicClientBetaExtensions
         {
             ArgumentNullException.ThrowIfNull(serviceType);
 
-            if (serviceKey is not null)
-            {
-                return null;
-            }
-
-            if (serviceType == typeof(ChatClientMetadata))
-            {
-                return _metadata ??= new ChatClientMetadata("anthropic", _messageService is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId);
-            }
-
-            if (serviceType.IsInstanceOfType(_messageService))
-            {
-                return _messageService;
-            }
-
-            if (serviceType.IsInstanceOfType(this))
-            {
-                return this;
-            }
-
-            return null;
+            return
+                serviceKey is not null ? null :
+                serviceType == typeof(ChatClientMetadata) ? _metadata ??= new ChatClientMetadata("anthropic", _betaService.Messages is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId) :
+                serviceType.IsInstanceOfType(_betaService) ? _betaService :
+                serviceType.IsInstanceOfType(this) ? this :
+                null;
         }
 
         /// <inheritdoc />
@@ -88,9 +62,9 @@ public static class AnthropicClientBetaExtensions
             List<BetaMessageParam> messageParams = CreateMessageParams(messages, out List<BetaTextBlockParam>? systemMessages);
             MessageCreateParams createParams = GetMessageCreateParams(messageParams, systemMessages, options);
 
-            var createResult = await _messageService.Create(createParams);
+            var createResult = await _betaService.Messages.Create(createParams, cancellationToken);
 
-            ChatMessage m = new(ChatRole.Assistant, [.. createResult.Content.Select(ToAIContent).OfType<AIContent>()])
+            ChatMessage m = new(ChatRole.Assistant, [.. createResult.Content.Select(ToAIContent)])
             {
                 CreatedAt = DateTimeOffset.UtcNow,
                 MessageId = createResult.ID,
@@ -122,7 +96,7 @@ public static class AnthropicClientBetaExtensions
             ChatFinishReason? finishReason = null;
             Dictionary<long, StreamingFunctionData>? streamingFunctions = null;
 
-            await foreach (var createResult in _messageService.CreateStreaming(createParams).WithCancellation(cancellationToken))
+            await foreach (var createResult in _betaService.Messages.CreateStreaming(createParams, cancellationToken).WithCancellation(cancellationToken))
             {
                 List<AIContent> contents = [];
 
@@ -161,15 +135,26 @@ public static class AnthropicClientBetaExtensions
                         switch (contentBlockStart.ContentBlock.Value)
                         {
                             case BetaTextBlock text:
-                                contents.Add(new TextContent(text.Text));
+                                contents.Add(new TextContent(text.Text)
+                                {
+                                    RawRepresentation = text,
+                                });
                                 break;
 
                             case BetaThinkingBlock thinking:
-                                contents.Add(new TextReasoningContent(thinking.Thinking) { ProtectedData = thinking.Signature });
+                                contents.Add(new TextReasoningContent(thinking.Thinking) 
+                                {
+                                    ProtectedData = thinking.Signature,
+                                    RawRepresentation = thinking,
+                                });
                                 break;
 
                             case BetaRedactedThinkingBlock redactedThinking:
-                                contents.Add(new TextReasoningContent(string.Empty) { ProtectedData = redactedThinking.Data });
+                                contents.Add(new TextReasoningContent(string.Empty) 
+                                {
+                                    ProtectedData = redactedThinking.Data,
+                                    RawRepresentation = redactedThinking,
+                                });
                                 break;
 
                             case BetaToolUseBlock toolUse:
@@ -187,7 +172,10 @@ public static class AnthropicClientBetaExtensions
                         switch (contentBlockDelta.Delta.Value)
                         {
                             case BetaTextDelta textDelta:
-                                contents.Add(new TextContent(textDelta.Text));
+                                contents.Add(new TextContent(textDelta.Text)
+                                {
+                                    RawRepresentation = textDelta,
+                                });
                                 break;
 
                             case BetaInputJSONDelta inputDelta:
@@ -199,11 +187,18 @@ public static class AnthropicClientBetaExtensions
                                 break;
                             
                             case BetaThinkingDelta thinkingDelta:
-                                contents.Add(new TextReasoningContent(thinkingDelta.Thinking));
+                                contents.Add(new TextReasoningContent(thinkingDelta.Thinking)
+                                {
+                                    RawRepresentation = thinkingDelta,
+                                });
                                 break;
                             
                             case BetaSignatureDelta signatureDelta:
-                                contents.Add(new TextReasoningContent(null) { ProtectedData = signatureDelta.Signature });
+                                contents.Add(new TextReasoningContent(null)
+                                {
+                                    ProtectedData = signatureDelta.Signature,
+                                    RawRepresentation = signatureDelta,
+                                });
                                 break;
                         }
                         break;
@@ -272,6 +267,10 @@ public static class AnthropicClientBetaExtensions
                 {
                     switch (content)
                     {
+                        case AIContent ac when ac.RawRepresentation is BetaContentBlockParam rawContent:
+                            contents.Add(rawContent);
+                            break;
+
                         case TextContent tc:
                             string text = tc.Text;
                             if (message.Role == ChatRole.Assistant)
@@ -320,7 +319,7 @@ public static class AnthropicClientBetaExtensions
                         case DataContent dc when dc.HasTopLevelMediaType("text"):
                             contents.Add(new BetaContentBlockParam(new BetaRequestDocumentBlock()
                             {
-                                Source = new(new BetaPlainTextSource() { Data = Encoding.UTF8.GetString(Convert.FromBase64String(dc.Base64Data.ToString())) })
+                                Source = new(new BetaPlainTextSource() { Data = Encoding.UTF8.GetString(dc.Data.ToArray()) }),
                             }));
                             break;
 
@@ -335,6 +334,13 @@ public static class AnthropicClientBetaExtensions
                             contents.Add(new BetaContentBlockParam(new BetaRequestDocumentBlock()
                             {
                                 Source = new(new BetaURLPDFSource() { URL = uc.Uri.AbsoluteUri }),
+                            }));
+                            break;
+
+                        case HostedFileContent fc:
+                            contents.Add(new BetaContentBlockParam(new BetaRequestDocumentBlock()
+                            {
+                                Source = new(new BetaFileDocumentSource(fc.FileId))
                             }));
                             break;
 
@@ -380,11 +386,6 @@ public static class AnthropicClientBetaExtensions
 
         private MessageCreateParams GetMessageCreateParams(List<BetaMessageParam> messages, List<BetaTextBlockParam>? systemMessages, ChatOptions? options)
         {
-            // MessageCreateParams exposes all of its properties as init-only. It also always initializes elements in those init members even
-            // when assigning null. And as init-only members can't be conditionally assigned, it's impossible for to create the MessageCreateParams
-            // here in the way we need to. Instead, we populate a dictionary, and then use that dictionary to populate the MessageCreateParams
-            // in one go.
-
             Dictionary<string, JsonElement>? bodyProperties = null;
 
             if (options?.RawRepresentationFactory?.Invoke(this) is MessageCreateParams rawMcp)
@@ -624,24 +625,41 @@ public static class AnthropicClientBetaExtensions
                 _ => ChatFinishReason.Stop,
             };
 
-        private static AIContent? ToAIContent(BetaContentBlock block)
+        private static AIContent ToAIContent(BetaContentBlock block)
         {
+            static AIContent FromBetaTextBlock( BetaTextBlock text)
+            {
+                TextContent tc = new TextContent(text.Text)
+                {
+                    RawRepresentation = text,
+                };
+
+                if (text.Citations is { Count: > 0 })
+                {
+                    tc.Annotations = [.. text.Citations.Select(ToAIAnnotation).OfType<AIAnnotation>()];
+                }
+
+                return tc;
+            }
+
             switch (block.Value)
             {
                 case BetaTextBlock text:
-                    TextContent tc = new TextContent(text.Text);
-                    if (text.Citations is { Count: > 0 })
-                    {
-                        tc.Annotations = [.. text.Citations.Select(ToAIAnnotation).OfType<AIAnnotation>()];
-                    }
-
-                    return tc;
+                    return FromBetaTextBlock(text);
 
                 case BetaThinkingBlock thinking:
-                    return new TextReasoningContent(thinking.Thinking) { ProtectedData = thinking.Signature };
+                    return new TextReasoningContent(thinking.Thinking) 
+                    {
+                        ProtectedData = thinking.Signature,
+                        RawRepresentation = thinking,
+                    };
 
                 case BetaRedactedThinkingBlock redactedThinking:
-                    return new TextReasoningContent(string.Empty) { ProtectedData = redactedThinking.Data };
+                    return new TextReasoningContent(string.Empty)
+                    {
+                        ProtectedData = redactedThinking.Data,
+                        RawRepresentation = redactedThinking,
+                    };
 
                 case BetaToolUseBlock toolUse:
                     return new FunctionCallContent(
@@ -649,10 +667,67 @@ public static class AnthropicClientBetaExtensions
                         toolUse.Name,
                         toolUse.Properties.TryGetValue("input", out JsonElement element) ?
                             JsonSerializer.Deserialize<Dictionary<string, object?>>(element, AIJsonUtilities.DefaultOptions) :
-                            null);
+                            null)
+                    {
+                        RawRepresentation = toolUse,
+                    };
+
+                case BetaMCPToolUseBlock mcpToolUse:
+                    return new McpServerToolCallContent(mcpToolUse.ID, mcpToolUse.Name, mcpToolUse.ServerName)
+                    {
+                        Arguments = mcpToolUse.Input.ToDictionary(e => e.Key, e => (object?)e.Value),
+                        RawRepresentation = mcpToolUse,
+                    };
+
+                case BetaMCPToolResultBlock mcpToolResult:
+                    return new McpServerToolResultContent(mcpToolResult.ToolUseID)
+                    {
+                        Output = mcpToolResult.Content.Value switch
+                        {
+                            string s => [new TextContent(s)],
+                            IReadOnlyList<BetaTextBlock> texts => texts.Select(FromBetaTextBlock).ToList(),
+                            _ => [],
+                        },
+                        RawRepresentation = mcpToolResult,
+                    };
+
+                case BetaCodeExecutionToolResultBlock ce when ce.Content?.Value is BetaCodeExecutionResultBlock ceOutput:
+                    CodeInterpreterToolResultContent c = new()
+                    {
+                        CallId = ce.ToolUseID,
+                        RawRepresentation = ce,
+                    };
+
+                    if (!string.IsNullOrWhiteSpace(ceOutput.Stdout))
+                    {
+                        (c.Outputs ??= []).Add(new TextContent(ceOutput.Stdout));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(ceOutput.Stderr) ||
+                       ceOutput.ReturnCode != 0)
+                    {
+                        (c.Outputs ??= []).Add(new ErrorContent(ceOutput.Stderr) 
+                        {
+                            ErrorCode = ceOutput.ReturnCode.ToString(CultureInfo.InvariantCulture) 
+                        });
+                    }
+
+                    if (ceOutput.Content is { Count: > 0 })
+                    {
+                        foreach (var ceOutputContent in ceOutput.Content)
+                        {
+                            (c.Outputs ??= []).Add(new HostedFileContent(ceOutputContent.FileID));
+                        }
+                    }
+
+                    return c;
+
+                default:
+                    return new AIContent()
+                    {
+                        RawRepresentation = block.Value
+                    };
             }
-         
-            return null;
         }
 
         private static AIAnnotation? ToAIAnnotation(BetaTextCitation citation)

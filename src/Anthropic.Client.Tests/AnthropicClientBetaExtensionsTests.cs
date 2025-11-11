@@ -1,10 +1,9 @@
 using Anthropic.Client;
+using Anthropic.Client.Services;
 using Anthropic.Client.Services.Beta;
-using Anthropic.Client.Services.Beta.Messages;
 using System;
 using System.Threading.Tasks;
 
-#nullable enable
 #pragma warning disable MEAI001
 
 namespace Microsoft.Extensions.AI.Tests;
@@ -12,20 +11,13 @@ namespace Microsoft.Extensions.AI.Tests;
 public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTestsBase
 {
     protected override IChatClient CreateChatClient(AnthropicClient client, string? modelId) =>
-        client.Beta.Messages.AsIChatClient(modelId);
+        client.Beta.AsIChatClient(modelId);
 
     [Fact]
     public void AsIChatClient_ReturnsValidChatClient()
     {
         var client = new AnthropicClient { APIKey = "test-key" }.Beta;
         Assert.NotNull(client.AsIChatClient("claude-haiku-4-5"));
-    }
-
-    [Fact]
-    public void AsIChatClient_MessageService_ReturnsValidChatClient()
-    {
-        var client = new AnthropicClient { APIKey = "test-key" }.Beta;
-        Assert.NotNull(client.Messages.AsIChatClient("claude-haiku-4-5"));
     }
 
     [Fact]
@@ -36,15 +28,12 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     }
 
     [Fact]
-    public void AsIChatClient_GetService_ReturnsMessageService()
+    public void AsIChatClient_GetService_ReturnsClient()
     {
         var client = new AnthropicClient { APIKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
-        var messageService = chatClient.GetService<IMessageService>();
-
-        Assert.NotNull(messageService);
-        Assert.Same(client.Beta.Messages, messageService);
+        Assert.Same(client.Beta, chatClient.GetService<IBetaService>());
     }
 
     [Fact]
@@ -274,5 +263,180 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
 
         ChatResponse response = await chatClient.GetResponseAsync("Use multiple servers", options);
         Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_VariousContentBlocks_HaveRawRepresentation()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test various content types"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_multi_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Here's my response"
+                    },
+                    {
+                        "type": "thinking",
+                        "thinking": "Let me think...",
+                        "signature": "sig123"
+                    },
+                    {
+                        "type": "tool_use",
+                        "id": "tool_call_1",
+                        "name": "test_tool",
+                        "input": {}
+                    }
+                ],
+                "stop_reason": "tool_use",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 30
+                }
+            }
+            """);
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync("Test various content types");
+
+        var textContent = response.Messages[0].Contents[0] as TextContent;
+        Assert.NotNull(textContent);
+        Assert.NotNull(textContent.RawRepresentation);
+        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaTextBlock>(textContent.RawRepresentation);
+
+        var thinkingContent = response.Messages[0].Contents[1] as TextReasoningContent;
+        Assert.NotNull(thinkingContent);
+        Assert.NotNull(thinkingContent.RawRepresentation);
+        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaThinkingBlock>(thinkingContent.RawRepresentation);
+
+        var toolCall = response.Messages[0].Contents[2] as FunctionCallContent;
+        Assert.NotNull(toolCall);
+        Assert.NotNull(toolCall.RawRepresentation);
+        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaToolUseBlock>(toolCall.RawRepresentation);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_McpToolUseBlock_CreatesCorrectContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use MCP tool"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mcp_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "mcp_tool_use",
+                    "id": "mcp_call_123",
+                    "name": "search",
+                    "server_name": "my-mcp-server",
+                    "input": {
+                        "query": "test query"
+                    }
+                }],
+                "stop_reason": "tool_use",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """);
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync("Use MCP tool");
+
+        var mcpToolCall = response.Messages[0].Contents[0] as McpServerToolCallContent;
+        Assert.NotNull(mcpToolCall);
+        Assert.Equal("mcp_call_123", mcpToolCall.CallId);
+        Assert.Equal("search", mcpToolCall.ToolName);
+        Assert.Equal("my-mcp-server", mcpToolCall.ServerName);
+        Assert.NotNull(mcpToolCall.Arguments);
+        Assert.True(mcpToolCall.Arguments.ContainsKey("query"));
+        Assert.NotNull(mcpToolCall.RawRepresentation);
+        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaMCPToolUseBlock>(mcpToolCall.RawRepresentation);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_McpToolResultBlock_WithTextContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_mcp_result_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "mcp_tool_result",
+                    "tool_use_id": "mcp_call_456",
+                    "is_error": false,
+                    "content": [{
+                        "type": "text",
+                        "text": "Result from MCP tool"
+                    }]
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 15
+                }
+            }
+            """);
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync("Test");
+
+        var mcpResult = response.Messages[0].Contents[0] as McpServerToolResultContent;
+        Assert.NotNull(mcpResult);
+        Assert.Equal("mcp_call_456", mcpResult.CallId);
+        Assert.NotNull(mcpResult.Output);
+        Assert.Single(mcpResult.Output);
+        Assert.Equal("Result from MCP tool", ((TextContent)mcpResult.Output[0]).Text);
+        Assert.NotNull(mcpResult.RawRepresentation);
+        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaMCPToolResultBlock>(mcpResult.RawRepresentation);
     }
 }

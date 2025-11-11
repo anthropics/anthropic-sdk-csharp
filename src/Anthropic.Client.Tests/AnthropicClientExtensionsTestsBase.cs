@@ -9,8 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Client;
 
-#nullable enable
-
 namespace Microsoft.Extensions.AI.Tests;
 
 public abstract class AnthropicClientExtensionsTestsBase

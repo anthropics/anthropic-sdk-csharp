@@ -1,8 +1,6 @@
 using Anthropic.Client;
 using Anthropic.Client.Core;
 using Anthropic.Client.Models.Messages;
-using Anthropic.Client.Services;
-using Anthropic.Client.Services.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,26 +23,14 @@ public static class AnthropicClientExtensions
     {
         ArgumentNullException.ThrowIfNull(client);
 
-        return new AnthropicChatClient(client.Messages, defaultModelId);
+        return new AnthropicChatClient(client, defaultModelId);
     }
 
-    /// <summary>Gets an <see cref="IChatClient"/> for use with this <see cref="IMessageService"/>.</summary>
-    /// <param name="messageService">The message service.</param>
-    /// <param name="defaultModelId">The default ID of the model to use. If <see langword="null"/>, it must be provided per request via <see cref="ChatOptions.ModelId"/>.</param>
-    /// <returns>An <see cref="IChatClient"/> that can be used to converse via the <see cref="IMessageService"/>.</returns>
-    /// <exception cref="ArgumentNullException"><paramref name="messageService"/> is <see langword="null"/>.</exception>
-    public static IChatClient AsIChatClient(this IMessageService messageService, string? defaultModelId = null)
-    {
-        ArgumentNullException.ThrowIfNull(messageService);
-
-        return new AnthropicChatClient(messageService, defaultModelId);
-    }
-
-    private sealed class AnthropicChatClient(IMessageService messageService, string? defaultModelId) : IChatClient
+    private sealed class AnthropicChatClient(IAnthropicClient anthropicClient, string? defaultModelId) : IChatClient
     {
         private const int DefaultMaxTokens = 1024;
 
-        private readonly IMessageService _messageService = messageService;
+        private readonly IAnthropicClient _anthropicClient = anthropicClient;
         private readonly string? _defaultModelId = defaultModelId;
         private ChatClientMetadata? _metadata;
 
@@ -56,27 +42,12 @@ public static class AnthropicClientExtensions
         {
             ArgumentNullException.ThrowIfNull(serviceType);
 
-            if (serviceKey is not null)
-            {
-                return null;
-            }
-
-            if (serviceType == typeof(ChatClientMetadata))
-            {
-                return _metadata ??= new ChatClientMetadata("anthropic", _messageService is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId);
-            }
-
-            if (serviceType.IsInstanceOfType(_messageService))
-            {
-                return _messageService;
-            }
-
-            if (serviceType.IsInstanceOfType(this))
-            {
-                return this;
-            }
-
-            return null;
+            return
+                serviceKey is not null ? null :
+                serviceType == typeof(ChatClientMetadata) ? _metadata ??= new ChatClientMetadata("anthropic", _anthropicClient.BaseUrl, _defaultModelId) :
+                serviceType.IsInstanceOfType(_anthropicClient) ? _anthropicClient :
+                serviceType.IsInstanceOfType(this) ? this :
+                null;
         }
 
         /// <inheritdoc />
@@ -88,9 +59,9 @@ public static class AnthropicClientExtensions
             List<MessageParam> messageParams = CreateMessageParams(messages, out List<TextBlockParam>? systemMessages);
             MessageCreateParams createParams = GetMessageCreateParams(messageParams, systemMessages, options);
 
-            var createResult = await _messageService.Create(createParams);
+            var createResult = await _anthropicClient.Messages.Create(createParams, cancellationToken);
 
-            ChatMessage m = new(ChatRole.Assistant, [.. createResult.Content.Select(ToAIContent).OfType<AIContent>()])
+            ChatMessage m = new(ChatRole.Assistant, [.. createResult.Content.Select(ToAIContent)])
             {
                 CreatedAt = DateTimeOffset.UtcNow,
                 MessageId = createResult.ID,
@@ -122,7 +93,7 @@ public static class AnthropicClientExtensions
             ChatFinishReason? finishReason = null;
             Dictionary<long, StreamingFunctionData>? streamingFunctions = null;
 
-            await foreach (var createResult in _messageService.CreateStreaming(createParams).WithCancellation(cancellationToken))
+            await foreach (var createResult in _anthropicClient.Messages.CreateStreaming(createParams, cancellationToken).WithCancellation(cancellationToken))
             {
                 List<AIContent> contents = [];
 
@@ -161,15 +132,26 @@ public static class AnthropicClientExtensions
                         switch (contentBlockStart.ContentBlock.Value)
                         {
                             case TextBlock text:
-                                contents.Add(new TextContent(text.Text));
+                                contents.Add(new TextContent(text.Text)
+                                {
+                                    RawRepresentation = text,
+                                });
                                 break;
 
                             case ThinkingBlock thinking:
-                                contents.Add(new TextReasoningContent(thinking.Thinking) { ProtectedData = thinking.Signature });
+                                contents.Add(new TextReasoningContent(thinking.Thinking) 
+                                {
+                                    ProtectedData = thinking.Signature,
+                                    RawRepresentation = thinking,
+                                });
                                 break;
 
                             case RedactedThinkingBlock redactedThinking:
-                                contents.Add(new TextReasoningContent(string.Empty) { ProtectedData = redactedThinking.Data });
+                                contents.Add(new TextReasoningContent(string.Empty) 
+                                {
+                                    ProtectedData = redactedThinking.Data,
+                                    RawRepresentation = redactedThinking,
+                                });
                                 break;
 
                             case ToolUseBlock toolUse:
@@ -187,7 +169,10 @@ public static class AnthropicClientExtensions
                         switch (contentBlockDelta.Delta.Value)
                         {
                             case TextDelta textDelta:
-                                contents.Add(new TextContent(textDelta.Text));
+                                contents.Add(new TextContent(textDelta.Text)
+                                {
+                                    RawRepresentation = textDelta,
+                                });
                                 break;
 
                             case InputJSONDelta inputDelta:
@@ -199,11 +184,18 @@ public static class AnthropicClientExtensions
                                 break;
                             
                             case ThinkingDelta thinkingDelta:
-                                contents.Add(new TextReasoningContent(thinkingDelta.Thinking));
+                                contents.Add(new TextReasoningContent(thinkingDelta.Thinking)
+                                {
+                                    RawRepresentation = thinkingDelta,
+                                });
                                 break;
                             
                             case SignatureDelta signatureDelta:
-                                contents.Add(new TextReasoningContent(null) { ProtectedData = signatureDelta.Signature });
+                                contents.Add(new TextReasoningContent(null) 
+                                {
+                                    ProtectedData = signatureDelta.Signature,
+                                    RawRepresentation = signatureDelta,
+                                });
                                 break;
                         }
                         break;
@@ -272,6 +264,10 @@ public static class AnthropicClientExtensions
                 {
                     switch (content)
                     {
+                        case AIContent ac when ac.RawRepresentation is ContentBlockParam rawContent:
+                            contents.Add(rawContent);
+                            break;
+
                         case TextContent tc:
                             string text = tc.Text;
                             if (message.Role == ChatRole.Assistant)
@@ -320,7 +316,7 @@ public static class AnthropicClientExtensions
                         case DataContent dc when dc.HasTopLevelMediaType("text"):
                             contents.Add(new ContentBlockParam(new DocumentBlockParam()
                             {
-                                Source = new(new PlainTextSource() { Data = Encoding.UTF8.GetString(Convert.FromBase64String(dc.Base64Data.ToString())) })
+                                Source = new(new PlainTextSource() { Data = Encoding.UTF8.GetString(dc.Data.ToArray()) }),
                             }));
                             break;
 
@@ -380,11 +376,6 @@ public static class AnthropicClientExtensions
 
         private MessageCreateParams GetMessageCreateParams(List<MessageParam> messages, List<TextBlockParam>? systemMessages, ChatOptions? options)
         {
-            // MessageCreateParams exposes all of its properties as init-only. It also always initializes elements in those init members even
-            // when assigning null. And as init-only members can't be conditionally assigned, it's impossible for to create the MessageCreateParams
-            // here in the way we need to. Instead, we populate a dictionary, and then use that dictionary to populate the MessageCreateParams
-            // in one go.
-
             Dictionary<string, JsonElement>? bodyProperties = null;
 
             if (options?.RawRepresentationFactory?.Invoke(this) is MessageCreateParams rawMcp)
@@ -593,12 +584,16 @@ public static class AnthropicClientExtensions
                 _ => ChatFinishReason.Stop,
             };
 
-        private static AIContent? ToAIContent(ContentBlock block)
+        private static AIContent ToAIContent(ContentBlock block)
         {
             switch (block.Value)
             {
                 case TextBlock text:
-                    TextContent tc = new TextContent(text.Text);
+                    TextContent tc = new TextContent(text.Text)
+                    {
+                        RawRepresentation = text,
+                    };
+
                     if (text.Citations is { Count: > 0 })
                     {
                         tc.Annotations = [.. text.Citations.Select(ToAIAnnotation).OfType<AIAnnotation>()];
@@ -607,10 +602,18 @@ public static class AnthropicClientExtensions
                     return tc;
 
                 case ThinkingBlock thinking:
-                    return new TextReasoningContent(thinking.Thinking) { ProtectedData = thinking.Signature };
+                    return new TextReasoningContent(thinking.Thinking)
+                    {
+                        ProtectedData = thinking.Signature,
+                        RawRepresentation = thinking,
+                    };
 
                 case RedactedThinkingBlock redactedThinking:
-                    return new TextReasoningContent(string.Empty) { ProtectedData = redactedThinking.Data };
+                    return new TextReasoningContent(string.Empty)
+                    {
+                        ProtectedData = redactedThinking.Data,
+                        RawRepresentation = redactedThinking,
+                    };
 
                 case ToolUseBlock toolUse:
                     return new FunctionCallContent(
@@ -618,10 +621,17 @@ public static class AnthropicClientExtensions
                         toolUse.Name,
                         toolUse.Properties.TryGetValue("input", out JsonElement element) ?
                             JsonSerializer.Deserialize<Dictionary<string, object?>>(element, AIJsonUtilities.DefaultOptions) :
-                            null);
+                            null)
+                    {
+                        RawRepresentation = toolUse,
+                    };
+
+                default:
+                    return new AIContent()
+                    {
+                        RawRepresentation = block.Value,
+                    };
             }
-         
-            return null;
         }
 
         private static AIAnnotation? ToAIAnnotation(TextCitation citation)

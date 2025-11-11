@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using Anthropic.Client;
 using Anthropic.Client.Services;
 
-#nullable enable
-
 namespace Microsoft.Extensions.AI.Tests;
 
 public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
@@ -20,13 +18,6 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
-    public void AsIChatClient_MessageService_ReturnsValidChatClient()
-    {
-        AnthropicClient client = new() { APIKey = "test-key" };
-        Assert.NotNull(client.Messages.AsIChatClient("claude-haiku-4-5"));
-    }
-
-    [Fact]
     public void AsIChatClient_ThrowsOnNullClient()
     {
         IAnthropicClient client = null!;
@@ -34,15 +25,13 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
-    public void AsIChatClient_GetService_ReturnsMessageService()
+    public void AsIChatClient_GetService_ReturnsClient()
     {
         AnthropicClient client = new() { APIKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
-        var messageService = chatClient.GetService<IMessageService>();
-
-        Assert.NotNull(messageService);
-        Assert.Same(client.Messages, messageService);
+        Assert.Same(client, chatClient.GetService<AnthropicClient>());
+        Assert.Same(client, chatClient.GetService<IAnthropicClient>());
     }
 
     [Fact]
@@ -89,5 +78,63 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
         var rawMessage = response.RawRepresentation as Anthropic.Client.Models.Messages.Message;
         Assert.NotNull(rawMessage);
         Assert.Equal("msg_raw_01", rawMessage.ID);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_VariousContentBlocks_HaveRawRepresentation()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test various content types"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_multi_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Here's my response"
+                    },
+                    {
+                        "type": "tool_use",
+                        "id": "tool_call_1",
+                        "name": "test_tool",
+                        "input": {}
+                    }
+                ],
+                "stop_reason": "tool_use",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 30
+                }
+            }
+            """);
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync("Test various content types");
+
+        var textContent = response.Messages[0].Contents[0] as TextContent;
+        Assert.NotNull(textContent);
+        Assert.NotNull(textContent.RawRepresentation);
+        Assert.IsType<Anthropic.Client.Models.Messages.TextBlock>(textContent.RawRepresentation);
+
+        var toolCall = response.Messages[0].Contents[1] as FunctionCallContent;
+        Assert.NotNull(toolCall);
+        Assert.NotNull(toolCall.RawRepresentation);
+        Assert.IsType<Anthropic.Client.Models.Messages.ToolUseBlock>(toolCall.RawRepresentation);
     }
 }
