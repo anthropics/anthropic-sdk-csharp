@@ -41,13 +41,13 @@ public sealed class AnthropicClient : IAnthropicClient
         init { this._options.ResponseValidation = value; }
     }
 
-    public int MaxRetries
+    public int? MaxRetries
     {
         get { return this._options.MaxRetries; }
         init { this._options.MaxRetries = value; }
     }
 
-    public TimeSpan Timeout
+    public TimeSpan? Timeout
     {
         get { return this._options.Timeout; }
         init { this._options.Timeout = value; }
@@ -94,7 +94,8 @@ public sealed class AnthropicClient : IAnthropicClient
     )
         where T : ParamsBase
     {
-        if (this.MaxRetries <= 0)
+        var maxRetries = this.MaxRetries ?? ClientOptions.DefaultMaxRetries;
+        if (maxRetries <= 0)
         {
             return await ExecuteOnce(request, cancellationToken).ConfigureAwait(false);
         }
@@ -109,13 +110,13 @@ public sealed class AnthropicClient : IAnthropicClient
             }
             catch (Exception e)
             {
-                if (++retries > this.MaxRetries || !ShouldRetry(e))
+                if (++retries > maxRetries || !ShouldRetry(e))
                 {
                     throw;
                 }
             }
 
-            if (response != null && (++retries > this.MaxRetries || !ShouldRetry(response)))
+            if (response != null && (++retries > maxRetries || !ShouldRetry(response)))
             {
                 if (response.Message.IsSuccessStatusCode)
                 {
@@ -159,7 +160,9 @@ public sealed class AnthropicClient : IAnthropicClient
             Content = request.Params.BodyContent(),
         };
         request.Params.AddHeadersToRequest(requestMessage, this._options);
-        using CancellationTokenSource timeoutCts = new(this.Timeout);
+        using CancellationTokenSource timeoutCts = new(
+            this.Timeout ?? ClientOptions.DefaultTimeout
+        );
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(
             timeoutCts.Token,
             cancellationToken

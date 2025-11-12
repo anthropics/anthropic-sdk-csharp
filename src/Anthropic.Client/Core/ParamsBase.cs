@@ -199,7 +199,10 @@ public abstract record class ParamsBase
         {
             request.Headers.Add("Authorization", string.Format("Bearer {0}", options.AuthToken));
         }
-        request.Headers.Add("X-Stainless-Timeout", options.Timeout.TotalSeconds.ToString());
+        request.Headers.Add(
+            "X-Stainless-Timeout",
+            (options.Timeout ?? ClientOptions.DefaultTimeout).TotalSeconds.ToString()
+        );
     }
 
     static string GetUserAgent() => $"{typeof(AnthropicClient).Name}/C# {GetPackageVersion()}";
