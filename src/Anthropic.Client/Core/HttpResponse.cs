@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
@@ -22,7 +23,7 @@ public sealed class HttpResponse : IDisposable
         try
         {
             return JsonSerializer.Deserialize<T>(
-                    await Message.Content.ReadAsStreamAsync(cts.Token).ConfigureAwait(false),
+                    await this.ReadAsStream(cts.Token).ConfigureAwait(false),
                     ModelBase.SerializerOptions
                 ) ?? throw new AnthropicInvalidDataException("Response cannot be null");
         }
@@ -30,6 +31,15 @@ public sealed class HttpResponse : IDisposable
         {
             throw new AnthropicIOException("I/O Exception", e);
         }
+    }
+
+    public async Task<Stream> ReadAsStream(CancellationToken cancellationToken = default)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(
+            this.CancellationToken,
+            cancellationToken
+        );
+        return await Message.Content.ReadAsStreamAsync(cts.Token).ConfigureAwait(false);
     }
 
     public async Task<string> ReadAsString(CancellationToken cancellationToken = default)
