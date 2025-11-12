@@ -43,7 +43,13 @@ public sealed class MessageService : IMessageService
             Params = parameters,
         };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            ._client.WithOptions(options =>
+                options with
+                {
+                    Timeout = options.Timeout ?? TimeSpan.FromMinutes(10),
+                }
+            )
+            .Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var message = await response.Deserialize<Message>(cancellationToken).ConfigureAwait(false);
         if (this._client.ResponseValidation)
@@ -73,7 +79,13 @@ public sealed class MessageService : IMessageService
             Params = parameters,
         };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            ._client.WithOptions(options =>
+                options with
+                {
+                    Timeout = options.Timeout ?? TimeSpan.FromMinutes(10),
+                }
+            )
+            .Execute(request, cancellationToken)
             .ConfigureAwait(false);
         await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
         {

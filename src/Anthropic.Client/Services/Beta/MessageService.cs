@@ -47,7 +47,13 @@ public sealed class MessageService : global::Anthropic.Client.Services.Beta.IMes
             Params = parameters,
         };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            ._client.WithOptions(options =>
+                options with
+                {
+                    Timeout = options.Timeout ?? TimeSpan.FromMinutes(10),
+                }
+            )
+            .Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var betaMessage = await response
             .Deserialize<BetaMessage>(cancellationToken)
@@ -79,7 +85,13 @@ public sealed class MessageService : global::Anthropic.Client.Services.Beta.IMes
             Params = parameters,
         };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            ._client.WithOptions(options =>
+                options with
+                {
+                    Timeout = options.Timeout ?? TimeSpan.FromMinutes(10),
+                }
+            )
+            .Execute(request, cancellationToken)
             .ConfigureAwait(false);
         await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
         {
