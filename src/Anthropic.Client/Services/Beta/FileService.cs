@@ -74,6 +74,22 @@ public sealed class FileService : IFileService
         return deletedFile;
     }
 
+    public async Task<HttpResponse> Download(
+        FileDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        HttpRequest<FileDownloadParams> request = new()
+        {
+            Method = HttpMethod.Get,
+            Params = parameters,
+        };
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        return response;
+    }
+
     public async Task<FileMetadata> RetrieveMetadata(
         FileRetrieveMetadataParams parameters,
         CancellationToken cancellationToken = default

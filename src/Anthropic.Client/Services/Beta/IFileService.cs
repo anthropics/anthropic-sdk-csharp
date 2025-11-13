@@ -27,6 +27,14 @@ public interface IFileService
     );
 
     /// <summary>
+    /// Download File
+    /// </summary>
+    Task<HttpResponse> Download(
+        FileDownloadParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Get File Metadata
     /// </summary>
     Task<FileMetadata> RetrieveMetadata(

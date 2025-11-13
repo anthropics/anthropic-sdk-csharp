@@ -18,6 +18,12 @@ public class FileServiceTest : TestBase
         deletedFile.Validate();
     }
 
+    [Fact(Skip = "Prism doesn't support application/binary responses")]
+    public async Task Download_Works()
+    {
+        await this.client.Beta.Files.Download(new() { FileID = "file_id" });
+    }
+
     [Fact]
     public async Task RetrieveMetadata_Works()
     {

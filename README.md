@@ -146,6 +146,34 @@ await foreach (var message in client.Messages.CreateStreaming(parameters))
 }
 ```
 
+## Binary responses
+
+The SDK defines methods that return binary responses, which are used for API responses that shouldn't necessarily be parsed, like non-JSON data.
+
+These methods return `HttpResponse`:
+
+```csharp
+using System;
+using Anthropic.Client.Models.Beta.Files;
+
+FileDownloadParams parameters = new() { FileID = "file_id" };
+
+var response = await client.Beta.Files.Download(parameters);
+
+Console.WriteLine(response);
+```
+
+To save the response content to a file, or any [`Stream`](https://learn.microsoft.com/en-us/dotnet/api/system.io.stream?view=net-9.0), use the [`CopyToAsync`](<https://learn.microsoft.com/en-us/dotnet/api/system.io.stream.copytoasync?view=net-9.0#system-io-stream-copytoasync(system-io-stream)>) method:
+
+```csharp
+using System.IO;
+
+using var response = await client.Beta.Files.Download(parameters);
+using var contentStream = await response.ReadAsStream();
+using var fileStream = File.Open(path, FileMode.OpenOrCreate);
+await contentStream.CopyToAsync(fileStream); // Or any other Stream
+```
+
 ## Error handling
 
 The SDK throws custom unchecked exception types:
