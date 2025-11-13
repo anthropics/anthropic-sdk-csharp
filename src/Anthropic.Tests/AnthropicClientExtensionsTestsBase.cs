@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using Anthropic.Client;
+using Anthropic;
 
 namespace Microsoft.Extensions.AI.Tests;
 
@@ -649,6 +649,71 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.NotNull(functionCall.Arguments);
         Assert.Contains("location", functionCall.Arguments.Keys);
         Assert.Contains("unit", functionCall.Arguments.Keys);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithParameterlessToolCall()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Get the current time"
+                    }]
+                }],
+                "max_tokens": 1024,
+                "tools": [{
+                    "name": "get_current_time",
+                    "description": "Gets the current time",
+                    "input_schema": {
+                        "type": "object",
+                        "required": []
+                    }
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_parameterless_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "tool_use",
+                    "id": "toolu_paramless_1",
+                    "name": "get_current_time",
+                    "input": {}
+                }],
+                "stop_reason": "tool_use",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 10
+                }
+            }
+            """);
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var timeFunction = AIFunctionFactory.Create(() => DateTime.Now.ToString(), "get_current_time", "Gets the current time");
+
+        ChatOptions options = new()
+        {
+            Tools = [timeFunction]
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync("Get the current time", options);
+        Assert.NotNull(response);
+        Assert.Equal(ChatFinishReason.ToolCalls, response.FinishReason);
+
+        var functionCall = response.Messages[0].Contents.OfType<FunctionCallContent>().FirstOrDefault();
+        Assert.NotNull(functionCall);
+        Assert.Equal("get_current_time", functionCall.Name);
+        Assert.Equal("toolu_paramless_1", functionCall.CallId);
+        Assert.True(functionCall.Arguments == null || functionCall.Arguments.Count == 0);
     }
 
     [Fact]
@@ -1688,6 +1753,61 @@ public abstract class AnthropicClientExtensionsTestsBase
         var functionCall = functionUpdates.SelectMany(u => u.Contents.OfType<FunctionCallContent>()).FirstOrDefault();
         Assert.NotNull(functionCall);
         Assert.Equal("test_tool", functionCall.Name);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithParameterlessToolCall()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Call parameterless tool"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_paramless_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_stream_paramless_1","name":"get_time","input":{}}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """);
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (var update in chatClient.GetStreamingResponseAsync("Call parameterless tool"))
+        {
+            updates.Add(update);
+        }
+
+        Assert.NotEmpty(updates);
+        var functionUpdates = updates.Where(u => u.Contents.Any(c => c is FunctionCallContent)).ToList();
+        Assert.NotEmpty(functionUpdates);
+
+        var functionCall = functionUpdates.SelectMany(u => u.Contents.OfType<FunctionCallContent>()).FirstOrDefault();
+        Assert.NotNull(functionCall);
+        Assert.Equal("get_time", functionCall.Name);
+        Assert.Equal("toolu_stream_paramless_1", functionCall.CallId);
+        Assert.True(functionCall.Arguments == null || functionCall.Arguments.Count == 0);
     }
 
     [Fact]

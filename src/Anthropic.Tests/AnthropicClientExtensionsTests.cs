@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Anthropic.Client;
-using Anthropic.Client.Services;
+using Anthropic;
 
 namespace Microsoft.Extensions.AI.Tests;
 
@@ -75,7 +74,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
         Assert.NotNull(response);
         Assert.NotNull(response.RawRepresentation);
 
-        var rawMessage = response.RawRepresentation as Anthropic.Client.Models.Messages.Message;
+        var rawMessage = response.RawRepresentation as Anthropic.Models.Messages.Message;
         Assert.NotNull(rawMessage);
         Assert.Equal("msg_raw_01", rawMessage.ID);
     }
@@ -130,11 +129,11 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
         var textContent = response.Messages[0].Contents[0] as TextContent;
         Assert.NotNull(textContent);
         Assert.NotNull(textContent.RawRepresentation);
-        Assert.IsType<Anthropic.Client.Models.Messages.TextBlock>(textContent.RawRepresentation);
+        Assert.IsType<Anthropic.Models.Messages.TextBlock>(textContent.RawRepresentation);
 
         var toolCall = response.Messages[0].Contents[1] as FunctionCallContent;
         Assert.NotNull(toolCall);
         Assert.NotNull(toolCall.RawRepresentation);
-        Assert.IsType<Anthropic.Client.Models.Messages.ToolUseBlock>(toolCall.RawRepresentation);
+        Assert.IsType<Anthropic.Models.Messages.ToolUseBlock>(toolCall.RawRepresentation);
     }
 }

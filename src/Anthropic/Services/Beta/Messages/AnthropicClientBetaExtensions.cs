@@ -1,6 +1,6 @@
-using Anthropic.Client.Core;
-using Anthropic.Client.Models.Beta.Messages;
-using Anthropic.Client.Services.Beta;
+using Anthropic.Core;
+using Anthropic.Models.Beta.Messages;
+using Anthropic.Services.Beta;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,18 +22,18 @@ public static class AnthropicBetaClientExtensions
     /// <param name="defaultModelId">The default ID of the model to use. If <see langword="null"/>, it must be provided per request via <see cref="ChatOptions.ModelId"/>.</param>
     /// <returns>An <see cref="IChatClient"/> that can be used to converse via the <see cref="IBetaService"/>.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="betaService"/> is <see langword="null"/>.</exception>
-    public static IChatClient AsIChatClient(this Anthropic.Client.Services.IBetaService betaService, string? defaultModelId = null)
+    public static IChatClient AsIChatClient(this Anthropic.Services.IBetaService betaService, string? defaultModelId = null)
     {
         ArgumentNullException.ThrowIfNull(betaService);
 
         return new AnthropicChatClient(betaService, defaultModelId);
     }
 
-    private sealed class AnthropicChatClient(Anthropic.Client.Services.IBetaService betaService, string? defaultModelId) : IChatClient
+    private sealed class AnthropicChatClient(Anthropic.Services.IBetaService betaService, string? defaultModelId) : IChatClient
     {
         private const int DefaultMaxTokens = 1024;
 
-        private readonly Anthropic.Client.Services.IBetaService _betaService = betaService;
+        private readonly Anthropic.Services.IBetaService _betaService = betaService;
         private readonly string? _defaultModelId = defaultModelId;
         private ChatClientMetadata? _metadata;
 
@@ -45,12 +45,27 @@ public static class AnthropicBetaClientExtensions
         {
             ArgumentNullException.ThrowIfNull(serviceType);
 
-            return
-                serviceKey is not null ? null :
-                serviceType == typeof(ChatClientMetadata) ? _metadata ??= new ChatClientMetadata("anthropic", _betaService.Messages is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId) :
-                serviceType.IsInstanceOfType(_betaService) ? _betaService :
-                serviceType.IsInstanceOfType(this) ? this :
-                null;
+            if (serviceKey is not null)
+            {
+                return null;
+            }
+
+            if (serviceType == typeof(ChatClientMetadata))
+            {
+                return _metadata ??= new("anthropic", _betaService.Messages is MessageService { _client.BaseUrl: Uri baseUrl } ? baseUrl : null, _defaultModelId);
+            }
+
+            if (serviceType.IsInstanceOfType(_betaService))
+            {
+                return _betaService;
+            }
+
+            if (serviceType.IsInstanceOfType(this))
+            {
+                return this;
+            }
+
+            return null;
         }
 
         /// <inheritdoc />
@@ -159,7 +174,7 @@ public static class AnthropicBetaClientExtensions
 
                             case BetaToolUseBlock toolUse:
                                 streamingFunctions ??= [];
-                                streamingFunctions[contentBlockStart.Index] = new StreamingFunctionData()
+                                streamingFunctions[contentBlockStart.Index] = new()
                                 {
                                     CallId = toolUse.ID,
                                     Name = toolUse.Name,
@@ -180,7 +195,7 @@ public static class AnthropicBetaClientExtensions
 
                             case BetaInputJSONDelta inputDelta:
                                 if (streamingFunctions is not null &&
-                                    streamingFunctions.TryGetValue(contentBlockDelta.Index, out StreamingFunctionData? functionData))
+                                    streamingFunctions.TryGetValue(contentBlockDelta.Index, out var functionData))
                                 {
                                     functionData.Arguments.Append(inputDelta.PartialJSON);
                                 }
@@ -208,16 +223,14 @@ public static class AnthropicBetaClientExtensions
                         {
                             foreach (var sf in streamingFunctions)
                             {
-                                contents.Add(new FunctionCallContent(
-                                    sf.Value.CallId, 
-                                    sf.Value.Name,
-                                    JsonSerializer.Deserialize<Dictionary<string, object?>>(sf.Value.Arguments.ToString(), AIJsonUtilities.DefaultOptions) ?? []));
+                                contents.Add(FunctionCallContent.CreateFromParsedArguments(sf.Value.Arguments.ToString(), sf.Value.CallId, sf.Value.Name,
+                                    json => JsonSerializer.Deserialize<Dictionary<string, object?>>(json, AIJsonUtilities.DefaultOptions)));
                             }
                         }
                         break;
                 }
 
-                yield return new ChatResponseUpdate(ChatRole.Assistant, contents)
+                yield return new(ChatRole.Assistant, contents)
                 {
                     CreatedAt = DateTimeOffset.UtcNow,
                     FinishReason = finishReason,
@@ -230,7 +243,7 @@ public static class AnthropicBetaClientExtensions
 
             if (usageDetails is not null)
             {
-                yield return new ChatResponseUpdate(ChatRole.Assistant, [new UsageContent(usageDetails)])
+                yield return new(ChatRole.Assistant, [new UsageContent(usageDetails)])
                 {
                     CreatedAt = DateTimeOffset.UtcNow,
                     FinishReason = finishReason,
@@ -278,88 +291,88 @@ public static class AnthropicBetaClientExtensions
                                 text = text.TrimEnd();
                                 if (!string.IsNullOrWhiteSpace(text))
                                 {
-                                    contents.Add(new BetaContentBlockParam(new BetaTextBlockParam() { Text = text }));
+                                    contents.Add(new BetaTextBlockParam() { Text = text });
                                 }
                             }
                             else if (!string.IsNullOrWhiteSpace(text))
                             {
-                                contents.Add(new BetaContentBlockParam(new BetaTextBlockParam() { Text = text }));
+                                contents.Add(new BetaTextBlockParam() { Text = text });
                             }
                             break;
 
                         case TextReasoningContent trc when !string.IsNullOrEmpty(trc.Text):
-                            contents.Add(new BetaContentBlockParam(new BetaThinkingBlockParam()
+                            contents.Add(new BetaThinkingBlockParam()
                             {
                                 Thinking = trc.Text,
                                 Signature = trc.ProtectedData ?? string.Empty,
-                            }));
+                            });
                             break;
 
                         case TextReasoningContent trc when !string.IsNullOrEmpty(trc.ProtectedData):
-                            contents.Add(new BetaContentBlockParam(new BetaRedactedThinkingBlockParam()
+                            contents.Add(new BetaRedactedThinkingBlockParam()
                             {
                                 Data = trc.ProtectedData,
-                            }));
+                            });
                             break;
 
                         case DataContent dc when dc.HasTopLevelMediaType("image"):
-                            contents.Add(new BetaContentBlockParam(new BetaImageBlockParam()
+                            contents.Add(new BetaImageBlockParam()
                             {
                                 Source = new(new BetaBase64ImageSource() { Data = dc.Base64Data.ToString(), MediaType = dc.MediaType })
-                            }));
+                            });
                             break;
 
                         case DataContent dc when string.Equals(dc.MediaType, "application/pdf", StringComparison.OrdinalIgnoreCase):
-                            contents.Add(new BetaContentBlockParam(new BetaRequestDocumentBlock()
+                            contents.Add(new BetaRequestDocumentBlock()
                             {
                                 Source = new(new BetaBase64PDFSource() { Data = dc.Base64Data.ToString() }),
-                            }));
+                            });
                             break;
 
                         case DataContent dc when dc.HasTopLevelMediaType("text"):
-                            contents.Add(new BetaContentBlockParam(new BetaRequestDocumentBlock()
+                            contents.Add(new BetaRequestDocumentBlock()
                             {
                                 Source = new(new BetaPlainTextSource() { Data = Encoding.UTF8.GetString(dc.Data.ToArray()) }),
-                            }));
+                            });
                             break;
 
                         case UriContent uc when uc.HasTopLevelMediaType("image"):
-                            contents.Add(new BetaContentBlockParam(new BetaImageBlockParam()
+                            contents.Add(new BetaImageBlockParam()
                             {
                                 Source = new(new BetaURLImageSource() { URL = uc.Uri.AbsoluteUri }),
-                            }));
+                            });
                             break;
 
                         case UriContent uc when string.Equals(uc.MediaType, "application/pdf", StringComparison.OrdinalIgnoreCase):
-                            contents.Add(new BetaContentBlockParam(new BetaRequestDocumentBlock()
+                            contents.Add(new BetaRequestDocumentBlock()
                             {
                                 Source = new(new BetaURLPDFSource() { URL = uc.Uri.AbsoluteUri }),
-                            }));
+                            });
                             break;
 
                         case HostedFileContent fc:
-                            contents.Add(new BetaContentBlockParam(new BetaRequestDocumentBlock()
+                            contents.Add(new BetaRequestDocumentBlock()
                             {
                                 Source = new(new BetaFileDocumentSource(fc.FileId))
-                            }));
+                            });
                             break;
 
                         case FunctionCallContent fcc:
-                            contents.Add(new BetaContentBlockParam(new BetaToolUseBlockParam()
+                            contents.Add(new BetaToolUseBlockParam()
                             {
                                 ID = fcc.CallId,
                                 Name = fcc.Name,
                                 Input = fcc.Arguments?.ToDictionary(e => e.Key, e => e.Value is JsonElement je ? je : JsonSerializer.SerializeToElement(e.Value, AIJsonUtilities.DefaultOptions)) ?? [],
-                            }));
+                            });
                             break;
 
                         case FunctionResultContent frc:
-                            contents.Add(new BetaContentBlockParam(new BetaToolResultBlockParam()
+                            contents.Add(new BetaToolResultBlockParam()
                             {
                                 ToolUseID = frc.CallId,
                                 IsError = frc.Exception is not null,
                                 Content = new(JsonSerializer.Serialize(frc.Result, AIJsonUtilities.DefaultOptions)),
-                            }));
+                            });
                             break;
                     }
                 }
@@ -372,7 +385,7 @@ public static class AnthropicBetaClientExtensions
                 messageParams.Add(new()
                 {
                     Role = message.Role == ChatRole.Assistant ? Role.Assistant : Role.User,
-                    Content = new(contents),
+                    Content = contents,
                 });
             }
 
@@ -386,40 +399,22 @@ public static class AnthropicBetaClientExtensions
 
         private MessageCreateParams GetMessageCreateParams(List<BetaMessageParam> messages, List<BetaTextBlockParam>? systemMessages, ChatOptions? options)
         {
-            Dictionary<string, JsonElement>? bodyProperties = null;
-
-            if (options?.RawRepresentationFactory?.Invoke(this) is MessageCreateParams rawMcp)
+            // Get the initial MessageCreateParams, either with a raw representation provided by the options
+            // or with only the required properties set.
+            MessageCreateParams? createParams = options?.RawRepresentationFactory?.Invoke(this) as MessageCreateParams;
+            if (createParams is not null)
             {
-                bodyProperties = new(rawMcp.BodyProperties);
-
-                // Merge existing messages if there were any in the raw representation
-                if (bodyProperties.TryGetValue("messages", out JsonElement existingMessageJson) &&
-                    JsonSerializer.Deserialize<List<BetaMessageParam>>(existingMessageJson, ModelBase.SerializerOptions) is { } existingMessages)
-                {
-                    messages.InsertRange(0, existingMessages);
-                }
+                // Merge any messages preconfigured on the params with the ones provided to the IChatClient.
+                createParams = createParams with { Messages = [.. createParams.Messages, .. messages] };
             }
             else
             {
-                bodyProperties = [];
-            }
-
-            // MessageCreateParams.Messages
-            bodyProperties["messages"] = JsonSerializer.SerializeToElement(messages, ModelBase.SerializerOptions);
-
-            // MessageCreateParams.Model
-            string? modelId = bodyProperties.TryGetValue("model", out JsonElement existingModelJson) ?
-                JsonSerializer.Deserialize<string>(existingModelJson, ModelBase.SerializerOptions) :
-                null;
-            modelId ??= options?.ModelId ?? _defaultModelId;
-            bodyProperties["model"] = !string.IsNullOrWhiteSpace(modelId) ?
-                JsonSerializer.SerializeToElement(modelId, ModelBase.SerializerOptions) :
-                throw new InvalidOperationException("Model ID must be specified either in ChatOptions or as the default for the client.");
-
-            // MessageCreateParams.MaxTokens
-            if (!bodyProperties.TryGetValue("max_tokens", out _))
-            {
-                bodyProperties["max_tokens"] = JsonSerializer.SerializeToElement(options?.MaxOutputTokens ?? DefaultMaxTokens, ModelBase.SerializerOptions);
+                createParams = new MessageCreateParams()
+                {
+                    MaxTokens = options?.MaxOutputTokens ?? DefaultMaxTokens,
+                    Messages = messages,
+                    Model = options?.ModelId ?? _defaultModelId ?? throw new InvalidOperationException("Model ID must be specified either in ChatOptions or as the default for the client."),
+                };
             }
 
             if (options is not null)
@@ -429,91 +424,76 @@ public static class AnthropicBetaClientExtensions
                     (systemMessages ??= []).Add(new BetaTextBlockParam() { Text = instructions });
                 }
 
-                // MessageCreateParams.StopSequences
-                if (options.StopSequences is { } stopSequences)
+                if (options.StopSequences is { Count: > 0 } stopSequences)
                 {
-                    List<string>? existingStopSequences = bodyProperties.TryGetValue("stop_sequences", out JsonElement stopSequencesJson) ?
-                        JsonSerializer.Deserialize<List<string>>(stopSequencesJson, ModelBase.SerializerOptions) :
-                        null;
-
-                    existingStopSequences = existingStopSequences is not null ?
-                        [.. existingStopSequences, .. stopSequences] :
-                        [.. stopSequences];
-
-                    bodyProperties["stop_sequences"] = JsonSerializer.SerializeToElement(existingStopSequences, ModelBase.SerializerOptions);
+                    createParams = createParams.StopSequences is { } existingSequences ?
+                        createParams with { StopSequences = [.. existingSequences, .. stopSequences] } :
+                        createParams with { StopSequences = [.. stopSequences] };
                 }
 
-                // MessageCreateParams.Temperature
-                if (options.Temperature is { } temperature && !bodyProperties.ContainsKey("temperature"))
+                if (createParams.Temperature is null && options.Temperature is { } temperature)
                 {
-                    bodyProperties["temperature"] = JsonSerializer.SerializeToElement((double)temperature, ModelBase.SerializerOptions);
+                    createParams = createParams with { Temperature = temperature };
                 }
 
-                // MessageCreateParams.TopK
-                if (options.TopK is { } topK && !bodyProperties.ContainsKey("top_k"))
+                if (createParams.TopK is null && options.TopK is { } topK)
                 {
-                    bodyProperties["top_k"] = JsonSerializer.SerializeToElement(topK, ModelBase.SerializerOptions);
+                    createParams = createParams with { TopK = topK };
                 }
 
-                // MessageCreateParams.TopP
-                if (options.TopP is { } topP && !bodyProperties.ContainsKey("top_p"))
+                if (createParams.TopP is null && options.TopP is { } topP)
                 {
-                    bodyProperties["top_p"] = JsonSerializer.SerializeToElement((double)topP, ModelBase.SerializerOptions);
+                    createParams = createParams with { TopP = topP };
                 }
 
-                // MessageCreateParams.Tools
-                List<BetaToolUnion>? createdTools = bodyProperties.TryGetValue("tools", out JsonElement toolsJson) ?
-                    JsonSerializer.Deserialize<List<BetaToolUnion>>(toolsJson, ModelBase.SerializerOptions) :
-                    null;
-                List<BetaRequestMCPServerURLDefinition>? mcpServers = bodyProperties.TryGetValue("mcp_servers", out JsonElement mcpServersJson) ?
-                    JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>>(mcpServersJson, ModelBase.SerializerOptions) :
-                    null;
                 if (options.Tools is { } tools)
                 {
+                    List<BetaToolUnion>? createdTools = createParams.Tools;
+                    List<BetaRequestMCPServerURLDefinition>? mcpServers = createParams.MCPServers;
                     foreach (var tool in tools)
                     {
                         switch (tool)
                         {
                             case AIFunctionDeclaration af:
+                                Dictionary<string, JsonElement> properties = [];
+                                List<string> required = [];
                                 JsonElement inputSchema = af.JsonSchema;
-                                if (inputSchema.ValueKind is JsonValueKind.Object &&
-                                    inputSchema.TryGetProperty("properties", out JsonElement propsElement) && propsElement.ValueKind is JsonValueKind.Object &&
-                                    inputSchema.TryGetProperty("required", out JsonElement reqElement) && reqElement.ValueKind is JsonValueKind.Array)
+                                if (inputSchema.ValueKind is JsonValueKind.Object)
                                 {
-                                    Dictionary<string, JsonElement> properties = [];
-                                    List<string> required = [];
-
-                                    foreach (JsonProperty p in propsElement.EnumerateObject())
+                                    if (inputSchema.TryGetProperty("properties", out JsonElement propsElement) && propsElement.ValueKind is JsonValueKind.Object)
                                     {
-                                        properties[p.Name] = p.Value;
-                                    }
-
-                                    foreach (JsonElement r in reqElement.EnumerateArray())
-                                    {
-                                        if (r.ValueKind is JsonValueKind.String && r.GetString() is { } s && !string.IsNullOrWhiteSpace(s))
+                                        foreach (JsonProperty p in propsElement.EnumerateObject())
                                         {
-                                            required.Add(s);
+                                            properties[p.Name] = p.Value;
                                         }
                                     }
 
-                                    (createdTools ??= []).Add(new BetaToolUnion(new BetaTool()
+                                    if (inputSchema.TryGetProperty("required", out JsonElement reqElement) && reqElement.ValueKind is JsonValueKind.Array)
                                     {
-                                        Name = af.Name,
-                                        Description = af.Description,
-                                        InputSchema = new(properties)
+                                        foreach (JsonElement r in reqElement.EnumerateArray())
                                         {
-                                            Required = required,
-                                        },
-                                    }));
+                                            if (r.ValueKind is JsonValueKind.String && r.GetString() is { } s && !string.IsNullOrWhiteSpace(s))
+                                            {
+                                                required.Add(s);
+                                            }
+                                        }
+                                    }
                                 }
+                                
+                                (createdTools ??= []).Add(new BetaTool()
+                                {
+                                    Name = af.Name,
+                                    Description = af.Description,
+                                    InputSchema = new(properties) { Required = required },
+                                });
                                 break;
 
                             case HostedWebSearchTool:
-                                (createdTools ??= []).Add(new BetaToolUnion(new BetaWebSearchTool20250305()));
+                                (createdTools ??= []).Add(new BetaWebSearchTool20250305());
                                 break;
 
                             case HostedCodeInterpreterTool:
-                                (createdTools ??= []).Add(new BetaToolUnion(new BetaCodeExecutionTool20250825()));
+                                (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
                                 break;
 
                             case HostedMcpServerTool mcp:
@@ -539,52 +519,47 @@ public static class AnthropicBetaClientExtensions
 
                     if (createdTools?.Count > 0)
                     {
-                        bodyProperties["tools"] = JsonSerializer.SerializeToElement(createdTools, ModelBase.SerializerOptions);
+                        createParams = createParams with { Tools = createdTools };
                     }
 
                     if (mcpServers?.Count > 0)
                     {
-                        bodyProperties["mcp_servers"] = JsonSerializer.SerializeToElement(mcpServers, ModelBase.SerializerOptions);
+                        createParams = createParams with { MCPServers = mcpServers };
                     }
                 }
 
-                if (!bodyProperties.ContainsKey("tool_choice") &&
-                    createdTools is { Count: > 0 } &&
-                    options.ToolMode is { } toolMode)
+                if (createParams.ToolChoice is null && options.ToolMode is { } toolMode)
                 {
                     BetaToolChoice? toolChoice =
-                        toolMode is AutoChatToolMode ? new BetaToolChoice(new BetaToolChoiceAuto() { DisableParallelToolUse = !options.AllowMultipleToolCalls }) :
-                        toolMode is NoneChatToolMode ? new BetaToolChoice(new BetaToolChoiceNone()) :
-                        toolMode is RequiredChatToolMode ? new BetaToolChoice(new BetaToolChoiceAny() { DisableParallelToolUse = !options.AllowMultipleToolCalls }) :
-                        null;
+                        toolMode is AutoChatToolMode ? new BetaToolChoiceAuto() { DisableParallelToolUse = !options.AllowMultipleToolCalls } :
+                        toolMode is NoneChatToolMode ? new BetaToolChoiceNone() :
+                        toolMode is RequiredChatToolMode ? new BetaToolChoiceAny() { DisableParallelToolUse = !options.AllowMultipleToolCalls } :
+                        (BetaToolChoice?)null;
                     if (toolChoice is not null)
                     {
-                        bodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(toolChoice, ModelBase.SerializerOptions);
+                        createParams = createParams with { ToolChoice = toolChoice };
                     }
                 }
             }
 
             if (systemMessages is not null)
             {
-                if (bodyProperties.TryGetValue("system", out JsonElement systemJson))
+                if (createParams.System is { } existingSystem)
                 {
-                    if (systemJson.ValueKind is JsonValueKind.String)
+                    if (existingSystem.Value is string existingMessage)
                     {
-                        systemMessages.Insert(0, new BetaTextBlockParam() { Text = systemJson.GetString() ?? string.Empty });
+                        systemMessages.Insert(0, new BetaTextBlockParam() { Text = existingMessage });
                     }
-                    else if (systemJson.ValueKind is JsonValueKind.Array)
+                    else if (existingSystem.Value is IReadOnlyList<BetaTextBlockParam> existingMessages)
                     {
-                        systemMessages.AddRange(JsonSerializer.Deserialize<List<BetaTextBlockParam>>(systemJson, ModelBase.SerializerOptions)!);
+                        systemMessages.InsertRange(0, existingMessages);
                     }
                 }
 
-                bodyProperties["system"] = JsonSerializer.SerializeToElement(systemMessages, ModelBase.SerializerOptions);
+                createParams = createParams with { System = systemMessages };
             }
 
-            return MessageCreateParams.FromRawUnchecked(
-                new Dictionary<string, JsonElement>(),
-                new Dictionary<string, JsonElement>(),
-                bodyProperties);
+            return createParams;
         }
 
         private static UsageDetails ToUsageDetails(BetaUsage usage) =>
@@ -627,9 +602,9 @@ public static class AnthropicBetaClientExtensions
 
         private static AIContent ToAIContent(BetaContentBlock block)
         {
-            static AIContent FromBetaTextBlock( BetaTextBlock text)
+            static AIContent FromBetaTextBlock(BetaTextBlock text)
             {
-                TextContent tc = new TextContent(text.Text)
+                TextContent tc = new(text.Text)
                 {
                     RawRepresentation = text,
                 };

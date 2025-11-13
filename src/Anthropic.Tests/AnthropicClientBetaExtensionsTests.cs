@@ -1,6 +1,5 @@
-using Anthropic.Client;
-using Anthropic.Client.Services;
-using Anthropic.Client.Services.Beta;
+using Anthropic;
+using Anthropic.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -23,7 +22,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     [Fact]
     public void AsIChatClient_ThrowsOnNullClient()
     {
-        Anthropic.Client.Services.IBetaService client = null!;
+        Anthropic.Services.IBetaService client = null!;
         Assert.Throws<ArgumentNullException>(() => client.AsIChatClient());
     }
 
@@ -77,7 +76,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(response);
         Assert.NotNull(response.RawRepresentation);
 
-        var rawMessage = response.RawRepresentation as Anthropic.Client.Models.Beta.Messages.BetaMessage;
+        var rawMessage = response.RawRepresentation as Anthropic.Models.Beta.Messages.BetaMessage;
         Assert.NotNull(rawMessage);
         Assert.Equal("msg_raw_01", rawMessage.ID);
     }
@@ -320,17 +319,17 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         var textContent = response.Messages[0].Contents[0] as TextContent;
         Assert.NotNull(textContent);
         Assert.NotNull(textContent.RawRepresentation);
-        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaTextBlock>(textContent.RawRepresentation);
+        Assert.IsType<Anthropic.Models.Beta.Messages.BetaTextBlock>(textContent.RawRepresentation);
 
         var thinkingContent = response.Messages[0].Contents[1] as TextReasoningContent;
         Assert.NotNull(thinkingContent);
         Assert.NotNull(thinkingContent.RawRepresentation);
-        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaThinkingBlock>(thinkingContent.RawRepresentation);
+        Assert.IsType<Anthropic.Models.Beta.Messages.BetaThinkingBlock>(thinkingContent.RawRepresentation);
 
         var toolCall = response.Messages[0].Contents[2] as FunctionCallContent;
         Assert.NotNull(toolCall);
         Assert.NotNull(toolCall.RawRepresentation);
-        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaToolUseBlock>(toolCall.RawRepresentation);
+        Assert.IsType<Anthropic.Models.Beta.Messages.BetaToolUseBlock>(toolCall.RawRepresentation);
     }
 
     [Fact]
@@ -384,7 +383,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(mcpToolCall.Arguments);
         Assert.True(mcpToolCall.Arguments.ContainsKey("query"));
         Assert.NotNull(mcpToolCall.RawRepresentation);
-        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaMCPToolUseBlock>(mcpToolCall.RawRepresentation);
+        Assert.IsType<Anthropic.Models.Beta.Messages.BetaMCPToolUseBlock>(mcpToolCall.RawRepresentation);
     }
 
     [Fact]
@@ -437,6 +436,6 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.Single(mcpResult.Output);
         Assert.Equal("Result from MCP tool", ((TextContent)mcpResult.Output[0]).Text);
         Assert.NotNull(mcpResult.RawRepresentation);
-        Assert.IsType<Anthropic.Client.Models.Beta.Messages.BetaMCPToolResultBlock>(mcpResult.RawRepresentation);
+        Assert.IsType<Anthropic.Models.Beta.Messages.BetaMCPToolResultBlock>(mcpResult.RawRepresentation);
     }
 }
