@@ -15,11 +15,17 @@ public enum Model
     /// <summary>
     /// High-performance model with early extended thinking
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     Claude3_7SonnetLatest,
 
     /// <summary>
     /// High-performance model with early extended thinking
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     Claude3_7Sonnet20250219,
 
     /// <summary>
@@ -90,11 +96,17 @@ public enum Model
     /// <summary>
     /// Excels at writing and complex tasks
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on January 5th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     Claude3OpusLatest,
 
     /// <summary>
     /// Excels at writing and complex tasks
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on January 5th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     Claude_3_Opus_20240229,
 
     /// <summary>

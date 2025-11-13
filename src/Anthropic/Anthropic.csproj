@@ -19,6 +19,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- Disable missing XML documentation warnings -->
     <NoWarn>$(NoWarn),1570,1573,1574,1591</NoWarn>
+    <!-- Disable deprecation warnings since we may reference our own deprecated symbols -->
+    <NoWarn>$(NoWarn),0618</NoWarn>
     <!-- Disable JSON warnings (beta) -->
     <NoWarn>$(NoWarn),IL2026,IL3050</NoWarn>
     <Configurations>Debug;Release</Configurations>

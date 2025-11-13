@@ -7,6 +7,8 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <!-- Disable skipped tests warnings -->
     <NoWarn>$(NoWarn),xUnit1004</NoWarn>
+    <!-- Disable deprecation warnings since we may reference our own deprecated symbols -->
+    <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
