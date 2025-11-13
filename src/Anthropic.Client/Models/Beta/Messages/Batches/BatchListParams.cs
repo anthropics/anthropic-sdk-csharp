@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Client.Core;
+using Anthropic.Client.Services.Beta.Messages;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches;
 
@@ -174,6 +175,7 @@ public sealed record class BatchListParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
+        BatchService.AddDefaultHeaders(request);
         foreach (var item in this.HeaderProperties)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

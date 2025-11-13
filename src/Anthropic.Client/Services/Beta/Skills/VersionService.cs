@@ -9,6 +9,11 @@ namespace Anthropic.Client.Services.Beta.Skills;
 
 public sealed class VersionService : IVersionService
 {
+    internal static void AddDefaultHeaders(HttpRequestMessage request)
+    {
+        request.Headers.Add("anthropic-beta", "skills-2025-10-02");
+    }
+
     public IVersionService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new VersionService(this._client.WithOptions(modifier));

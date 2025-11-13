@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Client.Core;
 using Anthropic.Client.Exceptions;
 using Anthropic.Client.Models.Messages;
+using Anthropic.Client.Services.Beta.Messages;
 using System = System;
 
 namespace Anthropic.Client.Models.Beta.Messages.Batches;
@@ -150,6 +151,7 @@ public sealed record class BatchCreateParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
+        BatchService.AddDefaultHeaders(request);
         foreach (var item in this.HeaderProperties)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

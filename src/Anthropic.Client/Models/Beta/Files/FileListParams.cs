@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Client.Core;
+using Anthropic.Client.Services.Beta;
 
 namespace Anthropic.Client.Models.Beta.Files;
 
@@ -169,6 +170,7 @@ public sealed record class FileListParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
+        FileService.AddDefaultHeaders(request);
         foreach (var item in this.HeaderProperties)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

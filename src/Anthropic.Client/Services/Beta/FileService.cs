@@ -9,6 +9,11 @@ namespace Anthropic.Client.Services.Beta;
 
 public sealed class FileService : IFileService
 {
+    internal static void AddDefaultHeaders(HttpRequestMessage request)
+    {
+        request.Headers.Add("anthropic-beta", "files-api-2025-04-14");
+    }
+
     public IFileService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new FileService(this._client.WithOptions(modifier));

@@ -10,6 +10,11 @@ namespace Anthropic.Client.Services.Beta;
 
 public sealed class SkillService : ISkillService
 {
+    internal static void AddDefaultHeaders(HttpRequestMessage request)
+    {
+        request.Headers.Add("anthropic-beta", "skills-2025-10-02");
+    }
+
     public ISkillService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new SkillService(this._client.WithOptions(modifier));
