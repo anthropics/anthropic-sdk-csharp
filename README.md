@@ -15,7 +15,7 @@ The REST API documentation can be found on [docs.anthropic.com](https://docs.ant
 
 ```bash
 git clone git@github.com:anthropics/anthropic-sdk-csharp.git
-dotnet add reference anthropic-sdk-csharp/src/Anthropic.Client
+dotnet add reference anthropic-sdk-csharp/src/Anthropic
 ```
 
 ## Requirements
@@ -31,8 +31,8 @@ See the [`examples`](examples) directory for complete and runnable examples.
 
 ```csharp
 using System;
-using Anthropic.Client;
-using Anthropic.Client.Models.Messages;
+using Anthropic;
+using Anthropic.Models.Messages;
 
 AnthropicClient client = new();
 
@@ -60,7 +60,7 @@ Console.WriteLine(message);
 Configure the client using environment variables:
 
 ```csharp
-using Anthropic.Client;
+using Anthropic;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
@@ -69,7 +69,7 @@ AnthropicClient client = new();
 Or manually:
 
 ```csharp
-using Anthropic.Client;
+using Anthropic;
 
 AnthropicClient client = new() { APIKey = "my-anthropic-api-key" };
 ```
@@ -124,7 +124,7 @@ These streaming methods return [`IAsyncEnumerable`](https://learn.microsoft.com/
 
 ```csharp
 using System;
-using Anthropic.Client.Models.Messages;
+using Anthropic.Models.Messages;
 
 MessageCreateParams parameters = new()
 {
@@ -154,7 +154,7 @@ These methods return `HttpResponse`:
 
 ```csharp
 using System;
-using Anthropic.Client.Models.Beta.Files;
+using Anthropic.Models.Beta.Files;
 
 FileDownloadParams parameters = new() { FileID = "file_id" };
 
@@ -220,7 +220,7 @@ The API may also explicitly instruct the SDK to retry or not retry a request.
 To set a custom number of retries, configure the client using the `MaxRetries` method:
 
 ```csharp
-using Anthropic.Client;
+using Anthropic;
 
 AnthropicClient client = new() { MaxRetries = 3 };
 ```
@@ -247,7 +247,7 @@ To set a custom timeout, configure the client using the `Timeout` option:
 
 ```csharp
 using System;
-using Anthropic.Client;
+using Anthropic;
 
 AnthropicClient client = new() { Timeout = TimeSpan.FromSeconds(42) };
 ```
@@ -286,7 +286,7 @@ message.Validate();
 Or configure the client using the `ResponseValidation` option:
 
 ```csharp
-using Anthropic.Client;
+using Anthropic;
 
 AnthropicClient client = new() { ResponseValidation = true };
 ```
