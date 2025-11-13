@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Anthropic.Core;
+using Anthropic.Exceptions;
+
+namespace Anthropic.Models.Messages.Batches;
+
+/// <summary>
+/// This is a single line in the response `.jsonl` file and does not represent the
+/// response as a whole.
+/// </summary>
+[JsonConverter(typeof(ModelConverter<MessageBatchIndividualResponse>))]
+public sealed record class MessageBatchIndividualResponse
+    : ModelBase,
+        IFromRaw<MessageBatchIndividualResponse>
+{
+    /// <summary>
+    /// Developer-provided ID created for each request in a Message Batch. Useful
+    /// for matching results to requests, as results may be given out of request order.
+    ///
+    /// <para>Must be unique for each request within the Message Batch.</para>
+    /// </summary>
+    public required string CustomID
+    {
+        get
+        {
+            if (!this._properties.TryGetValue("custom_id", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'custom_id' cannot be null",
+                    new ArgumentOutOfRangeException("custom_id", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'custom_id' cannot be null",
+                    new ArgumentNullException("custom_id")
+                );
+        }
+        init
+        {
+            this._properties["custom_id"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// Processing result for this request.
+    ///
+    /// <para>Contains a Message output if processing was successful, an error response
+    /// if processing failed, or the reason why processing was not attempted, such
+    /// as cancellation or expiration.</para>
+    /// </summary>
+    public required MessageBatchResult Result
+    {
+        get
+        {
+            if (!this._properties.TryGetValue("result", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'result' cannot be null",
+                    new ArgumentOutOfRangeException("result", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<MessageBatchResult>(
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'result' cannot be null",
+                    new ArgumentNullException("result")
+                );
+        }
+        init
+        {
+            this._properties["result"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public override void Validate()
+    {
+        _ = this.CustomID;
+        this.Result.Validate();
+    }
+
+    public MessageBatchIndividualResponse() { }
+
+    public MessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    MessageBatchIndividualResponse(FrozenDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+#pragma warning restore CS8618
+
+    public static MessageBatchIndividualResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
+    {
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
+    }
+}

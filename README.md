@@ -15,7 +15,7 @@ The REST API documentation can be found on [docs.anthropic.com](https://docs.ant
 
 ```bash
 git clone git@github.com:anthropics/anthropic-sdk-csharp.git
-dotnet add reference anthropic-sdk-csharp/src/Anthropic.Client
+dotnet add reference anthropic-sdk-csharp/src/Anthropic
 ```
 
 ## Requirements
@@ -31,8 +31,8 @@ See the [`examples`](examples) directory for complete and runnable examples.
 
 ```csharp
 using System;
-using Anthropic.Client;
-using Anthropic.Client.Models.Messages;
+using Anthropic;
+using Anthropic.Models.Messages;
 
 AnthropicClient client = new();
 
@@ -60,7 +60,7 @@ Console.WriteLine(message);
 Configure the client using environment variables:
 
 ```csharp
-using Anthropic.Client;
+using Anthropic;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
@@ -69,7 +69,7 @@ AnthropicClient client = new();
 Or manually:
 
 ```csharp
-using Anthropic.Client;
+using Anthropic;
 
 AnthropicClient client = new() { APIKey = "my-anthropic-api-key" };
 ```
@@ -124,7 +124,7 @@ These streaming methods return [`IAsyncEnumerable`](https://learn.microsoft.com/
 
 ```csharp
 using System;
-using Anthropic.Client.Models.Messages;
+using Anthropic.Models.Messages;
 
 MessageCreateParams parameters = new()
 {
@@ -144,6 +144,34 @@ await foreach (var message in client.Messages.CreateStreaming(parameters))
 {
     Console.WriteLine(message);
 }
+```
+
+## Binary responses
+
+The SDK defines methods that return binary responses, which are used for API responses that shouldn't necessarily be parsed, like non-JSON data.
+
+These methods return `HttpResponse`:
+
+```csharp
+using System;
+using Anthropic.Models.Beta.Files;
+
+FileDownloadParams parameters = new() { FileID = "file_id" };
+
+var response = await client.Beta.Files.Download(parameters);
+
+Console.WriteLine(response);
+```
+
+To save the response content to a file, or any [`Stream`](https://learn.microsoft.com/en-us/dotnet/api/system.io.stream?view=net-9.0), use the [`CopyToAsync`](<https://learn.microsoft.com/en-us/dotnet/api/system.io.stream.copytoasync?view=net-9.0#system-io-stream-copytoasync(system-io-stream)>) method:
+
+```csharp
+using System.IO;
+
+using var response = await client.Beta.Files.Download(parameters);
+using var contentStream = await response.ReadAsStream();
+using var fileStream = File.Open(path, FileMode.OpenOrCreate);
+await contentStream.CopyToAsync(fileStream); // Or any other Stream
 ```
 
 ## Error handling
@@ -192,7 +220,7 @@ The API may also explicitly instruct the SDK to retry or not retry a request.
 To set a custom number of retries, configure the client using the `MaxRetries` method:
 
 ```csharp
-using Anthropic.Client;
+using Anthropic;
 
 AnthropicClient client = new() { MaxRetries = 3 };
 ```
@@ -219,7 +247,7 @@ To set a custom timeout, configure the client using the `Timeout` option:
 
 ```csharp
 using System;
-using Anthropic.Client;
+using Anthropic;
 
 AnthropicClient client = new() { Timeout = TimeSpan.FromSeconds(42) };
 ```
@@ -258,7 +286,7 @@ message.Validate();
 Or configure the client using the `ResponseValidation` option:
 
 ```csharp
-using Anthropic.Client;
+using Anthropic;
 
 AnthropicClient client = new() { ResponseValidation = true };
 ```
