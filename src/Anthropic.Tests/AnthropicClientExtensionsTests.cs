@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Anthropic;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+
 namespace Microsoft.Extensions.AI.Tests;
 
 public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase

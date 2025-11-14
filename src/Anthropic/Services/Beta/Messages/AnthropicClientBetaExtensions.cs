@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 #pragma warning disable MEAI001 // [Experimental] APIs in Microsoft.Extensions.AI
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 
 namespace Microsoft.Extensions.AI;
 

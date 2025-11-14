@@ -10,6 +10,8 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+
 namespace Microsoft.Extensions.AI;
 
 public static class AnthropicClientExtensions

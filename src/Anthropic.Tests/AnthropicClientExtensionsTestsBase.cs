@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+
 namespace Microsoft.Extensions.AI.Tests;
 
 public abstract class AnthropicClientExtensionsTestsBase
@@ -2471,7 +2473,13 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "text": "Find recent news about AI"
                     }]
                 }],
-                "max_tokens": 1024
+                "max_tokens": 1024,
+                "tools": [
+                    {
+                        "name": "web_search",
+                        "type": "web_search_20250305"
+                    }
+                ]
             }
             """,
             actualResponse: """
@@ -2499,7 +2507,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             Tools = [new HostedWebSearchTool()]
         };
 
-        ChatResponse response = await chatClient.GetResponseAsync("Find recent news about AI");
+        ChatResponse response = await chatClient.GetResponseAsync("Find recent news about AI", options);
         Assert.NotNull(response);
     }
 
