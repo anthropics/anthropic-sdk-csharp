@@ -18,7 +18,7 @@ public sealed class MessageService : IMessageService
         return new MessageService(this._client.WithOptions(modifier));
     }
 
-    readonly IAnthropicClient _client;
+    internal readonly IAnthropicClient _client;
 
     public MessageService(IAnthropicClient client)
     {
