@@ -61,7 +61,6 @@
   ],
   "release-type": "simple",
   "extra-files": [
-    "README.md",
     {
       "type": "xml",
       "path": "src/Anthropic/Anthropic.csproj",
