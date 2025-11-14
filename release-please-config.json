@@ -61,10 +61,9 @@
   ],
   "release-type": "simple",
   "extra-files": [
-    "README.md",
     {
       "type": "xml",
-      "path": "src/Anthropic.Client/Anthropic.Client.csproj",
+      "path": "src/Anthropic/Anthropic.csproj",
       "xpath": "//Project/PropertyGroup/VersionPrefix"
     }
   ]

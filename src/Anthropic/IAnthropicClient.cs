@@ -1,0 +1,39 @@
+using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Anthropic.Core;
+using Anthropic.Services;
+
+namespace Anthropic;
+
+public interface IAnthropicClient
+{
+    HttpClient HttpClient { get; init; }
+
+    Uri BaseUrl { get; init; }
+
+    bool ResponseValidation { get; init; }
+
+    int? MaxRetries { get; init; }
+
+    TimeSpan? Timeout { get; init; }
+
+    string? APIKey { get; init; }
+
+    string? AuthToken { get; init; }
+
+    IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    IMessageService Messages { get; }
+
+    IModelService Models { get; }
+
+    IBetaService Beta { get; }
+
+    Task<HttpResponse> Execute<T>(
+        HttpRequest<T> request,
+        CancellationToken cancellationToken = default
+    )
+        where T : ParamsBase;
+}
