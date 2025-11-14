@@ -35,6 +35,29 @@ public record class BetaToolUnion
         }
     }
 
+    public bool? Strict
+    {
+        get
+        {
+            return Match<bool?>(
+                betaTool: (x) => x.Strict,
+                bash20241022: (x) => x.Strict,
+                bash20250124: (x) => x.Strict,
+                codeExecutionTool20250522: (x) => x.Strict,
+                codeExecutionTool20250825: (x) => x.Strict,
+                computerUse20241022: (x) => x.Strict,
+                memoryTool20250818: (x) => x.Strict,
+                computerUse20250124: (x) => x.Strict,
+                textEditor20241022: (x) => x.Strict,
+                textEditor20250124: (x) => x.Strict,
+                textEditor20250429: (x) => x.Strict,
+                textEditor20250728: (x) => x.Strict,
+                webSearchTool20250305: (x) => x.Strict,
+                webFetchTool20250910: (x) => x.Strict
+            );
+        }
+    }
+
     public long? DisplayHeightPx
     {
         get

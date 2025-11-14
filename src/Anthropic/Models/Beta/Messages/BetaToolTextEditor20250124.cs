@@ -85,6 +85,29 @@ public sealed record class BetaToolTextEditor20250124
         }
     }
 
+    public bool? Strict
+    {
+        get
+        {
+            if (!this._properties.TryGetValue("strict", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._properties["strict"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
     public override void Validate()
     {
         if (
@@ -106,6 +129,7 @@ public sealed record class BetaToolTextEditor20250124
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.CacheControl?.Validate();
+        _ = this.Strict;
     }
 
     public BetaToolTextEditor20250124()

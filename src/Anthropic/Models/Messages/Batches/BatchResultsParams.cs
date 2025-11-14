@@ -15,7 +15,7 @@ namespace Anthropic.Models.Messages.Batches;
 /// request in the Message Batch. Results are not guaranteed to be in the same order
 /// as requests. Use the `custom_id` field to match results to requests.</para>
 ///
-/// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+/// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
 /// </summary>
 public sealed record class BatchResultsParams : ParamsBase
 {

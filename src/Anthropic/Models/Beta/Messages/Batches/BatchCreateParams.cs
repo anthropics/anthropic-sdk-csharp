@@ -21,7 +21,7 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// at once. Once a Message Batch is created, it begins processing immediately. Batches
 /// can take up to 24 hours to complete.</para>
 ///
-/// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+/// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
 /// </summary>
 public sealed record class BatchCreateParams : ParamsBase
 {
@@ -510,6 +510,30 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     }
 
     /// <summary>
+    ///  A schema to specify Claude's output format in responses.
+    /// </summary>
+    public BetaJSONOutputFormat? OutputFormat
+    {
+        get
+        {
+            if (!this._properties.TryGetValue("output_format", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaJSONOutputFormat?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        init
+        {
+            this._properties["output_format"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
     /// Determines whether to use priority capacity (if available) or standard capacity
     /// for this request.
     ///
@@ -886,6 +910,7 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
             item.Validate();
         }
         this.Metadata?.Validate();
+        this.OutputFormat?.Validate();
         this.ServiceTier?.Validate();
         _ = this.StopSequences;
         _ = this.Stream;

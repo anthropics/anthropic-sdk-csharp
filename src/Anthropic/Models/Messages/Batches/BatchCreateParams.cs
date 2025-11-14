@@ -19,7 +19,7 @@ namespace Anthropic.Models.Messages.Batches;
 /// at once. Once a Message Batch is created, it begins processing immediately. Batches
 /// can take up to 24 hours to complete.</para>
 ///
-/// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+/// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
 /// </summary>
 public sealed record class BatchCreateParams : ParamsBase
 {

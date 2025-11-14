@@ -19,7 +19,7 @@ namespace Anthropic.Models.Beta.Messages;
 ///
 /// <para>The Messages API can be used for either single queries or stateless multi-turn conversations.</para>
 ///
-/// <para>Learn more about the Messages API in our [user guide](/en/docs/initial-setup)</para>
+/// <para>Learn more about the Messages API in our [user guide](https://docs.claude.com/en/docs/initial-setup)</para>
 /// </summary>
 public sealed record class MessageCreateParams : ParamsBase
 {
@@ -266,6 +266,30 @@ public sealed record class MessageCreateParams : ParamsBase
             }
 
             this._bodyProperties["metadata"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    ///  A schema to specify Claude's output format in responses.
+    /// </summary>
+    public BetaJSONOutputFormat? OutputFormat
+    {
+        get
+        {
+            if (!this._bodyProperties.TryGetValue("output_format", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaJSONOutputFormat?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        init
+        {
+            this._bodyProperties["output_format"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );

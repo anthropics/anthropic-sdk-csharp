@@ -131,6 +131,29 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
         }
     }
 
+    public bool? Strict
+    {
+        get
+        {
+            if (!this._properties.TryGetValue("strict", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._properties["strict"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
     public ApiEnum<string, BetaToolType>? Type
     {
         get
@@ -158,6 +181,7 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
         _ = this.Name;
         this.CacheControl?.Validate();
         _ = this.Description;
+        _ = this.Strict;
         this.Type?.Validate();
     }
 

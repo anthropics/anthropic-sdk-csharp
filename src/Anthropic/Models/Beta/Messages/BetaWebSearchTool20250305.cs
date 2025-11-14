@@ -149,6 +149,29 @@ public sealed record class BetaWebSearchTool20250305
         }
     }
 
+    public bool? Strict
+    {
+        get
+        {
+            if (!this._properties.TryGetValue("strict", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._properties["strict"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
     /// <summary>
     /// Parameters for the user's location. Used to provide more relevant search results.
     /// </summary>
@@ -194,6 +217,7 @@ public sealed record class BetaWebSearchTool20250305
         _ = this.BlockedDomains;
         this.CacheControl?.Validate();
         _ = this.MaxUses;
+        _ = this.Strict;
         this.UserLocation?.Validate();
     }
 

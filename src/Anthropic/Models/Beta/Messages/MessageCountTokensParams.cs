@@ -19,7 +19,7 @@ namespace Anthropic.Models.Beta.Messages;
 /// <para>The Token Count API can be used to count the number of tokens in a Message,
 /// including tools, images, and documents, without creating it.</para>
 ///
-/// <para>Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)</para>
+/// <para>Learn more about token counting in our [user guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
@@ -186,6 +186,30 @@ public sealed record class MessageCountTokensParams : ParamsBase
             }
 
             this._bodyProperties["mcp_servers"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    ///  A schema to specify Claude's output format in responses.
+    /// </summary>
+    public BetaJSONOutputFormat? OutputFormat
+    {
+        get
+        {
+            if (!this._bodyProperties.TryGetValue("output_format", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaJSONOutputFormat?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        init
+        {
+            this._bodyProperties["output_format"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -631,6 +655,29 @@ public record class Tool
                 betaToolTextEditor20250728: (x) => x.CacheControl,
                 betaWebSearchTool20250305: (x) => x.CacheControl,
                 betaWebFetchTool20250910: (x) => x.CacheControl
+            );
+        }
+    }
+
+    public bool? Strict
+    {
+        get
+        {
+            return Match<bool?>(
+                beta: (x) => x.Strict,
+                betaToolBash20241022: (x) => x.Strict,
+                betaToolBash20250124: (x) => x.Strict,
+                betaCodeExecutionTool20250522: (x) => x.Strict,
+                betaCodeExecutionTool20250825: (x) => x.Strict,
+                betaToolComputerUse20241022: (x) => x.Strict,
+                betaMemoryTool20250818: (x) => x.Strict,
+                betaToolComputerUse20250124: (x) => x.Strict,
+                betaToolTextEditor20241022: (x) => x.Strict,
+                betaToolTextEditor20250124: (x) => x.Strict,
+                betaToolTextEditor20250429: (x) => x.Strict,
+                betaToolTextEditor20250728: (x) => x.Strict,
+                betaWebSearchTool20250305: (x) => x.Strict,
+                betaWebFetchTool20250910: (x) => x.Strict
             );
         }
     }

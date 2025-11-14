@@ -83,6 +83,29 @@ public sealed record class BetaToolBash20250124 : ModelBase, IFromRaw<BetaToolBa
         }
     }
 
+    public bool? Strict
+    {
+        get
+        {
+            if (!this._properties.TryGetValue("strict", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._properties["strict"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Name, JsonSerializer.Deserialize<JsonElement>("\"bash\"")))
@@ -99,6 +122,7 @@ public sealed record class BetaToolBash20250124 : ModelBase, IFromRaw<BetaToolBa
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.CacheControl?.Validate();
+        _ = this.Strict;
     }
 
     public BetaToolBash20250124()

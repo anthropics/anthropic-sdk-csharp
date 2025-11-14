@@ -69,6 +69,13 @@ public class BatchServiceTest : TestBase
                                 },
                             ],
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                            OutputFormat = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
                             ServiceTier = ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
@@ -117,6 +124,7 @@ public class BatchServiceTest : TestBase
                                     Name = "name",
                                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
                                     Description = "Get the current weather in a given location",
+                                    Strict = true,
                                     Type = Messages::BetaToolType.Custom,
                                 },
                             ],

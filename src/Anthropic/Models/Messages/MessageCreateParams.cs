@@ -18,7 +18,7 @@ namespace Anthropic.Models.Messages;
 ///
 /// <para>The Messages API can be used for either single queries or stateless multi-turn conversations.</para>
 ///
-/// <para>Learn more about the Messages API in our [user guide](/en/docs/initial-setup)</para>
+/// <para>Learn more about the Messages API in our [user guide](https://docs.claude.com/en/docs/initial-setup)</para>
 /// </summary>
 public sealed record class MessageCreateParams : ParamsBase
 {

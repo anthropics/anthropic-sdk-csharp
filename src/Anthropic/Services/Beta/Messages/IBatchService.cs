@@ -18,7 +18,7 @@ public interface IBatchService
     /// requests at once. Once a Message Batch is created, it begins processing immediately.
     /// Batches can take up to 24 hours to complete.</para>
     ///
-    /// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+    /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
     /// </summary>
     Task<BetaMessageBatch> Create(
         BatchCreateParams parameters,
@@ -30,7 +30,7 @@ public interface IBatchService
     /// To access the results of a Message Batch, make a request to the `results_url`
     /// field in the response.
     ///
-    /// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+    /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
     /// </summary>
     Task<BetaMessageBatch> Retrieve(
         BatchRetrieveParams parameters,
@@ -41,7 +41,7 @@ public interface IBatchService
     /// List all Message Batches within a Workspace. Most recently created batches
     /// are returned first.
     ///
-    /// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+    /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
     /// </summary>
     Task<BatchListPageResponse> List(
         BatchListParams? parameters = null,
@@ -54,7 +54,7 @@ public interface IBatchService
     /// <para>Message Batches can only be deleted once they've finished processing.
     /// If you'd like to delete an in-progress batch, you must first cancel it.</para>
     ///
-    /// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+    /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
     /// </summary>
     Task<BetaDeletedMessageBatch> Delete(
         BatchDeleteParams parameters,
@@ -71,7 +71,7 @@ public interface IBatchService
     /// the batch. Note that cancellation may not result in any canceled requests
     /// if they were non-interruptible.</para>
     ///
-    /// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+    /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
     /// </summary>
     Task<BetaMessageBatch> Cancel(
         BatchCancelParams parameters,
@@ -85,7 +85,7 @@ public interface IBatchService
     /// request in the Message Batch. Results are not guaranteed to be in the same
     /// order as requests. Use the `custom_id` field to match results to requests.</para>
     ///
-    /// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+    /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
     /// </summary>
     IAsyncEnumerable<BetaMessageBatchIndividualResponse> ResultsStreaming(
         BatchResultsParams parameters,

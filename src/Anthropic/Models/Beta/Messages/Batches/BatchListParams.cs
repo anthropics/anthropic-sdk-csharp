@@ -13,7 +13,7 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// List all Message Batches within a Workspace. Most recently created batches are
 /// returned first.
 ///
-/// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+/// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
 /// </summary>
 public sealed record class BatchListParams : ParamsBase
 {

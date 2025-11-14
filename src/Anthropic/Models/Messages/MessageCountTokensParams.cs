@@ -18,7 +18,7 @@ namespace Anthropic.Models.Messages;
 /// <para>The Token Count API can be used to count the number of tokens in a Message,
 /// including tools, images, and documents, without creating it.</para>
 ///
-/// <para>Learn more about token counting in our [user guide](/en/docs/build-with-claude/token-counting)</para>
+/// <para>Learn more about token counting in our [user guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {

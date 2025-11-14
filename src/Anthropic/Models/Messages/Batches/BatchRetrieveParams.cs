@@ -13,7 +13,7 @@ namespace Anthropic.Models.Messages.Batches;
 /// To access the results of a Message Batch, make a request to the `results_url`
 /// field in the response.
 ///
-/// <para>Learn more about the Message Batches API in our [user guide](/en/docs/build-with-claude/batch-processing)</para>
+/// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
 /// </summary>
 public sealed record class BatchRetrieveParams : ParamsBase
 {
