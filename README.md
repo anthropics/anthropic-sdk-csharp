@@ -1,4 +1,12 @@
 # Anthropic C# API Library
+> [!IMPORTANT]
+> **Package Versioning Update**
+>
+> As of version 4+, the `Anthropic` package is now the **official Anthropic SDK for C#** (currently in beta).
+>
+> Package versions 3.X and below were previously used for the tryAGI community-built SDK, which has moved to [`tryAGI.Anthropic`](https://www.nuget.org/packages/tryagi.Anthropic/). If you need to continue using the former client in your project, please update your package reference to `tryAGI.Anthropic`.
+>
+> We're grateful to the maintainers of tryAGI.Anthropic for their work serving the C# community.
 
 > [!NOTE]
 > The Anthropic C# API Library is currently in **beta** and we're excited for you to experiment with it!
