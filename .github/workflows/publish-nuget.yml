@@ -1,0 +1,32 @@
+# workflow for re-running publishing to NuGet in case it fails for some reason
+# you can run this workflow by navigating to https://www.github.com/anthropics/anthropic-sdk-csharp/actions/workflows/publish-nuget.yml
+name: Publish to NuGet
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build and pack
+        run: dotnet pack
+          --configuration Release
+          --output "${{github.workspace}}/artifacts/packages"
+
+      - name: Publish package to nuget.org
+        run: dotnet nuget push
+          ${{ github.workspace }}/artifacts/packages/*.nupkg
+          --source https://api.nuget.org/v3/index.json
+          --api-key $NUGET_API_KEY
+          --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ secrets.ANTHROPIC_NUGET_API_KEY || secrets.NUGET_API_KEY }}

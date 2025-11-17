@@ -22,8 +22,7 @@ The REST API documentation can be found on [docs.anthropic.com](https://docs.ant
 ## Installation
 
 ```bash
-git clone git@github.com:anthropics/anthropic-sdk-csharp.git
-dotnet add reference anthropic-sdk-csharp/src/Anthropic
+dotnet add package Anthropic
 ```
 
 ## Requirements
