@@ -26,7 +26,7 @@ public sealed record class ModelRetrieveParams : ParamsBase
     {
         get
         {
-            if (!this._headerProperties.TryGetValue("betas", out JsonElement element))
+            if (!this._headerProperties.TryGetValue("anthropic-beta", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
@@ -41,7 +41,7 @@ public sealed record class ModelRetrieveParams : ParamsBase
                 return;
             }
 
-            this._headerProperties["betas"] = JsonSerializer.SerializeToElement(
+            this._headerProperties["anthropic-beta"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
