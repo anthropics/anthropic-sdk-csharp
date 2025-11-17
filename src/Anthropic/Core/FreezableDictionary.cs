@@ -7,8 +7,7 @@ using Collections = System.Collections;
 namespace Anthropic.Core;
 
 /// <summary>
-/// A dictionary that can be mutated and then frozen once no more mutations are expected.<br
-/// /><br />
+/// A dictionary that can be mutated and then frozen once no more mutations are expected.
 ///
 /// <para>This is useful for allowing a dictionary to be modified by a class's `init`
 /// properties, but then preventing it from being modified afterwards.</para>

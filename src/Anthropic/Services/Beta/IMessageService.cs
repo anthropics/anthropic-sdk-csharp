@@ -8,6 +8,11 @@ using Anthropic.Services.Beta.Messages;
 
 namespace Anthropic.Services.Beta;
 
+/// <summary>
+/// NOTE: Do not inherit from this type outside the SDK unless you're okay with breaking
+/// changes in non-major versions. We may add new methods in the future that cause
+/// existing derived classes to break.
+/// </summary>
 public interface IMessageService
 {
     global::Anthropic.Services.Beta.IMessageService WithOptions(
