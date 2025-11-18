@@ -1,5 +1,79 @@
 # Changelog
 
+## 10.0.1 (2025-11-18)
+
+Full Changelog: [v0.2.0...v10.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/v0.2.0...v10.0.1)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** improve names of some types
+* **client:** use `DateTimeOffset` instead of `DateTime`
+* **client:** flatten service namespaces
+* **client:** interpret null as omitted in some properties
+
+### Features
+
+* **api:** add file download method ([a03d526](https://github.com/anthropics/anthropic-sdk-csharp/commit/a03d5267282ba893e96ca96c70c7b28326076d1a))
+* **api:** add support for structured outputs beta ([17ea9b3](https://github.com/anthropics/anthropic-sdk-csharp/commit/17ea9b388f10cfe621af9aeb9f3ddd799027fc09))
+* **api:** rename C# package to Anthropic ([2ba3485](https://github.com/anthropics/anthropic-sdk-csharp/commit/2ba34850dcd783b672aff1371970db7e5f0abc14))
+* **client:** add `HttpResponse.ReadAsStream` method ([677857b](https://github.com/anthropics/anthropic-sdk-csharp/commit/677857b53e4bcfbc3f6a7b0d3cd7e2c9af86c9cd))
+* **client:** add cancellation token support ([bf4c0e5](https://github.com/anthropics/anthropic-sdk-csharp/commit/bf4c0e57952376844c27f63311e70cb903c5897c))
+* **client:** add per-resource headers ([1d7658a](https://github.com/anthropics/anthropic-sdk-csharp/commit/1d7658ad37ade9ed4d5a73521f72cb3a389535de))
+* **client:** add retries support ([3327c9b](https://github.com/anthropics/anthropic-sdk-csharp/commit/3327c9b2fd704a2807a9d4453d1c99c7f12e97f9))
+* **client:** add some implicit operators ([bf26da8](https://github.com/anthropics/anthropic-sdk-csharp/commit/bf26da89cad05f586a7f24fbcf0ad5adcfefc44f))
+* **client:** send `User-Agent` header ([e8a0844](https://github.com/anthropics/anthropic-sdk-csharp/commit/e8a08449899460d22522336714d86264755e1a57))
+* **client:** send `X-Stainless-Arch` header ([d66d180](https://github.com/anthropics/anthropic-sdk-csharp/commit/d66d180ff7c04aff7ec53cfefaa1dff0236ce53c))
+* **client:** send `X-Stainless-Lang` and `X-Stainless-OS` headers ([bcc30e9](https://github.com/anthropics/anthropic-sdk-csharp/commit/bcc30e9a754798c96d28516d556e40c4e8cbf802))
+* **client:** send `X-Stainless-Package-Version` headers ([84bf583](https://github.com/anthropics/anthropic-sdk-csharp/commit/84bf583218f56682972add2c77784c88700eff53))
+* **client:** send `X-Stainless-Runtime` and `X-Stainless-Runtime-Version` ([94d2581](https://github.com/anthropics/anthropic-sdk-csharp/commit/94d25812e111657e81e9f7c27dfdab97c0af82f4))
+* **client:** send `X-Stainless-Timeout` header ([95ec578](https://github.com/anthropics/anthropic-sdk-csharp/commit/95ec578685f65b8ff008b35b4cf43f289107dc86))
+* **client:** validate constant values ([493a9ef](https://github.com/anthropics/anthropic-sdk-csharp/commit/493a9efb26479cf26e21d7c7c95b70507c0d3dc9))
+* **csharp:** enable nuget publishing ([4a4a1bc](https://github.com/anthropics/anthropic-sdk-csharp/commit/4a4a1bccd369b7f7b38db636c2f5846c43b7d826))
+* **docs:** add package/version notice ([76b74eb](https://github.com/anthropics/anthropic-sdk-csharp/commit/76b74eb7f1aaee9ba6cb1844b061aee8c1288633))
+* **docs:** Semver warning ([55c20ba](https://github.com/anthropics/anthropic-sdk-csharp/commit/55c20bad38b05b7a2ec166ca403214833103b9c1))
+* **docs:** tweak readme notice ([82d5990](https://github.com/anthropics/anthropic-sdk-csharp/commit/82d5990cb33ba6acc55d12954c94aafaa75b7f7d))
+* **docs:** Update README for nuget (instead of just github) ([6bde0b4](https://github.com/anthropics/anthropic-sdk-csharp/commit/6bde0b45452e1ecde305ebace0b8a063ac205e40))
+* **docs:** Update version refs in README ([70d787d](https://github.com/anthropics/anthropic-sdk-csharp/commit/70d787dcc7d47a79e47814209f81a1366a3460c7))
+
+
+### Bug Fixes
+
+* **client:** interpret null as omitted in some properties ([56059db](https://github.com/anthropics/anthropic-sdk-csharp/commit/56059db7047e7263cbd666f19293985577f8339d))
+* **client:** use `DateTimeOffset` instead of `DateTime` ([dbc7f6f](https://github.com/anthropics/anthropic-sdk-csharp/commit/dbc7f6f086dd0a75d869c1c683fa3c245c18f548))
+* use correct header name ([f6d0942](https://github.com/anthropics/anthropic-sdk-csharp/commit/f6d0942657fd87bc7b479602e1e913f404da0bb7))
+
+
+### Performance Improvements
+
+* **client:** optimize header creation ([3d37bb5](https://github.com/anthropics/anthropic-sdk-csharp/commit/3d37bb54241981dfbfdfc7a8f69c2430de808bfb))
+
+
+### Chores
+
+* **client:** deprecate some symbols ([b3446f6](https://github.com/anthropics/anthropic-sdk-csharp/commit/b3446f6d62f8d6e53a6871aee5979903f6b04498))
+* **internal:** add prism log file to gitignore ([8588901](https://github.com/anthropics/anthropic-sdk-csharp/commit/8588901ed4a32880165b344246bc3b8c1dc2464d))
+* **internal:** codegen related update ([cf3f5d5](https://github.com/anthropics/anthropic-sdk-csharp/commit/cf3f5d5f9af0f066c53c2dcb0d27bed5f602edce))
+* **internal:** delete empty test files ([a79abd1](https://github.com/anthropics/anthropic-sdk-csharp/commit/a79abd17f32d1313f77365faf0fed8d004ff48c3))
+* **internal:** improve devcontainer ([ab246ff](https://github.com/anthropics/anthropic-sdk-csharp/commit/ab246ffcde051808c017d73c46d18a769ec7d2c0))
+* **internal:** minor improvements to csproj and gitignore ([bf94b8c](https://github.com/anthropics/anthropic-sdk-csharp/commit/bf94b8c15a7f296780660134ceb251e28ee0ed23))
+* **internal:** reduce import qualification ([137c8b4](https://github.com/anthropics/anthropic-sdk-csharp/commit/137c8b4b2103d5b510698629359e7ef2a28512ad))
+* **internal:** update release please config ([bd94183](https://github.com/anthropics/anthropic-sdk-csharp/commit/bd9418322fe76a3c7db57375ddb2f0ba8ee49543))
+
+
+### Documentation
+
+* **client:** document max retries ([e1f611f](https://github.com/anthropics/anthropic-sdk-csharp/commit/e1f611fdd28e19788f0fe843396707d20bb069fa))
+* **client:** separate comment content into paragraphs ([1f89605](https://github.com/anthropics/anthropic-sdk-csharp/commit/1f89605692d5cfee120c740098f0a35ccded6d93))
+* **internal:** add warning about implementing interface ([5476caf](https://github.com/anthropics/anthropic-sdk-csharp/commit/5476cafac1904b8185fecd56ebbe088136df3ccd))
+
+
+### Refactors
+
+* **client:** flatten service namespaces ([8de3f66](https://github.com/anthropics/anthropic-sdk-csharp/commit/8de3f666532cf1ed31031587c4819e024e3bfb6f))
+* **client:** improve names of some types ([2e52d59](https://github.com/anthropics/anthropic-sdk-csharp/commit/2e52d5996dd0121814b2827eafa3a6fca6f5c3d9))
+* **client:** move some defaults out of `ClientOptions` ([d536293](https://github.com/anthropics/anthropic-sdk-csharp/commit/d536293d0cc42d3341437f390587907cc4a8df5e))
+* **client:** pass around `ClientOptions` instead of client ([608310d](https://github.com/anthropics/anthropic-sdk-csharp/commit/608310d02a14ccfdaefad3c0f8d921ed98c2375e))
+
 ## 0.2.0 (2025-11-05)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v0.1.0...v0.2.0)
