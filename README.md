@@ -6,7 +6,7 @@
 >
 > Package versions 3.X and below were previously used for the tryAGI community-built SDK, which has moved to [`tryAGI.Anthropic`](https://www.nuget.org/packages/tryagi.Anthropic/). If you need to continue using the former client in your project, please update your package reference to `tryAGI.Anthropic`.
 >
-> We're grateful to the maintainers of tryAGI.Anthropic for their work serving the C# community.
+> We're grateful to the maintainers of tryAGI.Anthropic for their work serving the Claude ecosystem and C# community.
 
 ---
 
