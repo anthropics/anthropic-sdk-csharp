@@ -7,6 +7,10 @@
     "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
     "features": {
         // For the Prism mock server.
-        "ghcr.io/devcontainers/features/node:1": {}
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/dotnet:2": {
+            "version": "8.0",
+            "additionalVersions": "9.0"
+        }
     }
 }

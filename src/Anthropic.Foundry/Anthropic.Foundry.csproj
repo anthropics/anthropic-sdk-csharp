@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Anthropic.Foundry</RootNamespace>
+        <AssemblyName>Anthropic.Foundry</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Rest.ClientRuntime.Azure.Authentication"
+            Version="2.4.1" />
+        <PackageReference Include="Azure.Identity" Version="1.17.0" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <BuildPackage>true</BuildPackage>
+        <Deterministic>true</Deterministic>
+        <PackageId>Anthropic.Foundry</PackageId>
+        <Version>0.0.1-alpha03</Version>
+        <Authors>Stainless Software, Inc.</Authors>
+        <Company>Stainless Software, Inc.</Company>
+        <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageReleaseNotes>PRE-RELEASE NOT FOR DISTRIBUTION</PackageReleaseNotes>
+        <LangVersion>Latest</LangVersion>
+
+        <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository>
+        element) -->
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+        <!-- Optional: Embed source files that are not tracked by the source control manager in the
+        PDB -->
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+        <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>
+            $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+
+        <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../Anthropic/GlobalShims.cs">
+            <Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>

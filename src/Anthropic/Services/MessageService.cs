@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -64,10 +65,15 @@ public sealed class MessageService : IMessageService
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
+#if NET5_0_OR_GREATER
         Dictionary<string, JsonElement> bodyProperties = new(parameters.BodyProperties)
         {
             ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
         };
+#else
+        var bodyProperties = parameters.BodyProperties.ToDictionary(e => e.Key, e => e.Value);
+        bodyProperties["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
+#endif
         parameters = MessageCreateParams.FromRawUnchecked(
             parameters.HeaderProperties,
             parameters.QueryProperties,

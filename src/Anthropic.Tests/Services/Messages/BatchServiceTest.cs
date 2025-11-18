@@ -1,17 +1,21 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Anthropic.Tests;
 using Anthropic.Models.Messages.Batches;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Messages;
 
-public class BatchServiceTest : TestBase
+public class BatchServiceTest
 {
-    [Fact]
-    public async Task Create_Works()
+    [Theory]
+    [AnthropicTestClients]    
+    [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
+    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
+    public async Task Create_Works(IAnthropicClient client, string modelName)
     {
-        var messageBatch = await this.client.Messages.Batches.Create(
+        var messageBatch = await client.Messages.Batches.Create(
             new()
             {
                 Requests =
@@ -24,16 +28,16 @@ public class BatchServiceTest : TestBase
                             MaxTokens = 1024,
                             Messages =
                             [
-                                new() { Content = "Hello, world", Role = Messages::Role.User },
+                                new() { Content = "Hello, world", Role = Models.Messages.Role.User },
                             ],
-                            Model = Messages::Model.Claude3_7SonnetLatest,
+                            Model = modelName,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             ServiceTier = ServiceTier.Auto,
                             StopSequences = ["string"],
                             Stream = true,
                             System = new(
                                 [
-                                    new()
+                                    new Models.Messages.TextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
                                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -89,44 +93,49 @@ public class BatchServiceTest : TestBase
         messageBatch.Validate();
     }
 
-    [Fact]
-    public async Task Retrieve_Works()
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var messageBatch = await this.client.Messages.Batches.Retrieve(
+        var messageBatch = await client.Messages.Batches.Retrieve(
             new() { MessageBatchID = "message_batch_id" }
         );
         messageBatch.Validate();
     }
 
-    [Fact]
-    public async Task List_Works()
+    [Theory]
+    [AnthropicTestClients]
+    public async Task List_Works(IAnthropicClient client)
     {
-        var page = await this.client.Messages.Batches.List();
+        var page = await client.Messages.Batches.List();
         page.Validate();
     }
 
-    [Fact]
-    public async Task Delete_Works()
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Delete_Works(IAnthropicClient client)
     {
-        var deletedMessageBatch = await this.client.Messages.Batches.Delete(
+        var deletedMessageBatch = await client.Messages.Batches.Delete(
             new() { MessageBatchID = "message_batch_id" }
         );
         deletedMessageBatch.Validate();
     }
 
-    [Fact]
-    public async Task Cancel_Works()
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Cancel_Works(IAnthropicClient client)
     {
-        var messageBatch = await this.client.Messages.Batches.Cancel(
+        var messageBatch = await client.Messages.Batches.Cancel(
             new() { MessageBatchID = "message_batch_id" }
         );
         messageBatch.Validate();
     }
 
-    [Fact(Skip = "Prism doesn't support application/x-jsonl responses")]
-    public async Task ResultsStreaming_Works()
+    [Theory(Skip = "Prism doesn't support application/x-jsonl responses")]
+    [AnthropicTestClients]
+    public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
-        var stream = this.client.Messages.Batches.ResultsStreaming(
+        var stream = client.Messages.Batches.ResultsStreaming(
             new() { MessageBatchID = "message_batch_id" }
         );
 

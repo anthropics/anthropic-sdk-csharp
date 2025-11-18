@@ -1,11 +1,14 @@
 ﻿using System;
 using Anthropic;
 using Anthropic.Models.Messages;
-using Anthropic.Models.Messages.MessageParamProperties;
-using ContentBlockVariants = Anthropic.Models.Messages.ContentBlockVariants;
+using Anthropic.Foundry;
+
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
-AnthropicClient client = new();
+IAnthropicClient client = new AnthropicClient();
+
+// For using the Foundry client, use this instead
+// AnthropicFoundryClient client = new(new AnthropicFoundryApiKeyCredentials("API-TOKEN", "RESOURCE-NAME"));
 
 MessageCreateParams parameters = new()
 {
@@ -14,7 +17,7 @@ MessageCreateParams parameters = new()
     [
         new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
     ],
-    Model = Model.Claude4Sonnet20250514,
+    Model = "claude-sonnet-45-2",
 };
 
 var response = await client.Messages.Create(parameters);
@@ -22,8 +25,10 @@ var response = await client.Messages.Create(parameters);
 var message = String.Join(
     "",
     response
-        .Content.OfType<ContentBlockVariants::TextBlock>()
-        .Select((textBlock) => textBlock.Value.Text)
+        .Content
+        .Where(message => message.Value is TextBlock)
+        .Select(message => message.Value as TextBlock)
+        .Select((textBlock) => textBlock.Text)
 );
 
 Console.WriteLine(message);

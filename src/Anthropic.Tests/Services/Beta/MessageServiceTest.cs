@@ -1,15 +1,17 @@
 using System.Threading.Tasks;
+using Anthropic.Tests;
 using Anthropic.Models.Beta.Messages;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Beta;
 
-public class MessageServiceTest : TestBase
+public class MessageServiceTest
 {
-    [Fact(Skip = "prism validates based on the non-beta endpoint")]
-    public async Task Create_Works()
+    [Theory(Skip = "prism validates based on the non-beta endpoint")]
+    [AnthropicTestClients]
+    public async Task Create_Works(IAnthropicClient client)
     {
-        var betaMessage = await this.client.Beta.Messages.Create(
+        var betaMessage = await client.Beta.Messages.Create(
             new()
             {
                 MaxTokens = 1024,
@@ -20,10 +22,11 @@ public class MessageServiceTest : TestBase
         betaMessage.Validate();
     }
 
-    [Fact(Skip = "prism validates based on the non-beta endpoint")]
-    public async Task CreateStreaming_Works()
+    [Theory(Skip = "prism validates based on the non-beta endpoint")]
+    [AnthropicTestClients]
+    public async Task CreateStreaming_Works(IAnthropicClient client)
     {
-        var stream = this.client.Beta.Messages.CreateStreaming(
+        var stream = client.Beta.Messages.CreateStreaming(
             new()
             {
                 MaxTokens = 1024,
@@ -38,10 +41,11 @@ public class MessageServiceTest : TestBase
         }
     }
 
-    [Fact(Skip = "prism validates based on the non-beta endpoint")]
-    public async Task CountTokens_Works()
+    [Theory(Skip = "prism validates based on the non-beta endpoint")]
+    [AnthropicTestClients]
+    public async Task CountTokens_Works(IAnthropicClient client)
     {
-        var betaMessageTokensCount = await this.client.Beta.Messages.CountTokens(
+        var betaMessageTokensCount = await client.Beta.Messages.CountTokens(
             new()
             {
                 Messages = [new() { Content = "string", Role = Role.User }],

@@ -213,11 +213,17 @@ public abstract record class ParamsBase
             Architecture.X86 => "x32",
             Architecture.X64 => "x64",
             Architecture.Arm => "arm",
-            Architecture.Arm64 or Architecture.Armv6 => "arm64",
+            Architecture.Arm64
+#if NET5_0_OR_GREATER
+            or Architecture.Armv6 
+#endif
+            => "arm64",
+#if NET5_0_OR_GREATER
             Architecture.Wasm
             or Architecture.S390x
             or Architecture.LoongArch64
             or Architecture.Ppc64le => $"other:{RuntimeInformation.OSArchitecture}",
+#endif
             _ => "unknown",
         };
 
@@ -254,8 +260,8 @@ public abstract record class ParamsBase
             return new() { Name = runtimeDescription, Version = "unknown" };
         }
 
-        var name = runtimeDescription[..lastSpaceIndex].Trim();
-        var version = runtimeDescription[(lastSpaceIndex + 1)..].Trim();
+        var name = runtimeDescription.Substring(0, lastSpaceIndex).Trim();
+        var version = runtimeDescription.Substring(lastSpaceIndex + 1).Trim();
         return new()
         {
             Name = name.Length == 0 ? "unknown" : name,

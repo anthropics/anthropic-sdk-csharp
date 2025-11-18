@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -70,15 +71,15 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
+#if NET5_0_OR_GREATER
         Dictionary<string, JsonElement> bodyProperties = new(parameters.BodyProperties)
         {
             ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
         };
-        parameters = MessageCreateParams.FromRawUnchecked(
-            parameters.HeaderProperties,
-            parameters.QueryProperties,
-            bodyProperties
-        );
+#else
+        var bodyProperties = parameters.BodyProperties.ToDictionary(e => e.Key, e => e.Value);
+        bodyProperties["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
+#endif
         HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,

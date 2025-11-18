@@ -21,7 +21,12 @@ sealed class ModelConverter<TModel> : JsonConverter<TModel>
         if (properties == null)
             return null;
 
+#if NET5_0_OR_GREATER
         return TModel.FromRawUnchecked(properties);
+#else
+        return (TModel)ModelConverterConstructionShim
+            .FromRawFactories[typeof(TModel)](properties);
+#endif
     }
 
     public override void Write(Utf8JsonWriter writer, TModel value, JsonSerializerOptions options)

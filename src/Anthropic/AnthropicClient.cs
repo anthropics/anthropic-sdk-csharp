@@ -12,7 +12,7 @@ using Anthropic.Services;
 
 namespace Anthropic;
 
-public sealed class AnthropicClient : IAnthropicClient
+public class AnthropicClient : IAnthropicClient
 {
     static readonly ThreadLocal<Random> _threadLocalRandom = new(() => new Random());
 
@@ -53,13 +53,13 @@ public sealed class AnthropicClient : IAnthropicClient
         init { this._options.Timeout = value; }
     }
 
-    public string? APIKey
+    public virtual string? APIKey
     {
         get { return this._options.APIKey; }
         init { this._options.APIKey = value; }
     }
 
-    public string? AuthToken
+    public virtual string? AuthToken
     {
         get { return this._options.AuthToken; }
         init { this._options.AuthToken = value; }
@@ -71,19 +71,19 @@ public sealed class AnthropicClient : IAnthropicClient
     }
 
     readonly Lazy<IMessageService> _messages;
-    public IMessageService Messages
+    public virtual IMessageService Messages
     {
         get { return _messages.Value; }
     }
 
     readonly Lazy<IModelService> _models;
-    public IModelService Models
+    public virtual IModelService Models
     {
         get { return _models.Value; }
     }
 
     readonly Lazy<IBetaService> _beta;
-    public IBetaService Beta
+    public virtual IBetaService Beta
     {
         get { return _beta.Value; }
     }
@@ -146,6 +146,18 @@ public sealed class AnthropicClient : IAnthropicClient
         }
     }
 
+    protected virtual ValueTask BeforeSend<T>(HttpRequest<T> request, HttpRequestMessage requestMessage, CancellationToken cancellationToken)
+        where T : ParamsBase
+    {
+        return ValueTask.CompletedTask;
+    }
+
+    protected virtual ValueTask AfterSend<T>(HttpRequest<T> request, HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+        where T : ParamsBase
+    {
+        return ValueTask.CompletedTask;
+    }
+
     async Task<HttpResponse> ExecuteOnce<T>(
         HttpRequest<T> request,
         CancellationToken cancellationToken = default
@@ -170,6 +182,7 @@ public sealed class AnthropicClient : IAnthropicClient
         HttpResponseMessage responseMessage;
         try
         {
+            await BeforeSend(request, requestMessage, cts.Token).ConfigureAwait(false);
             responseMessage = await this
                 .HttpClient.SendAsync(
                     requestMessage,
@@ -177,6 +190,7 @@ public sealed class AnthropicClient : IAnthropicClient
                     cts.Token
                 )
                 .ConfigureAwait(false);
+            await AfterSend(request, responseMessage, cts.Token).ConfigureAwait(false);
         }
         catch (HttpRequestException e)
         {
@@ -211,7 +225,11 @@ public sealed class AnthropicClient : IAnthropicClient
             return null;
         }
 
-        if (float.TryParse(headerValue.AsSpan(), out var retryAfterMs))
+        if (float.TryParse(headerValue
+#if NET5_0_OR_GREATER
+            .AsSpan()
+#endif
+        , out var retryAfterMs))
         {
             return TimeSpan.FromMilliseconds(retryAfterMs);
         }
@@ -229,11 +247,19 @@ public sealed class AnthropicClient : IAnthropicClient
             return null;
         }
 
-        if (float.TryParse(headerValue.AsSpan(), out var retryAfterSeconds))
+        if (float.TryParse(headerValue
+#if NET5_0_OR_GREATER
+            .AsSpan()
+#endif
+        , out var retryAfterSeconds))
         {
             return TimeSpan.FromSeconds(retryAfterSeconds);
         }
-        else if (DateTimeOffset.TryParse(headerValue.AsSpan(), out var retryAfterDate))
+        else if (DateTimeOffset.TryParse(headerValue
+#if NET5_0_OR_GREATER
+            .AsSpan()
+#endif
+        , out var retryAfterDate))
         {
             return retryAfterDate - DateTimeOffset.Now;
         }
@@ -260,9 +286,11 @@ public sealed class AnthropicClient : IAnthropicClient
             // Retry on lock timeouts
             HttpStatusCode.Conflict
             or
+#if !NETSTANDARD2_0_OR_GREATER
             // Retry on rate limits
-            HttpStatusCode.TooManyRequests
+            HttpStatusCode.TooManyRequests            
             or
+#endif
             // Retry internal errors
             >= HttpStatusCode.InternalServerError => true,
             _ => false,

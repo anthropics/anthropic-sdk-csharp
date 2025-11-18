@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Anthropic.Tests;
 using Anthropic.Models.Beta.Messages.Batches;
 using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Services.Beta.Messages;
 
-public class BatchServiceTest : TestBase
+public class BatchServiceTest
 {
-    [Fact(Skip = "prism validates based on the non-beta endpoint")]
-    public async Task Create_Works()
+    [Theory(Skip = "prism validates based on the non-beta endpoint")]
+    [AnthropicTestClients]
+    public async Task Create_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await this.client.Beta.Messages.Batches.Create(
+        var betaMessageBatch = await client.Beta.Messages.Batches.Create(
             new()
             {
                 Requests =
@@ -81,7 +83,7 @@ public class BatchServiceTest : TestBase
                             Stream = true,
                             System = new(
                                 [
-                                    new()
+                                    new Models.Beta.Messages.BetaTextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
                                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -138,44 +140,53 @@ public class BatchServiceTest : TestBase
         betaMessageBatch.Validate();
     }
 
-    [Fact]
-    public async Task Retrieve_Works()
+    
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await this.client.Beta.Messages.Batches.Retrieve(
+        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve(
             new() { MessageBatchID = "message_batch_id" }
         );
         betaMessageBatch.Validate();
     }
 
-    [Fact]
-    public async Task List_Works()
+    
+    [Theory]
+    [AnthropicTestClients]
+    public async Task List_Works(IAnthropicClient client)
     {
-        var page = await this.client.Beta.Messages.Batches.List();
+        var page = await client.Beta.Messages.Batches.List();
         page.Validate();
     }
 
-    [Fact]
-    public async Task Delete_Works()
+    
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Delete_Works(IAnthropicClient client)
     {
-        var betaDeletedMessageBatch = await this.client.Beta.Messages.Batches.Delete(
+        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete(
             new() { MessageBatchID = "message_batch_id" }
         );
         betaDeletedMessageBatch.Validate();
     }
 
-    [Fact]
-    public async Task Cancel_Works()
+    
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Cancel_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await this.client.Beta.Messages.Batches.Cancel(
+        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel(
             new() { MessageBatchID = "message_batch_id" }
         );
         betaMessageBatch.Validate();
     }
 
-    [Fact(Skip = "Prism doesn't support application/x-jsonl responses")]
-    public async Task ResultsStreaming_Works()
+    [Theory(Skip = "Prism doesn't support application/x-jsonl responses")]
+    [AnthropicTestClients]
+    public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
-        var stream = this.client.Beta.Messages.Batches.ResultsStreaming(
+        var stream = client.Beta.Messages.Batches.ResultsStreaming(
             new() { MessageBatchID = "message_batch_id" }
         );
 

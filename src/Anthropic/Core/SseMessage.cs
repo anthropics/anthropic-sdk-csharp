@@ -18,7 +18,13 @@ sealed record class SseMessage(string? Event, string Data, string? ID, int? Retr
         var state = new SseState();
 
         using var stream = await response
-            .Content.ReadAsStreamAsync(cancellationToken)
+            .Content
+
+#if NET5_0_OR_GREATER
+            .ReadAsStreamAsync(cancellationToken)
+#else
+            .ReadAsStreamAsync()
+#endif
             .ConfigureAwait(false);
         using var reader = new StreamReader(stream);
         while (true)
@@ -26,7 +32,14 @@ sealed record class SseMessage(string? Event, string Data, string? ID, int? Retr
             string line;
             try
             {
-                var maybeLine = await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false);
+                var maybeLine = await reader
+#if NET5_0_OR_GREATER
+                .ReadLineAsync(cancellationToken)
+#else
+                .ReadLineAsync()
+#endif
+                .ConfigureAwait(false);
+
                 if (maybeLine == null)
                 {
                     break;

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Anthropic.Client\Anthropic.Client.csproj" />
+    <ProjectReference Include="..\..\src\Anthropic\Anthropic.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

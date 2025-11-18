@@ -17,7 +17,7 @@ sealed class SseState
             return Flush();
         }
 
-        if (line.StartsWith(':'))
+        if (line.StartsWith(":"))
         {
             return null;
         }
@@ -33,13 +33,13 @@ sealed class SseState
         }
         else
         {
-            fieldName = line[..colonIndex];
-            value = line[(colonIndex + 1)..];
+            fieldName = line.Substring(0, colonIndex);
+            value = line.Substring(colonIndex + 1);
         }
 
-        if (value.StartsWith(' '))
+        if (value.StartsWith(" "))
         {
-            value = value[1..];
+            value = value.TrimStart();
         }
 
         switch (fieldName)
@@ -51,7 +51,7 @@ sealed class SseState
                 _data.Add(value);
                 break;
             case "id":
-                if (!value.Contains('\u0000'))
+                if (!value.Contains("\u0000"))
                 {
                     _lastId = value;
                 }
@@ -74,7 +74,7 @@ sealed class SseState
             return null;
         }
 
-        var message = new SseMessage(_event, string.Join('\n', _data), _lastId, _retry);
+        var message = new SseMessage(_event, string.Join("\n", _data), _lastId, _retry);
 
         // NOTE: Per the SSE spec, do not reset _lastId.
         _event = null;
@@ -91,5 +91,5 @@ sealed class SseState
         && _retry == null;
 
     public override string ToString() =>
-        string.Format("SseState: event={0}, data={1}", _event, string.Join('\n', _data));
+        string.Format("SseState: event={0}, data={1}", _event, string.Join("\n", _data));
 }

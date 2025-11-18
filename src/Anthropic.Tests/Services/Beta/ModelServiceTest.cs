@@ -1,20 +1,25 @@
 using System.Threading.Tasks;
+using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services.Beta;
 
-public class ModelServiceTest : TestBase
+public class ModelServiceTest
 {
-    [Fact]
-    public async Task Retrieve_Works()
+    
+    [Theory]
+    [AnthropicTestClients(TestSupportTypes.Anthropic)]
+    public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var betaModelInfo = await this.client.Beta.Models.Retrieve(new() { ModelID = "model_id" });
+        var betaModelInfo = await client.Beta.Models.Retrieve(new() { ModelID = "model_id" });
         betaModelInfo.Validate();
     }
 
-    [Fact]
-    public async Task List_Works()
+    
+    [Theory]
+    [AnthropicTestClients]
+    public async Task List_Works(IAnthropicClient client)
     {
-        var page = await this.client.Beta.Models.List();
+        var page = await client.Beta.Models.List();
         page.Validate();
     }
 }

@@ -95,5 +95,7 @@ public abstract record class ModelBase
 /// </summary>
 interface IFromRaw<T>
 {
+#if NET5_0_OR_GREATER
     static abstract T FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties);
+#endif
 }
