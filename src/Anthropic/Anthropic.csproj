@@ -6,7 +6,7 @@
     <AssemblyTitle>SDK Code Generation Anthropic C#</AssemblyTitle>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Nullable>enable</Nullable>
-    <VersionPrefix>10.1.1</VersionPrefix>
+    <VersionPrefix>10.1.2</VersionPrefix>
     <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <!-- Generate an XML documentation file for the project. -->
