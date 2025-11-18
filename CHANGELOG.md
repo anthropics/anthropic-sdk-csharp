@@ -1,5 +1,13 @@
 # Changelog
 
+## 10.1.0 (2025-11-18)
+
+Full Changelog: [v10.0.1...v10.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.0.1...v10.1.0)
+
+### Features
+
+* add Foundry client ([8ddea23](https://github.com/anthropics/anthropic-sdk-csharp/commit/8ddea2363a799b366740779703f074fbe8dadf56))
+
 ## 10.0.1 (2025-11-18)
 
 Full Changelog: [v0.2.0...v10.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/v0.2.0...v10.0.1)
