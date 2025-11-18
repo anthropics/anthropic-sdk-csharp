@@ -33,7 +33,7 @@
     <PackageId>Anthropic</PackageId>
     <BuildPackage>true</BuildPackage>
 		<Deterministic>true</Deterministic>
-		<Version>0.2.0-alpha03</Version>
+		<Version>10.1.2</Version>
 		<Authors>Stainless Software, Inc.</Authors>
 		<Company>Stainless Software, Inc.</Company>
 		<PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
