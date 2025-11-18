@@ -318,6 +318,8 @@ Console.WriteLine(message);
 
 ## Semantic versioning
 
+> **⚠️ Beta Release:** While this package is versioned as 4+, it is currently in beta. During the beta period, breaking changes may occur in minor or patch releases. Once the library reaches stable release, we will follow SemVer conventions more strictly.
+
 This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
 
 1. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_
