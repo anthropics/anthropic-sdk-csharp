@@ -21,6 +21,8 @@
     <Deterministic>true</Deterministic>
     <PackageId>Anthropic.Foundry</PackageId>
     <Version>0.0.3</Version>
+  </PropertyGroup>
+  <PropertyGroup>
     <Authors>Stainless Software, Inc.</Authors>
     <Company>Stainless Software, Inc.</Company>
     <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
@@ -33,12 +35,31 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>
-            $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+      $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
+    <Readme>readme.md</Readme>
+    <Description>
+      Anthropic Foundry SDK for .NET — A .NET client library for Anthropic Foundry, providing typed
+      models, API bindings, and authentication helpers to integrate Anthropic services into .NET
+      applications.
+      Examples:
+      - Quickstart:
+      1. Create a client (API key or Azure credential).
+      2. Call the client to request a completion or classification and handle the response.
+      - Streaming:
+      Use the streaming helpers to receive partial tokens as they are produced for responsive UIs.
+      - Authentication:
+      Support for environment API key (`ANTHROPIC_API_KEY` environment variable) and Azure Identity
+      (DefaultAzureCredential).
+      - Samples:
+      See the repository's samples/ directory for complete examples (console app, ASP.NET
+      integration, and streaming examples).
+      - Install:
+      dotnet add package Anthropic.Foundry --version 0.0.1
+    </Description>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\logo.png" Pack="true" PackagePath="\" />
     <Compile Include="..\Anthropic\Shims.cs" />
   </ItemGroup>
 </Project>
-
