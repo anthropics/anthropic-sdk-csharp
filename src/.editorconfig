@@ -1,0 +1,7 @@
+root = true
+
+# C# files
+[*.cs]
+
+# Disabled due to multitargeting
+dotnet_diagnostic.CA1510.severity = none      # CA1510: Use ArgumentNullException throw helper
