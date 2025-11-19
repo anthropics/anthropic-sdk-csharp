@@ -14,21 +14,6 @@ namespace Anthropic;
 
 public class AnthropicClient : IAnthropicClient
 {
-    public AnthropicClient()
-    {
-        _options = new();
-
-        _messages = new(() => new MessageService(this));
-        _models = new(() => new ModelService(this));
-        _beta = new(() => new BetaService(this));
-    }
-
-    public AnthropicClient(ClientOptions options)
-        : this()
-    {
-        _options = options;
-    }
-
     static readonly ThreadLocal<Random> _threadLocalRandom = new(() => new Random());
 
     static Random Random
@@ -315,5 +300,20 @@ public class AnthropicClient : IAnthropicClient
     static bool ShouldRetry(Exception e)
     {
         return e is IOException || e is AnthropicIOException;
+    }
+    
+    public AnthropicClient()
+    {
+        _options = new();
+
+        _messages = new(() => new MessageService(this));
+        _models = new(() => new ModelService(this));
+        _beta = new(() => new BetaService(this));
+    }
+
+    public AnthropicClient(ClientOptions options)
+        : this()
+    {
+        _options = options;
     }
 }
