@@ -26,6 +26,12 @@ public class AnthropicFoundryClient : AnthropicClient
         BaseUrl = new Uri(url, UriKind.Absolute);
     }
 
+    private AnthropicFoundryClient(IAnthropicFoundryCredentials azureCredentials, ClientOptions options)
+        : base(options)
+    {  
+        _azureCredentials = azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));   
+    }
+
     [Obsolete("The {nameof(APIKey)} property is not supported in this configuration.", true)]
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
     public override string? APIKey
@@ -33,6 +39,11 @@ public class AnthropicFoundryClient : AnthropicClient
     {
         get => throw new NotSupportedException($"The {nameof(APIKey)} property is not supported in this configuration.");
         init => throw new NotSupportedException($"The {nameof(APIKey)} property is not supported in this configuration.");
+    }
+
+    public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AnthropicFoundryClient(_azureCredentials, modifier(this._options));
     }
 
     protected override ValueTask BeforeSend<T>(HttpRequest<T> request, HttpRequestMessage requestMessage, CancellationToken cancellationToken)
