@@ -31,7 +31,7 @@
         <PackageReleaseNotes>PRE-RELEASE NOT FOR DISTRIBUTION</PackageReleaseNotes>
         <LangVersion>Latest</LangVersion>
         <Copyright>Copyright © Stainless Software, Inc. 2024</Copyright>
-        <Readme>readme.md</Readme>
+        <Readme>README.md</Readme>
         <Description>
             Anthropic Foundry SDK for .NET — A .NET client library for Anthropic Foundry, providing typed models, API bindings, and authentication helpers to integrate Anthropic services into .NET applications.
             Examples:

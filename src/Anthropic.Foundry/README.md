@@ -22,12 +22,16 @@ Lightweight C# bindings for the Anthropic Foundry surface in the Anthropic SDK f
 Set your API key in the environment before running:
 
 - Linux/macOS
+```sh
 export ANTHROPIC_FOUNDRY_API_KEY="..."
 export ANTHROPIC_FOUNDRY_RESOURCE="..."
+```
 
 - Windows (PowerShell)
+```powershell
 $env:ANTHROPIC_FOUNDRY_API_KEY = "..."
 $env:ANTHROPIC_FOUNDRY_RESOURCE = "..."
+```
 
 Example usage (simplified):
 
@@ -65,5 +69,4 @@ var message = String.Join(
 );
 
 Console.WriteLine(message);
-
 ```
