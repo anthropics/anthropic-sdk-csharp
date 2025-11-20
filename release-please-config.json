@@ -63,8 +63,9 @@
   "extra-files": [
     {
       "type": "xml",
-      "path": "src/Anthropic/Anthropic.csproj",
-      "xpath": "//Project/PropertyGroup/VersionPrefix"
+      "path": "**/*.csproj",
+      "xpath": "//Project/PropertyGroup/VersionPrefix",
+      "glob": true
     }
   ]
 }
