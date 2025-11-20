@@ -14,7 +14,7 @@ namespace Anthropic.Models.Beta.Files;
 /// </summary>
 public sealed record class FileRetrieveMetadataParams : ParamsBase
 {
-    public required string FileID { get; init; }
+    public string? FileID { get; init; }
 
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.

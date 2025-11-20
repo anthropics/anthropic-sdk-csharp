@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(RawMessageStreamEventConverter))]
 public record class RawMessageStreamEvent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -42,44 +48,45 @@ public record class RawMessageStreamEvent
         }
     }
 
-    public RawMessageStreamEvent(RawMessageStartEvent value)
+    public RawMessageStreamEvent(RawMessageStartEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawMessageStreamEvent(RawMessageDeltaEvent value)
+    public RawMessageStreamEvent(RawMessageDeltaEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawMessageStreamEvent(RawMessageStopEvent value)
+    public RawMessageStreamEvent(RawMessageStopEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawMessageStreamEvent(RawContentBlockStartEvent value)
+    public RawMessageStreamEvent(RawContentBlockStartEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawMessageStreamEvent(RawContentBlockDeltaEvent value)
+    public RawMessageStreamEvent(RawContentBlockDeltaEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawMessageStreamEvent(RawContentBlockStopEvent value)
+    public RawMessageStreamEvent(RawContentBlockStopEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    RawMessageStreamEvent(UnknownVariant value)
+    public RawMessageStreamEvent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static RawMessageStreamEvent CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickStart([NotNullWhen(true)] out RawMessageStartEvent? value)
@@ -194,15 +201,13 @@ public record class RawMessageStreamEvent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of RawMessageStreamEvent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEvent>
@@ -228,8 +233,6 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
         {
             case "message_start":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(
@@ -239,26 +242,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RawMessageStartEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "message_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(
@@ -268,26 +264,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RawMessageDeltaEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "message_stop":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(
@@ -297,26 +286,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RawMessageStopEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content_block_start":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
@@ -326,26 +308,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RawContentBlockStartEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content_block_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(
@@ -355,26 +330,19 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RawContentBlockDeltaEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content_block_stop":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawContentBlockStopEvent>(
@@ -384,27 +352,20 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RawContentBlockStopEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new RawMessageStreamEvent(json);
             }
         }
     }
@@ -415,7 +376,6 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

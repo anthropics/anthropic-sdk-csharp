@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaMemoryTool20250818CommandConverter))]
 public record class BetaMemoryTool20250818Command
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Command
     {
@@ -42,44 +48,63 @@ public record class BetaMemoryTool20250818Command
         }
     }
 
-    public BetaMemoryTool20250818Command(BetaMemoryTool20250818ViewCommand value)
+    public BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818ViewCommand value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaMemoryTool20250818Command(BetaMemoryTool20250818CreateCommand value)
+    public BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818CreateCommand value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaMemoryTool20250818Command(BetaMemoryTool20250818StrReplaceCommand value)
+    public BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818StrReplaceCommand value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaMemoryTool20250818Command(BetaMemoryTool20250818InsertCommand value)
+    public BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818InsertCommand value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaMemoryTool20250818Command(BetaMemoryTool20250818DeleteCommand value)
+    public BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818DeleteCommand value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaMemoryTool20250818Command(BetaMemoryTool20250818RenameCommand value)
+    public BetaMemoryTool20250818Command(
+        BetaMemoryTool20250818RenameCommand value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaMemoryTool20250818Command(UnknownVariant value)
+    public BetaMemoryTool20250818Command(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaMemoryTool20250818Command CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickTool20250818View(
@@ -215,15 +240,13 @@ public record class BetaMemoryTool20250818Command
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaMemoryTool20250818Command"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTool20250818Command>
@@ -249,8 +272,6 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
         {
             case "view":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -261,26 +282,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaMemoryTool20250818Command(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMemoryTool20250818ViewCommand'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "create":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -291,26 +305,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaMemoryTool20250818Command(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMemoryTool20250818CreateCommand'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "str_replace":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -321,26 +328,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaMemoryTool20250818Command(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMemoryTool20250818StrReplaceCommand'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "insert":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -351,26 +351,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaMemoryTool20250818Command(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMemoryTool20250818InsertCommand'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "delete":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -381,26 +374,19 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaMemoryTool20250818Command(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMemoryTool20250818DeleteCommand'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "rename":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -411,27 +397,20 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaMemoryTool20250818Command(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMemoryTool20250818RenameCommand'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new BetaMemoryTool20250818Command(json);
             }
         }
     }
@@ -442,7 +421,6 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

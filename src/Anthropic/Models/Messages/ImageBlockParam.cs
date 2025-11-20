@@ -135,31 +135,35 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
 [JsonConverter(typeof(ImageBlockParamSourceConverter))]
 public record class ImageBlockParamSource
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
         get { return Match(base64Image: (x) => x.Type, urlImage: (x) => x.Type); }
     }
 
-    public ImageBlockParamSource(Base64ImageSource value)
+    public ImageBlockParamSource(Base64ImageSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ImageBlockParamSource(URLImageSource value)
+    public ImageBlockParamSource(URLImageSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    ImageBlockParamSource(UnknownVariant value)
+    public ImageBlockParamSource(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static ImageBlockParamSource CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBase64Image([NotNullWhen(true)] out Base64ImageSource? value)
@@ -215,15 +219,13 @@ public record class ImageBlockParamSource
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ImageBlockParamSource"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSource>
@@ -249,61 +251,45 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
         {
             case "base64":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<Base64ImageSource>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ImageBlockParamSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'Base64ImageSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "url":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<URLImageSource>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ImageBlockParamSource(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'URLImageSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new ImageBlockParamSource(json);
             }
         }
     }
@@ -314,7 +300,6 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

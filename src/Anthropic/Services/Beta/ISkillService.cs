@@ -35,6 +35,15 @@ public interface ISkillService
     );
 
     /// <summary>
+    /// Get Skill
+    /// </summary>
+    Task<SkillRetrieveResponse> Retrieve(
+        string skillID,
+        SkillRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// List Skills
     /// </summary>
     Task<SkillListPageResponse> List(
@@ -47,6 +56,15 @@ public interface ISkillService
     /// </summary>
     Task<SkillDeleteResponse> Delete(
         SkillDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Delete Skill
+    /// </summary>
+    Task<SkillDeleteResponse> Delete(
+        string skillID,
+        SkillDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 }

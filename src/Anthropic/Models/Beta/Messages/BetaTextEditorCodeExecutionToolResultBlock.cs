@@ -145,7 +145,14 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock
 [JsonConverter(typeof(BetaTextEditorCodeExecutionToolResultBlockContentConverter))]
 public record class BetaTextEditorCodeExecutionToolResultBlockContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -161,43 +168,44 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
     }
 
     public BetaTextEditorCodeExecutionToolResultBlockContent(
-        BetaTextEditorCodeExecutionToolResultError value
+        BetaTextEditorCodeExecutionToolResultError value,
+        JsonElement? json = null
     )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
     public BetaTextEditorCodeExecutionToolResultBlockContent(
-        BetaTextEditorCodeExecutionViewResultBlock value
+        BetaTextEditorCodeExecutionViewResultBlock value,
+        JsonElement? json = null
     )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
     public BetaTextEditorCodeExecutionToolResultBlockContent(
-        BetaTextEditorCodeExecutionCreateResultBlock value
+        BetaTextEditorCodeExecutionCreateResultBlock value,
+        JsonElement? json = null
     )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
     public BetaTextEditorCodeExecutionToolResultBlockContent(
-        BetaTextEditorCodeExecutionStrReplaceResultBlock value
+        BetaTextEditorCodeExecutionStrReplaceResultBlock value,
+        JsonElement? json = null
     )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaTextEditorCodeExecutionToolResultBlockContent(UnknownVariant value)
+    public BetaTextEditorCodeExecutionToolResultBlockContent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaTextEditorCodeExecutionToolResultBlockContent CreateUnknownVariant(
-        JsonElement value
-    )
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaTextEditorCodeExecutionToolResultError(
@@ -313,15 +321,13 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaTextEditorCodeExecutionToolResultBlockContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter
@@ -333,101 +339,80 @@ sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultError>(
-                    ref reader,
+                    json,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaTextEditorCodeExecutionToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaTextEditorCodeExecutionToolResultError'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlock>(
-                    ref reader,
+                    json,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaTextEditorCodeExecutionToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaTextEditorCodeExecutionViewResultBlock'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlock>(
-                    ref reader,
+                    json,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaTextEditorCodeExecutionToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaTextEditorCodeExecutionCreateResultBlock'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(
-                    ref reader,
+                    json,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaTextEditorCodeExecutionToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaTextEditorCodeExecutionStrReplaceResultBlock'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -436,7 +421,6 @@ sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

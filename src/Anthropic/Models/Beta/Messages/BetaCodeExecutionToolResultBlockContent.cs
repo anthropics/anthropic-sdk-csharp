@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,31 +9,41 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaCodeExecutionToolResultBlockContentConverter))]
 public record class BetaCodeExecutionToolResultBlockContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
         get { return Match(error: (x) => x.Type, resultBlock: (x) => x.Type); }
     }
 
-    public BetaCodeExecutionToolResultBlockContent(BetaCodeExecutionToolResultError value)
+    public BetaCodeExecutionToolResultBlockContent(
+        BetaCodeExecutionToolResultError value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaCodeExecutionToolResultBlockContent(BetaCodeExecutionResultBlock value)
+    public BetaCodeExecutionToolResultBlockContent(
+        BetaCodeExecutionResultBlock value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaCodeExecutionToolResultBlockContent(UnknownVariant value)
+    public BetaCodeExecutionToolResultBlockContent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaCodeExecutionToolResultBlockContent CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickError([NotNullWhen(true)] out BetaCodeExecutionToolResultError? value)
@@ -94,15 +103,13 @@ public record class BetaCodeExecutionToolResultBlockContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaCodeExecutionToolResultBlockContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaCodeExecutionToolResultBlockContentConverter
@@ -114,53 +121,42 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultError>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaCodeExecutionToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaCodeExecutionToolResultError'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionResultBlock>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaCodeExecutionToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaCodeExecutionResultBlock'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -169,7 +165,6 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

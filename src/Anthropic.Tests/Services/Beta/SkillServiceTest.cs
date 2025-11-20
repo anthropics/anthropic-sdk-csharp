@@ -17,10 +17,9 @@ public class SkillServiceTest
     [AnthropicTestClients]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var skill = await client.Beta.Skills.Retrieve(new() { SkillID = "skill_id" });
+        var skill = await client.Beta.Skills.Retrieve("skill_id");
         skill.Validate();
     }
-
 
     [Theory]
     [AnthropicTestClients]
@@ -30,12 +29,11 @@ public class SkillServiceTest
         page.Validate();
     }
 
-
     [Theory]
     [AnthropicTestClients]
     public async Task Delete_Works(IAnthropicClient client)
     {
-        var skill = await client.Beta.Skills.Delete(new() { SkillID = "skill_id" });
+        var skill = await client.Beta.Skills.Delete("skill_id");
         skill.Validate();
     }
 }

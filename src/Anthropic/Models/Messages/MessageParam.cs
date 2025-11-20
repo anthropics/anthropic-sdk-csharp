@@ -95,26 +95,30 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
 [JsonConverter(typeof(MessageParamContentConverter))]
 public record class MessageParamContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public MessageParamContent(string value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public MessageParamContent(IReadOnlyList<ContentBlockParam> value)
+    public MessageParamContent(string value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    MessageParamContent(UnknownVariant value)
+    public MessageParamContent(IReadOnlyList<ContentBlockParam> value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static MessageParamContent CreateUnknownVariant(JsonElement value)
+    public MessageParamContent(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
@@ -173,15 +177,13 @@ public record class MessageParamContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of MessageParamContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
@@ -192,45 +194,34 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<string>(json, options);
             if (deserialized != null)
             {
-                return new MessageParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<ContentBlockParam>>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<List<ContentBlockParam>>(json, options);
             if (deserialized != null)
             {
-                return new MessageParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<ContentBlockParam>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -239,8 +230,7 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }
 

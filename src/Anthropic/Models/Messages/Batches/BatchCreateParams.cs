@@ -863,26 +863,30 @@ sealed class ServiceTierConverter
 [JsonConverter(typeof(ParamsSystemConverter))]
 public record class ParamsSystem
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public ParamsSystem(string value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public ParamsSystem(IReadOnlyList<TextBlockParam> value)
+    public ParamsSystem(string value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    ParamsSystem(UnknownVariant value)
+    public ParamsSystem(IReadOnlyList<TextBlockParam> value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static ParamsSystem CreateUnknownVariant(JsonElement value)
+    public ParamsSystem(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
@@ -939,15 +943,13 @@ public record class ParamsSystem
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ParamsSystem"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
@@ -958,45 +960,34 @@ sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<string>(json, options);
             if (deserialized != null)
             {
-                return new ParamsSystem(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(json, options);
             if (deserialized != null)
             {
-                return new ParamsSystem(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<TextBlockParam>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -1005,7 +996,6 @@ sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

@@ -14,7 +14,7 @@ namespace Anthropic.Models.Beta.Skills.Versions;
 /// </summary>
 public sealed record class VersionListParams : ParamsBase
 {
-    public required string SkillID { get; init; }
+    public string? SkillID { get; init; }
 
     /// <summary>
     /// Number of items to return per page.

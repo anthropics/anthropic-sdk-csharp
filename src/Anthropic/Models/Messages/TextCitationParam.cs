@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(TextCitationParamConverter))]
 public record class TextCitationParam
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public string CitedText
     {
@@ -110,39 +116,39 @@ public record class TextCitationParam
         }
     }
 
-    public TextCitationParam(CitationCharLocationParam value)
+    public TextCitationParam(CitationCharLocationParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public TextCitationParam(CitationPageLocationParam value)
+    public TextCitationParam(CitationPageLocationParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public TextCitationParam(CitationContentBlockLocationParam value)
+    public TextCitationParam(CitationContentBlockLocationParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public TextCitationParam(CitationWebSearchResultLocationParam value)
+    public TextCitationParam(CitationWebSearchResultLocationParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public TextCitationParam(CitationSearchResultLocationParam value)
+    public TextCitationParam(CitationSearchResultLocationParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    TextCitationParam(UnknownVariant value)
+    public TextCitationParam(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static TextCitationParam CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickCitationCharLocation(
@@ -255,15 +261,13 @@ public record class TextCitationParam
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of TextCitationParam"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
@@ -289,8 +293,6 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
         {
             case "char_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationCharLocationParam>(
@@ -300,26 +302,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new TextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'CitationCharLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "page_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationPageLocationParam>(
@@ -329,26 +324,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new TextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'CitationPageLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content_block_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -359,26 +347,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new TextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'CitationContentBlockLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "web_search_result_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -389,26 +370,19 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new TextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'CitationWebSearchResultLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "search_result_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -419,27 +393,20 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new TextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'CitationSearchResultLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new TextCitationParam(json);
             }
         }
     }
@@ -450,7 +417,6 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

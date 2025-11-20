@@ -19,7 +19,7 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// </summary>
 public sealed record class BatchDeleteParams : ParamsBase
 {
-    public required string MessageBatchID { get; init; }
+    public string? MessageBatchID { get; init; }
 
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.

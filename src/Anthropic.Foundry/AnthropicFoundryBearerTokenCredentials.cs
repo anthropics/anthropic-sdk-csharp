@@ -21,6 +21,7 @@ public class AnthropicFoundryBearerTokenCredentials : IAnthropicFoundryCredentia
 
     public void Apply(HttpRequestMessage requestMessage)
     {
-        requestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", _apiKey);
+        requestMessage.Headers.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", _apiKey);
     }
 }

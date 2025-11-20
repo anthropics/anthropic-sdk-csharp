@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,7 +12,14 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(ContentBlockParamConverter))]
 public record class ContentBlockParam
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -110,64 +116,69 @@ public record class ContentBlockParam
         }
     }
 
-    public ContentBlockParam(TextBlockParam value)
+    public ContentBlockParam(TextBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(ImageBlockParam value)
+    public ContentBlockParam(ImageBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(DocumentBlockParam value)
+    public ContentBlockParam(DocumentBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(SearchResultBlockParam value)
+    public ContentBlockParam(SearchResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(ThinkingBlockParam value)
+    public ContentBlockParam(ThinkingBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(RedactedThinkingBlockParam value)
+    public ContentBlockParam(RedactedThinkingBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(ToolUseBlockParam value)
+    public ContentBlockParam(ToolUseBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(ToolResultBlockParam value)
+    public ContentBlockParam(ToolResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(ServerToolUseBlockParam value)
+    public ContentBlockParam(ServerToolUseBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ContentBlockParam(WebSearchToolResultBlockParam value)
+    public ContentBlockParam(WebSearchToolResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    ContentBlockParam(UnknownVariant value)
+    public ContentBlockParam(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static ContentBlockParam CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickText([NotNullWhen(true)] out TextBlockParam? value)
@@ -339,15 +350,13 @@ public record class ContentBlockParam
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlockParam"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
@@ -373,60 +382,44 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
         {
             case "text":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'TextBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "image":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ImageBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "document":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(
@@ -436,26 +429,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'DocumentBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "search_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<SearchResultBlockParam>(
@@ -465,26 +451,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'SearchResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "thinking":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingBlockParam>(
@@ -494,26 +473,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ThinkingBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "redacted_thinking":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlockParam>(
@@ -523,52 +495,38 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RedactedThinkingBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ToolUseBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ToolResultBlockParam>(
@@ -578,26 +536,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "server_tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ServerToolUseBlockParam>(
@@ -607,26 +558,19 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ServerToolUseBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "web_search_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParam>(
@@ -636,27 +580,20 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'WebSearchToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new ContentBlockParam(json);
             }
         }
     }
@@ -667,7 +604,6 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

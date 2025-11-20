@@ -18,29 +18,35 @@ public class AnthropicTestClientsAttribute : DataAttribute
 
     public override IEnumerable<object[]> GetData(MethodInfo testMethod)
     {
-        var dataServiceUrl = Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
+        var dataServiceUrl =
+            Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
         string apiKey = "YourApiKeyHere";
         var resource = "YourRegionOrResourceHere";
 
         var testData = testMethod.GetCustomAttributes<AnthropicTestDataAttribute>().ToArray();
         if (TestSupportTypes.HasFlag(TestSupportTypes.Anthropic))
         {
-            yield return [
-                new AnthropicClient()
-                {
-                    BaseUrl = new Uri(dataServiceUrl),
-                    APIKey = apiKey,
-                },
-                ..testData.Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic)).Select(f => f.TestData).ToArray()
+            yield return
+            [
+                new AnthropicClient() { BaseUrl = new Uri(dataServiceUrl), APIKey = apiKey },
+                .. testData
+                    .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
+                    .Select(f => f.TestData)
+                    .ToArray(),
             ];
         }
         if (TestSupportTypes.HasFlag(TestSupportTypes.Foundry))
         {
-            yield return [
-                new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(apiKey, resource!)) {
-                    BaseUrl = new Uri(dataServiceUrl)
+            yield return
+            [
+                new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(apiKey, resource!))
+                {
+                    BaseUrl = new Uri(dataServiceUrl),
                 },
-                ..testData.Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry)).Select(f => f.TestData).ToArray()
+                .. testData
+                    .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))
+                    .Select(f => f.TestData)
+                    .ToArray(),
             ];
         }
     }
@@ -48,7 +54,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
 
 [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
 sealed class AnthropicTestDataAttribute : Attribute
-{    
+{
     public AnthropicTestDataAttribute(TestSupportTypes testSupport, object testData)
     {
         TestSupport = testSupport;
@@ -64,5 +70,5 @@ public enum TestSupportTypes
 {
     All = Anthropic | Foundry,
     Anthropic = 1 << 1,
-    Foundry = 1 << 2
+    Foundry = 1 << 2,
 }

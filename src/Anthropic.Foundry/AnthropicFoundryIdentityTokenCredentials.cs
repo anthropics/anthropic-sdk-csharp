@@ -18,7 +18,10 @@ public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredent
     {
         if (apiKey.Equals(default) || string.IsNullOrWhiteSpace(apiKey.Token))
         {
-            throw new ArgumentNullException(nameof(apiKey), "Invalid/Empty api key struct is not valid");
+            throw new ArgumentNullException(
+                nameof(apiKey),
+                "Invalid/Empty api key struct is not valid"
+            );
         }
         _apiKey = apiKey;
         ResourceName = resourceName ?? throw new ArgumentNullException(nameof(resourceName));
@@ -29,6 +32,7 @@ public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredent
     public void Apply(HttpRequestMessage requestMessage)
     {
         //TODO implement token refresh
-        requestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", _apiKey.Token);
+        requestMessage.Headers.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", _apiKey.Token);
     }
 }

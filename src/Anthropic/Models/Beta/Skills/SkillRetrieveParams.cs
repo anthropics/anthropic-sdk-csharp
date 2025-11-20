@@ -14,7 +14,7 @@ namespace Anthropic.Models.Beta.Skills;
 /// </summary>
 public sealed record class SkillRetrieveParams : ParamsBase
 {
-    public required string SkillID { get; init; }
+    public string? SkillID { get; init; }
 
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.

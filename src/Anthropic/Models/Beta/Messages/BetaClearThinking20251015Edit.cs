@@ -111,7 +111,14 @@ public sealed record class BetaClearThinking20251015Edit
 [JsonConverter(typeof(KeepConverter))]
 public record class Keep
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement? Type
     {
@@ -125,29 +132,27 @@ public record class Keep
         }
     }
 
-    public Keep(BetaThinkingTurns value)
+    public Keep(BetaThinkingTurns value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Keep(BetaAllThinkingTurns value)
+    public Keep(BetaAllThinkingTurns value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Keep(UnionMember2 value)
+    public Keep(UnionMember2 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    Keep(UnknownVariant value)
+    public Keep(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static Keep CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaThinkingTurns([NotNullWhen(true)] out BetaThinkingTurns? value)
@@ -213,13 +218,11 @@ public record class Keep
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Keep");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class KeepConverter : JsonConverter<Keep>
@@ -230,75 +233,55 @@ sealed class KeepConverter : JsonConverter<Keep>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<UnionMember2>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<UnionMember2>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Keep(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'UnionMember2'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaThinkingTurns>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<BetaThinkingTurns>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Keep(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaThinkingTurns'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new Keep(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaAllThinkingTurns'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(Utf8JsonWriter writer, Keep value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }
 

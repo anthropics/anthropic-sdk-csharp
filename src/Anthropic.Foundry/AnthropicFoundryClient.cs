@@ -2,8 +2,8 @@
 global using ValueTask = System.Threading.Tasks.Task;
 #endif
 
-using Anthropic.Core;
 using Anthropic;
+using Anthropic.Core;
 
 namespace Anthropic.Foundry;
 
@@ -21,9 +21,20 @@ public class AnthropicFoundryClient : AnthropicClient
     /// <exception cref="ArgumentNullException"></exception>
     public AnthropicFoundryClient(IAnthropicFoundryCredentials azureCredentials)
     {
-        _azureCredentials = azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
+        _azureCredentials =
+            azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
         var url = $"https://{azureCredentials.ResourceName}.services.ai.azure.com/anthropic";
         BaseUrl = new Uri(url, UriKind.Absolute);
+    }
+
+    private AnthropicFoundryClient(
+        IAnthropicFoundryCredentials azureCredentials,
+        ClientOptions options
+    )
+        : base(options)
+    {
+        _azureCredentials =
+            azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
     }
 
     [Obsolete("The {nameof(APIKey)} property is not supported in this configuration.", true)]
@@ -31,11 +42,26 @@ public class AnthropicFoundryClient : AnthropicClient
     public override string? APIKey
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
     {
-        get => throw new NotSupportedException($"The {nameof(APIKey)} property is not supported in this configuration.");
-        init => throw new NotSupportedException($"The {nameof(APIKey)} property is not supported in this configuration.");
+        get =>
+            throw new NotSupportedException(
+                $"The {nameof(APIKey)} property is not supported in this configuration."
+            );
+        init =>
+            throw new NotSupportedException(
+                $"The {nameof(APIKey)} property is not supported in this configuration."
+            );
     }
 
-    protected override ValueTask BeforeSend<T>(HttpRequest<T> request, HttpRequestMessage requestMessage, CancellationToken cancellationToken)
+    public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AnthropicFoundryClient(_azureCredentials, modifier(_options));
+    }
+
+    protected override ValueTask BeforeSend<T>(
+        HttpRequest<T> request,
+        HttpRequestMessage requestMessage,
+        CancellationToken cancellationToken
+    )
     {
         _azureCredentials.Apply(requestMessage);
 

@@ -18,7 +18,7 @@ namespace Anthropic.Models.Messages.Batches;
 /// </summary>
 public sealed record class BatchDeleteParams : ParamsBase
 {
-    public required string MessageBatchID { get; init; }
+    public string? MessageBatchID { get; init; }
 
     public BatchDeleteParams() { }
 

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Skills.Versions;
 
 namespace Anthropic.Services.Beta.Skills;
@@ -31,6 +32,11 @@ public sealed class VersionService : IVersionService
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.SkillID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.SkillID' cannot be null");
+        }
+
         HttpRequest<VersionCreateParams> request = new()
         {
             Method = HttpMethod.Post,
@@ -49,11 +55,27 @@ public sealed class VersionService : IVersionService
         return version;
     }
 
+    public async Task<VersionCreateResponse> Create(
+        string skillID,
+        VersionCreateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.Create(parameters with { SkillID = skillID }, cancellationToken);
+    }
+
     public async Task<VersionRetrieveResponse> Retrieve(
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.Version == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.Version' cannot be null");
+        }
+
         HttpRequest<VersionRetrieveParams> request = new()
         {
             Method = HttpMethod.Get,
@@ -72,11 +94,25 @@ public sealed class VersionService : IVersionService
         return version;
     }
 
+    public async Task<VersionRetrieveResponse> Retrieve(
+        string version,
+        VersionRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await this.Retrieve(parameters with { Version = version }, cancellationToken);
+    }
+
     public async Task<VersionListPageResponse> List(
         VersionListParams parameters,
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.SkillID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.SkillID' cannot be null");
+        }
+
         HttpRequest<VersionListParams> request = new()
         {
             Method = HttpMethod.Get,
@@ -95,11 +131,27 @@ public sealed class VersionService : IVersionService
         return page;
     }
 
+    public async Task<VersionListPageResponse> List(
+        string skillID,
+        VersionListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.List(parameters with { SkillID = skillID }, cancellationToken);
+    }
+
     public async Task<VersionDeleteResponse> Delete(
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.Version == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.Version' cannot be null");
+        }
+
         HttpRequest<VersionDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
@@ -116,5 +168,14 @@ public sealed class VersionService : IVersionService
             version.Validate();
         }
         return version;
+    }
+
+    public async Task<VersionDeleteResponse> Delete(
+        string version,
+        VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await this.Delete(parameters with { Version = version }, cancellationToken);
     }
 }

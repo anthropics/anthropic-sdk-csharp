@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models;
 [JsonConverter(typeof(ErrorObjectConverter))]
 public record class ErrorObject
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public string Message
     {
@@ -48,59 +54,63 @@ public record class ErrorObject
         }
     }
 
-    public ErrorObject(InvalidRequestError value)
+    public ErrorObject(InvalidRequestError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ErrorObject(AuthenticationError value)
+    public ErrorObject(AuthenticationError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ErrorObject(BillingError value)
+    public ErrorObject(BillingError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ErrorObject(PermissionError value)
+    public ErrorObject(PermissionError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ErrorObject(NotFoundError value)
+    public ErrorObject(NotFoundError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ErrorObject(RateLimitError value)
+    public ErrorObject(RateLimitError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ErrorObject(GatewayTimeoutError value)
+    public ErrorObject(GatewayTimeoutError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ErrorObject(APIErrorObject value)
+    public ErrorObject(APIErrorObject value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ErrorObject(OverloadedError value)
+    public ErrorObject(OverloadedError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    ErrorObject(UnknownVariant value)
+    public ErrorObject(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static ErrorObject CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickInvalidRequestError([NotNullWhen(true)] out InvalidRequestError? value)
@@ -254,15 +264,13 @@ public record class ErrorObject
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ErrorObject"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
@@ -288,8 +296,6 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
         {
             case "invalid_request_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<InvalidRequestError>(
@@ -299,25 +305,18 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'InvalidRequestError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "authentication_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<AuthenticationError>(
@@ -327,125 +326,90 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'AuthenticationError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "billing_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BillingError>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BillingError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "permission_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<PermissionError>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'PermissionError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "not_found_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<NotFoundError>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'NotFoundError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "rate_limit_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RateLimitError>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RateLimitError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "timeout_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<GatewayTimeoutError>(
@@ -455,76 +419,55 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'GatewayTimeoutError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "api_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<APIErrorObject>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'APIErrorObject'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "overloaded_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<OverloadedError>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ErrorObject(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'OverloadedError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new ErrorObject(json);
             }
         }
     }
@@ -535,7 +478,6 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

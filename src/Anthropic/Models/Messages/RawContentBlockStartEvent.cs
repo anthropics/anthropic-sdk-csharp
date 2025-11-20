@@ -133,7 +133,14 @@ public sealed record class RawContentBlockStartEvent
 [JsonConverter(typeof(RawContentBlockStartEventContentBlockConverter))]
 public record class RawContentBlockStartEventContentBlock
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -165,44 +172,51 @@ public record class RawContentBlockStartEventContentBlock
         }
     }
 
-    public RawContentBlockStartEventContentBlock(TextBlock value)
+    public RawContentBlockStartEventContentBlock(TextBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockStartEventContentBlock(ThinkingBlock value)
+    public RawContentBlockStartEventContentBlock(ThinkingBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockStartEventContentBlock(RedactedThinkingBlock value)
+    public RawContentBlockStartEventContentBlock(
+        RedactedThinkingBlock value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockStartEventContentBlock(ToolUseBlock value)
+    public RawContentBlockStartEventContentBlock(ToolUseBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockStartEventContentBlock(ServerToolUseBlock value)
+    public RawContentBlockStartEventContentBlock(ServerToolUseBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockStartEventContentBlock(WebSearchToolResultBlock value)
+    public RawContentBlockStartEventContentBlock(
+        WebSearchToolResultBlock value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    RawContentBlockStartEventContentBlock(UnknownVariant value)
+    public RawContentBlockStartEventContentBlock(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static RawContentBlockStartEventContentBlock CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickText([NotNullWhen(true)] out TextBlock? value)
@@ -323,15 +337,13 @@ public record class RawContentBlockStartEventContentBlock
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of RawContentBlockStartEventContentBlock"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class RawContentBlockStartEventContentBlockConverter
@@ -358,60 +370,44 @@ sealed class RawContentBlockStartEventContentBlockConverter
         {
             case "text":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<TextBlock>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockStartEventContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'TextBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "thinking":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockStartEventContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ThinkingBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "redacted_thinking":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlock>(
@@ -421,52 +417,38 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockStartEventContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'RedactedThinkingBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockStartEventContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ToolUseBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "server_tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ServerToolUseBlock>(
@@ -476,26 +458,19 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockStartEventContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ServerToolUseBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "web_search_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(
@@ -505,27 +480,20 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockStartEventContentBlock(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'WebSearchToolResultBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new RawContentBlockStartEventContentBlock(json);
             }
         }
     }
@@ -536,7 +504,6 @@ sealed class RawContentBlockStartEventContentBlockConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

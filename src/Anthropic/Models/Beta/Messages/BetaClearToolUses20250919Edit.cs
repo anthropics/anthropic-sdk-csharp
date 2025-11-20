@@ -213,26 +213,30 @@ public sealed record class BetaClearToolUses20250919Edit
 [JsonConverter(typeof(ClearToolInputsConverter))]
 public record class ClearToolInputs
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public ClearToolInputs(bool value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public ClearToolInputs(IReadOnlyList<string> value)
+    public ClearToolInputs(bool value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    ClearToolInputs(UnknownVariant value)
+    public ClearToolInputs(IReadOnlyList<string> value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static ClearToolInputs CreateUnknownVariant(JsonElement value)
+    public ClearToolInputs(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBool([NotNullWhen(true)] out bool? value)
@@ -283,15 +287,13 @@ public record class ClearToolInputs
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ClearToolInputs"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
@@ -302,38 +304,30 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            return new ClearToolInputs(JsonSerializer.Deserialize<bool>(ref reader, options));
+            return new(JsonSerializer.Deserialize<bool>(json, options));
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'bool'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<string>>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<List<string>>(json, options);
             if (deserialized != null)
             {
-                return new ClearToolInputs(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<string>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -342,8 +336,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         JsonSerializerOptions options
     )
     {
-        object? variant = value?.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value?.Json, options);
     }
 }
 
@@ -353,7 +346,14 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
 [JsonConverter(typeof(TriggerConverter))]
 public record class Trigger
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -365,24 +365,21 @@ public record class Trigger
         get { return Match(betaInputTokens: (x) => x.Value, betaToolUses: (x) => x.Value); }
     }
 
-    public Trigger(BetaInputTokensTrigger value)
+    public Trigger(BetaInputTokensTrigger value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Trigger(BetaToolUsesTrigger value)
+    public Trigger(BetaToolUsesTrigger value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    Trigger(UnknownVariant value)
+    public Trigger(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static Trigger CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaInputTokens([NotNullWhen(true)] out BetaInputTokensTrigger? value)
@@ -438,13 +435,11 @@ public record class Trigger
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Trigger");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class TriggerConverter : JsonConverter<Trigger>
@@ -470,8 +465,6 @@ sealed class TriggerConverter : JsonConverter<Trigger>
         {
             case "input_tokens":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(
@@ -481,26 +474,19 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Trigger(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaInputTokensTrigger'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool_uses":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolUsesTrigger>(
@@ -510,34 +496,26 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Trigger(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaToolUsesTrigger'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new Trigger(json);
             }
         }
     }
 
     public override void Write(Utf8JsonWriter writer, Trigger value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

@@ -20,12 +20,11 @@ public record struct ApiEnum<TRaw, TEnum>(JsonElement Json)
 
     public readonly void Validate()
     {
-        #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
         if (!Enum.IsDefined(Value()))
-        #else
+#else
         if (!Enum.GetValues(typeof(TEnum)).OfType<TEnum>().Contains(Value()))
-        #endif
-        
+#endif
         {
             throw new AnthropicInvalidDataException("Invalid enum value");
         }

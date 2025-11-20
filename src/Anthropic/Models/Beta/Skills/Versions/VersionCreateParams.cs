@@ -21,7 +21,7 @@ public sealed record class VersionCreateParams : ParamsBase
         get { return this._bodyProperties.Freeze(); }
     }
 
-    public required string SkillID { get; init; }
+    public string? SkillID { get; init; }
 
     /// <summary>
     /// Files to upload for the skill.

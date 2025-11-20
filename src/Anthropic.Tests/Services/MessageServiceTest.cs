@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Anthropic.Tests;
 using Anthropic.Models.Messages;
+using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services;
 
@@ -18,7 +18,7 @@ public class MessageServiceTest
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = modelName
+                Model = modelName,
             }
         );
         message.Validate();
@@ -52,11 +52,7 @@ public class MessageServiceTest
     public async Task CountTokens_Works(IAnthropicClient client, string modelName)
     {
         var messageTokensCount = await client.Messages.CountTokens(
-            new()
-            {
-                Messages = [new() { Content = "string", Role = Role.User }],
-                Model = modelName,
-            }
+            new() { Messages = [new() { Content = "string", Role = Role.User }], Model = modelName }
         );
         messageTokensCount.Validate();
     }

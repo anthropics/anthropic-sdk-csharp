@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Anthropic.Tests;
 using Anthropic.Models.Beta.Messages;
+using Anthropic.Tests;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Beta;

@@ -11,28 +11,36 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaWebSearchToolResultBlockParamContentConverter))]
 public record class BetaWebSearchToolResultBlockParamContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public BetaWebSearchToolResultBlockParamContent(
-        IReadOnlyList<BetaWebSearchResultBlockParam> value
+        IReadOnlyList<BetaWebSearchResultBlockParam> value,
+        JsonElement? json = null
     )
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public BetaWebSearchToolResultBlockParamContent(BetaWebSearchToolRequestError value)
+    public BetaWebSearchToolResultBlockParamContent(
+        BetaWebSearchToolRequestError value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaWebSearchToolResultBlockParamContent(UnknownVariant value)
+    public BetaWebSearchToolResultBlockParamContent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaWebSearchToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickResultBlock(
@@ -94,15 +102,13 @@ public record class BetaWebSearchToolResultBlockParamContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebSearchToolResultBlockParamContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaWebSearchToolResultBlockParamContentConverter
@@ -114,52 +120,41 @@ sealed class BetaWebSearchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolRequestError>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaWebSearchToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebSearchToolRequestError'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<BetaWebSearchResultBlockParam>>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
-                return new BetaWebSearchToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<BetaWebSearchResultBlockParam>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -168,7 +163,6 @@ sealed class BetaWebSearchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

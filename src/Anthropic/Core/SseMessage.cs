@@ -19,11 +19,10 @@ sealed record class SseMessage(string? Event, string Data, string? ID, int? Retr
 
         using var stream = await response
             .Content
-
 #if NET5_0_OR_GREATER
             .ReadAsStreamAsync(cancellationToken)
 #else
-            .ReadAsStreamAsync()
+        .ReadAsStreamAsync()
 #endif
             .ConfigureAwait(false);
         using var reader = new StreamReader(stream);

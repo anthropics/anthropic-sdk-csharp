@@ -215,7 +215,7 @@ public abstract record class ParamsBase
             Architecture.Arm => "arm",
             Architecture.Arm64
 #if NET5_0_OR_GREATER
-            or Architecture.Armv6 
+            or Architecture.Armv6
 #endif
             => "arm64",
 #if NET5_0_OR_GREATER

@@ -15,7 +15,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-
 /* ValueTask and related async interface types are provided by
    referenced compatibility packages (e.g. System.Threading.Tasks.Extensions,
    Microsoft.Bcl.AsyncInterfaces). Defining them here can conflict with
@@ -38,7 +37,14 @@ namespace System.Runtime.CompilerServices
 
     // Supports `required` members feature: marks members that must be
     // initialized during object construction.
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event, Inherited = false)]
+    [AttributeUsage(
+        AttributeTargets.Class
+            | AttributeTargets.Struct
+            | AttributeTargets.Property
+            | AttributeTargets.Field
+            | AttributeTargets.Event,
+        Inherited = false
+    )]
     public sealed class RequiredMemberAttribute : Attribute { }
 
     // Applied to constructors (or factory methods) that ensure required
@@ -57,7 +63,11 @@ namespace System.Runtime.CompilerServices
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
     public sealed class CompilerFeatureRequiredAttribute : Attribute
     {
-        public CompilerFeatureRequiredAttribute(string feature) { Feature = feature; }
+        public CompilerFeatureRequiredAttribute(string feature)
+        {
+            Feature = feature;
+        }
+
         public string Feature { get; }
     }
 }
@@ -70,7 +80,14 @@ namespace System.Diagnostics.CodeAnalysis
         public SetsRequiredMembersAttribute() { }
     }
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Event, Inherited = false)]
+    [AttributeUsage(
+        AttributeTargets.Class
+            | AttributeTargets.Struct
+            | AttributeTargets.Property
+            | AttributeTargets.Field
+            | AttributeTargets.Event,
+        Inherited = false
+    )]
     public sealed class RequiredMemberAttribute : Attribute
     {
         public RequiredMemberAttribute() { }
@@ -95,31 +112,47 @@ namespace System.Collections.Frozen
 {
     // Provide a FrozenDictionary in the System.Collections.Frozen namespace
     // to match usages of that API in generated code.
-    public class FrozenDictionary<TKey, TValue> : System.Collections.Generic.Dictionary<TKey, TValue>
+    public class FrozenDictionary<TKey, TValue>
+        : System.Collections.Generic.Dictionary<TKey, TValue>
     {
-        public FrozenDictionary() : base() { }
-        public FrozenDictionary(System.Collections.Generic.IDictionary<TKey, TValue> source) : base(source) { }
+        public FrozenDictionary()
+            : base() { }
 
-        public static FrozenDictionary<TKey, TValue> ToFrozenDictionary(System.Collections.Generic.IDictionary<TKey, TValue> source)
+        public FrozenDictionary(System.Collections.Generic.IDictionary<TKey, TValue> source)
+            : base(source) { }
+
+        public static FrozenDictionary<TKey, TValue> ToFrozenDictionary(
+            System.Collections.Generic.IDictionary<TKey, TValue> source
+        )
         {
-            if (source is FrozenDictionary<TKey, TValue> fd) return fd;
+            if (source is FrozenDictionary<TKey, TValue> fd)
+                return fd;
             return new FrozenDictionary<TKey, TValue>(source);
         }
     }
+
     // Provide a FrozenDictionary in the System.Collections.Frozen namespace
     // to match usages of that API in generated code.
     public class FrozenDictionary
     {
-        public static FrozenDictionary<TKey, TValue> ToFrozenDictionary<TKey, TValue>(System.Collections.Generic.IDictionary<TKey, TValue> source)
+        public static FrozenDictionary<TKey, TValue> ToFrozenDictionary<TKey, TValue>(
+            System.Collections.Generic.IDictionary<TKey, TValue> source
+        )
         {
-            if (source is FrozenDictionary<TKey, TValue> fd) return fd;
+            if (source is FrozenDictionary<TKey, TValue> fd)
+                return fd;
             return new FrozenDictionary<TKey, TValue>(source);
         }
 
-        public static FrozenDictionary<TKey, TValue> ToFrozenDictionary<TKey, TValue>(System.Collections.Generic.IReadOnlyDictionary<TKey, TValue> source)
+        public static FrozenDictionary<TKey, TValue> ToFrozenDictionary<TKey, TValue>(
+            System.Collections.Generic.IReadOnlyDictionary<TKey, TValue> source
+        )
         {
-            if (source is FrozenDictionary<TKey, TValue> fd) return fd;
-            return new FrozenDictionary<TKey, TValue>(source.ToDictionary(e => e.Key, e => e.Value));
+            if (source is FrozenDictionary<TKey, TValue> fd)
+                return fd;
+            return new FrozenDictionary<TKey, TValue>(
+                source.ToDictionary(e => e.Key, e => e.Value)
+            );
         }
     }
 }
@@ -158,7 +191,9 @@ namespace System.Collections.Immutable
             return GetEnumerator();
         }
 
-        public static ImmutableArray<T> ToImmutableArray(System.Collections.Generic.IEnumerable<T> source)
+        public static ImmutableArray<T> ToImmutableArray(
+            System.Collections.Generic.IEnumerable<T> source
+        )
         {
             return new ImmutableArray<T>(source.ToArray());
         }
@@ -166,7 +201,9 @@ namespace System.Collections.Immutable
 
     public class ImmutableArray
     {
-        public static ImmutableArray<T> ToImmutableArray<T>(System.Collections.Generic.IEnumerable<T> source)
+        public static ImmutableArray<T> ToImmutableArray<T>(
+            System.Collections.Generic.IEnumerable<T> source
+        )
         {
             return ImmutableArray<T>.ToImmutableArray(source);
         }
@@ -194,20 +231,24 @@ public static class ModelConverterConstructionShim
 
     static ModelConverterConstructionShim()
     {
-        Assembly.GetCallingAssembly()
+        Assembly
+            .GetCallingAssembly()
             .GetTypes()
             .Where(t => t.IsSubclassOf(typeof(Anthropic.Core.ModelBase)))
             .ToList()
             .ForEach(t =>
             {
                 var converterType = typeof(Anthropic.Core.ModelConverter<>).MakeGenericType(t);
-                var converterMethod = converterType.GetMethod(FromRawUncheckedMethodName, BindingFlags.Static | BindingFlags.Public);
+                var converterMethod = converterType.GetMethod(
+                    FromRawUncheckedMethodName,
+                    BindingFlags.Static | BindingFlags.Public
+                );
                 if (converterMethod is null)
                 {
                     return;
                 }
                 var fromRaw =
-                        (Func<IReadOnlyDictionary<string, JsonElement>, object>)
+                    (Func<IReadOnlyDictionary<string, JsonElement>, object>)
                         Delegate.CreateDelegate(
                             typeof(Func<IReadOnlyDictionary<string, JsonElement>, object>),
                             converterMethod
@@ -216,8 +257,11 @@ public static class ModelConverterConstructionShim
             });
     }
 
-    internal static Dictionary<Type, Func<IReadOnlyDictionary<string, JsonElement>, object>> FromRawFactories { get; }
-        = new Dictionary<Type, Func<IReadOnlyDictionary<string, JsonElement>, object>>();
+    internal static Dictionary<
+        Type,
+        Func<IReadOnlyDictionary<string, JsonElement>, object>
+    > FromRawFactories { get; } =
+        new Dictionary<Type, Func<IReadOnlyDictionary<string, JsonElement>, object>>();
 }
 
 #endif

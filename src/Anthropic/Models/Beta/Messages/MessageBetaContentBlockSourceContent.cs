@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(MessageBetaContentBlockSourceContentConverter))]
 public record class MessageBetaContentBlockSourceContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -28,24 +34,21 @@ public record class MessageBetaContentBlockSourceContent
         }
     }
 
-    public MessageBetaContentBlockSourceContent(BetaTextBlockParam value)
+    public MessageBetaContentBlockSourceContent(BetaTextBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public MessageBetaContentBlockSourceContent(BetaImageBlockParam value)
+    public MessageBetaContentBlockSourceContent(BetaImageBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    MessageBetaContentBlockSourceContent(UnknownVariant value)
+    public MessageBetaContentBlockSourceContent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static MessageBetaContentBlockSourceContent CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickTextBlockParam([NotNullWhen(true)] out BetaTextBlockParam? value)
@@ -105,15 +108,13 @@ public record class MessageBetaContentBlockSourceContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of MessageBetaContentBlockSourceContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class MessageBetaContentBlockSourceContentConverter
@@ -140,8 +141,6 @@ sealed class MessageBetaContentBlockSourceContentConverter
         {
             case "text":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(
@@ -151,26 +150,19 @@ sealed class MessageBetaContentBlockSourceContentConverter
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new MessageBetaContentBlockSourceContent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaTextBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "image":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaImageBlockParam>(
@@ -180,27 +172,20 @@ sealed class MessageBetaContentBlockSourceContentConverter
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new MessageBetaContentBlockSourceContent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaImageBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new MessageBetaContentBlockSourceContent(json);
             }
         }
     }
@@ -211,7 +196,6 @@ sealed class MessageBetaContentBlockSourceContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

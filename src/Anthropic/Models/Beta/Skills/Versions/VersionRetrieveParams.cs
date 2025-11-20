@@ -16,7 +16,7 @@ public sealed record class VersionRetrieveParams : ParamsBase
 {
     public required string SkillID { get; init; }
 
-    public required string Version { get; init; }
+    public string? Version { get; init; }
 
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.

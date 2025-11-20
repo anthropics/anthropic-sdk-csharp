@@ -137,7 +137,14 @@ public sealed record class BetaWebFetchToolResultBlock
 [JsonConverter(typeof(BetaWebFetchToolResultBlockContentConverter))]
 public record class BetaWebFetchToolResultBlockContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -150,24 +157,24 @@ public record class BetaWebFetchToolResultBlockContent
         }
     }
 
-    public BetaWebFetchToolResultBlockContent(BetaWebFetchToolResultErrorBlock value)
+    public BetaWebFetchToolResultBlockContent(
+        BetaWebFetchToolResultErrorBlock value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value)
+    public BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaWebFetchToolResultBlockContent(UnknownVariant value)
+    public BetaWebFetchToolResultBlockContent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaWebFetchToolResultBlockContent CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaWebFetchToolResultErrorBlock(
@@ -228,15 +235,13 @@ public record class BetaWebFetchToolResultBlockContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebFetchToolResultBlockContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaWebFetchToolResultBlockContentConverter
@@ -248,50 +253,39 @@ sealed class BetaWebFetchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaWebFetchToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebFetchToolResultErrorBlock'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaWebFetchToolResultBlockContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebFetchBlock'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -300,7 +294,6 @@ sealed class BetaWebFetchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

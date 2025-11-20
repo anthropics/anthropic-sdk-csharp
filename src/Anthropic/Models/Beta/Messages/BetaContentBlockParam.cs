@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,7 +12,14 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaContentBlockParamConverter))]
 public record class BetaContentBlockParam
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -171,99 +177,120 @@ public record class BetaContentBlockParam
         }
     }
 
-    public BetaContentBlockParam(BetaTextBlockParam value)
+    public BetaContentBlockParam(BetaTextBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaImageBlockParam value)
+    public BetaContentBlockParam(BetaImageBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaRequestDocumentBlock value)
+    public BetaContentBlockParam(BetaRequestDocumentBlock value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaSearchResultBlockParam value)
+    public BetaContentBlockParam(BetaSearchResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaThinkingBlockParam value)
+    public BetaContentBlockParam(BetaThinkingBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaRedactedThinkingBlockParam value)
+    public BetaContentBlockParam(BetaRedactedThinkingBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaToolUseBlockParam value)
+    public BetaContentBlockParam(BetaToolUseBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaToolResultBlockParam value)
+    public BetaContentBlockParam(BetaToolResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaServerToolUseBlockParam value)
+    public BetaContentBlockParam(BetaServerToolUseBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaWebSearchToolResultBlockParam value)
+    public BetaContentBlockParam(BetaWebSearchToolResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaWebFetchToolResultBlockParam value)
+    public BetaContentBlockParam(BetaWebFetchToolResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaCodeExecutionToolResultBlockParam value)
+    public BetaContentBlockParam(
+        BetaCodeExecutionToolResultBlockParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaBashCodeExecutionToolResultBlockParam value)
+    public BetaContentBlockParam(
+        BetaBashCodeExecutionToolResultBlockParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaTextEditorCodeExecutionToolResultBlockParam value)
+    public BetaContentBlockParam(
+        BetaTextEditorCodeExecutionToolResultBlockParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaMCPToolUseBlockParam value)
+    public BetaContentBlockParam(BetaMCPToolUseBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaRequestMCPToolResultBlockParam value)
+    public BetaContentBlockParam(BetaRequestMCPToolResultBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaContentBlockParam(BetaContainerUploadBlockParam value)
+    public BetaContentBlockParam(BetaContainerUploadBlockParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaContentBlockParam(UnknownVariant value)
+    public BetaContentBlockParam(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaContentBlockParam CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickText([NotNullWhen(true)] out BetaTextBlockParam? value)
@@ -567,15 +594,13 @@ public record class BetaContentBlockParam
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockParam"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockParam>
@@ -601,8 +626,6 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
         {
             case "text":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(
@@ -612,26 +635,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaTextBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "image":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaImageBlockParam>(
@@ -641,26 +657,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaImageBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "document":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(
@@ -670,26 +679,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRequestDocumentBlock'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "search_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaSearchResultBlockParam>(
@@ -699,26 +701,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaSearchResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "thinking":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(
@@ -728,26 +723,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaThinkingBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "redacted_thinking":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRedactedThinkingBlockParam>(
@@ -757,26 +745,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRedactedThinkingBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParam>(
@@ -786,26 +767,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaToolUseBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolResultBlockParam>(
@@ -815,26 +789,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "server_tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(
@@ -844,26 +811,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaServerToolUseBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "web_search_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -874,26 +834,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaWebSearchToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "web_fetch_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(
@@ -903,26 +856,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaWebFetchToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "code_execution_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -933,26 +879,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaCodeExecutionToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "bash_code_execution_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -963,26 +902,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaBashCodeExecutionToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "text_editor_code_execution_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -993,26 +925,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaTextEditorCodeExecutionToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "mcp_tool_use":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlockParam>(
@@ -1022,26 +947,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaMCPToolUseBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "mcp_tool_result":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -1052,26 +970,19 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRequestMCPToolResultBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "container_upload":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(
@@ -1081,27 +992,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaContentBlockParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaContainerUploadBlockParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new BetaContentBlockParam(json);
             }
         }
     }
@@ -1112,7 +1016,6 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

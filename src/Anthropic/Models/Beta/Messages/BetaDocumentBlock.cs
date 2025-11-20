@@ -150,7 +150,14 @@ public sealed record class BetaDocumentBlock : ModelBase, IFromRaw<BetaDocumentB
 [JsonConverter(typeof(SourceConverter))]
 public record class Source
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public string Data
     {
@@ -167,24 +174,21 @@ public record class Source
         get { return Match(betaBase64PDF: (x) => x.Type, betaPlainText: (x) => x.Type); }
     }
 
-    public Source(BetaBase64PDFSource value)
+    public Source(BetaBase64PDFSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public Source(BetaPlainTextSource value)
+    public Source(BetaPlainTextSource value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    Source(UnknownVariant value)
+    public Source(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static Source CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaBase64PDF([NotNullWhen(true)] out BetaBase64PDFSource? value)
@@ -238,13 +242,11 @@ public record class Source
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class SourceConverter : JsonConverter<Source>
@@ -270,8 +272,6 @@ sealed class SourceConverter : JsonConverter<Source>
         {
             case "base64":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaBase64PDFSource>(
@@ -281,26 +281,19 @@ sealed class SourceConverter : JsonConverter<Source>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Source(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaBase64PDFSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "text":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaPlainTextSource>(
@@ -310,34 +303,26 @@ sealed class SourceConverter : JsonConverter<Source>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new Source(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaPlainTextSource'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new Source(json);
             }
         }
     }
 
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

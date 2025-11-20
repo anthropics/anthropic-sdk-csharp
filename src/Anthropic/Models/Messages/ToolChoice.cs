@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -14,7 +13,14 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(ToolChoiceConverter))]
 public record class ToolChoice
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -42,34 +48,33 @@ public record class ToolChoice
         }
     }
 
-    public ToolChoice(ToolChoiceAuto value)
+    public ToolChoice(ToolChoiceAuto value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ToolChoice(ToolChoiceAny value)
+    public ToolChoice(ToolChoiceAny value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ToolChoice(ToolChoiceTool value)
+    public ToolChoice(ToolChoiceTool value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ToolChoice(ToolChoiceNone value)
+    public ToolChoice(ToolChoiceNone value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    ToolChoice(UnknownVariant value)
+    public ToolChoice(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static ToolChoice CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickAuto([NotNullWhen(true)] out ToolChoiceAuto? value)
@@ -153,13 +158,11 @@ public record class ToolChoice
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of ToolChoice");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
@@ -185,113 +188,83 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
         {
             case "auto":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceAuto>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ToolChoice(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ToolChoiceAuto'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "any":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ToolChoice(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ToolChoiceAny'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "tool":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ToolChoice(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ToolChoiceTool'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "none":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ToolChoice(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ToolChoiceNone'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new ToolChoice(json);
             }
         }
     }
@@ -302,7 +275,6 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

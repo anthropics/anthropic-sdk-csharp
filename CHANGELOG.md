@@ -1,5 +1,13 @@
 # Changelog
 
+## 10.1.2 (2025-11-18)
+
+Full Changelog: [v10.1.1...v10.1.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.1.1...v10.1.2)
+
+### Bug Fixes
+
+* use correct version ([a808311](https://github.com/anthropics/anthropic-sdk-csharp/commit/a8083119584c82ec26e1d74f980b6c021e1fbb10))
+
 ## 10.1.1 (2025-11-18)
 
 Full Changelog: [v10.1.0...v10.1.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.1.0...v10.1.1)

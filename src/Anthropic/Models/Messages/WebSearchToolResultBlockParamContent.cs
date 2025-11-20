@@ -11,26 +11,36 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(WebSearchToolResultBlockParamContentConverter))]
 public record class WebSearchToolResultBlockParamContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public WebSearchToolResultBlockParamContent(IReadOnlyList<WebSearchResultBlockParam> value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public WebSearchToolResultBlockParamContent(WebSearchToolRequestError value)
+    public WebSearchToolResultBlockParamContent(
+        IReadOnlyList<WebSearchResultBlockParam> value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    WebSearchToolResultBlockParamContent(UnknownVariant value)
+    public WebSearchToolResultBlockParamContent(
+        WebSearchToolRequestError value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public static WebSearchToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
+    public WebSearchToolResultBlockParamContent(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickItem([NotNullWhen(true)] out IReadOnlyList<WebSearchResultBlockParam>? value)
@@ -90,15 +100,13 @@ public record class WebSearchToolResultBlockParamContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of WebSearchToolResultBlockParamContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class WebSearchToolResultBlockParamContentConverter
@@ -110,52 +118,38 @@ sealed class WebSearchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new WebSearchToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'WebSearchToolRequestError'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<WebSearchResultBlockParam>>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
-                return new WebSearchToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<WebSearchResultBlockParam>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -164,7 +158,6 @@ sealed class WebSearchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

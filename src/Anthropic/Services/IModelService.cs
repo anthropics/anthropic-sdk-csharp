@@ -27,6 +27,18 @@ public interface IModelService
     );
 
     /// <summary>
+    /// Get a specific model.
+    ///
+    /// <para>The Models API response can be used to determine information about a
+    /// specific model or resolve a model alias to a model ID.</para>
+    /// </summary>
+    Task<ModelInfo> Retrieve(
+        string modelID,
+        ModelRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// List available models.
     ///
     /// <para>The Models API response can be used to determine which models are available

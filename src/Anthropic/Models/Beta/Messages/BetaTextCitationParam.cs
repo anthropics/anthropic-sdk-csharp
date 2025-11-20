@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaTextCitationParamConverter))]
 public record class BetaTextCitationParam
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public string CitedText
     {
@@ -110,39 +116,48 @@ public record class BetaTextCitationParam
         }
     }
 
-    public BetaTextCitationParam(BetaCitationCharLocationParam value)
+    public BetaTextCitationParam(BetaCitationCharLocationParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaTextCitationParam(BetaCitationPageLocationParam value)
+    public BetaTextCitationParam(BetaCitationPageLocationParam value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaTextCitationParam(BetaCitationContentBlockLocationParam value)
+    public BetaTextCitationParam(
+        BetaCitationContentBlockLocationParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaTextCitationParam(BetaCitationWebSearchResultLocationParam value)
+    public BetaTextCitationParam(
+        BetaCitationWebSearchResultLocationParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaTextCitationParam(BetaCitationSearchResultLocationParam value)
+    public BetaTextCitationParam(
+        BetaCitationSearchResultLocationParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaTextCitationParam(UnknownVariant value)
+    public BetaTextCitationParam(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaTextCitationParam CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickCitationCharLocation(
@@ -260,15 +275,13 @@ public record class BetaTextCitationParam
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaTextCitationParam"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationParam>
@@ -294,8 +307,6 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
         {
             case "char_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocationParam>(
@@ -305,26 +316,19 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaTextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaCitationCharLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "page_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocationParam>(
@@ -334,26 +338,19 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaTextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaCitationPageLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content_block_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -364,26 +361,19 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaTextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaCitationContentBlockLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "web_search_result_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -394,26 +384,19 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaTextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaCitationWebSearchResultLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "search_result_location":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized =
@@ -424,27 +407,20 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaTextCitationParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaCitationSearchResultLocationParam'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new BetaTextCitationParam(json);
             }
         }
     }
@@ -455,7 +431,6 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

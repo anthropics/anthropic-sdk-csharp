@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Files;
 
 namespace Anthropic.Services.Beta;
@@ -56,6 +57,11 @@ public sealed class FileService : IFileService
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.FileID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.FileID' cannot be null");
+        }
+
         HttpRequest<FileDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
@@ -74,11 +80,27 @@ public sealed class FileService : IFileService
         return deletedFile;
     }
 
+    public async Task<DeletedFile> Delete(
+        string fileID,
+        FileDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.Delete(parameters with { FileID = fileID }, cancellationToken);
+    }
+
     public async Task<HttpResponse> Download(
         FileDownloadParams parameters,
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.FileID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.FileID' cannot be null");
+        }
+
         HttpRequest<FileDownloadParams> request = new()
         {
             Method = HttpMethod.Get,
@@ -90,11 +112,27 @@ public sealed class FileService : IFileService
         return response;
     }
 
+    public async Task<HttpResponse> Download(
+        string fileID,
+        FileDownloadParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.Download(parameters with { FileID = fileID }, cancellationToken);
+    }
+
     public async Task<FileMetadata> RetrieveMetadata(
         FileRetrieveMetadataParams parameters,
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.FileID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.FileID' cannot be null");
+        }
+
         HttpRequest<FileRetrieveMetadataParams> request = new()
         {
             Method = HttpMethod.Get,
@@ -111,5 +149,16 @@ public sealed class FileService : IFileService
             fileMetadata.Validate();
         }
         return fileMetadata;
+    }
+
+    public async Task<FileMetadata> RetrieveMetadata(
+        string fileID,
+        FileRetrieveMetadataParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.RetrieveMetadata(parameters with { FileID = fileID }, cancellationToken);
     }
 }

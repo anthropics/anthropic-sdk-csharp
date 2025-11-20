@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaRawMessageStreamEventConverter))]
 public record class BetaRawMessageStreamEvent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -42,44 +48,45 @@ public record class BetaRawMessageStreamEvent
         }
     }
 
-    public BetaRawMessageStreamEvent(BetaRawMessageStartEvent value)
+    public BetaRawMessageStreamEvent(BetaRawMessageStartEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value)
+    public BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawMessageStopEvent value)
+    public BetaRawMessageStreamEvent(BetaRawMessageStopEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawContentBlockStartEvent value)
+    public BetaRawMessageStreamEvent(BetaRawContentBlockStartEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawContentBlockDeltaEvent value)
+    public BetaRawMessageStreamEvent(BetaRawContentBlockDeltaEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value)
+    public BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaRawMessageStreamEvent(UnknownVariant value)
+    public BetaRawMessageStreamEvent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaRawMessageStreamEvent CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickStart([NotNullWhen(true)] out BetaRawMessageStartEvent? value)
@@ -203,15 +210,13 @@ public record class BetaRawMessageStreamEvent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaRawMessageStreamEvent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageStreamEvent>
@@ -237,8 +242,6 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
         {
             case "message_start":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawMessageStartEvent>(
@@ -248,26 +251,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRawMessageStartEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "message_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawMessageDeltaEvent>(
@@ -277,26 +273,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRawMessageDeltaEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "message_stop":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawMessageStopEvent>(
@@ -306,26 +295,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRawMessageStopEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content_block_start":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStartEvent>(
@@ -335,26 +317,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRawContentBlockStartEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content_block_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDeltaEvent>(
@@ -364,26 +339,19 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRawContentBlockDeltaEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "content_block_stop":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStopEvent>(
@@ -393,27 +361,20 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaRawMessageStreamEvent(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRawContentBlockStopEvent'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new BetaRawMessageStreamEvent(json);
             }
         }
     }
@@ -424,7 +385,6 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

@@ -162,7 +162,14 @@ public sealed record class BetaWebFetchToolResultBlockParam
 [JsonConverter(typeof(BetaWebFetchToolResultBlockParamContentConverter))]
 public record class BetaWebFetchToolResultBlockParamContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -175,24 +182,27 @@ public record class BetaWebFetchToolResultBlockParamContent
         }
     }
 
-    public BetaWebFetchToolResultBlockParamContent(BetaWebFetchToolResultErrorBlockParam value)
+    public BetaWebFetchToolResultBlockParamContent(
+        BetaWebFetchToolResultErrorBlockParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaWebFetchToolResultBlockParamContent(BetaWebFetchBlockParam value)
+    public BetaWebFetchToolResultBlockParamContent(
+        BetaWebFetchBlockParam value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaWebFetchToolResultBlockParamContent(UnknownVariant value)
+    public BetaWebFetchToolResultBlockParamContent(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaWebFetchToolResultBlockParamContent CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickBetaWebFetchToolResultErrorBlockParam(
@@ -259,15 +269,13 @@ public record class BetaWebFetchToolResultBlockParamContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebFetchToolResultBlockParamContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaWebFetchToolResultBlockParamContentConverter
@@ -279,53 +287,39 @@ sealed class BetaWebFetchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlockParam>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaWebFetchToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebFetchToolResultErrorBlockParam'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new BetaWebFetchToolResultBlockParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'BetaWebFetchBlockParam'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -334,7 +328,6 @@ sealed class BetaWebFetchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

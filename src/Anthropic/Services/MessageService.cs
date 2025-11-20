@@ -79,6 +79,7 @@ public sealed class MessageService : IMessageService
             parameters.QueryProperties,
             bodyProperties
         );
+
         HttpRequest<MessageCreateParams> request = new()
         {
             Method = HttpMethod.Post,

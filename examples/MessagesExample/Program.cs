@@ -1,8 +1,7 @@
 ﻿using System;
 using Anthropic;
-using Anthropic.Models.Messages;
 using Anthropic.Foundry;
-
+using Anthropic.Models.Messages;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 IAnthropicClient client = new AnthropicClient();
@@ -25,8 +24,7 @@ var response = await client.Messages.Create(parameters);
 var message = String.Join(
     "",
     response
-        .Content
-        .Where(message => message.Value is TextBlock)
+        .Content.Where(message => message.Value is TextBlock)
         .Select(message => message.Value as TextBlock)
         .Select((textBlock) => textBlock.Text)
 );

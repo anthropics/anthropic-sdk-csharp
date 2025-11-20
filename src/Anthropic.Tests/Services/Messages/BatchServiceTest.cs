@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Anthropic.Tests;
 using Anthropic.Models.Messages.Batches;
+using Anthropic.Tests;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Messages;
@@ -10,7 +10,7 @@ namespace Anthropic.Tests.Services.Messages;
 public class BatchServiceTest
 {
     [Theory]
-    [AnthropicTestClients]    
+    [AnthropicTestClients]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
     public async Task Create_Works(IAnthropicClient client, string modelName)
@@ -28,7 +28,11 @@ public class BatchServiceTest
                             MaxTokens = 1024,
                             Messages =
                             [
-                                new() { Content = "Hello, world", Role = Models.Messages.Role.User },
+                                new()
+                                {
+                                    Content = "Hello, world",
+                                    Role = Models.Messages.Role.User,
+                                },
                             ],
                             Model = modelName,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -97,9 +101,7 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var messageBatch = await client.Messages.Batches.Retrieve(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var messageBatch = await client.Messages.Batches.Retrieve("message_batch_id");
         messageBatch.Validate();
     }
 
@@ -115,9 +117,7 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Delete_Works(IAnthropicClient client)
     {
-        var deletedMessageBatch = await client.Messages.Batches.Delete(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var deletedMessageBatch = await client.Messages.Batches.Delete("message_batch_id");
         deletedMessageBatch.Validate();
     }
 
@@ -125,9 +125,7 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Cancel_Works(IAnthropicClient client)
     {
-        var messageBatch = await client.Messages.Batches.Cancel(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var messageBatch = await client.Messages.Batches.Cancel("message_batch_id");
         messageBatch.Validate();
     }
 
@@ -135,9 +133,7 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
-        var stream = client.Messages.Batches.ResultsStreaming(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var stream = client.Messages.Batches.ResultsStreaming("message_batch_id");
 
         await foreach (var messageBatchIndividualResponse in stream)
         {

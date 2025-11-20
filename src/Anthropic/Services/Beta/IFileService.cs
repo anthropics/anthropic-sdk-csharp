@@ -32,6 +32,15 @@ public interface IFileService
     );
 
     /// <summary>
+    /// Delete File
+    /// </summary>
+    Task<DeletedFile> Delete(
+        string fileID,
+        FileDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Download File
     /// </summary>
     Task<HttpResponse> Download(
@@ -40,10 +49,28 @@ public interface IFileService
     );
 
     /// <summary>
+    /// Download File
+    /// </summary>
+    Task<HttpResponse> Download(
+        string fileID,
+        FileDownloadParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Get File Metadata
     /// </summary>
     Task<FileMetadata> RetrieveMetadata(
         FileRetrieveMetadataParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Get File Metadata
+    /// </summary>
+    Task<FileMetadata> RetrieveMetadata(
+        string fileID,
+        FileRetrieveMetadataParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 }

@@ -126,6 +126,7 @@ class FreezableDictionary<K, V> : IDictionary<K, V>
     {
         return _mutableDictionary.Remove(item.Key);
     }
+
 #if NETSTANDARD2_0
     public bool TryGetValue(K key, out V value)
     {
@@ -137,7 +138,6 @@ class FreezableDictionary<K, V> : IDictionary<K, V>
         return _dictionary.TryGetValue(key, out value);
     }
 #endif
-
 
     Collections::IEnumerator Collections::IEnumerable.GetEnumerator()
     {

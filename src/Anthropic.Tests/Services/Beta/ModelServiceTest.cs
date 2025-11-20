@@ -5,16 +5,14 @@ namespace Anthropic.Tests.Services.Beta;
 
 public class ModelServiceTest
 {
-    
     [Theory]
     [AnthropicTestClients(TestSupportTypes.Anthropic)]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var betaModelInfo = await client.Beta.Models.Retrieve(new() { ModelID = "model_id" });
+        var betaModelInfo = await client.Beta.Models.Retrieve("model_id");
         betaModelInfo.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task List_Works(IAnthropicClient client)

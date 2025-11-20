@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Beta;
 [JsonConverter(typeof(BetaErrorConverter))]
 public record class BetaError
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public string Message
     {
@@ -48,59 +54,63 @@ public record class BetaError
         }
     }
 
-    public BetaError(BetaInvalidRequestError value)
+    public BetaError(BetaInvalidRequestError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaError(BetaAuthenticationError value)
+    public BetaError(BetaAuthenticationError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaError(BetaBillingError value)
+    public BetaError(BetaBillingError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaError(BetaPermissionError value)
+    public BetaError(BetaPermissionError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaError(BetaNotFoundError value)
+    public BetaError(BetaNotFoundError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaError(BetaRateLimitError value)
+    public BetaError(BetaRateLimitError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaError(BetaGatewayTimeoutError value)
+    public BetaError(BetaGatewayTimeoutError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaError(BetaAPIError value)
+    public BetaError(BetaAPIError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public BetaError(BetaOverloadedError value)
+    public BetaError(BetaOverloadedError value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaError(UnknownVariant value)
+    public BetaError(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static BetaError CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickInvalidRequest([NotNullWhen(true)] out BetaInvalidRequestError? value)
@@ -254,13 +264,11 @@ public record class BetaError
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of BetaError");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaErrorConverter : JsonConverter<BetaError>
@@ -286,8 +294,6 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
         {
             case "invalid_request_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaInvalidRequestError>(
@@ -297,25 +303,18 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaInvalidRequestError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "authentication_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaAuthenticationError>(
@@ -325,50 +324,36 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaAuthenticationError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "billing_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaBillingError>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaBillingError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "permission_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaPermissionError>(
@@ -378,50 +363,36 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaPermissionError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "not_found_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaNotFoundError>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaNotFoundError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "rate_limit_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRateLimitError>(
@@ -431,25 +402,18 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaRateLimitError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "timeout_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaGatewayTimeoutError>(
@@ -459,50 +423,36 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaGatewayTimeoutError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "api_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaAPIError>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaAPIError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             case "overloaded_error":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaOverloadedError>(
@@ -512,26 +462,19 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new BetaError(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'BetaOverloadedError'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new BetaError(json);
             }
         }
     }
@@ -542,7 +485,6 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

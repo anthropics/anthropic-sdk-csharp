@@ -97,26 +97,33 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
 [JsonConverter(typeof(BetaMessageParamContentConverter))]
 public record class BetaMessageParamContent
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
 
-    public BetaMessageParamContent(string value)
+    JsonElement? _json = null;
+
+    public JsonElement Json
     {
-        Value = value;
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public BetaMessageParamContent(IReadOnlyList<BetaContentBlockParam> value)
+    public BetaMessageParamContent(string value, JsonElement? json = null)
     {
-        Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
+        this._json = json;
     }
 
-    BetaMessageParamContent(UnknownVariant value)
+    public BetaMessageParamContent(
+        IReadOnlyList<BetaContentBlockParam> value,
+        JsonElement? json = null
+    )
     {
-        Value = value;
+        this.Value = ImmutableArray.ToImmutableArray(value);
+        this._json = json;
     }
 
-    public static BetaMessageParamContent CreateUnknownVariant(JsonElement value)
+    public BetaMessageParamContent(JsonElement json)
     {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickString([NotNullWhen(true)] out string? value)
@@ -175,15 +182,13 @@ public record class BetaMessageParamContent
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaMessageParamContent"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamContent>
@@ -194,45 +199,37 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<string>(json, options);
             if (deserialized != null)
             {
-                return new BetaMessageParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'string'", e)
-            );
+            // ignore
         }
 
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<BetaContentBlockParam>>(
-                ref reader,
+                json,
                 options
             );
             if (deserialized != null)
             {
-                return new BetaMessageParamContent(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'List<BetaContentBlockParam>'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -241,8 +238,7 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }
 

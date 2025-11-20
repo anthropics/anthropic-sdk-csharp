@@ -24,9 +24,27 @@ public interface IVersionService
     );
 
     /// <summary>
+    /// Create Skill Version
+    /// </summary>
+    Task<VersionCreateResponse> Create(
+        string skillID,
+        VersionCreateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Get Skill Version
     /// </summary>
     Task<VersionRetrieveResponse> Retrieve(
+        VersionRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Get Skill Version
+    /// </summary>
+    Task<VersionRetrieveResponse> Retrieve(
+        string version,
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
@@ -40,9 +58,27 @@ public interface IVersionService
     );
 
     /// <summary>
+    /// List Skill Versions
+    /// </summary>
+    Task<VersionListPageResponse> List(
+        string skillID,
+        VersionListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Delete Skill Version
     /// </summary>
     Task<VersionDeleteResponse> Delete(
+        VersionDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Delete Skill Version
+    /// </summary>
+    Task<VersionDeleteResponse> Delete(
+        string version,
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
     );

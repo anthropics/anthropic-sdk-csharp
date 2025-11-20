@@ -21,7 +21,7 @@ public class AnthropicClient : IAnthropicClient
         get { return _threadLocalRandom.Value!; }
     }
 
-    readonly ClientOptions _options;
+    protected readonly ClientOptions _options;
 
     public HttpClient HttpClient
     {
@@ -65,7 +65,7 @@ public class AnthropicClient : IAnthropicClient
         init { this._options.AuthToken = value; }
     }
 
-    public IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new AnthropicClient(modifier(this._options));
     }
@@ -146,13 +146,21 @@ public class AnthropicClient : IAnthropicClient
         }
     }
 
-    protected virtual ValueTask BeforeSend<T>(HttpRequest<T> request, HttpRequestMessage requestMessage, CancellationToken cancellationToken)
+    protected virtual ValueTask BeforeSend<T>(
+        HttpRequest<T> request,
+        HttpRequestMessage requestMessage,
+        CancellationToken cancellationToken
+    )
         where T : ParamsBase
     {
         return ValueTask.CompletedTask;
     }
 
-    protected virtual ValueTask AfterSend<T>(HttpRequest<T> request, HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+    protected virtual ValueTask AfterSend<T>(
+        HttpRequest<T> request,
+        HttpResponseMessage httpResponseMessage,
+        CancellationToken cancellationToken
+    )
         where T : ParamsBase
     {
         return ValueTask.CompletedTask;
@@ -227,9 +235,9 @@ public class AnthropicClient : IAnthropicClient
 
         if (float.TryParse(headerValue
 #if NET5_0_OR_GREATER
-            .AsSpan()
+                .AsSpan()
 #endif
-        , out var retryAfterMs))
+                , out var retryAfterMs))
         {
             return TimeSpan.FromMilliseconds(retryAfterMs);
         }
@@ -249,17 +257,17 @@ public class AnthropicClient : IAnthropicClient
 
         if (float.TryParse(headerValue
 #if NET5_0_OR_GREATER
-            .AsSpan()
+                .AsSpan()
 #endif
-        , out var retryAfterSeconds))
+                , out var retryAfterSeconds))
         {
             return TimeSpan.FromSeconds(retryAfterSeconds);
         }
         else if (DateTimeOffset.TryParse(headerValue
 #if NET5_0_OR_GREATER
-            .AsSpan()
+                .AsSpan()
 #endif
-        , out var retryAfterDate))
+                , out var retryAfterDate))
         {
             return retryAfterDate - DateTimeOffset.Now;
         }
@@ -288,7 +296,7 @@ public class AnthropicClient : IAnthropicClient
             or
 #if !NETSTANDARD2_0_OR_GREATER
             // Retry on rate limits
-            HttpStatusCode.TooManyRequests            
+            HttpStatusCode.TooManyRequests
             or
 #endif
             // Retry internal errors

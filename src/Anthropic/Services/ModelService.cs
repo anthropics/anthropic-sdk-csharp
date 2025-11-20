@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Models;
 
 namespace Anthropic.Services;
@@ -26,6 +27,11 @@ public sealed class ModelService : IModelService
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.ModelID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.ModelID' cannot be null");
+        }
+
         HttpRequest<ModelRetrieveParams> request = new()
         {
             Method = HttpMethod.Get,
@@ -42,6 +48,17 @@ public sealed class ModelService : IModelService
             modelInfo.Validate();
         }
         return modelInfo;
+    }
+
+    public async Task<ModelInfo> Retrieve(
+        string modelID,
+        ModelRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.Retrieve(parameters with { ModelID = modelID }, cancellationToken);
     }
 
     public async Task<ModelListPageResponse> List(

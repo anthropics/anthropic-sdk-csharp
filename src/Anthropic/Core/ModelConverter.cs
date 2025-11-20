@@ -24,8 +24,7 @@ sealed class ModelConverter<TModel> : JsonConverter<TModel>
 #if NET5_0_OR_GREATER
         return TModel.FromRawUnchecked(properties);
 #else
-        return (TModel)ModelConverterConstructionShim
-            .FromRawFactories[typeof(TModel)](properties);
+        return (TModel)ModelConverterConstructionShim.FromRawFactories[typeof(TModel)](properties);
 #endif
     }
 

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Anthropic.Tests;
 using Anthropic.Models.Beta.Messages.Batches;
+using Anthropic.Tests;
 using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Services.Beta.Messages;
@@ -140,18 +140,14 @@ public class BatchServiceTest
         betaMessageBatch.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve("message_batch_id");
         betaMessageBatch.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task List_Works(IAnthropicClient client)
@@ -160,25 +156,19 @@ public class BatchServiceTest
         page.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task Delete_Works(IAnthropicClient client)
     {
-        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete("message_batch_id");
         betaDeletedMessageBatch.Validate();
     }
 
-    
     [Theory]
     [AnthropicTestClients]
     public async Task Cancel_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel("message_batch_id");
         betaMessageBatch.Validate();
     }
 
@@ -186,9 +176,7 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
-        var stream = client.Beta.Messages.Batches.ResultsStreaming(
-            new() { MessageBatchID = "message_batch_id" }
-        );
+        var stream = client.Beta.Messages.Batches.ResultsStreaming("message_batch_id");
 
         await foreach (var betaMessageBatchIndividualResponse in stream)
         {

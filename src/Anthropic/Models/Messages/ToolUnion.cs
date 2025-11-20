@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(ToolUnionConverter))]
 public record class ToolUnion
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public CacheControlEphemeral? CacheControl
     {
@@ -27,44 +33,45 @@ public record class ToolUnion
         }
     }
 
-    public ToolUnion(Tool value)
+    public ToolUnion(Tool value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ToolUnion(ToolBash20250124 value)
+    public ToolUnion(ToolBash20250124 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ToolUnion(ToolTextEditor20250124 value)
+    public ToolUnion(ToolTextEditor20250124 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ToolUnion(ToolTextEditor20250429 value)
+    public ToolUnion(ToolTextEditor20250429 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ToolUnion(ToolTextEditor20250728 value)
+    public ToolUnion(ToolTextEditor20250728 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ToolUnion(WebSearchTool20250305 value)
+    public ToolUnion(WebSearchTool20250305 value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    ToolUnion(UnknownVariant value)
+    public ToolUnion(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static ToolUnion CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickTool([NotNullWhen(true)] out Tool? value)
@@ -176,13 +183,11 @@ public record class ToolUnion
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of ToolUnion");
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ToolUnionConverter : JsonConverter<ToolUnion>
@@ -193,132 +198,92 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         JsonSerializerOptions options
     )
     {
-        List<AnthropicInvalidDataException> exceptions = [];
-
+        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Tool>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<Tool>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new ToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException("Data does not match union variant 'Tool'", e)
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(ref reader, options);
+            var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new ToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'ToolBash20250124'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250124>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250124>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new ToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'ToolTextEditor20250124'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new ToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'ToolTextEditor20250429'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new ToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'ToolTextEditor20250728'",
-                    e
-                )
-            );
+            // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(
-                ref reader,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new ToolUnion(deserialized);
+                return new(deserialized, json);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
-            exceptions.Add(
-                new AnthropicInvalidDataException(
-                    "Data does not match union variant 'WebSearchTool20250305'",
-                    e
-                )
-            );
+            // ignore
         }
 
-        throw new System::AggregateException(exceptions);
+        return new(json);
     }
 
     public override void Write(
@@ -327,7 +292,6 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

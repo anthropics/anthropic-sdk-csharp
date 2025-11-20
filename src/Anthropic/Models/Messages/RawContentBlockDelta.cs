@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +9,14 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(RawContentBlockDeltaConverter))]
 public record class RawContentBlockDelta
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -26,39 +32,39 @@ public record class RawContentBlockDelta
         }
     }
 
-    public RawContentBlockDelta(TextDelta value)
+    public RawContentBlockDelta(TextDelta value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockDelta(InputJSONDelta value)
+    public RawContentBlockDelta(InputJSONDelta value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockDelta(CitationsDelta value)
+    public RawContentBlockDelta(CitationsDelta value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockDelta(ThinkingDelta value)
+    public RawContentBlockDelta(ThinkingDelta value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public RawContentBlockDelta(SignatureDelta value)
+    public RawContentBlockDelta(SignatureDelta value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    RawContentBlockDelta(UnknownVariant value)
+    public RawContentBlockDelta(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static RawContentBlockDelta CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickText([NotNullWhen(true)] out TextDelta? value)
@@ -156,15 +162,13 @@ public record class RawContentBlockDelta
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of RawContentBlockDelta"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
@@ -190,139 +194,102 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
         {
             case "text_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<TextDelta>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockDelta(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'TextDelta'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "input_json_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<InputJSONDelta>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockDelta(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'InputJSONDelta'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "citations_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationsDelta>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockDelta(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'CitationsDelta'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "thinking_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockDelta(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ThinkingDelta'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "signature_delta":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<SignatureDelta>(json, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new RawContentBlockDelta(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'SignatureDelta'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new RawContentBlockDelta(json);
             }
         }
     }
@@ -333,7 +300,6 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

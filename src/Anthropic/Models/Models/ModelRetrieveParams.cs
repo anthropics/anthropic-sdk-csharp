@@ -17,7 +17,7 @@ namespace Anthropic.Models.Models;
 /// </summary>
 public sealed record class ModelRetrieveParams : ParamsBase
 {
-    public required string ModelID { get; init; }
+    public string? ModelID { get; init; }
 
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.

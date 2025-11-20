@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,31 +19,35 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(ThinkingConfigParamConverter))]
 public record class ThinkingConfigParam
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
         get { return Match(enabled: (x) => x.Type, disabled: (x) => x.Type); }
     }
 
-    public ThinkingConfigParam(ThinkingConfigEnabled value)
+    public ThinkingConfigParam(ThinkingConfigEnabled value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public ThinkingConfigParam(ThinkingConfigDisabled value)
+    public ThinkingConfigParam(ThinkingConfigDisabled value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    ThinkingConfigParam(UnknownVariant value)
+    public ThinkingConfigParam(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static ThinkingConfigParam CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickEnabled([NotNullWhen(true)] out ThinkingConfigEnabled? value)
@@ -100,15 +103,13 @@ public record class ThinkingConfigParam
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ThinkingConfigParam"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
@@ -134,8 +135,6 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
         {
             case "enabled":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingConfigEnabled>(
@@ -145,26 +144,19 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ThinkingConfigParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ThinkingConfigEnabled'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "disabled":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
@@ -174,27 +166,20 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new ThinkingConfigParam(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'ThinkingConfigDisabled'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new ThinkingConfigParam(json);
             }
         }
     }
@@ -205,7 +190,6 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,7 +16,14 @@ namespace Anthropic.Models.Messages.Batches;
 [JsonConverter(typeof(MessageBatchResultConverter))]
 public record class MessageBatchResult
 {
-    public object Value { get; private init; }
+    public object? Value { get; } = null;
+
+    JsonElement? _json = null;
+
+    public JsonElement Json
+    {
+        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+    }
 
     public JsonElement Type
     {
@@ -32,34 +38,33 @@ public record class MessageBatchResult
         }
     }
 
-    public MessageBatchResult(MessageBatchSucceededResult value)
+    public MessageBatchResult(MessageBatchSucceededResult value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public MessageBatchResult(MessageBatchErroredResult value)
+    public MessageBatchResult(MessageBatchErroredResult value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public MessageBatchResult(MessageBatchCanceledResult value)
+    public MessageBatchResult(MessageBatchCanceledResult value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    public MessageBatchResult(MessageBatchExpiredResult value)
+    public MessageBatchResult(MessageBatchExpiredResult value, JsonElement? json = null)
     {
-        Value = value;
+        this.Value = value;
+        this._json = json;
     }
 
-    MessageBatchResult(UnknownVariant value)
+    public MessageBatchResult(JsonElement json)
     {
-        Value = value;
-    }
-
-    public static MessageBatchResult CreateUnknownVariant(JsonElement value)
-    {
-        return new(new UnknownVariant(value));
+        this._json = json;
     }
 
     public bool TryPickSucceeded([NotNullWhen(true)] out MessageBatchSucceededResult? value)
@@ -147,15 +152,13 @@ public record class MessageBatchResult
 
     public void Validate()
     {
-        if (this.Value is UnknownVariant)
+        if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
                 "Data did not match any variant of MessageBatchResult"
             );
         }
     }
-
-    record struct UnknownVariant(JsonElement value);
 }
 
 sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
@@ -181,8 +184,6 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
         {
             case "succeeded":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(
@@ -192,26 +193,19 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new MessageBatchResult(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'MessageBatchSucceededResult'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "errored":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(
@@ -221,26 +215,19 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new MessageBatchResult(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'MessageBatchErroredResult'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "canceled":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(
@@ -250,26 +237,19 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new MessageBatchResult(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'MessageBatchCanceledResult'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             case "expired":
             {
-                List<AnthropicInvalidDataException> exceptions = [];
-
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(
@@ -279,27 +259,20 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new MessageBatchResult(deserialized);
+                        return new(deserialized, json);
                     }
                 }
                 catch (System::Exception e)
                     when (e is JsonException || e is AnthropicInvalidDataException)
                 {
-                    exceptions.Add(
-                        new AnthropicInvalidDataException(
-                            "Data does not match union variant 'MessageBatchExpiredResult'",
-                            e
-                        )
-                    );
+                    // ignore
                 }
 
-                throw new System::AggregateException(exceptions);
+                return new(json);
             }
             default:
             {
-                throw new AnthropicInvalidDataException(
-                    "Could not find valid union variant to represent data"
-                );
+                return new MessageBatchResult(json);
             }
         }
     }
@@ -310,7 +283,6 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
         JsonSerializerOptions options
     )
     {
-        object variant = value.Value;
-        JsonSerializer.Serialize(writer, variant, options);
+        JsonSerializer.Serialize(writer, value.Json, options);
     }
 }

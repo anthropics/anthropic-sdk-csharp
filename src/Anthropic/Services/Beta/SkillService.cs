@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Skills;
 using Anthropic.Services.Beta.Skills;
 
@@ -64,6 +65,11 @@ public sealed class SkillService : ISkillService
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.SkillID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.SkillID' cannot be null");
+        }
+
         HttpRequest<SkillRetrieveParams> request = new()
         {
             Method = HttpMethod.Get,
@@ -80,6 +86,17 @@ public sealed class SkillService : ISkillService
             skill.Validate();
         }
         return skill;
+    }
+
+    public async Task<SkillRetrieveResponse> Retrieve(
+        string skillID,
+        SkillRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.Retrieve(parameters with { SkillID = skillID }, cancellationToken);
     }
 
     public async Task<SkillListPageResponse> List(
@@ -112,6 +129,11 @@ public sealed class SkillService : ISkillService
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.SkillID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.SkillID' cannot be null");
+        }
+
         HttpRequest<SkillDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
@@ -128,5 +150,16 @@ public sealed class SkillService : ISkillService
             skill.Validate();
         }
         return skill;
+    }
+
+    public async Task<SkillDeleteResponse> Delete(
+        string skillID,
+        SkillDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.Delete(parameters with { SkillID = skillID }, cancellationToken);
     }
 }
