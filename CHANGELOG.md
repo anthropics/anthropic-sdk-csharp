@@ -1,5 +1,24 @@
 # Changelog
 
+## 10.2.0 (2025-11-20)
+
+Full Changelog: [v10.1.2...v10.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.1.2...v10.2.0)
+
+### Features
+
+* **client:** additional methods for positional params ([8bc6323](https://github.com/anthropics/anthropic-sdk-csharp/commit/8bc6323c38ce551f995bec5e4b1584460b7f037b))
+
+
+### Bug Fixes
+
+* **client:** return correct type for foundry#WithOptions ([#18](https://github.com/anthropics/anthropic-sdk-csharp/issues/18)) ([f814a46](https://github.com/anthropics/anthropic-sdk-csharp/commit/f814a460503abf7fdf7a824b5bf446ef74d60f28))
+* use correct versions ([c78c8db](https://github.com/anthropics/anthropic-sdk-csharp/commit/c78c8db4b6effa6b1438bb879bcafdad2d155808))
+
+
+### Refactors
+
+* **client:** make unknown variants implicit ([eb0e5b6](https://github.com/anthropics/anthropic-sdk-csharp/commit/eb0e5b628d7090adc34300775043ecd26ccfffaf))
+
 ## 10.1.2 (2025-11-18)
 
 Full Changelog: [v10.1.1...v10.1.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.1.1...v10.1.2)
