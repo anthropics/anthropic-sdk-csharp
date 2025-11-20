@@ -7,3 +7,7 @@ cd "$(dirname "$0")/.."
 echo "==> Running dotnet format"
 dotnet format style --severity info --verify-no-changes
 dotnet format analyzers --severity info --verify-no-changes
+
+
+echo "==> Running dotnet csharpier check"
+dotnet csharpier check .
