@@ -13,6 +13,10 @@
     <PackageReference Include="Microsoft.Rest.ClientRuntime.Azure.Authentication" Version="2.4.1" />
     <PackageReference Include="Azure.Identity" Version="1.17.0" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
+  </ItemGroup>
   <PropertyGroup>
     <BuildPackage>true</BuildPackage>
     <Deterministic>true</Deterministic>
@@ -39,9 +43,6 @@
     <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="../Anthropic/GlobalShims.cs">
-      <Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Compile Include="../Anthropic/GlobalShims.cs" />
   </ItemGroup>
 </Project>

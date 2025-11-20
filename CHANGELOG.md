@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.2.1 (2025-11-20)
+
+Full Changelog: [v10.2.0...v10.2.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.2.0...v10.2.1)
+
 ## 10.2.0 (2025-11-20)
 
 Full Changelog: [v10.1.2...v10.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.1.2...v10.2.0)

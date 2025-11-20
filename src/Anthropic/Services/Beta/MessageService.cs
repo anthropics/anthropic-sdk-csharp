@@ -23,7 +23,7 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
         );
     }
 
-    readonly IAnthropicClient _client;
+    internal readonly IAnthropicClient _client;
 
     public MessageService(IAnthropicClient client)
     {

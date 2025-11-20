@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+#if !NET
+using System.Linq;
+using System.Reflection;
+#endif
 
 namespace Anthropic.Core;
 
@@ -21,7 +25,7 @@ sealed class ModelConverter<TModel> : JsonConverter<TModel>
         if (properties == null)
             return null;
 
-#if NET5_0_OR_GREATER
+#if NET
         return TModel.FromRawUnchecked(properties);
 #else
         return (TModel)ModelConverterConstructionShim.FromRawFactories[typeof(TModel)](properties);
@@ -33,3 +37,44 @@ sealed class ModelConverter<TModel> : JsonConverter<TModel>
         JsonSerializer.Serialize(writer, value.Properties, options);
     }
 }
+
+#if !NET
+internal static class ModelConverterConstructionShim
+{
+    public const string FromRawUncheckedMethodName = "FromRawUnchecked";
+
+    static ModelConverterConstructionShim()
+    {
+        Assembly
+            .GetCallingAssembly()
+            .GetTypes()
+            .Where(t => t.IsSubclassOf(typeof(ModelBase)))
+            .ToList()
+            .ForEach(t =>
+            {
+                var converterType = typeof(ModelConverter<>).MakeGenericType(t);
+                var converterMethod = converterType.GetMethod(
+                    FromRawUncheckedMethodName,
+                    BindingFlags.Static | BindingFlags.Public
+                );
+                if (converterMethod is null)
+                {
+                    return;
+                }
+                var fromRaw =
+                    (Func<IReadOnlyDictionary<string, JsonElement>, object>)
+                        Delegate.CreateDelegate(
+                            typeof(Func<IReadOnlyDictionary<string, JsonElement>, object>),
+                            converterMethod
+                        );
+                FromRawFactories.Add(t, fromRaw);
+            });
+    }
+
+    internal static Dictionary<
+        Type,
+        Func<IReadOnlyDictionary<string, JsonElement>, object>
+    > FromRawFactories { get; } =
+        new Dictionary<Type, Func<IReadOnlyDictionary<string, JsonElement>, object>>();
+}
+#endif

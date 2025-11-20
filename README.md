@@ -156,6 +156,33 @@ await foreach (var message in client.Messages.CreateStreaming(parameters))
 }
 ```
 
+## `IChatClient`
+
+The SDK provides an implementation of the `IChatClient` interface from the `Microsoft.Extensions.AI.Abstractions` library.
+This enables `AnthropicClient` (and `Anthropic.Services.IBetaService`) to be used with other libraries that integrate with
+these core abstractions. For example, tools in the MCP C# SDK (`ModelContextProtocol`) library can be used directly with an `AnthropicClient`
+exposed via `IChatClient`.
+
+```csharp
+using Anthropic;
+using Microsoft.Extensions.AI;
+using ModelContextProtocol.Client;
+
+// Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
+IChatClient chatClient = client.AsIChatClient("claude-haiku-4-5")
+    .AsBuilder()
+    .UseFunctionInvocation()
+    .Build();
+
+// Using McpClient from the MCP C# SDK
+McpClient learningServer = await McpClient.CreateAsync(
+    new HttpClientTransport(new() { Endpoint = new("https://learn.microsoft.com/api/mcp") }));
+
+ChatOptions options = new() { Tools = [.. await learningServer.ListToolsAsync()] };
+
+Console.WriteLine(await chatClient.GetResponseAsync("Tell me about IChatClient", options));
+```
+
 ## Binary responses
 
 The SDK defines methods that return binary responses, which are used for API responses that shouldn't necessarily be parsed, like non-JSON data.
