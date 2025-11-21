@@ -55,6 +55,51 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public void AsIChatClient_GetService_ThrowsOnNullServiceType()
+    {
+        IChatClient chatClient = CreateChatClient(
+            new VerbatimHttpHandler("", ""),
+            "claude-haiku-4-5"
+        );
+        Assert.Throws<ArgumentNullException>(() => chatClient.GetService(null!, null));
+    }
+
+    [Fact]
+    public void AsIChatClient_GetService_ReturnsNullWithNonNullServiceKey()
+    {
+        IChatClient chatClient = CreateChatClient(
+            new VerbatimHttpHandler("", ""),
+            "claude-haiku-4-5"
+        );
+        Assert.Null(chatClient.GetService(typeof(string), "someKey"));
+    }
+
+    [Fact]
+    public void AsIChatClient_GetService_ReturnsMetadata()
+    {
+        AnthropicClient client = new() { APIKey = "test-key" };
+        IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
+
+        var metadata = chatClient.GetService<ChatClientMetadata>();
+
+        Assert.NotNull(metadata);
+        Assert.Equal("anthropic", metadata.ProviderName);
+        Assert.Equal("claude-haiku-4-5", metadata.DefaultModelId);
+    }
+
+    [Fact]
+    public void AsIChatClient_GetService_ReturnsSelf()
+    {
+        AnthropicClient client = new() { APIKey = "test-key" };
+        IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
+
+        var self = chatClient.GetService<IChatClient>();
+
+        Assert.NotNull(self);
+        Assert.Same(chatClient, self);
+    }
+
+    [Fact]
     public void IChatClient_Dispose_Nop()
     {
         IChatClient chatClient = CreateChatClient(
@@ -635,28 +680,154 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
-    public void AsIChatClient_GetService_ReturnsMetadata()
+    public async Task GetResponseAsync_WithTextDataContent()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
-        IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "document",
+                        "source": {
+                            "type": "text",
+                            "media_type": "text/plain",
+                            "data": "Sample text content"
+                        }
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_text_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I read the text."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
 
-        var metadata = chatClient.GetService<ChatClientMetadata>();
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
-        Assert.NotNull(metadata);
-        Assert.Equal("anthropic", metadata.ProviderName);
-        Assert.Equal("claude-haiku-4-5", metadata.DefaultModelId);
+        var dataContent = new DataContent(
+            Encoding.UTF8.GetBytes("Sample text content"),
+            "text/plain"
+        );
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [new ChatMessage(ChatRole.User, [dataContent])]
+        );
+        Assert.NotNull(response);
     }
 
     [Fact]
-    public void AsIChatClient_GetService_ReturnsSelf()
+    public async Task GetResponseAsync_WithImageUriContent()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
-        IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "image",
+                        "source": {
+                            "type": "url",
+                            "url": "https://example.com/image.jpg"
+                        }
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_img_uri_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I see the image."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 6
+                }
+            }
+            """
+        );
 
-        var self = chatClient.GetService<IChatClient>();
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
-        Assert.NotNull(self);
-        Assert.Same(chatClient, self);
+        var imageUri = new UriContent(new Uri("https://example.com/image.jpg"), "image/jpeg");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [new ChatMessage(ChatRole.User, [imageUri])]
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithPdfUriContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "document",
+                        "source": {
+                            "type": "url",
+                            "url": "https://example.com/document.pdf"
+                        }
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_pdf_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I analyzed the PDF."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 6
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var pdfUri = new UriContent(new Uri("https://example.com/document.pdf"), "application/pdf");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [new ChatMessage(ChatRole.User, [pdfUri])]
+        );
+        Assert.NotNull(response);
     }
 
     [Fact]
