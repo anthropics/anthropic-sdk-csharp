@@ -1,3 +1,4 @@
+using Anthropic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,6 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using Anthropic;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 
@@ -2994,7 +2994,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             if (!string.IsNullOrEmpty(expectedRequest))
             {
                 Assert.NotNull(request.Content);
-                string actualRequest = await request.Content.ReadAsStringAsync(cancellationToken);
+                string actualRequest = await request.Content.ReadAsStringAsync();
                 Assert.True(
                     JsonNode.DeepEquals(
                         JsonNode.Parse(expectedRequest),

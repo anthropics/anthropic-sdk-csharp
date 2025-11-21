@@ -60,4 +60,21 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Run tests
-        run: ./scripts/test
+        run: ./scripts/test --framework net8.0
+  
+  test-netstandard:
+    timeout-minutes: 10
+    name: test-netstandard
+    needs: build
+    runs-on: windows-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Run tests
+        run: ./scripts/test --framework net462

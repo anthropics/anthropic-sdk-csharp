@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net462</TargetFrameworks>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>12</LangVersion>
     <!-- Disable skipped tests warnings -->
     <NoWarn>$(NoWarn),xUnit1004</NoWarn>
     <!-- Disable deprecation warnings since we may reference our own deprecated symbols -->
