@@ -1,7 +1,5 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Anthropic.Models.Messages;
-using Anthropic.Tests;
+using System.Threading.Tasks;
 
 namespace Anthropic.Tests.Services;
 

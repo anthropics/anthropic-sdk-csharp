@@ -9,6 +9,23 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
+# Default framework
+FRAMEWORK="net8.0"
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --framework)
+      FRAMEWORK="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
+
 function prism_is_running() {
   curl --silent "http://localhost:4010" >/dev/null 2>&1
 }
@@ -53,4 +70,4 @@ else
 fi
 
 echo "==> Running tests"
-dotnet test
+dotnet test -f "$FRAMEWORK"

@@ -1,8 +1,8 @@
+using Anthropic.Foundry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Anthropic.Foundry;
 using Xunit.Sdk;
 
 namespace Anthropic.Tests;
@@ -18,10 +18,9 @@ public class AnthropicTestClientsAttribute : DataAttribute
 
     public override IEnumerable<object[]> GetData(MethodInfo testMethod)
     {
-        var dataServiceUrl =
-            Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
-        string apiKey = "YourApiKeyHere";
-        var resource = "YourRegionOrResourceHere";
+        var dataServiceUrl = Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
+        var apiKey = Environment.GetEnvironmentVariable("TEST_API_API_KEY") ?? "YourApiKeyHere";
+        var resource = Environment.GetEnvironmentVariable("TEST_API_RESOURCE");
 
         var testData = testMethod.GetCustomAttributes<AnthropicTestDataAttribute>().ToArray();
         if (TestSupportTypes.HasFlag(TestSupportTypes.Anthropic))
@@ -35,11 +34,11 @@ public class AnthropicTestClientsAttribute : DataAttribute
                     .ToArray(),
             ];
         }
-        if (TestSupportTypes.HasFlag(TestSupportTypes.Foundry))
+        if (TestSupportTypes.HasFlag(TestSupportTypes.Foundry) && resource is not null)
         {
             yield return
             [
-                new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(apiKey, resource!))
+                new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(apiKey, resource))
                 {
                     BaseUrl = new Uri(dataServiceUrl),
                 },
