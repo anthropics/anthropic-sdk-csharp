@@ -2994,7 +2994,11 @@ public abstract class AnthropicClientExtensionsTestsBase
             if (!string.IsNullOrEmpty(expectedRequest))
             {
                 Assert.NotNull(request.Content);
+#if NET
+                string actualRequest = await request.Content.ReadAsStringAsync(cancellationToken);
+#else
                 string actualRequest = await request.Content.ReadAsStringAsync();
+#endif
                 Assert.True(
                     JsonNode.DeepEquals(
                         JsonNode.Parse(expectedRequest),
