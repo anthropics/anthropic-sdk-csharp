@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Anthropic;
 using Anthropic.Models.Messages;
@@ -220,6 +223,245 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
         ChatOptions options = new() { Tools = [toolUnion.AsAITool()] };
 
         ChatResponse response = await chatClient.GetResponseAsync("Search the web", options);
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public void AsAITool_GetService_ReturnsToolUnion()
+    {
+        ToolUnion toolUnion = new WebSearchTool20250305() { AllowedDomains = ["example.com"] };
+        AITool aiTool = toolUnion.AsAITool();
+
+        Assert.Same(toolUnion, aiTool.GetService<ToolUnion>());
+
+        Assert.Null(aiTool.GetService<ToolUnion>("key"));
+        Assert.Null(aiTool.GetService<string>());
+
+        Assert.NotNull(aiTool.Name);
+        Assert.Contains(nameof(WebSearchTool20250305), aiTool.Name);
+    }
+
+    [Fact]
+    public void AsAITool_GetService_ThrowsOnNullServiceType()
+    {
+        AITool aiTool = (
+            (ToolUnion)new WebSearchTool20250305() { AllowedDomains = ["example.com"] }
+        ).AsAITool();
+        Assert.Throws<ArgumentNullException>(() => aiTool.GetService(null!, null));
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithRawRepresentationFactory()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 2048,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Preconfigured message"
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "New message"
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_factory_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 20,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 2048,
+                Model = "claude-haiku-4-5",
+                Messages =
+                [
+                    new MessageParam()
+                    {
+                        Role = Role.User,
+                        Content = new MessageParamContent(
+                            [
+                                new TextBlockParam() { Text = "Preconfigured message" },
+                            ]
+                        ),
+                    },
+                ],
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync("New message", options);
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithRawRepresentationFactory_SystemMessagesMerged()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }],
+                "system": [
+                    {
+                        "type": "text",
+                        "text": "Existing system message"
+                    },
+                    {
+                        "type": "text",
+                        "text": "New system message"
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_sys_merge_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                System = "Existing system message",
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [
+                new ChatMessage(ChatRole.System, "New system message"),
+                new ChatMessage(ChatRole.User, "Test"),
+            ],
+            options
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithRawRepresentationFactory_SystemMessagesListMerged()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }],
+                "system": [
+                    {
+                        "type": "text",
+                        "text": "First"
+                    },
+                    {
+                        "type": "text",
+                        "text": "Second"
+                    },
+                    {
+                        "type": "text",
+                        "text": "Third"
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_sys_list_merge_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 15,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                System = new System.Collections.Generic.List<TextBlockParam>
+                {
+                    new() { Text = "First" },
+                    new() { Text = "Second" },
+                },
+            },
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            [new ChatMessage(ChatRole.System, "Third"), new ChatMessage(ChatRole.User, "Test")],
+            options
+        );
         Assert.NotNull(response);
     }
 }
