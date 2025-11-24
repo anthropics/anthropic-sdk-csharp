@@ -27,7 +27,6 @@
     <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>PRE-RELEASE NOT FOR DISTRIBUTION</PackageReleaseNotes>
     <LangVersion>Latest</LangVersion>
     <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository>
         element) -->
