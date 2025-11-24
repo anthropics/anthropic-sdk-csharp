@@ -5,23 +5,35 @@
     </Description>
     <AssemblyTitle>SDK Code Generation Anthropic C#</AssemblyTitle>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
     <Nullable>enable</Nullable>
+
     <VersionPrefix>0.0.1</VersionPrefix>
+
     <TargetFrameworks>net8.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
+
     <!-- Generate an XML documentation file for the project. -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
     <PackageReadmeFile>README.md</PackageReadmeFile>
+
     <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+
     <!-- Embed source files that are not tracked by the source control manager in the PDB -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
     <!-- Disable missing XML documentation warnings -->
     <NoWarn>$(NoWarn),1570,1573,1574,1591</NoWarn>
+
     <!-- Disable deprecation warnings since we may reference our own deprecated symbols -->
     <NoWarn>$(NoWarn),0618</NoWarn>
+
     <Configurations>Debug;Release</Configurations>
+
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
