@@ -1,5 +1,30 @@
 # Changelog
 
+## 10.4.0 (2025-11-25)
+
+Full Changelog: [v10.3.0...v10.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.3.0...v10.4.0)
+
+### Features
+
+* **client:** support .NET Standard 2.0 ([70928cd](https://github.com/anthropics/anthropic-sdk-csharp/commit/70928cdd02452b2b7ad37f419b43d92680e02f9d))
+
+
+### Bug Fixes
+
+* **internal:** don't format csproj files ([76affbf](https://github.com/anthropics/anthropic-sdk-csharp/commit/76affbf85b3f9c04bd500020644660265d361fb6))
+
+
+### Chores
+
+* **internal:** add logo to nuget package ([#181](https://github.com/anthropics/anthropic-sdk-csharp/issues/181)) ([f2ca130](https://github.com/anthropics/anthropic-sdk-csharp/commit/f2ca130ab65ec6db6ce164a33a7a820de5187e1a))
+* **internal:** remove redundant keyword ([f33f185](https://github.com/anthropics/anthropic-sdk-csharp/commit/f33f185da453cc9c8293891cb653964d085e362e))
+* remove .keep ([#37](https://github.com/anthropics/anthropic-sdk-csharp/issues/37)) ([3974964](https://github.com/anthropics/anthropic-sdk-csharp/commit/3974964dbf738d0a265f77482e3c9fecefdc5f67))
+
+
+### Refactors
+
+* **internal:** remove abstract static methods ([3a3dffe](https://github.com/anthropics/anthropic-sdk-csharp/commit/3a3dffedbc11260c1b5e65606671f9898af9531b))
+
 ## 10.3.0 (2025-11-24)
 
 Full Changelog: [v10.2.1...v10.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.2.1...v10.3.0)
