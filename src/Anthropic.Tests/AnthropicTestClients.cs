@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Anthropic.Foundry;
+using Anthropic.Bedrock;
 using Xunit.Sdk;
 
 namespace Anthropic.Tests;
@@ -49,6 +50,20 @@ public class AnthropicTestClientsAttribute : DataAttribute
                     .ToArray(),
             ];
         }
+        if (TestSupportTypes.HasFlag(TestSupportTypes.Bedrock))
+        {
+            yield return
+            [
+                new AnthropicBedrockClient(new AnthropicBedrockApiTokenCredentials(apiKey, resource!))
+                {
+                    BaseUrl = new Uri(dataServiceUrl),
+                },
+                .. testData
+                    .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Bedrock))
+                    .Select(f => f.TestData)
+                    .ToArray(),
+            ];
+        }
     }
 }
 
@@ -68,7 +83,8 @@ sealed class AnthropicTestDataAttribute : Attribute
 [Flags]
 public enum TestSupportTypes
 {
-    All = Anthropic | Foundry,
+    All = Anthropic | Foundry | Bedrock,
     Anthropic = 1 << 1,
     Foundry = 1 << 2,
+    Bedrock = 1 << 3
 }
