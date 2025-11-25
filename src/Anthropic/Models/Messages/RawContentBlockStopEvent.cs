@@ -16,7 +16,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
     {
         get
         {
-            if (!this._properties.TryGetValue("index", out JsonElement element))
+            if (!this._rawData.TryGetValue("index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'index' cannot be null",
                     new ArgumentOutOfRangeException("index", "Missing required argument")
@@ -26,7 +26,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
         }
         init
         {
-            this._properties["index"] = JsonSerializer.SerializeToElement(
+            this._rawData["index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -37,7 +37,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -47,7 +47,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -73,26 +73,26 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
     }
 
-    public RawContentBlockStopEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    public RawContentBlockStopEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    RawContentBlockStopEvent(FrozenDictionary<string, JsonElement> properties)
+    RawContentBlockStopEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static RawContentBlockStopEvent FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

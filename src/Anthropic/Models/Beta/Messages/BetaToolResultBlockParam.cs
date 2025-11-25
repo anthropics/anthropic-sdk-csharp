@@ -17,7 +17,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this._properties.TryGetValue("tool_use_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("tool_use_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'tool_use_id' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -34,7 +34,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         }
         init
         {
-            this._properties["tool_use_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["tool_use_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +45,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -55,7 +55,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,7 +69,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -79,7 +79,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -90,7 +90,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaToolResultBlockParamContent?>(
@@ -105,7 +105,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                 return;
             }
 
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -116,7 +116,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         get
         {
-            if (!this._properties.TryGetValue("is_error", out JsonElement element))
+            if (!this._rawData.TryGetValue("is_error", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
@@ -128,7 +128,7 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
                 return;
             }
 
-            this._properties["is_error"] = JsonSerializer.SerializeToElement(
+            this._rawData["is_error"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -157,26 +157,26 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
     }
 
-    public BetaToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaToolResultBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaToolResultBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -322,6 +322,9 @@ sealed class BetaToolResultBlockParamContentConverter
     }
 }
 
+/// <summary>
+/// Tool reference block that can be included in tool_result content.
+/// </summary>
 [JsonConverter(typeof(BlockConverter))]
 public record class Block
 {
@@ -342,7 +345,8 @@ public record class Block
                 betaTextBlockParam: (x) => x.Type,
                 betaImageBlockParam: (x) => x.Type,
                 betaSearchResultBlockParam: (x) => x.Type,
-                betaRequestDocument: (x) => x.Type
+                betaRequestDocument: (x) => x.Type,
+                betaToolReferenceBlockParam: (x) => x.Type
             );
         }
     }
@@ -355,7 +359,8 @@ public record class Block
                 betaTextBlockParam: (x) => x.CacheControl,
                 betaImageBlockParam: (x) => x.CacheControl,
                 betaSearchResultBlockParam: (x) => x.CacheControl,
-                betaRequestDocument: (x) => x.CacheControl
+                betaRequestDocument: (x) => x.CacheControl,
+                betaToolReferenceBlockParam: (x) => x.CacheControl
             );
         }
     }
@@ -368,7 +373,8 @@ public record class Block
                 betaTextBlockParam: (_) => null,
                 betaImageBlockParam: (_) => null,
                 betaSearchResultBlockParam: (x) => x.Title,
-                betaRequestDocument: (x) => x.Title
+                betaRequestDocument: (x) => x.Title,
+                betaToolReferenceBlockParam: (_) => null
             );
         }
     }
@@ -392,6 +398,12 @@ public record class Block
     }
 
     public Block(BetaRequestDocumentBlock value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public Block(BetaToolReferenceBlockParam value, JsonElement? json = null)
     {
         this.Value = value;
         this._json = json;
@@ -428,11 +440,20 @@ public record class Block
         return value != null;
     }
 
+    public bool TryPickBetaToolReferenceBlockParam(
+        [NotNullWhen(true)] out BetaToolReferenceBlockParam? value
+    )
+    {
+        value = this.Value as BetaToolReferenceBlockParam;
+        return value != null;
+    }
+
     public void Switch(
         System::Action<BetaTextBlockParam> betaTextBlockParam,
         System::Action<BetaImageBlockParam> betaImageBlockParam,
         System::Action<BetaSearchResultBlockParam> betaSearchResultBlockParam,
-        System::Action<BetaRequestDocumentBlock> betaRequestDocument
+        System::Action<BetaRequestDocumentBlock> betaRequestDocument,
+        System::Action<BetaToolReferenceBlockParam> betaToolReferenceBlockParam
     )
     {
         switch (this.Value)
@@ -449,6 +470,9 @@ public record class Block
             case BetaRequestDocumentBlock value:
                 betaRequestDocument(value);
                 break;
+            case BetaToolReferenceBlockParam value:
+                betaToolReferenceBlockParam(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Block");
         }
@@ -458,7 +482,8 @@ public record class Block
         System::Func<BetaTextBlockParam, T> betaTextBlockParam,
         System::Func<BetaImageBlockParam, T> betaImageBlockParam,
         System::Func<BetaSearchResultBlockParam, T> betaSearchResultBlockParam,
-        System::Func<BetaRequestDocumentBlock, T> betaRequestDocument
+        System::Func<BetaRequestDocumentBlock, T> betaRequestDocument,
+        System::Func<BetaToolReferenceBlockParam, T> betaToolReferenceBlockParam
     )
     {
         return this.Value switch
@@ -467,6 +492,7 @@ public record class Block
             BetaImageBlockParam value => betaImageBlockParam(value),
             BetaSearchResultBlockParam value => betaSearchResultBlockParam(value),
             BetaRequestDocumentBlock value => betaRequestDocument(value),
+            BetaToolReferenceBlockParam value => betaToolReferenceBlockParam(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Block"),
         };
     }
@@ -478,6 +504,8 @@ public record class Block
     public static implicit operator Block(BetaSearchResultBlockParam value) => new(value);
 
     public static implicit operator Block(BetaRequestDocumentBlock value) => new(value);
+
+    public static implicit operator Block(BetaToolReferenceBlockParam value) => new(value);
 
     public void Validate()
     {
@@ -580,6 +608,28 @@ sealed class BlockConverter : JsonConverter<Block>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(
+                        json,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(json);
+            }
+            case "tool_reference":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlockParam>(
                         json,
                         options
                     );

@@ -40,6 +40,7 @@ public record class BetaContentBlockParam
                 codeExecutionToolResult: (x) => x.Type,
                 bashCodeExecutionToolResult: (x) => x.Type,
                 textEditorCodeExecutionToolResult: (x) => x.Type,
+                toolSearchToolResult: (x) => x.Type,
                 mcpToolUse: (x) => x.Type,
                 requestMCPToolResult: (x) => x.Type,
                 containerUpload: (x) => x.Type
@@ -66,6 +67,7 @@ public record class BetaContentBlockParam
                 codeExecutionToolResult: (x) => x.CacheControl,
                 bashCodeExecutionToolResult: (x) => x.CacheControl,
                 textEditorCodeExecutionToolResult: (x) => x.CacheControl,
+                toolSearchToolResult: (x) => x.CacheControl,
                 mcpToolUse: (x) => x.CacheControl,
                 requestMCPToolResult: (x) => x.CacheControl,
                 containerUpload: (x) => x.CacheControl
@@ -92,6 +94,7 @@ public record class BetaContentBlockParam
                 codeExecutionToolResult: (_) => null,
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
+                toolSearchToolResult: (_) => null,
                 mcpToolUse: (_) => null,
                 requestMCPToolResult: (_) => null,
                 containerUpload: (_) => null
@@ -118,6 +121,7 @@ public record class BetaContentBlockParam
                 codeExecutionToolResult: (_) => null,
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
+                toolSearchToolResult: (_) => null,
                 mcpToolUse: (x) => x.ID,
                 requestMCPToolResult: (_) => null,
                 containerUpload: (_) => null
@@ -144,6 +148,7 @@ public record class BetaContentBlockParam
                 codeExecutionToolResult: (x) => x.ToolUseID,
                 bashCodeExecutionToolResult: (x) => x.ToolUseID,
                 textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
+                toolSearchToolResult: (x) => x.ToolUseID,
                 mcpToolUse: (_) => null,
                 requestMCPToolResult: (x) => x.ToolUseID,
                 containerUpload: (_) => null
@@ -170,6 +175,7 @@ public record class BetaContentBlockParam
                 codeExecutionToolResult: (_) => null,
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
+                toolSearchToolResult: (_) => null,
                 mcpToolUse: (_) => null,
                 requestMCPToolResult: (x) => x.IsError,
                 containerUpload: (_) => null
@@ -265,6 +271,12 @@ public record class BetaContentBlockParam
         BetaTextEditorCodeExecutionToolResultBlockParam value,
         JsonElement? json = null
     )
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public BetaContentBlockParam(BetaToolSearchToolResultBlockParam value, JsonElement? json = null)
     {
         this.Value = value;
         this._json = json;
@@ -389,6 +401,14 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    public bool TryPickToolSearchToolResult(
+        [NotNullWhen(true)] out BetaToolSearchToolResultBlockParam? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolResultBlockParam;
+        return value != null;
+    }
+
     public bool TryPickMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlockParam? value)
     {
         value = this.Value as BetaMCPToolUseBlockParam;
@@ -424,6 +444,7 @@ public record class BetaContentBlockParam
         System::Action<BetaCodeExecutionToolResultBlockParam> codeExecutionToolResult,
         System::Action<BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
+        System::Action<BetaToolSearchToolResultBlockParam> toolSearchToolResult,
         System::Action<BetaMCPToolUseBlockParam> mcpToolUse,
         System::Action<BetaRequestMCPToolResultBlockParam> requestMCPToolResult,
         System::Action<BetaContainerUploadBlockParam> containerUpload
@@ -473,6 +494,9 @@ public record class BetaContentBlockParam
             case BetaTextEditorCodeExecutionToolResultBlockParam value:
                 textEditorCodeExecutionToolResult(value);
                 break;
+            case BetaToolSearchToolResultBlockParam value:
+                toolSearchToolResult(value);
+                break;
             case BetaMCPToolUseBlockParam value:
                 mcpToolUse(value);
                 break;
@@ -507,6 +531,7 @@ public record class BetaContentBlockParam
             BetaTextEditorCodeExecutionToolResultBlockParam,
             T
         > textEditorCodeExecutionToolResult,
+        System::Func<BetaToolSearchToolResultBlockParam, T> toolSearchToolResult,
         System::Func<BetaMCPToolUseBlockParam, T> mcpToolUse,
         System::Func<BetaRequestMCPToolResultBlockParam, T> requestMCPToolResult,
         System::Func<BetaContainerUploadBlockParam, T> containerUpload
@@ -529,6 +554,7 @@ public record class BetaContentBlockParam
             BetaBashCodeExecutionToolResultBlockParam value => bashCodeExecutionToolResult(value),
             BetaTextEditorCodeExecutionToolResultBlockParam value =>
                 textEditorCodeExecutionToolResult(value),
+            BetaToolSearchToolResultBlockParam value => toolSearchToolResult(value),
             BetaMCPToolUseBlockParam value => mcpToolUse(value),
             BetaRequestMCPToolResultBlockParam value => requestMCPToolResult(value),
             BetaContainerUploadBlockParam value => containerUpload(value),
@@ -580,6 +606,10 @@ public record class BetaContentBlockParam
 
     public static implicit operator BetaContentBlockParam(
         BetaTextEditorCodeExecutionToolResultBlockParam value
+    ) => new(value);
+
+    public static implicit operator BetaContentBlockParam(
+        BetaToolSearchToolResultBlockParam value
     ) => new(value);
 
     public static implicit operator BetaContentBlockParam(BetaMCPToolUseBlockParam value) =>
@@ -919,6 +949,29 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(
+                            json,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(json);
+            }
+            case "tool_search_tool_result":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(
                             json,
                             options
                         );

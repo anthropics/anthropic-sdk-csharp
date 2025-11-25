@@ -25,7 +25,7 @@ public sealed record class ModelListParams : ParamsBase
     {
         get
         {
-            if (!this._queryProperties.TryGetValue("after_id", out JsonElement element))
+            if (!this._rawQueryData.TryGetValue("after_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -37,7 +37,7 @@ public sealed record class ModelListParams : ParamsBase
                 return;
             }
 
-            this._queryProperties["after_id"] = JsonSerializer.SerializeToElement(
+            this._rawQueryData["after_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -52,7 +52,7 @@ public sealed record class ModelListParams : ParamsBase
     {
         get
         {
-            if (!this._queryProperties.TryGetValue("before_id", out JsonElement element))
+            if (!this._rawQueryData.TryGetValue("before_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -64,7 +64,7 @@ public sealed record class ModelListParams : ParamsBase
                 return;
             }
 
-            this._queryProperties["before_id"] = JsonSerializer.SerializeToElement(
+            this._rawQueryData["before_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -80,7 +80,7 @@ public sealed record class ModelListParams : ParamsBase
     {
         get
         {
-            if (!this._queryProperties.TryGetValue("limit", out JsonElement element))
+            if (!this._rawQueryData.TryGetValue("limit", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
@@ -92,7 +92,7 @@ public sealed record class ModelListParams : ParamsBase
                 return;
             }
 
-            this._queryProperties["limit"] = JsonSerializer.SerializeToElement(
+            this._rawQueryData["limit"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -106,7 +106,7 @@ public sealed record class ModelListParams : ParamsBase
     {
         get
         {
-            if (!this._headerProperties.TryGetValue("anthropic-beta", out JsonElement element))
+            if (!this._rawHeaderData.TryGetValue("anthropic-beta", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
@@ -121,7 +121,7 @@ public sealed record class ModelListParams : ParamsBase
                 return;
             }
 
-            this._headerProperties["anthropic-beta"] = JsonSerializer.SerializeToElement(
+            this._rawHeaderData["anthropic-beta"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -131,34 +131,34 @@ public sealed record class ModelListParams : ParamsBase
     public ModelListParams() { }
 
     public ModelListParams(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ModelListParams(
-        FrozenDictionary<string, JsonElement> headerProperties,
-        FrozenDictionary<string, JsonElement> queryProperties
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
     }
 #pragma warning restore CS8618
 
     public static ModelListParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData
     )
     {
         return new(
-            FrozenDictionary.ToFrozenDictionary(headerProperties),
-            FrozenDictionary.ToFrozenDictionary(queryProperties)
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData)
         );
     }
 
@@ -173,7 +173,7 @@ public sealed record class ModelListParams : ParamsBase
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        foreach (var item in this.HeaderProperties)
+        foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }

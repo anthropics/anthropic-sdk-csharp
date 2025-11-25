@@ -16,7 +16,7 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
     {
         get
         {
-            if (!this._properties.TryGetValue("data", out JsonElement element))
+            if (!this._rawData.TryGetValue("data", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'data' cannot be null",
                     new ArgumentOutOfRangeException("data", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
         }
         init
         {
-            this._properties["data"] = JsonSerializer.SerializeToElement(
+            this._rawData["data"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -77,26 +77,26 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
     }
 
-    public RedactedThinkingBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public RedactedThinkingBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    RedactedThinkingBlock(FrozenDictionary<string, JsonElement> properties)
+    RedactedThinkingBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static RedactedThinkingBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

@@ -21,7 +21,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
     {
         get
         {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
+            if (!this._rawData.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new ArgumentOutOfRangeException("name", "Missing required argument")
@@ -31,7 +31,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
         }
         init
         {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
+            this._rawData["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,7 +42,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -52,7 +52,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -66,7 +66,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -76,7 +76,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -91,14 +91,14 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
     {
         get
         {
-            if (!this._properties.TryGetValue("max_characters", out JsonElement element))
+            if (!this._rawData.TryGetValue("max_characters", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["max_characters"] = JsonSerializer.SerializeToElement(
+            this._rawData["max_characters"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -135,9 +135,9 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250728\"");
     }
 
-    public ToolTextEditor20250728(IReadOnlyDictionary<string, JsonElement> properties)
+    public ToolTextEditor20250728(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_based_edit_tool\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250728\"");
@@ -145,16 +145,16 @@ public sealed record class ToolTextEditor20250728 : ModelBase, IFromRaw<ToolText
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ToolTextEditor20250728(FrozenDictionary<string, JsonElement> properties)
+    ToolTextEditor20250728(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static ToolTextEditor20250728 FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

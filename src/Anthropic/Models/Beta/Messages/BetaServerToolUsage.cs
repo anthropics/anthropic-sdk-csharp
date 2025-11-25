@@ -19,7 +19,7 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
     {
         get
         {
-            if (!this._properties.TryGetValue("web_fetch_requests", out JsonElement element))
+            if (!this._rawData.TryGetValue("web_fetch_requests", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'web_fetch_requests' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -32,7 +32,7 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
         }
         init
         {
-            this._properties["web_fetch_requests"] = JsonSerializer.SerializeToElement(
+            this._rawData["web_fetch_requests"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,7 +46,7 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
     {
         get
         {
-            if (!this._properties.TryGetValue("web_search_requests", out JsonElement element))
+            if (!this._rawData.TryGetValue("web_search_requests", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'web_search_requests' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -59,7 +59,7 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
         }
         init
         {
-            this._properties["web_search_requests"] = JsonSerializer.SerializeToElement(
+            this._rawData["web_search_requests"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -74,23 +74,23 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
 
     public BetaServerToolUsage() { }
 
-    public BetaServerToolUsage(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaServerToolUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaServerToolUsage(FrozenDictionary<string, JsonElement> properties)
+    BetaServerToolUsage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaServerToolUsage FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

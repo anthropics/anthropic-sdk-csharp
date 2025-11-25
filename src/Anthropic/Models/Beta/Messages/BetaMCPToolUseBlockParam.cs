@@ -16,7 +16,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
     {
         get
         {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
+            if (!this._rawData.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new ArgumentOutOfRangeException("id", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
         }
         init
         {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
+            this._rawData["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
     {
         get
         {
-            if (!this._properties.TryGetValue("input", out JsonElement element))
+            if (!this._rawData.TryGetValue("input", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input' cannot be null",
                     new ArgumentOutOfRangeException("input", "Missing required argument")
@@ -58,7 +58,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
         }
         init
         {
-            this._properties["input"] = JsonSerializer.SerializeToElement(
+            this._rawData["input"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,7 +69,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
     {
         get
         {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
+            if (!this._rawData.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new ArgumentOutOfRangeException("name", "Missing required argument")
@@ -83,7 +83,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
         }
         init
         {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
+            this._rawData["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -97,7 +97,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
     {
         get
         {
-            if (!this._properties.TryGetValue("server_name", out JsonElement element))
+            if (!this._rawData.TryGetValue("server_name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'server_name' cannot be null",
                     new ArgumentOutOfRangeException("server_name", "Missing required argument")
@@ -111,7 +111,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
         }
         init
         {
-            this._properties["server_name"] = JsonSerializer.SerializeToElement(
+            this._rawData["server_name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -122,7 +122,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -132,7 +132,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -146,7 +146,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -156,7 +156,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -186,25 +186,25 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase, IFromRaw<BetaMC
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
     }
 
-    public BetaMCPToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMCPToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_use\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMCPToolUseBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaMCPToolUseBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMCPToolUseBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

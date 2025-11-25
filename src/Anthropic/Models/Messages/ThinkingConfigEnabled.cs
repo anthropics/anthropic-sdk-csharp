@@ -26,7 +26,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
     {
         get
         {
-            if (!this._properties.TryGetValue("budget_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("budget_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'budget_tokens' cannot be null",
                     new ArgumentOutOfRangeException("budget_tokens", "Missing required argument")
@@ -36,7 +36,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
         }
         init
         {
-            this._properties["budget_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["budget_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -47,7 +47,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -57,7 +57,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -83,26 +83,26 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
     }
 
-    public ThinkingConfigEnabled(IReadOnlyDictionary<string, JsonElement> properties)
+    public ThinkingConfigEnabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ThinkingConfigEnabled(FrozenDictionary<string, JsonElement> properties)
+    ThinkingConfigEnabled(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static ThinkingConfigEnabled FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

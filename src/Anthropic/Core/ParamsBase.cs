@@ -31,18 +31,18 @@ public abstract record class ParamsBase
         };
     }
 
-    private protected FreezableDictionary<string, JsonElement> _queryProperties = [];
+    private protected FreezableDictionary<string, JsonElement> _rawQueryData = [];
 
-    public IReadOnlyDictionary<string, JsonElement> QueryProperties
+    public IReadOnlyDictionary<string, JsonElement> RawQueryData
     {
-        get { return this._queryProperties.Freeze(); }
+        get { return this._rawQueryData.Freeze(); }
     }
 
-    private protected FreezableDictionary<string, JsonElement> _headerProperties = [];
+    private protected FreezableDictionary<string, JsonElement> _rawHeaderData = [];
 
-    public IReadOnlyDictionary<string, JsonElement> HeaderProperties
+    public IReadOnlyDictionary<string, JsonElement> RawHeaderData
     {
-        get { return this._headerProperties.Freeze(); }
+        get { return this._rawHeaderData.Freeze(); }
     }
 
     public abstract Uri Url(ClientOptions options);
@@ -154,7 +154,7 @@ public abstract record class ParamsBase
     protected string QueryString(ClientOptions options)
     {
         NameValueCollection collection = [];
-        foreach (var item in this.QueryProperties)
+        foreach (var item in this.RawQueryData)
         {
             ParamsBase.AddQueryElementToCollection(collection, item.Key, item.Value);
         }

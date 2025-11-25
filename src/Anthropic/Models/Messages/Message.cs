@@ -21,7 +21,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         get
         {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
+            if (!this._rawData.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new ArgumentOutOfRangeException("id", "Missing required argument")
@@ -35,7 +35,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
         }
         init
         {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
+            this._rawData["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +68,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new ArgumentOutOfRangeException("content", "Missing required argument")
@@ -85,7 +85,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -100,7 +100,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         get
         {
-            if (!this._properties.TryGetValue("model", out JsonElement element))
+            if (!this._rawData.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
                     new ArgumentOutOfRangeException("model", "Missing required argument")
@@ -113,7 +113,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
         }
         init
         {
-            this._properties["model"] = JsonSerializer.SerializeToElement(
+            this._rawData["model"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -129,7 +129,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         get
         {
-            if (!this._properties.TryGetValue("role", out JsonElement element))
+            if (!this._rawData.TryGetValue("role", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'role' cannot be null",
                     new ArgumentOutOfRangeException("role", "Missing required argument")
@@ -139,7 +139,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
         }
         init
         {
-            this._properties["role"] = JsonSerializer.SerializeToElement(
+            this._rawData["role"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -164,7 +164,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         get
         {
-            if (!this._properties.TryGetValue("stop_reason", out JsonElement element))
+            if (!this._rawData.TryGetValue("stop_reason", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, StopReason>?>(
@@ -174,7 +174,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
         }
         init
         {
-            this._properties["stop_reason"] = JsonSerializer.SerializeToElement(
+            this._rawData["stop_reason"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -191,14 +191,14 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         get
         {
-            if (!this._properties.TryGetValue("stop_sequence", out JsonElement element))
+            if (!this._rawData.TryGetValue("stop_sequence", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["stop_sequence"] = JsonSerializer.SerializeToElement(
+            this._rawData["stop_sequence"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -214,7 +214,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -224,7 +224,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -252,7 +252,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         get
         {
-            if (!this._properties.TryGetValue("usage", out JsonElement element))
+            if (!this._rawData.TryGetValue("usage", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
                     new ArgumentOutOfRangeException("usage", "Missing required argument")
@@ -266,7 +266,7 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
         }
         init
         {
-            this._properties["usage"] = JsonSerializer.SerializeToElement(
+            this._rawData["usage"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -310,9 +310,9 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
     }
 
-    public Message(IReadOnlyDictionary<string, JsonElement> properties)
+    public Message(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
@@ -320,14 +320,14 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Message(FrozenDictionary<string, JsonElement> properties)
+    Message(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Message FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static Message FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

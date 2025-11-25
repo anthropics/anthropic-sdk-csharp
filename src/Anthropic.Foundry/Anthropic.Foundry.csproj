@@ -17,17 +17,21 @@
     <PackageReference Include="Azure.Identity" Version="1.17.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
+  </ItemGroup>
+
   <PropertyGroup>
     <BuildPackage>true</BuildPackage>
     <Deterministic>true</Deterministic>
     <PackageId>Anthropic.Foundry</PackageId>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Stainless Software, Inc.</Authors>
     <Company>Stainless Software, Inc.</Company>
     <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>PRE-RELEASE NOT FOR DISTRIBUTION</PackageReleaseNotes>
     <LangVersion>Latest</LangVersion>
     <Copyright>Copyright © Stainless Software, Inc. 2024</Copyright>
     <Readme>README.md</Readme>
@@ -60,9 +64,6 @@
     <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="../Anthropic/GlobalShims.cs">
-      <Link>%(RecursiveDir)/%(FileName)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Compile Include="../Anthropic/GlobalShims.cs" />
   </ItemGroup>
 </Project>

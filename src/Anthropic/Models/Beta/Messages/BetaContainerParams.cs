@@ -20,14 +20,14 @@ public sealed record class BetaContainerParams : ModelBase, IFromRaw<BetaContain
     {
         get
         {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
+            if (!this._rawData.TryGetValue("id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
+            this._rawData["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class BetaContainerParams : ModelBase, IFromRaw<BetaContain
     {
         get
         {
-            if (!this._properties.TryGetValue("skills", out JsonElement element))
+            if (!this._rawData.TryGetValue("skills", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<BetaSkillParams>?>(
@@ -51,7 +51,7 @@ public sealed record class BetaContainerParams : ModelBase, IFromRaw<BetaContain
         }
         init
         {
-            this._properties["skills"] = JsonSerializer.SerializeToElement(
+            this._rawData["skills"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,23 +69,23 @@ public sealed record class BetaContainerParams : ModelBase, IFromRaw<BetaContain
 
     public BetaContainerParams() { }
 
-    public BetaContainerParams(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaContainerParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContainerParams(FrozenDictionary<string, JsonElement> properties)
+    BetaContainerParams(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaContainerParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

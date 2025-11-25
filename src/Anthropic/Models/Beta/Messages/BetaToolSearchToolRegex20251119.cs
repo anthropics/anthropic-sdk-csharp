@@ -1,0 +1,314 @@
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Anthropic.Core;
+using Anthropic.Exceptions;
+using System = System;
+
+namespace Anthropic.Models.Beta.Messages;
+
+[JsonConverter(typeof(ModelConverter<BetaToolSearchToolRegex20251119>))]
+public sealed record class BetaToolSearchToolRegex20251119
+    : ModelBase,
+        IFromRaw<BetaToolSearchToolRegex20251119>
+{
+    /// <summary>
+    /// Name of the tool.
+    ///
+    /// <para>This is how the tool will be called by the model and in `tool_use` blocks.</para>
+    /// </summary>
+    public JsonElement Name
+    {
+        get
+        {
+            if (!this._rawData.TryGetValue("name", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'name' cannot be null",
+                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
+        }
+        init
+        {
+            this._rawData["name"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public required ApiEnum<string, BetaToolSearchToolRegex20251119Type> Type
+    {
+        get
+        {
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
+                throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
+                );
+
+            return JsonSerializer.Deserialize<ApiEnum<string, BetaToolSearchToolRegex20251119Type>>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        init
+        {
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public List<ApiEnum<string, AllowedCaller9>>? AllowedCallers
+    {
+        get
+        {
+            if (!this._rawData.TryGetValue("allowed_callers", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<List<ApiEnum<string, AllowedCaller9>>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData["allowed_callers"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// Create a cache control breakpoint at this content block.
+    /// </summary>
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        init
+        {
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// If true, tool will not be included in initial system prompt. Only loaded when
+    /// returned via tool_reference from tool search.
+    /// </summary>
+    public bool? DeferLoading
+    {
+        get
+        {
+            if (!this._rawData.TryGetValue("defer_loading", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData["defer_loading"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public bool? Strict
+    {
+        get
+        {
+            if (!this._rawData.TryGetValue("strict", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData["strict"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public override void Validate()
+    {
+        if (
+            !JsonElement.DeepEquals(
+                this.Name,
+                JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_regex\"")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        this.Type.Validate();
+        foreach (var item in this.AllowedCallers ?? [])
+        {
+            item.Validate();
+        }
+        this.CacheControl?.Validate();
+        _ = this.DeferLoading;
+        _ = this.Strict;
+    }
+
+    public BetaToolSearchToolRegex20251119()
+    {
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_regex\"");
+    }
+
+    public BetaToolSearchToolRegex20251119(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = [.. rawData];
+
+        this.Name = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_regex\"");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    BetaToolSearchToolRegex20251119(FrozenDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = [.. rawData];
+    }
+#pragma warning restore CS8618
+
+    public static BetaToolSearchToolRegex20251119 FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public BetaToolSearchToolRegex20251119(
+        ApiEnum<string, BetaToolSearchToolRegex20251119Type> type
+    )
+        : this()
+    {
+        this.Type = type;
+    }
+}
+
+[JsonConverter(typeof(BetaToolSearchToolRegex20251119TypeConverter))]
+public enum BetaToolSearchToolRegex20251119Type
+{
+    ToolSearchToolRegex20251119,
+    ToolSearchToolRegex,
+}
+
+sealed class BetaToolSearchToolRegex20251119TypeConverter
+    : JsonConverter<BetaToolSearchToolRegex20251119Type>
+{
+    public override BetaToolSearchToolRegex20251119Type Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "tool_search_tool_regex_20251119" =>
+                BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
+            "tool_search_tool_regex" => BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex,
+            _ => (BetaToolSearchToolRegex20251119Type)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaToolSearchToolRegex20251119Type value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119 =>
+                    "tool_search_tool_regex_20251119",
+                BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex => "tool_search_tool_regex",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+[JsonConverter(typeof(AllowedCaller9Converter))]
+public enum AllowedCaller9
+{
+    Direct,
+    CodeExecution20250825,
+}
+
+sealed class AllowedCaller9Converter : JsonConverter<AllowedCaller9>
+{
+    public override AllowedCaller9 Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "direct" => AllowedCaller9.Direct,
+            "code_execution_20250825" => AllowedCaller9.CodeExecution20250825,
+            _ => (AllowedCaller9)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        AllowedCaller9 value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                AllowedCaller9.Direct => "direct",
+                AllowedCaller9.CodeExecution20250825 => "code_execution_20250825",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}

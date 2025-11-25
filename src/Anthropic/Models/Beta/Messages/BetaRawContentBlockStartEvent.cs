@@ -21,7 +21,7 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("content_block", out JsonElement element))
+            if (!this._rawData.TryGetValue("content_block", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content_block' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -38,7 +38,7 @@ public sealed record class BetaRawContentBlockStartEvent
         }
         init
         {
-            this._properties["content_block"] = JsonSerializer.SerializeToElement(
+            this._rawData["content_block"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -49,7 +49,7 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("index", out JsonElement element))
+            if (!this._rawData.TryGetValue("index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'index' cannot be null",
                     new System::ArgumentOutOfRangeException("index", "Missing required argument")
@@ -59,7 +59,7 @@ public sealed record class BetaRawContentBlockStartEvent
         }
         init
         {
-            this._properties["index"] = JsonSerializer.SerializeToElement(
+            this._rawData["index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -70,7 +70,7 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -80,7 +80,7 @@ public sealed record class BetaRawContentBlockStartEvent
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -107,26 +107,26 @@ public sealed record class BetaRawContentBlockStartEvent
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
-    public BetaRawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaRawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRawContentBlockStartEvent(FrozenDictionary<string, JsonElement> properties)
+    BetaRawContentBlockStartEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaRawContentBlockStartEvent FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
@@ -160,6 +160,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (x) => x.Type,
                 betaBashCodeExecutionToolResult: (x) => x.Type,
                 betaTextEditorCodeExecutionToolResult: (x) => x.Type,
+                betaToolSearchToolResult: (x) => x.Type,
                 betaMCPToolUse: (x) => x.Type,
                 betaMCPToolResult: (x) => x.Type,
                 betaContainerUpload: (x) => x.Type
@@ -182,6 +183,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (_) => null,
                 betaBashCodeExecutionToolResult: (_) => null,
                 betaTextEditorCodeExecutionToolResult: (_) => null,
+                betaToolSearchToolResult: (_) => null,
                 betaMCPToolUse: (x) => x.ID,
                 betaMCPToolResult: (_) => null,
                 betaContainerUpload: (_) => null
@@ -204,6 +206,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaBashCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaTextEditorCodeExecutionToolResult: (x) => x.ToolUseID,
+                betaToolSearchToolResult: (x) => x.ToolUseID,
                 betaMCPToolUse: (_) => null,
                 betaMCPToolResult: (x) => x.ToolUseID,
                 betaContainerUpload: (_) => null
@@ -266,6 +269,12 @@ public record class ContentBlock
     }
 
     public ContentBlock(BetaTextEditorCodeExecutionToolResultBlock value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public ContentBlock(BetaToolSearchToolResultBlock value, JsonElement? json = null)
     {
         this.Value = value;
         this._json = json;
@@ -366,6 +375,14 @@ public record class ContentBlock
         return value != null;
     }
 
+    public bool TryPickBetaToolSearchToolResult(
+        [NotNullWhen(true)] out BetaToolSearchToolResultBlock? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolResultBlock;
+        return value != null;
+    }
+
     public bool TryPickBetaMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlock? value)
     {
         value = this.Value as BetaMCPToolUseBlock;
@@ -395,6 +412,7 @@ public record class ContentBlock
         System::Action<BetaCodeExecutionToolResultBlock> betaCodeExecutionToolResult,
         System::Action<BetaBashCodeExecutionToolResultBlock> betaBashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlock> betaTextEditorCodeExecutionToolResult,
+        System::Action<BetaToolSearchToolResultBlock> betaToolSearchToolResult,
         System::Action<BetaMCPToolUseBlock> betaMCPToolUse,
         System::Action<BetaMCPToolResultBlock> betaMCPToolResult,
         System::Action<BetaContainerUploadBlock> betaContainerUpload
@@ -432,6 +450,9 @@ public record class ContentBlock
             case BetaTextEditorCodeExecutionToolResultBlock value:
                 betaTextEditorCodeExecutionToolResult(value);
                 break;
+            case BetaToolSearchToolResultBlock value:
+                betaToolSearchToolResult(value);
+                break;
             case BetaMCPToolUseBlock value:
                 betaMCPToolUse(value);
                 break;
@@ -462,6 +483,7 @@ public record class ContentBlock
             BetaTextEditorCodeExecutionToolResultBlock,
             T
         > betaTextEditorCodeExecutionToolResult,
+        System::Func<BetaToolSearchToolResultBlock, T> betaToolSearchToolResult,
         System::Func<BetaMCPToolUseBlock, T> betaMCPToolUse,
         System::Func<BetaMCPToolResultBlock, T> betaMCPToolResult,
         System::Func<BetaContainerUploadBlock, T> betaContainerUpload
@@ -480,6 +502,7 @@ public record class ContentBlock
             BetaBashCodeExecutionToolResultBlock value => betaBashCodeExecutionToolResult(value),
             BetaTextEditorCodeExecutionToolResultBlock value =>
                 betaTextEditorCodeExecutionToolResult(value),
+            BetaToolSearchToolResultBlock value => betaToolSearchToolResult(value),
             BetaMCPToolUseBlock value => betaMCPToolUse(value),
             BetaMCPToolResultBlock value => betaMCPToolResult(value),
             BetaContainerUploadBlock value => betaContainerUpload(value),
@@ -512,6 +535,8 @@ public record class ContentBlock
     public static implicit operator ContentBlock(
         BetaTextEditorCodeExecutionToolResultBlock value
     ) => new(value);
+
+    public static implicit operator ContentBlock(BetaToolSearchToolResultBlock value) => new(value);
 
     public static implicit operator ContentBlock(BetaMCPToolUseBlock value) => new(value);
 
@@ -750,6 +775,28 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                             json,
                             options
                         );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(json);
+            }
+            case "tool_search_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(
+                        json,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();

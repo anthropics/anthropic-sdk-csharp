@@ -21,7 +21,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
     {
         get
         {
-            if (!this._properties.TryGetValue("command", out JsonElement element))
+            if (!this._rawData.TryGetValue("command", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'command' cannot be null",
                     new ArgumentOutOfRangeException("command", "Missing required argument")
@@ -31,7 +31,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
         }
         init
         {
-            this._properties["command"] = JsonSerializer.SerializeToElement(
+            this._rawData["command"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +45,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
     {
         get
         {
-            if (!this._properties.TryGetValue("file_text", out JsonElement element))
+            if (!this._rawData.TryGetValue("file_text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'file_text' cannot be null",
                     new ArgumentOutOfRangeException("file_text", "Missing required argument")
@@ -59,7 +59,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
         }
         init
         {
-            this._properties["file_text"] = JsonSerializer.SerializeToElement(
+            this._rawData["file_text"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -73,7 +73,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
     {
         get
         {
-            if (!this._properties.TryGetValue("path", out JsonElement element))
+            if (!this._rawData.TryGetValue("path", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'path' cannot be null",
                     new ArgumentOutOfRangeException("path", "Missing required argument")
@@ -87,7 +87,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand
         }
         init
         {
-            this._properties["path"] = JsonSerializer.SerializeToElement(
+            this._rawData["path"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -114,25 +114,25 @@ public sealed record class BetaMemoryTool20250818CreateCommand
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"create\"");
     }
 
-    public BetaMemoryTool20250818CreateCommand(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMemoryTool20250818CreateCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"create\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMemoryTool20250818CreateCommand(FrozenDictionary<string, JsonElement> properties)
+    BetaMemoryTool20250818CreateCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMemoryTool20250818CreateCommand FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

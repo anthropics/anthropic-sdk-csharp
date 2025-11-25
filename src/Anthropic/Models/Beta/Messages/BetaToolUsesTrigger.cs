@@ -16,7 +16,7 @@ public sealed record class BetaToolUsesTrigger : ModelBase, IFromRaw<BetaToolUse
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -26,7 +26,7 @@ public sealed record class BetaToolUsesTrigger : ModelBase, IFromRaw<BetaToolUse
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -37,7 +37,7 @@ public sealed record class BetaToolUsesTrigger : ModelBase, IFromRaw<BetaToolUse
     {
         get
         {
-            if (!this._properties.TryGetValue("value", out JsonElement element))
+            if (!this._rawData.TryGetValue("value", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'value' cannot be null",
                     new ArgumentOutOfRangeException("value", "Missing required argument")
@@ -47,7 +47,7 @@ public sealed record class BetaToolUsesTrigger : ModelBase, IFromRaw<BetaToolUse
         }
         init
         {
-            this._properties["value"] = JsonSerializer.SerializeToElement(
+            this._rawData["value"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -73,26 +73,26 @@ public sealed record class BetaToolUsesTrigger : ModelBase, IFromRaw<BetaToolUse
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
     }
 
-    public BetaToolUsesTrigger(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaToolUsesTrigger(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaToolUsesTrigger(FrozenDictionary<string, JsonElement> properties)
+    BetaToolUsesTrigger(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaToolUsesTrigger FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

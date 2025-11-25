@@ -19,7 +19,7 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
     {
         get
         {
-            if (!this._properties.TryGetValue("context_management", out JsonElement element))
+            if (!this._rawData.TryGetValue("context_management", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCountTokensContextManagementResponse?>(
@@ -29,7 +29,7 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
         }
         init
         {
-            this._properties["context_management"] = JsonSerializer.SerializeToElement(
+            this._rawData["context_management"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +44,7 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
     {
         get
         {
-            if (!this._properties.TryGetValue("input_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input_tokens' cannot be null",
                     new ArgumentOutOfRangeException("input_tokens", "Missing required argument")
@@ -54,7 +54,7 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
         }
         init
         {
-            this._properties["input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,23 +69,23 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
 
     public BetaMessageTokensCount() { }
 
-    public BetaMessageTokensCount(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMessageTokensCount(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageTokensCount(FrozenDictionary<string, JsonElement> properties)
+    BetaMessageTokensCount(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMessageTokensCount FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

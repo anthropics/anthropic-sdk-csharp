@@ -16,7 +16,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new ArgumentOutOfRangeException("content", "Missing required argument")
@@ -33,7 +33,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -47,14 +47,14 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
     {
         get
         {
-            if (!this._properties.TryGetValue("retrieved_at", out JsonElement element))
+            if (!this._rawData.TryGetValue("retrieved_at", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["retrieved_at"] = JsonSerializer.SerializeToElement(
+            this._rawData["retrieved_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -65,7 +65,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -75,7 +75,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -89,7 +89,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
     {
         get
         {
-            if (!this._properties.TryGetValue("url", out JsonElement element))
+            if (!this._rawData.TryGetValue("url", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'url' cannot be null",
                     new ArgumentOutOfRangeException("url", "Missing required argument")
@@ -103,7 +103,7 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
         }
         init
         {
-            this._properties["url"] = JsonSerializer.SerializeToElement(
+            this._rawData["url"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -131,25 +131,25 @@ public sealed record class BetaWebFetchBlock : ModelBase, IFromRaw<BetaWebFetchB
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
     }
 
-    public BetaWebFetchBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaWebFetchBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaWebFetchBlock(FrozenDictionary<string, JsonElement> properties)
+    BetaWebFetchBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaWebFetchBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

@@ -18,7 +18,7 @@ public sealed record class BetaRawContentBlockDeltaEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("delta", out JsonElement element))
+            if (!this._rawData.TryGetValue("delta", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'delta' cannot be null",
                     new ArgumentOutOfRangeException("delta", "Missing required argument")
@@ -35,7 +35,7 @@ public sealed record class BetaRawContentBlockDeltaEvent
         }
         init
         {
-            this._properties["delta"] = JsonSerializer.SerializeToElement(
+            this._rawData["delta"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,7 +46,7 @@ public sealed record class BetaRawContentBlockDeltaEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("index", out JsonElement element))
+            if (!this._rawData.TryGetValue("index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'index' cannot be null",
                     new ArgumentOutOfRangeException("index", "Missing required argument")
@@ -56,7 +56,7 @@ public sealed record class BetaRawContentBlockDeltaEvent
         }
         init
         {
-            this._properties["index"] = JsonSerializer.SerializeToElement(
+            this._rawData["index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -67,7 +67,7 @@ public sealed record class BetaRawContentBlockDeltaEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -77,7 +77,7 @@ public sealed record class BetaRawContentBlockDeltaEvent
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -104,25 +104,25 @@ public sealed record class BetaRawContentBlockDeltaEvent
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"");
     }
 
-    public BetaRawContentBlockDeltaEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaRawContentBlockDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRawContentBlockDeltaEvent(FrozenDictionary<string, JsonElement> properties)
+    BetaRawContentBlockDeltaEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaRawContentBlockDeltaEvent FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

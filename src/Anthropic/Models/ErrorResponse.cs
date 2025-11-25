@@ -16,7 +16,7 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
     {
         get
         {
-            if (!this._properties.TryGetValue("error", out JsonElement element))
+            if (!this._rawData.TryGetValue("error", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'error' cannot be null",
                     new ArgumentOutOfRangeException("error", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
         }
         init
         {
-            this._properties["error"] = JsonSerializer.SerializeToElement(
+            this._rawData["error"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,14 +41,14 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
     {
         get
         {
-            if (!this._properties.TryGetValue("request_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("request_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["request_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["request_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -59,7 +59,7 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -69,7 +69,7 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -93,25 +93,23 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
     }
 
-    public ErrorResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public ErrorResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ErrorResponse(FrozenDictionary<string, JsonElement> properties)
+    ErrorResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ErrorResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public static ErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

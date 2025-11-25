@@ -16,7 +16,7 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
     {
         get
         {
-            if (!this._properties.TryGetValue("data", out JsonElement element))
+            if (!this._rawData.TryGetValue("data", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'data' cannot be null",
                     new ArgumentOutOfRangeException("data", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
         }
         init
         {
-            this._properties["data"] = JsonSerializer.SerializeToElement(
+            this._rawData["data"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
     {
         get
         {
-            if (!this._properties.TryGetValue("media_type", out JsonElement element))
+            if (!this._rawData.TryGetValue("media_type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'media_type' cannot be null",
                     new ArgumentOutOfRangeException("media_type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
         }
         init
         {
-            this._properties["media_type"] = JsonSerializer.SerializeToElement(
+            this._rawData["media_type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -62,7 +62,7 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -72,7 +72,7 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,9 +108,9 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
     }
 
-    public BetaBase64PDFSource(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaBase64PDFSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"application/pdf\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
@@ -118,17 +118,17 @@ public sealed record class BetaBase64PDFSource : ModelBase, IFromRaw<BetaBase64P
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBase64PDFSource(FrozenDictionary<string, JsonElement> properties)
+    BetaBase64PDFSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaBase64PDFSource FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

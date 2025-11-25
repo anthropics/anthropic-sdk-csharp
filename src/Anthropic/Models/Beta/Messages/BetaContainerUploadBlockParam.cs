@@ -22,7 +22,7 @@ public sealed record class BetaContainerUploadBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("file_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("file_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'file_id' cannot be null",
                     new ArgumentOutOfRangeException("file_id", "Missing required argument")
@@ -36,7 +36,7 @@ public sealed record class BetaContainerUploadBlockParam
         }
         init
         {
-            this._properties["file_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["file_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -47,7 +47,7 @@ public sealed record class BetaContainerUploadBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -57,7 +57,7 @@ public sealed record class BetaContainerUploadBlockParam
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -71,7 +71,7 @@ public sealed record class BetaContainerUploadBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -81,7 +81,7 @@ public sealed record class BetaContainerUploadBlockParam
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -108,26 +108,26 @@ public sealed record class BetaContainerUploadBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
     }
 
-    public BetaContainerUploadBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaContainerUploadBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContainerUploadBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaContainerUploadBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaContainerUploadBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

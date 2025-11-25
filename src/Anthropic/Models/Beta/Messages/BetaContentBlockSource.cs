@@ -17,7 +17,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -34,7 +34,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +45,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -55,7 +55,7 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -81,26 +81,26 @@ public sealed record class BetaContentBlockSource : ModelBase, IFromRaw<BetaCont
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
-    public BetaContentBlockSource(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContentBlockSource(FrozenDictionary<string, JsonElement> properties)
+    BetaContentBlockSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaContentBlockSource FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

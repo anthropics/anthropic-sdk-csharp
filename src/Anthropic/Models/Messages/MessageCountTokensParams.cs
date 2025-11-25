@@ -22,10 +22,10 @@ namespace Anthropic.Models.Messages;
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
-    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
-        get { return this._bodyProperties.Freeze(); }
+        get { return this._rawBodyData.Freeze(); }
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("messages", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("messages", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
                     new System::ArgumentOutOfRangeException("messages", "Missing required argument")
@@ -100,7 +100,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
         init
         {
-            this._bodyProperties["messages"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["messages"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -115,7 +115,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("model", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
                     new System::ArgumentOutOfRangeException("model", "Missing required argument")
@@ -128,7 +128,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
         init
         {
-            this._bodyProperties["model"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["model"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -145,7 +145,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("system", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("system", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<System1?>(element, ModelBase.SerializerOptions);
@@ -157,7 +157,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["system"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["system"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -178,7 +178,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("thinking", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("thinking", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ThinkingConfigParam?>(
@@ -193,7 +193,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["thinking"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -208,7 +208,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("tool_choice", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ToolChoice?>(element, ModelBase.SerializerOptions);
@@ -220,7 +220,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["tool_choice"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -278,7 +278,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("tools", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<MessageCountTokensTool>?>(
@@ -293,7 +293,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["tools"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -303,40 +303,40 @@ public sealed record class MessageCountTokensParams : ParamsBase
     public MessageCountTokensParams() { }
 
     public MessageCountTokensParams(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageCountTokensParams(
-        FrozenDictionary<string, JsonElement> headerProperties,
-        FrozenDictionary<string, JsonElement> queryProperties,
-        FrozenDictionary<string, JsonElement> bodyProperties
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 #pragma warning restore CS8618
 
     public static MessageCountTokensParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
         return new(
-            FrozenDictionary.ToFrozenDictionary(headerProperties),
-            FrozenDictionary.ToFrozenDictionary(queryProperties),
-            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            FrozenDictionary.ToFrozenDictionary(rawBodyData)
         );
     }
 
@@ -352,17 +352,13 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
     internal override StringContent? BodyContent()
     {
-        return new(
-            JsonSerializer.Serialize(this.BodyProperties),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        foreach (var item in this.HeaderProperties)
+        foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }

@@ -153,7 +153,7 @@ public class AnthropicClient : IAnthropicClient
     )
         where T : ParamsBase
     {
-        return ValueTask.CompletedTask;
+        return default;
     }
 
     protected virtual ValueTask AfterSend<T>(
@@ -163,7 +163,7 @@ public class AnthropicClient : IAnthropicClient
     )
         where T : ParamsBase
     {
-        return ValueTask.CompletedTask;
+        return default;
     }
 
     async Task<HttpResponse> ExecuteOnce<T>(

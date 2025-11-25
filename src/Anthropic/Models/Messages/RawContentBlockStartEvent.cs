@@ -18,7 +18,7 @@ public sealed record class RawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("content_block", out JsonElement element))
+            if (!this._rawData.TryGetValue("content_block", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content_block' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -38,7 +38,7 @@ public sealed record class RawContentBlockStartEvent
         }
         init
         {
-            this._properties["content_block"] = JsonSerializer.SerializeToElement(
+            this._rawData["content_block"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -49,7 +49,7 @@ public sealed record class RawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("index", out JsonElement element))
+            if (!this._rawData.TryGetValue("index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'index' cannot be null",
                     new System::ArgumentOutOfRangeException("index", "Missing required argument")
@@ -59,7 +59,7 @@ public sealed record class RawContentBlockStartEvent
         }
         init
         {
-            this._properties["index"] = JsonSerializer.SerializeToElement(
+            this._rawData["index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -70,7 +70,7 @@ public sealed record class RawContentBlockStartEvent
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -80,7 +80,7 @@ public sealed record class RawContentBlockStartEvent
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -107,26 +107,26 @@ public sealed record class RawContentBlockStartEvent
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
-    public RawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    public RawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    RawContentBlockStartEvent(FrozenDictionary<string, JsonElement> properties)
+    RawContentBlockStartEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static RawContentBlockStartEvent FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

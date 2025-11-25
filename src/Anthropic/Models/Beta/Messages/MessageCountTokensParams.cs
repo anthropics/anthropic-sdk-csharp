@@ -23,10 +23,10 @@ namespace Anthropic.Models.Beta.Messages;
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
-    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
-        get { return this._bodyProperties.Freeze(); }
+        get { return this._rawBodyData.Freeze(); }
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("messages", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("messages", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'messages' cannot be null",
                     new System::ArgumentOutOfRangeException("messages", "Missing required argument")
@@ -101,7 +101,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
         init
         {
-            this._bodyProperties["messages"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["messages"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -116,7 +116,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("model", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("model", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'model' cannot be null",
                     new System::ArgumentOutOfRangeException("model", "Missing required argument")
@@ -129,7 +129,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
         init
         {
-            this._bodyProperties["model"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["model"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -146,7 +146,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("context_management", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("context_management", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaContextManagementConfig?>(
@@ -156,7 +156,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
         init
         {
-            this._bodyProperties["context_management"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["context_management"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -170,7 +170,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("mcp_servers", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("mcp_servers", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<BetaRequestMCPServerURLDefinition>?>(
@@ -185,7 +185,37 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["mcp_servers"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["mcp_servers"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    /// <summary>
+    /// Configuration options for the model's output. Controls aspects like how much
+    /// effort the model puts into its response.
+    /// </summary>
+    public BetaOutputConfig? OutputConfig
+    {
+        get
+        {
+            if (!this._rawBodyData.TryGetValue("output_config", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<BetaOutputConfig?>(
+                element,
+                ModelBase.SerializerOptions
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData["output_config"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -199,7 +229,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("output_format", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("output_format", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaJSONOutputFormat?>(
@@ -209,7 +239,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }
         init
         {
-            this._bodyProperties["output_format"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["output_format"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -226,7 +256,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("system", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("system", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<System1?>(element, ModelBase.SerializerOptions);
@@ -238,7 +268,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["system"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["system"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -259,7 +289,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("thinking", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("thinking", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaThinkingConfigParam?>(
@@ -274,7 +304,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["thinking"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -289,7 +319,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("tool_choice", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("tool_choice", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaToolChoice?>(
@@ -304,7 +334,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["tool_choice"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["tool_choice"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -362,7 +392,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("tools", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<Tool>?>(element, ModelBase.SerializerOptions);
@@ -374,7 +404,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["tools"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -388,7 +418,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            if (!this._headerProperties.TryGetValue("anthropic-beta", out JsonElement element))
+            if (!this._rawHeaderData.TryGetValue("anthropic-beta", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
@@ -403,7 +433,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            this._headerProperties["anthropic-beta"] = JsonSerializer.SerializeToElement(
+            this._rawHeaderData["anthropic-beta"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -413,40 +443,40 @@ public sealed record class MessageCountTokensParams : ParamsBase
     public MessageCountTokensParams() { }
 
     public MessageCountTokensParams(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageCountTokensParams(
-        FrozenDictionary<string, JsonElement> headerProperties,
-        FrozenDictionary<string, JsonElement> queryProperties,
-        FrozenDictionary<string, JsonElement> bodyProperties
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 #pragma warning restore CS8618
 
     public static MessageCountTokensParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
         return new(
-            FrozenDictionary.ToFrozenDictionary(headerProperties),
-            FrozenDictionary.ToFrozenDictionary(queryProperties),
-            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            FrozenDictionary.ToFrozenDictionary(rawBodyData)
         );
     }
 
@@ -462,17 +492,13 @@ public sealed record class MessageCountTokensParams : ParamsBase
 
     internal override StringContent? BodyContent()
     {
-        return new(
-            JsonSerializer.Serialize(this.BodyProperties),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        foreach (var item in this.HeaderProperties)
+        foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
@@ -621,6 +647,12 @@ sealed class System1Converter : JsonConverter<System1>
     }
 }
 
+/// <summary>
+/// Configuration for a group of tools from an MCP server.
+///
+/// <para>Allows configuring enabled status and defer_loading for all tools from
+/// an MCP server, with optional per-tool overrides.</para>
+/// </summary>
 [JsonConverter(typeof(ToolConverter))]
 public record class Tool
 {
@@ -647,11 +679,42 @@ public record class Tool
                 betaMemoryTool20250818: (x) => x.CacheControl,
                 betaToolComputerUse20250124: (x) => x.CacheControl,
                 betaToolTextEditor20241022: (x) => x.CacheControl,
+                betaToolComputerUse20251124: (x) => x.CacheControl,
                 betaToolTextEditor20250124: (x) => x.CacheControl,
                 betaToolTextEditor20250429: (x) => x.CacheControl,
                 betaToolTextEditor20250728: (x) => x.CacheControl,
                 betaWebSearchTool20250305: (x) => x.CacheControl,
-                betaWebFetchTool20250910: (x) => x.CacheControl
+                betaWebFetchTool20250910: (x) => x.CacheControl,
+                betaToolSearchToolBm25_20251119: (x) => x.CacheControl,
+                betaToolSearchToolRegex20251119: (x) => x.CacheControl,
+                betaMCPToolset: (x) => x.CacheControl
+            );
+        }
+    }
+
+    public bool? DeferLoading
+    {
+        get
+        {
+            return Match<bool?>(
+                beta: (x) => x.DeferLoading,
+                betaToolBash20241022: (x) => x.DeferLoading,
+                betaToolBash20250124: (x) => x.DeferLoading,
+                betaCodeExecutionTool20250522: (x) => x.DeferLoading,
+                betaCodeExecutionTool20250825: (x) => x.DeferLoading,
+                betaToolComputerUse20241022: (x) => x.DeferLoading,
+                betaMemoryTool20250818: (x) => x.DeferLoading,
+                betaToolComputerUse20250124: (x) => x.DeferLoading,
+                betaToolTextEditor20241022: (x) => x.DeferLoading,
+                betaToolComputerUse20251124: (x) => x.DeferLoading,
+                betaToolTextEditor20250124: (x) => x.DeferLoading,
+                betaToolTextEditor20250429: (x) => x.DeferLoading,
+                betaToolTextEditor20250728: (x) => x.DeferLoading,
+                betaWebSearchTool20250305: (x) => x.DeferLoading,
+                betaWebFetchTool20250910: (x) => x.DeferLoading,
+                betaToolSearchToolBm25_20251119: (x) => x.DeferLoading,
+                betaToolSearchToolRegex20251119: (x) => x.DeferLoading,
+                betaMCPToolset: (_) => null
             );
         }
     }
@@ -670,11 +733,15 @@ public record class Tool
                 betaMemoryTool20250818: (x) => x.Strict,
                 betaToolComputerUse20250124: (x) => x.Strict,
                 betaToolTextEditor20241022: (x) => x.Strict,
+                betaToolComputerUse20251124: (x) => x.Strict,
                 betaToolTextEditor20250124: (x) => x.Strict,
                 betaToolTextEditor20250429: (x) => x.Strict,
                 betaToolTextEditor20250728: (x) => x.Strict,
                 betaWebSearchTool20250305: (x) => x.Strict,
-                betaWebFetchTool20250910: (x) => x.Strict
+                betaWebFetchTool20250910: (x) => x.Strict,
+                betaToolSearchToolBm25_20251119: (x) => x.Strict,
+                betaToolSearchToolRegex20251119: (x) => x.Strict,
+                betaMCPToolset: (_) => null
             );
         }
     }
@@ -693,11 +760,15 @@ public record class Tool
                 betaMemoryTool20250818: (_) => null,
                 betaToolComputerUse20250124: (x) => x.DisplayHeightPx,
                 betaToolTextEditor20241022: (_) => null,
+                betaToolComputerUse20251124: (x) => x.DisplayHeightPx,
                 betaToolTextEditor20250124: (_) => null,
                 betaToolTextEditor20250429: (_) => null,
                 betaToolTextEditor20250728: (_) => null,
                 betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (_) => null
+                betaWebFetchTool20250910: (_) => null,
+                betaToolSearchToolBm25_20251119: (_) => null,
+                betaToolSearchToolRegex20251119: (_) => null,
+                betaMCPToolset: (_) => null
             );
         }
     }
@@ -716,11 +787,15 @@ public record class Tool
                 betaMemoryTool20250818: (_) => null,
                 betaToolComputerUse20250124: (x) => x.DisplayWidthPx,
                 betaToolTextEditor20241022: (_) => null,
+                betaToolComputerUse20251124: (x) => x.DisplayWidthPx,
                 betaToolTextEditor20250124: (_) => null,
                 betaToolTextEditor20250429: (_) => null,
                 betaToolTextEditor20250728: (_) => null,
                 betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (_) => null
+                betaWebFetchTool20250910: (_) => null,
+                betaToolSearchToolBm25_20251119: (_) => null,
+                betaToolSearchToolRegex20251119: (_) => null,
+                betaMCPToolset: (_) => null
             );
         }
     }
@@ -739,11 +814,15 @@ public record class Tool
                 betaMemoryTool20250818: (_) => null,
                 betaToolComputerUse20250124: (x) => x.DisplayNumber,
                 betaToolTextEditor20241022: (_) => null,
+                betaToolComputerUse20251124: (x) => x.DisplayNumber,
                 betaToolTextEditor20250124: (_) => null,
                 betaToolTextEditor20250429: (_) => null,
                 betaToolTextEditor20250728: (_) => null,
                 betaWebSearchTool20250305: (_) => null,
-                betaWebFetchTool20250910: (_) => null
+                betaWebFetchTool20250910: (_) => null,
+                betaToolSearchToolBm25_20251119: (_) => null,
+                betaToolSearchToolRegex20251119: (_) => null,
+                betaMCPToolset: (_) => null
             );
         }
     }
@@ -762,11 +841,15 @@ public record class Tool
                 betaMemoryTool20250818: (_) => null,
                 betaToolComputerUse20250124: (_) => null,
                 betaToolTextEditor20241022: (_) => null,
+                betaToolComputerUse20251124: (_) => null,
                 betaToolTextEditor20250124: (_) => null,
                 betaToolTextEditor20250429: (_) => null,
                 betaToolTextEditor20250728: (_) => null,
                 betaWebSearchTool20250305: (x) => x.MaxUses,
-                betaWebFetchTool20250910: (x) => x.MaxUses
+                betaWebFetchTool20250910: (x) => x.MaxUses,
+                betaToolSearchToolBm25_20251119: (_) => null,
+                betaToolSearchToolRegex20251119: (_) => null,
+                betaMCPToolset: (_) => null
             );
         }
     }
@@ -825,6 +908,12 @@ public record class Tool
         this._json = json;
     }
 
+    public Tool(BetaToolComputerUse20251124 value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
     public Tool(BetaToolTextEditor20250124 value, JsonElement? json = null)
     {
         this.Value = value;
@@ -850,6 +939,24 @@ public record class Tool
     }
 
     public Tool(BetaWebFetchTool20250910 value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public Tool(BetaToolSearchToolBm25_20251119 value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public Tool(BetaToolSearchToolRegex20251119 value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public Tool(BetaMCPToolset value, JsonElement? json = null)
     {
         this.Value = value;
         this._json = json;
@@ -924,6 +1031,14 @@ public record class Tool
         return value != null;
     }
 
+    public bool TryPickBetaToolComputerUse20251124(
+        [NotNullWhen(true)] out BetaToolComputerUse20251124? value
+    )
+    {
+        value = this.Value as BetaToolComputerUse20251124;
+        return value != null;
+    }
+
     public bool TryPickBetaToolTextEditor20250124(
         [NotNullWhen(true)] out BetaToolTextEditor20250124? value
     )
@@ -964,6 +1079,28 @@ public record class Tool
         return value != null;
     }
 
+    public bool TryPickBetaToolSearchToolBm25_20251119(
+        [NotNullWhen(true)] out BetaToolSearchToolBm25_20251119? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolBm25_20251119;
+        return value != null;
+    }
+
+    public bool TryPickBetaToolSearchToolRegex20251119(
+        [NotNullWhen(true)] out BetaToolSearchToolRegex20251119? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolRegex20251119;
+        return value != null;
+    }
+
+    public bool TryPickBetaMCPToolset([NotNullWhen(true)] out BetaMCPToolset? value)
+    {
+        value = this.Value as BetaMCPToolset;
+        return value != null;
+    }
+
     public void Switch(
         System::Action<BetaTool> beta,
         System::Action<BetaToolBash20241022> betaToolBash20241022,
@@ -974,11 +1111,15 @@ public record class Tool
         System::Action<BetaMemoryTool20250818> betaMemoryTool20250818,
         System::Action<BetaToolComputerUse20250124> betaToolComputerUse20250124,
         System::Action<BetaToolTextEditor20241022> betaToolTextEditor20241022,
+        System::Action<BetaToolComputerUse20251124> betaToolComputerUse20251124,
         System::Action<BetaToolTextEditor20250124> betaToolTextEditor20250124,
         System::Action<BetaToolTextEditor20250429> betaToolTextEditor20250429,
         System::Action<BetaToolTextEditor20250728> betaToolTextEditor20250728,
         System::Action<BetaWebSearchTool20250305> betaWebSearchTool20250305,
-        System::Action<BetaWebFetchTool20250910> betaWebFetchTool20250910
+        System::Action<BetaWebFetchTool20250910> betaWebFetchTool20250910,
+        System::Action<BetaToolSearchToolBm25_20251119> betaToolSearchToolBm25_20251119,
+        System::Action<BetaToolSearchToolRegex20251119> betaToolSearchToolRegex20251119,
+        System::Action<BetaMCPToolset> betaMCPToolset
     )
     {
         switch (this.Value)
@@ -1010,6 +1151,9 @@ public record class Tool
             case BetaToolTextEditor20241022 value:
                 betaToolTextEditor20241022(value);
                 break;
+            case BetaToolComputerUse20251124 value:
+                betaToolComputerUse20251124(value);
+                break;
             case BetaToolTextEditor20250124 value:
                 betaToolTextEditor20250124(value);
                 break;
@@ -1024,6 +1168,15 @@ public record class Tool
                 break;
             case BetaWebFetchTool20250910 value:
                 betaWebFetchTool20250910(value);
+                break;
+            case BetaToolSearchToolBm25_20251119 value:
+                betaToolSearchToolBm25_20251119(value);
+                break;
+            case BetaToolSearchToolRegex20251119 value:
+                betaToolSearchToolRegex20251119(value);
+                break;
+            case BetaMCPToolset value:
+                betaMCPToolset(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Tool");
@@ -1040,11 +1193,15 @@ public record class Tool
         System::Func<BetaMemoryTool20250818, T> betaMemoryTool20250818,
         System::Func<BetaToolComputerUse20250124, T> betaToolComputerUse20250124,
         System::Func<BetaToolTextEditor20241022, T> betaToolTextEditor20241022,
+        System::Func<BetaToolComputerUse20251124, T> betaToolComputerUse20251124,
         System::Func<BetaToolTextEditor20250124, T> betaToolTextEditor20250124,
         System::Func<BetaToolTextEditor20250429, T> betaToolTextEditor20250429,
         System::Func<BetaToolTextEditor20250728, T> betaToolTextEditor20250728,
         System::Func<BetaWebSearchTool20250305, T> betaWebSearchTool20250305,
-        System::Func<BetaWebFetchTool20250910, T> betaWebFetchTool20250910
+        System::Func<BetaWebFetchTool20250910, T> betaWebFetchTool20250910,
+        System::Func<BetaToolSearchToolBm25_20251119, T> betaToolSearchToolBm25_20251119,
+        System::Func<BetaToolSearchToolRegex20251119, T> betaToolSearchToolRegex20251119,
+        System::Func<BetaMCPToolset, T> betaMCPToolset
     )
     {
         return this.Value switch
@@ -1058,11 +1215,15 @@ public record class Tool
             BetaMemoryTool20250818 value => betaMemoryTool20250818(value),
             BetaToolComputerUse20250124 value => betaToolComputerUse20250124(value),
             BetaToolTextEditor20241022 value => betaToolTextEditor20241022(value),
+            BetaToolComputerUse20251124 value => betaToolComputerUse20251124(value),
             BetaToolTextEditor20250124 value => betaToolTextEditor20250124(value),
             BetaToolTextEditor20250429 value => betaToolTextEditor20250429(value),
             BetaToolTextEditor20250728 value => betaToolTextEditor20250728(value),
             BetaWebSearchTool20250305 value => betaWebSearchTool20250305(value),
             BetaWebFetchTool20250910 value => betaWebFetchTool20250910(value),
+            BetaToolSearchToolBm25_20251119 value => betaToolSearchToolBm25_20251119(value),
+            BetaToolSearchToolRegex20251119 value => betaToolSearchToolRegex20251119(value),
+            BetaMCPToolset value => betaMCPToolset(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Tool"),
         };
     }
@@ -1085,6 +1246,8 @@ public record class Tool
 
     public static implicit operator Tool(BetaToolTextEditor20241022 value) => new(value);
 
+    public static implicit operator Tool(BetaToolComputerUse20251124 value) => new(value);
+
     public static implicit operator Tool(BetaToolTextEditor20250124 value) => new(value);
 
     public static implicit operator Tool(BetaToolTextEditor20250429 value) => new(value);
@@ -1094,6 +1257,12 @@ public record class Tool
     public static implicit operator Tool(BetaWebSearchTool20250305 value) => new(value);
 
     public static implicit operator Tool(BetaWebFetchTool20250910 value) => new(value);
+
+    public static implicit operator Tool(BetaToolSearchToolBm25_20251119 value) => new(value);
+
+    public static implicit operator Tool(BetaToolSearchToolRegex20251119 value) => new(value);
+
+    public static implicit operator Tool(BetaMCPToolset value) => new(value);
 
     public void Validate()
     {
@@ -1256,6 +1425,23 @@ sealed class ToolConverter : JsonConverter<Tool>
 
         try
         {
+            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(
+                json,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250124>(
                 json,
                 options
@@ -1322,6 +1508,54 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(json, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolBm25_20251119>(
+                json,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(
+                json,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();

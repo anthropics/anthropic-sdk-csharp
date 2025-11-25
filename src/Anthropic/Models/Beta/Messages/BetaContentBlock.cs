@@ -36,6 +36,7 @@ public record class BetaContentBlock
                 codeExecutionToolResult: (x) => x.Type,
                 bashCodeExecutionToolResult: (x) => x.Type,
                 textEditorCodeExecutionToolResult: (x) => x.Type,
+                toolSearchToolResult: (x) => x.Type,
                 mcpToolUse: (x) => x.Type,
                 mcpToolResult: (x) => x.Type,
                 containerUpload: (x) => x.Type
@@ -58,6 +59,7 @@ public record class BetaContentBlock
                 codeExecutionToolResult: (_) => null,
                 bashCodeExecutionToolResult: (_) => null,
                 textEditorCodeExecutionToolResult: (_) => null,
+                toolSearchToolResult: (_) => null,
                 mcpToolUse: (x) => x.ID,
                 mcpToolResult: (_) => null,
                 containerUpload: (_) => null
@@ -80,6 +82,7 @@ public record class BetaContentBlock
                 codeExecutionToolResult: (x) => x.ToolUseID,
                 bashCodeExecutionToolResult: (x) => x.ToolUseID,
                 textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
+                toolSearchToolResult: (x) => x.ToolUseID,
                 mcpToolUse: (_) => null,
                 mcpToolResult: (x) => x.ToolUseID,
                 containerUpload: (_) => null
@@ -145,6 +148,12 @@ public record class BetaContentBlock
         BetaTextEditorCodeExecutionToolResultBlock value,
         JsonElement? json = null
     )
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public BetaContentBlock(BetaToolSearchToolResultBlock value, JsonElement? json = null)
     {
         this.Value = value;
         this._json = json;
@@ -243,6 +252,14 @@ public record class BetaContentBlock
         return value != null;
     }
 
+    public bool TryPickToolSearchToolResult(
+        [NotNullWhen(true)] out BetaToolSearchToolResultBlock? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolResultBlock;
+        return value != null;
+    }
+
     public bool TryPickMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlock? value)
     {
         value = this.Value as BetaMCPToolUseBlock;
@@ -272,6 +289,7 @@ public record class BetaContentBlock
         System::Action<BetaCodeExecutionToolResultBlock> codeExecutionToolResult,
         System::Action<BetaBashCodeExecutionToolResultBlock> bashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlock> textEditorCodeExecutionToolResult,
+        System::Action<BetaToolSearchToolResultBlock> toolSearchToolResult,
         System::Action<BetaMCPToolUseBlock> mcpToolUse,
         System::Action<BetaMCPToolResultBlock> mcpToolResult,
         System::Action<BetaContainerUploadBlock> containerUpload
@@ -309,6 +327,9 @@ public record class BetaContentBlock
             case BetaTextEditorCodeExecutionToolResultBlock value:
                 textEditorCodeExecutionToolResult(value);
                 break;
+            case BetaToolSearchToolResultBlock value:
+                toolSearchToolResult(value);
+                break;
             case BetaMCPToolUseBlock value:
                 mcpToolUse(value);
                 break;
@@ -339,6 +360,7 @@ public record class BetaContentBlock
             BetaTextEditorCodeExecutionToolResultBlock,
             T
         > textEditorCodeExecutionToolResult,
+        System::Func<BetaToolSearchToolResultBlock, T> toolSearchToolResult,
         System::Func<BetaMCPToolUseBlock, T> mcpToolUse,
         System::Func<BetaMCPToolResultBlock, T> mcpToolResult,
         System::Func<BetaContainerUploadBlock, T> containerUpload
@@ -358,6 +380,7 @@ public record class BetaContentBlock
             BetaTextEditorCodeExecutionToolResultBlock value => textEditorCodeExecutionToolResult(
                 value
             ),
+            BetaToolSearchToolResultBlock value => toolSearchToolResult(value),
             BetaMCPToolUseBlock value => mcpToolUse(value),
             BetaMCPToolResultBlock value => mcpToolResult(value),
             BetaContainerUploadBlock value => containerUpload(value),
@@ -392,6 +415,9 @@ public record class BetaContentBlock
     public static implicit operator BetaContentBlock(
         BetaTextEditorCodeExecutionToolResultBlock value
     ) => new(value);
+
+    public static implicit operator BetaContentBlock(BetaToolSearchToolResultBlock value) =>
+        new(value);
 
     public static implicit operator BetaContentBlock(BetaMCPToolUseBlock value) => new(value);
 
@@ -630,6 +656,28 @@ sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>
                             json,
                             options
                         );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(json);
+            }
+            case "tool_search_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(
+                        json,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();

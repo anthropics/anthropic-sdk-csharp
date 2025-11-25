@@ -16,7 +16,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     {
         get
         {
-            if (!this._properties.TryGetValue("source", out JsonElement element))
+            if (!this._rawData.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
@@ -33,7 +33,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
         }
         init
         {
-            this._properties["source"] = JsonSerializer.SerializeToElement(
+            this._rawData["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +44,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -54,7 +54,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +68,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -78,7 +78,7 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -102,26 +102,26 @@ public sealed record class BetaImageBlockParam : ModelBase, IFromRaw<BetaImageBl
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
 
-    public BetaImageBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaImageBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaImageBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaImageBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

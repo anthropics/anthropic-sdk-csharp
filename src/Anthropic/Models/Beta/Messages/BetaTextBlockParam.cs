@@ -16,7 +16,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("text", out JsonElement element))
+            if (!this._rawData.TryGetValue("text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'text' cannot be null",
                     new ArgumentOutOfRangeException("text", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
         }
         init
         {
-            this._properties["text"] = JsonSerializer.SerializeToElement(
+            this._rawData["text"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -65,7 +65,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -75,7 +75,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -86,7 +86,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("citations", out JsonElement element))
+            if (!this._rawData.TryGetValue("citations", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<BetaTextCitationParam>?>(
@@ -96,7 +96,7 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
         }
         init
         {
-            this._properties["citations"] = JsonSerializer.SerializeToElement(
+            this._rawData["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -122,26 +122,26 @@ public sealed record class BetaTextBlockParam : ModelBase, IFromRaw<BetaTextBloc
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
-    public BetaTextBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaTextBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaTextBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaTextBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaTextBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

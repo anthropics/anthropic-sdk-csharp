@@ -19,7 +19,7 @@ public sealed record class ServerToolUsage : ModelBase, IFromRaw<ServerToolUsage
     {
         get
         {
-            if (!this._properties.TryGetValue("web_search_requests", out JsonElement element))
+            if (!this._rawData.TryGetValue("web_search_requests", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'web_search_requests' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -32,7 +32,7 @@ public sealed record class ServerToolUsage : ModelBase, IFromRaw<ServerToolUsage
         }
         init
         {
-            this._properties["web_search_requests"] = JsonSerializer.SerializeToElement(
+            this._rawData["web_search_requests"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,24 +46,22 @@ public sealed record class ServerToolUsage : ModelBase, IFromRaw<ServerToolUsage
 
     public ServerToolUsage() { }
 
-    public ServerToolUsage(IReadOnlyDictionary<string, JsonElement> properties)
+    public ServerToolUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ServerToolUsage(FrozenDictionary<string, JsonElement> properties)
+    ServerToolUsage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ServerToolUsage FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public static ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

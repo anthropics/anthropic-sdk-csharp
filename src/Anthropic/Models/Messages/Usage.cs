@@ -19,14 +19,14 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_creation", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_creation", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheCreation?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["cache_creation"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_creation"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,19 +40,14 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     {
         get
         {
-            if (
-                !this._properties.TryGetValue(
-                    "cache_creation_input_tokens",
-                    out JsonElement element
-                )
-            )
+            if (!this._rawData.TryGetValue("cache_creation_input_tokens", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["cache_creation_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_creation_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -66,14 +61,14 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_read_input_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_read_input_tokens", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["cache_read_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_read_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -87,7 +82,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     {
         get
         {
-            if (!this._properties.TryGetValue("input_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input_tokens' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -100,7 +95,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
         }
         init
         {
-            this._properties["input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -114,7 +109,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     {
         get
         {
-            if (!this._properties.TryGetValue("output_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("output_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'output_tokens' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -127,7 +122,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
         }
         init
         {
-            this._properties["output_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["output_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -141,7 +136,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     {
         get
         {
-            if (!this._properties.TryGetValue("server_tool_use", out JsonElement element))
+            if (!this._rawData.TryGetValue("server_tool_use", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ServerToolUsage?>(
@@ -151,7 +146,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
         }
         init
         {
-            this._properties["server_tool_use"] = JsonSerializer.SerializeToElement(
+            this._rawData["server_tool_use"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -165,7 +160,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
     {
         get
         {
-            if (!this._properties.TryGetValue("service_tier", out JsonElement element))
+            if (!this._rawData.TryGetValue("service_tier", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, UsageServiceTier>?>(
@@ -175,7 +170,7 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
         }
         init
         {
-            this._properties["service_tier"] = JsonSerializer.SerializeToElement(
+            this._rawData["service_tier"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -195,22 +190,22 @@ public sealed record class Usage : ModelBase, IFromRaw<Usage>
 
     public Usage() { }
 
-    public Usage(IReadOnlyDictionary<string, JsonElement> properties)
+    public Usage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Usage(FrozenDictionary<string, JsonElement> properties)
+    Usage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Usage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static Usage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

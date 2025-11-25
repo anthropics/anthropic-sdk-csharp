@@ -16,7 +16,7 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
     {
         get
         {
-            if (!this._properties.TryGetValue("thinking", out JsonElement element))
+            if (!this._rawData.TryGetValue("thinking", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'thinking' cannot be null",
                     new ArgumentOutOfRangeException("thinking", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
         }
         init
         {
-            this._properties["thinking"] = JsonSerializer.SerializeToElement(
+            this._rawData["thinking"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -77,26 +77,24 @@ public sealed record class ThinkingDelta : ModelBase, IFromRaw<ThinkingDelta>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
     }
 
-    public ThinkingDelta(IReadOnlyDictionary<string, JsonElement> properties)
+    public ThinkingDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ThinkingDelta(FrozenDictionary<string, JsonElement> properties)
+    ThinkingDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ThinkingDelta FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public static ThinkingDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

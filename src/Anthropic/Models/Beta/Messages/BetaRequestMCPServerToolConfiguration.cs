@@ -16,14 +16,14 @@ public sealed record class BetaRequestMCPServerToolConfiguration
     {
         get
         {
-            if (!this._properties.TryGetValue("allowed_tools", out JsonElement element))
+            if (!this._rawData.TryGetValue("allowed_tools", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["allowed_tools"] = JsonSerializer.SerializeToElement(
+            this._rawData["allowed_tools"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -34,14 +34,14 @@ public sealed record class BetaRequestMCPServerToolConfiguration
     {
         get
         {
-            if (!this._properties.TryGetValue("enabled", out JsonElement element))
+            if (!this._rawData.TryGetValue("enabled", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["enabled"] = JsonSerializer.SerializeToElement(
+            this._rawData["enabled"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -56,25 +56,23 @@ public sealed record class BetaRequestMCPServerToolConfiguration
 
     public BetaRequestMCPServerToolConfiguration() { }
 
-    public BetaRequestMCPServerToolConfiguration(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public BetaRequestMCPServerToolConfiguration(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRequestMCPServerToolConfiguration(FrozenDictionary<string, JsonElement> properties)
+    BetaRequestMCPServerToolConfiguration(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaRequestMCPServerToolConfiguration FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

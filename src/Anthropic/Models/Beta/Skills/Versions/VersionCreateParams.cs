@@ -15,10 +15,10 @@ namespace Anthropic.Models.Beta.Skills.Versions;
 /// </summary>
 public sealed record class VersionCreateParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
-    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
-        get { return this._bodyProperties.Freeze(); }
+        get { return this._rawBodyData.Freeze(); }
     }
 
     public string? SkillID { get; init; }
@@ -33,14 +33,14 @@ public sealed record class VersionCreateParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("files", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("files", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._bodyProperties["files"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["files"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -54,7 +54,7 @@ public sealed record class VersionCreateParams : ParamsBase
     {
         get
         {
-            if (!this._headerProperties.TryGetValue("anthropic-beta", out JsonElement element))
+            if (!this._rawHeaderData.TryGetValue("anthropic-beta", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
@@ -69,7 +69,7 @@ public sealed record class VersionCreateParams : ParamsBase
                 return;
             }
 
-            this._headerProperties["anthropic-beta"] = JsonSerializer.SerializeToElement(
+            this._rawHeaderData["anthropic-beta"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -79,40 +79,40 @@ public sealed record class VersionCreateParams : ParamsBase
     public VersionCreateParams() { }
 
     public VersionCreateParams(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     VersionCreateParams(
-        FrozenDictionary<string, JsonElement> headerProperties,
-        FrozenDictionary<string, JsonElement> queryProperties,
-        FrozenDictionary<string, JsonElement> bodyProperties
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 #pragma warning restore CS8618
 
     public static VersionCreateParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
         return new(
-            FrozenDictionary.ToFrozenDictionary(headerProperties),
-            FrozenDictionary.ToFrozenDictionary(queryProperties),
-            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            FrozenDictionary.ToFrozenDictionary(rawBodyData)
         );
     }
 
@@ -129,18 +129,14 @@ public sealed record class VersionCreateParams : ParamsBase
 
     internal override StringContent? BodyContent()
     {
-        return new(
-            JsonSerializer.Serialize(this.BodyProperties),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
         VersionService.AddDefaultHeaders(request);
-        foreach (var item in this.HeaderProperties)
+        foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }

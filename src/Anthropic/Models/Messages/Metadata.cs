@@ -21,14 +21,14 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     {
         get
         {
-            if (!this._properties.TryGetValue("user_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("user_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["user_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["user_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,21 +42,21 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
 
     public Metadata() { }
 
-    public Metadata(IReadOnlyDictionary<string, JsonElement> properties)
+    public Metadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Metadata(FrozenDictionary<string, JsonElement> properties)
+    Metadata(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+#if !NET
+using System.Linq;
+using System.Reflection;
+#endif
 
 namespace Anthropic.Core;
 
@@ -14,22 +18,63 @@ sealed class ModelConverter<TModel> : JsonConverter<TModel>
         JsonSerializerOptions options
     )
     {
-        var properties = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+        var rawData = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
             ref reader,
             options
         );
-        if (properties == null)
+        if (rawData == null)
             return null;
 
-#if NET5_0_OR_GREATER
-        return TModel.FromRawUnchecked(properties);
+#if NET
+        return TModel.FromRawUnchecked(rawData);
 #else
-        return (TModel)ModelConverterConstructionShim.FromRawFactories[typeof(TModel)](properties);
+        return (TModel)ModelConverterConstructionShim.FromRawFactories[typeof(TModel)](rawData);
 #endif
     }
 
     public override void Write(Utf8JsonWriter writer, TModel value, JsonSerializerOptions options)
     {
-        JsonSerializer.Serialize(writer, value.Properties, options);
+        JsonSerializer.Serialize(writer, value.RawData, options);
     }
 }
+
+#if !NET
+internal static class ModelConverterConstructionShim
+{
+    public const string FromRawUncheckedMethodName = "FromRawUnchecked";
+
+    static ModelConverterConstructionShim()
+    {
+        Assembly
+            .GetCallingAssembly()
+            .GetTypes()
+            .Where(t => t.IsSubclassOf(typeof(ModelBase)))
+            .ToList()
+            .ForEach(t =>
+            {
+                var converterType = typeof(ModelConverter<>).MakeGenericType(t);
+                var converterMethod = converterType.GetMethod(
+                    FromRawUncheckedMethodName,
+                    BindingFlags.Static | BindingFlags.Public
+                );
+                if (converterMethod is null)
+                {
+                    return;
+                }
+                var fromRaw =
+                    (Func<IReadOnlyDictionary<string, JsonElement>, object>)
+                        Delegate.CreateDelegate(
+                            typeof(Func<IReadOnlyDictionary<string, JsonElement>, object>),
+                            converterMethod
+                        );
+                FromRawFactories.Add(t, fromRaw);
+            });
+    }
+
+    internal static Dictionary<
+        Type,
+        Func<IReadOnlyDictionary<string, JsonElement>, object>
+    > FromRawFactories { get; } =
+        new Dictionary<Type, Func<IReadOnlyDictionary<string, JsonElement>, object>>();
+}
+#endif

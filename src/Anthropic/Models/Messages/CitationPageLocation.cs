@@ -16,7 +16,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
     {
         get
         {
-            if (!this._properties.TryGetValue("cited_text", out JsonElement element))
+            if (!this._rawData.TryGetValue("cited_text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cited_text' cannot be null",
                     new ArgumentOutOfRangeException("cited_text", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
         }
         init
         {
-            this._properties["cited_text"] = JsonSerializer.SerializeToElement(
+            this._rawData["cited_text"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
     {
         get
         {
-            if (!this._properties.TryGetValue("document_index", out JsonElement element))
+            if (!this._rawData.TryGetValue("document_index", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'document_index' cannot be null",
                     new ArgumentOutOfRangeException("document_index", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
         }
         init
         {
-            this._properties["document_index"] = JsonSerializer.SerializeToElement(
+            this._rawData["document_index"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -62,14 +62,14 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
     {
         get
         {
-            if (!this._properties.TryGetValue("document_title", out JsonElement element))
+            if (!this._rawData.TryGetValue("document_title", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["document_title"] = JsonSerializer.SerializeToElement(
+            this._rawData["document_title"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -80,7 +80,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
     {
         get
         {
-            if (!this._properties.TryGetValue("end_page_number", out JsonElement element))
+            if (!this._rawData.TryGetValue("end_page_number", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'end_page_number' cannot be null",
                     new ArgumentOutOfRangeException("end_page_number", "Missing required argument")
@@ -90,7 +90,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
         }
         init
         {
-            this._properties["end_page_number"] = JsonSerializer.SerializeToElement(
+            this._rawData["end_page_number"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -101,14 +101,14 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
     {
         get
         {
-            if (!this._properties.TryGetValue("file_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("file_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["file_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["file_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -119,7 +119,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
     {
         get
         {
-            if (!this._properties.TryGetValue("start_page_number", out JsonElement element))
+            if (!this._rawData.TryGetValue("start_page_number", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'start_page_number' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -132,7 +132,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
         }
         init
         {
-            this._properties["start_page_number"] = JsonSerializer.SerializeToElement(
+            this._rawData["start_page_number"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -143,7 +143,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -153,7 +153,7 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -184,25 +184,25 @@ public sealed record class CitationPageLocation : ModelBase, IFromRaw<CitationPa
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
     }
 
-    public CitationPageLocation(IReadOnlyDictionary<string, JsonElement> properties)
+    public CitationPageLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    CitationPageLocation(FrozenDictionary<string, JsonElement> properties)
+    CitationPageLocation(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static CitationPageLocation FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

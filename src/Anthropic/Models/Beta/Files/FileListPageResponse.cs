@@ -19,7 +19,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
     {
         get
         {
-            if (!this._properties.TryGetValue("data", out JsonElement element))
+            if (!this._rawData.TryGetValue("data", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'data' cannot be null",
                     new ArgumentOutOfRangeException("data", "Missing required argument")
@@ -36,7 +36,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
         }
         init
         {
-            this._properties["data"] = JsonSerializer.SerializeToElement(
+            this._rawData["data"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -50,14 +50,14 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
     {
         get
         {
-            if (!this._properties.TryGetValue("first_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("first_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["first_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["first_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -71,7 +71,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
     {
         get
         {
-            if (!this._properties.TryGetValue("has_more", out JsonElement element))
+            if (!this._rawData.TryGetValue("has_more", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
@@ -83,7 +83,7 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
                 return;
             }
 
-            this._properties["has_more"] = JsonSerializer.SerializeToElement(
+            this._rawData["has_more"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -97,14 +97,14 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
     {
         get
         {
-            if (!this._properties.TryGetValue("last_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("last_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["last_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["last_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -124,24 +124,24 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
 
     public FileListPageResponse() { }
 
-    public FileListPageResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public FileListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    FileListPageResponse(FrozenDictionary<string, JsonElement> properties)
+    FileListPageResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static FileListPageResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

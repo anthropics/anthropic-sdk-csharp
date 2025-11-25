@@ -19,7 +19,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
     {
         get
         {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
+            if (!this._rawData.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new System::ArgumentOutOfRangeException("id", "Missing required argument")
@@ -33,7 +33,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
         }
         init
         {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
+            this._rawData["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -49,7 +49,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<
@@ -64,7 +64,7 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
                 return;
             }
 
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -79,22 +79,22 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
 
     public DeletedFile() { }
 
-    public DeletedFile(IReadOnlyDictionary<string, JsonElement> properties)
+    public DeletedFile(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    DeletedFile(FrozenDictionary<string, JsonElement> properties)
+    DeletedFile(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

@@ -16,7 +16,7 @@ public sealed record class BetaCitationConfig : ModelBase, IFromRaw<BetaCitation
     {
         get
         {
-            if (!this._properties.TryGetValue("enabled", out JsonElement element))
+            if (!this._rawData.TryGetValue("enabled", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'enabled' cannot be null",
                     new ArgumentOutOfRangeException("enabled", "Missing required argument")
@@ -26,7 +26,7 @@ public sealed record class BetaCitationConfig : ModelBase, IFromRaw<BetaCitation
         }
         init
         {
-            this._properties["enabled"] = JsonSerializer.SerializeToElement(
+            this._rawData["enabled"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,24 +40,24 @@ public sealed record class BetaCitationConfig : ModelBase, IFromRaw<BetaCitation
 
     public BetaCitationConfig() { }
 
-    public BetaCitationConfig(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaCitationConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCitationConfig(FrozenDictionary<string, JsonElement> properties)
+    BetaCitationConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaCitationConfig FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

@@ -18,7 +18,7 @@ public sealed record class BetaMessageBatchCanceledResult
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -28,7 +28,7 @@ public sealed record class BetaMessageBatchCanceledResult
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -53,25 +53,25 @@ public sealed record class BetaMessageBatchCanceledResult
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
     }
 
-    public BetaMessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageBatchCanceledResult(FrozenDictionary<string, JsonElement> properties)
+    BetaMessageBatchCanceledResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMessageBatchCanceledResult FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

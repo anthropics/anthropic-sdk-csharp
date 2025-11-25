@@ -19,7 +19,7 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
     {
         get
         {
-            if (!this._properties.TryGetValue("ephemeral_1h_input_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("ephemeral_1h_input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'ephemeral_1h_input_tokens' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -32,7 +32,7 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
         }
         init
         {
-            this._properties["ephemeral_1h_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["ephemeral_1h_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,7 +46,7 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
     {
         get
         {
-            if (!this._properties.TryGetValue("ephemeral_5m_input_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("ephemeral_5m_input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'ephemeral_5m_input_tokens' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -59,7 +59,7 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
         }
         init
         {
-            this._properties["ephemeral_5m_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["ephemeral_5m_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -74,23 +74,23 @@ public sealed record class BetaCacheCreation : ModelBase, IFromRaw<BetaCacheCrea
 
     public BetaCacheCreation() { }
 
-    public BetaCacheCreation(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaCacheCreation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCacheCreation(FrozenDictionary<string, JsonElement> properties)
+    BetaCacheCreation(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaCacheCreation FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

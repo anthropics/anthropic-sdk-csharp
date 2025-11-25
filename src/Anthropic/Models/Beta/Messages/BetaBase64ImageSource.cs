@@ -16,7 +16,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
     {
         get
         {
-            if (!this._properties.TryGetValue("data", out JsonElement element))
+            if (!this._rawData.TryGetValue("data", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'data' cannot be null",
                     new System::ArgumentOutOfRangeException("data", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
         }
         init
         {
-            this._properties["data"] = JsonSerializer.SerializeToElement(
+            this._rawData["data"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
     {
         get
         {
-            if (!this._properties.TryGetValue("media_type", out JsonElement element))
+            if (!this._rawData.TryGetValue("media_type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'media_type' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -57,7 +57,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
         }
         init
         {
-            this._properties["media_type"] = JsonSerializer.SerializeToElement(
+            this._rawData["media_type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -68,7 +68,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -78,7 +78,7 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -105,26 +105,26 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
     }
 
-    public BetaBase64ImageSource(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaBase64ImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBase64ImageSource(FrozenDictionary<string, JsonElement> properties)
+    BetaBase64ImageSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaBase64ImageSource FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

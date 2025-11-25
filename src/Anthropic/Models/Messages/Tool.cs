@@ -22,7 +22,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     {
         get
         {
-            if (!this._properties.TryGetValue("input_schema", out JsonElement element))
+            if (!this._rawData.TryGetValue("input_schema", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input_schema' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -39,7 +39,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
         }
         init
         {
-            this._properties["input_schema"] = JsonSerializer.SerializeToElement(
+            this._rawData["input_schema"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -55,7 +55,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     {
         get
         {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
+            if (!this._rawData.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new System::ArgumentOutOfRangeException("name", "Missing required argument")
@@ -69,7 +69,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
         }
         init
         {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
+            this._rawData["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -83,7 +83,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -93,7 +93,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -112,7 +112,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     {
         get
         {
-            if (!this._properties.TryGetValue("description", out JsonElement element))
+            if (!this._rawData.TryGetValue("description", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -124,7 +124,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
                 return;
             }
 
-            this._properties["description"] = JsonSerializer.SerializeToElement(
+            this._rawData["description"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -135,7 +135,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<
@@ -145,7 +145,7 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -163,22 +163,22 @@ public sealed record class Tool : ModelBase, IFromRaw<Tool>
 
     public Tool() { }
 
-    public Tool(IReadOnlyDictionary<string, JsonElement> properties)
+    public Tool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Tool(FrozenDictionary<string, JsonElement> properties)
+    Tool(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Tool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static Tool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
@@ -195,7 +195,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -205,18 +205,18 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
         }
     }
 
-    public Dictionary<string, JsonElement>? Properties1
+    public Dictionary<string, JsonElement>? Properties
     {
         get
         {
-            if (!this._properties.TryGetValue("properties", out JsonElement element))
+            if (!this._rawData.TryGetValue("properties", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Dictionary<string, JsonElement>?>(
@@ -226,7 +226,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
         }
         init
         {
-            this._properties["properties"] = JsonSerializer.SerializeToElement(
+            this._rawData["properties"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -237,14 +237,14 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
     {
         get
         {
-            if (!this._properties.TryGetValue("required", out JsonElement element))
+            if (!this._rawData.TryGetValue("required", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["required"] = JsonSerializer.SerializeToElement(
+            this._rawData["required"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -262,7 +262,7 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        _ = this.Properties1;
+        _ = this.Properties;
         _ = this.Required;
     }
 
@@ -271,24 +271,24 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
     }
 
-    public InputSchema(IReadOnlyDictionary<string, JsonElement> properties)
+    public InputSchema(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    InputSchema(FrozenDictionary<string, JsonElement> properties)
+    InputSchema(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

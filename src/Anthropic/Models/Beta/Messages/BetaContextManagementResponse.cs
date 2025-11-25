@@ -21,7 +21,7 @@ public sealed record class BetaContextManagementResponse
     {
         get
         {
-            if (!this._properties.TryGetValue("applied_edits", out JsonElement element))
+            if (!this._rawData.TryGetValue("applied_edits", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'applied_edits' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -41,7 +41,7 @@ public sealed record class BetaContextManagementResponse
         }
         init
         {
-            this._properties["applied_edits"] = JsonSerializer.SerializeToElement(
+            this._rawData["applied_edits"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -58,24 +58,24 @@ public sealed record class BetaContextManagementResponse
 
     public BetaContextManagementResponse() { }
 
-    public BetaContextManagementResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaContextManagementResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContextManagementResponse(FrozenDictionary<string, JsonElement> properties)
+    BetaContextManagementResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaContextManagementResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

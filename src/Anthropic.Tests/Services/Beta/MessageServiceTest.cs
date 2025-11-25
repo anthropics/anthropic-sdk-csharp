@@ -16,7 +16,7 @@ public class MessageServiceTest
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = Messages::Model.Claude3_7SonnetLatest,
+                Model = Messages::Model.ClaudeOpus4_5_20251101,
             }
         );
         betaMessage.Validate();
@@ -31,7 +31,7 @@ public class MessageServiceTest
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = Messages::Model.Claude3_7SonnetLatest,
+                Model = Messages::Model.ClaudeOpus4_5_20251101,
             }
         );
 
@@ -49,7 +49,7 @@ public class MessageServiceTest
             new()
             {
                 Messages = [new() { Content = "string", Role = Role.User }],
-                Model = Messages::Model.Claude3_7SonnetLatest,
+                Model = Messages::Model.ClaudeOpus4_5_20251101,
             }
         );
         betaMessageTokensCount.Validate();

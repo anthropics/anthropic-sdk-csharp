@@ -21,7 +21,7 @@ public sealed record class BetaClearThinking20251015EditResponse
     {
         get
         {
-            if (!this._properties.TryGetValue("cleared_input_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("cleared_input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cleared_input_tokens' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -34,7 +34,7 @@ public sealed record class BetaClearThinking20251015EditResponse
         }
         init
         {
-            this._properties["cleared_input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["cleared_input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -48,7 +48,7 @@ public sealed record class BetaClearThinking20251015EditResponse
     {
         get
         {
-            if (!this._properties.TryGetValue("cleared_thinking_turns", out JsonElement element))
+            if (!this._rawData.TryGetValue("cleared_thinking_turns", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'cleared_thinking_turns' cannot be null",
                     new ArgumentOutOfRangeException(
@@ -61,7 +61,7 @@ public sealed record class BetaClearThinking20251015EditResponse
         }
         init
         {
-            this._properties["cleared_thinking_turns"] = JsonSerializer.SerializeToElement(
+            this._rawData["cleared_thinking_turns"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -75,7 +75,7 @@ public sealed record class BetaClearThinking20251015EditResponse
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -85,7 +85,7 @@ public sealed record class BetaClearThinking20251015EditResponse
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -112,27 +112,25 @@ public sealed record class BetaClearThinking20251015EditResponse
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
     }
 
-    public BetaClearThinking20251015EditResponse(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public BetaClearThinking20251015EditResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaClearThinking20251015EditResponse(FrozenDictionary<string, JsonElement> properties)
+    BetaClearThinking20251015EditResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaClearThinking20251015EditResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

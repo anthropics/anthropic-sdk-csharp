@@ -19,7 +19,7 @@ public sealed record class VersionListPageResponse : ModelBase, IFromRaw<Version
     {
         get
         {
-            if (!this._properties.TryGetValue("data", out JsonElement element))
+            if (!this._rawData.TryGetValue("data", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'data' cannot be null",
                     new ArgumentOutOfRangeException("data", "Missing required argument")
@@ -35,7 +35,7 @@ public sealed record class VersionListPageResponse : ModelBase, IFromRaw<Version
         }
         init
         {
-            this._properties["data"] = JsonSerializer.SerializeToElement(
+            this._rawData["data"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -49,7 +49,7 @@ public sealed record class VersionListPageResponse : ModelBase, IFromRaw<Version
     {
         get
         {
-            if (!this._properties.TryGetValue("has_more", out JsonElement element))
+            if (!this._rawData.TryGetValue("has_more", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'has_more' cannot be null",
                     new ArgumentOutOfRangeException("has_more", "Missing required argument")
@@ -59,7 +59,7 @@ public sealed record class VersionListPageResponse : ModelBase, IFromRaw<Version
         }
         init
         {
-            this._properties["has_more"] = JsonSerializer.SerializeToElement(
+            this._rawData["has_more"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -74,14 +74,14 @@ public sealed record class VersionListPageResponse : ModelBase, IFromRaw<Version
     {
         get
         {
-            if (!this._properties.TryGetValue("next_page", out JsonElement element))
+            if (!this._rawData.TryGetValue("next_page", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["next_page"] = JsonSerializer.SerializeToElement(
+            this._rawData["next_page"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -100,24 +100,24 @@ public sealed record class VersionListPageResponse : ModelBase, IFromRaw<Version
 
     public VersionListPageResponse() { }
 
-    public VersionListPageResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public VersionListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    VersionListPageResponse(FrozenDictionary<string, JsonElement> properties)
+    VersionListPageResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static VersionListPageResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
@@ -135,7 +135,7 @@ public sealed record class Data
     {
         get
         {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
+            if (!this._rawData.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new ArgumentOutOfRangeException("id", "Missing required argument")
@@ -149,7 +149,7 @@ public sealed record class Data
         }
         init
         {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
+            this._rawData["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -163,7 +163,7 @@ public sealed record class Data
     {
         get
         {
-            if (!this._properties.TryGetValue("created_at", out JsonElement element))
+            if (!this._rawData.TryGetValue("created_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'created_at' cannot be null",
                     new ArgumentOutOfRangeException("created_at", "Missing required argument")
@@ -177,7 +177,7 @@ public sealed record class Data
         }
         init
         {
-            this._properties["created_at"] = JsonSerializer.SerializeToElement(
+            this._rawData["created_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -193,7 +193,7 @@ public sealed record class Data
     {
         get
         {
-            if (!this._properties.TryGetValue("description", out JsonElement element))
+            if (!this._rawData.TryGetValue("description", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'description' cannot be null",
                     new ArgumentOutOfRangeException("description", "Missing required argument")
@@ -207,7 +207,7 @@ public sealed record class Data
         }
         init
         {
-            this._properties["description"] = JsonSerializer.SerializeToElement(
+            this._rawData["description"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -223,7 +223,7 @@ public sealed record class Data
     {
         get
         {
-            if (!this._properties.TryGetValue("directory", out JsonElement element))
+            if (!this._rawData.TryGetValue("directory", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'directory' cannot be null",
                     new ArgumentOutOfRangeException("directory", "Missing required argument")
@@ -237,7 +237,7 @@ public sealed record class Data
         }
         init
         {
-            this._properties["directory"] = JsonSerializer.SerializeToElement(
+            this._rawData["directory"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -253,7 +253,7 @@ public sealed record class Data
     {
         get
         {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
+            if (!this._rawData.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new ArgumentOutOfRangeException("name", "Missing required argument")
@@ -267,7 +267,7 @@ public sealed record class Data
         }
         init
         {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
+            this._rawData["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -281,7 +281,7 @@ public sealed record class Data
     {
         get
         {
-            if (!this._properties.TryGetValue("skill_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("skill_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'skill_id' cannot be null",
                     new ArgumentOutOfRangeException("skill_id", "Missing required argument")
@@ -295,7 +295,7 @@ public sealed record class Data
         }
         init
         {
-            this._properties["skill_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["skill_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -311,7 +311,7 @@ public sealed record class Data
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -325,7 +325,7 @@ public sealed record class Data
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -341,7 +341,7 @@ public sealed record class Data
     {
         get
         {
-            if (!this._properties.TryGetValue("version", out JsonElement element))
+            if (!this._rawData.TryGetValue("version", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'version' cannot be null",
                     new ArgumentOutOfRangeException("version", "Missing required argument")
@@ -355,7 +355,7 @@ public sealed record class Data
         }
         init
         {
-            this._properties["version"] = JsonSerializer.SerializeToElement(
+            this._rawData["version"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -376,23 +376,23 @@ public sealed record class Data
 
     public Data() { }
 
-    public Data(IReadOnlyDictionary<string, JsonElement> properties)
+    public Data(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Data(FrozenDictionary<string, JsonElement> properties)
+    Data(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static global::Anthropic.Models.Beta.Skills.Versions.Data FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

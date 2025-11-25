@@ -22,7 +22,7 @@ public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
     {
         get
         {
-            if (!this._properties.TryGetValue("skill_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("skill_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'skill_id' cannot be null",
                     new System::ArgumentOutOfRangeException("skill_id", "Missing required argument")
@@ -36,7 +36,7 @@ public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
         }
         init
         {
-            this._properties["skill_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["skill_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -50,7 +50,7 @@ public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -62,7 +62,7 @@ public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -76,7 +76,7 @@ public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
     {
         get
         {
-            if (!this._properties.TryGetValue("version", out JsonElement element))
+            if (!this._rawData.TryGetValue("version", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'version' cannot be null",
                     new System::ArgumentOutOfRangeException("version", "Missing required argument")
@@ -90,7 +90,7 @@ public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
         }
         init
         {
-            this._properties["version"] = JsonSerializer.SerializeToElement(
+            this._rawData["version"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -106,22 +106,22 @@ public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
 
     public BetaSkill() { }
 
-    public BetaSkill(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaSkill(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaSkill(FrozenDictionary<string, JsonElement> properties)
+    BetaSkill(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

@@ -6,7 +6,7 @@
     <AssemblyTitle>SDK Code Generation Anthropic C#</AssemblyTitle>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Nullable>enable</Nullable>
-    <VersionPrefix>10.1.2</VersionPrefix>
+    <VersionPrefix>10.2.1</VersionPrefix>
     <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <!-- Generate an XML documentation file for the project. -->
@@ -21,30 +21,18 @@
     <NoWarn>$(NoWarn),1570,1573,1574,1591</NoWarn>
     <!-- Disable deprecation warnings since we may reference our own deprecated symbols -->
     <NoWarn>$(NoWarn),0618</NoWarn>
-    <!-- Disable JSON warnings (beta) -->
-    <NoWarn>$(NoWarn),IL2026,IL3050</NoWarn>
     <!-- Disable warnings about netstandard compat -->
-    <NoWarn>$(NoWarn),IDE0028,IDE0057,IDE0130,IDE0305,CA1847,CA1866</NoWarn>
+    <NoWarn>$(NoWarn),IDE0028,IDE0057,CA1847,CA1866</NoWarn>
     <Configurations>Debug;Release</Configurations>
-    <IsTrimmable
-      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))"
-      >true</IsTrimmable
-    >
-    <IsAotCompatible
-      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))"
-      >true</IsAotCompatible
-    >
     <ImplicitUsings>disable</ImplicitUsings>
     <PackageId>Anthropic</PackageId>
     <BuildPackage>true</BuildPackage>
     <Deterministic>true</Deterministic>
-    <Version>10.1.2</Version>
     <Authors>Stainless Software, Inc.</Authors>
     <Company>Stainless Software, Inc.</Company>
     <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>PRE-RELEASE NOT FOR DISTRIBUTION</PackageReleaseNotes>
     <LangVersion>Latest</LangVersion>
     <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -60,6 +48,10 @@
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="9.0.9" />
+    <PackageReference Include="System.Text.Json" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
   </ItemGroup>
 </Project>

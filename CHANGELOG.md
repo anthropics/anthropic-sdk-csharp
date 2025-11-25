@@ -1,5 +1,50 @@
 # Changelog
 
+## 10.3.0 (2025-11-24)
+
+Full Changelog: [v10.2.1...v10.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.2.1...v10.3.0)
+
+### Features
+
+* **api:** adds support for Claude Opus 4.5, Effort, Advance Tool Use Features, Autocompaction, and Computer Use v5 ([144a820](https://github.com/anthropics/anthropic-sdk-csharp/commit/144a8209e522f5bba2174b1efd3d5607a2d7c145))
+
+
+### Bug Fixes
+
+* **internal:** install csharpier during ci lint phase ([8898df9](https://github.com/anthropics/anthropic-sdk-csharp/commit/8898df9bf709867ddf3851bd5f5c0acbd8d90764))
+* **internal:** minor project fixes ([3c344e2](https://github.com/anthropics/anthropic-sdk-csharp/commit/3c344e2db929ed43cc49854c791ea10e5e42489c))
+* **internal:** remove release notes from foundry readme ([afeaa2f](https://github.com/anthropics/anthropic-sdk-csharp/commit/afeaa2f526c3818c244bb351b4dad56a59883395))
+
+
+### Chores
+
+* **client:** change name of underlying properties for models and params ([75a2cce](https://github.com/anthropics/anthropic-sdk-csharp/commit/75a2ccecefaf3fff5a07138a3c38ff0b9b9df476))
+* formatting ([6850900](https://github.com/anthropics/anthropic-sdk-csharp/commit/6850900ae2b8f5da55381988af5d4cb5b2ee4351))
+* **internal:** update release please config ([980d7fd](https://github.com/anthropics/anthropic-sdk-csharp/commit/980d7fd21375f9125c0bd0f58a378a081bfa11bb))
+
+## 10.2.1 (2025-11-20)
+
+Full Changelog: [v10.2.0...v10.2.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.2.0...v10.2.1)
+
+## 10.2.0 (2025-11-20)
+
+Full Changelog: [v10.1.2...v10.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.1.2...v10.2.0)
+
+### Features
+
+* **client:** additional methods for positional params ([8bc6323](https://github.com/anthropics/anthropic-sdk-csharp/commit/8bc6323c38ce551f995bec5e4b1584460b7f037b))
+
+
+### Bug Fixes
+
+* **client:** return correct type for foundry#WithOptions ([#18](https://github.com/anthropics/anthropic-sdk-csharp/issues/18)) ([f814a46](https://github.com/anthropics/anthropic-sdk-csharp/commit/f814a460503abf7fdf7a824b5bf446ef74d60f28))
+* use correct versions ([c78c8db](https://github.com/anthropics/anthropic-sdk-csharp/commit/c78c8db4b6effa6b1438bb879bcafdad2d155808))
+
+
+### Refactors
+
+* **client:** make unknown variants implicit ([eb0e5b6](https://github.com/anthropics/anthropic-sdk-csharp/commit/eb0e5b628d7090adc34300775043ecd26ccfffaf))
+
 ## 10.1.2 (2025-11-18)
 
 Full Changelog: [v10.1.1...v10.1.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.1.1...v10.1.2)

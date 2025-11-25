@@ -20,7 +20,7 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
     {
         get
         {
-            if (!this._properties.TryGetValue("input_tokens", out JsonElement element))
+            if (!this._rawData.TryGetValue("input_tokens", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input_tokens' cannot be null",
                     new ArgumentOutOfRangeException("input_tokens", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
         }
         init
         {
-            this._properties["input_tokens"] = JsonSerializer.SerializeToElement(
+            this._rawData["input_tokens"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,24 +44,24 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
 
     public MessageTokensCount() { }
 
-    public MessageTokensCount(IReadOnlyDictionary<string, JsonElement> properties)
+    public MessageTokensCount(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageTokensCount(FrozenDictionary<string, JsonElement> properties)
+    MessageTokensCount(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static MessageTokensCount FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

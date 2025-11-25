@@ -23,7 +23,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
     {
         get
         {
-            if (!this._properties.TryGetValue("citations", out JsonElement element))
+            if (!this._rawData.TryGetValue("citations", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<BetaTextCitation>?>(
@@ -33,7 +33,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
         }
         init
         {
-            this._properties["citations"] = JsonSerializer.SerializeToElement(
+            this._rawData["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,7 +44,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
     {
         get
         {
-            if (!this._properties.TryGetValue("text", out JsonElement element))
+            if (!this._rawData.TryGetValue("text", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'text' cannot be null",
                     new ArgumentOutOfRangeException("text", "Missing required argument")
@@ -58,7 +58,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
         }
         init
         {
-            this._properties["text"] = JsonSerializer.SerializeToElement(
+            this._rawData["text"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,7 +69,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -79,7 +79,7 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -104,25 +104,23 @@ public sealed record class BetaTextBlock : ModelBase, IFromRaw<BetaTextBlock>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
-    public BetaTextBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaTextBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaTextBlock(FrozenDictionary<string, JsonElement> properties)
+    BetaTextBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaTextBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public static BetaTextBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

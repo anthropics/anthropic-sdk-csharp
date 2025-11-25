@@ -71,7 +71,7 @@ public class BatchServiceTest
                                 {
                                     InputSchema = new()
                                     {
-                                        Properties1 = new Dictionary<string, JsonElement>()
+                                        Properties = new Dictionary<string, JsonElement>()
                                         {
                                             {
                                                 "location",

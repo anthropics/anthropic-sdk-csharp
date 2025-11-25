@@ -18,7 +18,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new ArgumentOutOfRangeException("content", "Missing required argument")
@@ -35,7 +35,7 @@ public sealed record class BetaSearchResultBlockParam
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -46,7 +46,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("source", out JsonElement element))
+            if (!this._rawData.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new ArgumentOutOfRangeException("source", "Missing required argument")
@@ -60,7 +60,7 @@ public sealed record class BetaSearchResultBlockParam
         }
         init
         {
-            this._properties["source"] = JsonSerializer.SerializeToElement(
+            this._rawData["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -71,7 +71,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("title", out JsonElement element))
+            if (!this._rawData.TryGetValue("title", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'title' cannot be null",
                     new ArgumentOutOfRangeException("title", "Missing required argument")
@@ -85,7 +85,7 @@ public sealed record class BetaSearchResultBlockParam
         }
         init
         {
-            this._properties["title"] = JsonSerializer.SerializeToElement(
+            this._rawData["title"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -96,7 +96,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -106,7 +106,7 @@ public sealed record class BetaSearchResultBlockParam
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -120,7 +120,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
@@ -130,7 +130,7 @@ public sealed record class BetaSearchResultBlockParam
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -141,7 +141,7 @@ public sealed record class BetaSearchResultBlockParam
     {
         get
         {
-            if (!this._properties.TryGetValue("citations", out JsonElement element))
+            if (!this._rawData.TryGetValue("citations", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
@@ -156,7 +156,7 @@ public sealed record class BetaSearchResultBlockParam
                 return;
             }
 
-            this._properties["citations"] = JsonSerializer.SerializeToElement(
+            this._rawData["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -189,25 +189,25 @@ public sealed record class BetaSearchResultBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
     }
 
-    public BetaSearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaSearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaSearchResultBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaSearchResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaSearchResultBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

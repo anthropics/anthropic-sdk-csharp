@@ -19,7 +19,7 @@ public sealed class MessageService : IMessageService
         return new MessageService(this._client.WithOptions(modifier));
     }
 
-    readonly IAnthropicClient _client;
+    internal readonly IAnthropicClient _client;
 
     public MessageService(IAnthropicClient client)
     {
@@ -66,18 +66,18 @@ public sealed class MessageService : IMessageService
     )
     {
 #if NET5_0_OR_GREATER
-        Dictionary<string, JsonElement> bodyProperties = new(parameters.BodyProperties)
+        Dictionary<string, JsonElement> rawBodyData = new(parameters.RawBodyData)
         {
             ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
         };
 #else
-        var bodyProperties = parameters.BodyProperties.ToDictionary(e => e.Key, e => e.Value);
-        bodyProperties["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
+        var rawBodyData = parameters.RawBodyData.ToDictionary(e => e.Key, e => e.Value);
+        rawBodyData["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
 #endif
         parameters = MessageCreateParams.FromRawUnchecked(
-            parameters.HeaderProperties,
-            parameters.QueryProperties,
-            bodyProperties
+            parameters.RawHeaderData,
+            parameters.RawQueryData,
+            rawBodyData
         );
 
         HttpRequest<MessageCreateParams> request = new()

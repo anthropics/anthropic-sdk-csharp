@@ -21,7 +21,7 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
     {
         get
         {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
+            if (!this._rawData.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new ArgumentOutOfRangeException("name", "Missing required argument")
@@ -31,7 +31,7 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
         }
         init
         {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
+            this._rawData["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,7 +42,7 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -52,7 +52,7 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -66,7 +66,7 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -76,7 +76,7 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -107,9 +107,9 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
     }
 
-    public ToolBash20250124(IReadOnlyDictionary<string, JsonElement> properties)
+    public ToolBash20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
@@ -117,16 +117,16 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ToolBash20250124(FrozenDictionary<string, JsonElement> properties)
+    ToolBash20250124(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static ToolBash20250124 FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

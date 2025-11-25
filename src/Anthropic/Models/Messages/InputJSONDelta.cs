@@ -16,7 +16,7 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
     {
         get
         {
-            if (!this._properties.TryGetValue("partial_json", out JsonElement element))
+            if (!this._rawData.TryGetValue("partial_json", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'partial_json' cannot be null",
                     new ArgumentOutOfRangeException("partial_json", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
         }
         init
         {
-            this._properties["partial_json"] = JsonSerializer.SerializeToElement(
+            this._rawData["partial_json"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -77,26 +77,24 @@ public sealed record class InputJSONDelta : ModelBase, IFromRaw<InputJSONDelta>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
     }
 
-    public InputJSONDelta(IReadOnlyDictionary<string, JsonElement> properties)
+    public InputJSONDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    InputJSONDelta(FrozenDictionary<string, JsonElement> properties)
+    InputJSONDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static InputJSONDelta FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    public static InputJSONDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

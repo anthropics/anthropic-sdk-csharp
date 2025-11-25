@@ -28,7 +28,7 @@ public sealed record class MessageBatchIndividualResponse
     {
         get
         {
-            if (!this._properties.TryGetValue("custom_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("custom_id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'custom_id' cannot be null",
                     new ArgumentOutOfRangeException("custom_id", "Missing required argument")
@@ -42,7 +42,7 @@ public sealed record class MessageBatchIndividualResponse
         }
         init
         {
-            this._properties["custom_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["custom_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -60,7 +60,7 @@ public sealed record class MessageBatchIndividualResponse
     {
         get
         {
-            if (!this._properties.TryGetValue("result", out JsonElement element))
+            if (!this._rawData.TryGetValue("result", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'result' cannot be null",
                     new ArgumentOutOfRangeException("result", "Missing required argument")
@@ -77,7 +77,7 @@ public sealed record class MessageBatchIndividualResponse
         }
         init
         {
-            this._properties["result"] = JsonSerializer.SerializeToElement(
+            this._rawData["result"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -92,23 +92,23 @@ public sealed record class MessageBatchIndividualResponse
 
     public MessageBatchIndividualResponse() { }
 
-    public MessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public MessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageBatchIndividualResponse(FrozenDictionary<string, JsonElement> properties)
+    MessageBatchIndividualResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static MessageBatchIndividualResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

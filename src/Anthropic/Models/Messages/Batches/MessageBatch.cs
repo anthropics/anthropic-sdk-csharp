@@ -21,7 +21,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
+            if (!this._rawData.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new System::ArgumentOutOfRangeException("id", "Missing required argument")
@@ -35,7 +35,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
+            this._rawData["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -50,7 +50,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("archived_at", out JsonElement element))
+            if (!this._rawData.TryGetValue("archived_at", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<System::DateTimeOffset?>(
@@ -60,7 +60,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["archived_at"] = JsonSerializer.SerializeToElement(
+            this._rawData["archived_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -75,7 +75,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("cancel_initiated_at", out JsonElement element))
+            if (!this._rawData.TryGetValue("cancel_initiated_at", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<System::DateTimeOffset?>(
@@ -85,7 +85,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["cancel_initiated_at"] = JsonSerializer.SerializeToElement(
+            this._rawData["cancel_initiated_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -100,7 +100,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("created_at", out JsonElement element))
+            if (!this._rawData.TryGetValue("created_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'created_at' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -116,7 +116,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["created_at"] = JsonSerializer.SerializeToElement(
+            this._rawData["created_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -134,7 +134,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("ended_at", out JsonElement element))
+            if (!this._rawData.TryGetValue("ended_at", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<System::DateTimeOffset?>(
@@ -144,7 +144,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["ended_at"] = JsonSerializer.SerializeToElement(
+            this._rawData["ended_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -159,7 +159,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("expires_at", out JsonElement element))
+            if (!this._rawData.TryGetValue("expires_at", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'expires_at' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -175,7 +175,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["expires_at"] = JsonSerializer.SerializeToElement(
+            this._rawData["expires_at"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -189,7 +189,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("processing_status", out JsonElement element))
+            if (!this._rawData.TryGetValue("processing_status", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'processing_status' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -205,7 +205,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["processing_status"] = JsonSerializer.SerializeToElement(
+            this._rawData["processing_status"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -223,7 +223,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("request_counts", out JsonElement element))
+            if (!this._rawData.TryGetValue("request_counts", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'request_counts' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -243,7 +243,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["request_counts"] = JsonSerializer.SerializeToElement(
+            this._rawData["request_counts"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -261,14 +261,14 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("results_url", out JsonElement element))
+            if (!this._rawData.TryGetValue("results_url", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["results_url"] = JsonSerializer.SerializeToElement(
+            this._rawData["results_url"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -284,7 +284,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -294,7 +294,7 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -328,24 +328,24 @@ public sealed record class MessageBatch : ModelBase, IFromRaw<MessageBatch>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
     }
 
-    public MessageBatch(IReadOnlyDictionary<string, JsonElement> properties)
+    public MessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageBatch(FrozenDictionary<string, JsonElement> properties)
+    MessageBatch(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static MessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static MessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

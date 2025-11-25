@@ -16,7 +16,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
     {
         get
         {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
+            if (!this._rawData.TryGetValue("id", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'id' cannot be null",
                     new ArgumentOutOfRangeException("id", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
         }
         init
         {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
+            this._rawData["id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
     {
         get
         {
-            if (!this._properties.TryGetValue("input", out JsonElement element))
+            if (!this._rawData.TryGetValue("input", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'input' cannot be null",
                     new ArgumentOutOfRangeException("input", "Missing required argument")
@@ -58,7 +58,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
         }
         init
         {
-            this._properties["input"] = JsonSerializer.SerializeToElement(
+            this._rawData["input"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -69,7 +69,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
     {
         get
         {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
+            if (!this._rawData.TryGetValue("name", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'name' cannot be null",
                     new ArgumentOutOfRangeException("name", "Missing required argument")
@@ -79,7 +79,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
         }
         init
         {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
+            this._rawData["name"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -90,7 +90,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -100,7 +100,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -114,7 +114,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -124,7 +124,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -162,9 +162,9 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
     }
 
-    public ServerToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public ServerToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
@@ -172,16 +172,16 @@ public sealed record class ServerToolUseBlockParam : ModelBase, IFromRaw<ServerT
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ServerToolUseBlockParam(FrozenDictionary<string, JsonElement> properties)
+    ServerToolUseBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static ServerToolUseBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

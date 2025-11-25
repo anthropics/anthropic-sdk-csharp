@@ -16,7 +16,7 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
     {
         get
         {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
+            if (!this._rawData.TryGetValue("message", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'message' cannot be null",
                     new ArgumentOutOfRangeException("message", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
         }
         init
         {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
+            this._rawData["message"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -77,24 +77,24 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
     }
 
-    public BetaAPIError(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaAPIError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaAPIError(FrozenDictionary<string, JsonElement> properties)
+    BetaAPIError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaAPIError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static BetaAPIError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

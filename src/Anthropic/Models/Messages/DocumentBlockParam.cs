@@ -16,7 +16,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("source", out JsonElement element))
+            if (!this._rawData.TryGetValue("source", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'source' cannot be null",
                     new System::ArgumentOutOfRangeException("source", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
         }
         init
         {
-            this._properties["source"] = JsonSerializer.SerializeToElement(
+            this._rawData["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -65,7 +65,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
+            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CacheControlEphemeral?>(
@@ -75,7 +75,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
         }
         init
         {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
+            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -86,7 +86,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("citations", out JsonElement element))
+            if (!this._rawData.TryGetValue("citations", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<CitationsConfigParam?>(
@@ -96,7 +96,7 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
         }
         init
         {
-            this._properties["citations"] = JsonSerializer.SerializeToElement(
+            this._rawData["citations"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -107,14 +107,14 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("context", out JsonElement element))
+            if (!this._rawData.TryGetValue("context", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["context"] = JsonSerializer.SerializeToElement(
+            this._rawData["context"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -125,14 +125,14 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
     {
         get
         {
-            if (!this._properties.TryGetValue("title", out JsonElement element))
+            if (!this._rawData.TryGetValue("title", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["title"] = JsonSerializer.SerializeToElement(
+            this._rawData["title"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -162,26 +162,26 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
 
-    public DocumentBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public DocumentBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    DocumentBlockParam(FrozenDictionary<string, JsonElement> properties)
+    DocumentBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static DocumentBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

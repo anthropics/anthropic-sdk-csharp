@@ -21,7 +21,7 @@ public sealed record class BetaContextManagementConfig
     {
         get
         {
-            if (!this._properties.TryGetValue("edits", out JsonElement element))
+            if (!this._rawData.TryGetValue("edits", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<Edit>?>(element, ModelBase.SerializerOptions);
@@ -33,7 +33,7 @@ public sealed record class BetaContextManagementConfig
                 return;
             }
 
-            this._properties["edits"] = JsonSerializer.SerializeToElement(
+            this._rawData["edits"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -50,24 +50,24 @@ public sealed record class BetaContextManagementConfig
 
     public BetaContextManagementConfig() { }
 
-    public BetaContextManagementConfig(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaContextManagementConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContextManagementConfig(FrozenDictionary<string, JsonElement> properties)
+    BetaContextManagementConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaContextManagementConfig FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

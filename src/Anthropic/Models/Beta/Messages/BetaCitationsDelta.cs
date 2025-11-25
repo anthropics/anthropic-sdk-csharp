@@ -16,7 +16,7 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
     {
         get
         {
-            if (!this._properties.TryGetValue("citation", out JsonElement element))
+            if (!this._rawData.TryGetValue("citation", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'citation' cannot be null",
                     new System::ArgumentOutOfRangeException("citation", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
         }
         init
         {
-            this._properties["citation"] = JsonSerializer.SerializeToElement(
+            this._rawData["citation"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -77,26 +77,26 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
     }
 
-    public BetaCitationsDelta(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaCitationsDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCitationsDelta(FrozenDictionary<string, JsonElement> properties)
+    BetaCitationsDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaCitationsDelta FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

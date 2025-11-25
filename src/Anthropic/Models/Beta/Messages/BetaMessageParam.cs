@@ -17,7 +17,7 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'content' cannot be null",
                     new System::ArgumentOutOfRangeException("content", "Missing required argument")
@@ -34,7 +34,7 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
         }
         init
         {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -45,7 +45,7 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
     {
         get
         {
-            if (!this._properties.TryGetValue("role", out JsonElement element))
+            if (!this._rawData.TryGetValue("role", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'role' cannot be null",
                     new System::ArgumentOutOfRangeException("role", "Missing required argument")
@@ -58,7 +58,7 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
         }
         init
         {
-            this._properties["role"] = JsonSerializer.SerializeToElement(
+            this._rawData["role"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -73,24 +73,24 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
 
     public BetaMessageParam() { }
 
-    public BetaMessageParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageParam(FrozenDictionary<string, JsonElement> properties)
+    BetaMessageParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaMessageParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

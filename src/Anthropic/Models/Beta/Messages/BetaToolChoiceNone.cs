@@ -19,7 +19,7 @@ public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoi
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -29,7 +29,7 @@ public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoi
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -49,25 +49,25 @@ public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoi
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"none\"");
     }
 
-    public BetaToolChoiceNone(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaToolChoiceNone(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"none\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaToolChoiceNone(FrozenDictionary<string, JsonElement> properties)
+    BetaToolChoiceNone(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaToolChoiceNone FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

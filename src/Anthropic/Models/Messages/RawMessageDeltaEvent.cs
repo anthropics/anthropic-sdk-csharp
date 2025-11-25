@@ -16,7 +16,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
     {
         get
         {
-            if (!this._properties.TryGetValue("delta", out JsonElement element))
+            if (!this._rawData.TryGetValue("delta", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'delta' cannot be null",
                     new ArgumentOutOfRangeException("delta", "Missing required argument")
@@ -30,7 +30,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
         }
         init
         {
-            this._properties["delta"] = JsonSerializer.SerializeToElement(
+            this._rawData["delta"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,7 +41,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -51,7 +51,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -79,7 +79,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
     {
         get
         {
-            if (!this._properties.TryGetValue("usage", out JsonElement element))
+            if (!this._rawData.TryGetValue("usage", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'usage' cannot be null",
                     new ArgumentOutOfRangeException("usage", "Missing required argument")
@@ -96,7 +96,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
         }
         init
         {
-            this._properties["usage"] = JsonSerializer.SerializeToElement(
+            this._rawData["usage"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -123,26 +123,26 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
     }
 
-    public RawMessageDeltaEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    public RawMessageDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    RawMessageDeltaEvent(FrozenDictionary<string, JsonElement> properties)
+    RawMessageDeltaEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static RawMessageDeltaEvent FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
@@ -153,7 +153,7 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
     {
         get
         {
-            if (!this._properties.TryGetValue("stop_reason", out JsonElement element))
+            if (!this._rawData.TryGetValue("stop_reason", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, StopReason>?>(
@@ -163,7 +163,7 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
         }
         init
         {
-            this._properties["stop_reason"] = JsonSerializer.SerializeToElement(
+            this._rawData["stop_reason"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -174,14 +174,14 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
     {
         get
         {
-            if (!this._properties.TryGetValue("stop_sequence", out JsonElement element))
+            if (!this._rawData.TryGetValue("stop_sequence", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
         init
         {
-            this._properties["stop_sequence"] = JsonSerializer.SerializeToElement(
+            this._rawData["stop_sequence"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -196,21 +196,21 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
 
     public Delta() { }
 
-    public Delta(IReadOnlyDictionary<string, JsonElement> properties)
+    public Delta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Delta(FrozenDictionary<string, JsonElement> properties)
+    Delta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

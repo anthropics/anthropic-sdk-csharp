@@ -18,7 +18,7 @@ public sealed record class BetaWebSearchToolResultError
     {
         get
         {
-            if (!this._properties.TryGetValue("error_code", out JsonElement element))
+            if (!this._rawData.TryGetValue("error_code", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'error_code' cannot be null",
                     new ArgumentOutOfRangeException("error_code", "Missing required argument")
@@ -31,7 +31,7 @@ public sealed record class BetaWebSearchToolResultError
         }
         init
         {
-            this._properties["error_code"] = JsonSerializer.SerializeToElement(
+            this._rawData["error_code"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,7 +42,7 @@ public sealed record class BetaWebSearchToolResultError
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new ArgumentOutOfRangeException("type", "Missing required argument")
@@ -52,7 +52,7 @@ public sealed record class BetaWebSearchToolResultError
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -78,26 +78,26 @@ public sealed record class BetaWebSearchToolResultError
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
-    public BetaWebSearchToolResultError(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaWebSearchToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaWebSearchToolResultError(FrozenDictionary<string, JsonElement> properties)
+    BetaWebSearchToolResultError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaWebSearchToolResultError FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]

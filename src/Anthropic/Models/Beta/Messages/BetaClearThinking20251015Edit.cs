@@ -18,7 +18,7 @@ public sealed record class BetaClearThinking20251015Edit
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 throw new AnthropicInvalidDataException(
                     "'type' cannot be null",
                     new System::ArgumentOutOfRangeException("type", "Missing required argument")
@@ -28,7 +28,7 @@ public sealed record class BetaClearThinking20251015Edit
         }
         init
         {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -43,7 +43,7 @@ public sealed record class BetaClearThinking20251015Edit
     {
         get
         {
-            if (!this._properties.TryGetValue("keep", out JsonElement element))
+            if (!this._rawData.TryGetValue("keep", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Keep?>(element, ModelBase.SerializerOptions);
@@ -55,7 +55,7 @@ public sealed record class BetaClearThinking20251015Edit
                 return;
             }
 
-            this._properties["keep"] = JsonSerializer.SerializeToElement(
+            this._rawData["keep"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -81,26 +81,26 @@ public sealed record class BetaClearThinking20251015Edit
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
     }
 
-    public BetaClearThinking20251015Edit(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaClearThinking20251015Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaClearThinking20251015Edit(FrozenDictionary<string, JsonElement> properties)
+    BetaClearThinking20251015Edit(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static BetaClearThinking20251015Edit FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
