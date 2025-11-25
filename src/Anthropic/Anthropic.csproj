@@ -12,6 +12,7 @@
     <!-- Generate an XML documentation file for the project. -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo.png</PackageIcon>
     <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <!-- Embed source files that are not tracked by the source control manager in the PDB -->
@@ -34,17 +35,15 @@
     <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <LangVersion>Latest</LangVersion>
-    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\logo.png" Pack="true" PackagePath="\" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
