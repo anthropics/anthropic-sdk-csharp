@@ -51,7 +51,7 @@ internal static class ModelConverterConstructionShim
             .Where(t => typeof(ModelBase).IsAssignableFrom(t))
             .ToList()
             .ForEach(t =>
-            {                
+            {
                 var converterMethod = t.GetMethod(
                     FromRawUncheckedMethodName,
                     BindingFlags.Static | BindingFlags.Public
