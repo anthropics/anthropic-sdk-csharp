@@ -12,6 +12,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2025 Anthropic</Copyright>
     <PackageProjectUrl>https://docs.anthropic.com/claude/reference/</PackageProjectUrl>
+    <Nullable>enable</Nullable>
+    <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <OutputType>Library</OutputType>
@@ -43,11 +46,13 @@
   <ItemGroup>
     <None Include="..\logo.png" Pack="true" PackagePath="\"/>
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-    <PackageReference Include="System.Text.Json" Version="10.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Collections.Immutable" Version="8.0.0"/>
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
   </ItemGroup>
 </Project>
