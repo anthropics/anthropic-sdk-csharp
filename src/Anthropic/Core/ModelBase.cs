@@ -152,5 +152,5 @@ interface IFromRaw<T>
     /// abstract static methods because .NET Standard 2.0 doesn't support abstract
     /// static methods.
     /// </summary>
-    abstract T FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData);
+    T FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData);
 }
