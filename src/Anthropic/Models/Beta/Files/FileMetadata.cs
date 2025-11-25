@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<FileMetadata>))]
-public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
+[JsonConverter(typeof(ModelConverter<FileMetadata, FileMetadataFromRaw>))]
+public sealed record class FileMetadata : ModelBase
 {
     /// <summary>
     /// Unique object identifier.
@@ -236,4 +236,10 @@ public sealed record class FileMetadata : ModelBase, IFromRaw<FileMetadata>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class FileMetadataFromRaw : IFromRaw<FileMetadata>
+{
+    public FileMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        FileMetadata.FromRawUnchecked(rawData);
 }

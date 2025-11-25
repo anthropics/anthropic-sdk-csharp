@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsConfigParam>))]
-public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsConfigParam>
+[JsonConverter(typeof(ModelConverter<CitationsConfigParam, CitationsConfigParamFromRaw>))]
+public sealed record class CitationsConfigParam : ModelBase
 {
     public bool? Enabled
     {
@@ -59,4 +59,11 @@ public sealed record class CitationsConfigParam : ModelBase, IFromRaw<CitationsC
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class CitationsConfigParamFromRaw : IFromRaw<CitationsConfigParam>
+{
+    public CitationsConfigParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => CitationsConfigParam.FromRawUnchecked(rawData);
 }

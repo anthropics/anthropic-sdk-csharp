@@ -9,10 +9,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsSearchResultLocation>))]
-public sealed record class CitationsSearchResultLocation
-    : ModelBase,
-        IFromRaw<CitationsSearchResultLocation>
+[JsonConverter(
+    typeof(ModelConverter<CitationsSearchResultLocation, CitationsSearchResultLocationFromRaw>)
+)]
+public sealed record class CitationsSearchResultLocation : ModelBase
 {
     public required string CitedText
     {
@@ -217,4 +217,11 @@ public sealed record class CitationsSearchResultLocation
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class CitationsSearchResultLocationFromRaw : IFromRaw<CitationsSearchResultLocation>
+{
+    public CitationsSearchResultLocation FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => CitationsSearchResultLocation.FromRawUnchecked(rawData);
 }

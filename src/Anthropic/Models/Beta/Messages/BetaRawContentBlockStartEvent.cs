@@ -9,10 +9,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawContentBlockStartEvent>))]
-public sealed record class BetaRawContentBlockStartEvent
-    : ModelBase,
-        IFromRaw<BetaRawContentBlockStartEvent>
+[JsonConverter(
+    typeof(ModelConverter<BetaRawContentBlockStartEvent, BetaRawContentBlockStartEventFromRaw>)
+)]
+public sealed record class BetaRawContentBlockStartEvent : ModelBase
 {
     /// <summary>
     /// Response model for a file uploaded to the container.
@@ -128,6 +128,13 @@ public sealed record class BetaRawContentBlockStartEvent
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaRawContentBlockStartEventFromRaw : IFromRaw<BetaRawContentBlockStartEvent>
+{
+    public BetaRawContentBlockStartEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRawContentBlockStartEvent.FromRawUnchecked(rawData);
 }
 
 /// <summary>

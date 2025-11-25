@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CacheCreation>))]
-public sealed record class CacheCreation : ModelBase, IFromRaw<CacheCreation>
+[JsonConverter(typeof(ModelConverter<CacheCreation, CacheCreationFromRaw>))]
+public sealed record class CacheCreation : ModelBase
 {
     /// <summary>
     /// The number of input tokens used to create the 1 hour cache entry.
@@ -91,4 +91,10 @@ public sealed record class CacheCreation : ModelBase, IFromRaw<CacheCreation>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class CacheCreationFromRaw : IFromRaw<CacheCreation>
+{
+    public CacheCreation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        CacheCreation.FromRawUnchecked(rawData);
 }

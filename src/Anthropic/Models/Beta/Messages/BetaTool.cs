@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTool>))]
-public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
+[JsonConverter(typeof(ModelConverter<BetaTool, BetaToolFromRaw>))]
+public sealed record class BetaTool : ModelBase
 {
     /// <summary>
     /// [JSON schema](https://json-schema.org/draft/2020-12) for this tool's input.
@@ -291,14 +291,20 @@ public sealed record class BetaTool : ModelBase, IFromRaw<BetaTool>
     }
 }
 
+class BetaToolFromRaw : IFromRaw<BetaTool>
+{
+    public BetaTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaTool.FromRawUnchecked(rawData);
+}
+
 /// <summary>
 /// [JSON schema](https://json-schema.org/draft/2020-12) for this tool's input.
 ///
 /// <para>This defines the shape of the `input` that your tool accepts and that the
 /// model will produce.</para>
 /// </summary>
-[JsonConverter(typeof(ModelConverter<InputSchema>))]
-public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
+[JsonConverter(typeof(ModelConverter<InputSchema, InputSchemaFromRaw>))]
+public sealed record class InputSchema : ModelBase
 {
     public JsonElement Type
     {
@@ -399,6 +405,12 @@ public sealed record class InputSchema : ModelBase, IFromRaw<InputSchema>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class InputSchemaFromRaw : IFromRaw<InputSchema>
+{
+    public InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        InputSchema.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(AllowedCaller2Converter))]

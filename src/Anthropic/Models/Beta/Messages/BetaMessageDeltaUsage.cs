@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageDeltaUsage>))]
-public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessageDeltaUsage>
+[JsonConverter(typeof(ModelConverter<BetaMessageDeltaUsage, BetaMessageDeltaUsageFromRaw>))]
+public sealed record class BetaMessageDeltaUsage : ModelBase
 {
     /// <summary>
     /// The cumulative number of input tokens used to create the cache entry.
@@ -153,4 +153,11 @@ public sealed record class BetaMessageDeltaUsage : ModelBase, IFromRaw<BetaMessa
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageDeltaUsageFromRaw : IFromRaw<BetaMessageDeltaUsage>
+{
+    public BetaMessageDeltaUsage FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMessageDeltaUsage.FromRawUnchecked(rawData);
 }

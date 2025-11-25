@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationsConfigParam>))]
-public sealed record class BetaCitationsConfigParam : ModelBase, IFromRaw<BetaCitationsConfigParam>
+[JsonConverter(typeof(ModelConverter<BetaCitationsConfigParam, BetaCitationsConfigParamFromRaw>))]
+public sealed record class BetaCitationsConfigParam : ModelBase
 {
     public bool? Enabled
     {
@@ -59,4 +59,11 @@ public sealed record class BetaCitationsConfigParam : ModelBase, IFromRaw<BetaCi
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaCitationsConfigParamFromRaw : IFromRaw<BetaCitationsConfigParam>
+{
+    public BetaCitationsConfigParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCitationsConfigParam.FromRawUnchecked(rawData);
 }

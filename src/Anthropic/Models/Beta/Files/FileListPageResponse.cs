@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<FileListPageResponse>))]
-public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPageResponse>
+[JsonConverter(typeof(ModelConverter<FileListPageResponse, FileListPageResponseFromRaw>))]
+public sealed record class FileListPageResponse : ModelBase
 {
     /// <summary>
     /// List of file metadata objects.
@@ -150,4 +150,11 @@ public sealed record class FileListPageResponse : ModelBase, IFromRaw<FileListPa
     {
         this.Data = data;
     }
+}
+
+class FileListPageResponseFromRaw : IFromRaw<FileListPageResponse>
+{
+    public FileListPageResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => FileListPageResponse.FromRawUnchecked(rawData);
 }

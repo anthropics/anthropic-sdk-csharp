@@ -9,10 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebSearchTool20250305>))]
-public sealed record class BetaWebSearchTool20250305
-    : ModelBase,
-        IFromRaw<BetaWebSearchTool20250305>
+[JsonConverter(typeof(ModelConverter<BetaWebSearchTool20250305, BetaWebSearchTool20250305FromRaw>))]
+public sealed record class BetaWebSearchTool20250305 : ModelBase
 {
     /// <summary>
     /// Name of the tool.
@@ -309,6 +307,13 @@ public sealed record class BetaWebSearchTool20250305
     }
 }
 
+class BetaWebSearchTool20250305FromRaw : IFromRaw<BetaWebSearchTool20250305>
+{
+    public BetaWebSearchTool20250305 FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaWebSearchTool20250305.FromRawUnchecked(rawData);
+}
+
 [JsonConverter(typeof(AllowedCaller15Converter))]
 public enum AllowedCaller15
 {
@@ -356,8 +361,8 @@ sealed class AllowedCaller15Converter : JsonConverter<AllowedCaller15>
 /// <summary>
 /// Parameters for the user's location. Used to provide more relevant search results.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<UserLocation>))]
-public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
+[JsonConverter(typeof(ModelConverter<UserLocation, UserLocationFromRaw>))]
+public sealed record class UserLocation : ModelBase
 {
     public JsonElement Type
     {
@@ -506,4 +511,10 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class UserLocationFromRaw : IFromRaw<UserLocation>
+{
+    public UserLocation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        UserLocation.FromRawUnchecked(rawData);
 }

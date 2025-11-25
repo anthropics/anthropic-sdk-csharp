@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ToolBash20250124>))]
-public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash20250124>
+[JsonConverter(typeof(ModelConverter<ToolBash20250124, ToolBash20250124FromRaw>))]
+public sealed record class ToolBash20250124 : ModelBase
 {
     /// <summary>
     /// Name of the tool.
@@ -129,4 +129,10 @@ public sealed record class ToolBash20250124 : ModelBase, IFromRaw<ToolBash202501
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ToolBash20250124FromRaw : IFromRaw<ToolBash20250124>
+{
+    public ToolBash20250124 FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ToolBash20250124.FromRawUnchecked(rawData);
 }

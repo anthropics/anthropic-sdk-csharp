@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Models;
 
-[JsonConverter(typeof(ModelConverter<ModelListPageResponse>))]
-public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelListPageResponse>
+[JsonConverter(typeof(ModelConverter<ModelListPageResponse, ModelListPageResponseFromRaw>))]
+public sealed record class ModelListPageResponse : ModelBase
 {
     public required List<ModelInfo> Data
     {
@@ -135,4 +135,11 @@ public sealed record class ModelListPageResponse : ModelBase, IFromRaw<ModelList
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ModelListPageResponseFromRaw : IFromRaw<ModelListPageResponse>
+{
+    public ModelListPageResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ModelListPageResponse.FromRawUnchecked(rawData);
 }

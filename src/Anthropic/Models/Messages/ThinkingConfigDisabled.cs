@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingConfigDisabled>))]
-public sealed record class ThinkingConfigDisabled : ModelBase, IFromRaw<ThinkingConfigDisabled>
+[JsonConverter(typeof(ModelConverter<ThinkingConfigDisabled, ThinkingConfigDisabledFromRaw>))]
+public sealed record class ThinkingConfigDisabled : ModelBase
 {
     public JsonElement Type
     {
@@ -72,4 +72,11 @@ public sealed record class ThinkingConfigDisabled : ModelBase, IFromRaw<Thinking
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ThinkingConfigDisabledFromRaw : IFromRaw<ThinkingConfigDisabled>
+{
+    public ThinkingConfigDisabled FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ThinkingConfigDisabled.FromRawUnchecked(rawData);
 }

@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Metadata>))]
-public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
+[JsonConverter(typeof(ModelConverter<Metadata, MetadataFromRaw>))]
+public sealed record class Metadata : ModelBase
 {
     /// <summary>
     /// An external identifier for the user who is associated with the request.
@@ -59,4 +59,10 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MetadataFromRaw : IFromRaw<Metadata>
+{
+    public Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Metadata.FromRawUnchecked(rawData);
 }

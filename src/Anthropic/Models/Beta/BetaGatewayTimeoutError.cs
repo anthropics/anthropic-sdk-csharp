@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaGatewayTimeoutError>))]
-public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGatewayTimeoutError>
+[JsonConverter(typeof(ModelConverter<BetaGatewayTimeoutError, BetaGatewayTimeoutErrorFromRaw>))]
+public sealed record class BetaGatewayTimeoutError : ModelBase
 {
     public required string Message
     {
@@ -105,4 +105,11 @@ public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGat
     {
         this.Message = message;
     }
+}
+
+class BetaGatewayTimeoutErrorFromRaw : IFromRaw<BetaGatewayTimeoutError>
+{
+    public BetaGatewayTimeoutError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaGatewayTimeoutError.FromRawUnchecked(rawData);
 }

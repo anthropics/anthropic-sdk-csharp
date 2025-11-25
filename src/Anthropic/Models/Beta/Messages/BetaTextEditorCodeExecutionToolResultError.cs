@@ -9,10 +9,13 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTextEditorCodeExecutionToolResultError>))]
-public sealed record class BetaTextEditorCodeExecutionToolResultError
-    : ModelBase,
-        IFromRaw<BetaTextEditorCodeExecutionToolResultError>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaTextEditorCodeExecutionToolResultError,
+        BetaTextEditorCodeExecutionToolResultErrorFromRaw
+    >)
+)]
+public sealed record class BetaTextEditorCodeExecutionToolResultError : ModelBase
 {
     public required ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorErrorCode> ErrorCode
     {
@@ -128,6 +131,14 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaTextEditorCodeExecutionToolResultErrorFromRaw
+    : IFromRaw<BetaTextEditorCodeExecutionToolResultError>
+{
+    public BetaTextEditorCodeExecutionToolResultError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaTextEditorCodeExecutionToolResultError.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaTextEditorCodeExecutionToolResultErrorErrorCodeConverter))]

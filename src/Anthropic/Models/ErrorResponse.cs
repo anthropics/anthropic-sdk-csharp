@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<ErrorResponse>))]
-public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
+[JsonConverter(typeof(ModelConverter<ErrorResponse, ErrorResponseFromRaw>))]
+public sealed record class ErrorResponse : ModelBase
 {
     public required ErrorObject Error
     {
@@ -112,4 +112,10 @@ public sealed record class ErrorResponse : ModelBase, IFromRaw<ErrorResponse>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ErrorResponseFromRaw : IFromRaw<ErrorResponse>
+{
+    public ErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ErrorResponse.FromRawUnchecked(rawData);
 }

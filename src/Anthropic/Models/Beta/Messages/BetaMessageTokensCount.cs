@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageTokensCount>))]
-public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMessageTokensCount>
+[JsonConverter(typeof(ModelConverter<BetaMessageTokensCount, BetaMessageTokensCountFromRaw>))]
+public sealed record class BetaMessageTokensCount : ModelBase
 {
     /// <summary>
     /// Information about context management applied to the message.
@@ -88,4 +88,11 @@ public sealed record class BetaMessageTokensCount : ModelBase, IFromRaw<BetaMess
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageTokensCountFromRaw : IFromRaw<BetaMessageTokensCount>
+{
+    public BetaMessageTokensCount FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMessageTokensCount.FromRawUnchecked(rawData);
 }

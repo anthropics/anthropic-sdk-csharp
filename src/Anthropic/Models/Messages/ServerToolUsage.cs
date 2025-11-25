@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ServerToolUsage>))]
-public sealed record class ServerToolUsage : ModelBase, IFromRaw<ServerToolUsage>
+[JsonConverter(typeof(ModelConverter<ServerToolUsage, ServerToolUsageFromRaw>))]
+public sealed record class ServerToolUsage : ModelBase
 {
     /// <summary>
     /// The number of web search tool requests.
@@ -70,4 +70,10 @@ public sealed record class ServerToolUsage : ModelBase, IFromRaw<ServerToolUsage
     {
         this.WebSearchRequests = webSearchRequests;
     }
+}
+
+class ServerToolUsageFromRaw : IFromRaw<ServerToolUsage>
+{
+    public ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ServerToolUsage.FromRawUnchecked(rawData);
 }

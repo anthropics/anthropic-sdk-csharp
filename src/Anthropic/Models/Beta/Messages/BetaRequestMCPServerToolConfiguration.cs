@@ -7,10 +7,13 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRequestMCPServerToolConfiguration>))]
-public sealed record class BetaRequestMCPServerToolConfiguration
-    : ModelBase,
-        IFromRaw<BetaRequestMCPServerToolConfiguration>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaRequestMCPServerToolConfiguration,
+        BetaRequestMCPServerToolConfigurationFromRaw
+    >)
+)]
+public sealed record class BetaRequestMCPServerToolConfiguration : ModelBase
 {
     public List<string>? AllowedTools
     {
@@ -75,4 +78,11 @@ public sealed record class BetaRequestMCPServerToolConfiguration
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaRequestMCPServerToolConfigurationFromRaw : IFromRaw<BetaRequestMCPServerToolConfiguration>
+{
+    public BetaRequestMCPServerToolConfiguration FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRequestMCPServerToolConfiguration.FromRawUnchecked(rawData);
 }

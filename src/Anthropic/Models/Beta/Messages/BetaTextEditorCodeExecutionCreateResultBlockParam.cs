@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTextEditorCodeExecutionCreateResultBlockParam>))]
-public sealed record class BetaTextEditorCodeExecutionCreateResultBlockParam
-    : ModelBase,
-        IFromRaw<BetaTextEditorCodeExecutionCreateResultBlockParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaTextEditorCodeExecutionCreateResultBlockParam,
+        BetaTextEditorCodeExecutionCreateResultBlockParamFromRaw
+    >)
+)]
+public sealed record class BetaTextEditorCodeExecutionCreateResultBlockParam : ModelBase
 {
     public required bool IsFileUpdate
     {
@@ -111,4 +114,12 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlockParam
     {
         this.IsFileUpdate = isFileUpdate;
     }
+}
+
+class BetaTextEditorCodeExecutionCreateResultBlockParamFromRaw
+    : IFromRaw<BetaTextEditorCodeExecutionCreateResultBlockParam>
+{
+    public BetaTextEditorCodeExecutionCreateResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaTextEditorCodeExecutionCreateResultBlockParam.FromRawUnchecked(rawData);
 }

@@ -10,8 +10,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Configuration for a specific tool in an MCP toolset.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaMCPToolConfig>))]
-public sealed record class BetaMCPToolConfig : ModelBase, IFromRaw<BetaMCPToolConfig>
+[JsonConverter(typeof(ModelConverter<BetaMCPToolConfig, BetaMCPToolConfigFromRaw>))]
+public sealed record class BetaMCPToolConfig : ModelBase
 {
     public bool? DeferLoading
     {
@@ -86,4 +86,10 @@ public sealed record class BetaMCPToolConfig : ModelBase, IFromRaw<BetaMCPToolCo
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMCPToolConfigFromRaw : IFromRaw<BetaMCPToolConfig>
+{
+    public BetaMCPToolConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaMCPToolConfig.FromRawUnchecked(rawData);
 }

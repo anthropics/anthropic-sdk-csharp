@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<URLPDFSource>))]
-public sealed record class URLPDFSource : ModelBase, IFromRaw<URLPDFSource>
+[JsonConverter(typeof(ModelConverter<URLPDFSource, URLPDFSourceFromRaw>))]
+public sealed record class URLPDFSource : ModelBase
 {
     public JsonElement Type
     {
@@ -98,4 +98,10 @@ public sealed record class URLPDFSource : ModelBase, IFromRaw<URLPDFSource>
     {
         this.URL = url;
     }
+}
+
+class URLPDFSourceFromRaw : IFromRaw<URLPDFSource>
+{
+    public URLPDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        URLPDFSource.FromRawUnchecked(rawData);
 }

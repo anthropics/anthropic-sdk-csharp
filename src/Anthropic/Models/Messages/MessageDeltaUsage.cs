@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageDeltaUsage>))]
-public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaUsage>
+[JsonConverter(typeof(ModelConverter<MessageDeltaUsage, MessageDeltaUsageFromRaw>))]
+public sealed record class MessageDeltaUsage : ModelBase
 {
     /// <summary>
     /// The cumulative number of input tokens used to create the cache entry.
@@ -153,4 +153,10 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MessageDeltaUsageFromRaw : IFromRaw<MessageDeltaUsage>
+{
+    public MessageDeltaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        MessageDeltaUsage.FromRawUnchecked(rawData);
 }

@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingBlockParam>))]
-public sealed record class ThinkingBlockParam : ModelBase, IFromRaw<ThinkingBlockParam>
+[JsonConverter(typeof(ModelConverter<ThinkingBlockParam, ThinkingBlockParamFromRaw>))]
+public sealed record class ThinkingBlockParam : ModelBase
 {
     public required string Signature
     {
@@ -124,4 +124,10 @@ public sealed record class ThinkingBlockParam : ModelBase, IFromRaw<ThinkingBloc
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ThinkingBlockParamFromRaw : IFromRaw<ThinkingBlockParam>
+{
+    public ThinkingBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ThinkingBlockParam.FromRawUnchecked(rawData);
 }

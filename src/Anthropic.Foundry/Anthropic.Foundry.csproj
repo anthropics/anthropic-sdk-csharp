@@ -24,16 +24,12 @@
     <Authors>Stainless Software, Inc.</Authors>
     <Company>Stainless Software, Inc.</Company>
     <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
+    <PackageIcon>logo.png</PackageIcon>
     <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <LangVersion>Latest</LangVersion>
-    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository>
-        element) -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <!-- Optional: Embed source files that are not tracked by the source control manager in the
-        PDB -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>
@@ -41,6 +37,8 @@
     <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="../Anthropic/GlobalShims.cs" />
+    <None Include="..\logo.png" Pack="true" PackagePath="\" />
+    <Compile Include="..\Anthropic\GlobalShims.cs" />
   </ItemGroup>
 </Project>
+

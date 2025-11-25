@@ -9,10 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatchRequestCounts>))]
-public sealed record class MessageBatchRequestCounts
-    : ModelBase,
-        IFromRaw<MessageBatchRequestCounts>
+[JsonConverter(typeof(ModelConverter<MessageBatchRequestCounts, MessageBatchRequestCountsFromRaw>))]
+public sealed record class MessageBatchRequestCounts : ModelBase
 {
     /// <summary>
     /// Number of requests in the Message Batch that have been canceled.
@@ -172,4 +170,11 @@ public sealed record class MessageBatchRequestCounts
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MessageBatchRequestCountsFromRaw : IFromRaw<MessageBatchRequestCounts>
+{
+    public MessageBatchRequestCounts FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => MessageBatchRequestCounts.FromRawUnchecked(rawData);
 }

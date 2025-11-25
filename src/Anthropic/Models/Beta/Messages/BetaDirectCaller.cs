@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Tool invocation directly from the model.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaDirectCaller>))]
-public sealed record class BetaDirectCaller : ModelBase, IFromRaw<BetaDirectCaller>
+[JsonConverter(typeof(ModelConverter<BetaDirectCaller, BetaDirectCallerFromRaw>))]
+public sealed record class BetaDirectCaller : ModelBase
 {
     public JsonElement Type
     {
@@ -75,4 +75,10 @@ public sealed record class BetaDirectCaller : ModelBase, IFromRaw<BetaDirectCall
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaDirectCallerFromRaw : IFromRaw<BetaDirectCaller>
+{
+    public BetaDirectCaller FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaDirectCaller.FromRawUnchecked(rawData);
 }

@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
-[JsonConverter(typeof(ModelConverter<VersionDeleteResponse>))]
-public sealed record class VersionDeleteResponse : ModelBase, IFromRaw<VersionDeleteResponse>
+[JsonConverter(typeof(ModelConverter<VersionDeleteResponse, VersionDeleteResponseFromRaw>))]
+public sealed record class VersionDeleteResponse : ModelBase
 {
     /// <summary>
     /// Version identifier for the skill.
@@ -99,4 +99,11 @@ public sealed record class VersionDeleteResponse : ModelBase, IFromRaw<VersionDe
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class VersionDeleteResponseFromRaw : IFromRaw<VersionDeleteResponse>
+{
+    public VersionDeleteResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => VersionDeleteResponse.FromRawUnchecked(rawData);
 }

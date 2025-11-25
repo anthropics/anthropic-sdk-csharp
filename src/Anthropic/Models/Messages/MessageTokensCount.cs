@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageTokensCount>))]
-public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageTokensCount>
+[JsonConverter(typeof(ModelConverter<MessageTokensCount, MessageTokensCountFromRaw>))]
+public sealed record class MessageTokensCount : ModelBase
 {
     /// <summary>
     /// The total number of tokens across the provided list of messages, system prompt,
@@ -70,4 +70,10 @@ public sealed record class MessageTokensCount : ModelBase, IFromRaw<MessageToken
     {
         this.InputTokens = inputTokens;
     }
+}
+
+class MessageTokensCountFromRaw : IFromRaw<MessageTokensCount>
+{
+    public MessageTokensCount FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        MessageTokensCount.FromRawUnchecked(rawData);
 }

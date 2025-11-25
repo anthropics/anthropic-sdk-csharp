@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaInvalidRequestError>))]
-public sealed record class BetaInvalidRequestError : ModelBase, IFromRaw<BetaInvalidRequestError>
+[JsonConverter(typeof(ModelConverter<BetaInvalidRequestError, BetaInvalidRequestErrorFromRaw>))]
+public sealed record class BetaInvalidRequestError : ModelBase
 {
     public required string Message
     {
@@ -105,4 +105,11 @@ public sealed record class BetaInvalidRequestError : ModelBase, IFromRaw<BetaInv
     {
         this.Message = message;
     }
+}
+
+class BetaInvalidRequestErrorFromRaw : IFromRaw<BetaInvalidRequestError>
+{
+    public BetaInvalidRequestError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaInvalidRequestError.FromRawUnchecked(rawData);
 }

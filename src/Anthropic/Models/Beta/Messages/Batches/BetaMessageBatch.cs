@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageBatch>))]
-public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBatch>
+[JsonConverter(typeof(ModelConverter<BetaMessageBatch, BetaMessageBatchFromRaw>))]
+public sealed record class BetaMessageBatch : ModelBase
 {
     /// <summary>
     /// Unique object identifier.
@@ -349,6 +349,12 @@ public sealed record class BetaMessageBatch : ModelBase, IFromRaw<BetaMessageBat
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageBatchFromRaw : IFromRaw<BetaMessageBatch>
+{
+    public BetaMessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaMessageBatch.FromRawUnchecked(rawData);
 }
 
 /// <summary>

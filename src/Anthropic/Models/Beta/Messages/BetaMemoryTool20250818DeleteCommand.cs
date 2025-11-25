@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMemoryTool20250818DeleteCommand>))]
-public sealed record class BetaMemoryTool20250818DeleteCommand
-    : ModelBase,
-        IFromRaw<BetaMemoryTool20250818DeleteCommand>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaMemoryTool20250818DeleteCommand,
+        BetaMemoryTool20250818DeleteCommandFromRaw
+    >)
+)]
+public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
 {
     /// <summary>
     /// Command type identifier
@@ -113,4 +116,11 @@ public sealed record class BetaMemoryTool20250818DeleteCommand
     {
         this.Path = path;
     }
+}
+
+class BetaMemoryTool20250818DeleteCommandFromRaw : IFromRaw<BetaMemoryTool20250818DeleteCommand>
+{
+    public BetaMemoryTool20250818DeleteCommand FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMemoryTool20250818DeleteCommand.FromRawUnchecked(rawData);
 }

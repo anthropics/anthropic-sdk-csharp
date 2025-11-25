@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageStartEvent>))]
-public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessageStartEvent>
+[JsonConverter(typeof(ModelConverter<RawMessageStartEvent, RawMessageStartEventFromRaw>))]
+public sealed record class RawMessageStartEvent : ModelBase
 {
     public required Message Message
     {
@@ -105,4 +105,11 @@ public sealed record class RawMessageStartEvent : ModelBase, IFromRaw<RawMessage
     {
         this.Message = message;
     }
+}
+
+class RawMessageStartEventFromRaw : IFromRaw<RawMessageStartEvent>
+{
+    public RawMessageStartEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => RawMessageStartEvent.FromRawUnchecked(rawData);
 }

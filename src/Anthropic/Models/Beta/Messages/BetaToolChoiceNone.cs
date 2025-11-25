@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// The model will not be allowed to use tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolChoiceNone>))]
-public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoiceNone>
+[JsonConverter(typeof(ModelConverter<BetaToolChoiceNone, BetaToolChoiceNoneFromRaw>))]
+public sealed record class BetaToolChoiceNone : ModelBase
 {
     public JsonElement Type
     {
@@ -70,4 +70,10 @@ public sealed record class BetaToolChoiceNone : ModelBase, IFromRaw<BetaToolChoi
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaToolChoiceNoneFromRaw : IFromRaw<BetaToolChoiceNone>
+{
+    public BetaToolChoiceNone FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaToolChoiceNone.FromRawUnchecked(rawData);
 }

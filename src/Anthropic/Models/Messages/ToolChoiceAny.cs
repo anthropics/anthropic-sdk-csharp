@@ -12,8 +12,8 @@ namespace Anthropic.Models.Messages;
 /// <summary>
 /// The model will use any available tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<ToolChoiceAny>))]
-public sealed record class ToolChoiceAny : ModelBase, IFromRaw<ToolChoiceAny>
+[JsonConverter(typeof(ModelConverter<ToolChoiceAny, ToolChoiceAnyFromRaw>))]
+public sealed record class ToolChoiceAny : ModelBase
 {
     public JsonElement Type
     {
@@ -98,4 +98,10 @@ public sealed record class ToolChoiceAny : ModelBase, IFromRaw<ToolChoiceAny>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ToolChoiceAnyFromRaw : IFromRaw<ToolChoiceAny>
+{
+    public ToolChoiceAny FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ToolChoiceAny.FromRawUnchecked(rawData);
 }

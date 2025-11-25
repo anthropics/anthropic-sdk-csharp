@@ -9,10 +9,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaToolComputerUse20241022>))]
-public sealed record class BetaToolComputerUse20241022
-    : ModelBase,
-        IFromRaw<BetaToolComputerUse20241022>
+[JsonConverter(
+    typeof(ModelConverter<BetaToolComputerUse20241022, BetaToolComputerUse20241022FromRaw>)
+)]
+public sealed record class BetaToolComputerUse20241022 : ModelBase
 {
     /// <summary>
     /// The height of the display in pixels.
@@ -323,6 +323,13 @@ public sealed record class BetaToolComputerUse20241022
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaToolComputerUse20241022FromRaw : IFromRaw<BetaToolComputerUse20241022>
+{
+    public BetaToolComputerUse20241022 FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaToolComputerUse20241022.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(AllowedCaller5Converter))]

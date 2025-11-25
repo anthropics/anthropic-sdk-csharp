@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageDeltaEvent>))]
-public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessageDeltaEvent>
+[JsonConverter(typeof(ModelConverter<RawMessageDeltaEvent, RawMessageDeltaEventFromRaw>))]
+public sealed record class RawMessageDeltaEvent : ModelBase
 {
     public required Delta Delta
     {
@@ -146,8 +146,15 @@ public sealed record class RawMessageDeltaEvent : ModelBase, IFromRaw<RawMessage
     }
 }
 
-[JsonConverter(typeof(ModelConverter<Delta>))]
-public sealed record class Delta : ModelBase, IFromRaw<Delta>
+class RawMessageDeltaEventFromRaw : IFromRaw<RawMessageDeltaEvent>
+{
+    public RawMessageDeltaEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => RawMessageDeltaEvent.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(ModelConverter<Delta, DeltaFromRaw>))]
+public sealed record class Delta : ModelBase
 {
     public required ApiEnum<string, StopReason>? StopReason
     {
@@ -213,4 +220,10 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class DeltaFromRaw : IFromRaw<Delta>
+{
+    public Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Delta.FromRawUnchecked(rawData);
 }

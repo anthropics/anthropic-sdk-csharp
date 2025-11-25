@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingConfigEnabled>))]
-public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingConfigEnabled>
+[JsonConverter(typeof(ModelConverter<ThinkingConfigEnabled, ThinkingConfigEnabledFromRaw>))]
+public sealed record class ThinkingConfigEnabled : ModelBase
 {
     /// <summary>
     /// Determines how many tokens Claude can use for its internal reasoning process.
@@ -111,4 +111,11 @@ public sealed record class ThinkingConfigEnabled : ModelBase, IFromRaw<ThinkingC
     {
         this.BudgetTokens = budgetTokens;
     }
+}
+
+class ThinkingConfigEnabledFromRaw : IFromRaw<ThinkingConfigEnabled>
+{
+    public ThinkingConfigEnabled FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ThinkingConfigEnabled.FromRawUnchecked(rawData);
 }

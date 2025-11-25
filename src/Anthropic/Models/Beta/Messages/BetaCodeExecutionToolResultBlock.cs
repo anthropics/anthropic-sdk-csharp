@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCodeExecutionToolResultBlock>))]
-public sealed record class BetaCodeExecutionToolResultBlock
-    : ModelBase,
-        IFromRaw<BetaCodeExecutionToolResultBlock>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaCodeExecutionToolResultBlock,
+        BetaCodeExecutionToolResultBlockFromRaw
+    >)
+)]
+public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
 {
     public required BetaCodeExecutionToolResultBlockContent Content
     {
@@ -129,4 +132,11 @@ public sealed record class BetaCodeExecutionToolResultBlock
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaCodeExecutionToolResultBlockFromRaw : IFromRaw<BetaCodeExecutionToolResultBlock>
+{
+    public BetaCodeExecutionToolResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCodeExecutionToolResultBlock.FromRawUnchecked(rawData);
 }

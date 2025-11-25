@@ -9,10 +9,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaThinkingConfigDisabled>))]
-public sealed record class BetaThinkingConfigDisabled
-    : ModelBase,
-        IFromRaw<BetaThinkingConfigDisabled>
+[JsonConverter(
+    typeof(ModelConverter<BetaThinkingConfigDisabled, BetaThinkingConfigDisabledFromRaw>)
+)]
+public sealed record class BetaThinkingConfigDisabled : ModelBase
 {
     public JsonElement Type
     {
@@ -74,4 +74,11 @@ public sealed record class BetaThinkingConfigDisabled
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaThinkingConfigDisabledFromRaw : IFromRaw<BetaThinkingConfigDisabled>
+{
+    public BetaThinkingConfigDisabled FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaThinkingConfigDisabled.FromRawUnchecked(rawData);
 }

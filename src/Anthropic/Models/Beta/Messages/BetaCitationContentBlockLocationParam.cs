@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationContentBlockLocationParam>))]
-public sealed record class BetaCitationContentBlockLocationParam
-    : ModelBase,
-        IFromRaw<BetaCitationContentBlockLocationParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaCitationContentBlockLocationParam,
+        BetaCitationContentBlockLocationParamFromRaw
+    >)
+)]
+public sealed record class BetaCitationContentBlockLocationParam : ModelBase
 {
     public required string CitedText
     {
@@ -188,4 +191,11 @@ public sealed record class BetaCitationContentBlockLocationParam
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaCitationContentBlockLocationParamFromRaw : IFromRaw<BetaCitationContentBlockLocationParam>
+{
+    public BetaCitationContentBlockLocationParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCitationContentBlockLocationParam.FromRawUnchecked(rawData);
 }

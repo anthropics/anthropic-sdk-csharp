@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageStopEvent>))]
-public sealed record class RawMessageStopEvent : ModelBase, IFromRaw<RawMessageStopEvent>
+[JsonConverter(typeof(ModelConverter<RawMessageStopEvent, RawMessageStopEventFromRaw>))]
+public sealed record class RawMessageStopEvent : ModelBase
 {
     public JsonElement Type
     {
@@ -72,4 +72,10 @@ public sealed record class RawMessageStopEvent : ModelBase, IFromRaw<RawMessageS
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class RawMessageStopEventFromRaw : IFromRaw<RawMessageStopEvent>
+{
+    public RawMessageStopEvent FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        RawMessageStopEvent.FromRawUnchecked(rawData);
 }

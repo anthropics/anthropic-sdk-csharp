@@ -123,8 +123,8 @@ public sealed record class BatchCreateParams : ParamsBase
     }
 }
 
-[JsonConverter(typeof(ModelConverter<Request>))]
-public sealed record class Request : ModelBase, IFromRaw<Request>
+[JsonConverter(typeof(ModelConverter<Request, RequestFromRaw>))]
+public sealed record class Request : ModelBase
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful
@@ -218,14 +218,20 @@ public sealed record class Request : ModelBase, IFromRaw<Request>
     }
 }
 
+class RequestFromRaw : IFromRaw<Request>
+{
+    public Request FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Request.FromRawUnchecked(rawData);
+}
+
 /// <summary>
 /// Messages API creation parameters for the individual request.
 ///
 /// <para>See the [Messages API reference](https://docs.claude.com/en/api/messages)
 /// for full documentation on available parameters.</para>
 /// </summary>
-[JsonConverter(typeof(ModelConverter<Params>))]
-public sealed record class Params : ModelBase, IFromRaw<Params>
+[JsonConverter(typeof(ModelConverter<Params, ParamsFromRaw>))]
+public sealed record class Params : ModelBase
 {
     /// <summary>
     /// The maximum number of tokens to generate before stopping.
@@ -795,6 +801,12 @@ public sealed record class Params : ModelBase, IFromRaw<Params>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ParamsFromRaw : IFromRaw<Params>
+{
+    public Params FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Params.FromRawUnchecked(rawData);
 }
 
 /// <summary>

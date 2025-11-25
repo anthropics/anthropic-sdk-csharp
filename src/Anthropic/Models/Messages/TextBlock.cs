@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<TextBlock>))]
-public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
+[JsonConverter(typeof(ModelConverter<TextBlock, TextBlockFromRaw>))]
+public sealed record class TextBlock : ModelBase
 {
     /// <summary>
     /// Citations supporting the text block.
@@ -123,4 +123,10 @@ public sealed record class TextBlock : ModelBase, IFromRaw<TextBlock>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class TextBlockFromRaw : IFromRaw<TextBlock>
+{
+    public TextBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        TextBlock.FromRawUnchecked(rawData);
 }

@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebFetchBlockParam>))]
-public sealed record class BetaWebFetchBlockParam : ModelBase, IFromRaw<BetaWebFetchBlockParam>
+[JsonConverter(typeof(ModelConverter<BetaWebFetchBlockParam, BetaWebFetchBlockParamFromRaw>))]
+public sealed record class BetaWebFetchBlockParam : ModelBase
 {
     public required BetaRequestDocumentBlock Content
     {
@@ -152,4 +152,11 @@ public sealed record class BetaWebFetchBlockParam : ModelBase, IFromRaw<BetaWebF
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaWebFetchBlockParamFromRaw : IFromRaw<BetaWebFetchBlockParam>
+{
+    public BetaWebFetchBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaWebFetchBlockParam.FromRawUnchecked(rawData);
 }

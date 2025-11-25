@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<DocumentBlockParam>))]
-public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBlockParam>
+[JsonConverter(typeof(ModelConverter<DocumentBlockParam, DocumentBlockParamFromRaw>))]
+public sealed record class DocumentBlockParam : ModelBase
 {
     public required Source Source
     {
@@ -190,6 +190,12 @@ public sealed record class DocumentBlockParam : ModelBase, IFromRaw<DocumentBloc
     {
         this.Source = source;
     }
+}
+
+class DocumentBlockParamFromRaw : IFromRaw<DocumentBlockParam>
+{
+    public DocumentBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        DocumentBlockParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(SourceConverter))]

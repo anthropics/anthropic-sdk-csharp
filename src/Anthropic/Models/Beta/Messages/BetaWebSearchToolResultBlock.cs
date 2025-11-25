@@ -9,10 +9,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebSearchToolResultBlock>))]
-public sealed record class BetaWebSearchToolResultBlock
-    : ModelBase,
-        IFromRaw<BetaWebSearchToolResultBlock>
+[JsonConverter(
+    typeof(ModelConverter<BetaWebSearchToolResultBlock, BetaWebSearchToolResultBlockFromRaw>)
+)]
+public sealed record class BetaWebSearchToolResultBlock : ModelBase
 {
     public required BetaWebSearchToolResultBlockContent Content
     {
@@ -129,4 +129,11 @@ public sealed record class BetaWebSearchToolResultBlock
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaWebSearchToolResultBlockFromRaw : IFromRaw<BetaWebSearchToolResultBlock>
+{
+    public BetaWebSearchToolResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaWebSearchToolResultBlock.FromRawUnchecked(rawData);
 }

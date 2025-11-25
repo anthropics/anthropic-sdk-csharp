@@ -12,10 +12,10 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Tool reference block that can be included in tool_result content.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolReferenceBlockParam>))]
-public sealed record class BetaToolReferenceBlockParam
-    : ModelBase,
-        IFromRaw<BetaToolReferenceBlockParam>
+[JsonConverter(
+    typeof(ModelConverter<BetaToolReferenceBlockParam, BetaToolReferenceBlockParamFromRaw>)
+)]
+public sealed record class BetaToolReferenceBlockParam : ModelBase
 {
     public required string ToolName
     {
@@ -135,4 +135,11 @@ public sealed record class BetaToolReferenceBlockParam
     {
         this.ToolName = toolName;
     }
+}
+
+class BetaToolReferenceBlockParamFromRaw : IFromRaw<BetaToolReferenceBlockParam>
+{
+    public BetaToolReferenceBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaToolReferenceBlockParam.FromRawUnchecked(rawData);
 }

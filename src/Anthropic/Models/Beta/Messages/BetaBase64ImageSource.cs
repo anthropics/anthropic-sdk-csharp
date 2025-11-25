@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBase64ImageSource>))]
-public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase64ImageSource>
+[JsonConverter(typeof(ModelConverter<BetaBase64ImageSource, BetaBase64ImageSourceFromRaw>))]
+public sealed record class BetaBase64ImageSource : ModelBase
 {
     public required string Data
     {
@@ -126,6 +126,13 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaBase64ImageSourceFromRaw : IFromRaw<BetaBase64ImageSource>
+{
+    public BetaBase64ImageSource FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaBase64ImageSource.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(MediaTypeConverter))]

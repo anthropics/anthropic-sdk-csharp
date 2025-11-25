@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Information about the container used in the request (for the code execution tool)
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainer>))]
-public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
+[JsonConverter(typeof(ModelConverter<BetaContainer, BetaContainerFromRaw>))]
+public sealed record class BetaContainer : ModelBase
 {
     /// <summary>
     /// Identifier for the container used in this request
@@ -120,4 +120,10 @@ public sealed record class BetaContainer : ModelBase, IFromRaw<BetaContainer>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaContainerFromRaw : IFromRaw<BetaContainer>
+{
+    public BetaContainer FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaContainer.FromRawUnchecked(rawData);
 }

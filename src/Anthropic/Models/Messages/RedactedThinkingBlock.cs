@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RedactedThinkingBlock>))]
-public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedThinkingBlock>
+[JsonConverter(typeof(ModelConverter<RedactedThinkingBlock, RedactedThinkingBlockFromRaw>))]
+public sealed record class RedactedThinkingBlock : ModelBase
 {
     public required string Data
     {
@@ -105,4 +105,11 @@ public sealed record class RedactedThinkingBlock : ModelBase, IFromRaw<RedactedT
     {
         this.Data = data;
     }
+}
+
+class RedactedThinkingBlockFromRaw : IFromRaw<RedactedThinkingBlock>
+{
+    public RedactedThinkingBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => RedactedThinkingBlock.FromRawUnchecked(rawData);
 }
