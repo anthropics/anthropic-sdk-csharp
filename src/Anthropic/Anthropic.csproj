@@ -43,8 +43,23 @@
     <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
+  <PropertyGroup>
     <None Include="..\logo.png" Pack="true" PackagePath="\"/>
+    <Authors>Stainless Software, Inc.</Authors>
+    <Company>Stainless Software, Inc.</Company>
+    <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <LangVersion>Latest</LangVersion>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\logo.png" Pack="true" PackagePath="\" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
