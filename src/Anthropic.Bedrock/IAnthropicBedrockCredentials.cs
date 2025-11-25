@@ -1,3 +1,6 @@
+using Amazon.Runtime;
+using Amazon.Runtime.Credentials;
+
 namespace Anthropic.Bedrock;
 
 public interface IAnthropicBedrockCredentials
@@ -5,18 +8,20 @@ public interface IAnthropicBedrockCredentials
     public string Region { get; }
     public void Apply(HttpRequestMessage requestMessage);
 
-    public static IAnthropicBedrockCredentials? FromEnv()
+    public static async ValueTask<IAnthropicBedrockCredentials?> FromEnv()
     {
         const string ENV_API_KEY = "AWS_BEARER_TOKEN_BEDROCK";
         const string ENV_REGION = "AWS_REGION";
 
-        var region = Environment.GetEnvironmentVariable(ENV_REGION); 
-        // TODO according to the java sdk that uses the DefaultAwsRegionProviderChain there are a lot more possible ways to determine this
-        // https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/regions/providers/DefaultAwsRegionProviderChain.html
-        // Check if there is a simple C# alternative for this
+        var region = Environment.GetEnvironmentVariable(ENV_REGION); // this is a bit redundant as FallbackRegionFactory checks for the same value too, but its aligned with the behavior of the java sdk
         if (region is null)
         {
-            return null;
+            var defaultRegion = FallbackRegionFactory.GetRegionEndpoint(false);
+            if (defaultRegion is null)
+            {
+                return null;
+            }
+            region = defaultRegion.HostnameTemplate;
         }
 
         var token = Environment.GetEnvironmentVariable(ENV_API_KEY);
@@ -24,9 +29,24 @@ public interface IAnthropicBedrockCredentials
         {
             return new AnthropicBedrockApiTokenCredentials(token, region);
         }
+        
+        var defaultIdentity = DefaultAWSCredentialsIdentityResolver.GetCredentials();
+        if (defaultIdentity is null)
+        {
+            return null;
+        }
 
-        // TODO use DefaultCredentialsProvider from the C# SDK to get public/private keypair
+        var defaultCreds = await defaultIdentity.GetCredentialsAsync().ConfigureAwait(false);
+        if (defaultCreds is null)
+        {
+            return null;
+        }
 
-        return null;
+        if (defaultCreds.UseToken)
+        {
+            return new AnthropicBedrockApiTokenCredentials(defaultCreds.Token, region);
+        }
+
+        return new AnthropicBedrockPrivateKeyCredentials(defaultCreds.SecretKey, defaultCreds.AccessKey, region);
     }
 }
