@@ -3010,4 +3010,823 @@ public abstract class AnthropicClientExtensionsTestsBase
             };
         }
     }
+
+    [Fact]
+    public async Task GetResponseAsync_FunctionResult_WithSingleTextContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "What's the weather in Seattle?"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "toolu_012ji4C9Dx9qiGwDPfWSjRVC",
+                            "name": "get_weather",
+                            "input": {
+                                "location": "Seattle"
+                            }
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "toolu_012ji4C9Dx9qiGwDPfWSjRVC",
+                            "is_error": false,
+                            "content": [{
+                                "type": "text",
+                                "text": "The weather in Seattle is sunny and 72�F"
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_01DzfU3ta5z9nrJo6EGamXqV",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5-20251001",
+                "content": [{
+                    "type": "text",
+                    "text": "The weather in Seattle is currently **sunny** with a temperature of **72�F** (about 22�C). Great weather for outdoor activities!"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 91,
+                    "output_tokens": 34
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "What's the weather in Seattle?"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "toolu_012ji4C9Dx9qiGwDPfWSjRVC",
+                        "get_weather",
+                        new Dictionary<string, object?> { ["location"] = "Seattle" }
+                    ),
+                ]
+            ),
+            new(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "toolu_012ji4C9Dx9qiGwDPfWSjRVC",
+                        new TextContent("The weather in Seattle is sunny and 72�F")
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("sunny", textContent.Text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("72", textContent.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_FunctionResult_WithMultipleTextContents()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Get me news about AI"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "toolu_01TQkFntpAPUXLijpPu5Q1dT",
+                            "name": "get_news",
+                            "input": {
+                                "topic": "AI"
+                            }
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "toolu_01TQkFntpAPUXLijpPu5Q1dT",
+                            "is_error": false,
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "Breaking: AI advances"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "Research shows improvements"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "Industry adoption grows"
+                                }
+                            ]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_01G8oMUpScZWsMe5JsNuLkgJ",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5-20251001",
+                "content": [{
+                    "type": "text",
+                    "text": "Here's the latest AI news:\\n\\n**Breaking: AI Advances**\\n- Researchers are demonstrating significant improvements in AI capabilities across various domains\\n\\n**Research Shows Improvements**\\n- Ongoing studies continue to push the boundaries of what AI systems can accomplish\\n\\n**Industry Adoption Grows**\\n- Companies across sectors are increasingly implementing AI solutions into their operations"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 95,
+                    "output_tokens": 100
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Get me news about AI"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "toolu_01TQkFntpAPUXLijpPu5Q1dT",
+                        "get_news",
+                        new Dictionary<string, object?> { ["topic"] = "AI" }
+                    ),
+                ]
+            ),
+            new(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "toolu_01TQkFntpAPUXLijpPu5Q1dT",
+                        new AIContent[]
+                        {
+                            new TextContent("Breaking: AI advances"),
+                            new TextContent("Research shows improvements"),
+                            new TextContent("Industry adoption grows"),
+                        }
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("AI", textContent.Text);
+        Assert.Contains("advances", textContent.Text, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_FunctionResult_WithImageDataContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Generate a bar chart"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "toolu_01RFvjHBAxq1z9kgH7vtVioW",
+                            "name": "generate_chart",
+                            "input": {
+                                "type": "bar"
+                            }
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "toolu_01RFvjHBAxq1z9kgH7vtVioW",
+                            "is_error": false,
+                            "content": [{
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": "image/png",
+                                    "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_01JVBwA4cipSnmopX4ywyZ36",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5-20251001",
+                "content": [{
+                    "type": "text",
+                    "text": "I've generated a simple bar chart for you! \\n\\nSince you didn't specify particular data, here's a basic example. If you'd like me to create a bar chart with specific data, categories, or a particular theme, please let me know."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 92,
+                    "output_tokens": 50
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        byte[] pngData = Convert.FromBase64String(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+        );
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Generate a bar chart"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "toolu_01RFvjHBAxq1z9kgH7vtVioW",
+                        "generate_chart",
+                        new Dictionary<string, object?> { ["type"] = "bar" }
+                    ),
+                ]
+            ),
+            new(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "toolu_01RFvjHBAxq1z9kgH7vtVioW",
+                        new DataContent(pngData, "image/png")
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("chart", textContent.Text, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_FunctionResult_WithPdfDataContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Generate a sales report"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "toolu_01Xp2XKeM6KcpCrGKbh96biN",
+                            "name": "generate_report",
+                            "input": {
+                                "type": "sales"
+                            }
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "toolu_01Xp2XKeM6KcpCrGKbh96biN",
+                            "is_error": false,
+                            "content": [{
+                                "type": "document",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": "application/pdf",
+                                    "data": "JVBERi0xLjQKMSAwIG9iajw8L1R5cGUvQ2F0YWxvZy9QYWdlcyAyIDAgUj4+ZW5kb2JqIDIgMCBvYmo8PC9UeXBlL1BhZ2VzL0tpZHNbMyAwIFJdL0NvdW50IDE+PmVuZG9iaiAzIDAgb2JqPDwvVHlwZS9QYWdlL01lZGlhQm94WzAgMCA2MTIgNzkyXS9QYXJlbnQgMiAwIFIvUmVzb3VyY2VzPDw+Pj4+ZW5kb2JqCnhyZWYKMCA0CjAwMDAwMDAwMDAgNjU1MzUgZgowMDAwMDAwMDA5IDAwMDAwIG4KMDAwMDAwMDA1MiAwMDAwMCBuCjAwMDAwMDAxMDEgMDAwMDAgbgp0cmFpbGVyPDwvU2l6ZSA0L1Jvb3QgMSAwIFI+PgpzdGFydHhyZWYKMTc4CiUlRU9G"
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_01WhQmBXmH4zHd1fB2VYGRWW",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5-20251001",
+                "content": [{
+                    "type": "text",
+                    "text": "I attempted to generate a sales report, but the generated document appears to be blank. Let me provide you with a sample **Sales Report** instead with key metrics and insights."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 1653,
+                    "output_tokens": 50
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        string pdfContent =
+            "%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj 3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj\nxref\n0 4\n0000000000 65535 f\n0000000009 00000 n\n0000000052 00000 n\n0000000101 00000 n\ntrailer<</Size 4/Root 1 0 R>>\nstartxref\n178\n%%EOF";
+        byte[] pdfData = Encoding.UTF8.GetBytes(pdfContent);
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Generate a sales report"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "toolu_01Xp2XKeM6KcpCrGKbh96biN",
+                        "generate_report",
+                        new Dictionary<string, object?> { ["type"] = "sales" }
+                    ),
+                ]
+            ),
+            new(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "toolu_01Xp2XKeM6KcpCrGKbh96biN",
+                        new DataContent(pdfData, "application/pdf")
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("report", textContent.Text, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_FunctionResult_WithTextPlainDataContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Get the system logs"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "I'll retrieve the system logs for you."
+                            },
+                            {
+                                "type": "tool_use",
+                                "id": "toolu_01JqNHMtbwFQExUwDMWy3wHe",
+                                "name": "get_logs",
+                                "input": {
+                                    "type": "system"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "toolu_01JqNHMtbwFQExUwDMWy3wHe",
+                            "is_error": false,
+                            "content": [{
+                                "type": "document",
+                                "source": {
+                                    "type": "text",
+                                    "media_type": "text/plain",
+                                    "data": "Log Entry 1: System started\nLog Entry 2: Processing data\nLog Entry 3: Task completed"
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_01RxuuTbpsvFyNpim6uoXujV",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5-20251001",
+                "content": [{
+                    "type": "text",
+                    "text": "Here are the system logs:\\n\\n**System Logs:**\\n1. System started\\n2. Processing data\\n3. Task completed\\n\\nThese are the current entries in the system log."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 148,
+                    "output_tokens": 50
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        string logContent =
+            "Log Entry 1: System started\nLog Entry 2: Processing data\nLog Entry 3: Task completed";
+        byte[] logData = Encoding.UTF8.GetBytes(logContent);
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Get the system logs"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new TextContent("I'll retrieve the system logs for you."),
+                    new FunctionCallContent(
+                        "toolu_01JqNHMtbwFQExUwDMWy3wHe",
+                        "get_logs",
+                        new Dictionary<string, object?> { ["type"] = "system" }
+                    ),
+                ]
+            ),
+            new(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "toolu_01JqNHMtbwFQExUwDMWy3wHe",
+                        new DataContent(logData, "text/plain")
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("System started", textContent.Text);
+        Assert.Contains("Task completed", textContent.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_FunctionResult_WithMixedContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Analyze the sales data"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "toolu_01ABC123",
+                            "name": "analyze_data",
+                            "input": {
+                                "dataset": "sales"
+                            }
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "toolu_01ABC123",
+                            "is_error": false,
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "Analysis: Mean=42.5, Median=40"
+                                },
+                                {
+                                    "type": "image",
+                                    "source": {
+                                        "type": "base64",
+                                        "media_type": "image/png",
+                                        "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+                                    }
+                                }
+                            ]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_01MixedContent",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5-20251001",
+                "content": [{
+                    "type": "text",
+                    "text": "Based on the analysis, your sales data shows a mean of 42.5 and median of 40. The chart visualization helps illustrate the distribution."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 120,
+                    "output_tokens": 35
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        byte[] chartData = Convert.FromBase64String(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+        );
+
+        List<ChatMessage> messages =
+        [
+            new(ChatRole.User, "Analyze the sales data"),
+            new(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "toolu_01ABC123",
+                        "analyze_data",
+                        new Dictionary<string, object?> { ["dataset"] = "sales" }
+                    ),
+                ]
+            ),
+            new(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "toolu_01ABC123",
+                        new AIContent[]
+                        {
+                            new TextContent("Analysis: Mean=42.5, Median=40"),
+                            new DataContent(chartData, "image/png"),
+                        }
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("42.5", textContent.Text);
+        Assert.Contains("40", textContent.Text);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithFunctionResultContent_UriContent_Image()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Get image URL"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "tool_uri_img",
+                            "name": "url_tool",
+                            "input": {}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "tool_uri_img",
+                            "is_error": false,
+                            "content": [{
+                                "type": "image",
+                                "source": {
+                                    "type": "url",
+                                    "url": "https://example.com/image.png"
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_uri_img_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Image URL received"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 32,
+                    "output_tokens": 8
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new ChatMessage(ChatRole.User, "Get image URL"),
+            new ChatMessage(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "tool_uri_img",
+                        "url_tool",
+                        new Dictionary<string, object?>()
+                    ),
+                ]
+            ),
+            new ChatMessage(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "tool_uri_img",
+                        new UriContent(new Uri("https://example.com/image.png"), "image/png")
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithFunctionResultContent_UriContent_PDF()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Get PDF URL"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "tool_uri_pdf",
+                            "name": "pdf_url_tool",
+                            "input": {}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "tool_uri_pdf",
+                            "is_error": false,
+                            "content": [{
+                                "type": "document",
+                                "source": {
+                                    "type": "url",
+                                    "url": "https://example.com/document.pdf"
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_uri_pdf_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "PDF URL received"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 35,
+                    "output_tokens": 9
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new ChatMessage(ChatRole.User, "Get PDF URL"),
+            new ChatMessage(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "tool_uri_pdf",
+                        "pdf_url_tool",
+                        new Dictionary<string, object?>()
+                    ),
+                ]
+            ),
+            new ChatMessage(
+                ChatRole.User,
+                [
+                    new FunctionResultContent(
+                        "tool_uri_pdf",
+                        new UriContent(
+                            new Uri("https://example.com/document.pdf"),
+                            "application/pdf"
+                        )
+                    ),
+                ]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+        Assert.NotNull(response);
+    }
 }

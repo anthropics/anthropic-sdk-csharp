@@ -542,19 +542,148 @@ public static class AnthropicClientExtensions
                             break;
 
                         case FunctionResultContent frc:
+                            ToolResultBlockParamContent result = frc.Result switch
+                            {
+                                ToolResultBlockParamContent trbpc => trbpc,
+
+                                AIContent aiContent => new(ToResultBlocks([aiContent])),
+
+                                IEnumerable<AIContent> aiContents => new(
+                                    ToResultBlocks(aiContents)
+                                ),
+
+                                _ => new(
+                                    JsonSerializer.Serialize(
+                                        frc.Result,
+                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(typeof(object))
+                                    )
+                                ),
+                            };
+
+                            static IReadOnlyList<Block> ToResultBlocks(
+                                IEnumerable<AIContent> aiContents
+                            )
+                            {
+                                List<Block> blocks = [];
+                                foreach (AIContent ac in aiContents)
+                                {
+                                    blocks.Add(
+                                        ac switch
+                                        {
+                                            AIContent ai
+                                                when ai.RawRepresentation is Block rawBlock =>
+                                                rawBlock,
+
+                                            TextContent tc => new Block(
+                                                new TextBlockParam() { Text = tc.Text }
+                                            ),
+
+                                            DataContent dc when dc.HasTopLevelMediaType("image") =>
+                                                new Block(
+                                                    new ImageBlockParam()
+                                                    {
+                                                        Source = new(
+                                                            new Base64ImageSource()
+                                                            {
+                                                                Data = dc.Base64Data.ToString(),
+                                                                MediaType = dc.MediaType,
+                                                            }
+                                                        ),
+                                                    }
+                                                ),
+
+                                            DataContent dc
+                                                when string.Equals(
+                                                    dc.MediaType,
+                                                    "application/pdf",
+                                                    StringComparison.OrdinalIgnoreCase
+                                                ) => new Block(
+                                                new DocumentBlockParam()
+                                                {
+                                                    Source = new(
+                                                        new Base64PDFSource()
+                                                        {
+                                                            Data = dc.Base64Data.ToString(),
+                                                        }
+                                                    ),
+                                                }
+                                            ),
+
+                                            DataContent dc when dc.HasTopLevelMediaType("text") =>
+                                                new Block(
+                                                    new DocumentBlockParam()
+                                                    {
+                                                        Source = new(
+                                                            new PlainTextSource()
+                                                            {
+#if NET
+                                                                Data = Encoding.UTF8.GetString(
+                                                                    dc.Data.Span
+                                                                ),
+#else
+                                                                Data = Encoding.UTF8.GetString(
+                                                                    dc.Data.ToArray()
+                                                                ),
+#endif
+                                                            }
+                                                        ),
+                                                    }
+                                                ),
+
+                                            UriContent uc when uc.HasTopLevelMediaType("image") =>
+                                                new Block(
+                                                    new ImageBlockParam()
+                                                    {
+                                                        Source = new(
+                                                            new URLImageSource()
+                                                            {
+                                                                URL = uc.Uri.AbsoluteUri,
+                                                            }
+                                                        ),
+                                                    }
+                                                ),
+
+                                            UriContent uc
+                                                when string.Equals(
+                                                    uc.MediaType,
+                                                    "application/pdf",
+                                                    StringComparison.OrdinalIgnoreCase
+                                                ) => new Block(
+                                                new DocumentBlockParam()
+                                                {
+                                                    Source = new(
+                                                        new URLPDFSource()
+                                                        {
+                                                            URL = uc.Uri.AbsoluteUri,
+                                                        }
+                                                    ),
+                                                }
+                                            ),
+
+                                            _ => new Block(
+                                                new TextBlockParam()
+                                                {
+                                                    Text = JsonSerializer.Serialize(
+                                                        ac,
+                                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                            typeof(object)
+                                                        )
+                                                    ),
+                                                }
+                                            ),
+                                        }
+                                    );
+                                }
+
+                                return blocks;
+                            }
+
                             contents.Add(
                                 new ToolResultBlockParam()
                                 {
                                     ToolUseID = frc.CallId,
                                     IsError = frc.Exception is not null,
-                                    Content = new(
-                                        JsonSerializer.Serialize(
-                                            frc.Result,
-                                            AIJsonUtilities.DefaultOptions.GetTypeInfo(
-                                                typeof(object)
-                                            )
-                                        )
-                                    ),
+                                    Content = result,
                                 }
                             );
                             break;
