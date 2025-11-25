@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaURLImageSource>))]
-public sealed record class BetaURLImageSource : ModelBase, IFromRaw<BetaURLImageSource>
+[JsonConverter(typeof(ModelConverter<BetaURLImageSource, BetaURLImageSourceFromRaw>))]
+public sealed record class BetaURLImageSource : ModelBase
 {
     public JsonElement Type
     {
@@ -100,4 +100,10 @@ public sealed record class BetaURLImageSource : ModelBase, IFromRaw<BetaURLImage
     {
         this.URL = url;
     }
+}
+
+class BetaURLImageSourceFromRaw : IFromRaw<BetaURLImageSource>
+{
+    public BetaURLImageSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaURLImageSource.FromRawUnchecked(rawData);
 }

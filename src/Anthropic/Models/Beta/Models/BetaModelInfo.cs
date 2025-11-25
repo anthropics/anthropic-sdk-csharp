@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Models;
 
-[JsonConverter(typeof(ModelConverter<BetaModelInfo>))]
-public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
+[JsonConverter(typeof(ModelConverter<BetaModelInfo, BetaModelInfoFromRaw>))]
+public sealed record class BetaModelInfo : ModelBase
 {
     /// <summary>
     /// Unique model identifier.
@@ -156,4 +156,10 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaModelInfoFromRaw : IFromRaw<BetaModelInfo>
+{
+    public BetaModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaModelInfo.FromRawUnchecked(rawData);
 }

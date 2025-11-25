@@ -12,8 +12,8 @@ namespace Anthropic.Models.Messages;
 /// <summary>
 /// The model will use the specified tool with `tool_choice.name`.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<ToolChoiceTool>))]
-public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
+[JsonConverter(typeof(ModelConverter<ToolChoiceTool, ToolChoiceToolFromRaw>))]
+public sealed record class ToolChoiceTool : ModelBase
 {
     /// <summary>
     /// The name of the tool to use.
@@ -134,4 +134,10 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
     {
         this.Name = name;
     }
+}
+
+class ToolChoiceToolFromRaw : IFromRaw<ToolChoiceTool>
+{
+    public ToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ToolChoiceTool.FromRawUnchecked(rawData);
 }

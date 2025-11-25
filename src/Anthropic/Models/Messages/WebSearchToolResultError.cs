@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolResultError>))]
-public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSearchToolResultError>
+[JsonConverter(typeof(ModelConverter<WebSearchToolResultError, WebSearchToolResultErrorFromRaw>))]
+public sealed record class WebSearchToolResultError : ModelBase
 {
     public required ApiEnum<string, WebSearchToolResultErrorErrorCode> ErrorCode
     {
@@ -107,6 +107,13 @@ public sealed record class WebSearchToolResultError : ModelBase, IFromRaw<WebSea
     {
         this.ErrorCode = errorCode;
     }
+}
+
+class WebSearchToolResultErrorFromRaw : IFromRaw<WebSearchToolResultError>
+{
+    public WebSearchToolResultError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => WebSearchToolResultError.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(WebSearchToolResultErrorErrorCodeConverter))]

@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Skills;
 
-[JsonConverter(typeof(ModelConverter<SkillListPageResponse>))]
-public sealed record class SkillListPageResponse : ModelBase, IFromRaw<SkillListPageResponse>
+[JsonConverter(typeof(ModelConverter<SkillListPageResponse, SkillListPageResponseFromRaw>))]
+public sealed record class SkillListPageResponse : ModelBase
 {
     /// <summary>
     /// List of skills.
@@ -124,8 +124,15 @@ public sealed record class SkillListPageResponse : ModelBase, IFromRaw<SkillList
     }
 }
 
-[JsonConverter(typeof(ModelConverter<Data>))]
-public sealed record class Data : ModelBase, IFromRaw<Data>
+class SkillListPageResponseFromRaw : IFromRaw<SkillListPageResponse>
+{
+    public SkillListPageResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => SkillListPageResponse.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(ModelConverter<Data, DataFromRaw>))]
+public sealed record class Data : ModelBase
 {
     /// <summary>
     /// Unique identifier for the skill.
@@ -351,4 +358,10 @@ public sealed record class Data : ModelBase, IFromRaw<Data>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class DataFromRaw : IFromRaw<Data>
+{
+    public Data FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Data.FromRawUnchecked(rawData);
 }

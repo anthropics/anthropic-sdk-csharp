@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaOutputConfig>))]
-public sealed record class BetaOutputConfig : ModelBase, IFromRaw<BetaOutputConfig>
+[JsonConverter(typeof(ModelConverter<BetaOutputConfig, BetaOutputConfigFromRaw>))]
+public sealed record class BetaOutputConfig : ModelBase
 {
     /// <summary>
     /// All possible effort levels.
@@ -62,6 +62,12 @@ public sealed record class BetaOutputConfig : ModelBase, IFromRaw<BetaOutputConf
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaOutputConfigFromRaw : IFromRaw<BetaOutputConfig>
+{
+    public BetaOutputConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaOutputConfig.FromRawUnchecked(rawData);
 }
 
 /// <summary>

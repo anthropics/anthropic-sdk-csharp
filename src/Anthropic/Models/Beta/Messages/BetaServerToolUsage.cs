@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaServerToolUsage>))]
-public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerToolUsage>
+[JsonConverter(typeof(ModelConverter<BetaServerToolUsage, BetaServerToolUsageFromRaw>))]
+public sealed record class BetaServerToolUsage : ModelBase
 {
     /// <summary>
     /// The number of web fetch tool requests.
@@ -93,4 +93,10 @@ public sealed record class BetaServerToolUsage : ModelBase, IFromRaw<BetaServerT
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaServerToolUsageFromRaw : IFromRaw<BetaServerToolUsage>
+{
+    public BetaServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaServerToolUsage.FromRawUnchecked(rawData);
 }

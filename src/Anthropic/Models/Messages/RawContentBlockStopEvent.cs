@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawContentBlockStopEvent>))]
-public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawContentBlockStopEvent>
+[JsonConverter(typeof(ModelConverter<RawContentBlockStopEvent, RawContentBlockStopEventFromRaw>))]
+public sealed record class RawContentBlockStopEvent : ModelBase
 {
     public required long Index
     {
@@ -101,4 +101,11 @@ public sealed record class RawContentBlockStopEvent : ModelBase, IFromRaw<RawCon
     {
         this.Index = index;
     }
+}
+
+class RawContentBlockStopEventFromRaw : IFromRaw<RawContentBlockStopEvent>
+{
+    public RawContentBlockStopEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => RawContentBlockStopEvent.FromRawUnchecked(rawData);
 }

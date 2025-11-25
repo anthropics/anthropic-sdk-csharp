@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCodeExecutionToolResultErrorParam>))]
-public sealed record class BetaCodeExecutionToolResultErrorParam
-    : ModelBase,
-        IFromRaw<BetaCodeExecutionToolResultErrorParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaCodeExecutionToolResultErrorParam,
+        BetaCodeExecutionToolResultErrorParamFromRaw
+    >)
+)]
+public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
 {
     public required ApiEnum<string, BetaCodeExecutionToolResultErrorCode> ErrorCode
     {
@@ -107,4 +110,11 @@ public sealed record class BetaCodeExecutionToolResultErrorParam
     {
         this.ErrorCode = errorCode;
     }
+}
+
+class BetaCodeExecutionToolResultErrorParamFromRaw : IFromRaw<BetaCodeExecutionToolResultErrorParam>
+{
+    public BetaCodeExecutionToolResultErrorParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCodeExecutionToolResultErrorParam.FromRawUnchecked(rawData);
 }

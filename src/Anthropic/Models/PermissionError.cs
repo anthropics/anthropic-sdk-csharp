@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<PermissionError>))]
-public sealed record class PermissionError : ModelBase, IFromRaw<PermissionError>
+[JsonConverter(typeof(ModelConverter<PermissionError, PermissionErrorFromRaw>))]
+public sealed record class PermissionError : ModelBase
 {
     public required string Message
     {
@@ -103,4 +103,10 @@ public sealed record class PermissionError : ModelBase, IFromRaw<PermissionError
     {
         this.Message = message;
     }
+}
+
+class PermissionErrorFromRaw : IFromRaw<PermissionError>
+{
+    public PermissionError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        PermissionError.FromRawUnchecked(rawData);
 }

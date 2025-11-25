@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
-[JsonConverter(typeof(ModelConverter<VersionListPageResponse>))]
-public sealed record class VersionListPageResponse : ModelBase, IFromRaw<VersionListPageResponse>
+[JsonConverter(typeof(ModelConverter<VersionListPageResponse, VersionListPageResponseFromRaw>))]
+public sealed record class VersionListPageResponse : ModelBase
 {
     /// <summary>
     /// List of skill versions.
@@ -121,10 +121,20 @@ public sealed record class VersionListPageResponse : ModelBase, IFromRaw<Version
     }
 }
 
-[JsonConverter(typeof(ModelConverter<global::Anthropic.Models.Beta.Skills.Versions.Data>))]
-public sealed record class Data
-    : ModelBase,
-        IFromRaw<global::Anthropic.Models.Beta.Skills.Versions.Data>
+class VersionListPageResponseFromRaw : IFromRaw<VersionListPageResponse>
+{
+    public VersionListPageResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => VersionListPageResponse.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(
+    typeof(ModelConverter<
+        global::Anthropic.Models.Beta.Skills.Versions.Data,
+        global::Anthropic.Models.Beta.Skills.Versions.DataFromRaw
+    >)
+)]
+public sealed record class Data : ModelBase
 {
     /// <summary>
     /// Unique identifier for the skill version.
@@ -395,4 +405,11 @@ public sealed record class Data
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class DataFromRaw : IFromRaw<global::Anthropic.Models.Beta.Skills.Versions.Data>
+{
+    public global::Anthropic.Models.Beta.Skills.Versions.Data FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => global::Anthropic.Models.Beta.Skills.Versions.Data.FromRawUnchecked(rawData);
 }

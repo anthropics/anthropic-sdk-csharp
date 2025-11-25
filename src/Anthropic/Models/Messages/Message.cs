@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Message>))]
-public sealed record class Message : ModelBase, IFromRaw<Message>
+[JsonConverter(typeof(ModelConverter<Message, MessageFromRaw>))]
+public sealed record class Message : ModelBase
 {
     /// <summary>
     /// Unique object identifier.
@@ -330,4 +330,10 @@ public sealed record class Message : ModelBase, IFromRaw<Message>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MessageFromRaw : IFromRaw<Message>
+{
+    public Message FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Message.FromRawUnchecked(rawData);
 }

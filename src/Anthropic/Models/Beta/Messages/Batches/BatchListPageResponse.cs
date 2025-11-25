@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BatchListPageResponse>))]
-public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchListPageResponse>
+[JsonConverter(typeof(ModelConverter<BatchListPageResponse, BatchListPageResponseFromRaw>))]
+public sealed record class BatchListPageResponse : ModelBase
 {
     public required List<BetaMessageBatch> Data
     {
@@ -138,4 +138,11 @@ public sealed record class BatchListPageResponse : ModelBase, IFromRaw<BatchList
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BatchListPageResponseFromRaw : IFromRaw<BatchListPageResponse>
+{
+    public BatchListPageResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BatchListPageResponse.FromRawUnchecked(rawData);
 }

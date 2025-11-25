@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawMessageDeltaEvent>))]
-public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRawMessageDeltaEvent>
+[JsonConverter(typeof(ModelConverter<BetaRawMessageDeltaEvent, BetaRawMessageDeltaEventFromRaw>))]
+public sealed record class BetaRawMessageDeltaEvent : ModelBase
 {
     /// <summary>
     /// Information about context management strategies applied during the request
@@ -171,8 +171,15 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase, IFromRaw<BetaRa
     }
 }
 
-[JsonConverter(typeof(ModelConverter<Delta>))]
-public sealed record class Delta : ModelBase, IFromRaw<Delta>
+class BetaRawMessageDeltaEventFromRaw : IFromRaw<BetaRawMessageDeltaEvent>
+{
+    public BetaRawMessageDeltaEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRawMessageDeltaEvent.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(ModelConverter<Delta, DeltaFromRaw>))]
+public sealed record class Delta : ModelBase
 {
     /// <summary>
     /// Information about the container used in the request (for the code execution tool)
@@ -260,4 +267,10 @@ public sealed record class Delta : ModelBase, IFromRaw<Delta>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class DeltaFromRaw : IFromRaw<Delta>
+{
+    public Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Delta.FromRawUnchecked(rawData);
 }

@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationConfig>))]
-public sealed record class BetaCitationConfig : ModelBase, IFromRaw<BetaCitationConfig>
+[JsonConverter(typeof(ModelConverter<BetaCitationConfig, BetaCitationConfigFromRaw>))]
+public sealed record class BetaCitationConfig : ModelBase
 {
     public required bool Enabled
     {
@@ -66,4 +66,10 @@ public sealed record class BetaCitationConfig : ModelBase, IFromRaw<BetaCitation
     {
         this.Enabled = enabled;
     }
+}
+
+class BetaCitationConfigFromRaw : IFromRaw<BetaCitationConfig>
+{
+    public BetaCitationConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaCitationConfig.FromRawUnchecked(rawData);
 }

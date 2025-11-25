@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaUsage>))]
-public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
+[JsonConverter(typeof(ModelConverter<BetaUsage, BetaUsageFromRaw>))]
+public sealed record class BetaUsage : ModelBase
 {
     /// <summary>
     /// Breakdown of cached tokens by TTL
@@ -210,6 +210,12 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaUsageFromRaw : IFromRaw<BetaUsage>
+{
+    public BetaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaUsage.FromRawUnchecked(rawData);
 }
 
 /// <summary>

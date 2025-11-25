@@ -9,10 +9,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawContentBlockStopEvent>))]
-public sealed record class BetaRawContentBlockStopEvent
-    : ModelBase,
-        IFromRaw<BetaRawContentBlockStopEvent>
+[JsonConverter(
+    typeof(ModelConverter<BetaRawContentBlockStopEvent, BetaRawContentBlockStopEventFromRaw>)
+)]
+public sealed record class BetaRawContentBlockStopEvent : ModelBase
 {
     public required long Index
     {
@@ -103,4 +103,11 @@ public sealed record class BetaRawContentBlockStopEvent
     {
         this.Index = index;
     }
+}
+
+class BetaRawContentBlockStopEventFromRaw : IFromRaw<BetaRawContentBlockStopEvent>
+{
+    public BetaRawContentBlockStopEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRawContentBlockStopEvent.FromRawUnchecked(rawData);
 }

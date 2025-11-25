@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CacheControlEphemeral>))]
-public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheControlEphemeral>
+[JsonConverter(typeof(ModelConverter<CacheControlEphemeral, CacheControlEphemeralFromRaw>))]
+public sealed record class CacheControlEphemeral : ModelBase
 {
     public JsonElement Type
     {
@@ -106,6 +106,13 @@ public sealed record class CacheControlEphemeral : ModelBase, IFromRaw<CacheCont
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class CacheControlEphemeralFromRaw : IFromRaw<CacheControlEphemeral>
+{
+    public CacheControlEphemeral FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => CacheControlEphemeral.FromRawUnchecked(rawData);
 }
 
 /// <summary>

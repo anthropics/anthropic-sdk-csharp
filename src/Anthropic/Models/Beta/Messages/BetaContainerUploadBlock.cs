@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Response model for a file uploaded to the container.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainerUploadBlock>))]
-public sealed record class BetaContainerUploadBlock : ModelBase, IFromRaw<BetaContainerUploadBlock>
+[JsonConverter(typeof(ModelConverter<BetaContainerUploadBlock, BetaContainerUploadBlockFromRaw>))]
+public sealed record class BetaContainerUploadBlock : ModelBase
 {
     public required string FileID
     {
@@ -108,4 +108,11 @@ public sealed record class BetaContainerUploadBlock : ModelBase, IFromRaw<BetaCo
     {
         this.FileID = fileID;
     }
+}
+
+class BetaContainerUploadBlockFromRaw : IFromRaw<BetaContainerUploadBlock>
+{
+    public BetaContainerUploadBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaContainerUploadBlock.FromRawUnchecked(rawData);
 }

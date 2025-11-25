@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ImageBlockParam>))]
-public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam>
+[JsonConverter(typeof(ModelConverter<ImageBlockParam, ImageBlockParamFromRaw>))]
+public sealed record class ImageBlockParam : ModelBase
 {
     public required ImageBlockParamSource Source
     {
@@ -128,6 +128,12 @@ public sealed record class ImageBlockParam : ModelBase, IFromRaw<ImageBlockParam
     {
         this.Source = source;
     }
+}
+
+class ImageBlockParamFromRaw : IFromRaw<ImageBlockParam>
+{
+    public ImageBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ImageBlockParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(ImageBlockParamSourceConverter))]

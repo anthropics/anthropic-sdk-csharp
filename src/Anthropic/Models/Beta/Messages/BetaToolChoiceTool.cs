@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// The model will use the specified tool with `tool_choice.name`.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolChoiceTool>))]
-public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoiceTool>
+[JsonConverter(typeof(ModelConverter<BetaToolChoiceTool, BetaToolChoiceToolFromRaw>))]
+public sealed record class BetaToolChoiceTool : ModelBase
 {
     /// <summary>
     /// The name of the tool to use.
@@ -136,4 +136,10 @@ public sealed record class BetaToolChoiceTool : ModelBase, IFromRaw<BetaToolChoi
     {
         this.Name = name;
     }
+}
+
+class BetaToolChoiceToolFromRaw : IFromRaw<BetaToolChoiceTool>
+{
+    public BetaToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaToolChoiceTool.FromRawUnchecked(rawData);
 }

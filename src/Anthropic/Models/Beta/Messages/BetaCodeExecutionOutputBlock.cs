@@ -9,10 +9,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCodeExecutionOutputBlock>))]
-public sealed record class BetaCodeExecutionOutputBlock
-    : ModelBase,
-        IFromRaw<BetaCodeExecutionOutputBlock>
+[JsonConverter(
+    typeof(ModelConverter<BetaCodeExecutionOutputBlock, BetaCodeExecutionOutputBlockFromRaw>)
+)]
+public sealed record class BetaCodeExecutionOutputBlock : ModelBase
 {
     public required string FileID
     {
@@ -107,4 +107,11 @@ public sealed record class BetaCodeExecutionOutputBlock
     {
         this.FileID = fileID;
     }
+}
+
+class BetaCodeExecutionOutputBlockFromRaw : IFromRaw<BetaCodeExecutionOutputBlock>
+{
+    public BetaCodeExecutionOutputBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCodeExecutionOutputBlock.FromRawUnchecked(rawData);
 }

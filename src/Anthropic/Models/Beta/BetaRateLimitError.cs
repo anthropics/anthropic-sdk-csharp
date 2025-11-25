@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaRateLimitError>))]
-public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimitError>
+[JsonConverter(typeof(ModelConverter<BetaRateLimitError, BetaRateLimitErrorFromRaw>))]
+public sealed record class BetaRateLimitError : ModelBase
 {
     public required string Message
     {
@@ -105,4 +105,10 @@ public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimi
     {
         this.Message = message;
     }
+}
+
+class BetaRateLimitErrorFromRaw : IFromRaw<BetaRateLimitError>
+{
+    public BetaRateLimitError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaRateLimitError.FromRawUnchecked(rawData);
 }

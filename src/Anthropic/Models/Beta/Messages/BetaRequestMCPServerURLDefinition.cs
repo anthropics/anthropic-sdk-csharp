@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRequestMCPServerURLDefinition>))]
-public sealed record class BetaRequestMCPServerURLDefinition
-    : ModelBase,
-        IFromRaw<BetaRequestMCPServerURLDefinition>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaRequestMCPServerURLDefinition,
+        BetaRequestMCPServerURLDefinitionFromRaw
+    >)
+)]
+public sealed record class BetaRequestMCPServerURLDefinition : ModelBase
 {
     public required string Name
     {
@@ -162,4 +165,11 @@ public sealed record class BetaRequestMCPServerURLDefinition
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaRequestMCPServerURLDefinitionFromRaw : IFromRaw<BetaRequestMCPServerURLDefinition>
+{
+    public BetaRequestMCPServerURLDefinition FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRequestMCPServerURLDefinition.FromRawUnchecked(rawData);
 }

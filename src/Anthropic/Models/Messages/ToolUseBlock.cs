@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ToolUseBlock>))]
-public sealed record class ToolUseBlock : ModelBase, IFromRaw<ToolUseBlock>
+[JsonConverter(typeof(ModelConverter<ToolUseBlock, ToolUseBlockFromRaw>))]
+public sealed record class ToolUseBlock : ModelBase
 {
     public required string ID
     {
@@ -151,4 +151,10 @@ public sealed record class ToolUseBlock : ModelBase, IFromRaw<ToolUseBlock>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ToolUseBlockFromRaw : IFromRaw<ToolUseBlock>
+{
+    public ToolUseBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ToolUseBlock.FromRawUnchecked(rawData);
 }

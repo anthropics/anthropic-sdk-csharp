@@ -15,8 +15,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <para>Allows configuring enabled status and defer_loading for all tools from
 /// an MCP server, with optional per-tool overrides.</para>
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaMCPToolset>))]
-public sealed record class BetaMCPToolset : ModelBase, IFromRaw<BetaMCPToolset>
+[JsonConverter(typeof(ModelConverter<BetaMCPToolset, BetaMCPToolsetFromRaw>))]
+public sealed record class BetaMCPToolset : ModelBase
 {
     /// <summary>
     /// Name of the MCP server to configure tools for
@@ -198,4 +198,10 @@ public sealed record class BetaMCPToolset : ModelBase, IFromRaw<BetaMCPToolset>
     {
         this.MCPServerName = mcpServerName;
     }
+}
+
+class BetaMCPToolsetFromRaw : IFromRaw<BetaMCPToolset>
+{
+    public BetaMCPToolset FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaMCPToolset.FromRawUnchecked(rawData);
 }

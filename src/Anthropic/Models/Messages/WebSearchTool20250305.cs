@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchTool20250305>))]
-public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearchTool20250305>
+[JsonConverter(typeof(ModelConverter<WebSearchTool20250305, WebSearchTool20250305FromRaw>))]
+public sealed record class WebSearchTool20250305 : ModelBase
 {
     /// <summary>
     /// Name of the tool.
@@ -225,11 +225,18 @@ public sealed record class WebSearchTool20250305 : ModelBase, IFromRaw<WebSearch
     }
 }
 
+class WebSearchTool20250305FromRaw : IFromRaw<WebSearchTool20250305>
+{
+    public WebSearchTool20250305 FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => WebSearchTool20250305.FromRawUnchecked(rawData);
+}
+
 /// <summary>
 /// Parameters for the user's location. Used to provide more relevant search results.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<UserLocation>))]
-public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
+[JsonConverter(typeof(ModelConverter<UserLocation, UserLocationFromRaw>))]
+public sealed record class UserLocation : ModelBase
 {
     public JsonElement Type
     {
@@ -378,4 +385,10 @@ public sealed record class UserLocation : ModelBase, IFromRaw<UserLocation>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class UserLocationFromRaw : IFromRaw<UserLocation>
+{
+    public UserLocation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        UserLocation.FromRawUnchecked(rawData);
 }

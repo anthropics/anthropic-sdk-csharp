@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaSignatureDelta>))]
-public sealed record class BetaSignatureDelta : ModelBase, IFromRaw<BetaSignatureDelta>
+[JsonConverter(typeof(ModelConverter<BetaSignatureDelta, BetaSignatureDeltaFromRaw>))]
+public sealed record class BetaSignatureDelta : ModelBase
 {
     public required string Signature
     {
@@ -105,4 +105,10 @@ public sealed record class BetaSignatureDelta : ModelBase, IFromRaw<BetaSignatur
     {
         this.Signature = signature;
     }
+}
+
+class BetaSignatureDeltaFromRaw : IFromRaw<BetaSignatureDelta>
+{
+    public BetaSignatureDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaSignatureDelta.FromRawUnchecked(rawData);
 }

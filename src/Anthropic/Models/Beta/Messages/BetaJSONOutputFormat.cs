@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaJSONOutputFormat>))]
-public sealed record class BetaJSONOutputFormat : ModelBase, IFromRaw<BetaJSONOutputFormat>
+[JsonConverter(typeof(ModelConverter<BetaJSONOutputFormat, BetaJSONOutputFormatFromRaw>))]
+public sealed record class BetaJSONOutputFormat : ModelBase
 {
     /// <summary>
     /// The JSON schema of the format
@@ -104,4 +104,11 @@ public sealed record class BetaJSONOutputFormat : ModelBase, IFromRaw<BetaJSONOu
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaJSONOutputFormatFromRaw : IFromRaw<BetaJSONOutputFormat>
+{
+    public BetaJSONOutputFormat FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaJSONOutputFormat.FromRawUnchecked(rawData);
 }

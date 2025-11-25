@@ -13,10 +13,10 @@ namespace Anthropic.Models.Messages.Batches;
 /// This is a single line in the response `.jsonl` file and does not represent the
 /// response as a whole.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<MessageBatchIndividualResponse>))]
-public sealed record class MessageBatchIndividualResponse
-    : ModelBase,
-        IFromRaw<MessageBatchIndividualResponse>
+[JsonConverter(
+    typeof(ModelConverter<MessageBatchIndividualResponse, MessageBatchIndividualResponseFromRaw>)
+)]
+public sealed record class MessageBatchIndividualResponse : ModelBase
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful
@@ -111,4 +111,11 @@ public sealed record class MessageBatchIndividualResponse
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MessageBatchIndividualResponseFromRaw : IFromRaw<MessageBatchIndividualResponse>
+{
+    public MessageBatchIndividualResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => MessageBatchIndividualResponse.FromRawUnchecked(rawData);
 }

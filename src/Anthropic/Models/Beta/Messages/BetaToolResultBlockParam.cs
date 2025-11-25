@@ -10,8 +10,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaToolResultBlockParam>))]
-public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaToolResultBlockParam>
+[JsonConverter(typeof(ModelConverter<BetaToolResultBlockParam, BetaToolResultBlockParamFromRaw>))]
+public sealed record class BetaToolResultBlockParam : ModelBase
 {
     public required string ToolUseID
     {
@@ -185,6 +185,13 @@ public sealed record class BetaToolResultBlockParam : ModelBase, IFromRaw<BetaTo
     {
         this.ToolUseID = toolUseID;
     }
+}
+
+class BetaToolResultBlockParamFromRaw : IFromRaw<BetaToolResultBlockParam>
+{
+    public BetaToolResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaToolResultBlockParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaToolResultBlockParamContentConverter))]

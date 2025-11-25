@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaNotFoundError>))]
-public sealed record class BetaNotFoundError : ModelBase, IFromRaw<BetaNotFoundError>
+[JsonConverter(typeof(ModelConverter<BetaNotFoundError, BetaNotFoundErrorFromRaw>))]
+public sealed record class BetaNotFoundError : ModelBase
 {
     public required string Message
     {
@@ -105,4 +105,10 @@ public sealed record class BetaNotFoundError : ModelBase, IFromRaw<BetaNotFoundE
     {
         this.Message = message;
     }
+}
+
+class BetaNotFoundErrorFromRaw : IFromRaw<BetaNotFoundError>
+{
+    public BetaNotFoundError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaNotFoundError.FromRawUnchecked(rawData);
 }

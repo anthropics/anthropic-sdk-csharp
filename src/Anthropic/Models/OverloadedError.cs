@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<OverloadedError>))]
-public sealed record class OverloadedError : ModelBase, IFromRaw<OverloadedError>
+[JsonConverter(typeof(ModelConverter<OverloadedError, OverloadedErrorFromRaw>))]
+public sealed record class OverloadedError : ModelBase
 {
     public required string Message
     {
@@ -103,4 +103,10 @@ public sealed record class OverloadedError : ModelBase, IFromRaw<OverloadedError
     {
         this.Message = message;
     }
+}
+
+class OverloadedErrorFromRaw : IFromRaw<OverloadedError>
+{
+    public OverloadedError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        OverloadedError.FromRawUnchecked(rawData);
 }

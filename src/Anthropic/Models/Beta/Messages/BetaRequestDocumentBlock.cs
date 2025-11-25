@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRequestDocumentBlock>))]
-public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRequestDocumentBlock>
+[JsonConverter(typeof(ModelConverter<BetaRequestDocumentBlock, BetaRequestDocumentBlockFromRaw>))]
+public sealed record class BetaRequestDocumentBlock : ModelBase
 {
     public required BetaRequestDocumentBlockSource Source
     {
@@ -193,6 +193,13 @@ public sealed record class BetaRequestDocumentBlock : ModelBase, IFromRaw<BetaRe
     {
         this.Source = source;
     }
+}
+
+class BetaRequestDocumentBlockFromRaw : IFromRaw<BetaRequestDocumentBlock>
+{
+    public BetaRequestDocumentBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRequestDocumentBlock.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaRequestDocumentBlockSourceConverter))]

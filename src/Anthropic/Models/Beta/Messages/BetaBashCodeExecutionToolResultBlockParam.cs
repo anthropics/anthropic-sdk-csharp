@@ -9,10 +9,13 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBashCodeExecutionToolResultBlockParam>))]
-public sealed record class BetaBashCodeExecutionToolResultBlockParam
-    : ModelBase,
-        IFromRaw<BetaBashCodeExecutionToolResultBlockParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaBashCodeExecutionToolResultBlockParam,
+        BetaBashCodeExecutionToolResultBlockParamFromRaw
+    >)
+)]
+public sealed record class BetaBashCodeExecutionToolResultBlockParam : ModelBase
 {
     public required BetaBashCodeExecutionToolResultBlockParamContent Content
     {
@@ -159,6 +162,14 @@ public sealed record class BetaBashCodeExecutionToolResultBlockParam
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaBashCodeExecutionToolResultBlockParamFromRaw
+    : IFromRaw<BetaBashCodeExecutionToolResultBlockParam>
+{
+    public BetaBashCodeExecutionToolResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaBashCodeExecutionToolResultBlockParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaBashCodeExecutionToolResultBlockParamContentConverter))]

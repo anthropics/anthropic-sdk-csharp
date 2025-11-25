@@ -9,10 +9,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaToolSearchToolBm25_20251119>))]
-public sealed record class BetaToolSearchToolBm25_20251119
-    : ModelBase,
-        IFromRaw<BetaToolSearchToolBm25_20251119>
+[JsonConverter(
+    typeof(ModelConverter<BetaToolSearchToolBm25_20251119, BetaToolSearchToolBm25_20251119FromRaw>)
+)]
+public sealed record class BetaToolSearchToolBm25_20251119 : ModelBase
 {
     /// <summary>
     /// Name of the tool.
@@ -220,6 +220,13 @@ public sealed record class BetaToolSearchToolBm25_20251119
     {
         this.Type = type;
     }
+}
+
+class BetaToolSearchToolBm25_20251119FromRaw : IFromRaw<BetaToolSearchToolBm25_20251119>
+{
+    public BetaToolSearchToolBm25_20251119 FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaToolSearchToolBm25_20251119.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaToolSearchToolBm25_20251119TypeConverter))]

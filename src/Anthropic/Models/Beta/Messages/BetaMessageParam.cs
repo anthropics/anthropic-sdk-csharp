@@ -10,8 +10,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageParam>))]
-public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessageParam>
+[JsonConverter(typeof(ModelConverter<BetaMessageParam, BetaMessageParamFromRaw>))]
+public sealed record class BetaMessageParam : ModelBase
 {
     public required BetaMessageParamContent Content
     {
@@ -92,6 +92,12 @@ public sealed record class BetaMessageParam : ModelBase, IFromRaw<BetaMessagePar
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageParamFromRaw : IFromRaw<BetaMessageParam>
+{
+    public BetaMessageParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaMessageParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaMessageParamContentConverter))]

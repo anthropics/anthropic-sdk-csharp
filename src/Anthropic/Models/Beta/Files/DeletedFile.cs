@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<DeletedFile>))]
-public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
+[JsonConverter(typeof(ModelConverter<DeletedFile, DeletedFileFromRaw>))]
+public sealed record class DeletedFile : ModelBase
 {
     /// <summary>
     /// ID of the deleted file.
@@ -103,6 +103,12 @@ public sealed record class DeletedFile : ModelBase, IFromRaw<DeletedFile>
     {
         this.ID = id;
     }
+}
+
+class DeletedFileFromRaw : IFromRaw<DeletedFile>
+{
+    public DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        DeletedFile.FromRawUnchecked(rawData);
 }
 
 /// <summary>

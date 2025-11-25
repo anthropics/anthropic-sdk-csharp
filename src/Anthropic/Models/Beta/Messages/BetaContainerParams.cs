@@ -10,8 +10,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Container parameters with skills to be loaded.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainerParams>))]
-public sealed record class BetaContainerParams : ModelBase, IFromRaw<BetaContainerParams>
+[JsonConverter(typeof(ModelConverter<BetaContainerParams, BetaContainerParamsFromRaw>))]
+public sealed record class BetaContainerParams : ModelBase
 {
     /// <summary>
     /// Container id
@@ -88,4 +88,10 @@ public sealed record class BetaContainerParams : ModelBase, IFromRaw<BetaContain
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaContainerParamsFromRaw : IFromRaw<BetaContainerParams>
+{
+    public BetaContainerParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaContainerParams.FromRawUnchecked(rawData);
 }

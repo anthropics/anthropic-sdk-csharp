@@ -9,10 +9,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawContentBlockDeltaEvent>))]
-public sealed record class BetaRawContentBlockDeltaEvent
-    : ModelBase,
-        IFromRaw<BetaRawContentBlockDeltaEvent>
+[JsonConverter(
+    typeof(ModelConverter<BetaRawContentBlockDeltaEvent, BetaRawContentBlockDeltaEventFromRaw>)
+)]
+public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
 {
     public required BetaRawContentBlockDelta Delta
     {
@@ -125,4 +125,11 @@ public sealed record class BetaRawContentBlockDeltaEvent
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaRawContentBlockDeltaEventFromRaw : IFromRaw<BetaRawContentBlockDeltaEvent>
+{
+    public BetaRawContentBlockDeltaEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRawContentBlockDeltaEvent.FromRawUnchecked(rawData);
 }

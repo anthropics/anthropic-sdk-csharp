@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Base64PDFSource>))]
-public sealed record class Base64PDFSource : ModelBase, IFromRaw<Base64PDFSource>
+[JsonConverter(typeof(ModelConverter<Base64PDFSource, Base64PDFSourceFromRaw>))]
+public sealed record class Base64PDFSource : ModelBase
 {
     public required string Data
     {
@@ -135,4 +135,10 @@ public sealed record class Base64PDFSource : ModelBase, IFromRaw<Base64PDFSource
     {
         this.Data = data;
     }
+}
+
+class Base64PDFSourceFromRaw : IFromRaw<Base64PDFSource>
+{
+    public Base64PDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Base64PDFSource.FromRawUnchecked(rawData);
 }

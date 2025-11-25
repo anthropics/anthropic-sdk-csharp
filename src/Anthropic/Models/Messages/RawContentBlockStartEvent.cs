@@ -9,10 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawContentBlockStartEvent>))]
-public sealed record class RawContentBlockStartEvent
-    : ModelBase,
-        IFromRaw<RawContentBlockStartEvent>
+[JsonConverter(typeof(ModelConverter<RawContentBlockStartEvent, RawContentBlockStartEventFromRaw>))]
+public sealed record class RawContentBlockStartEvent : ModelBase
 {
     public required RawContentBlockStartEventContentBlock ContentBlock
     {
@@ -128,6 +126,13 @@ public sealed record class RawContentBlockStartEvent
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class RawContentBlockStartEventFromRaw : IFromRaw<RawContentBlockStartEvent>
+{
+    public RawContentBlockStartEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => RawContentBlockStartEvent.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(RawContentBlockStartEventContentBlockConverter))]

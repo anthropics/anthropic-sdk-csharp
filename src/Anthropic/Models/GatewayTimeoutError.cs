@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<GatewayTimeoutError>))]
-public sealed record class GatewayTimeoutError : ModelBase, IFromRaw<GatewayTimeoutError>
+[JsonConverter(typeof(ModelConverter<GatewayTimeoutError, GatewayTimeoutErrorFromRaw>))]
+public sealed record class GatewayTimeoutError : ModelBase
 {
     public required string Message
     {
@@ -105,4 +105,10 @@ public sealed record class GatewayTimeoutError : ModelBase, IFromRaw<GatewayTime
     {
         this.Message = message;
     }
+}
+
+class GatewayTimeoutErrorFromRaw : IFromRaw<GatewayTimeoutError>
+{
+    public GatewayTimeoutError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        GatewayTimeoutError.FromRawUnchecked(rawData);
 }

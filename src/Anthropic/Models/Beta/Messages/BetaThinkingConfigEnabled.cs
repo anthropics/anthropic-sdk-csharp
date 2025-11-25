@@ -9,10 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaThinkingConfigEnabled>))]
-public sealed record class BetaThinkingConfigEnabled
-    : ModelBase,
-        IFromRaw<BetaThinkingConfigEnabled>
+[JsonConverter(typeof(ModelConverter<BetaThinkingConfigEnabled, BetaThinkingConfigEnabledFromRaw>))]
+public sealed record class BetaThinkingConfigEnabled : ModelBase
 {
     /// <summary>
     /// Determines how many tokens Claude can use for its internal reasoning process.
@@ -113,4 +111,11 @@ public sealed record class BetaThinkingConfigEnabled
     {
         this.BudgetTokens = budgetTokens;
     }
+}
+
+class BetaThinkingConfigEnabledFromRaw : IFromRaw<BetaThinkingConfigEnabled>
+{
+    public BetaThinkingConfigEnabled FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaThinkingConfigEnabled.FromRawUnchecked(rawData);
 }

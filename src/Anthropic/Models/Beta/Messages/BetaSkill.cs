@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// A skill that was loaded in a container (response model).
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaSkill>))]
-public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
+[JsonConverter(typeof(ModelConverter<BetaSkill, BetaSkillFromRaw>))]
+public sealed record class BetaSkill : ModelBase
 {
     /// <summary>
     /// Skill ID
@@ -123,6 +123,12 @@ public sealed record class BetaSkill : ModelBase, IFromRaw<BetaSkill>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaSkillFromRaw : IFromRaw<BetaSkill>
+{
+    public BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaSkill.FromRawUnchecked(rawData);
 }
 
 /// <summary>

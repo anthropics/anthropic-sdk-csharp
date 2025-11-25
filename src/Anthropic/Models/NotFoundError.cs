@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<NotFoundError>))]
-public sealed record class NotFoundError : ModelBase, IFromRaw<NotFoundError>
+[JsonConverter(typeof(ModelConverter<NotFoundError, NotFoundErrorFromRaw>))]
+public sealed record class NotFoundError : ModelBase
 {
     public required string Message
     {
@@ -103,4 +103,10 @@ public sealed record class NotFoundError : ModelBase, IFromRaw<NotFoundError>
     {
         this.Message = message;
     }
+}
+
+class NotFoundErrorFromRaw : IFromRaw<NotFoundError>
+{
+    public NotFoundError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        NotFoundError.FromRawUnchecked(rawData);
 }

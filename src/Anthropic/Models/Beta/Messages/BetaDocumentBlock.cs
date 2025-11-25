@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaDocumentBlock>))]
-public sealed record class BetaDocumentBlock : ModelBase, IFromRaw<BetaDocumentBlock>
+[JsonConverter(typeof(ModelConverter<BetaDocumentBlock, BetaDocumentBlockFromRaw>))]
+public sealed record class BetaDocumentBlock : ModelBase
 {
     /// <summary>
     /// Citation configuration for the document
@@ -145,6 +145,12 @@ public sealed record class BetaDocumentBlock : ModelBase, IFromRaw<BetaDocumentB
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaDocumentBlockFromRaw : IFromRaw<BetaDocumentBlock>
+{
+    public BetaDocumentBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaDocumentBlock.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(SourceConverter))]

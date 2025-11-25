@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMemoryTool20250818CreateCommand>))]
-public sealed record class BetaMemoryTool20250818CreateCommand
-    : ModelBase,
-        IFromRaw<BetaMemoryTool20250818CreateCommand>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaMemoryTool20250818CreateCommand,
+        BetaMemoryTool20250818CreateCommandFromRaw
+    >)
+)]
+public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
 {
     /// <summary>
     /// Command type identifier
@@ -135,4 +138,11 @@ public sealed record class BetaMemoryTool20250818CreateCommand
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMemoryTool20250818CreateCommandFromRaw : IFromRaw<BetaMemoryTool20250818CreateCommand>
+{
+    public BetaMemoryTool20250818CreateCommand FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMemoryTool20250818CreateCommand.FromRawUnchecked(rawData);
 }

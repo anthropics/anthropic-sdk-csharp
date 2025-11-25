@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolResultBlock>))]
-public sealed record class WebSearchToolResultBlock : ModelBase, IFromRaw<WebSearchToolResultBlock>
+[JsonConverter(typeof(ModelConverter<WebSearchToolResultBlock, WebSearchToolResultBlockFromRaw>))]
+public sealed record class WebSearchToolResultBlock : ModelBase
 {
     public required WebSearchToolResultBlockContent Content
     {
@@ -127,4 +127,11 @@ public sealed record class WebSearchToolResultBlock : ModelBase, IFromRaw<WebSea
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class WebSearchToolResultBlockFromRaw : IFromRaw<WebSearchToolResultBlock>
+{
+    public WebSearchToolResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => WebSearchToolResultBlock.FromRawUnchecked(rawData);
 }

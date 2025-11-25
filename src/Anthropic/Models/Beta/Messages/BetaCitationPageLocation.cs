@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationPageLocation>))]
-public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCitationPageLocation>
+[JsonConverter(typeof(ModelConverter<BetaCitationPageLocation, BetaCitationPageLocationFromRaw>))]
+public sealed record class BetaCitationPageLocation : ModelBase
 {
     public required string CitedText
     {
@@ -205,4 +205,11 @@ public sealed record class BetaCitationPageLocation : ModelBase, IFromRaw<BetaCi
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaCitationPageLocationFromRaw : IFromRaw<BetaCitationPageLocation>
+{
+    public BetaCitationPageLocation FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCitationPageLocation.FromRawUnchecked(rawData);
 }

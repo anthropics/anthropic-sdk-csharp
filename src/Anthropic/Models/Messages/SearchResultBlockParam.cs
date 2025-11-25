@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<SearchResultBlockParam>))]
-public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchResultBlockParam>
+[JsonConverter(typeof(ModelConverter<SearchResultBlockParam, SearchResultBlockParamFromRaw>))]
+public sealed record class SearchResultBlockParam : ModelBase
 {
     public required List<TextBlockParam> Content
     {
@@ -208,4 +208,11 @@ public sealed record class SearchResultBlockParam : ModelBase, IFromRaw<SearchRe
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class SearchResultBlockParamFromRaw : IFromRaw<SearchResultBlockParam>
+{
+    public SearchResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => SearchResultBlockParam.FromRawUnchecked(rawData);
 }

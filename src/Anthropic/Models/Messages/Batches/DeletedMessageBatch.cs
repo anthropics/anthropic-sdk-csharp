@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<DeletedMessageBatch>))]
-public sealed record class DeletedMessageBatch : ModelBase, IFromRaw<DeletedMessageBatch>
+[JsonConverter(typeof(ModelConverter<DeletedMessageBatch, DeletedMessageBatchFromRaw>))]
+public sealed record class DeletedMessageBatch : ModelBase
 {
     /// <summary>
     /// ID of the Message Batch.
@@ -113,4 +113,10 @@ public sealed record class DeletedMessageBatch : ModelBase, IFromRaw<DeletedMess
     {
         this.ID = id;
     }
+}
+
+class DeletedMessageBatchFromRaw : IFromRaw<DeletedMessageBatch>
+{
+    public DeletedMessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        DeletedMessageBatch.FromRawUnchecked(rawData);
 }

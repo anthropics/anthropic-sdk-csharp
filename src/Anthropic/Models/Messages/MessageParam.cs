@@ -10,8 +10,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageParam>))]
-public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
+[JsonConverter(typeof(ModelConverter<MessageParam, MessageParamFromRaw>))]
+public sealed record class MessageParam : ModelBase
 {
     public required MessageParamContent Content
     {
@@ -90,6 +90,12 @@ public sealed record class MessageParam : ModelBase, IFromRaw<MessageParam>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MessageParamFromRaw : IFromRaw<MessageParam>
+{
+    public MessageParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        MessageParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(MessageParamContentConverter))]

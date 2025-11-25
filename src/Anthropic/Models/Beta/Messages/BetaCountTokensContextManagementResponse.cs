@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCountTokensContextManagementResponse>))]
-public sealed record class BetaCountTokensContextManagementResponse
-    : ModelBase,
-        IFromRaw<BetaCountTokensContextManagementResponse>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaCountTokensContextManagementResponse,
+        BetaCountTokensContextManagementResponseFromRaw
+    >)
+)]
+public sealed record class BetaCountTokensContextManagementResponse : ModelBase
 {
     /// <summary>
     /// The original token count before context management was applied
@@ -76,4 +79,12 @@ public sealed record class BetaCountTokensContextManagementResponse
     {
         this.OriginalInputTokens = originalInputTokens;
     }
+}
+
+class BetaCountTokensContextManagementResponseFromRaw
+    : IFromRaw<BetaCountTokensContextManagementResponse>
+{
+    public BetaCountTokensContextManagementResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCountTokensContextManagementResponse.FromRawUnchecked(rawData);
 }

@@ -9,10 +9,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebSearchToolResultError>))]
-public sealed record class BetaWebSearchToolResultError
-    : ModelBase,
-        IFromRaw<BetaWebSearchToolResultError>
+[JsonConverter(
+    typeof(ModelConverter<BetaWebSearchToolResultError, BetaWebSearchToolResultErrorFromRaw>)
+)]
+public sealed record class BetaWebSearchToolResultError : ModelBase
 {
     public required ApiEnum<string, BetaWebSearchToolResultErrorCode> ErrorCode
     {
@@ -106,4 +106,11 @@ public sealed record class BetaWebSearchToolResultError
     {
         this.ErrorCode = errorCode;
     }
+}
+
+class BetaWebSearchToolResultErrorFromRaw : IFromRaw<BetaWebSearchToolResultError>
+{
+    public BetaWebSearchToolResultError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaWebSearchToolResultError.FromRawUnchecked(rawData);
 }

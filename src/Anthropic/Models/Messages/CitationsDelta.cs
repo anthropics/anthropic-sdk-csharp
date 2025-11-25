@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsDelta>))]
-public sealed record class CitationsDelta : ModelBase, IFromRaw<CitationsDelta>
+[JsonConverter(typeof(ModelConverter<CitationsDelta, CitationsDeltaFromRaw>))]
+public sealed record class CitationsDelta : ModelBase
 {
     public required Citation Citation
     {
@@ -103,6 +103,12 @@ public sealed record class CitationsDelta : ModelBase, IFromRaw<CitationsDelta>
     {
         this.Citation = citation;
     }
+}
+
+class CitationsDeltaFromRaw : IFromRaw<CitationsDelta>
+{
+    public CitationsDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        CitationsDelta.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(CitationConverter))]

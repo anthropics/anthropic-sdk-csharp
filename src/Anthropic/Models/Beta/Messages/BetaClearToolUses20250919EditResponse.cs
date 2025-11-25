@@ -9,10 +9,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaClearToolUses20250919EditResponse>))]
-public sealed record class BetaClearToolUses20250919EditResponse
-    : ModelBase,
-        IFromRaw<BetaClearToolUses20250919EditResponse>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaClearToolUses20250919EditResponse,
+        BetaClearToolUses20250919EditResponseFromRaw
+    >)
+)]
+public sealed record class BetaClearToolUses20250919EditResponse : ModelBase
 {
     /// <summary>
     /// Number of input tokens cleared by this edit.
@@ -133,4 +136,11 @@ public sealed record class BetaClearToolUses20250919EditResponse
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaClearToolUses20250919EditResponseFromRaw : IFromRaw<BetaClearToolUses20250919EditResponse>
+{
+    public BetaClearToolUses20250919EditResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaClearToolUses20250919EditResponse.FromRawUnchecked(rawData);
 }

@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<URLImageSource>))]
-public sealed record class URLImageSource : ModelBase, IFromRaw<URLImageSource>
+[JsonConverter(typeof(ModelConverter<URLImageSource, URLImageSourceFromRaw>))]
+public sealed record class URLImageSource : ModelBase
 {
     public JsonElement Type
     {
@@ -98,4 +98,10 @@ public sealed record class URLImageSource : ModelBase, IFromRaw<URLImageSource>
     {
         this.URL = url;
     }
+}
+
+class URLImageSourceFromRaw : IFromRaw<URLImageSource>
+{
+    public URLImageSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        URLImageSource.FromRawUnchecked(rawData);
 }

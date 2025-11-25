@@ -9,10 +9,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaServerToolUseBlockParam>))]
-public sealed record class BetaServerToolUseBlockParam
-    : ModelBase,
-        IFromRaw<BetaServerToolUseBlockParam>
+[JsonConverter(
+    typeof(ModelConverter<BetaServerToolUseBlockParam, BetaServerToolUseBlockParamFromRaw>)
+)]
+public sealed record class BetaServerToolUseBlockParam : ModelBase
 {
     public required string ID
     {
@@ -209,6 +209,13 @@ public sealed record class BetaServerToolUseBlockParam
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaServerToolUseBlockParamFromRaw : IFromRaw<BetaServerToolUseBlockParam>
+{
+    public BetaServerToolUseBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaServerToolUseBlockParam.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(BetaServerToolUseBlockParamNameConverter))]

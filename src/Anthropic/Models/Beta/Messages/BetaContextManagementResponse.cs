@@ -9,10 +9,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaContextManagementResponse>))]
-public sealed record class BetaContextManagementResponse
-    : ModelBase,
-        IFromRaw<BetaContextManagementResponse>
+[JsonConverter(
+    typeof(ModelConverter<BetaContextManagementResponse, BetaContextManagementResponseFromRaw>)
+)]
+public sealed record class BetaContextManagementResponse : ModelBase
 {
     /// <summary>
     /// List of context management edits that were applied.
@@ -84,6 +84,13 @@ public sealed record class BetaContextManagementResponse
     {
         this.AppliedEdits = appliedEdits;
     }
+}
+
+class BetaContextManagementResponseFromRaw : IFromRaw<BetaContextManagementResponse>
+{
+    public BetaContextManagementResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaContextManagementResponse.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(AppliedEditConverter))]

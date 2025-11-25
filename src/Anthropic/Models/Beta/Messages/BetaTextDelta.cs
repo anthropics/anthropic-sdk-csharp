@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTextDelta>))]
-public sealed record class BetaTextDelta : ModelBase, IFromRaw<BetaTextDelta>
+[JsonConverter(typeof(ModelConverter<BetaTextDelta, BetaTextDeltaFromRaw>))]
+public sealed record class BetaTextDelta : ModelBase
 {
     public required string Text
     {
@@ -103,4 +103,10 @@ public sealed record class BetaTextDelta : ModelBase, IFromRaw<BetaTextDelta>
     {
         this.Text = text;
     }
+}
+
+class BetaTextDeltaFromRaw : IFromRaw<BetaTextDelta>
+{
+    public BetaTextDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaTextDelta.FromRawUnchecked(rawData);
 }

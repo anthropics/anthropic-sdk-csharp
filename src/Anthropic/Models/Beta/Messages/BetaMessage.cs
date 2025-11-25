@@ -10,8 +10,8 @@ using Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessage>))]
-public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
+[JsonConverter(typeof(ModelConverter<BetaMessage, BetaMessageFromRaw>))]
+public sealed record class BetaMessage : ModelBase
 {
     /// <summary>
     /// Unique object identifier.
@@ -380,4 +380,10 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageFromRaw : IFromRaw<BetaMessage>
+{
+    public BetaMessage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaMessage.FromRawUnchecked(rawData);
 }
