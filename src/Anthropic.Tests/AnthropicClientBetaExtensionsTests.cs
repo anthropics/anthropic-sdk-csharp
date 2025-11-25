@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services;
 
@@ -965,5 +966,248 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
 
         ErrorContent errorContent = Assert.IsType<ErrorContent>(codeResult.Outputs[0]);
         Assert.Equal("ExecutionTimeExceeded", errorContent.ErrorCode);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithFunctionResultContent_HostedFileContent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "text",
+                            "text": "Get file"
+                        }]
+                    },
+                    {
+                        "role": "assistant",
+                        "content": [{
+                            "type": "tool_use",
+                            "id": "tool_file",
+                            "name": "file_tool",
+                            "input": {}
+                        }]
+                    },
+                    {
+                        "role": "user",
+                        "content": [{
+                            "type": "tool_result",
+                            "tool_use_id": "tool_file",
+                            "is_error": false,
+                            "content": [{
+                                "type": "document",
+                                "source": {
+                                    "type": "file",
+                                    "file_id": "file_abc123"
+                                }
+                            }]
+                        }]
+                    }
+                ]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_file_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "File received"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 28,
+                    "output_tokens": 7
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatMessage> messages =
+        [
+            new ChatMessage(ChatRole.User, "Get file"),
+            new ChatMessage(
+                ChatRole.Assistant,
+                [
+                    new FunctionCallContent(
+                        "tool_file",
+                        "file_tool",
+                        new Dictionary<string, object?>()
+                    ),
+                ]
+            ),
+            new ChatMessage(
+                ChatRole.User,
+                [new FunctionResultContent("tool_file", new HostedFileContent("file_abc123"))]
+            ),
+        ];
+
+        ChatResponse response = await chatClient.GetResponseAsync(messages);
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_AdditionalProperties_FlowsThrough()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use enhanced tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "enhanced_tool",
+                    "description": "A tool with additional properties",
+                    "input_schema": {
+                        "query": {
+                            "type": "string"
+                        },
+                        "type": "object",
+                        "required": ["query"]
+                    },
+                    "defer_loading": true,
+                    "strict": true,
+                    "input_examples": [
+                        {
+                            "query": "example query"
+                        }
+                    ],
+                    "allowed_callers": [
+                        "direct"
+                    ]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_enhanced_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Tool is ready"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 40,
+                    "output_tokens": 10
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var enhancedFunction = AIFunctionFactory.Create(
+            (string query) => "result",
+            new AIFunctionFactoryOptions
+            {
+                Name = "enhanced_tool",
+                Description = "A tool with additional properties",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(BetaTool.DeferLoading)] = true,
+                    [nameof(BetaTool.Strict)] = true,
+                    [nameof(BetaTool.InputExamples)] = new List<Dictionary<string, JsonElement>>
+                    {
+                        new() { ["query"] = JsonSerializer.SerializeToElement("example query") },
+                    },
+                    [nameof(BetaTool.AllowedCallers)] = new List<ApiEnum<string, AllowedCaller2>>
+                    {
+                        new(JsonSerializer.SerializeToElement("direct")),
+                    },
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [enhancedFunction] };
+
+        ChatResponse response = await chatClient.GetResponseAsync("Use enhanced tool", options);
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithAIFunctionTool_PartialAdditionalProperties()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use strict tool"
+                    }]
+                }],
+                "tools": [{
+                    "name": "strict_tool",
+                    "description": "A tool with only strict property",
+                    "input_schema": {
+                        "value": {
+                            "type": "integer"
+                        },
+                        "type": "object",
+                        "required": ["value"]
+                    },
+                    "strict": true
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_strict_tool_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Strict mode enabled"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 35,
+                    "output_tokens": 8
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        var strictFunction = AIFunctionFactory.Create(
+            (int value) => value * 2,
+            new AIFunctionFactoryOptions
+            {
+                Name = "strict_tool",
+                Description = "A tool with only strict property",
+                AdditionalProperties = new Dictionary<string, object?>
+                {
+                    [nameof(BetaTool.Strict)] = true,
+                },
+            }
+        );
+
+        ChatOptions options = new() { Tools = [strictFunction] };
+
+        ChatResponse response = await chatClient.GetResponseAsync("Use strict tool", options);
+        Assert.NotNull(response);
     }
 }
