@@ -12,8 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Rest.ClientRuntime.Azure.Authentication"
-      Version="2.4.1" />
     <PackageReference Include="Azure.Identity" Version="1.17.0" />
   </ItemGroup>
 
