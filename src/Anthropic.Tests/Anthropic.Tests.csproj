@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-
-    <Nullable>enable</Nullable>
-
-    <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+
+    <!-- Run tests on net8.0, which will use the SDK's net8.0 DLL, and on net462, which will use the
+    SDK's netstandard2.0 DLL. -->
+    <TargetFrameworks>net8.0;net462</TargetFrameworks>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
 
-    <!-- Disable skipped tests warnings -->
+    <!-- Disable skipped tests warnings. -->
     <NoWarn>$(NoWarn),xUnit1004</NoWarn>
 
-    <!-- Disable deprecation warnings since we may reference our own deprecated symbols -->
+    <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
@@ -23,13 +23,8 @@
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
-
     <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
     <ProjectReference Include="..\Anthropic.Foundry\Anthropic.Foundry.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
-
 </Project>
