@@ -35,7 +35,7 @@ class FreezableDictionary<K, V> : IDictionary<K, V>
 
     public FreezableDictionary(IReadOnlyDictionary<K, V> dictionary)
     {
-        _dictionary = dictionary.ToDictionary(e => e.Key, e => e.Value);
+        _dictionary = Enumerable.ToDictionary(dictionary, e => e.Key, e => e.Value);
     }
 
     public FreezableDictionary(FrozenDictionary<K, V> frozen)
@@ -127,17 +127,14 @@ class FreezableDictionary<K, V> : IDictionary<K, V>
         return _mutableDictionary.Remove(item.Key);
     }
 
-#if NETSTANDARD2_0
-    public bool TryGetValue(K key, out V value)
-    {
-        return _dictionary.TryGetValue(key, out value);
-    }
-#else
-    public bool TryGetValue(K key, [MaybeNullWhenAttribute(false)] out V value)
-    {
-        return _dictionary.TryGetValue(key, out value);
-    }
+    public bool TryGetValue(K key,
+#if NET
+        [MaybeNullWhen(false)]
 #endif
+        out V value)
+    {
+        return _dictionary.TryGetValue(key, out value);
+    }
 
     Collections::IEnumerator Collections::IEnumerable.GetEnumerator()
     {

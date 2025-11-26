@@ -61,6 +61,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\logo.png" Pack="true" PackagePath="\" />
-    <Compile Include="..\Anthropic\GlobalShims.cs" />
+    <Compile Include="..\Anthropic\Shims.cs" />
   </ItemGroup>
 </Project>

@@ -39,11 +39,11 @@ public sealed class HttpResponse : IDisposable
             this.CancellationToken,
             cancellationToken
         );
-#if NET5_0_OR_GREATER
-        return await Message.Content.ReadAsStreamAsync(cts.Token).ConfigureAwait(false);
-#else
-        return await Message.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        return await Message.Content.ReadAsStreamAsync(
+#if NET
+            cts.Token
 #endif
+        ).ConfigureAwait(false);
     }
 
     public async Task<string> ReadAsString(CancellationToken cancellationToken = default)
@@ -52,11 +52,11 @@ public sealed class HttpResponse : IDisposable
             this.CancellationToken,
             cancellationToken
         );
-#if NET5_0_OR_GREATER
-        return await Message.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false);
-#else
-        return await Message.Content.ReadAsStringAsync().ConfigureAwait(false);
+        return await Message.Content.ReadAsStringAsync(
+#if NET
+            cts.Token
 #endif
+        ).ConfigureAwait(false);
     }
 
     public void Dispose()
