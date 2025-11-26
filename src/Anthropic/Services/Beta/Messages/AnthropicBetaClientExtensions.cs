@@ -839,7 +839,7 @@ public static class AnthropicBetaClientExtensions
                                 {
                                     OutputFormat = new BetaJSONOutputFormat()
                                     {
-                                        Schema = new()
+                                        Schema = new Dictionary<string, JsonElement>
                                         {
                                             ["type"] = JsonElement.Parse("\"object\""),
                                             ["properties"] = properties,
@@ -883,8 +883,9 @@ public static class AnthropicBetaClientExtensions
 
                 if (options.Tools is { } tools)
                 {
-                    List<BetaToolUnion>? createdTools = createParams.Tools;
-                    List<BetaRequestMCPServerURLDefinition>? mcpServers = createParams.MCPServers;
+                    List<BetaToolUnion>? createdTools = createParams.Tools?.ToList();
+                    List<BetaRequestMCPServerURLDefinition>? mcpServers =
+                        createParams.MCPServers?.ToList();
                     foreach (var tool in tools)
                     {
                         switch (tool)
