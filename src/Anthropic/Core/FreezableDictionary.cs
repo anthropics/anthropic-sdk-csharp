@@ -131,6 +131,7 @@ class FreezableDictionary<K, V> : IDictionary<K, V>
 #if NET
         [MaybeNullWhen(false)]
 #endif
+
         out V value)
     {
         return _dictionary.TryGetValue(key, out value);
