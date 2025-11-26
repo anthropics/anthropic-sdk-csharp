@@ -1,8 +1,5 @@
-﻿using System;
-using Anthropic;
+﻿using Anthropic;
 using Anthropic.Models.Messages;
-using Anthropic.Models.Messages.MessageParamProperties;
-using ContentBlockVariants = Anthropic.Models.Messages.ContentBlockVariants;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 AnthropicClient client = new();
@@ -22,11 +19,11 @@ var response = await client.Messages.Create(parameters);
 
 foreach (ContentBlock block in response.Content)
 {
-    if (block.TryPickThinking(out ThinkingBlock thinking))
+    if (block.TryPickThinking(out ThinkingBlock? thinking))
     {
         Console.WriteLine($"Thinking: {thinking.Thinking}");
     }
-    else if (block.TryPickText(out TextBlock text))
+    else if (block.TryPickText(out TextBlock? text))
     {
         Console.WriteLine($"Text: {text.Text}");
     }
@@ -34,9 +31,7 @@ foreach (ContentBlock block in response.Content)
 
 var message = String.Join(
     "",
-    response
-        .Content.OfType<ContentBlockVariants::TextBlock>()
-        .Select((textBlock) => textBlock.Value.Text)
+    response.Content.Select(e => e.Value).OfType<TextBlock>().Select((textBlock) => textBlock.Text)
 );
 
 Console.WriteLine(message);
