@@ -15,7 +15,7 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaRequestMCPServerToolConfiguration : ModelBase
 {
-    public List<string>? AllowedTools
+    public IReadOnlyList<string>? AllowedTools
     {
         get
         {

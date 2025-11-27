@@ -115,7 +115,7 @@ public sealed record class BetaToolComputerUse20251124 : ModelBase
         }
     }
 
-    public List<ApiEnum<string, AllowedCaller7>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, AllowedCaller7>>? AllowedCallers
     {
         get
         {
@@ -239,7 +239,7 @@ public sealed record class BetaToolComputerUse20251124 : ModelBase
         }
     }
 
-    public List<Dictionary<string, JsonElement>>? InputExamples
+    public IReadOnlyList<Dictionary<string, JsonElement>>? InputExamples
     {
         get
         {

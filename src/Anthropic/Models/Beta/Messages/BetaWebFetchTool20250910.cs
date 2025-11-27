@@ -59,7 +59,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
         }
     }
 
-    public List<ApiEnum<string, AllowedCaller14>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, AllowedCaller14>>? AllowedCallers
     {
         get
         {
@@ -88,7 +88,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// <summary>
     /// List of domains to allow fetching from
     /// </summary>
-    public List<string>? AllowedDomains
+    public IReadOnlyList<string>? AllowedDomains
     {
         get
         {
@@ -109,7 +109,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// <summary>
     /// List of domains to block fetching from
     /// </summary>
-    public List<string>? BlockedDomains
+    public IReadOnlyList<string>? BlockedDomains
     {
         get
         {

@@ -783,7 +783,7 @@ public static class AnthropicClientExtensions
 
                 if (options.Tools is { } tools)
                 {
-                    List<ToolUnion>? createdTools = createParams.Tools;
+                    List<ToolUnion>? createdTools = createParams.Tools?.ToList();
                     foreach (var tool in tools)
                     {
                         switch (tool)

@@ -15,7 +15,7 @@ public sealed record class VersionListPageResponse : ModelBase
     /// <summary>
     /// List of skill versions.
     /// </summary>
-    public required List<global::Anthropic.Models.Beta.Skills.Versions.Data> Data
+    public required IReadOnlyList<global::Anthropic.Models.Beta.Skills.Versions.Data> Data
     {
         get
         {

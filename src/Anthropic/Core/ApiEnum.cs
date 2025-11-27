@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Exceptions;
@@ -20,11 +19,7 @@ public record struct ApiEnum<TRaw, TEnum>(JsonElement Json)
 
     public readonly void Validate()
     {
-#if NET7_0_OR_GREATER
-        if (!Enum.IsDefined(Value()))
-#else
-        if (!Enum.GetValues(typeof(TEnum)).OfType<TEnum>().Contains(Value()))
-#endif
+        if (!Enum.IsDefined(typeof(TEnum), Value()))
         {
             throw new AnthropicInvalidDataException("Invalid enum value");
         }

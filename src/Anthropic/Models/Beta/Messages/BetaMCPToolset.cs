@@ -94,7 +94,7 @@ public sealed record class BetaMCPToolset : ModelBase
     /// <summary>
     /// Configuration overrides for specific tools, keyed by tool name
     /// </summary>
-    public Dictionary<string, BetaMCPToolConfig>? Configs
+    public IReadOnlyDictionary<string, BetaMCPToolConfig>? Configs
     {
         get
         {

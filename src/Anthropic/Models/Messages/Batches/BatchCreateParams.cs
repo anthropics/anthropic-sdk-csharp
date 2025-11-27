@@ -33,7 +33,7 @@ public sealed record class BatchCreateParams : ParamsBase
     /// List of requests for prompt completion. Each is an individual request to
     /// create a Message.
     /// </summary>
-    public required List<Request> Requests
+    public required IReadOnlyList<Request> Requests
     {
         get
         {
@@ -317,7 +317,7 @@ public sealed record class Params : ModelBase
     ///
     /// <para>There is a limit of 100,000 messages in a single request.</para>
     /// </summary>
-    public required List<MessageParam> Messages
+    public required IReadOnlyList<MessageParam> Messages
     {
         get
         {
@@ -444,7 +444,7 @@ public sealed record class Params : ModelBase
     /// will be `"stop_sequence"` and the response `stop_sequence` value will contain
     /// the matched stop sequence.</para>
     /// </summary>
-    public List<string>? StopSequences
+    public IReadOnlyList<string>? StopSequences
     {
         get
         {
@@ -668,7 +668,7 @@ public sealed record class Params : ModelBase
     ///
     /// <para>See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.</para>
     /// </summary>
-    public List<ToolUnion>? Tools
+    public IReadOnlyList<ToolUnion>? Tools
     {
         get
         {

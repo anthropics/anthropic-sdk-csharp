@@ -51,7 +51,7 @@ public sealed record class SkillCreateParams : ParamsBase
     /// <para>All files must be in the same top-level directory and must include
     /// a SKILL.md file at the root of that directory.</para>
     /// </summary>
-    public List<string>? Files
+    public IReadOnlyList<string>? Files
     {
         get
         {
@@ -72,7 +72,7 @@ public sealed record class SkillCreateParams : ParamsBase
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
-    public List<ApiEnum<string, AnthropicBeta>>? Betas
+    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
         get
         {

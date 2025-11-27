@@ -70,7 +70,7 @@ public sealed record class BetaContainer : ModelBase
     /// <summary>
     /// Skills loaded in the container
     /// </summary>
-    public required List<BetaSkill>? Skills
+    public required IReadOnlyList<BetaSkill>? Skills
     {
         get
         {

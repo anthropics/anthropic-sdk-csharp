@@ -17,7 +17,7 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaToolSearchToolSearchResultBlockParam : ModelBase
 {
-    public required List<BetaToolReferenceBlockParam> ToolReferences
+    public required IReadOnlyList<BetaToolReferenceBlockParam> ToolReferences
     {
         get
         {

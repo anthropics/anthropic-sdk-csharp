@@ -37,7 +37,7 @@ public sealed record class BetaContainerParams : ModelBase
     /// <summary>
     /// List of skills to load in the container
     /// </summary>
-    public List<BetaSkillParams>? Skills
+    public IReadOnlyList<BetaSkillParams>? Skills
     {
         get
         {

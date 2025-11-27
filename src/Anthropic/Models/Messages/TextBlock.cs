@@ -19,7 +19,7 @@ public sealed record class TextBlock : ModelBase
     /// cited. Citing a PDF results in `page_location`, plain text results in `char_location`,
     /// and content document results in `content_block_location`.</para>
     /// </summary>
-    public required List<TextCitation>? Citations
+    public required IReadOnlyList<TextCitation>? Citations
     {
         get
         {

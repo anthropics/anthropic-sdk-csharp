@@ -2,10 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-#if !NET
-using System.Linq;
-using System.Reflection;
-#endif
 
 namespace Anthropic.Core;
 

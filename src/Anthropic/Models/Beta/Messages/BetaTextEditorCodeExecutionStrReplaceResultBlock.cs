@@ -17,7 +17,7 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : ModelBase
 {
-    public required List<string>? Lines
+    public required IReadOnlyList<string>? Lines
     {
         get
         {

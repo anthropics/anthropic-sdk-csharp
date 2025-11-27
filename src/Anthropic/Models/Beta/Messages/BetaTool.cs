@@ -76,7 +76,7 @@ public sealed record class BetaTool : ModelBase
         }
     }
 
-    public List<ApiEnum<string, AllowedCaller2>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, AllowedCaller2>>? AllowedCallers
     {
         get
         {
@@ -184,7 +184,7 @@ public sealed record class BetaTool : ModelBase
         }
     }
 
-    public List<Dictionary<string, JsonElement>>? InputExamples
+    public IReadOnlyList<Dictionary<string, JsonElement>>? InputExamples
     {
         get
         {
@@ -327,7 +327,7 @@ public sealed record class InputSchema : ModelBase
         }
     }
 
-    public Dictionary<string, JsonElement>? Properties
+    public IReadOnlyDictionary<string, JsonElement>? Properties
     {
         get
         {
@@ -348,7 +348,7 @@ public sealed record class InputSchema : ModelBase
         }
     }
 
-    public List<string>? Required
+    public IReadOnlyList<string>? Required
     {
         get
         {

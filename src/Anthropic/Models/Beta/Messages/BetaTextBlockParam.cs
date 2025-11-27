@@ -82,7 +82,7 @@ public sealed record class BetaTextBlockParam : ModelBase
         }
     }
 
-    public List<BetaTextCitationParam>? Citations
+    public IReadOnlyList<BetaTextCitationParam>? Citations
     {
         get
         {

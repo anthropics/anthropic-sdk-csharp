@@ -64,7 +64,7 @@ public sealed record class Message : ModelBase
     ///
     /// <para>```json [{"type": "text", "text": "B)"}] ```</para>
     /// </summary>
-    public required List<ContentBlock> Content
+    public required IReadOnlyList<ContentBlock> Content
     {
         get
         {

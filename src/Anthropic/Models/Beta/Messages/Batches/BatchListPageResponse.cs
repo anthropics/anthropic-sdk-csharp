@@ -12,7 +12,7 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 [JsonConverter(typeof(ModelConverter<BatchListPageResponse, BatchListPageResponseFromRaw>))]
 public sealed record class BatchListPageResponse : ModelBase
 {
-    public required List<BetaMessageBatch> Data
+    public required IReadOnlyList<BetaMessageBatch> Data
     {
         get
         {

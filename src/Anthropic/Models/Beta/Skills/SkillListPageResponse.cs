@@ -15,7 +15,7 @@ public sealed record class SkillListPageResponse : ModelBase
     /// <summary>
     /// List of skills.
     /// </summary>
-    public required List<Data> Data
+    public required IReadOnlyList<Data> Data
     {
         get
         {

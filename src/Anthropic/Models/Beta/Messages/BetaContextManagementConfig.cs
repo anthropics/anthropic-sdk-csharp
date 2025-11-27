@@ -17,7 +17,7 @@ public sealed record class BetaContextManagementConfig : ModelBase
     /// <summary>
     /// List of context management edits to apply
     /// </summary>
-    public List<Edit>? Edits
+    public IReadOnlyList<Edit>? Edits
     {
         get
         {

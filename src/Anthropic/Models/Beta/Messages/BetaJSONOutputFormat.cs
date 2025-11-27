@@ -15,7 +15,7 @@ public sealed record class BetaJSONOutputFormat : ModelBase
     /// <summary>
     /// The JSON schema of the format
     /// </summary>
-    public required Dictionary<string, JsonElement> Schema
+    public required IReadOnlyDictionary<string, JsonElement> Schema
     {
         get
         {

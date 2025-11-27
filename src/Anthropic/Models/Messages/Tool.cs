@@ -218,7 +218,7 @@ public sealed record class InputSchema : ModelBase
         }
     }
 
-    public Dictionary<string, JsonElement>? Properties
+    public IReadOnlyDictionary<string, JsonElement>? Properties
     {
         get
         {
@@ -239,7 +239,7 @@ public sealed record class InputSchema : ModelBase
         }
     }
 
-    public List<string>? Required
+    public IReadOnlyList<string>? Required
     {
         get
         {

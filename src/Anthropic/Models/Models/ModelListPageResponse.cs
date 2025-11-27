@@ -12,7 +12,7 @@ namespace Anthropic.Models.Models;
 [JsonConverter(typeof(ModelConverter<ModelListPageResponse, ModelListPageResponseFromRaw>))]
 public sealed record class ModelListPageResponse : ModelBase
 {
-    public required List<ModelInfo> Data
+    public required IReadOnlyList<ModelInfo> Data
     {
         get
         {

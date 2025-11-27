@@ -17,7 +17,7 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaBashCodeExecutionResultBlockParam : ModelBase
 {
-    public required List<BetaBashCodeExecutionOutputBlockParam> Content
+    public required IReadOnlyList<BetaBashCodeExecutionOutputBlockParam> Content
     {
         get
         {

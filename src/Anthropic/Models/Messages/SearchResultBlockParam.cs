@@ -12,7 +12,7 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(ModelConverter<SearchResultBlockParam, SearchResultBlockParamFromRaw>))]
 public sealed record class SearchResultBlockParam : ModelBase
 {
-    public required List<TextBlockParam> Content
+    public required IReadOnlyList<TextBlockParam> Content
     {
         get
         {

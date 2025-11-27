@@ -59,7 +59,7 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
         }
     }
 
-    public List<ApiEnum<string, AllowedCaller15>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, AllowedCaller15>>? AllowedCallers
     {
         get
         {
@@ -89,7 +89,7 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     /// If provided, only these domains will be included in results. Cannot be used
     /// alongside `blocked_domains`.
     /// </summary>
-    public List<string>? AllowedDomains
+    public IReadOnlyList<string>? AllowedDomains
     {
         get
         {
@@ -110,7 +110,7 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     /// <summary>
     /// If provided, these domains will never appear in results. Cannot be used alongside `allowed_domains`.
     /// </summary>
-    public List<string>? BlockedDomains
+    public IReadOnlyList<string>? BlockedDomains
     {
         get
         {

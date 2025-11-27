@@ -14,7 +14,7 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaSearchResultBlockParam : ModelBase
 {
-    public required List<BetaTextBlockParam> Content
+    public required IReadOnlyList<BetaTextBlockParam> Content
     {
         get
         {

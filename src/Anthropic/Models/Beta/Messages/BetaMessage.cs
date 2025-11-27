@@ -86,7 +86,7 @@ public sealed record class BetaMessage : ModelBase
     ///
     /// <para>```json [{"type": "text", "text": "B)"}] ```</para>
     /// </summary>
-    public required List<BetaContentBlock> Content
+    public required IReadOnlyList<BetaContentBlock> Content
     {
         get
         {

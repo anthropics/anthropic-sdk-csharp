@@ -113,7 +113,7 @@ public sealed record class MessageCreateParams : ParamsBase
     ///
     /// <para>There is a limit of 100,000 messages in a single request.</para>
     /// </summary>
-    public required List<BetaMessageParam> Messages
+    public required IReadOnlyList<BetaMessageParam> Messages
     {
         get
         {
@@ -220,7 +220,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
-    public List<BetaRequestMCPServerURLDefinition>? MCPServers
+    public IReadOnlyList<BetaRequestMCPServerURLDefinition>? MCPServers
     {
         get
         {
@@ -371,7 +371,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// will be `"stop_sequence"` and the response `stop_sequence` value will contain
     /// the matched stop sequence.</para>
     /// </summary>
-    public List<string>? StopSequences
+    public IReadOnlyList<string>? StopSequences
     {
         get
         {
@@ -569,7 +569,7 @@ public sealed record class MessageCreateParams : ParamsBase
     ///
     /// <para>See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.</para>
     /// </summary>
-    public List<BetaToolUnion>? Tools
+    public IReadOnlyList<BetaToolUnion>? Tools
     {
         get
         {
@@ -662,7 +662,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
-    public List<ApiEnum<string, AnthropicBeta>>? Betas
+    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
         get
         {

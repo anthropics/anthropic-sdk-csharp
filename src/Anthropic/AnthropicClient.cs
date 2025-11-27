@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -233,11 +232,7 @@ public class AnthropicClient : IAnthropicClient
             return null;
         }
 
-        if (float.TryParse(headerValue
-#if NET5_0_OR_GREATER
-                .AsSpan()
-#endif
-                , out var retryAfterMs))
+        if (float.TryParse(headerValue, out var retryAfterMs))
         {
             return TimeSpan.FromMilliseconds(retryAfterMs);
         }
@@ -255,19 +250,11 @@ public class AnthropicClient : IAnthropicClient
             return null;
         }
 
-        if (float.TryParse(headerValue
-#if NET5_0_OR_GREATER
-                .AsSpan()
-#endif
-                , out var retryAfterSeconds))
+        if (float.TryParse(headerValue, out var retryAfterSeconds))
         {
             return TimeSpan.FromSeconds(retryAfterSeconds);
         }
-        else if (DateTimeOffset.TryParse(headerValue
-#if NET5_0_OR_GREATER
-                .AsSpan()
-#endif
-                , out var retryAfterDate))
+        else if (DateTimeOffset.TryParse(headerValue, out var retryAfterDate))
         {
             return retryAfterDate - DateTimeOffset.Now;
         }
@@ -286,21 +273,21 @@ public class AnthropicClient : IAnthropicClient
             return shouldRetry;
         }
 
-        return response.Message.StatusCode switch
+        return (int)response.Message.StatusCode switch
         {
             // Retry on request timeouts
-            HttpStatusCode.RequestTimeout
+            408
             or
             // Retry on lock timeouts
-            HttpStatusCode.Conflict
+            409
             or
 #if !NETSTANDARD2_0_OR_GREATER
             // Retry on rate limits
-            HttpStatusCode.TooManyRequests
+            429
             or
 #endif
             // Retry internal errors
-            >= HttpStatusCode.InternalServerError => true,
+            >= 500 => true,
             _ => false,
         };
     }

@@ -64,7 +64,7 @@ public sealed record class BetaToolSearchToolBm25_20251119 : ModelBase
         }
     }
 
-    public List<ApiEnum<string, AllowedCaller8>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, AllowedCaller8>>? AllowedCallers
     {
         get
         {

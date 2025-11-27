@@ -19,7 +19,7 @@ public sealed record class SkillRetrieveParams : ParamsBase
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
-    public List<ApiEnum<string, AnthropicBeta>>? Betas
+    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
         get
         {

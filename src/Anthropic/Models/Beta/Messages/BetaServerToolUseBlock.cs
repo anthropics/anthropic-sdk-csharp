@@ -65,7 +65,7 @@ public sealed record class BetaServerToolUseBlock : ModelBase
         }
     }
 
-    public required Dictionary<string, JsonElement> Input
+    public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {

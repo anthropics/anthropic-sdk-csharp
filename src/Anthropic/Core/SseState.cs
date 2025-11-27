@@ -39,7 +39,7 @@ sealed class SseState
 
         if (value.StartsWith(" "))
         {
-            value = value.TrimStart();
+            value = value.Substring(1);
         }
 
         switch (fieldName)

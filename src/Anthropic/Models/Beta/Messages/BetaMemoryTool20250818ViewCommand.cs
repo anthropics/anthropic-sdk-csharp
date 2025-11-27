@@ -72,7 +72,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
     /// <summary>
     /// Optional line range for viewing specific lines
     /// </summary>
-    public List<long>? ViewRange
+    public IReadOnlyList<long>? ViewRange
     {
         get
         {

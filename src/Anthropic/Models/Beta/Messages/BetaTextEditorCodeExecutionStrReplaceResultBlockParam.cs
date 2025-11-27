@@ -38,7 +38,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
         }
     }
 
-    public List<string>? Lines
+    public IReadOnlyList<string>? Lines
     {
         get
         {

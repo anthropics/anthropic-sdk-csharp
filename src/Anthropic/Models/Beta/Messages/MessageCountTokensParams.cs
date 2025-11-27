@@ -80,7 +80,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     ///
     /// <para>There is a limit of 100,000 messages in a single request.</para>
     /// </summary>
-    public required List<BetaMessageParam> Messages
+    public required IReadOnlyList<BetaMessageParam> Messages
     {
         get
         {
@@ -166,7 +166,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
-    public List<BetaRequestMCPServerURLDefinition>? MCPServers
+    public IReadOnlyList<BetaRequestMCPServerURLDefinition>? MCPServers
     {
         get
         {
@@ -388,7 +388,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     ///
     /// <para>See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.</para>
     /// </summary>
-    public List<Tool>? Tools
+    public IReadOnlyList<Tool>? Tools
     {
         get
         {
@@ -414,7 +414,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// Optional header to specify the beta version(s) you want to use.
     /// </summary>
-    public List<ApiEnum<string, AnthropicBeta>>? Betas
+    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
     {
         get
         {

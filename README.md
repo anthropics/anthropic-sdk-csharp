@@ -30,10 +30,7 @@ dotnet add package Anthropic
 
 ## Requirements
 
-This library requires .NET 8 or later.
-
-> [!NOTE]
-> The library is currently in **beta**. The requirements will be lowered in the future.
+This library requires .NET Standard 2.0 or later.
 
 ## Usage
 

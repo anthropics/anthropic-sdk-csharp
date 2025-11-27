@@ -213,12 +213,9 @@ public abstract record class ParamsBase
             Architecture.X86 => "x32",
             Architecture.X64 => "x64",
             Architecture.Arm => "arm",
-            Architecture.Arm64
-#if NET5_0_OR_GREATER
-            or Architecture.Armv6
-#endif
-            => "arm64",
-#if NET5_0_OR_GREATER
+            Architecture.Arm64 => "arm64",
+#if !NETSTANDARD2_0
+            Architecture.Armv6 => "arm64",
             Architecture.Wasm
             or Architecture.S390x
             or Architecture.LoongArch64

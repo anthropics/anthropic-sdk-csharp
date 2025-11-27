@@ -15,7 +15,7 @@ public sealed record class FileListPageResponse : ModelBase
     /// <summary>
     /// List of file metadata objects.
     /// </summary>
-    public required List<FileMetadata> Data
+    public required IReadOnlyList<FileMetadata> Data
     {
         get
         {

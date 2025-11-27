@@ -79,7 +79,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     ///
     /// <para>There is a limit of 100,000 messages in a single request.</para>
     /// </summary>
-    public required List<MessageParam> Messages
+    public required IReadOnlyList<MessageParam> Messages
     {
         get
         {
@@ -274,7 +274,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     ///
     /// <para>See our [guide](https://docs.claude.com/en/docs/tool-use) for more details.</para>
     /// </summary>
-    public List<MessageCountTokensTool>? Tools
+    public IReadOnlyList<MessageCountTokensTool>? Tools
     {
         get
         {

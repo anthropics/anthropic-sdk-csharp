@@ -59,7 +59,7 @@ public sealed record class BetaMemoryTool20250818 : ModelBase
         }
     }
 
-    public List<ApiEnum<string, AllowedCaller1>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, AllowedCaller1>>? AllowedCallers
     {
         get
         {
@@ -136,7 +136,7 @@ public sealed record class BetaMemoryTool20250818 : ModelBase
         }
     }
 
-    public List<Dictionary<string, JsonElement>>? InputExamples
+    public IReadOnlyList<Dictionary<string, JsonElement>>? InputExamples
     {
         get
         {

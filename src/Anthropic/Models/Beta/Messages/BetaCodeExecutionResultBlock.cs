@@ -14,7 +14,7 @@ namespace Anthropic.Models.Beta.Messages;
 )]
 public sealed record class BetaCodeExecutionResultBlock : ModelBase
 {
-    public required List<BetaCodeExecutionOutputBlock> Content
+    public required IReadOnlyList<BetaCodeExecutionOutputBlock> Content
     {
         get
         {

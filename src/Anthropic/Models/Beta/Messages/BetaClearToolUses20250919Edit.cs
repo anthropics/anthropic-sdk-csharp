@@ -88,7 +88,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
     /// <summary>
     /// Tool names whose uses are preserved from clearing
     /// </summary>
-    public List<string>? ExcludeTools
+    public IReadOnlyList<string>? ExcludeTools
     {
         get
         {

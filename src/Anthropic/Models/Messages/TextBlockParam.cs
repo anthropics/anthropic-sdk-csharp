@@ -82,7 +82,7 @@ public sealed record class TextBlockParam : ModelBase
         }
     }
 
-    public List<TextCitationParam>? Citations
+    public IReadOnlyList<TextCitationParam>? Citations
     {
         get
         {
