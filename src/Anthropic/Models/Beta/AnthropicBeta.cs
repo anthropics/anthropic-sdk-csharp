@@ -26,7 +26,8 @@ public enum AnthropicBeta
     Context1m2025_08_07,
     ContextManagement2025_06_27,
     ModelContextWindowExceeded2025_08_26,
-    Skills2025_10_02,
+    Skills2025_10_02,    
+    CodeExecution2025_08_25,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -52,7 +53,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "mcp-client-2025-11-20" => AnthropicBeta.MCPClient2025_11_20,
             "dev-full-thinking-2025-05-14" => AnthropicBeta.DevFullThinking2025_05_14,
             "interleaved-thinking-2025-05-14" => AnthropicBeta.InterleavedThinking2025_05_14,
-            "code-execution-2025-05-22" => AnthropicBeta.CodeExecution2025_05_22,
+            "code-execution-2025-05-22" => AnthropicBeta.CodeExecution2025_05_22,            
+            "code-execution-2025-08-25" => AnthropicBeta.CodeExecution2025_08_25,
             "extended-cache-ttl-2025-04-11" => AnthropicBeta.ExtendedCacheTTL2025_04_11,
             "context-1m-2025-08-07" => AnthropicBeta.Context1m2025_08_07,
             "context-management-2025-06-27" => AnthropicBeta.ContextManagement2025_06_27,
@@ -86,7 +88,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.MCPClient2025_11_20 => "mcp-client-2025-11-20",
                 AnthropicBeta.DevFullThinking2025_05_14 => "dev-full-thinking-2025-05-14",
                 AnthropicBeta.InterleavedThinking2025_05_14 => "interleaved-thinking-2025-05-14",
-                AnthropicBeta.CodeExecution2025_05_22 => "code-execution-2025-05-22",
+                AnthropicBeta.CodeExecution2025_05_22 => "code-execution-2025-05-22",                
+                AnthropicBeta.CodeExecution2025_08_25 => "code-execution-2025-08-25",
                 AnthropicBeta.ExtendedCacheTTL2025_04_11 => "extended-cache-ttl-2025-04-11",
                 AnthropicBeta.Context1m2025_08_07 => "context-1m-2025-08-07",
                 AnthropicBeta.ContextManagement2025_06_27 => "context-management-2025-06-27",
@@ -101,3 +104,5 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
         );
     }
 }
+
+
