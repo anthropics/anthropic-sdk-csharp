@@ -46,7 +46,7 @@
         - Authentication:
             Support for environment API key (`ANTHROPIC_FOUNDRY_API_KEY` environment variable) and Azure Identity (DefaultAzureCredential).
         - Samples:
-            See the repository's samples/ directory for complete examples (console app, ASP.NET integration, and streaming examples).
+            See the repository's examples/ directory for complete examples (console app and streaming examples).
         - Install:
             dotnet add package Anthropic.Foundry
     </Description>
