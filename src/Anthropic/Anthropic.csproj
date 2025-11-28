@@ -12,9 +12,6 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2025 Anthropic</Copyright>
     <PackageProjectUrl>https://docs.anthropic.com/claude/reference/</PackageProjectUrl>
-    <Nullable>enable</Nullable>
-    <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
     <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <OutputType>Library</OutputType>
@@ -44,7 +41,6 @@
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <None Include="..\logo.png" Pack="true" PackagePath="\"/>
     <Authors>Stainless Software, Inc.</Authors>
     <Company>Stainless Software, Inc.</Company>
     <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
