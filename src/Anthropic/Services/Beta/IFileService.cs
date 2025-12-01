@@ -13,6 +13,11 @@ namespace Anthropic.Services.Beta;
 /// </summary>
 public interface IFileService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     IFileService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
@@ -31,9 +36,7 @@ public interface IFileService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Delete File
-    /// </summary>
+    /// <inheritdoc cref="Delete(FileDeleteParams, CancellationToken)"/>
     Task<DeletedFile> Delete(
         string fileID,
         FileDeleteParams? parameters = null,
@@ -48,9 +51,7 @@ public interface IFileService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Download File
-    /// </summary>
+    /// <inheritdoc cref="Download(FileDownloadParams, CancellationToken)"/>
     Task<HttpResponse> Download(
         string fileID,
         FileDownloadParams? parameters = null,
@@ -65,9 +66,7 @@ public interface IFileService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Get File Metadata
-    /// </summary>
+    /// <inheritdoc cref="RetrieveMetadata(FileRetrieveMetadataParams, CancellationToken)"/>
     Task<FileMetadata> RetrieveMetadata(
         string fileID,
         FileRetrieveMetadataParams? parameters = null,

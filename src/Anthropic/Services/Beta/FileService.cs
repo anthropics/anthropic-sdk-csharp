@@ -8,6 +8,7 @@ using Anthropic.Models.Beta.Files;
 
 namespace Anthropic.Services.Beta;
 
+/// <inheritdoc />
 public sealed class FileService : IFileService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)
@@ -15,6 +16,7 @@ public sealed class FileService : IFileService
         request.Headers.Add("anthropic-beta", "files-api-2025-04-14");
     }
 
+    /// <inheritdoc/>
     public IFileService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new FileService(this._client.WithOptions(modifier));
@@ -27,6 +29,7 @@ public sealed class FileService : IFileService
         _client = client;
     }
 
+    /// <inheritdoc/>
     public async Task<FileListPageResponse> List(
         FileListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -52,6 +55,7 @@ public sealed class FileService : IFileService
         return page;
     }
 
+    /// <inheritdoc/>
     public async Task<DeletedFile> Delete(
         FileDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -80,6 +84,7 @@ public sealed class FileService : IFileService
         return deletedFile;
     }
 
+    /// <inheritdoc/>
     public async Task<DeletedFile> Delete(
         string fileID,
         FileDeleteParams? parameters = null,
@@ -91,6 +96,7 @@ public sealed class FileService : IFileService
         return await this.Delete(parameters with { FileID = fileID }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<HttpResponse> Download(
         FileDownloadParams parameters,
         CancellationToken cancellationToken = default
@@ -112,6 +118,7 @@ public sealed class FileService : IFileService
         return response;
     }
 
+    /// <inheritdoc/>
     public async Task<HttpResponse> Download(
         string fileID,
         FileDownloadParams? parameters = null,
@@ -123,6 +130,7 @@ public sealed class FileService : IFileService
         return await this.Download(parameters with { FileID = fileID }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<FileMetadata> RetrieveMetadata(
         FileRetrieveMetadataParams parameters,
         CancellationToken cancellationToken = default
@@ -151,6 +159,7 @@ public sealed class FileService : IFileService
         return fileMetadata;
     }
 
+    /// <inheritdoc/>
     public async Task<FileMetadata> RetrieveMetadata(
         string fileID,
         FileRetrieveMetadataParams? parameters = null,

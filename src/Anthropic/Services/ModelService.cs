@@ -8,8 +8,10 @@ using Anthropic.Models.Models;
 
 namespace Anthropic.Services;
 
+/// <inheritdoc />
 public sealed class ModelService : IModelService
 {
+    /// <inheritdoc/>
     public IModelService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new ModelService(this._client.WithOptions(modifier));
@@ -22,6 +24,7 @@ public sealed class ModelService : IModelService
         _client = client;
     }
 
+    /// <inheritdoc/>
     public async Task<ModelInfo> Retrieve(
         ModelRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -50,6 +53,7 @@ public sealed class ModelService : IModelService
         return modelInfo;
     }
 
+    /// <inheritdoc/>
     public async Task<ModelInfo> Retrieve(
         string modelID,
         ModelRetrieveParams? parameters = null,
@@ -61,6 +65,7 @@ public sealed class ModelService : IModelService
         return await this.Retrieve(parameters with { ModelID = modelID }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<ModelListPageResponse> List(
         ModelListParams? parameters = null,
         CancellationToken cancellationToken = default

@@ -10,6 +10,7 @@ using Anthropic.Models.Beta.Messages.Batches;
 
 namespace Anthropic.Services.Beta.Messages;
 
+/// <inheritdoc />
 public sealed class BatchService : IBatchService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)
@@ -17,6 +18,7 @@ public sealed class BatchService : IBatchService
         request.Headers.Add("anthropic-beta", "message-batches-2024-09-24");
     }
 
+    /// <inheritdoc/>
     public IBatchService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new BatchService(this._client.WithOptions(modifier));
@@ -29,6 +31,7 @@ public sealed class BatchService : IBatchService
         _client = client;
     }
 
+    /// <inheritdoc/>
     public async Task<BetaMessageBatch> Create(
         BatchCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -52,6 +55,7 @@ public sealed class BatchService : IBatchService
         return betaMessageBatch;
     }
 
+    /// <inheritdoc/>
     public async Task<BetaMessageBatch> Retrieve(
         BatchRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -80,6 +84,7 @@ public sealed class BatchService : IBatchService
         return betaMessageBatch;
     }
 
+    /// <inheritdoc/>
     public async Task<BetaMessageBatch> Retrieve(
         string messageBatchID,
         BatchRetrieveParams? parameters = null,
@@ -97,6 +102,7 @@ public sealed class BatchService : IBatchService
         );
     }
 
+    /// <inheritdoc/>
     public async Task<BatchListPageResponse> List(
         BatchListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -122,6 +128,7 @@ public sealed class BatchService : IBatchService
         return page;
     }
 
+    /// <inheritdoc/>
     public async Task<BetaDeletedMessageBatch> Delete(
         BatchDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -150,6 +157,7 @@ public sealed class BatchService : IBatchService
         return betaDeletedMessageBatch;
     }
 
+    /// <inheritdoc/>
     public async Task<BetaDeletedMessageBatch> Delete(
         string messageBatchID,
         BatchDeleteParams? parameters = null,
@@ -167,6 +175,7 @@ public sealed class BatchService : IBatchService
         );
     }
 
+    /// <inheritdoc/>
     public async Task<BetaMessageBatch> Cancel(
         BatchCancelParams parameters,
         CancellationToken cancellationToken = default
@@ -195,6 +204,7 @@ public sealed class BatchService : IBatchService
         return betaMessageBatch;
     }
 
+    /// <inheritdoc/>
     public async Task<BetaMessageBatch> Cancel(
         string messageBatchID,
         BatchCancelParams? parameters = null,
@@ -212,6 +222,7 @@ public sealed class BatchService : IBatchService
         );
     }
 
+    /// <inheritdoc/>
     public async IAsyncEnumerable<BetaMessageBatchIndividualResponse> ResultsStreaming(
         BatchResultsParams parameters,
         [EnumeratorCancellation] CancellationToken cancellationToken = default
@@ -242,6 +253,7 @@ public sealed class BatchService : IBatchService
         }
     }
 
+    /// <inheritdoc/>
     public async IAsyncEnumerable<BetaMessageBatchIndividualResponse> ResultsStreaming(
         string messageBatchID,
         BatchResultsParams? parameters = null,

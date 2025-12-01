@@ -13,6 +13,11 @@ namespace Anthropic.Services.Beta.Skills;
 /// </summary>
 public interface IVersionService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     IVersionService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
@@ -23,9 +28,7 @@ public interface IVersionService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Create Skill Version
-    /// </summary>
+    /// <inheritdoc cref="Create(VersionCreateParams, CancellationToken)"/>
     Task<VersionCreateResponse> Create(
         string skillID,
         VersionCreateParams? parameters = null,
@@ -40,9 +43,7 @@ public interface IVersionService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Get Skill Version
-    /// </summary>
+    /// <inheritdoc cref="Retrieve(VersionRetrieveParams, CancellationToken)"/>
     Task<VersionRetrieveResponse> Retrieve(
         string version,
         VersionRetrieveParams parameters,
@@ -57,9 +58,7 @@ public interface IVersionService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// List Skill Versions
-    /// </summary>
+    /// <inheritdoc cref="List(VersionListParams, CancellationToken)"/>
     Task<VersionListPageResponse> List(
         string skillID,
         VersionListParams? parameters = null,
@@ -74,9 +73,7 @@ public interface IVersionService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Delete Skill Version
-    /// </summary>
+    /// <inheritdoc cref="Delete(VersionDeleteParams, CancellationToken)"/>
     Task<VersionDeleteResponse> Delete(
         string version,
         VersionDeleteParams parameters,

@@ -14,6 +14,11 @@ namespace Anthropic.Services.Beta;
 /// </summary>
 public interface ISkillService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     ISkillService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     IVersionService Versions { get; }
@@ -34,9 +39,7 @@ public interface ISkillService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Get Skill
-    /// </summary>
+    /// <inheritdoc cref="Retrieve(SkillRetrieveParams, CancellationToken)"/>
     Task<SkillRetrieveResponse> Retrieve(
         string skillID,
         SkillRetrieveParams? parameters = null,
@@ -59,9 +62,7 @@ public interface ISkillService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Delete Skill
-    /// </summary>
+    /// <inheritdoc cref="Delete(SkillDeleteParams, CancellationToken)"/>
     Task<SkillDeleteResponse> Delete(
         string skillID,
         SkillDeleteParams? parameters = null,

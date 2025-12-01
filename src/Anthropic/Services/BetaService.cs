@@ -4,8 +4,10 @@ using Beta = Anthropic.Services.Beta;
 
 namespace Anthropic.Services;
 
+/// <inheritdoc />
 public sealed class BetaService : IBetaService
 {
+    /// <inheritdoc/>
     public IBetaService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new BetaService(this._client.WithOptions(modifier));

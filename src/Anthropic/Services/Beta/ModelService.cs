@@ -8,8 +8,10 @@ using Anthropic.Models.Beta.Models;
 
 namespace Anthropic.Services.Beta;
 
+/// <inheritdoc />
 public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
 {
+    /// <inheritdoc/>
     public global::Anthropic.Services.Beta.IModelService WithOptions(
         Func<ClientOptions, ClientOptions> modifier
     )
@@ -24,6 +26,7 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
         _client = client;
     }
 
+    /// <inheritdoc/>
     public async Task<BetaModelInfo> Retrieve(
         ModelRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -52,6 +55,7 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
         return betaModelInfo;
     }
 
+    /// <inheritdoc/>
     public async Task<BetaModelInfo> Retrieve(
         string modelID,
         ModelRetrieveParams? parameters = null,
@@ -63,6 +67,7 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
         return await this.Retrieve(parameters with { ModelID = modelID }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<ModelListPageResponse> List(
         ModelListParams? parameters = null,
         CancellationToken cancellationToken = default

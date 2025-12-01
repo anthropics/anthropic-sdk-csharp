@@ -11,6 +11,7 @@ using Anthropic.Services;
 
 namespace Anthropic;
 
+/// <inheritdoc/>
 public class AnthropicClient : IAnthropicClient
 {
     static readonly ThreadLocal<Random> _threadLocalRandom = new(() => new Random());
@@ -22,48 +23,56 @@ public class AnthropicClient : IAnthropicClient
 
     protected readonly ClientOptions _options;
 
+    /// <inheritdoc/>
     public HttpClient HttpClient
     {
         get { return this._options.HttpClient; }
         init { this._options.HttpClient = value; }
     }
 
+    /// <inheritdoc/>
     public Uri BaseUrl
     {
         get { return this._options.BaseUrl; }
         init { this._options.BaseUrl = value; }
     }
 
+    /// <inheritdoc/>
     public bool ResponseValidation
     {
         get { return this._options.ResponseValidation; }
         init { this._options.ResponseValidation = value; }
     }
 
+    /// <inheritdoc/>
     public int? MaxRetries
     {
         get { return this._options.MaxRetries; }
         init { this._options.MaxRetries = value; }
     }
 
+    /// <inheritdoc/>
     public TimeSpan? Timeout
     {
         get { return this._options.Timeout; }
         init { this._options.Timeout = value; }
     }
 
+    /// <inheritdoc/>
     public virtual string? APIKey
     {
         get { return this._options.APIKey; }
         init { this._options.APIKey = value; }
     }
 
+    /// <inheritdoc/>
     public virtual string? AuthToken
     {
         get { return this._options.AuthToken; }
         init { this._options.AuthToken = value; }
     }
 
+    /// <inheritdoc/>
     public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new AnthropicClient(modifier(this._options));
@@ -87,6 +96,7 @@ public class AnthropicClient : IAnthropicClient
         get { return _beta.Value; }
     }
 
+    /// <inheritdoc/>
     public async Task<HttpResponse> Execute<T>(
         HttpRequest<T> request,
         CancellationToken cancellationToken = default

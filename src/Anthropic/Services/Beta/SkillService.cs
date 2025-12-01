@@ -9,6 +9,7 @@ using Anthropic.Services.Beta.Skills;
 
 namespace Anthropic.Services.Beta;
 
+/// <inheritdoc />
 public sealed class SkillService : ISkillService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)
@@ -16,6 +17,7 @@ public sealed class SkillService : ISkillService
         request.Headers.Add("anthropic-beta", "skills-2025-10-02");
     }
 
+    /// <inheritdoc/>
     public ISkillService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new SkillService(this._client.WithOptions(modifier));
@@ -35,6 +37,7 @@ public sealed class SkillService : ISkillService
         get { return _versions.Value; }
     }
 
+    /// <inheritdoc/>
     public async Task<SkillCreateResponse> Create(
         SkillCreateParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -60,6 +63,7 @@ public sealed class SkillService : ISkillService
         return skill;
     }
 
+    /// <inheritdoc/>
     public async Task<SkillRetrieveResponse> Retrieve(
         SkillRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -88,6 +92,7 @@ public sealed class SkillService : ISkillService
         return skill;
     }
 
+    /// <inheritdoc/>
     public async Task<SkillRetrieveResponse> Retrieve(
         string skillID,
         SkillRetrieveParams? parameters = null,
@@ -99,6 +104,7 @@ public sealed class SkillService : ISkillService
         return await this.Retrieve(parameters with { SkillID = skillID }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<SkillListPageResponse> List(
         SkillListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -124,6 +130,7 @@ public sealed class SkillService : ISkillService
         return page;
     }
 
+    /// <inheritdoc/>
     public async Task<SkillDeleteResponse> Delete(
         SkillDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -152,6 +159,7 @@ public sealed class SkillService : ISkillService
         return skill;
     }
 
+    /// <inheritdoc/>
     public async Task<SkillDeleteResponse> Delete(
         string skillID,
         SkillDeleteParams? parameters = null,

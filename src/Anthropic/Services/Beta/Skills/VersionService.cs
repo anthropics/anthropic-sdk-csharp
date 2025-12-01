@@ -8,6 +8,7 @@ using Anthropic.Models.Beta.Skills.Versions;
 
 namespace Anthropic.Services.Beta.Skills;
 
+/// <inheritdoc />
 public sealed class VersionService : IVersionService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)
@@ -15,6 +16,7 @@ public sealed class VersionService : IVersionService
         request.Headers.Add("anthropic-beta", "skills-2025-10-02");
     }
 
+    /// <inheritdoc/>
     public IVersionService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new VersionService(this._client.WithOptions(modifier));
@@ -27,6 +29,7 @@ public sealed class VersionService : IVersionService
         _client = client;
     }
 
+    /// <inheritdoc/>
     public async Task<VersionCreateResponse> Create(
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -55,6 +58,7 @@ public sealed class VersionService : IVersionService
         return version;
     }
 
+    /// <inheritdoc/>
     public async Task<VersionCreateResponse> Create(
         string skillID,
         VersionCreateParams? parameters = null,
@@ -66,6 +70,7 @@ public sealed class VersionService : IVersionService
         return await this.Create(parameters with { SkillID = skillID }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<VersionRetrieveResponse> Retrieve(
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -94,6 +99,7 @@ public sealed class VersionService : IVersionService
         return version;
     }
 
+    /// <inheritdoc/>
     public async Task<VersionRetrieveResponse> Retrieve(
         string version,
         VersionRetrieveParams parameters,
@@ -103,6 +109,7 @@ public sealed class VersionService : IVersionService
         return await this.Retrieve(parameters with { Version = version }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<VersionListPageResponse> List(
         VersionListParams parameters,
         CancellationToken cancellationToken = default
@@ -131,6 +138,7 @@ public sealed class VersionService : IVersionService
         return page;
     }
 
+    /// <inheritdoc/>
     public async Task<VersionListPageResponse> List(
         string skillID,
         VersionListParams? parameters = null,
@@ -142,6 +150,7 @@ public sealed class VersionService : IVersionService
         return await this.List(parameters with { SkillID = skillID }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<VersionDeleteResponse> Delete(
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -170,6 +179,7 @@ public sealed class VersionService : IVersionService
         return version;
     }
 
+    /// <inheritdoc/>
     public async Task<VersionDeleteResponse> Delete(
         string version,
         VersionDeleteParams parameters,
