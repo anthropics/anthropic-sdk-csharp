@@ -20,7 +20,7 @@
     <BuildPackage>true</BuildPackage>
     <Deterministic>true</Deterministic>
     <PackageId>Anthropic.Foundry</PackageId>
-    <Version>0.0.3</Version>
+    <Version>0.1.0</Version>
     <Authors>Stainless Software, Inc.</Authors>
     <Company>Stainless Software, Inc.</Company>
     <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
@@ -33,7 +33,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>
-            $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+      $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
   </PropertyGroup>
   <ItemGroup>
@@ -41,4 +41,3 @@
     <Compile Include="..\Anthropic\Shims.cs" />
   </ItemGroup>
 </Project>
-
