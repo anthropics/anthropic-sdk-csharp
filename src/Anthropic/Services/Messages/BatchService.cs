@@ -38,7 +38,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var messageBatch = await response
-            .Deserialize<MessageBatch>(cancellationToken)
+            .DeserializeAsync<MessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -66,7 +66,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var messageBatch = await response
-            .Deserialize<MessageBatch>(cancellationToken)
+            .DeserializeAsync<MessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -108,7 +108,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var page = await response
-            .Deserialize<BatchListPageResponse>(cancellationToken)
+            .DeserializeAsync<BatchListPageResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -136,7 +136,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var deletedMessageBatch = await response
-            .Deserialize<DeletedMessageBatch>(cancellationToken)
+            .DeserializeAsync<DeletedMessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -181,7 +181,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var messageBatch = await response
-            .Deserialize<MessageBatch>(cancellationToken)
+            .DeserializeAsync<MessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

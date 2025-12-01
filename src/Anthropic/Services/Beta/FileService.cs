@@ -43,7 +43,7 @@ public sealed class FileService : IFileService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var page = await response
-            .Deserialize<FileListPageResponse>(cancellationToken)
+            .DeserializeAsync<FileListPageResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -71,7 +71,7 @@ public sealed class FileService : IFileService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var deletedFile = await response
-            .Deserialize<DeletedFile>(cancellationToken)
+            .DeserializeAsync<DeletedFile>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -142,7 +142,7 @@ public sealed class FileService : IFileService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var fileMetadata = await response
-            .Deserialize<FileMetadata>(cancellationToken)
+            .DeserializeAsync<FileMetadata>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

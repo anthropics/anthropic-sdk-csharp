@@ -126,7 +126,7 @@ public class AnthropicClient : IAnthropicClient
                 {
                     throw AnthropicExceptionFactory.CreateApiException(
                         response.Message.StatusCode,
-                        await response.ReadAsString(cancellationToken).ConfigureAwait(false)
+                        await response.ReadAsStringAsync(cancellationToken).ConfigureAwait(false)
                     );
                 }
                 catch (HttpRequestException e)

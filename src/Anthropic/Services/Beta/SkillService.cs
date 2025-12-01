@@ -51,7 +51,7 @@ public sealed class SkillService : ISkillService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var skill = await response
-            .Deserialize<SkillCreateResponse>(cancellationToken)
+            .DeserializeAsync<SkillCreateResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -79,7 +79,7 @@ public sealed class SkillService : ISkillService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var skill = await response
-            .Deserialize<SkillRetrieveResponse>(cancellationToken)
+            .DeserializeAsync<SkillRetrieveResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -115,7 +115,7 @@ public sealed class SkillService : ISkillService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var page = await response
-            .Deserialize<SkillListPageResponse>(cancellationToken)
+            .DeserializeAsync<SkillListPageResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -143,7 +143,7 @@ public sealed class SkillService : ISkillService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var skill = await response
-            .Deserialize<SkillDeleteResponse>(cancellationToken)
+            .DeserializeAsync<SkillDeleteResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

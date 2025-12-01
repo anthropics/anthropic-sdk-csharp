@@ -52,7 +52,7 @@ public sealed class MessageService : IMessageService
             )
             .Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        var message = await response.Deserialize<Message>(cancellationToken).ConfigureAwait(false);
+        var message = await response.DeserializeAsync<Message>(cancellationToken).ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             message.Validate();
@@ -112,7 +112,7 @@ public sealed class MessageService : IMessageService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var messageTokensCount = await response
-            .Deserialize<MessageTokensCount>(cancellationToken)
+            .DeserializeAsync<MessageTokensCount>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

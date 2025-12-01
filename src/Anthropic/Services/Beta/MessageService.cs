@@ -57,7 +57,7 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
             .Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var betaMessage = await response
-            .Deserialize<BetaMessage>(cancellationToken)
+            .DeserializeAsync<BetaMessage>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -118,7 +118,7 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var betaMessageTokensCount = await response
-            .Deserialize<BetaMessageTokensCount>(cancellationToken)
+            .DeserializeAsync<BetaMessageTokensCount>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

@@ -14,7 +14,7 @@ public sealed class HttpResponse : IDisposable
 
     public CancellationToken CancellationToken { get; init; } = default;
 
-    public async Task<T> Deserialize<T>(CancellationToken cancellationToken = default)
+    public async Task<T> DeserializeAsync<T>(CancellationToken cancellationToken = default)
     {
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(
             this.CancellationToken,
@@ -22,10 +22,11 @@ public sealed class HttpResponse : IDisposable
         );
         try
         {
-            return JsonSerializer.Deserialize<T>(
-                    await this.ReadAsStream(cts.Token).ConfigureAwait(false),
-                    ModelBase.SerializerOptions
-                ) ?? throw new AnthropicInvalidDataException("Response cannot be null");
+            return await JsonSerializer.DeserializeAsync<T>(
+                    await this.ReadAsStreamAsync(cts.Token).ConfigureAwait(false),
+                    ModelBase.SerializerOptions,
+                    cts.Token
+                ).ConfigureAwait(false) ?? throw new AnthropicInvalidDataException("Response cannot be null");
         }
         catch (HttpRequestException e)
         {
@@ -33,7 +34,7 @@ public sealed class HttpResponse : IDisposable
         }
     }
 
-    public async Task<Stream> ReadAsStream(CancellationToken cancellationToken = default)
+    public async Task<Stream> ReadAsStreamAsync(CancellationToken cancellationToken = default)
     {
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(
             this.CancellationToken,
@@ -46,7 +47,7 @@ public sealed class HttpResponse : IDisposable
         ).ConfigureAwait(false);
     }
 
-    public async Task<string> ReadAsString(CancellationToken cancellationToken = default)
+    public async Task<string> ReadAsStringAsync(CancellationToken cancellationToken = default)
     {
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(
             this.CancellationToken,

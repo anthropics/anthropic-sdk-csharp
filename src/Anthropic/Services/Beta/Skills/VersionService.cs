@@ -46,7 +46,7 @@ public sealed class VersionService : IVersionService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var version = await response
-            .Deserialize<VersionCreateResponse>(cancellationToken)
+            .DeserializeAsync<VersionCreateResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -85,7 +85,7 @@ public sealed class VersionService : IVersionService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var version = await response
-            .Deserialize<VersionRetrieveResponse>(cancellationToken)
+            .DeserializeAsync<VersionRetrieveResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -122,7 +122,7 @@ public sealed class VersionService : IVersionService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var page = await response
-            .Deserialize<VersionListPageResponse>(cancellationToken)
+            .DeserializeAsync<VersionListPageResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -161,7 +161,7 @@ public sealed class VersionService : IVersionService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var version = await response
-            .Deserialize<VersionDeleteResponse>(cancellationToken)
+            .DeserializeAsync<VersionDeleteResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

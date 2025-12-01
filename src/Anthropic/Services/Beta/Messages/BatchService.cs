@@ -43,7 +43,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var betaMessageBatch = await response
-            .Deserialize<BetaMessageBatch>(cancellationToken)
+            .DeserializeAsync<BetaMessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -71,7 +71,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var betaMessageBatch = await response
-            .Deserialize<BetaMessageBatch>(cancellationToken)
+            .DeserializeAsync<BetaMessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -113,7 +113,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var page = await response
-            .Deserialize<BatchListPageResponse>(cancellationToken)
+            .DeserializeAsync<BatchListPageResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -141,7 +141,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var betaDeletedMessageBatch = await response
-            .Deserialize<BetaDeletedMessageBatch>(cancellationToken)
+            .DeserializeAsync<BetaDeletedMessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -186,7 +186,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var betaMessageBatch = await response
-            .Deserialize<BetaMessageBatch>(cancellationToken)
+            .DeserializeAsync<BetaMessageBatch>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

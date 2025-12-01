@@ -43,7 +43,7 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var betaModelInfo = await response
-            .Deserialize<BetaModelInfo>(cancellationToken)
+            .DeserializeAsync<BetaModelInfo>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -79,7 +79,7 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var page = await response
-            .Deserialize<ModelListPageResponse>(cancellationToken)
+            .DeserializeAsync<ModelListPageResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

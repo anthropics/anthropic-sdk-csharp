@@ -41,7 +41,7 @@ public sealed class ModelService : IModelService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var modelInfo = await response
-            .Deserialize<ModelInfo>(cancellationToken)
+            .DeserializeAsync<ModelInfo>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
@@ -77,7 +77,7 @@ public sealed class ModelService : IModelService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         var page = await response
-            .Deserialize<ModelListPageResponse>(cancellationToken)
+            .DeserializeAsync<ModelListPageResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
