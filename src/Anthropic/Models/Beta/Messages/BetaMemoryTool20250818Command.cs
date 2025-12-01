@@ -247,6 +247,16 @@ public record class BetaMemoryTool20250818Command
             );
         }
     }
+
+    public virtual bool Equals(BetaMemoryTool20250818Command? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTool20250818Command>

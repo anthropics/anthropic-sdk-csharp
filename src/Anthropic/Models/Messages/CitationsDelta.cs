@@ -376,6 +376,16 @@ public record class Citation
             throw new AnthropicInvalidDataException("Data did not match any variant of Citation");
         }
     }
+
+    public virtual bool Equals(Citation? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class CitationConverter : JsonConverter<Citation>

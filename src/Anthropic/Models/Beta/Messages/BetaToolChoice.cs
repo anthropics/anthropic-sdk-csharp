@@ -165,6 +165,16 @@ public record class BetaToolChoice
             );
         }
     }
+
+    public virtual bool Equals(BetaToolChoice? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>

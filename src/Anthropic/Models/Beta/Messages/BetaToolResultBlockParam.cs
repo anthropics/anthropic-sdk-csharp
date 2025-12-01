@@ -278,6 +278,16 @@ public record class BetaToolResultBlockParamContent
             );
         }
     }
+
+    public virtual bool Equals(BetaToolResultBlockParamContent? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class BetaToolResultBlockParamContentConverter
@@ -520,6 +530,16 @@ public record class Block
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Block");
         }
+    }
+
+    public virtual bool Equals(Block? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

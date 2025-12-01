@@ -78,9 +78,13 @@ public sealed record class BetaServerToolUseBlockParam : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, BetaServerToolUseBlockParamName>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'name' cannot be null",
+                    new System::ArgumentNullException("name")
+                );
         }
         init
         {
@@ -377,6 +381,16 @@ public record class BetaServerToolUseBlockParamCaller
                 "Data did not match any variant of BetaServerToolUseBlockParamCaller"
             );
         }
+    }
+
+    public virtual bool Equals(BetaServerToolUseBlockParamCaller? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

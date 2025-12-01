@@ -26,9 +26,13 @@ public sealed record class WebSearchToolRequestError : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'error_code' cannot be null",
+                    new System::ArgumentNullException("error_code")
+                );
         }
         init
         {

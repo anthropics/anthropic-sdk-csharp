@@ -28,8 +28,12 @@ public sealed record class BetaCodeExecutionToolResultError : ModelBase
                 );
 
             return JsonSerializer.Deserialize<
-                ApiEnum<string, BetaCodeExecutionToolResultErrorCode>
-            >(element, ModelBase.SerializerOptions);
+                    ApiEnum<string, BetaCodeExecutionToolResultErrorCode>
+                >(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'error_code' cannot be null",
+                    new ArgumentNullException("error_code")
+                );
         }
         init
         {

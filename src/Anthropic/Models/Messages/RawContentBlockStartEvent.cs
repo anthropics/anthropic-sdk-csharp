@@ -349,6 +349,16 @@ public record class RawContentBlockStartEventContentBlock
             );
         }
     }
+
+    public virtual bool Equals(RawContentBlockStartEventContentBlock? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class RawContentBlockStartEventContentBlockConverter

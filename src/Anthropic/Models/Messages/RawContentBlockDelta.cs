@@ -169,6 +169,16 @@ public record class RawContentBlockDelta
             );
         }
     }
+
+    public virtual bool Equals(RawContentBlockDelta? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>

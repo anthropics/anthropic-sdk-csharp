@@ -163,6 +163,16 @@ public record class ToolChoice
             throw new AnthropicInvalidDataException("Data did not match any variant of ToolChoice");
         }
     }
+
+    public virtual bool Equals(ToolChoice? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class ToolChoiceConverter : JsonConverter<ToolChoice>

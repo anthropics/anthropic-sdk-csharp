@@ -301,6 +301,16 @@ public record class ClearToolInputs
             );
         }
     }
+
+    public virtual bool Equals(ClearToolInputs? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
@@ -446,6 +456,16 @@ public record class Trigger
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Trigger");
         }
+    }
+
+    public virtual bool Equals(Trigger? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

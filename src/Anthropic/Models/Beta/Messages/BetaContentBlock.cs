@@ -434,6 +434,16 @@ public record class BetaContentBlock
             );
         }
     }
+
+    public virtual bool Equals(BetaContentBlock? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class BetaContentBlockConverter : JsonConverter<BetaContentBlock>

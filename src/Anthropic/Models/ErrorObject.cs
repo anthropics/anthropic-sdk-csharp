@@ -271,6 +271,16 @@ public record class ErrorObject
             );
         }
     }
+
+    public virtual bool Equals(ErrorObject? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class ErrorObjectConverter : JsonConverter<ErrorObject>

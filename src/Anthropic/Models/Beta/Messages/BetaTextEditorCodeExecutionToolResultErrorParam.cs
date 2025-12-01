@@ -34,8 +34,12 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
                 );
 
             return JsonSerializer.Deserialize<
-                ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
-            >(element, ModelBase.SerializerOptions);
+                    ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
+                >(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'error_code' cannot be null",
+                    new System::ArgumentNullException("error_code")
+                );
         }
         init
         {

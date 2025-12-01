@@ -137,6 +137,34 @@ public abstract record class ModelBase
         return JsonSerializer.Serialize(this.RawData, _toStringSerializerOptions);
     }
 
+    public virtual bool Equals(ModelBase? other)
+    {
+        if (other == null || this.RawData.Count != other.RawData.Count)
+        {
+            return false;
+        }
+
+        foreach (var item in this.RawData)
+        {
+            if (!other.RawData.TryGetValue(item.Key, out var otherValue))
+            {
+                return false;
+            }
+
+            if (!JsonElement.DeepEquals(item.Value, otherValue))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+
     public abstract void Validate();
 }
 

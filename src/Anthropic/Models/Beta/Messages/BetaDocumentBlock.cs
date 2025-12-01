@@ -253,6 +253,16 @@ public record class Source
             throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
     }
+
+    public virtual bool Equals(Source? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class SourceConverter : JsonConverter<Source>

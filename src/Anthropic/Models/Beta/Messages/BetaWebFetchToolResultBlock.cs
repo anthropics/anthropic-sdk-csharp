@@ -249,6 +249,16 @@ public record class BetaWebFetchToolResultBlockContent
             );
         }
     }
+
+    public virtual bool Equals(BetaWebFetchToolResultBlockContent? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class BetaWebFetchToolResultBlockContentConverter

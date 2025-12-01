@@ -104,9 +104,13 @@ public sealed record class BetaServerToolUseBlock : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Name>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'name' cannot be null",
+                    new System::ArgumentNullException("name")
+                );
         }
         init
         {
@@ -282,6 +286,16 @@ public record class Caller
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Caller");
         }
+    }
+
+    public virtual bool Equals(Caller? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

@@ -269,6 +269,16 @@ public record class BetaError
             throw new AnthropicInvalidDataException("Data did not match any variant of BetaError");
         }
     }
+
+    public virtual bool Equals(BetaError? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class BetaErrorConverter : JsonConverter<BetaError>
