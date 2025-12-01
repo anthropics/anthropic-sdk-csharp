@@ -1,5 +1,48 @@
 # Changelog
 
+## 11.0.0 (2025-12-01)
+
+Full Changelog: [v10.4.0...v11.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.4.0...v11.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** use readonly types for properties
+
+### Features
+
+* **client:** improve csproj ([f9e5956](https://github.com/anthropics/anthropic-sdk-csharp/commit/f9e5956ba1f2ef3942f837a916c58c293dd933e8))
+
+
+### Bug Fixes
+
+* **client:** update custom code for readonly ([#198](https://github.com/anthropics/anthropic-sdk-csharp/issues/198)) ([11cdfa4](https://github.com/anthropics/anthropic-sdk-csharp/commit/11cdfa4f1e626fbbeccccea2ef8152665a70cabf))
+* **client:** use readonly types for properties ([1d78f38](https://github.com/anthropics/anthropic-sdk-csharp/commit/1d78f38be82098a5f27fbd7f32b7a89fae3de844))
+* **internal:** running net462 tests on ci ([23ca28a](https://github.com/anthropics/anthropic-sdk-csharp/commit/23ca28ab7f8b640e16aa08a164522c6122ecf1dc))
+* release please config for foundry ([#52](https://github.com/anthropics/anthropic-sdk-csharp/issues/52)) ([45d4b76](https://github.com/anthropics/anthropic-sdk-csharp/commit/45d4b76048b9b5a574cf39cbb2b921e9db1277e1))
+
+
+### Performance Improvements
+
+* **client:** use async deserialization in `HttpResponse` ([1ce5af7](https://github.com/anthropics/anthropic-sdk-csharp/commit/1ce5af76ffbb7742c796240877f79f91ffdb49fb))
+
+
+### Chores
+
+* **client:** update namespace imports ([9d89414](https://github.com/anthropics/anthropic-sdk-csharp/commit/9d89414d410ada2667c6c1760877a6c862f7e9c5))
+* fix ci ([#196](https://github.com/anthropics/anthropic-sdk-csharp/issues/196)) ([98beb5b](https://github.com/anthropics/anthropic-sdk-csharp/commit/98beb5bb6374969c9ccd40ff8553888bcb399fdf))
+* **internal:** clean up diffs vs codegen ([ba8adc6](https://github.com/anthropics/anthropic-sdk-csharp/commit/ba8adc6ff59b060ad5c13d14fb5518b83564fee7))
+* **internal:** fix release please config ([2732101](https://github.com/anthropics/anthropic-sdk-csharp/commit/27321011bea2ac4e3fbb591d4e81021e09469699))
+* **internal:** set up cron release job ([2d1499c](https://github.com/anthropics/anthropic-sdk-csharp/commit/2d1499c142f635791ece0b62bd4d2827933d2d4d))
+* **internal:** suppress diagnostic for .netstandard2.0 ([e781b24](https://github.com/anthropics/anthropic-sdk-csharp/commit/e781b24eaffd66d2a42b5994728fa09064b4314e))
+* sync with release-please ([6c74dff](https://github.com/anthropics/anthropic-sdk-csharp/commit/6c74dff7c2c11aeac75ccb58f73fa06d9b380912))
+* sync with release-please ([c0845ae](https://github.com/anthropics/anthropic-sdk-csharp/commit/c0845ae273c871b27ca9379392432a0bb37dc617))
+
+
+### Documentation
+
+* add more comments ([d4c4825](https://github.com/anthropics/anthropic-sdk-csharp/commit/d4c48257d26d2d394d5c15e475fe4875d42640e2))
+* correct reqs ([0c67249](https://github.com/anthropics/anthropic-sdk-csharp/commit/0c672493b1c821d86fbcc31c06656eda4cdf739f))
+
 ## 10.4.0 (2025-11-25)
 
 Full Changelog: [v10.3.0...v10.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.3.0...v10.4.0)
