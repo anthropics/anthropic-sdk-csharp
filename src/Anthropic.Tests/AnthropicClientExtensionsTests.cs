@@ -309,9 +309,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
                     {
                         Role = Role.User,
                         Content = new MessageParamContent(
-                            [
-                                new TextBlockParam() { Text = "Preconfigured message" },
-                            ]
+                            [new TextBlockParam() { Text = "Preconfigured message" }]
                         ),
                     },
                 ],

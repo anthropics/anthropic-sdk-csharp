@@ -1392,9 +1392,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     {
                         Role = Role.User,
                         Content = new BetaMessageParamContent(
-                            [
-                                new BetaTextBlockParam() { Text = "Preconfigured message" },
-                            ]
+                            [new BetaTextBlockParam() { Text = "Preconfigured message" }]
                         ),
                     },
                 ],
