@@ -241,10 +241,13 @@ public sealed class BatchService : IBatchService
         using var response = await this
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
+        await foreach (
+            var betaMessageBatchIndividualResponse in Sse.Enumerate<BetaMessageBatchIndividualResponse>(
+                response.Message,
+                cancellationToken
+            )
+        )
         {
-            var betaMessageBatchIndividualResponse =
-                message.Deserialize<BetaMessageBatchIndividualResponse>();
             if (this._client.ResponseValidation)
             {
                 betaMessageBatchIndividualResponse.Validate();

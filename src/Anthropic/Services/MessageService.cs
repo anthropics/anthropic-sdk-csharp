@@ -91,14 +91,15 @@ public sealed class MessageService : IMessageService
             )
             .Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
+        await foreach (
+            var message in Sse.Enumerate<RawMessageStreamEvent>(response.Message, cancellationToken)
+        )
         {
-            var deserializedMessage = message.Deserialize<RawMessageStreamEvent>();
             if (this._client.ResponseValidation)
             {
-                deserializedMessage.Validate();
+                message.Validate();
             }
-            yield return deserializedMessage;
+            yield return message;
         }
     }
 
