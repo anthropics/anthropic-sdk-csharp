@@ -7,7 +7,7 @@ using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Services.Beta.Messages;
 
-public class BatchServiceTest
+public class BatchServiceTest : TestBase
 {
     [Theory(Skip = "prism validates based on the non-beta endpoint")]
     [AnthropicTestClients]

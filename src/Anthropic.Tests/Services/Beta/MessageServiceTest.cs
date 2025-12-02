@@ -5,7 +5,7 @@ using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Beta;
 
-public class MessageServiceTest
+public class MessageServiceTest : TestBase
 {
     [Theory(Skip = "prism validates based on the non-beta endpoint")]
     [AnthropicTestClients]

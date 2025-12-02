@@ -3,7 +3,7 @@ using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services.Beta;
 
-public class ModelServiceTest
+public class ModelServiceTest : TestBase
 {
     [Theory]
     [AnthropicTestClients(TestSupportTypes.Anthropic)]

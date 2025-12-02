@@ -5,7 +5,7 @@ using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services;
 
-public class MessageServiceTest
+public class MessageServiceTest : TestBase
 {
     [Theory]
     [AnthropicTestClients]
