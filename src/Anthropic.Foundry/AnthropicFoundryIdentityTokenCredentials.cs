@@ -15,7 +15,7 @@ public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredent
     public string ResourceName { get; }
 
     /// <summary>
-    /// Creates a new instance of the <see cref="AnthropicAzureTokenCredential"/>.
+    /// Creates a new instance of the <see cref="AnthropicFoundryIdentityTokenCredentials"/>.
     /// </summary>
     /// <param name="tokenCredential">The credential provider. Use any specialization of <see cref="TokenCredential"/> to get your access token in supported environments.</param>
     /// <param name="resourceName">The service resource subdomain name to use in the anthropic azure endpoint</param>
