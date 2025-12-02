@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <RootNamespace>Anthropic.Foundry</RootNamespace>
     <AssemblyName>Anthropic.Foundry</AssemblyName>
   </PropertyGroup>
@@ -21,23 +19,7 @@
     <BuildPackage>true</BuildPackage>
     <Deterministic>true</Deterministic>
     <PackageId>Anthropic.Foundry</PackageId>
-    <Version>0.1.0</Version>
-    <Authors>Stainless Software, Inc.</Authors>
-    <Company>Stainless Software, Inc.</Company>
-    <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
-    <PackageIcon>logo.png</PackageIcon>
-    <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <LangVersion>Latest</LangVersion>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>
-      $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
-
-    <Copyright>Copyright © Stainless Software, Inc. 2024</Copyright>
+    <Version>0.1.0</Version>    
     <Readme>README.md</Readme>
     <Description>
      Anthropic Foundry SDK for .NET — A .NET client library for Anthropic Foundry, providing typed models, API bindings, and authentication helpers to integrate Anthropic services into .NET applications.

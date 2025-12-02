@@ -1,3 +1,6 @@
+using System;
+using System.Net.Http;
+
 namespace Anthropic.Foundry;
 
 /// <summary>

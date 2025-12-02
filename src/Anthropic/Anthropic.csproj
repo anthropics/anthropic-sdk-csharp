@@ -5,54 +5,18 @@
     <AssemblyName>Anthropic</AssemblyName>
     <PackageId>Anthropic</PackageId>
     <VersionPrefix>11.0.0</VersionPrefix>
-    <Authors>Anthropic</Authors>
-    <Company>Anthropic</Company>
     <Description>The official .NET library for the Anthropic API.</Description>
     <PackageTags>sdk;api;http;library</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright 2025 Anthropic</Copyright>
-    <PackageProjectUrl>https://docs.anthropic.com/claude/reference/</PackageProjectUrl>
-    <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <OutputType>Library</OutputType>
-
+   
     <!-- Documentation-->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>logo.png</PackageIcon>
     <!-- Disable missing XML documentation warnings. -->
     <NoWarn>$(NoWarn),1570,1573,1574,1591</NoWarn>
-
-    <!-- Source link -->
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <DebugType>embedded</DebugType>
-
-    <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
-    <LangVersion>12</LangVersion>
-    <Configurations>Debug;Release</Configurations>
-    <BuildPackage>true</BuildPackage>
-    <Deterministic>true</Deterministic>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <ImplicitUsings>disable</ImplicitUsings>
+    
     <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
     <NoWarn>$(NoWarn),0618</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Authors>Stainless Software, Inc.</Authors>
-    <Company>Stainless Software, Inc.</Company>
-    <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <LangVersion>Latest</LangVersion>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\logo.png" Pack="true" PackagePath="\" />
@@ -60,8 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="10.0.0" />
-    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0" />    
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />

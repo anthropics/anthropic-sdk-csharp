@@ -1,0 +1,46 @@
+<Project>
+    <PropertyGroup>
+        <Copyright>Copyright 2025 Anthropic</Copyright>
+        <PackageProjectUrl>https://docs.anthropic.com/claude/reference/</PackageProjectUrl>
+        <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
+        <LangVersion>12</LangVersion>
+        <Configurations>Debug;Release</Configurations>
+        <BuildPackage>true</BuildPackage>
+        <Deterministic>true</Deterministic>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Authors>Anthropic</Authors>
+        <Company>Anthropic</Company>
+        <PackageIcon>logo.png</PackageIcon>
+        <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <LangVersion>Latest</LangVersion>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+        <!-- Source link -->
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <DebugType>embedded</DebugType>
+
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>
+            $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    </ItemGroup>
+</Project>

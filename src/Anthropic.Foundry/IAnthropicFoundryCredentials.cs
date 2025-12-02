@@ -1,4 +1,7 @@
-﻿using Azure.Identity;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Azure.Identity;
 
 namespace Anthropic.Foundry;
 
