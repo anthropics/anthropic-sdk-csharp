@@ -12,7 +12,6 @@ public class RawMessageDeltaEventTest : TestBase
         var model = new RawMessageDeltaEvent
         {
             Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
-            Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\""),
             Usage = new()
             {
                 CacheCreationInputTokens = 2051,
@@ -42,6 +41,87 @@ public class RawMessageDeltaEventTest : TestBase
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUsage, model.Usage);
     }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new RawMessageDeltaEvent
+        {
+            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                InputTokens = 2095,
+                OutputTokens = 503,
+                ServerToolUse = new(0),
+            },
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new RawMessageDeltaEvent
+        {
+            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                InputTokens = 2095,
+                OutputTokens = 503,
+                ServerToolUse = new(0),
+            },
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(json);
+        Assert.NotNull(deserialized);
+
+        Delta expectedDelta = new()
+        {
+            StopReason = StopReason.EndTurn,
+            StopSequence = "stop_sequence",
+        };
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        MessageDeltaUsage expectedUsage = new()
+        {
+            CacheCreationInputTokens = 2051,
+            CacheReadInputTokens = 2051,
+            InputTokens = 2095,
+            OutputTokens = 503,
+            ServerToolUse = new(0),
+        };
+
+        Assert.Equal(expectedDelta, deserialized.Delta);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedUsage, deserialized.Usage);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new RawMessageDeltaEvent
+        {
+            Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
+            Usage = new()
+            {
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                InputTokens = 2095,
+                OutputTokens = 503,
+                ServerToolUse = new(0),
+            },
+        };
+
+        model.Validate();
+    }
 }
 
 public class DeltaTest : TestBase
@@ -56,5 +136,40 @@ public class DeltaTest : TestBase
 
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Equal(expectedStopSequence, model.StopSequence);
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Delta>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Delta>(json);
+        Assert.NotNull(deserialized);
+
+        ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
+        string expectedStopSequence = "stop_sequence";
+
+        Assert.Equal(expectedStopReason, deserialized.StopReason);
+        Assert.Equal(expectedStopSequence, deserialized.StopSequence);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
+
+        model.Validate();
     }
 }

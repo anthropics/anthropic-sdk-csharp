@@ -12,7 +12,6 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
         {
             Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_tool_result\""),
         };
 
         Content expectedContent = new BetaBashCodeExecutionToolResultError(
@@ -26,5 +25,58 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaBashCodeExecutionToolResultBlock
+        {
+            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlock>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaBashCodeExecutionToolResultBlock
+        {
+            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlock>(json);
+        Assert.NotNull(deserialized);
+
+        Content expectedContent = new BetaBashCodeExecutionToolResultError(
+            ErrorCode.InvalidToolInput
+        );
+        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
+            "\"bash_code_execution_tool_result\""
+        );
+
+        Assert.Equal(expectedContent, deserialized.Content);
+        Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaBashCodeExecutionToolResultBlock
+        {
+            Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        model.Validate();
     }
 }

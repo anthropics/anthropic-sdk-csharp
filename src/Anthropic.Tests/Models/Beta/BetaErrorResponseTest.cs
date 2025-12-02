@@ -12,7 +12,6 @@ public class BetaErrorResponseTest : TestBase
         {
             Error = new BetaInvalidRequestError("message"),
             RequestID = "request_id",
-            Type = JsonSerializer.Deserialize<JsonElement>("\"error\""),
         };
 
         BetaError expectedError = new BetaInvalidRequestError("message");
@@ -22,5 +21,54 @@ public class BetaErrorResponseTest : TestBase
         Assert.Equal(expectedError, model.Error);
         Assert.Equal(expectedRequestID, model.RequestID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaErrorResponse
+        {
+            Error = new BetaInvalidRequestError("message"),
+            RequestID = "request_id",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaErrorResponse>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaErrorResponse
+        {
+            Error = new BetaInvalidRequestError("message"),
+            RequestID = "request_id",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaErrorResponse>(json);
+        Assert.NotNull(deserialized);
+
+        BetaError expectedError = new BetaInvalidRequestError("message");
+        string expectedRequestID = "request_id";
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+
+        Assert.Equal(expectedError, deserialized.Error);
+        Assert.Equal(expectedRequestID, deserialized.RequestID);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaErrorResponse
+        {
+            Error = new BetaInvalidRequestError("message"),
+            RequestID = "request_id",
+        };
+
+        model.Validate();
     }
 }

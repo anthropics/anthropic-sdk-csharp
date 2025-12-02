@@ -15,7 +15,6 @@ public class CitationCharLocationParamTest : TestBase
             DocumentTitle = "x",
             EndCharIndex = 0,
             StartCharIndex = 0,
-            Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\""),
         };
 
         string expectedCitedText = "cited_text";
@@ -31,5 +30,69 @@ public class CitationCharLocationParamTest : TestBase
         Assert.Equal(expectedEndCharIndex, model.EndCharIndex);
         Assert.Equal(expectedStartCharIndex, model.StartCharIndex);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new CitationCharLocationParam
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndCharIndex = 0,
+            StartCharIndex = 0,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationCharLocationParam>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new CitationCharLocationParam
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndCharIndex = 0,
+            StartCharIndex = 0,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationCharLocationParam>(json);
+        Assert.NotNull(deserialized);
+
+        string expectedCitedText = "cited_text";
+        long expectedDocumentIndex = 0;
+        string expectedDocumentTitle = "x";
+        long expectedEndCharIndex = 0;
+        long expectedStartCharIndex = 0;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+
+        Assert.Equal(expectedCitedText, deserialized.CitedText);
+        Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);
+        Assert.Equal(expectedDocumentTitle, deserialized.DocumentTitle);
+        Assert.Equal(expectedEndCharIndex, deserialized.EndCharIndex);
+        Assert.Equal(expectedStartCharIndex, deserialized.StartCharIndex);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new CitationCharLocationParam
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndCharIndex = 0,
+            StartCharIndex = 0,
+        };
+
+        model.Validate();
     }
 }

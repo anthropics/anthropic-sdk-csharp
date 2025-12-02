@@ -15,7 +15,6 @@ public class BetaCodeExecutionResultBlockTest : TestBase
             ReturnCode = 0,
             Stderr = "stderr",
             Stdout = "stdout",
-            Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_result\""),
         };
 
         List<BetaCodeExecutionOutputBlock> expectedContent = [new("file_id")];
@@ -35,5 +34,70 @@ public class BetaCodeExecutionResultBlockTest : TestBase
         Assert.Equal(expectedStderr, model.Stderr);
         Assert.Equal(expectedStdout, model.Stdout);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaCodeExecutionResultBlock
+        {
+            Content = [new("file_id")],
+            ReturnCode = 0,
+            Stderr = "stderr",
+            Stdout = "stdout",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionResultBlock>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaCodeExecutionResultBlock
+        {
+            Content = [new("file_id")],
+            ReturnCode = 0,
+            Stderr = "stderr",
+            Stdout = "stdout",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionResultBlock>(json);
+        Assert.NotNull(deserialized);
+
+        List<BetaCodeExecutionOutputBlock> expectedContent = [new("file_id")];
+        long expectedReturnCode = 0;
+        string expectedStderr = "stderr";
+        string expectedStdout = "stdout";
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
+            "\"code_execution_result\""
+        );
+
+        Assert.Equal(expectedContent.Count, deserialized.Content.Count);
+        for (int i = 0; i < expectedContent.Count; i++)
+        {
+            Assert.Equal(expectedContent[i], deserialized.Content[i]);
+        }
+        Assert.Equal(expectedReturnCode, deserialized.ReturnCode);
+        Assert.Equal(expectedStderr, deserialized.Stderr);
+        Assert.Equal(expectedStdout, deserialized.Stdout);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaCodeExecutionResultBlock
+        {
+            Content = [new("file_id")],
+            ReturnCode = 0,
+            Stderr = "stderr",
+            Stdout = "stdout",
+        };
+
+        model.Validate();
     }
 }

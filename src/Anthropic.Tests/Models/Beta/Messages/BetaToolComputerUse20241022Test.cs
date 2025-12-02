@@ -14,8 +14,6 @@ public class BetaToolComputerUse20241022Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            Name = JsonSerializer.Deserialize<JsonElement>("\"computer\""),
-            Type = JsonSerializer.Deserialize<JsonElement>("\"computer_20241022\""),
             AllowedCallers = [AllowedCaller5.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
@@ -71,5 +69,306 @@ public class BetaToolComputerUse20241022Test : TestBase
             }
         }
         Assert.Equal(expectedStrict, model.Strict);
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [AllowedCaller5.Direct],
+            CacheControl = new() { TTL = TTL.TTL5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [AllowedCaller5.Direct],
+            CacheControl = new() { TTL = TTL.TTL5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(json);
+        Assert.NotNull(deserialized);
+
+        long expectedDisplayHeightPx = 1;
+        long expectedDisplayWidthPx = 1;
+        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"computer_20241022\"");
+        List<ApiEnum<string, AllowedCaller5>> expectedAllowedCallers = [AllowedCaller5.Direct];
+        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        bool expectedDeferLoading = true;
+        long expectedDisplayNumber = 0;
+        List<Dictionary<string, JsonElement>> expectedInputExamples =
+        [
+            new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        ];
+        bool expectedStrict = true;
+
+        Assert.Equal(expectedDisplayHeightPx, deserialized.DisplayHeightPx);
+        Assert.Equal(expectedDisplayWidthPx, deserialized.DisplayWidthPx);
+        Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
+        for (int i = 0; i < expectedAllowedCallers.Count; i++)
+        {
+            Assert.Equal(expectedAllowedCallers[i], deserialized.AllowedCallers[i]);
+        }
+        Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
+        Assert.Equal(expectedDisplayNumber, deserialized.DisplayNumber);
+        Assert.Equal(expectedInputExamples.Count, deserialized.InputExamples.Count);
+        for (int i = 0; i < expectedInputExamples.Count; i++)
+        {
+            Assert.Equal(expectedInputExamples[i].Count, deserialized.InputExamples[i].Count);
+            foreach (var item in expectedInputExamples[i])
+            {
+                Assert.True(deserialized.InputExamples[i].TryGetValue(item.Key, out var value));
+
+                Assert.True(JsonElement.DeepEquals(value, deserialized.InputExamples[i][item.Key]));
+            }
+        }
+        Assert.Equal(expectedStrict, deserialized.Strict);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [AllowedCaller5.Direct],
+            CacheControl = new() { TTL = TTL.TTL5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            CacheControl = new() { TTL = TTL.TTL5m },
+            DisplayNumber = 0,
+        };
+
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.InputExamples);
+        Assert.False(model.RawData.ContainsKey("input_examples"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            CacheControl = new() { TTL = TTL.TTL5m },
+            DisplayNumber = 0,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            CacheControl = new() { TTL = TTL.TTL5m },
+            DisplayNumber = 0,
+
+            // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            InputExamples = null,
+            Strict = null,
+        };
+
+        Assert.Null(model.AllowedCallers);
+        Assert.False(model.RawData.ContainsKey("allowed_callers"));
+        Assert.Null(model.DeferLoading);
+        Assert.False(model.RawData.ContainsKey("defer_loading"));
+        Assert.Null(model.InputExamples);
+        Assert.False(model.RawData.ContainsKey("input_examples"));
+        Assert.Null(model.Strict);
+        Assert.False(model.RawData.ContainsKey("strict"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            CacheControl = new() { TTL = TTL.TTL5m },
+            DisplayNumber = 0,
+
+            // Null should be interpreted as omitted for these properties
+            AllowedCallers = null,
+            DeferLoading = null,
+            InputExamples = null,
+            Strict = null,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [AllowedCaller5.Direct],
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+
+        Assert.Null(model.CacheControl);
+        Assert.False(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.DisplayNumber);
+        Assert.False(model.RawData.ContainsKey("display_number"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [AllowedCaller5.Direct],
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [AllowedCaller5.Direct],
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+
+            CacheControl = null,
+            DisplayNumber = null,
+        };
+
+        Assert.Null(model.CacheControl);
+        Assert.True(model.RawData.ContainsKey("cache_control"));
+        Assert.Null(model.DisplayNumber);
+        Assert.True(model.RawData.ContainsKey("display_number"));
+    }
+
+    [Fact]
+    public void OptionalNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new BetaToolComputerUse20241022
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [AllowedCaller5.Direct],
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+
+            CacheControl = null,
+            DisplayNumber = null,
+        };
+
+        model.Validate();
     }
 }

@@ -16,7 +16,6 @@ public class BetaCitationCharLocationTest : TestBase
             EndCharIndex = 0,
             FileID = "file_id",
             StartCharIndex = 0,
-            Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\""),
         };
 
         string expectedCitedText = "cited_text";
@@ -34,5 +33,74 @@ public class BetaCitationCharLocationTest : TestBase
         Assert.Equal(expectedFileID, model.FileID);
         Assert.Equal(expectedStartCharIndex, model.StartCharIndex);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaCitationCharLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndCharIndex = 0,
+            FileID = "file_id",
+            StartCharIndex = 0,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocation>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaCitationCharLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndCharIndex = 0,
+            FileID = "file_id",
+            StartCharIndex = 0,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocation>(json);
+        Assert.NotNull(deserialized);
+
+        string expectedCitedText = "cited_text";
+        long expectedDocumentIndex = 0;
+        string expectedDocumentTitle = "document_title";
+        long expectedEndCharIndex = 0;
+        string expectedFileID = "file_id";
+        long expectedStartCharIndex = 0;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+
+        Assert.Equal(expectedCitedText, deserialized.CitedText);
+        Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);
+        Assert.Equal(expectedDocumentTitle, deserialized.DocumentTitle);
+        Assert.Equal(expectedEndCharIndex, deserialized.EndCharIndex);
+        Assert.Equal(expectedFileID, deserialized.FileID);
+        Assert.Equal(expectedStartCharIndex, deserialized.StartCharIndex);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaCitationCharLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndCharIndex = 0,
+            FileID = "file_id",
+            StartCharIndex = 0,
+        };
+
+        model.Validate();
     }
 }

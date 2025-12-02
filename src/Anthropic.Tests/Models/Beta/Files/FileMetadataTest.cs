@@ -16,7 +16,6 @@ public class FileMetadataTest : TestBase
             Filename = "x",
             MimeType = "x",
             SizeBytes = 0,
-            Type = JsonSerializer.Deserialize<JsonElement>("\"file\""),
             Downloadable = true,
         };
 
@@ -35,5 +34,142 @@ public class FileMetadataTest : TestBase
         Assert.Equal(expectedSizeBytes, model.SizeBytes);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedDownloadable, model.Downloadable);
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "id",
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Filename = "x",
+            MimeType = "x",
+            SizeBytes = 0,
+            Downloadable = true,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<FileMetadata>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "id",
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Filename = "x",
+            MimeType = "x",
+            SizeBytes = 0,
+            Downloadable = true,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<FileMetadata>(json);
+        Assert.NotNull(deserialized);
+
+        string expectedID = "id";
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        string expectedFilename = "x";
+        string expectedMimeType = "x";
+        long expectedSizeBytes = 0;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        bool expectedDownloadable = true;
+
+        Assert.Equal(expectedID, deserialized.ID);
+        Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
+        Assert.Equal(expectedFilename, deserialized.Filename);
+        Assert.Equal(expectedMimeType, deserialized.MimeType);
+        Assert.Equal(expectedSizeBytes, deserialized.SizeBytes);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedDownloadable, deserialized.Downloadable);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "id",
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Filename = "x",
+            MimeType = "x",
+            SizeBytes = 0,
+            Downloadable = true,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "id",
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Filename = "x",
+            MimeType = "x",
+            SizeBytes = 0,
+        };
+
+        Assert.Null(model.Downloadable);
+        Assert.False(model.RawData.ContainsKey("downloadable"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "id",
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Filename = "x",
+            MimeType = "x",
+            SizeBytes = 0,
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "id",
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Filename = "x",
+            MimeType = "x",
+            SizeBytes = 0,
+
+            // Null should be interpreted as omitted for these properties
+            Downloadable = null,
+        };
+
+        Assert.Null(model.Downloadable);
+        Assert.False(model.RawData.ContainsKey("downloadable"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
+    {
+        var model = new FileMetadata
+        {
+            ID = "id",
+            CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Filename = "x",
+            MimeType = "x",
+            SizeBytes = 0,
+
+            // Null should be interpreted as omitted for these properties
+            Downloadable = null,
+        };
+
+        model.Validate();
     }
 }

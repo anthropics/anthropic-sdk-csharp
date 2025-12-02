@@ -16,7 +16,6 @@ public class BetaCitationPageLocationTest : TestBase
             EndPageNumber = 0,
             FileID = "file_id",
             StartPageNumber = 1,
-            Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\""),
         };
 
         string expectedCitedText = "cited_text";
@@ -34,5 +33,74 @@ public class BetaCitationPageLocationTest : TestBase
         Assert.Equal(expectedFileID, model.FileID);
         Assert.Equal(expectedStartPageNumber, model.StartPageNumber);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaCitationPageLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndPageNumber = 0,
+            FileID = "file_id",
+            StartPageNumber = 1,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocation>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaCitationPageLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndPageNumber = 0,
+            FileID = "file_id",
+            StartPageNumber = 1,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocation>(json);
+        Assert.NotNull(deserialized);
+
+        string expectedCitedText = "cited_text";
+        long expectedDocumentIndex = 0;
+        string expectedDocumentTitle = "document_title";
+        long expectedEndPageNumber = 0;
+        string expectedFileID = "file_id";
+        long expectedStartPageNumber = 1;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
+
+        Assert.Equal(expectedCitedText, deserialized.CitedText);
+        Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);
+        Assert.Equal(expectedDocumentTitle, deserialized.DocumentTitle);
+        Assert.Equal(expectedEndPageNumber, deserialized.EndPageNumber);
+        Assert.Equal(expectedFileID, deserialized.FileID);
+        Assert.Equal(expectedStartPageNumber, deserialized.StartPageNumber);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaCitationPageLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndPageNumber = 0,
+            FileID = "file_id",
+            StartPageNumber = 1,
+        };
+
+        model.Validate();
     }
 }

@@ -14,7 +14,6 @@ public class ModelInfoTest : TestBase
             ID = "claude-sonnet-4-20250514",
             CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
             DisplayName = "Claude Sonnet 4",
-            Type = JsonSerializer.Deserialize<JsonElement>("\"model\""),
         };
 
         string expectedID = "claude-sonnet-4-20250514";
@@ -26,5 +25,59 @@ public class ModelInfoTest : TestBase
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedDisplayName, model.DisplayName);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new ModelInfo
+        {
+            ID = "claude-sonnet-4-20250514",
+            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
+            DisplayName = "Claude Sonnet 4",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ModelInfo>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new ModelInfo
+        {
+            ID = "claude-sonnet-4-20250514",
+            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
+            DisplayName = "Claude Sonnet 4",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ModelInfo>(json);
+        Assert.NotNull(deserialized);
+
+        string expectedID = "claude-sonnet-4-20250514";
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z");
+        string expectedDisplayName = "Claude Sonnet 4";
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+
+        Assert.Equal(expectedID, deserialized.ID);
+        Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
+        Assert.Equal(expectedDisplayName, deserialized.DisplayName);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new ModelInfo
+        {
+            ID = "claude-sonnet-4-20250514",
+            CreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z"),
+            DisplayName = "Claude Sonnet 4",
+        };
+
+        model.Validate();
     }
 }

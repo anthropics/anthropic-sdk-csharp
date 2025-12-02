@@ -12,9 +12,6 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
         var model = new BetaBashCodeExecutionToolResultError
         {
             ErrorCode = ErrorCode.InvalidToolInput,
-            Type = JsonSerializer.Deserialize<JsonElement>(
-                "\"bash_code_execution_tool_result_error\""
-            ),
         };
 
         ApiEnum<string, ErrorCode> expectedErrorCode = ErrorCode.InvalidToolInput;
@@ -24,5 +21,51 @@ public class BetaBashCodeExecutionToolResultErrorTest : TestBase
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaBashCodeExecutionToolResultError
+        {
+            ErrorCode = ErrorCode.InvalidToolInput,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultError>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaBashCodeExecutionToolResultError
+        {
+            ErrorCode = ErrorCode.InvalidToolInput,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultError>(json);
+        Assert.NotNull(deserialized);
+
+        ApiEnum<string, ErrorCode> expectedErrorCode = ErrorCode.InvalidToolInput;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
+            "\"bash_code_execution_tool_result_error\""
+        );
+
+        Assert.Equal(expectedErrorCode, deserialized.ErrorCode);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaBashCodeExecutionToolResultError
+        {
+            ErrorCode = ErrorCode.InvalidToolInput,
+        };
+
+        model.Validate();
     }
 }

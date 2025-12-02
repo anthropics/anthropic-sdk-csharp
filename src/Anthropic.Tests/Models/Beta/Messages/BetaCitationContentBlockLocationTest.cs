@@ -16,7 +16,6 @@ public class BetaCitationContentBlockLocationTest : TestBase
             EndBlockIndex = 0,
             FileID = "file_id",
             StartBlockIndex = 0,
-            Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_location\""),
         };
 
         string expectedCitedText = "cited_text";
@@ -36,5 +35,76 @@ public class BetaCitationContentBlockLocationTest : TestBase
         Assert.Equal(expectedFileID, model.FileID);
         Assert.Equal(expectedStartBlockIndex, model.StartBlockIndex);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaCitationContentBlockLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndBlockIndex = 0,
+            FileID = "file_id",
+            StartBlockIndex = 0,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocation>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaCitationContentBlockLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndBlockIndex = 0,
+            FileID = "file_id",
+            StartBlockIndex = 0,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocation>(json);
+        Assert.NotNull(deserialized);
+
+        string expectedCitedText = "cited_text";
+        long expectedDocumentIndex = 0;
+        string expectedDocumentTitle = "document_title";
+        long expectedEndBlockIndex = 0;
+        string expectedFileID = "file_id";
+        long expectedStartBlockIndex = 0;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
+            "\"content_block_location\""
+        );
+
+        Assert.Equal(expectedCitedText, deserialized.CitedText);
+        Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);
+        Assert.Equal(expectedDocumentTitle, deserialized.DocumentTitle);
+        Assert.Equal(expectedEndBlockIndex, deserialized.EndBlockIndex);
+        Assert.Equal(expectedFileID, deserialized.FileID);
+        Assert.Equal(expectedStartBlockIndex, deserialized.StartBlockIndex);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaCitationContentBlockLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndBlockIndex = 0,
+            FileID = "file_id",
+            StartBlockIndex = 0,
+        };
+
+        model.Validate();
     }
 }

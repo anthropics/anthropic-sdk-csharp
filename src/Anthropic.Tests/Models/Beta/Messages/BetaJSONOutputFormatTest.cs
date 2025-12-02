@@ -15,7 +15,6 @@ public class BetaJSONOutputFormatTest : TestBase
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
-            Type = JsonSerializer.Deserialize<JsonElement>("\"json_schema\""),
         };
 
         Dictionary<string, JsonElement> expectedSchema = new()
@@ -32,5 +31,67 @@ public class BetaJSONOutputFormatTest : TestBase
             Assert.True(JsonElement.DeepEquals(value, model.Schema[item.Key]));
         }
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaJSONOutputFormat
+        {
+            Schema = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaJSONOutputFormat>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaJSONOutputFormat
+        {
+            Schema = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaJSONOutputFormat>(json);
+        Assert.NotNull(deserialized);
+
+        Dictionary<string, JsonElement> expectedSchema = new()
+        {
+            { "foo", JsonSerializer.SerializeToElement("bar") },
+        };
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"json_schema\"");
+
+        Assert.Equal(expectedSchema.Count, deserialized.Schema.Count);
+        foreach (var item in expectedSchema)
+        {
+            Assert.True(deserialized.Schema.TryGetValue(item.Key, out var value));
+
+            Assert.True(JsonElement.DeepEquals(value, deserialized.Schema[item.Key]));
+        }
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaJSONOutputFormat
+        {
+            Schema = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+
+        model.Validate();
     }
 }

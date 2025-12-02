@@ -12,7 +12,6 @@ public class BetaWebFetchToolResultErrorBlockTest : TestBase
         var model = new BetaWebFetchToolResultErrorBlock
         {
             ErrorCode = BetaWebFetchToolResultErrorCode.InvalidToolInput,
-            Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result_error\""),
         };
 
         ApiEnum<string, BetaWebFetchToolResultErrorCode> expectedErrorCode =
@@ -23,5 +22,52 @@ public class BetaWebFetchToolResultErrorBlockTest : TestBase
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaWebFetchToolResultErrorBlock
+        {
+            ErrorCode = BetaWebFetchToolResultErrorCode.InvalidToolInput,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaWebFetchToolResultErrorBlock
+        {
+            ErrorCode = BetaWebFetchToolResultErrorCode.InvalidToolInput,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(json);
+        Assert.NotNull(deserialized);
+
+        ApiEnum<string, BetaWebFetchToolResultErrorCode> expectedErrorCode =
+            BetaWebFetchToolResultErrorCode.InvalidToolInput;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
+            "\"web_fetch_tool_result_error\""
+        );
+
+        Assert.Equal(expectedErrorCode, deserialized.ErrorCode);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaWebFetchToolResultErrorBlock
+        {
+            ErrorCode = BetaWebFetchToolResultErrorCode.InvalidToolInput,
+        };
+
+        model.Validate();
     }
 }

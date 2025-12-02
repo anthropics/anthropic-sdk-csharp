@@ -8,16 +8,47 @@ public class RateLimitErrorTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new RateLimitError
-        {
-            Message = "message",
-            Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\""),
-        };
+        var model = new RateLimitError { Message = "message" };
 
         string expectedMessage = "message";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new RateLimitError { Message = "message" };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RateLimitError>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new RateLimitError { Message = "message" };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RateLimitError>(json);
+        Assert.NotNull(deserialized);
+
+        string expectedMessage = "message";
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+
+        Assert.Equal(expectedMessage, deserialized.Message);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new RateLimitError { Message = "message" };
+
+        model.Validate();
     }
 }

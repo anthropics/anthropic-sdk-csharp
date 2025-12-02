@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -27,5 +28,67 @@ public class MessageDeltaUsageTest : TestBase
         Assert.Equal(expectedInputTokens, model.InputTokens);
         Assert.Equal(expectedOutputTokens, model.OutputTokens);
         Assert.Equal(expectedServerToolUse, model.ServerToolUse);
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new MessageDeltaUsage
+        {
+            CacheCreationInputTokens = 2051,
+            CacheReadInputTokens = 2051,
+            InputTokens = 2095,
+            OutputTokens = 503,
+            ServerToolUse = new(0),
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageDeltaUsage>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new MessageDeltaUsage
+        {
+            CacheCreationInputTokens = 2051,
+            CacheReadInputTokens = 2051,
+            InputTokens = 2095,
+            OutputTokens = 503,
+            ServerToolUse = new(0),
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageDeltaUsage>(json);
+        Assert.NotNull(deserialized);
+
+        long expectedCacheCreationInputTokens = 2051;
+        long expectedCacheReadInputTokens = 2051;
+        long expectedInputTokens = 2095;
+        long expectedOutputTokens = 503;
+        ServerToolUsage expectedServerToolUse = new(0);
+
+        Assert.Equal(expectedCacheCreationInputTokens, deserialized.CacheCreationInputTokens);
+        Assert.Equal(expectedCacheReadInputTokens, deserialized.CacheReadInputTokens);
+        Assert.Equal(expectedInputTokens, deserialized.InputTokens);
+        Assert.Equal(expectedOutputTokens, deserialized.OutputTokens);
+        Assert.Equal(expectedServerToolUse, deserialized.ServerToolUse);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new MessageDeltaUsage
+        {
+            CacheCreationInputTokens = 2051,
+            CacheReadInputTokens = 2051,
+            InputTokens = 2095,
+            OutputTokens = 503,
+            ServerToolUse = new(0),
+        };
+
+        model.Validate();
     }
 }

@@ -13,7 +13,6 @@ public class BetaCitationsWebSearchResultLocationTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "title",
-            Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\""),
             URL = "url",
         };
 
@@ -30,5 +29,66 @@ public class BetaCitationsWebSearchResultLocationTest : TestBase
         Assert.Equal(expectedTitle, model.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedURL, model.URL);
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaCitationsWebSearchResultLocation
+        {
+            CitedText = "cited_text",
+            EncryptedIndex = "encrypted_index",
+            Title = "title",
+            URL = "url",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationsWebSearchResultLocation>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaCitationsWebSearchResultLocation
+        {
+            CitedText = "cited_text",
+            EncryptedIndex = "encrypted_index",
+            Title = "title",
+            URL = "url",
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationsWebSearchResultLocation>(json);
+        Assert.NotNull(deserialized);
+
+        string expectedCitedText = "cited_text";
+        string expectedEncryptedIndex = "encrypted_index";
+        string expectedTitle = "title";
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
+            "\"web_search_result_location\""
+        );
+        string expectedURL = "url";
+
+        Assert.Equal(expectedCitedText, deserialized.CitedText);
+        Assert.Equal(expectedEncryptedIndex, deserialized.EncryptedIndex);
+        Assert.Equal(expectedTitle, deserialized.Title);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedURL, deserialized.URL);
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaCitationsWebSearchResultLocation
+        {
+            CitedText = "cited_text",
+            EncryptedIndex = "encrypted_index",
+            Title = "title",
+            URL = "url",
+        };
+
+        model.Validate();
     }
 }

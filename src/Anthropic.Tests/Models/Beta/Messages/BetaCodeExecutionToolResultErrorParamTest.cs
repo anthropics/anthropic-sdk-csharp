@@ -12,7 +12,6 @@ public class BetaCodeExecutionToolResultErrorParamTest : TestBase
         var model = new BetaCodeExecutionToolResultErrorParam
         {
             ErrorCode = BetaCodeExecutionToolResultErrorCode.InvalidToolInput,
-            Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\""),
         };
 
         ApiEnum<string, BetaCodeExecutionToolResultErrorCode> expectedErrorCode =
@@ -23,5 +22,52 @@ public class BetaCodeExecutionToolResultErrorParamTest : TestBase
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaCodeExecutionToolResultErrorParam
+        {
+            ErrorCode = BetaCodeExecutionToolResultErrorCode.InvalidToolInput,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorParam>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaCodeExecutionToolResultErrorParam
+        {
+            ErrorCode = BetaCodeExecutionToolResultErrorCode.InvalidToolInput,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorParam>(json);
+        Assert.NotNull(deserialized);
+
+        ApiEnum<string, BetaCodeExecutionToolResultErrorCode> expectedErrorCode =
+            BetaCodeExecutionToolResultErrorCode.InvalidToolInput;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
+            "\"code_execution_tool_result_error\""
+        );
+
+        Assert.Equal(expectedErrorCode, deserialized.ErrorCode);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaCodeExecutionToolResultErrorParam
+        {
+            ErrorCode = BetaCodeExecutionToolResultErrorCode.InvalidToolInput,
+        };
+
+        model.Validate();
     }
 }

@@ -16,9 +16,6 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
             NewStart = 0,
             OldLines = 0,
             OldStart = 0,
-            Type = JsonSerializer.Deserialize<JsonElement>(
-                "\"text_editor_code_execution_str_replace_result\""
-            ),
         };
 
         List<string> expectedLines = ["string"];
@@ -40,5 +37,77 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
         Assert.Equal(expectedOldLines, model.OldLines);
         Assert.Equal(expectedOldStart, model.OldStart);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+    }
+
+    [Fact]
+    public void SerializationRoundtrip_Works()
+    {
+        var model = new BetaTextEditorCodeExecutionStrReplaceResultBlock
+        {
+            Lines = ["string"],
+            NewLines = 0,
+            NewStart = 0,
+            OldLines = 0,
+            OldStart = 0,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(json);
+
+        Assert.Equal(model, deserialized);
+    }
+
+    [Fact]
+    public void FieldRoundtripThroughSerialization_Works()
+    {
+        var model = new BetaTextEditorCodeExecutionStrReplaceResultBlock
+        {
+            Lines = ["string"],
+            NewLines = 0,
+            NewStart = 0,
+            OldLines = 0,
+            OldStart = 0,
+        };
+
+        string json = JsonSerializer.Serialize(model);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(json);
+        Assert.NotNull(deserialized);
+
+        List<string> expectedLines = ["string"];
+        long expectedNewLines = 0;
+        long expectedNewStart = 0;
+        long expectedOldLines = 0;
+        long expectedOldStart = 0;
+        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
+            "\"text_editor_code_execution_str_replace_result\""
+        );
+
+        Assert.Equal(expectedLines.Count, deserialized.Lines.Count);
+        for (int i = 0; i < expectedLines.Count; i++)
+        {
+            Assert.Equal(expectedLines[i], deserialized.Lines[i]);
+        }
+        Assert.Equal(expectedNewLines, deserialized.NewLines);
+        Assert.Equal(expectedNewStart, deserialized.NewStart);
+        Assert.Equal(expectedOldLines, deserialized.OldLines);
+        Assert.Equal(expectedOldStart, deserialized.OldStart);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+    }
+
+    [Fact]
+    public void Validation_Works()
+    {
+        var model = new BetaTextEditorCodeExecutionStrReplaceResultBlock
+        {
+            Lines = ["string"],
+            NewLines = 0,
+            NewStart = 0,
+            OldLines = 0,
+            OldStart = 0,
+        };
+
+        model.Validate();
     }
 }
