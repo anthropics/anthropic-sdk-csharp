@@ -40,14 +40,30 @@
     <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
+  <PropertyGroup>
+    <Authors>Stainless Software, Inc.</Authors>
+    <Company>Stainless Software, Inc.</Company>
+    <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <LangVersion>Latest</LangVersion>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
+  </PropertyGroup>
   <ItemGroup>
-    <None Include="..\logo.png" Pack="true" PackagePath="\"/>
-    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
-    <PackageReference Include="System.Text.Json" Version="10.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0"/>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    <None Include="..\logo.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Collections.Immutable" Version="8.0.0"/>
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
   </ItemGroup>
 </Project>
