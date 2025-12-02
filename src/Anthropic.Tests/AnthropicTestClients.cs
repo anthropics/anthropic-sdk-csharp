@@ -10,7 +10,7 @@ namespace Anthropic.Tests;
 public class AnthropicTestClientsAttribute : DataAttribute
 {
     public static string DataServiceUrl { get; } =
-            Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
+        Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
     public static string ApiKey { get; } = "YourApiKeyHere";
     public static string Resource { get; } = "YourRegionOrResourceHere";
 

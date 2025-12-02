@@ -13,12 +13,10 @@ public abstract class TestBase
     /// This class is only used by codegen tests and should not be used for hand written tests. Use the <see cref="AnthropicTestClientsAttribute"/> instead.
     /// </summary>
     public TestBase()
-    {        
+    {
         client = new AnthropicClient()
         {
-            BaseUrl = new Uri(
-                AnthropicTestClientsAttribute.DataServiceUrl
-            ),
+            BaseUrl = new Uri(AnthropicTestClientsAttribute.DataServiceUrl),
             APIKey = AnthropicTestClientsAttribute.ApiKey,
         };
     }
