@@ -58,45 +58,53 @@ public class AnthropicBedrockClient : AnthropicClient
     {
         ValidateRequest(requestMessage);
 
-        requestMessage.Headers.TryAddWithoutValidation("anthropic_version", AnthropicVersion);
-
-        var bodyContent = JsonNode.Parse(await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false));
-
-        if (bodyContent?["model"] == null)
+        if (requestMessage.Content is not null)
         {
-            throw new AnthropicInvalidDataException("Expected to find property model in request json but found none.");
-        }
+            var bodyContent = JsonNode.Parse(await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false));
 
-        var betaVersions = requestMessage.Headers.GetValues(HEADER_ANTHROPIC_BETA).Distinct().ToArray();
-        if (betaVersions is not { Length: 0 })
-        {
-            bodyContent["anthropic_beta"] = new JsonArray(betaVersions.Select(v => JsonValue.Create(v)).ToArray());
-        }
+            if (bodyContent?["model"] == null)
+            {
+                throw new AnthropicInvalidDataException("Expected to find property model in request json but found none.");
+            }
 
-        var modelValue = bodyContent["model"];
+            var betaVersions = requestMessage.Headers.Contains(HEADER_ANTHROPIC_BETA) ? requestMessage.Headers.GetValues(HEADER_ANTHROPIC_BETA).Distinct().ToArray() : [];
+            if (betaVersions is not { Length: 0 })
+            {
+                bodyContent["anthropic_beta"] = new JsonArray(betaVersions.Select(v => JsonValue.Create(v)).ToArray());
+            }
 
-        if (modelValue is null)
-        {
-            throw new AnthropicInvalidDataException("Expected to find property model in request json but found none.");
-        }
+            bodyContent["anthropic_version"] = JsonValue.Create(AnthropicVersion);
 
-        bodyContent["model"] = null;
-        var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
+            var modelValue = bodyContent["model"];
 
-        var contentStream = new MemoryStream();
-        requestMessage.Content = new StreamContent(contentStream);
-        using var writer = new Utf8JsonWriter(contentStream);
-        {
-            bodyContent.WriteTo(writer);
-        }
+            if (modelValue is null)
+            {
+                throw new AnthropicInvalidDataException("Expected to find property model in request json but found none.");
+            }
+            
+            bodyContent.Root.AsObject().Remove("model");
+            var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
 
-        var uriBuilder = new UriBuilder(requestMessage.RequestUri);
-        uriBuilder.Path = string.Join('/', [.. uriBuilder.Path.Split("/").Select(e => e == "model" ? modelValue.ToString() : e), (parsedStreamValue ? "invoke-with-response-stream" : "invoke")]);
+            var contentStream = new MemoryStream();
+            requestMessage.Content = new StreamContent(contentStream);
+            using var writer = new Utf8JsonWriter(contentStream);
+            {
+                bodyContent.WriteTo(writer);
+                await writer.FlushAsync().ConfigureAwait(false);
+            }
+            contentStream.Seek(0, SeekOrigin.Begin);
+            requestMessage.Headers.TryAddWithoutValidation("content-length", contentStream.Length.ToString());
+            var url = $"{requestMessage.RequestUri.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue.ToString()}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
+            requestMessage.RequestUri = new Uri(url, new UriCreationOptions()
+            {
+                DangerousDisablePathAndQueryCanonicalization = true
+            });
+            requestMessage.Headers.TryAddWithoutValidation("Host", requestMessage.RequestUri.Host);
+            requestMessage.Headers.TryAddWithoutValidation("accept", "application/json");
+            requestMessage.Headers.TryAddWithoutValidation("content-type", "application/json");
+        }    
 
-        requestMessage.RequestUri = uriBuilder.Uri;
-        requestMessage.Headers.TryAddWithoutValidation("Host", uriBuilder.Uri.Host);
-
-        _bedrockCredentials.Apply(requestMessage);
+        await _bedrockCredentials.Apply(requestMessage).ConfigureAwait(false);
     }
 
     private static void ValidateRequest(HttpRequestMessage requestMessage)
@@ -111,20 +119,26 @@ public class AnthropicBedrockClient : AnthropicClient
             throw new AnthropicInvalidDataException("Request is missing required path segments. Expected > 1 segments found none.");
         }
 
-        if (requestMessage.RequestUri.Segments[0] != "v1")
+        if (requestMessage.RequestUri.Segments[1].Trim('/') != "v1")
         {
             throw new AnthropicInvalidDataException($"Request is missing required path segments. Expected [0] segment to be 'v1' found {requestMessage.RequestUri.Segments[0]}.");
         }
 
-        if (requestMessage.RequestUri.Segments[1] is "messages" && requestMessage.RequestUri.Segments[2] is "batches" or "count_tokens")
+        if (requestMessage.RequestUri.Segments.Length >= 4 && requestMessage.RequestUri.Segments[2].Trim('/') is "messages" && requestMessage.RequestUri.Segments[3].Trim('/') is "batches" or "count_tokens")
         {
-            throw new AnthropicInvalidDataException($"The requested endpoint '{requestMessage.RequestUri.Segments[2]}' is not yet supported.");
+            throw new AnthropicInvalidDataException($"The requested endpoint '{requestMessage.RequestUri.Segments[3].Trim('/')}' is not yet supported.");
         }
     }
 
     protected override async ValueTask AfterSend<T>(HttpRequest<T> request, HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
     {
-        if (!httpResponseMessage.Headers.GetValues("content-type").Any(f => string.Equals(f, CONTENT_TYPE_AWS_EVENT_STREAM, StringComparison.CurrentCultureIgnoreCase)))
+        if (!httpResponseMessage.IsSuccessStatusCode)
+        {
+            return;
+        }
+        
+        if (httpResponseMessage.Content.Headers.ContentType?
+            .Parameters.Any(f => string.Equals(f.Value, CONTENT_TYPE_AWS_EVENT_STREAM, StringComparison.CurrentCultureIgnoreCase)) != true)
         {
             return;
         }

@@ -6,7 +6,7 @@ namespace Anthropic.Bedrock;
 public interface IAnthropicBedrockCredentials
 {
     public string Region { get; }
-    public void Apply(HttpRequestMessage requestMessage);
+    public Task Apply(HttpRequestMessage requestMessage);
 
     public static async ValueTask<IAnthropicBedrockCredentials?> FromEnv()
     {
