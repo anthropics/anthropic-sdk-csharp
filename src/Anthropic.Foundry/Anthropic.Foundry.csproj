@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <RootNamespace>Anthropic.Foundry</RootNamespace>
     <AssemblyName>Anthropic.Foundry</AssemblyName>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
   </ItemGroup>
@@ -20,25 +19,26 @@
     <BuildPackage>true</BuildPackage>
     <Deterministic>true</Deterministic>
     <PackageId>Anthropic.Foundry</PackageId>
-    <Version>0.1.0</Version>
-    <Authors>Stainless Software, Inc.</Authors>
-    <Company>Stainless Software, Inc.</Company>
-    <PackageProjectUrl>https://github.com/anthropics/anthropic-sdk-csharp</PackageProjectUrl>
-    <PackageIcon>logo.png</PackageIcon>
-    <RepositoryUrl>https://github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <LangVersion>Latest</LangVersion>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>
-            $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <SupportedFrameworks>net8.0;net9.0;netstandard2.0</SupportedFrameworks>
+    <Version>0.1.0</Version>    
+    <Readme>README.md</Readme>
+    <Description>
+     Anthropic Foundry SDK for .NET — A .NET client library for Anthropic Foundry, providing typed models, API bindings, and authentication helpers to integrate Anthropic services into .NET applications.
+        Examples:
+        - Quickstart:
+            1. Create a client (API key or Azure credential).
+            2. Call the client to request a completion or classification and handle the response.
+        - Streaming:
+            Use the streaming helpers to receive partial tokens as they are produced for responsive UIs.
+        - Authentication:
+            Support for environment API key (`ANTHROPIC_FOUNDRY_API_KEY` environment variable) and Azure Identity (DefaultAzureCredential).
+        - Samples:
+            See the repository's examples/ directory for complete examples (console app and streaming examples).
+        - Install:
+            `dotnet add package Anthropic.Foundry`
+    </Description>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\logo.png" Pack="true" PackagePath="\" />
     <Compile Include="..\Anthropic\Shims.cs" />
   </ItemGroup>
 </Project>
-

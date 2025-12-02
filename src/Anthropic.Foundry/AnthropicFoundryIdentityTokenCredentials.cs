@@ -1,3 +1,5 @@
+using System;
+using System.Net.Http;
 using Azure.Core;
 
 namespace Anthropic.Foundry;
