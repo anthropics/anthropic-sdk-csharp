@@ -9,6 +9,7 @@ namespace Anthropic.Foundry;
 public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredentials
 {
     private readonly TokenCredential _tokenCredential;
+    private readonly object _tokenLock = new object();
     private AccessToken? _cachedAccessToken;
     private readonly string[] _scopes = ["https://ai.azure.com/.default"];
 
@@ -46,15 +47,18 @@ public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredent
 
     public void Apply(HttpRequestMessage requestMessage)
     {
-        if (_cachedAccessToken is null || _cachedAccessToken.Value.ExpiresOn <= DateTimeOffset.Now)
+        lock (this._tokenLock)
         {
-            // This will also get the first or refresh the token which is the responsibility of the underlying TokenCredential.GetToken implementation
-            _cachedAccessToken = _tokenCredential.GetToken(new TokenRequestContext(_scopes), CancellationToken.None);
+            if (this._cachedAccessToken is null || this._cachedAccessToken.Value.ExpiresOn <= DateTimeOffset.Now)
+            {
+                // This will also get the first or refresh the token which is the responsibility of the underlying TokenCredential.GetToken implementation
+                this._cachedAccessToken = this._tokenCredential.GetToken(new TokenRequestContext(this._scopes), CancellationToken.None);
+            }
         }
 
         requestMessage.Headers.Authorization = new AuthenticationHeaderValue(
             "bearer",
-            _cachedAccessToken.Value.Token
+            this._cachedAccessToken.Value.Token
         );
     }
 }
