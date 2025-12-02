@@ -199,9 +199,13 @@ public sealed record class MessageBatch : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'processing_status' cannot be null",
+                    new System::ArgumentNullException("processing_status")
+                );
         }
         init
         {

@@ -56,9 +56,13 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock : ModelBas
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'file_type' cannot be null",
+                    new System::ArgumentNullException("file_type")
+                );
         }
         init
         {

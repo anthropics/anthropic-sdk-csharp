@@ -25,9 +25,13 @@ public sealed record class BetaWebSearchToolResultError : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'error_code' cannot be null",
+                    new ArgumentNullException("error_code")
+                );
         }
         init
         {

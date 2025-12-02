@@ -51,9 +51,13 @@ public sealed record class Base64ImageSource : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'media_type' cannot be null",
+                    new System::ArgumentNullException("media_type")
+                );
         }
         init
         {

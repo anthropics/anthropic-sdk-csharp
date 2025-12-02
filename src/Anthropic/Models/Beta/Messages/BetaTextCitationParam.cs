@@ -282,6 +282,16 @@ public record class BetaTextCitationParam
             );
         }
     }
+
+    public virtual bool Equals(BetaTextCitationParam? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationParam>

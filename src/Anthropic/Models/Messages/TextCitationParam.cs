@@ -268,6 +268,16 @@ public record class TextCitationParam
             );
         }
     }
+
+    public virtual bool Equals(TextCitationParam? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>

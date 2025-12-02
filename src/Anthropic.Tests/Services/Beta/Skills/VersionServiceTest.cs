@@ -3,36 +3,40 @@ using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services.Beta.Skills;
 
-public class VersionServiceTest : TestBase
+public class VersionServiceTest
 {
-    [Fact(Skip = "prism binary unsupported")]
-    public async Task Create_Works()
+    [Theory(Skip = "prism binary unsupported")]
+    [AnthropicTestClients]
+    public async Task Create_Works(IAnthropicClient client)
     {
-        var version = await this.client.Beta.Skills.Versions.Create("skill_id");
+        var version = await client.Beta.Skills.Versions.Create("skill_id");
         version.Validate();
     }
 
-    [Fact]
-    public async Task Retrieve_Works()
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var version = await this.client.Beta.Skills.Versions.Retrieve(
+        var version = await client.Beta.Skills.Versions.Retrieve(
             "version",
             new() { SkillID = "skill_id" }
         );
         version.Validate();
     }
 
-    [Fact]
-    public async Task List_Works()
+    [Theory]
+    [AnthropicTestClients]
+    public async Task List_Works(IAnthropicClient client)
     {
-        var page = await this.client.Beta.Skills.Versions.List("skill_id");
+        var page = await client.Beta.Skills.Versions.List("skill_id");
         page.Validate();
     }
 
-    [Fact]
-    public async Task Delete_Works()
+    [Theory]
+    [AnthropicTestClients]
+    public async Task Delete_Works(IAnthropicClient client)
     {
-        var version = await this.client.Beta.Skills.Versions.Delete(
+        var version = await client.Beta.Skills.Versions.Delete(
             "version",
             new() { SkillID = "skill_id" }
         );

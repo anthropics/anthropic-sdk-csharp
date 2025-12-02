@@ -1,0 +1,35 @@
+using Anthropic.Models.Beta.Messages;
+
+namespace Anthropic.Tests.Models.Beta.Messages;
+
+public class BetaMessageDeltaUsageTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var model = new BetaMessageDeltaUsage
+        {
+            CacheCreationInputTokens = 2051,
+            CacheReadInputTokens = 2051,
+            InputTokens = 2095,
+            OutputTokens = 503,
+            ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+        };
+
+        long expectedCacheCreationInputTokens = 2051;
+        long expectedCacheReadInputTokens = 2051;
+        long expectedInputTokens = 2095;
+        long expectedOutputTokens = 503;
+        BetaServerToolUsage expectedServerToolUse = new()
+        {
+            WebFetchRequests = 2,
+            WebSearchRequests = 0,
+        };
+
+        Assert.Equal(expectedCacheCreationInputTokens, model.CacheCreationInputTokens);
+        Assert.Equal(expectedCacheReadInputTokens, model.CacheReadInputTokens);
+        Assert.Equal(expectedInputTokens, model.InputTokens);
+        Assert.Equal(expectedOutputTokens, model.OutputTokens);
+        Assert.Equal(expectedServerToolUse, model.ServerToolUse);
+    }
+}

@@ -57,9 +57,13 @@ public sealed record class BetaSkillParams : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, BetaSkillParamsType>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new System::ArgumentNullException("type")
+                );
         }
         init
         {

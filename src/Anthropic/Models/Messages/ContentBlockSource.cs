@@ -204,6 +204,16 @@ public record class Content
             throw new AnthropicInvalidDataException("Data did not match any variant of Content");
         }
     }
+
+    public virtual bool Equals(Content? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class ContentConverter : JsonConverter<Content>

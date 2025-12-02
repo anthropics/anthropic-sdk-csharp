@@ -278,6 +278,16 @@ public record class ToolResultBlockParamContent
             );
         }
     }
+
+    public virtual bool Equals(ToolResultBlockParamContent? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBlockParamContent>
@@ -489,6 +499,16 @@ public record class Block
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Block");
         }
+    }
+
+    public virtual bool Equals(Block? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

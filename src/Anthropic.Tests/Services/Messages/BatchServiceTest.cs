@@ -7,7 +7,7 @@ using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Messages;
 
-public class BatchServiceTest : TestBase
+public class BatchServiceTest
 {
     [Theory]
     [AnthropicTestClients]

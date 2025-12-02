@@ -51,9 +51,13 @@ public sealed record class BetaToolSearchToolBm25_20251119 : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, BetaToolSearchToolBm25_20251119Type>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new System::ArgumentNullException("type")
+                );
         }
         init
         {

@@ -188,6 +188,16 @@ public record class ToolUnion
             throw new AnthropicInvalidDataException("Data did not match any variant of ToolUnion");
         }
     }
+
+    public virtual bool Equals(ToolUnion? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class ToolUnionConverter : JsonConverter<ToolUnion>

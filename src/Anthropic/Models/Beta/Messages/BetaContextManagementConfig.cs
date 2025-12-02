@@ -176,6 +176,16 @@ public record class Edit
             throw new AnthropicInvalidDataException("Data did not match any variant of Edit");
         }
     }
+
+    public virtual bool Equals(Edit? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class EditConverter : JsonConverter<Edit>

@@ -52,9 +52,13 @@ public sealed record class BetaMessageParam : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Role>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'role' cannot be null",
+                    new System::ArgumentNullException("role")
+                );
         }
         init
         {
@@ -194,6 +198,16 @@ public record class BetaMessageParamContent
                 "Data did not match any variant of BetaMessageParamContent"
             );
         }
+    }
+
+    public virtual bool Equals(BetaMessageParamContent? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

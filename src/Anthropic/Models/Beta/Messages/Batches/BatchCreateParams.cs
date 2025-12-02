@@ -392,9 +392,13 @@ public sealed record class Params : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'model' cannot be null",
+                    new System::ArgumentNullException("model")
+                );
         }
         init
         {
@@ -1080,6 +1084,16 @@ public record class Container
             throw new AnthropicInvalidDataException("Data did not match any variant of Container");
         }
     }
+
+    public virtual bool Equals(global::Anthropic.Models.Beta.Messages.Batches.Container? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class ContainerConverter
@@ -1288,6 +1302,16 @@ public record class ParamsSystem
                 "Data did not match any variant of ParamsSystem"
             );
         }
+    }
+
+    public virtual bool Equals(ParamsSystem? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

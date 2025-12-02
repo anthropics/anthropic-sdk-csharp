@@ -31,8 +31,12 @@ public sealed record class BetaToolSearchToolResultErrorParam : ModelBase
                 );
 
             return JsonSerializer.Deserialize<
-                ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode>
-            >(element, ModelBase.SerializerOptions);
+                    ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode>
+                >(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'error_code' cannot be null",
+                    new System::ArgumentNullException("error_code")
+                );
         }
         init
         {

@@ -52,9 +52,13 @@ public sealed record class MessageParam : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Role>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'role' cannot be null",
+                    new System::ArgumentNullException("role")
+                );
         }
         init
         {
@@ -189,6 +193,16 @@ public record class MessageParamContent
                 "Data did not match any variant of MessageParamContent"
             );
         }
+    }
+
+    public virtual bool Equals(MessageParamContent? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

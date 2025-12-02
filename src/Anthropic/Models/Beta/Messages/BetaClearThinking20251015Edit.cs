@@ -230,6 +230,16 @@ public record class Keep
             throw new AnthropicInvalidDataException("Data did not match any variant of Keep");
         }
     }
+
+    public virtual bool Equals(Keep? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class KeepConverter : JsonConverter<Keep>

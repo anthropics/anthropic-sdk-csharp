@@ -155,9 +155,13 @@ public sealed record class BetaMessage : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'model' cannot be null",
+                    new ArgumentNullException("model")
+                );
         }
         init
         {

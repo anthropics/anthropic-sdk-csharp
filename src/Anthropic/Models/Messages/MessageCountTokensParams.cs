@@ -122,9 +122,13 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'model' cannot be null",
+                    new System::ArgumentNullException("model")
+                );
         }
         init
         {
@@ -458,6 +462,16 @@ public record class System1
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of System1");
         }
+    }
+
+    public virtual bool Equals(System1? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

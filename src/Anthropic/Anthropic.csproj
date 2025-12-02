@@ -41,13 +41,14 @@
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\logo.png" Pack="true" PackagePath="\"/>
-    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
-    <PackageReference Include="System.Text.Json" Version="10.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0"/>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    <None Include="..\logo.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <InternalsVisibleTo Include="Anthropic.Tests" />
+    <PackageReference Include="System.Text.Json" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Collections.Immutable" Version="8.0.0"/>
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
   </ItemGroup>
 </Project>

@@ -255,6 +255,16 @@ public record class BetaToolSearchToolResultBlockContent
             );
         }
     }
+
+    public virtual bool Equals(BetaToolSearchToolResultBlockContent? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class BetaToolSearchToolResultBlockContentConverter

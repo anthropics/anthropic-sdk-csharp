@@ -291,9 +291,11 @@ public class AnthropicClient : IAnthropicClient
             // Retry on lock timeouts
             409
             or
+#if !NETSTANDARD2_0_OR_GREATER
             // Retry on rate limits
             429
             or
+#endif
             // Retry internal errors
             >= 500 => true,
             _ => false,

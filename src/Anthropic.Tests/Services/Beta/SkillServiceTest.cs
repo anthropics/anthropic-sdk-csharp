@@ -3,7 +3,7 @@ using Anthropic.Tests;
 
 namespace Anthropic.Tests.Services.Beta;
 
-public class SkillServiceTest : TestBase
+public class SkillServiceTest
 {
     [Theory(Skip = "prism binary unsupported")]
     [AnthropicTestClients]

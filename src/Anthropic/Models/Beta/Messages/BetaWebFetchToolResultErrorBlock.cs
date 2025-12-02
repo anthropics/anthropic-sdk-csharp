@@ -28,9 +28,13 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
                 );
 
             return JsonSerializer.Deserialize<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
-                element,
-                ModelBase.SerializerOptions
-            );
+                    element,
+                    ModelBase.SerializerOptions
+                )
+                ?? throw new AnthropicInvalidDataException(
+                    "'error_code' cannot be null",
+                    new ArgumentNullException("error_code")
+                );
         }
         init
         {

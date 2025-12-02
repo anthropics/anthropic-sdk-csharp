@@ -357,6 +357,16 @@ public record class ContentBlockParam
             );
         }
     }
+
+    public virtual bool Equals(ContentBlockParam? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
 sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>

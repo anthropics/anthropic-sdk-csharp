@@ -57,8 +57,12 @@ public sealed record class BetaSkill : ModelBase
                 );
 
             return JsonSerializer.Deserialize<
-                ApiEnum<string, global::Anthropic.Models.Beta.Messages.Type>
-            >(element, ModelBase.SerializerOptions);
+                    ApiEnum<string, global::Anthropic.Models.Beta.Messages.Type>
+                >(element, ModelBase.SerializerOptions)
+                ?? throw new AnthropicInvalidDataException(
+                    "'type' cannot be null",
+                    new System::ArgumentNullException("type")
+                );
         }
         init
         {
