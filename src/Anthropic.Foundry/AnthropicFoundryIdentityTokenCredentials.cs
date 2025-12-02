@@ -35,11 +35,11 @@ public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredent
     [Obsolete("This constructor is deprecated. Please use the constructor that takes a TokenCredential instead.")]
     public AnthropicFoundryIdentityTokenCredentials(AccessToken apiKey, string resourceName) : this(DelegatedTokenCredential.Create((_, _) => apiKey), resourceName)
     {
-        if (apiKey.Equals(default) || string.IsNullOrWhiteSpace(apiKey.Token))
+        if (apiKey.Equals(default) || string.IsNullOrWhiteSpace(apiKey.Token) || apiKey.ExpiresOn <= DateTimeOffset.Now)
         {
             throw new ArgumentNullException(
                 nameof(apiKey),
-                "Invalid/Empty api key struct is not valid"
+                "Invalid/Empty or already expired api key struct is not valid"
             );
         }
     }
