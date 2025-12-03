@@ -105,6 +105,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -146,6 +147,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolSearchToolRegex20251119FromRaw.FromRawUnchecked"/>
     public static BetaToolSearchToolRegex20251119 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -165,6 +167,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
 
 class BetaToolSearchToolRegex20251119FromRaw : IFromRaw<BetaToolSearchToolRegex20251119>
 {
+    /// <inheritdoc/>
     public BetaToolSearchToolRegex20251119 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaToolSearchToolRegex20251119.FromRawUnchecked(rawData);

@@ -23,6 +23,7 @@ public sealed record class BetaTextDelta : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
@@ -57,6 +58,7 @@ public sealed record class BetaTextDelta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextDeltaFromRaw.FromRawUnchecked"/>
     public static BetaTextDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -72,6 +74,7 @@ public sealed record class BetaTextDelta : ModelBase
 
 class BetaTextDeltaFromRaw : IFromRaw<BetaTextDelta>
 {
+    /// <inheritdoc/>
     public BetaTextDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaTextDelta.FromRawUnchecked(rawData);
 }

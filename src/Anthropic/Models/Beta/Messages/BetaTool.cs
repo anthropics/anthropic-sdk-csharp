@@ -153,6 +153,7 @@ public sealed record class BetaTool : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.InputSchema.Validate();
@@ -184,6 +185,7 @@ public sealed record class BetaTool : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolFromRaw.FromRawUnchecked"/>
     public static BetaTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -192,6 +194,7 @@ public sealed record class BetaTool : ModelBase
 
 class BetaToolFromRaw : IFromRaw<BetaTool>
 {
+    /// <inheritdoc/>
     public BetaTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaTool.FromRawUnchecked(rawData);
 }
@@ -229,6 +232,7 @@ public sealed record class InputSchema : ModelBase
         init { ModelBase.Set(this._rawData, "required", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -264,6 +268,7 @@ public sealed record class InputSchema : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="InputSchemaFromRaw.FromRawUnchecked"/>
     public static InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -272,6 +277,7 @@ public sealed record class InputSchema : ModelBase
 
 class InputSchemaFromRaw : IFromRaw<InputSchema>
 {
+    /// <inheritdoc/>
     public InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         InputSchema.FromRawUnchecked(rawData);
 }

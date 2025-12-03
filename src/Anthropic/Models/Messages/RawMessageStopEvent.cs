@@ -17,6 +17,7 @@ public sealed record class RawMessageStopEvent : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -50,6 +51,7 @@ public sealed record class RawMessageStopEvent : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="RawMessageStopEventFromRaw.FromRawUnchecked"/>
     public static RawMessageStopEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -60,6 +62,7 @@ public sealed record class RawMessageStopEvent : ModelBase
 
 class RawMessageStopEventFromRaw : IFromRaw<RawMessageStopEvent>
 {
+    /// <inheritdoc/>
     public RawMessageStopEvent FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         RawMessageStopEvent.FromRawUnchecked(rawData);
 }

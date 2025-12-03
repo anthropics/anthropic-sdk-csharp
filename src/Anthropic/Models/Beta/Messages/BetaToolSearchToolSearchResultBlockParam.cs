@@ -34,6 +34,7 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.ToolReferences)
@@ -73,6 +74,7 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolSearchToolSearchResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaToolSearchToolSearchResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -93,6 +95,7 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : ModelBase
 class BetaToolSearchToolSearchResultBlockParamFromRaw
     : IFromRaw<BetaToolSearchToolSearchResultBlockParam>
 {
+    /// <inheritdoc/>
     public BetaToolSearchToolSearchResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaToolSearchToolSearchResultBlockParam.FromRawUnchecked(rawData);

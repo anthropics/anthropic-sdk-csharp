@@ -98,6 +98,7 @@ public sealed record class BetaCodeExecutionTool20250522 : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -149,6 +150,7 @@ public sealed record class BetaCodeExecutionTool20250522 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCodeExecutionTool20250522FromRaw.FromRawUnchecked"/>
     public static BetaCodeExecutionTool20250522 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -159,6 +161,7 @@ public sealed record class BetaCodeExecutionTool20250522 : ModelBase
 
 class BetaCodeExecutionTool20250522FromRaw : IFromRaw<BetaCodeExecutionTool20250522>
 {
+    /// <inheritdoc/>
     public BetaCodeExecutionTool20250522 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCodeExecutionTool20250522.FromRawUnchecked(rawData);

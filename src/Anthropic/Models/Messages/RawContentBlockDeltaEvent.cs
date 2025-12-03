@@ -29,6 +29,7 @@ public sealed record class RawContentBlockDeltaEvent : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Delta.Validate();
@@ -64,6 +65,7 @@ public sealed record class RawContentBlockDeltaEvent : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="RawContentBlockDeltaEventFromRaw.FromRawUnchecked"/>
     public static RawContentBlockDeltaEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class RawContentBlockDeltaEvent : ModelBase
 
 class RawContentBlockDeltaEventFromRaw : IFromRaw<RawContentBlockDeltaEvent>
 {
+    /// <inheritdoc/>
     public RawContentBlockDeltaEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => RawContentBlockDeltaEvent.FromRawUnchecked(rawData);

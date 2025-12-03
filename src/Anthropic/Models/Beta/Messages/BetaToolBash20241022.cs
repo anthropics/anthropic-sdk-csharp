@@ -115,6 +115,7 @@ public sealed record class BetaToolBash20241022 : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Name, JsonSerializer.Deserialize<JsonElement>("\"bash\"")))
@@ -162,6 +163,7 @@ public sealed record class BetaToolBash20241022 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolBash20241022FromRaw.FromRawUnchecked"/>
     public static BetaToolBash20241022 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -172,6 +174,7 @@ public sealed record class BetaToolBash20241022 : ModelBase
 
 class BetaToolBash20241022FromRaw : IFromRaw<BetaToolBash20241022>
 {
+    /// <inheritdoc/>
     public BetaToolBash20241022 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaToolBash20241022.FromRawUnchecked(rawData);

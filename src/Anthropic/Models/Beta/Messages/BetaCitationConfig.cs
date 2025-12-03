@@ -16,6 +16,7 @@ public sealed record class BetaCitationConfig : ModelBase
         init { ModelBase.Set(this._rawData, "enabled", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Enabled;
@@ -36,6 +37,7 @@ public sealed record class BetaCitationConfig : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationConfigFromRaw.FromRawUnchecked"/>
     public static BetaCitationConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -53,6 +55,7 @@ public sealed record class BetaCitationConfig : ModelBase
 
 class BetaCitationConfigFromRaw : IFromRaw<BetaCitationConfig>
 {
+    /// <inheritdoc/>
     public BetaCitationConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaCitationConfig.FromRawUnchecked(rawData);
 }

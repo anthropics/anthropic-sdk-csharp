@@ -61,6 +61,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Mod
         init { ModelBase.Set(this._rawData, "total_lines", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Content;
@@ -107,6 +108,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Mod
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextEditorCodeExecutionViewResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaTextEditorCodeExecutionViewResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -118,6 +120,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Mod
 class BetaTextEditorCodeExecutionViewResultBlockParamFromRaw
     : IFromRaw<BetaTextEditorCodeExecutionViewResultBlockParam>
 {
+    /// <inheritdoc/>
     public BetaTextEditorCodeExecutionViewResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaTextEditorCodeExecutionViewResultBlockParam.FromRawUnchecked(rawData);

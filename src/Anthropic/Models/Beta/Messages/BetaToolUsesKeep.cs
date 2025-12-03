@@ -23,6 +23,7 @@ public sealed record class BetaToolUsesKeep : ModelBase
         init { ModelBase.Set(this._rawData, "value", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -57,6 +58,7 @@ public sealed record class BetaToolUsesKeep : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolUsesKeepFromRaw.FromRawUnchecked"/>
     public static BetaToolUsesKeep FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaToolUsesKeep : ModelBase
 
 class BetaToolUsesKeepFromRaw : IFromRaw<BetaToolUsesKeep>
 {
+    /// <inheritdoc/>
     public BetaToolUsesKeep FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaToolUsesKeep.FromRawUnchecked(rawData);
 }

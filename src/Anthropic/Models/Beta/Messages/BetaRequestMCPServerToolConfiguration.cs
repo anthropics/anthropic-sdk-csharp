@@ -27,6 +27,7 @@ public sealed record class BetaRequestMCPServerToolConfiguration : ModelBase
         init { ModelBase.Set(this._rawData, "enabled", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.AllowedTools;
@@ -48,6 +49,7 @@ public sealed record class BetaRequestMCPServerToolConfiguration : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaRequestMCPServerToolConfigurationFromRaw.FromRawUnchecked"/>
     public static BetaRequestMCPServerToolConfiguration FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -58,6 +60,7 @@ public sealed record class BetaRequestMCPServerToolConfiguration : ModelBase
 
 class BetaRequestMCPServerToolConfigurationFromRaw : IFromRaw<BetaRequestMCPServerToolConfiguration>
 {
+    /// <inheritdoc/>
     public BetaRequestMCPServerToolConfiguration FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaRequestMCPServerToolConfiguration.FromRawUnchecked(rawData);

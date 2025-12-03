@@ -40,6 +40,7 @@ public sealed record class ToolBash20250124 : ModelBase
         init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Name, JsonSerializer.Deserialize<JsonElement>("\"bash\"")))
@@ -80,6 +81,7 @@ public sealed record class ToolBash20250124 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ToolBash20250124FromRaw.FromRawUnchecked"/>
     public static ToolBash20250124 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -90,6 +92,7 @@ public sealed record class ToolBash20250124 : ModelBase
 
 class ToolBash20250124FromRaw : IFromRaw<ToolBash20250124>
 {
+    /// <inheritdoc/>
     public ToolBash20250124 FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ToolBash20250124.FromRawUnchecked(rawData);
 }

@@ -41,6 +41,7 @@ public sealed record class BetaWebFetchBlock : ModelBase
         init { ModelBase.Set(this._rawData, "url", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
@@ -77,6 +78,7 @@ public sealed record class BetaWebFetchBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebFetchBlockFromRaw.FromRawUnchecked"/>
     public static BetaWebFetchBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -87,6 +89,7 @@ public sealed record class BetaWebFetchBlock : ModelBase
 
 class BetaWebFetchBlockFromRaw : IFromRaw<BetaWebFetchBlock>
 {
+    /// <inheritdoc/>
     public BetaWebFetchBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaWebFetchBlock.FromRawUnchecked(rawData);
 }

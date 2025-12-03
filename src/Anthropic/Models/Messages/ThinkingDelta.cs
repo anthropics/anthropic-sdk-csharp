@@ -23,6 +23,7 @@ public sealed record class ThinkingDelta : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Thinking;
@@ -57,6 +58,7 @@ public sealed record class ThinkingDelta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ThinkingDeltaFromRaw.FromRawUnchecked"/>
     public static ThinkingDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -72,6 +74,7 @@ public sealed record class ThinkingDelta : ModelBase
 
 class ThinkingDeltaFromRaw : IFromRaw<ThinkingDelta>
 {
+    /// <inheritdoc/>
     public ThinkingDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ThinkingDelta.FromRawUnchecked(rawData);
 }

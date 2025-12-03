@@ -51,6 +51,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -86,6 +87,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMemoryTool20250818ViewCommandFromRaw.FromRawUnchecked"/>
     public static BetaMemoryTool20250818ViewCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -103,6 +105,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
 
 class BetaMemoryTool20250818ViewCommandFromRaw : IFromRaw<BetaMemoryTool20250818ViewCommand>
 {
+    /// <inheritdoc/>
     public BetaMemoryTool20250818ViewCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMemoryTool20250818ViewCommand.FromRawUnchecked(rawData);

@@ -53,6 +53,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -90,6 +91,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMCPToolUseBlockFromRaw.FromRawUnchecked"/>
     public static BetaMCPToolUseBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -100,6 +102,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase
 
 class BetaMCPToolUseBlockFromRaw : IFromRaw<BetaMCPToolUseBlock>
 {
+    /// <inheritdoc/>
     public BetaMCPToolUseBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaMCPToolUseBlock.FromRawUnchecked(rawData);
 }

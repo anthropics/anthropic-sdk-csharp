@@ -17,6 +17,7 @@ public sealed record class ThinkingConfigDisabled : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -50,6 +51,7 @@ public sealed record class ThinkingConfigDisabled : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ThinkingConfigDisabledFromRaw.FromRawUnchecked"/>
     public static ThinkingConfigDisabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -60,6 +62,7 @@ public sealed record class ThinkingConfigDisabled : ModelBase
 
 class ThinkingConfigDisabledFromRaw : IFromRaw<ThinkingConfigDisabled>
 {
+    /// <inheritdoc/>
     public ThinkingConfigDisabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ThinkingConfigDisabled.FromRawUnchecked(rawData);

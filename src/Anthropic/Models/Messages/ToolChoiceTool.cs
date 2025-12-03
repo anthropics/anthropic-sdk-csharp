@@ -49,6 +49,7 @@ public sealed record class ToolChoiceTool : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Name;
@@ -79,6 +80,7 @@ public sealed record class ToolChoiceTool : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ToolChoiceToolFromRaw.FromRawUnchecked"/>
     public static ToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -94,6 +96,7 @@ public sealed record class ToolChoiceTool : ModelBase
 
 class ToolChoiceToolFromRaw : IFromRaw<ToolChoiceTool>
 {
+    /// <inheritdoc/>
     public ToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ToolChoiceTool.FromRawUnchecked(rawData);
 }

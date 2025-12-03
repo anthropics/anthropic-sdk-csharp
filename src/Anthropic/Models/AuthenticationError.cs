@@ -23,6 +23,7 @@ public sealed record class AuthenticationError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class AuthenticationError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="AuthenticationErrorFromRaw.FromRawUnchecked"/>
     public static AuthenticationError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class AuthenticationError : ModelBase
 
 class AuthenticationErrorFromRaw : IFromRaw<AuthenticationError>
 {
+    /// <inheritdoc/>
     public AuthenticationError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         AuthenticationError.FromRawUnchecked(rawData);
 }

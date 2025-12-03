@@ -44,6 +44,7 @@ public sealed record class BetaContainerUploadBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.FileID;
@@ -79,6 +80,7 @@ public sealed record class BetaContainerUploadBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaContainerUploadBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaContainerUploadBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -96,6 +98,7 @@ public sealed record class BetaContainerUploadBlockParam : ModelBase
 
 class BetaContainerUploadBlockParamFromRaw : IFromRaw<BetaContainerUploadBlockParam>
 {
+    /// <inheritdoc/>
     public BetaContainerUploadBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaContainerUploadBlockParam.FromRawUnchecked(rawData);

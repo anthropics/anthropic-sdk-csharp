@@ -23,6 +23,7 @@ public sealed record class BetaAuthenticationError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class BetaAuthenticationError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaAuthenticationErrorFromRaw.FromRawUnchecked"/>
     public static BetaAuthenticationError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaAuthenticationError : ModelBase
 
 class BetaAuthenticationErrorFromRaw : IFromRaw<BetaAuthenticationError>
 {
+    /// <inheritdoc/>
     public BetaAuthenticationError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAuthenticationError.FromRawUnchecked(rawData);

@@ -23,6 +23,7 @@ public sealed record class BetaGatewayTimeoutError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class BetaGatewayTimeoutError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaGatewayTimeoutErrorFromRaw.FromRawUnchecked"/>
     public static BetaGatewayTimeoutError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaGatewayTimeoutError : ModelBase
 
 class BetaGatewayTimeoutErrorFromRaw : IFromRaw<BetaGatewayTimeoutError>
 {
+    /// <inheritdoc/>
     public BetaGatewayTimeoutError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaGatewayTimeoutError.FromRawUnchecked(rawData);

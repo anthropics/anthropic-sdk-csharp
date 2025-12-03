@@ -23,6 +23,7 @@ public sealed record class BetaURLPDFSource : ModelBase
         init { ModelBase.Set(this._rawData, "url", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"url\"")))
@@ -52,6 +53,7 @@ public sealed record class BetaURLPDFSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaURLPDFSourceFromRaw.FromRawUnchecked"/>
     public static BetaURLPDFSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -69,6 +71,7 @@ public sealed record class BetaURLPDFSource : ModelBase
 
 class BetaURLPDFSourceFromRaw : IFromRaw<BetaURLPDFSource>
 {
+    /// <inheritdoc/>
     public BetaURLPDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaURLPDFSource.FromRawUnchecked(rawData);
 }

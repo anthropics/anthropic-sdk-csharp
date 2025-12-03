@@ -23,6 +23,7 @@ public sealed record class SignatureDelta : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Signature;
@@ -57,6 +58,7 @@ public sealed record class SignatureDelta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="SignatureDeltaFromRaw.FromRawUnchecked"/>
     public static SignatureDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -72,6 +74,7 @@ public sealed record class SignatureDelta : ModelBase
 
 class SignatureDeltaFromRaw : IFromRaw<SignatureDelta>
 {
+    /// <inheritdoc/>
     public SignatureDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         SignatureDelta.FromRawUnchecked(rawData);
 }

@@ -40,6 +40,7 @@ public sealed record class BetaToolChoiceAuto : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"auto\"")))
@@ -69,6 +70,7 @@ public sealed record class BetaToolChoiceAuto : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolChoiceAutoFromRaw.FromRawUnchecked"/>
     public static BetaToolChoiceAuto FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -79,6 +81,7 @@ public sealed record class BetaToolChoiceAuto : ModelBase
 
 class BetaToolChoiceAutoFromRaw : IFromRaw<BetaToolChoiceAuto>
 {
+    /// <inheritdoc/>
     public BetaToolChoiceAuto FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaToolChoiceAuto.FromRawUnchecked(rawData);
 }

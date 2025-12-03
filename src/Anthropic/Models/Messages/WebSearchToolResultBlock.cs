@@ -35,6 +35,7 @@ public sealed record class WebSearchToolResultBlock : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
@@ -70,6 +71,7 @@ public sealed record class WebSearchToolResultBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="WebSearchToolResultBlockFromRaw.FromRawUnchecked"/>
     public static WebSearchToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -80,6 +82,7 @@ public sealed record class WebSearchToolResultBlock : ModelBase
 
 class WebSearchToolResultBlockFromRaw : IFromRaw<WebSearchToolResultBlock>
 {
+    /// <inheritdoc/>
     public WebSearchToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => WebSearchToolResultBlock.FromRawUnchecked(rawData);

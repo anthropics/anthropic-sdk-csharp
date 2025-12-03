@@ -94,6 +94,7 @@ public sealed record class VersionCreateResponse : ModelBase
         init { ModelBase.Set(this._rawData, "version", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -121,6 +122,7 @@ public sealed record class VersionCreateResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="VersionCreateResponseFromRaw.FromRawUnchecked"/>
     public static VersionCreateResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -131,6 +133,7 @@ public sealed record class VersionCreateResponse : ModelBase
 
 class VersionCreateResponseFromRaw : IFromRaw<VersionCreateResponse>
 {
+    /// <inheritdoc/>
     public VersionCreateResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => VersionCreateResponse.FromRawUnchecked(rawData);

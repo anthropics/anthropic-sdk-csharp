@@ -25,6 +25,7 @@ public sealed record class BetaInputTokensClearAtLeast : ModelBase
         init { ModelBase.Set(this._rawData, "value", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -59,6 +60,7 @@ public sealed record class BetaInputTokensClearAtLeast : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaInputTokensClearAtLeastFromRaw.FromRawUnchecked"/>
     public static BetaInputTokensClearAtLeast FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -76,6 +78,7 @@ public sealed record class BetaInputTokensClearAtLeast : ModelBase
 
 class BetaInputTokensClearAtLeastFromRaw : IFromRaw<BetaInputTokensClearAtLeast>
 {
+    /// <inheritdoc/>
     public BetaInputTokensClearAtLeast FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaInputTokensClearAtLeast.FromRawUnchecked(rawData);

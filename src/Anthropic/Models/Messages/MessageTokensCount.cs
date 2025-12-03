@@ -20,6 +20,7 @@ public sealed record class MessageTokensCount : ModelBase
         init { ModelBase.Set(this._rawData, "input_tokens", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.InputTokens;
@@ -40,6 +41,7 @@ public sealed record class MessageTokensCount : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageTokensCountFromRaw.FromRawUnchecked"/>
     public static MessageTokensCount FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -57,6 +59,7 @@ public sealed record class MessageTokensCount : ModelBase
 
 class MessageTokensCountFromRaw : IFromRaw<MessageTokensCount>
 {
+    /// <inheritdoc/>
     public MessageTokensCount FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         MessageTokensCount.FromRawUnchecked(rawData);
 }

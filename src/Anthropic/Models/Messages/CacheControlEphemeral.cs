@@ -39,6 +39,7 @@ public sealed record class CacheControlEphemeral : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -73,6 +74,7 @@ public sealed record class CacheControlEphemeral : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="CacheControlEphemeralFromRaw.FromRawUnchecked"/>
     public static CacheControlEphemeral FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -83,6 +85,7 @@ public sealed record class CacheControlEphemeral : ModelBase
 
 class CacheControlEphemeralFromRaw : IFromRaw<CacheControlEphemeral>
 {
+    /// <inheritdoc/>
     public CacheControlEphemeral FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => CacheControlEphemeral.FromRawUnchecked(rawData);

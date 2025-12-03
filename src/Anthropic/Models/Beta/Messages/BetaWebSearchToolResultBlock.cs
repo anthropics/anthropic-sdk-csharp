@@ -37,6 +37,7 @@ public sealed record class BetaWebSearchToolResultBlock : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
@@ -72,6 +73,7 @@ public sealed record class BetaWebSearchToolResultBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebSearchToolResultBlockFromRaw.FromRawUnchecked"/>
     public static BetaWebSearchToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -82,6 +84,7 @@ public sealed record class BetaWebSearchToolResultBlock : ModelBase
 
 class BetaWebSearchToolResultBlockFromRaw : IFromRaw<BetaWebSearchToolResultBlock>
 {
+    /// <inheritdoc/>
     public BetaWebSearchToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaWebSearchToolResultBlock.FromRawUnchecked(rawData);

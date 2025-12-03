@@ -41,6 +41,7 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
         init { ModelBase.Set(this._rawData, "result", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CustomID;
@@ -62,6 +63,7 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchIndividualResponseFromRaw.FromRawUnchecked"/>
     public static MessageBatchIndividualResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -72,6 +74,7 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
 
 class MessageBatchIndividualResponseFromRaw : IFromRaw<MessageBatchIndividualResponse>
 {
+    /// <inheritdoc/>
     public MessageBatchIndividualResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MessageBatchIndividualResponse.FromRawUnchecked(rawData);

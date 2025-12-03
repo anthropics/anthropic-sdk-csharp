@@ -55,6 +55,7 @@ public sealed record class CitationContentBlockLocation : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CitedText;
@@ -94,6 +95,7 @@ public sealed record class CitationContentBlockLocation : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="CitationContentBlockLocationFromRaw.FromRawUnchecked"/>
     public static CitationContentBlockLocation FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -104,6 +106,7 @@ public sealed record class CitationContentBlockLocation : ModelBase
 
 class CitationContentBlockLocationFromRaw : IFromRaw<CitationContentBlockLocation>
 {
+    /// <inheritdoc/>
     public CitationContentBlockLocation FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => CitationContentBlockLocation.FromRawUnchecked(rawData);

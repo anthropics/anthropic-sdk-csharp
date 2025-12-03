@@ -23,6 +23,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Index;
@@ -57,6 +58,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="RawContentBlockStopEventFromRaw.FromRawUnchecked"/>
     public static RawContentBlockStopEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase
 
 class RawContentBlockStopEventFromRaw : IFromRaw<RawContentBlockStopEvent>
 {
+    /// <inheritdoc/>
     public RawContentBlockStopEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => RawContentBlockStopEvent.FromRawUnchecked(rawData);

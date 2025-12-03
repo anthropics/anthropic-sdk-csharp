@@ -23,6 +23,7 @@ public sealed record class BetaPermissionError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class BetaPermissionError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaPermissionErrorFromRaw.FromRawUnchecked"/>
     public static BetaPermissionError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaPermissionError : ModelBase
 
 class BetaPermissionErrorFromRaw : IFromRaw<BetaPermissionError>
 {
+    /// <inheritdoc/>
     public BetaPermissionError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaPermissionError.FromRawUnchecked(rawData);
 }

@@ -67,30 +67,112 @@ public record class BetaMessageBatchResult
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMessageBatchSucceededResult"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSucceeded(out var value)) {
+    ///     // `value` is of type `BetaMessageBatchSucceededResult`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickSucceeded([NotNullWhen(true)] out BetaMessageBatchSucceededResult? value)
     {
         value = this.Value as BetaMessageBatchSucceededResult;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMessageBatchErroredResult"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickErrored(out var value)) {
+    ///     // `value` is of type `BetaMessageBatchErroredResult`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickErrored([NotNullWhen(true)] out BetaMessageBatchErroredResult? value)
     {
         value = this.Value as BetaMessageBatchErroredResult;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMessageBatchCanceledResult"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCanceled(out var value)) {
+    ///     // `value` is of type `BetaMessageBatchCanceledResult`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCanceled([NotNullWhen(true)] out BetaMessageBatchCanceledResult? value)
     {
         value = this.Value as BetaMessageBatchCanceledResult;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMessageBatchExpiredResult"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickExpired(out var value)) {
+    ///     // `value` is of type `BetaMessageBatchExpiredResult`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickExpired([NotNullWhen(true)] out BetaMessageBatchExpiredResult? value)
     {
         value = this.Value as BetaMessageBatchExpiredResult;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaMessageBatchSucceededResult value) => {...},
+    ///     (BetaMessageBatchErroredResult value) => {...},
+    ///     (BetaMessageBatchCanceledResult value) => {...},
+    ///     (BetaMessageBatchExpiredResult value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaMessageBatchSucceededResult> succeeded,
         System::Action<BetaMessageBatchErroredResult> errored,
@@ -119,6 +201,29 @@ public record class BetaMessageBatchResult
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaMessageBatchSucceededResult value) => {...},
+    ///     (BetaMessageBatchErroredResult value) => {...},
+    ///     (BetaMessageBatchCanceledResult value) => {...},
+    ///     (BetaMessageBatchExpiredResult value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaMessageBatchSucceededResult, T> succeeded,
         System::Func<BetaMessageBatchErroredResult, T> errored,
@@ -150,6 +255,16 @@ public record class BetaMessageBatchResult
     public static implicit operator BetaMessageBatchResult(BetaMessageBatchExpiredResult value) =>
         new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

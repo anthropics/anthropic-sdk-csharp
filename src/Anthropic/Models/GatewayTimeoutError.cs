@@ -23,6 +23,7 @@ public sealed record class GatewayTimeoutError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class GatewayTimeoutError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="GatewayTimeoutErrorFromRaw.FromRawUnchecked"/>
     public static GatewayTimeoutError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class GatewayTimeoutError : ModelBase
 
 class GatewayTimeoutErrorFromRaw : IFromRaw<GatewayTimeoutError>
 {
+    /// <inheritdoc/>
     public GatewayTimeoutError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         GatewayTimeoutError.FromRawUnchecked(rawData);
 }

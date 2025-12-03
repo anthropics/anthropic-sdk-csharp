@@ -87,6 +87,7 @@ public sealed record class FileMetadata : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -121,6 +122,7 @@ public sealed record class FileMetadata : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="FileMetadataFromRaw.FromRawUnchecked"/>
     public static FileMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -129,6 +131,7 @@ public sealed record class FileMetadata : ModelBase
 
 class FileMetadataFromRaw : IFromRaw<FileMetadata>
 {
+    /// <inheritdoc/>
     public FileMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         FileMetadata.FromRawUnchecked(rawData);
 }

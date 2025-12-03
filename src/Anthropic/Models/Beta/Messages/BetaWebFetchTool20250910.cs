@@ -144,6 +144,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -200,6 +201,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebFetchTool20250910FromRaw.FromRawUnchecked"/>
     public static BetaWebFetchTool20250910 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -210,6 +212,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
 
 class BetaWebFetchTool20250910FromRaw : IFromRaw<BetaWebFetchTool20250910>
 {
+    /// <inheritdoc/>
     public BetaWebFetchTool20250910 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaWebFetchTool20250910.FromRawUnchecked(rawData);

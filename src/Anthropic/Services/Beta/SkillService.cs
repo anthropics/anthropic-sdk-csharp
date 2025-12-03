@@ -9,7 +9,7 @@ using Anthropic.Services.Beta.Skills;
 
 namespace Anthropic.Services.Beta;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class SkillService : ISkillService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)

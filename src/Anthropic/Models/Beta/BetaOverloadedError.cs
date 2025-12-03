@@ -23,6 +23,7 @@ public sealed record class BetaOverloadedError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class BetaOverloadedError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaOverloadedErrorFromRaw.FromRawUnchecked"/>
     public static BetaOverloadedError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaOverloadedError : ModelBase
 
 class BetaOverloadedErrorFromRaw : IFromRaw<BetaOverloadedError>
 {
+    /// <inheritdoc/>
     public BetaOverloadedError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaOverloadedError.FromRawUnchecked(rawData);
 }

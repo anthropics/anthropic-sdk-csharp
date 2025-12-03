@@ -30,6 +30,7 @@ public sealed record class WebSearchToolRequestError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -64,6 +65,7 @@ public sealed record class WebSearchToolRequestError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="WebSearchToolRequestErrorFromRaw.FromRawUnchecked"/>
     public static WebSearchToolRequestError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -81,6 +83,7 @@ public sealed record class WebSearchToolRequestError : ModelBase
 
 class WebSearchToolRequestErrorFromRaw : IFromRaw<WebSearchToolRequestError>
 {
+    /// <inheritdoc/>
     public WebSearchToolRequestError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => WebSearchToolRequestError.FromRawUnchecked(rawData);

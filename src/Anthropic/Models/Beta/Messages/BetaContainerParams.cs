@@ -31,6 +31,7 @@ public sealed record class BetaContainerParams : ModelBase
         init { ModelBase.Set(this._rawData, "skills", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -55,6 +56,7 @@ public sealed record class BetaContainerParams : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaContainerParamsFromRaw.FromRawUnchecked"/>
     public static BetaContainerParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -65,6 +67,7 @@ public sealed record class BetaContainerParams : ModelBase
 
 class BetaContainerParamsFromRaw : IFromRaw<BetaContainerParams>
 {
+    /// <inheritdoc/>
     public BetaContainerParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaContainerParams.FromRawUnchecked(rawData);
 }

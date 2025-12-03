@@ -52,6 +52,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
         init { ModelBase.Set(this._rawData, "path", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -88,6 +89,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMemoryTool20250818InsertCommandFromRaw.FromRawUnchecked"/>
     public static BetaMemoryTool20250818InsertCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -98,6 +100,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
 
 class BetaMemoryTool20250818InsertCommandFromRaw : IFromRaw<BetaMemoryTool20250818InsertCommand>
 {
+    /// <inheritdoc/>
     public BetaMemoryTool20250818InsertCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMemoryTool20250818InsertCommand.FromRawUnchecked(rawData);

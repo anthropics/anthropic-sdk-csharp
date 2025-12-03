@@ -29,6 +29,7 @@ public sealed record class ErrorResponse : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Error.Validate();
@@ -61,6 +62,7 @@ public sealed record class ErrorResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ErrorResponseFromRaw.FromRawUnchecked"/>
     public static ErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -69,6 +71,7 @@ public sealed record class ErrorResponse : ModelBase
 
 class ErrorResponseFromRaw : IFromRaw<ErrorResponse>
 {
+    /// <inheritdoc/>
     public ErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ErrorResponse.FromRawUnchecked(rawData);
 }

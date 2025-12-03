@@ -39,6 +39,7 @@ public sealed record class BetaTextBlock : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Citations ?? [])
@@ -72,6 +73,7 @@ public sealed record class BetaTextBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextBlockFromRaw.FromRawUnchecked"/>
     public static BetaTextBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -80,6 +82,7 @@ public sealed record class BetaTextBlock : ModelBase
 
 class BetaTextBlockFromRaw : IFromRaw<BetaTextBlock>
 {
+    /// <inheritdoc/>
     public BetaTextBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaTextBlock.FromRawUnchecked(rawData);
 }

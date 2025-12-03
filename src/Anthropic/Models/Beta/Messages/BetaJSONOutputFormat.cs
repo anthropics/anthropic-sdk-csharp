@@ -32,6 +32,7 @@ public sealed record class BetaJSONOutputFormat : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Schema;
@@ -66,6 +67,7 @@ public sealed record class BetaJSONOutputFormat : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaJSONOutputFormatFromRaw.FromRawUnchecked"/>
     public static BetaJSONOutputFormat FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -76,6 +78,7 @@ public sealed record class BetaJSONOutputFormat : ModelBase
 
 class BetaJSONOutputFormatFromRaw : IFromRaw<BetaJSONOutputFormat>
 {
+    /// <inheritdoc/>
     public BetaJSONOutputFormat FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaJSONOutputFormat.FromRawUnchecked(rawData);

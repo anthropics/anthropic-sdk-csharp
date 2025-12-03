@@ -17,6 +17,7 @@ public sealed record class BetaAllThinkingTurns : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"all\"")))
@@ -45,6 +46,7 @@ public sealed record class BetaAllThinkingTurns : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaAllThinkingTurnsFromRaw.FromRawUnchecked"/>
     public static BetaAllThinkingTurns FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -55,6 +57,7 @@ public sealed record class BetaAllThinkingTurns : ModelBase
 
 class BetaAllThinkingTurnsFromRaw : IFromRaw<BetaAllThinkingTurns>
 {
+    /// <inheritdoc/>
     public BetaAllThinkingTurns FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAllThinkingTurns.FromRawUnchecked(rawData);

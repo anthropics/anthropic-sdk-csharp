@@ -41,6 +41,7 @@ public sealed record class BetaWebSearchResultBlock : ModelBase
         init { ModelBase.Set(this._rawData, "url", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.EncryptedContent;
@@ -78,6 +79,7 @@ public sealed record class BetaWebSearchResultBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebSearchResultBlockFromRaw.FromRawUnchecked"/>
     public static BetaWebSearchResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -88,6 +90,7 @@ public sealed record class BetaWebSearchResultBlock : ModelBase
 
 class BetaWebSearchResultBlockFromRaw : IFromRaw<BetaWebSearchResultBlock>
 {
+    /// <inheritdoc/>
     public BetaWebSearchResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaWebSearchResultBlock.FromRawUnchecked(rawData);

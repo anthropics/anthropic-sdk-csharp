@@ -152,6 +152,7 @@ public sealed record class BetaMessageBatch : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -194,6 +195,7 @@ public sealed record class BetaMessageBatch : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageBatchFromRaw.FromRawUnchecked"/>
     public static BetaMessageBatch FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -204,6 +206,7 @@ public sealed record class BetaMessageBatch : ModelBase
 
 class BetaMessageBatchFromRaw : IFromRaw<BetaMessageBatch>
 {
+    /// <inheritdoc/>
     public BetaMessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaMessageBatch.FromRawUnchecked(rawData);
 }

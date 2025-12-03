@@ -24,6 +24,7 @@ public sealed record class BetaCitationsDelta : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Citation.Validate();
@@ -58,6 +59,7 @@ public sealed record class BetaCitationsDelta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationsDeltaFromRaw.FromRawUnchecked"/>
     public static BetaCitationsDelta FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -75,6 +77,7 @@ public sealed record class BetaCitationsDelta : ModelBase
 
 class BetaCitationsDeltaFromRaw : IFromRaw<BetaCitationsDelta>
 {
+    /// <inheritdoc/>
     public BetaCitationsDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaCitationsDelta.FromRawUnchecked(rawData);
 }
@@ -238,6 +241,21 @@ public record class Citation
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationCharLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationCharLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationCharLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationCharLocation(
         [NotNullWhen(true)] out BetaCitationCharLocation? value
     )
@@ -246,6 +264,21 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationPageLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationPageLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationPageLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationPageLocation(
         [NotNullWhen(true)] out BetaCitationPageLocation? value
     )
@@ -254,6 +287,21 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationContentBlockLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationContentBlockLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationContentBlockLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationContentBlockLocation(
         [NotNullWhen(true)] out BetaCitationContentBlockLocation? value
     )
@@ -262,6 +310,21 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationsWebSearchResultLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationsWebSearchResultLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationsWebSearchResultLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationsWebSearchResultLocation(
         [NotNullWhen(true)] out BetaCitationsWebSearchResultLocation? value
     )
@@ -270,6 +333,21 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationSearchResultLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationSearchResultLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationSearchResultLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationSearchResultLocation(
         [NotNullWhen(true)] out BetaCitationSearchResultLocation? value
     )
@@ -278,6 +356,29 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaCitationCharLocation value) => {...},
+    ///     (BetaCitationPageLocation value) => {...},
+    ///     (BetaCitationContentBlockLocation value) => {...},
+    ///     (BetaCitationsWebSearchResultLocation value) => {...},
+    ///     (BetaCitationSearchResultLocation value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaCitationCharLocation> betaCitationCharLocation,
         System::Action<BetaCitationPageLocation> betaCitationPageLocation,
@@ -310,6 +411,30 @@ public record class Citation
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaCitationCharLocation value) => {...},
+    ///     (BetaCitationPageLocation value) => {...},
+    ///     (BetaCitationContentBlockLocation value) => {...},
+    ///     (BetaCitationsWebSearchResultLocation value) => {...},
+    ///     (BetaCitationSearchResultLocation value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaCitationCharLocation, T> betaCitationCharLocation,
         System::Func<BetaCitationPageLocation, T> betaCitationPageLocation,
@@ -344,6 +469,16 @@ public record class Citation
 
     public static implicit operator Citation(BetaCitationSearchResultLocation value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

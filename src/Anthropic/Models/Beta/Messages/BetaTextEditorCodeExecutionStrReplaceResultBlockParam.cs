@@ -52,6 +52,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
         init { ModelBase.Set(this._rawData, "old_start", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -100,6 +101,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextEditorCodeExecutionStrReplaceResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaTextEditorCodeExecutionStrReplaceResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -111,6 +113,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 class BetaTextEditorCodeExecutionStrReplaceResultBlockParamFromRaw
     : IFromRaw<BetaTextEditorCodeExecutionStrReplaceResultBlockParam>
 {
+    /// <inheritdoc/>
     public BetaTextEditorCodeExecutionStrReplaceResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaTextEditorCodeExecutionStrReplaceResultBlockParam.FromRawUnchecked(rawData);

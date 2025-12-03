@@ -25,6 +25,7 @@ public sealed record class BetaRedactedThinkingBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Data;
@@ -59,6 +60,7 @@ public sealed record class BetaRedactedThinkingBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaRedactedThinkingBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaRedactedThinkingBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -76,6 +78,7 @@ public sealed record class BetaRedactedThinkingBlockParam : ModelBase
 
 class BetaRedactedThinkingBlockParamFromRaw : IFromRaw<BetaRedactedThinkingBlockParam>
 {
+    /// <inheritdoc/>
     public BetaRedactedThinkingBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaRedactedThinkingBlockParam.FromRawUnchecked(rawData);

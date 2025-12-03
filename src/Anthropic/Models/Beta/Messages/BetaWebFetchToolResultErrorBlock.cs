@@ -34,6 +34,7 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -68,6 +69,7 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebFetchToolResultErrorBlockFromRaw.FromRawUnchecked"/>
     public static BetaWebFetchToolResultErrorBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -87,6 +89,7 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
 
 class BetaWebFetchToolResultErrorBlockFromRaw : IFromRaw<BetaWebFetchToolResultErrorBlock>
 {
+    /// <inheritdoc/>
     public BetaWebFetchToolResultErrorBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaWebFetchToolResultErrorBlock.FromRawUnchecked(rawData);

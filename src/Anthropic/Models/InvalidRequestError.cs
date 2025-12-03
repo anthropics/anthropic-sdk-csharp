@@ -23,6 +23,7 @@ public sealed record class InvalidRequestError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class InvalidRequestError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="InvalidRequestErrorFromRaw.FromRawUnchecked"/>
     public static InvalidRequestError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class InvalidRequestError : ModelBase
 
 class InvalidRequestErrorFromRaw : IFromRaw<InvalidRequestError>
 {
+    /// <inheritdoc/>
     public InvalidRequestError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         InvalidRequestError.FromRawUnchecked(rawData);
 }

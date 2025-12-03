@@ -24,6 +24,7 @@ public sealed record class BetaCountTokensContextManagementResponse : ModelBase
         init { ModelBase.Set(this._rawData, "original_input_tokens", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.OriginalInputTokens;
@@ -46,6 +47,7 @@ public sealed record class BetaCountTokensContextManagementResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCountTokensContextManagementResponseFromRaw.FromRawUnchecked"/>
     public static BetaCountTokensContextManagementResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -64,6 +66,7 @@ public sealed record class BetaCountTokensContextManagementResponse : ModelBase
 class BetaCountTokensContextManagementResponseFromRaw
     : IFromRaw<BetaCountTokensContextManagementResponse>
 {
+    /// <inheritdoc/>
     public BetaCountTokensContextManagementResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCountTokensContextManagementResponse.FromRawUnchecked(rawData);

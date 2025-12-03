@@ -77,6 +77,7 @@ public sealed record class WebSearchTool20250305 : ModelBase
         init { ModelBase.Set(this._rawData, "user_location", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -126,6 +127,7 @@ public sealed record class WebSearchTool20250305 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="WebSearchTool20250305FromRaw.FromRawUnchecked"/>
     public static WebSearchTool20250305 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -136,6 +138,7 @@ public sealed record class WebSearchTool20250305 : ModelBase
 
 class WebSearchTool20250305FromRaw : IFromRaw<WebSearchTool20250305>
 {
+    /// <inheritdoc/>
     public WebSearchTool20250305 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => WebSearchTool20250305.FromRawUnchecked(rawData);
@@ -190,6 +193,7 @@ public sealed record class UserLocation : ModelBase
         init { ModelBase.Set(this._rawData, "timezone", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -227,6 +231,7 @@ public sealed record class UserLocation : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="UserLocationFromRaw.FromRawUnchecked"/>
     public static UserLocation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -235,6 +240,7 @@ public sealed record class UserLocation : ModelBase
 
 class UserLocationFromRaw : IFromRaw<UserLocation>
 {
+    /// <inheritdoc/>
     public UserLocation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         UserLocation.FromRawUnchecked(rawData);
 }

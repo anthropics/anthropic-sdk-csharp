@@ -43,6 +43,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
@@ -79,6 +80,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMCPToolResultBlockFromRaw.FromRawUnchecked"/>
     public static BetaMCPToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -89,6 +91,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase
 
 class BetaMCPToolResultBlockFromRaw : IFromRaw<BetaMCPToolResultBlock>
 {
+    /// <inheritdoc/>
     public BetaMCPToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMCPToolResultBlock.FromRawUnchecked(rawData);
@@ -126,12 +129,42 @@ public record class BetaMCPToolResultBlockContent
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="string"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickString(out var value)) {
+    ///     // `value` is of type `string`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickString([NotNullWhen(true)] out string? value)
     {
         value = this.Value as string;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="IReadOnlyList<BetaTextBlock>"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaMCPToolResultBlock(out var value)) {
+    ///     // `value` is of type `IReadOnlyList<BetaTextBlock>`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaMCPToolResultBlock(
         [NotNullWhen(true)] out IReadOnlyList<BetaTextBlock>? value
     )
@@ -140,6 +173,26 @@ public record class BetaMCPToolResultBlockContent
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (string value) => {...},
+    ///     (IReadOnlyList<BetaTextBlock> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<string> @string,
         System::Action<IReadOnlyList<BetaTextBlock>> betaMCPToolResultBlockContent
@@ -160,6 +213,27 @@ public record class BetaMCPToolResultBlockContent
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (string value) => {...},
+    ///     (IReadOnlyList<BetaTextBlock> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<string, T> @string,
         System::Func<IReadOnlyList<BetaTextBlock>, T> betaMCPToolResultBlockContent
@@ -180,6 +254,16 @@ public record class BetaMCPToolResultBlockContent
     public static implicit operator BetaMCPToolResultBlockContent(List<BetaTextBlock> value) =>
         new((IReadOnlyList<BetaTextBlock>)value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

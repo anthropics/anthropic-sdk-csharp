@@ -4,7 +4,7 @@ using Beta = Anthropic.Services.Beta;
 
 namespace Anthropic.Services;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class BetaService : IBetaService
 {
     /// <inheritdoc/>

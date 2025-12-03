@@ -20,6 +20,7 @@ public sealed record class ToolChoiceNone : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"none\"")))
@@ -48,6 +49,7 @@ public sealed record class ToolChoiceNone : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ToolChoiceNoneFromRaw.FromRawUnchecked"/>
     public static ToolChoiceNone FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -56,6 +58,7 @@ public sealed record class ToolChoiceNone : ModelBase
 
 class ToolChoiceNoneFromRaw : IFromRaw<ToolChoiceNone>
 {
+    /// <inheritdoc/>
     public ToolChoiceNone FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ToolChoiceNone.FromRawUnchecked(rawData);
 }

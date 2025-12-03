@@ -23,6 +23,7 @@ public sealed record class BetaThinkingTurns : ModelBase
         init { ModelBase.Set(this._rawData, "value", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -57,6 +58,7 @@ public sealed record class BetaThinkingTurns : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaThinkingTurnsFromRaw.FromRawUnchecked"/>
     public static BetaThinkingTurns FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaThinkingTurns : ModelBase
 
 class BetaThinkingTurnsFromRaw : IFromRaw<BetaThinkingTurns>
 {
+    /// <inheritdoc/>
     public BetaThinkingTurns FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaThinkingTurns.FromRawUnchecked(rawData);
 }

@@ -33,6 +33,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.BudgetTokens;
@@ -67,6 +68,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ThinkingConfigEnabledFromRaw.FromRawUnchecked"/>
     public static ThinkingConfigEnabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -84,6 +86,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase
 
 class ThinkingConfigEnabledFromRaw : IFromRaw<ThinkingConfigEnabled>
 {
+    /// <inheritdoc/>
     public ThinkingConfigEnabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ThinkingConfigEnabled.FromRawUnchecked(rawData);

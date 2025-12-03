@@ -23,6 +23,7 @@ public sealed record class APIErrorObject : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class APIErrorObject : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="APIErrorObjectFromRaw.FromRawUnchecked"/>
     public static APIErrorObject FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -72,6 +74,7 @@ public sealed record class APIErrorObject : ModelBase
 
 class APIErrorObjectFromRaw : IFromRaw<APIErrorObject>
 {
+    /// <inheritdoc/>
     public APIErrorObject FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         APIErrorObject.FromRawUnchecked(rawData);
 }

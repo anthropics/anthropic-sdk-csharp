@@ -49,6 +49,7 @@ public sealed record class BetaToolChoiceTool : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Name;
@@ -79,6 +80,7 @@ public sealed record class BetaToolChoiceTool : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolChoiceToolFromRaw.FromRawUnchecked"/>
     public static BetaToolChoiceTool FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -96,6 +98,7 @@ public sealed record class BetaToolChoiceTool : ModelBase
 
 class BetaToolChoiceToolFromRaw : IFromRaw<BetaToolChoiceTool>
 {
+    /// <inheritdoc/>
     public BetaToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaToolChoiceTool.FromRawUnchecked(rawData);
 }

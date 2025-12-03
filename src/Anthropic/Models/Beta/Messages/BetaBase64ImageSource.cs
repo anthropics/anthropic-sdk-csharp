@@ -36,6 +36,7 @@ public sealed record class BetaBase64ImageSource : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Data;
@@ -71,6 +72,7 @@ public sealed record class BetaBase64ImageSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaBase64ImageSourceFromRaw.FromRawUnchecked"/>
     public static BetaBase64ImageSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -81,6 +83,7 @@ public sealed record class BetaBase64ImageSource : ModelBase
 
 class BetaBase64ImageSourceFromRaw : IFromRaw<BetaBase64ImageSource>
 {
+    /// <inheritdoc/>
     public BetaBase64ImageSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaBase64ImageSource.FromRawUnchecked(rawData);

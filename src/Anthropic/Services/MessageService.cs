@@ -12,7 +12,7 @@ using Anthropic.Services.Messages;
 
 namespace Anthropic.Services;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class MessageService : IMessageService
 {
     /// <inheritdoc/>

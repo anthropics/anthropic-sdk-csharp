@@ -23,6 +23,7 @@ public sealed record class BetaInvalidRequestError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class BetaInvalidRequestError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaInvalidRequestErrorFromRaw.FromRawUnchecked"/>
     public static BetaInvalidRequestError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaInvalidRequestError : ModelBase
 
 class BetaInvalidRequestErrorFromRaw : IFromRaw<BetaInvalidRequestError>
 {
+    /// <inheritdoc/>
     public BetaInvalidRequestError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaInvalidRequestError.FromRawUnchecked(rawData);

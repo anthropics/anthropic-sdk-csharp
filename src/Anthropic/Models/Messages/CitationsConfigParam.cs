@@ -24,6 +24,7 @@ public sealed record class CitationsConfigParam : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Enabled;
@@ -44,6 +45,7 @@ public sealed record class CitationsConfigParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="CitationsConfigParamFromRaw.FromRawUnchecked"/>
     public static CitationsConfigParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -54,6 +56,7 @@ public sealed record class CitationsConfigParam : ModelBase
 
 class CitationsConfigParamFromRaw : IFromRaw<CitationsConfigParam>
 {
+    /// <inheritdoc/>
     public CitationsConfigParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => CitationsConfigParam.FromRawUnchecked(rawData);

@@ -34,6 +34,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -68,6 +69,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCodeExecutionToolResultErrorParamFromRaw.FromRawUnchecked"/>
     public static BetaCodeExecutionToolResultErrorParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -87,6 +89,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
 
 class BetaCodeExecutionToolResultErrorParamFromRaw : IFromRaw<BetaCodeExecutionToolResultErrorParam>
 {
+    /// <inheritdoc/>
     public BetaCodeExecutionToolResultErrorParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCodeExecutionToolResultErrorParam.FromRawUnchecked(rawData);

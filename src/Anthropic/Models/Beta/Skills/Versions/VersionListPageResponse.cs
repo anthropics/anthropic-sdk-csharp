@@ -43,6 +43,7 @@ public sealed record class VersionListPageResponse : ModelBase
         init { ModelBase.Set(this._rawData, "next_page", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Data)
@@ -68,6 +69,7 @@ public sealed record class VersionListPageResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="VersionListPageResponseFromRaw.FromRawUnchecked"/>
     public static VersionListPageResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -78,6 +80,7 @@ public sealed record class VersionListPageResponse : ModelBase
 
 class VersionListPageResponseFromRaw : IFromRaw<VersionListPageResponse>
 {
+    /// <inheritdoc/>
     public VersionListPageResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => VersionListPageResponse.FromRawUnchecked(rawData);
@@ -175,6 +178,7 @@ public sealed record class Data : ModelBase
         init { ModelBase.Set(this._rawData, "version", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -202,6 +206,7 @@ public sealed record class Data : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="global::Anthropic.Models.Beta.Skills.Versions.DataFromRaw.FromRawUnchecked"/>
     public static global::Anthropic.Models.Beta.Skills.Versions.Data FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -212,6 +217,7 @@ public sealed record class Data : ModelBase
 
 class DataFromRaw : IFromRaw<global::Anthropic.Models.Beta.Skills.Versions.Data>
 {
+    /// <inheritdoc/>
     public global::Anthropic.Models.Beta.Skills.Versions.Data FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => global::Anthropic.Models.Beta.Skills.Versions.Data.FromRawUnchecked(rawData);

@@ -85,6 +85,7 @@ public sealed record class BetaMCPToolset : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.MCPServerName;
@@ -128,6 +129,7 @@ public sealed record class BetaMCPToolset : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMCPToolsetFromRaw.FromRawUnchecked"/>
     public static BetaMCPToolset FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -143,6 +145,7 @@ public sealed record class BetaMCPToolset : ModelBase
 
 class BetaMCPToolsetFromRaw : IFromRaw<BetaMCPToolset>
 {
+    /// <inheritdoc/>
     public BetaMCPToolset FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaMCPToolset.FromRawUnchecked(rawData);
 }

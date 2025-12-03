@@ -52,6 +52,7 @@ public sealed record class BetaCodeExecutionResultBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Content)
@@ -92,6 +93,7 @@ public sealed record class BetaCodeExecutionResultBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCodeExecutionResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaCodeExecutionResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -102,6 +104,7 @@ public sealed record class BetaCodeExecutionResultBlockParam : ModelBase
 
 class BetaCodeExecutionResultBlockParamFromRaw : IFromRaw<BetaCodeExecutionResultBlockParam>
 {
+    /// <inheritdoc/>
     public BetaCodeExecutionResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCodeExecutionResultBlockParam.FromRawUnchecked(rawData);

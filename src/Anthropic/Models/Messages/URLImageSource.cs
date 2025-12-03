@@ -23,6 +23,7 @@ public sealed record class URLImageSource : ModelBase
         init { ModelBase.Set(this._rawData, "url", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"url\"")))
@@ -52,6 +53,7 @@ public sealed record class URLImageSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="URLImageSourceFromRaw.FromRawUnchecked"/>
     public static URLImageSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -67,6 +69,7 @@ public sealed record class URLImageSource : ModelBase
 
 class URLImageSourceFromRaw : IFromRaw<URLImageSource>
 {
+    /// <inheritdoc/>
     public URLImageSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         URLImageSource.FromRawUnchecked(rawData);
 }

@@ -28,6 +28,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelB
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.IsFileUpdate;
@@ -70,6 +71,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelB
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextEditorCodeExecutionCreateResultBlockFromRaw.FromRawUnchecked"/>
     public static BetaTextEditorCodeExecutionCreateResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -88,6 +90,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelB
 class BetaTextEditorCodeExecutionCreateResultBlockFromRaw
     : IFromRaw<BetaTextEditorCodeExecutionCreateResultBlock>
 {
+    /// <inheritdoc/>
     public BetaTextEditorCodeExecutionCreateResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaTextEditorCodeExecutionCreateResultBlock.FromRawUnchecked(rawData);

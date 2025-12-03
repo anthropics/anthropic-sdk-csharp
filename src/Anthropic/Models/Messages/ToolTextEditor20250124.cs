@@ -40,6 +40,7 @@ public sealed record class ToolTextEditor20250124 : ModelBase
         init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -85,6 +86,7 @@ public sealed record class ToolTextEditor20250124 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ToolTextEditor20250124FromRaw.FromRawUnchecked"/>
     public static ToolTextEditor20250124 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -95,6 +97,7 @@ public sealed record class ToolTextEditor20250124 : ModelBase
 
 class ToolTextEditor20250124FromRaw : IFromRaw<ToolTextEditor20250124>
 {
+    /// <inheritdoc/>
     public ToolTextEditor20250124 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ToolTextEditor20250124.FromRawUnchecked(rawData);

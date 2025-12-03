@@ -46,6 +46,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase
         init { ModelBase.Set(this._rawData, "usage", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Delta.Validate();
@@ -81,6 +82,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="RawMessageDeltaEventFromRaw.FromRawUnchecked"/>
     public static RawMessageDeltaEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -91,6 +93,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase
 
 class RawMessageDeltaEventFromRaw : IFromRaw<RawMessageDeltaEvent>
 {
+    /// <inheritdoc/>
     public RawMessageDeltaEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => RawMessageDeltaEvent.FromRawUnchecked(rawData);
@@ -117,6 +120,7 @@ public sealed record class Delta : ModelBase
         init { ModelBase.Set(this._rawData, "stop_sequence", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.StopReason?.Validate();
@@ -138,6 +142,7 @@ public sealed record class Delta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="DeltaFromRaw.FromRawUnchecked"/>
     public static Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -146,6 +151,7 @@ public sealed record class Delta : ModelBase
 
 class DeltaFromRaw : IFromRaw<Delta>
 {
+    /// <inheritdoc/>
     public Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Delta.FromRawUnchecked(rawData);
 }

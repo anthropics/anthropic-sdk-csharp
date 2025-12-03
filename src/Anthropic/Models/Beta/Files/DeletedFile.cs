@@ -45,6 +45,7 @@ public sealed record class DeletedFile : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -66,6 +67,7 @@ public sealed record class DeletedFile : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="DeletedFileFromRaw.FromRawUnchecked"/>
     public static DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -81,6 +83,7 @@ public sealed record class DeletedFile : ModelBase
 
 class DeletedFileFromRaw : IFromRaw<DeletedFile>
 {
+    /// <inheritdoc/>
     public DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         DeletedFile.FromRawUnchecked(rawData);
 }

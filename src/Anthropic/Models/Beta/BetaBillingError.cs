@@ -23,6 +23,7 @@ public sealed record class BetaBillingError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class BetaBillingError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaBillingErrorFromRaw.FromRawUnchecked"/>
     public static BetaBillingError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaBillingError : ModelBase
 
 class BetaBillingErrorFromRaw : IFromRaw<BetaBillingError>
 {
+    /// <inheritdoc/>
     public BetaBillingError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaBillingError.FromRawUnchecked(rawData);
 }

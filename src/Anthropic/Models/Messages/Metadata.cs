@@ -23,6 +23,7 @@ public sealed record class Metadata : ModelBase
         init { ModelBase.Set(this._rawData, "user_id", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.UserID;
@@ -43,6 +44,7 @@ public sealed record class Metadata : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MetadataFromRaw.FromRawUnchecked"/>
     public static Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -51,6 +53,7 @@ public sealed record class Metadata : ModelBase
 
 class MetadataFromRaw : IFromRaw<Metadata>
 {
+    /// <inheritdoc/>
     public Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Metadata.FromRawUnchecked(rawData);
 }

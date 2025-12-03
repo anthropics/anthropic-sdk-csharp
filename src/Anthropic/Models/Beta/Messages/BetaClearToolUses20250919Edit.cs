@@ -92,6 +92,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -130,6 +131,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaClearToolUses20250919EditFromRaw.FromRawUnchecked"/>
     public static BetaClearToolUses20250919Edit FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -140,6 +142,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
 
 class BetaClearToolUses20250919EditFromRaw : IFromRaw<BetaClearToolUses20250919Edit>
 {
+    /// <inheritdoc/>
     public BetaClearToolUses20250919Edit FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaClearToolUses20250919Edit.FromRawUnchecked(rawData);
@@ -177,18 +180,68 @@ public record class ClearToolInputs
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="bool"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBool(out var value)) {
+    ///     // `value` is of type `bool`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBool([NotNullWhen(true)] out bool? value)
     {
         value = this.Value as bool?;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="IReadOnlyList<string>"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickStrings(out var value)) {
+    ///     // `value` is of type `IReadOnlyList<string>`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickStrings([NotNullWhen(true)] out IReadOnlyList<string>? value)
     {
         value = this.Value as IReadOnlyList<string>;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (bool value) => {...},
+    ///     (IReadOnlyList<string> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(System::Action<bool> @bool, System::Action<IReadOnlyList<string>> strings)
     {
         switch (this.Value)
@@ -206,6 +259,27 @@ public record class ClearToolInputs
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (bool value) => {...},
+    ///     (IReadOnlyList<string> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(System::Func<bool, T> @bool, System::Func<IReadOnlyList<string>, T> strings)
     {
         return this.Value switch
@@ -223,6 +297,16 @@ public record class ClearToolInputs
     public static implicit operator ClearToolInputs(List<string> value) =>
         new((IReadOnlyList<string>)value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -330,18 +414,68 @@ public record class Trigger
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaInputTokensTrigger"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaInputTokens(out var value)) {
+    ///     // `value` is of type `BetaInputTokensTrigger`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaInputTokens([NotNullWhen(true)] out BetaInputTokensTrigger? value)
     {
         value = this.Value as BetaInputTokensTrigger;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolUsesTrigger"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolUses(out var value)) {
+    ///     // `value` is of type `BetaToolUsesTrigger`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolUses([NotNullWhen(true)] out BetaToolUsesTrigger? value)
     {
         value = this.Value as BetaToolUsesTrigger;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaInputTokensTrigger value) => {...},
+    ///     (BetaToolUsesTrigger value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaInputTokensTrigger> betaInputTokens,
         System::Action<BetaToolUsesTrigger> betaToolUses
@@ -362,6 +496,27 @@ public record class Trigger
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaInputTokensTrigger value) => {...},
+    ///     (BetaToolUsesTrigger value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaInputTokensTrigger, T> betaInputTokens,
         System::Func<BetaToolUsesTrigger, T> betaToolUses
@@ -381,6 +536,16 @@ public record class Trigger
 
     public static implicit operator Trigger(BetaToolUsesTrigger value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

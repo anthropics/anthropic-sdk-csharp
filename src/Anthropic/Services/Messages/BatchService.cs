@@ -10,7 +10,7 @@ using Anthropic.Models.Messages.Batches;
 
 namespace Anthropic.Services.Messages;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class BatchService : IBatchService
 {
     /// <inheritdoc/>

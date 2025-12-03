@@ -56,6 +56,7 @@ public sealed record class BetaSkillParams : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.SkillID;
@@ -78,6 +79,7 @@ public sealed record class BetaSkillParams : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaSkillParamsFromRaw.FromRawUnchecked"/>
     public static BetaSkillParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -86,6 +88,7 @@ public sealed record class BetaSkillParams : ModelBase
 
 class BetaSkillParamsFromRaw : IFromRaw<BetaSkillParams>
 {
+    /// <inheritdoc/>
     public BetaSkillParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaSkillParams.FromRawUnchecked(rawData);
 }

@@ -170,6 +170,7 @@ public sealed record class BetaMessage : ModelBase
         init { ModelBase.Set(this._rawData, "usage", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -225,6 +226,7 @@ public sealed record class BetaMessage : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageFromRaw.FromRawUnchecked"/>
     public static BetaMessage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -233,6 +235,7 @@ public sealed record class BetaMessage : ModelBase
 
 class BetaMessageFromRaw : IFromRaw<BetaMessage>
 {
+    /// <inheritdoc/>
     public BetaMessage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaMessage.FromRawUnchecked(rawData);
 }

@@ -29,6 +29,7 @@ public sealed record class Base64PDFSource : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Data;
@@ -74,6 +75,7 @@ public sealed record class Base64PDFSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="Base64PDFSourceFromRaw.FromRawUnchecked"/>
     public static Base64PDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -89,6 +91,7 @@ public sealed record class Base64PDFSource : ModelBase
 
 class Base64PDFSourceFromRaw : IFromRaw<Base64PDFSource>
 {
+    /// <inheritdoc/>
     public Base64PDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Base64PDFSource.FromRawUnchecked(rawData);
 }

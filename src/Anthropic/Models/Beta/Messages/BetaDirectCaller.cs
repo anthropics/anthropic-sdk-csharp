@@ -20,6 +20,7 @@ public sealed record class BetaDirectCaller : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -53,6 +54,7 @@ public sealed record class BetaDirectCaller : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaDirectCallerFromRaw.FromRawUnchecked"/>
     public static BetaDirectCaller FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -63,6 +65,7 @@ public sealed record class BetaDirectCaller : ModelBase
 
 class BetaDirectCallerFromRaw : IFromRaw<BetaDirectCaller>
 {
+    /// <inheritdoc/>
     public BetaDirectCaller FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaDirectCaller.FromRawUnchecked(rawData);
 }

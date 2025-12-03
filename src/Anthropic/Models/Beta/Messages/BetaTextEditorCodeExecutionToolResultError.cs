@@ -40,6 +40,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : ModelBas
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -83,6 +84,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : ModelBas
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextEditorCodeExecutionToolResultErrorFromRaw.FromRawUnchecked"/>
     public static BetaTextEditorCodeExecutionToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -94,6 +96,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : ModelBas
 class BetaTextEditorCodeExecutionToolResultErrorFromRaw
     : IFromRaw<BetaTextEditorCodeExecutionToolResultError>
 {
+    /// <inheritdoc/>
     public BetaTextEditorCodeExecutionToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaTextEditorCodeExecutionToolResultError.FromRawUnchecked(rawData);

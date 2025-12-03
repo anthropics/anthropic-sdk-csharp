@@ -28,6 +28,7 @@ public sealed record class CacheCreation : ModelBase
         init { ModelBase.Set(this._rawData, "ephemeral_5m_input_tokens", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Ephemeral1hInputTokens;
@@ -49,6 +50,7 @@ public sealed record class CacheCreation : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="CacheCreationFromRaw.FromRawUnchecked"/>
     public static CacheCreation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -57,6 +59,7 @@ public sealed record class CacheCreation : ModelBase
 
 class CacheCreationFromRaw : IFromRaw<CacheCreation>
 {
+    /// <inheritdoc/>
     public CacheCreation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         CacheCreation.FromRawUnchecked(rawData);
 }

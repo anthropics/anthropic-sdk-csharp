@@ -23,6 +23,7 @@ public sealed record class BetaNotFoundError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class BetaNotFoundError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaNotFoundErrorFromRaw.FromRawUnchecked"/>
     public static BetaNotFoundError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaNotFoundError : ModelBase
 
 class BetaNotFoundErrorFromRaw : IFromRaw<BetaNotFoundError>
 {
+    /// <inheritdoc/>
     public BetaNotFoundError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaNotFoundError.FromRawUnchecked(rawData);
 }

@@ -40,6 +40,7 @@ public sealed record class ToolChoiceAny : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"any\"")))
@@ -69,6 +70,7 @@ public sealed record class ToolChoiceAny : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ToolChoiceAnyFromRaw.FromRawUnchecked"/>
     public static ToolChoiceAny FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -77,6 +79,7 @@ public sealed record class ToolChoiceAny : ModelBase
 
 class ToolChoiceAnyFromRaw : IFromRaw<ToolChoiceAny>
 {
+    /// <inheritdoc/>
     public ToolChoiceAny FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ToolChoiceAny.FromRawUnchecked(rawData);
 }

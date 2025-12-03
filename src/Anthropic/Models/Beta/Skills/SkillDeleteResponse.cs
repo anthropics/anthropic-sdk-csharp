@@ -32,6 +32,7 @@ public sealed record class SkillDeleteResponse : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -53,6 +54,7 @@ public sealed record class SkillDeleteResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="SkillDeleteResponseFromRaw.FromRawUnchecked"/>
     public static SkillDeleteResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -63,6 +65,7 @@ public sealed record class SkillDeleteResponse : ModelBase
 
 class SkillDeleteResponseFromRaw : IFromRaw<SkillDeleteResponse>
 {
+    /// <inheritdoc/>
     public SkillDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         SkillDeleteResponse.FromRawUnchecked(rawData);
 }

@@ -43,6 +43,7 @@ public sealed record class BetaClearToolUses20250919EditResponse : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ClearedInputTokens;
@@ -78,6 +79,7 @@ public sealed record class BetaClearToolUses20250919EditResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaClearToolUses20250919EditResponseFromRaw.FromRawUnchecked"/>
     public static BetaClearToolUses20250919EditResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -88,6 +90,7 @@ public sealed record class BetaClearToolUses20250919EditResponse : ModelBase
 
 class BetaClearToolUses20250919EditResponseFromRaw : IFromRaw<BetaClearToolUses20250919EditResponse>
 {
+    /// <inheritdoc/>
     public BetaClearToolUses20250919EditResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaClearToolUses20250919EditResponse.FromRawUnchecked(rawData);

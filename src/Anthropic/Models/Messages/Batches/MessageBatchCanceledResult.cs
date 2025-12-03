@@ -19,6 +19,7 @@ public sealed record class MessageBatchCanceledResult : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -52,6 +53,7 @@ public sealed record class MessageBatchCanceledResult : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchCanceledResultFromRaw.FromRawUnchecked"/>
     public static MessageBatchCanceledResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -62,6 +64,7 @@ public sealed record class MessageBatchCanceledResult : ModelBase
 
 class MessageBatchCanceledResultFromRaw : IFromRaw<MessageBatchCanceledResult>
 {
+    /// <inheritdoc/>
     public MessageBatchCanceledResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MessageBatchCanceledResult.FromRawUnchecked(rawData);

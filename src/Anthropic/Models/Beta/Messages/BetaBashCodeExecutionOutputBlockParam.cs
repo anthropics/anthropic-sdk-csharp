@@ -28,6 +28,7 @@ public sealed record class BetaBashCodeExecutionOutputBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.FileID;
@@ -62,6 +63,7 @@ public sealed record class BetaBashCodeExecutionOutputBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaBashCodeExecutionOutputBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaBashCodeExecutionOutputBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -79,6 +81,7 @@ public sealed record class BetaBashCodeExecutionOutputBlockParam : ModelBase
 
 class BetaBashCodeExecutionOutputBlockParamFromRaw : IFromRaw<BetaBashCodeExecutionOutputBlockParam>
 {
+    /// <inheritdoc/>
     public BetaBashCodeExecutionOutputBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaBashCodeExecutionOutputBlockParam.FromRawUnchecked(rawData);

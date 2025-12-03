@@ -33,6 +33,7 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.BudgetTokens;
@@ -67,6 +68,7 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaThinkingConfigEnabledFromRaw.FromRawUnchecked"/>
     public static BetaThinkingConfigEnabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -84,6 +86,7 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
 
 class BetaThinkingConfigEnabledFromRaw : IFromRaw<BetaThinkingConfigEnabled>
 {
+    /// <inheritdoc/>
     public BetaThinkingConfigEnabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaThinkingConfigEnabled.FromRawUnchecked(rawData);

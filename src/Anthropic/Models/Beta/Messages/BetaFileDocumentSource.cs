@@ -23,6 +23,7 @@ public sealed record class BetaFileDocumentSource : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.FileID;
@@ -52,6 +53,7 @@ public sealed record class BetaFileDocumentSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaFileDocumentSourceFromRaw.FromRawUnchecked"/>
     public static BetaFileDocumentSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -69,6 +71,7 @@ public sealed record class BetaFileDocumentSource : ModelBase
 
 class BetaFileDocumentSourceFromRaw : IFromRaw<BetaFileDocumentSource>
 {
+    /// <inheritdoc/>
     public BetaFileDocumentSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaFileDocumentSource.FromRawUnchecked(rawData);

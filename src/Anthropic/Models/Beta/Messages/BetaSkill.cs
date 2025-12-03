@@ -47,6 +47,7 @@ public sealed record class BetaSkill : ModelBase
         init { ModelBase.Set(this._rawData, "version", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.SkillID;
@@ -69,6 +70,7 @@ public sealed record class BetaSkill : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaSkillFromRaw.FromRawUnchecked"/>
     public static BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -77,6 +79,7 @@ public sealed record class BetaSkill : ModelBase
 
 class BetaSkillFromRaw : IFromRaw<BetaSkill>
 {
+    /// <inheritdoc/>
     public BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaSkill.FromRawUnchecked(rawData);
 }

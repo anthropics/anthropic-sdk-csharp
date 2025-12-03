@@ -17,6 +17,7 @@ public sealed record class MessageBatchExpiredResult : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -50,6 +51,7 @@ public sealed record class MessageBatchExpiredResult : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchExpiredResultFromRaw.FromRawUnchecked"/>
     public static MessageBatchExpiredResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -60,6 +62,7 @@ public sealed record class MessageBatchExpiredResult : ModelBase
 
 class MessageBatchExpiredResultFromRaw : IFromRaw<MessageBatchExpiredResult>
 {
+    /// <inheritdoc/>
     public MessageBatchExpiredResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MessageBatchExpiredResult.FromRawUnchecked(rawData);

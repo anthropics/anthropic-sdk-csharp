@@ -113,60 +113,222 @@ public record class BetaError
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaInvalidRequestError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickInvalidRequest(out var value)) {
+    ///     // `value` is of type `BetaInvalidRequestError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickInvalidRequest([NotNullWhen(true)] out BetaInvalidRequestError? value)
     {
         value = this.Value as BetaInvalidRequestError;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAuthenticationError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickAuthentication(out var value)) {
+    ///     // `value` is of type `BetaAuthenticationError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickAuthentication([NotNullWhen(true)] out BetaAuthenticationError? value)
     {
         value = this.Value as BetaAuthenticationError;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBillingError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBilling(out var value)) {
+    ///     // `value` is of type `BetaBillingError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBilling([NotNullWhen(true)] out BetaBillingError? value)
     {
         value = this.Value as BetaBillingError;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaPermissionError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickPermission(out var value)) {
+    ///     // `value` is of type `BetaPermissionError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickPermission([NotNullWhen(true)] out BetaPermissionError? value)
     {
         value = this.Value as BetaPermissionError;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaNotFoundError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickNotFound(out var value)) {
+    ///     // `value` is of type `BetaNotFoundError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickNotFound([NotNullWhen(true)] out BetaNotFoundError? value)
     {
         value = this.Value as BetaNotFoundError;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRateLimitError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRateLimit(out var value)) {
+    ///     // `value` is of type `BetaRateLimitError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickRateLimit([NotNullWhen(true)] out BetaRateLimitError? value)
     {
         value = this.Value as BetaRateLimitError;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaGatewayTimeoutError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickGatewayTimeout(out var value)) {
+    ///     // `value` is of type `BetaGatewayTimeoutError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickGatewayTimeout([NotNullWhen(true)] out BetaGatewayTimeoutError? value)
     {
         value = this.Value as BetaGatewayTimeoutError;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAPIError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickAPI(out var value)) {
+    ///     // `value` is of type `BetaAPIError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickAPI([NotNullWhen(true)] out BetaAPIError? value)
     {
         value = this.Value as BetaAPIError;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaOverloadedError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickOverloaded(out var value)) {
+    ///     // `value` is of type `BetaOverloadedError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickOverloaded([NotNullWhen(true)] out BetaOverloadedError? value)
     {
         value = this.Value as BetaOverloadedError;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaInvalidRequestError value) => {...},
+    ///     (BetaAuthenticationError value) => {...},
+    ///     (BetaBillingError value) => {...},
+    ///     (BetaPermissionError value) => {...},
+    ///     (BetaNotFoundError value) => {...},
+    ///     (BetaRateLimitError value) => {...},
+    ///     (BetaGatewayTimeoutError value) => {...},
+    ///     (BetaAPIError value) => {...},
+    ///     (BetaOverloadedError value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         Action<BetaInvalidRequestError> invalidRequest,
         Action<BetaAuthenticationError> authentication,
@@ -215,6 +377,34 @@ public record class BetaError
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaInvalidRequestError value) => {...},
+    ///     (BetaAuthenticationError value) => {...},
+    ///     (BetaBillingError value) => {...},
+    ///     (BetaPermissionError value) => {...},
+    ///     (BetaNotFoundError value) => {...},
+    ///     (BetaRateLimitError value) => {...},
+    ///     (BetaGatewayTimeoutError value) => {...},
+    ///     (BetaAPIError value) => {...},
+    ///     (BetaOverloadedError value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         Func<BetaInvalidRequestError, T> invalidRequest,
         Func<BetaAuthenticationError, T> authentication,
@@ -262,6 +452,16 @@ public record class BetaError
 
     public static implicit operator BetaError(BetaOverloadedError value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

@@ -88,6 +88,7 @@ public sealed record class BetaServerToolUseBlockParam : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -126,6 +127,7 @@ public sealed record class BetaServerToolUseBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaServerToolUseBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaServerToolUseBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -136,6 +138,7 @@ public sealed record class BetaServerToolUseBlockParam : ModelBase
 
 class BetaServerToolUseBlockParamFromRaw : IFromRaw<BetaServerToolUseBlockParam>
 {
+    /// <inheritdoc/>
     public BetaServerToolUseBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaServerToolUseBlockParam.FromRawUnchecked(rawData);
@@ -239,18 +242,68 @@ public record class BetaServerToolUseBlockParamCaller
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaDirectCaller"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaDirect(out var value)) {
+    ///     // `value` is of type `BetaDirectCaller`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaDirect([NotNullWhen(true)] out BetaDirectCaller? value)
     {
         value = this.Value as BetaDirectCaller;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaServerToolCaller"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaServerTool(out var value)) {
+    ///     // `value` is of type `BetaServerToolCaller`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaServerTool([NotNullWhen(true)] out BetaServerToolCaller? value)
     {
         value = this.Value as BetaServerToolCaller;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaDirectCaller value) => {...},
+    ///     (BetaServerToolCaller value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaDirectCaller> betaDirect,
         System::Action<BetaServerToolCaller> betaServerTool
@@ -271,6 +324,27 @@ public record class BetaServerToolUseBlockParamCaller
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaDirectCaller value) => {...},
+    ///     (BetaServerToolCaller value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaDirectCaller, T> betaDirect,
         System::Func<BetaServerToolCaller, T> betaServerTool
@@ -292,6 +366,16 @@ public record class BetaServerToolUseBlockParamCaller
     public static implicit operator BetaServerToolUseBlockParamCaller(BetaServerToolCaller value) =>
         new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

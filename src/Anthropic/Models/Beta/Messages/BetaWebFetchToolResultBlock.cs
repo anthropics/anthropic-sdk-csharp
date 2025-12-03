@@ -38,6 +38,7 @@ public sealed record class BetaWebFetchToolResultBlock : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
@@ -73,6 +74,7 @@ public sealed record class BetaWebFetchToolResultBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebFetchToolResultBlockFromRaw.FromRawUnchecked"/>
     public static BetaWebFetchToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -83,6 +85,7 @@ public sealed record class BetaWebFetchToolResultBlock : ModelBase
 
 class BetaWebFetchToolResultBlockFromRaw : IFromRaw<BetaWebFetchToolResultBlock>
 {
+    /// <inheritdoc/>
     public BetaWebFetchToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaWebFetchToolResultBlock.FromRawUnchecked(rawData);
@@ -131,6 +134,21 @@ public record class BetaWebFetchToolResultBlockContent
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchToolResultErrorBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWebFetchToolResultErrorBlock(out var value)) {
+    ///     // `value` is of type `BetaWebFetchToolResultErrorBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaWebFetchToolResultErrorBlock(
         [NotNullWhen(true)] out BetaWebFetchToolResultErrorBlock? value
     )
@@ -139,12 +157,47 @@ public record class BetaWebFetchToolResultBlockContent
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWebFetchBlock(out var value)) {
+    ///     // `value` is of type `BetaWebFetchBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaWebFetchBlock([NotNullWhen(true)] out BetaWebFetchBlock? value)
     {
         value = this.Value as BetaWebFetchBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaWebFetchToolResultErrorBlock value) => {...},
+    ///     (BetaWebFetchBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaWebFetchToolResultErrorBlock> betaWebFetchToolResultErrorBlock,
         System::Action<BetaWebFetchBlock> betaWebFetchBlock
@@ -165,6 +218,27 @@ public record class BetaWebFetchToolResultBlockContent
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaWebFetchToolResultErrorBlock value) => {...},
+    ///     (BetaWebFetchBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaWebFetchToolResultErrorBlock, T> betaWebFetchToolResultErrorBlock,
         System::Func<BetaWebFetchBlock, T> betaWebFetchBlock
@@ -187,6 +261,16 @@ public record class BetaWebFetchToolResultBlockContent
     public static implicit operator BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value) =>
         new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

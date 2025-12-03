@@ -58,6 +58,7 @@ public sealed record class CitationSearchResultLocationParam : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CitedText;
@@ -97,6 +98,7 @@ public sealed record class CitationSearchResultLocationParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="CitationSearchResultLocationParamFromRaw.FromRawUnchecked"/>
     public static CitationSearchResultLocationParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -107,6 +109,7 @@ public sealed record class CitationSearchResultLocationParam : ModelBase
 
 class CitationSearchResultLocationParamFromRaw : IFromRaw<CitationSearchResultLocationParam>
 {
+    /// <inheritdoc/>
     public CitationSearchResultLocationParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => CitationSearchResultLocationParam.FromRawUnchecked(rawData);

@@ -90,6 +90,7 @@ public sealed record class BetaUsage : ModelBase
         init { ModelBase.Set(this._rawData, "service_tier", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.CacheCreation?.Validate();
@@ -116,6 +117,7 @@ public sealed record class BetaUsage : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaUsageFromRaw.FromRawUnchecked"/>
     public static BetaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -124,6 +126,7 @@ public sealed record class BetaUsage : ModelBase
 
 class BetaUsageFromRaw : IFromRaw<BetaUsage>
 {
+    /// <inheritdoc/>
     public BetaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaUsage.FromRawUnchecked(rawData);
 }

@@ -367,6 +367,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static MessageCountTokensParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -443,12 +444,42 @@ public record class MessageCountTokensParamsSystem
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="string"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickString(out var value)) {
+    ///     // `value` is of type `string`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickString([NotNullWhen(true)] out string? value)
     {
         value = this.Value as string;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="IReadOnlyList<BetaTextBlockParam>"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaTextBlockParams(out var value)) {
+    ///     // `value` is of type `IReadOnlyList<BetaTextBlockParam>`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaTextBlockParams(
         [NotNullWhen(true)] out IReadOnlyList<BetaTextBlockParam>? value
     )
@@ -457,6 +488,26 @@ public record class MessageCountTokensParamsSystem
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (string value) => {...},
+    ///     (IReadOnlyList<BetaTextBlockParam> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<string> @string,
         System::Action<IReadOnlyList<BetaTextBlockParam>> betaTextBlockParams
@@ -477,6 +528,27 @@ public record class MessageCountTokensParamsSystem
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (string value) => {...},
+    ///     (IReadOnlyList<BetaTextBlockParam> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<string, T> @string,
         System::Func<IReadOnlyList<BetaTextBlockParam>, T> betaTextBlockParams
@@ -498,6 +570,16 @@ public record class MessageCountTokensParamsSystem
         List<BetaTextBlockParam> value
     ) => new((IReadOnlyList<BetaTextBlockParam>)value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -887,24 +969,84 @@ public record class Tool
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTool"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBeta(out var value)) {
+    ///     // `value` is of type `BetaTool`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBeta([NotNullWhen(true)] out BetaTool? value)
     {
         value = this.Value as BetaTool;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolBash20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolBash20241022(out var value)) {
+    ///     // `value` is of type `BetaToolBash20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolBash20241022([NotNullWhen(true)] out BetaToolBash20241022? value)
     {
         value = this.Value as BetaToolBash20241022;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolBash20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolBash20250124(out var value)) {
+    ///     // `value` is of type `BetaToolBash20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolBash20250124([NotNullWhen(true)] out BetaToolBash20250124? value)
     {
         value = this.Value as BetaToolBash20250124;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20250522"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCodeExecutionTool20250522(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20250522`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCodeExecutionTool20250522(
         [NotNullWhen(true)] out BetaCodeExecutionTool20250522? value
     )
@@ -913,6 +1055,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20250825"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCodeExecutionTool20250825(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20250825`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCodeExecutionTool20250825(
         [NotNullWhen(true)] out BetaCodeExecutionTool20250825? value
     )
@@ -921,6 +1078,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolComputerUse20241022(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolComputerUse20241022(
         [NotNullWhen(true)] out BetaToolComputerUse20241022? value
     )
@@ -929,12 +1101,42 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaMemoryTool20250818(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaMemoryTool20250818([NotNullWhen(true)] out BetaMemoryTool20250818? value)
     {
         value = this.Value as BetaMemoryTool20250818;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolComputerUse20250124(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolComputerUse20250124(
         [NotNullWhen(true)] out BetaToolComputerUse20250124? value
     )
@@ -943,6 +1145,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolTextEditor20241022(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolTextEditor20241022(
         [NotNullWhen(true)] out BetaToolTextEditor20241022? value
     )
@@ -951,6 +1168,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20251124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolComputerUse20251124(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20251124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolComputerUse20251124(
         [NotNullWhen(true)] out BetaToolComputerUse20251124? value
     )
@@ -959,6 +1191,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolTextEditor20250124(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolTextEditor20250124(
         [NotNullWhen(true)] out BetaToolTextEditor20250124? value
     )
@@ -967,6 +1214,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250429"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolTextEditor20250429(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250429`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolTextEditor20250429(
         [NotNullWhen(true)] out BetaToolTextEditor20250429? value
     )
@@ -975,6 +1237,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250728"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolTextEditor20250728(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250728`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolTextEditor20250728(
         [NotNullWhen(true)] out BetaToolTextEditor20250728? value
     )
@@ -983,6 +1260,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchTool20250305"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWebSearchTool20250305(out var value)) {
+    ///     // `value` is of type `BetaWebSearchTool20250305`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaWebSearchTool20250305(
         [NotNullWhen(true)] out BetaWebSearchTool20250305? value
     )
@@ -991,6 +1283,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchTool20250910"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWebFetchTool20250910(out var value)) {
+    ///     // `value` is of type `BetaWebFetchTool20250910`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaWebFetchTool20250910(
         [NotNullWhen(true)] out BetaWebFetchTool20250910? value
     )
@@ -999,6 +1306,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolSearchToolBm25_20251119"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolSearchToolBm25_20251119(out var value)) {
+    ///     // `value` is of type `BetaToolSearchToolBm25_20251119`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolSearchToolBm25_20251119(
         [NotNullWhen(true)] out BetaToolSearchToolBm25_20251119? value
     )
@@ -1007,6 +1329,21 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolSearchToolRegex20251119"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolSearchToolRegex20251119(out var value)) {
+    ///     // `value` is of type `BetaToolSearchToolRegex20251119`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolSearchToolRegex20251119(
         [NotNullWhen(true)] out BetaToolSearchToolRegex20251119? value
     )
@@ -1015,12 +1352,63 @@ public record class Tool
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMCPToolset"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaMCPToolset(out var value)) {
+    ///     // `value` is of type `BetaMCPToolset`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaMCPToolset([NotNullWhen(true)] out BetaMCPToolset? value)
     {
         value = this.Value as BetaMCPToolset;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaTool value) => {...},
+    ///     (BetaToolBash20241022 value) => {...},
+    ///     (BetaToolBash20250124 value) => {...},
+    ///     (BetaCodeExecutionTool20250522 value) => {...},
+    ///     (BetaCodeExecutionTool20250825 value) => {...},
+    ///     (BetaToolComputerUse20241022 value) => {...},
+    ///     (BetaMemoryTool20250818 value) => {...},
+    ///     (BetaToolComputerUse20250124 value) => {...},
+    ///     (BetaToolTextEditor20241022 value) => {...},
+    ///     (BetaToolComputerUse20251124 value) => {...},
+    ///     (BetaToolTextEditor20250124 value) => {...},
+    ///     (BetaToolTextEditor20250429 value) => {...},
+    ///     (BetaToolTextEditor20250728 value) => {...},
+    ///     (BetaWebSearchTool20250305 value) => {...},
+    ///     (BetaWebFetchTool20250910 value) => {...},
+    ///     (BetaToolSearchToolBm25_20251119 value) => {...},
+    ///     (BetaToolSearchToolRegex20251119 value) => {...},
+    ///     (BetaMCPToolset value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaTool> beta,
         System::Action<BetaToolBash20241022> betaToolBash20241022,
@@ -1103,6 +1491,43 @@ public record class Tool
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaTool value) => {...},
+    ///     (BetaToolBash20241022 value) => {...},
+    ///     (BetaToolBash20250124 value) => {...},
+    ///     (BetaCodeExecutionTool20250522 value) => {...},
+    ///     (BetaCodeExecutionTool20250825 value) => {...},
+    ///     (BetaToolComputerUse20241022 value) => {...},
+    ///     (BetaMemoryTool20250818 value) => {...},
+    ///     (BetaToolComputerUse20250124 value) => {...},
+    ///     (BetaToolTextEditor20241022 value) => {...},
+    ///     (BetaToolComputerUse20251124 value) => {...},
+    ///     (BetaToolTextEditor20250124 value) => {...},
+    ///     (BetaToolTextEditor20250429 value) => {...},
+    ///     (BetaToolTextEditor20250728 value) => {...},
+    ///     (BetaWebSearchTool20250305 value) => {...},
+    ///     (BetaWebFetchTool20250910 value) => {...},
+    ///     (BetaToolSearchToolBm25_20251119 value) => {...},
+    ///     (BetaToolSearchToolRegex20251119 value) => {...},
+    ///     (BetaMCPToolset value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaTool, T> beta,
         System::Func<BetaToolBash20241022, T> betaToolBash20241022,
@@ -1184,6 +1609,16 @@ public record class Tool
 
     public static implicit operator Tool(BetaMCPToolset value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

@@ -40,6 +40,7 @@ public sealed record class ToolChoiceAuto : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"auto\"")))
@@ -69,6 +70,7 @@ public sealed record class ToolChoiceAuto : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ToolChoiceAutoFromRaw.FromRawUnchecked"/>
     public static ToolChoiceAuto FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -77,6 +79,7 @@ public sealed record class ToolChoiceAuto : ModelBase
 
 class ToolChoiceAutoFromRaw : IFromRaw<ToolChoiceAuto>
 {
+    /// <inheritdoc/>
     public ToolChoiceAuto FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ToolChoiceAuto.FromRawUnchecked(rawData);
 }

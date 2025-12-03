@@ -50,6 +50,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase
         init { ModelBase.Set(this._rawData, "max_characters", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -96,6 +97,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ToolTextEditor20250728FromRaw.FromRawUnchecked"/>
     public static ToolTextEditor20250728 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -106,6 +108,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase
 
 class ToolTextEditor20250728FromRaw : IFromRaw<ToolTextEditor20250728>
 {
+    /// <inheritdoc/>
     public ToolTextEditor20250728 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ToolTextEditor20250728.FromRawUnchecked(rawData);

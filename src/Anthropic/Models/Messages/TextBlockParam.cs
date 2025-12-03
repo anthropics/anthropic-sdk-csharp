@@ -44,6 +44,7 @@ public sealed record class TextBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "citations", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
@@ -78,6 +79,7 @@ public sealed record class TextBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="TextBlockParamFromRaw.FromRawUnchecked"/>
     public static TextBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -93,6 +95,7 @@ public sealed record class TextBlockParam : ModelBase
 
 class TextBlockParamFromRaw : IFromRaw<TextBlockParam>
 {
+    /// <inheritdoc/>
     public TextBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         TextBlockParam.FromRawUnchecked(rawData);
 }

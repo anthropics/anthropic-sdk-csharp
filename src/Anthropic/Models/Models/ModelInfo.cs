@@ -51,6 +51,7 @@ public sealed record class ModelInfo : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -84,6 +85,7 @@ public sealed record class ModelInfo : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ModelInfoFromRaw.FromRawUnchecked"/>
     public static ModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -92,6 +94,7 @@ public sealed record class ModelInfo : ModelBase
 
 class ModelInfoFromRaw : IFromRaw<ModelInfo>
 {
+    /// <inheritdoc/>
     public ModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ModelInfo.FromRawUnchecked(rawData);
 }

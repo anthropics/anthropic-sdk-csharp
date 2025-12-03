@@ -65,6 +65,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -103,6 +104,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMCPToolUseBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaMCPToolUseBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -113,6 +115,7 @@ public sealed record class BetaMCPToolUseBlockParam : ModelBase
 
 class BetaMCPToolUseBlockParamFromRaw : IFromRaw<BetaMCPToolUseBlockParam>
 {
+    /// <inheritdoc/>
     public BetaMCPToolUseBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMCPToolUseBlockParam.FromRawUnchecked(rawData);

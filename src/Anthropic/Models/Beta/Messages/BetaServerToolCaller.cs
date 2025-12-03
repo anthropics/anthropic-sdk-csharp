@@ -26,6 +26,7 @@ public sealed record class BetaServerToolCaller : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ToolID;
@@ -60,6 +61,7 @@ public sealed record class BetaServerToolCaller : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaServerToolCallerFromRaw.FromRawUnchecked"/>
     public static BetaServerToolCaller FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -77,6 +79,7 @@ public sealed record class BetaServerToolCaller : ModelBase
 
 class BetaServerToolCallerFromRaw : IFromRaw<BetaServerToolCaller>
 {
+    /// <inheritdoc/>
     public BetaServerToolCaller FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaServerToolCaller.FromRawUnchecked(rawData);

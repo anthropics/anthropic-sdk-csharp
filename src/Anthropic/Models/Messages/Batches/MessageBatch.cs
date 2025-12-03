@@ -152,6 +152,7 @@ public sealed record class MessageBatch : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -194,6 +195,7 @@ public sealed record class MessageBatch : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchFromRaw.FromRawUnchecked"/>
     public static MessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -202,6 +204,7 @@ public sealed record class MessageBatch : ModelBase
 
 class MessageBatchFromRaw : IFromRaw<MessageBatch>
 {
+    /// <inheritdoc/>
     public MessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         MessageBatch.FromRawUnchecked(rawData);
 }

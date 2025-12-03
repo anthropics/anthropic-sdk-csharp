@@ -55,6 +55,7 @@ public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
@@ -91,6 +92,7 @@ public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebSearchToolResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaWebSearchToolResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -101,6 +103,7 @@ public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
 
 class BetaWebSearchToolResultBlockParamFromRaw : IFromRaw<BetaWebSearchToolResultBlockParam>
 {
+    /// <inheritdoc/>
     public BetaWebSearchToolResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaWebSearchToolResultBlockParam.FromRawUnchecked(rawData);

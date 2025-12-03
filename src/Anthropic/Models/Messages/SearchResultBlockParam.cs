@@ -61,6 +61,7 @@ public sealed record class SearchResultBlockParam : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Content)
@@ -102,6 +103,7 @@ public sealed record class SearchResultBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="SearchResultBlockParamFromRaw.FromRawUnchecked"/>
     public static SearchResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -112,6 +114,7 @@ public sealed record class SearchResultBlockParam : ModelBase
 
 class SearchResultBlockParamFromRaw : IFromRaw<SearchResultBlockParam>
 {
+    /// <inheritdoc/>
     public SearchResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => SearchResultBlockParam.FromRawUnchecked(rawData);

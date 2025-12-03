@@ -21,6 +21,7 @@ public sealed record class BetaOutputConfig : ModelBase
         init { ModelBase.Set(this._rawData, "effort", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Effort?.Validate();
@@ -41,6 +42,7 @@ public sealed record class BetaOutputConfig : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaOutputConfigFromRaw.FromRawUnchecked"/>
     public static BetaOutputConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -51,6 +53,7 @@ public sealed record class BetaOutputConfig : ModelBase
 
 class BetaOutputConfigFromRaw : IFromRaw<BetaOutputConfig>
 {
+    /// <inheritdoc/>
     public BetaOutputConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaOutputConfig.FromRawUnchecked(rawData);
 }

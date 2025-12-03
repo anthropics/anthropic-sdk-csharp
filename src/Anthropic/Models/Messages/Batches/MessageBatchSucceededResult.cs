@@ -25,6 +25,7 @@ public sealed record class MessageBatchSucceededResult : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Message.Validate();
@@ -59,6 +60,7 @@ public sealed record class MessageBatchSucceededResult : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchSucceededResultFromRaw.FromRawUnchecked"/>
     public static MessageBatchSucceededResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -76,6 +78,7 @@ public sealed record class MessageBatchSucceededResult : ModelBase
 
 class MessageBatchSucceededResultFromRaw : IFromRaw<MessageBatchSucceededResult>
 {
+    /// <inheritdoc/>
     public MessageBatchSucceededResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MessageBatchSucceededResult.FromRawUnchecked(rawData);

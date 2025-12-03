@@ -23,6 +23,7 @@ public sealed record class OverloadedError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class OverloadedError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="OverloadedErrorFromRaw.FromRawUnchecked"/>
     public static OverloadedError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -72,6 +74,7 @@ public sealed record class OverloadedError : ModelBase
 
 class OverloadedErrorFromRaw : IFromRaw<OverloadedError>
 {
+    /// <inheritdoc/>
     public OverloadedError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         OverloadedError.FromRawUnchecked(rawData);
 }

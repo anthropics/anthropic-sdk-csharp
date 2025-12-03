@@ -69,6 +69,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Content)
@@ -110,6 +111,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaSearchResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaSearchResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -120,6 +122,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
 
 class BetaSearchResultBlockParamFromRaw : IFromRaw<BetaSearchResultBlockParam>
 {
+    /// <inheritdoc/>
     public BetaSearchResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaSearchResultBlockParam.FromRawUnchecked(rawData);

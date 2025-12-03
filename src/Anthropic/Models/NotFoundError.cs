@@ -23,6 +23,7 @@ public sealed record class NotFoundError : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -57,6 +58,7 @@ public sealed record class NotFoundError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="NotFoundErrorFromRaw.FromRawUnchecked"/>
     public static NotFoundError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -72,6 +74,7 @@ public sealed record class NotFoundError : ModelBase
 
 class NotFoundErrorFromRaw : IFromRaw<NotFoundError>
 {
+    /// <inheritdoc/>
     public NotFoundError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         NotFoundError.FromRawUnchecked(rawData);
 }

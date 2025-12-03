@@ -29,6 +29,7 @@ public sealed record class PlainTextSource : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Data;
@@ -69,6 +70,7 @@ public sealed record class PlainTextSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="PlainTextSourceFromRaw.FromRawUnchecked"/>
     public static PlainTextSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -84,6 +86,7 @@ public sealed record class PlainTextSource : ModelBase
 
 class PlainTextSourceFromRaw : IFromRaw<PlainTextSource>
 {
+    /// <inheritdoc/>
     public PlainTextSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         PlainTextSource.FromRawUnchecked(rawData);
 }

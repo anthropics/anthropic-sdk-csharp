@@ -161,6 +161,7 @@ public sealed record class BetaToolComputerUse20251124 : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.DisplayHeightPx;
@@ -217,6 +218,7 @@ public sealed record class BetaToolComputerUse20251124 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolComputerUse20251124FromRaw.FromRawUnchecked"/>
     public static BetaToolComputerUse20251124 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -227,6 +229,7 @@ public sealed record class BetaToolComputerUse20251124 : ModelBase
 
 class BetaToolComputerUse20251124FromRaw : IFromRaw<BetaToolComputerUse20251124>
 {
+    /// <inheritdoc/>
     public BetaToolComputerUse20251124 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaToolComputerUse20251124.FromRawUnchecked(rawData);

@@ -63,6 +63,7 @@ public sealed record class MessageBatchRequestCounts : ModelBase
         init { ModelBase.Set(this._rawData, "succeeded", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Canceled;
@@ -87,6 +88,7 @@ public sealed record class MessageBatchRequestCounts : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchRequestCountsFromRaw.FromRawUnchecked"/>
     public static MessageBatchRequestCounts FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -97,6 +99,7 @@ public sealed record class MessageBatchRequestCounts : ModelBase
 
 class MessageBatchRequestCountsFromRaw : IFromRaw<MessageBatchRequestCounts>
 {
+    /// <inheritdoc/>
     public MessageBatchRequestCounts FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MessageBatchRequestCounts.FromRawUnchecked(rawData);

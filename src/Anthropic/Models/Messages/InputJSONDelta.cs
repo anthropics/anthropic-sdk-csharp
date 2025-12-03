@@ -23,6 +23,7 @@ public sealed record class InputJSONDelta : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.PartialJSON;
@@ -57,6 +58,7 @@ public sealed record class InputJSONDelta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="InputJSONDeltaFromRaw.FromRawUnchecked"/>
     public static InputJSONDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -72,6 +74,7 @@ public sealed record class InputJSONDelta : ModelBase
 
 class InputJSONDeltaFromRaw : IFromRaw<InputJSONDelta>
 {
+    /// <inheritdoc/>
     public InputJSONDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         InputJSONDelta.FromRawUnchecked(rawData);
 }

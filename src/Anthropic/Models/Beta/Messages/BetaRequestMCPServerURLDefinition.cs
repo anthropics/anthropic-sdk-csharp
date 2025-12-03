@@ -52,6 +52,7 @@ public sealed record class BetaRequestMCPServerURLDefinition : ModelBase
         init { ModelBase.Set(this._rawData, "tool_configuration", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Name;
@@ -84,6 +85,7 @@ public sealed record class BetaRequestMCPServerURLDefinition : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaRequestMCPServerURLDefinitionFromRaw.FromRawUnchecked"/>
     public static BetaRequestMCPServerURLDefinition FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -94,6 +96,7 @@ public sealed record class BetaRequestMCPServerURLDefinition : ModelBase
 
 class BetaRequestMCPServerURLDefinitionFromRaw : IFromRaw<BetaRequestMCPServerURLDefinition>
 {
+    /// <inheritdoc/>
     public BetaRequestMCPServerURLDefinition FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaRequestMCPServerURLDefinition.FromRawUnchecked(rawData);

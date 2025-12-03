@@ -160,6 +160,21 @@ public record class BetaTextCitationParam
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationCharLocationParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationCharLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationCharLocationParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationCharLocation(
         [NotNullWhen(true)] out BetaCitationCharLocationParam? value
     )
@@ -168,6 +183,21 @@ public record class BetaTextCitationParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationPageLocationParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationPageLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationPageLocationParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationPageLocation(
         [NotNullWhen(true)] out BetaCitationPageLocationParam? value
     )
@@ -176,6 +206,21 @@ public record class BetaTextCitationParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationContentBlockLocationParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationContentBlockLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationContentBlockLocationParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationContentBlockLocation(
         [NotNullWhen(true)] out BetaCitationContentBlockLocationParam? value
     )
@@ -184,6 +229,21 @@ public record class BetaTextCitationParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationWebSearchResultLocationParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationWebSearchResultLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationWebSearchResultLocationParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationWebSearchResultLocation(
         [NotNullWhen(true)] out BetaCitationWebSearchResultLocationParam? value
     )
@@ -192,6 +252,21 @@ public record class BetaTextCitationParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationSearchResultLocationParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationSearchResultLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationSearchResultLocationParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationSearchResultLocation(
         [NotNullWhen(true)] out BetaCitationSearchResultLocationParam? value
     )
@@ -200,6 +275,29 @@ public record class BetaTextCitationParam
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaCitationCharLocationParam value) => {...},
+    ///     (BetaCitationPageLocationParam value) => {...},
+    ///     (BetaCitationContentBlockLocationParam value) => {...},
+    ///     (BetaCitationWebSearchResultLocationParam value) => {...},
+    ///     (BetaCitationSearchResultLocationParam value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaCitationCharLocationParam> citationCharLocation,
         System::Action<BetaCitationPageLocationParam> citationPageLocation,
@@ -232,6 +330,30 @@ public record class BetaTextCitationParam
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaCitationCharLocationParam value) => {...},
+    ///     (BetaCitationPageLocationParam value) => {...},
+    ///     (BetaCitationContentBlockLocationParam value) => {...},
+    ///     (BetaCitationWebSearchResultLocationParam value) => {...},
+    ///     (BetaCitationSearchResultLocationParam value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaCitationCharLocationParam, T> citationCharLocation,
         System::Func<BetaCitationPageLocationParam, T> citationPageLocation,
@@ -273,6 +395,16 @@ public record class BetaTextCitationParam
         BetaCitationSearchResultLocationParam value
     ) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)

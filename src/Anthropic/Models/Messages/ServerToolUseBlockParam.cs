@@ -53,6 +53,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase
         init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -100,6 +101,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ServerToolUseBlockParamFromRaw.FromRawUnchecked"/>
     public static ServerToolUseBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -110,6 +112,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase
 
 class ServerToolUseBlockParamFromRaw : IFromRaw<ServerToolUseBlockParam>
 {
+    /// <inheritdoc/>
     public ServerToolUseBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ServerToolUseBlockParam.FromRawUnchecked(rawData);

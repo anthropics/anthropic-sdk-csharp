@@ -23,6 +23,7 @@ public sealed record class BetaInputTokensTrigger : ModelBase
         init { ModelBase.Set(this._rawData, "value", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -57,6 +58,7 @@ public sealed record class BetaInputTokensTrigger : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaInputTokensTriggerFromRaw.FromRawUnchecked"/>
     public static BetaInputTokensTrigger FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +76,7 @@ public sealed record class BetaInputTokensTrigger : ModelBase
 
 class BetaInputTokensTriggerFromRaw : IFromRaw<BetaInputTokensTrigger>
 {
+    /// <inheritdoc/>
     public BetaInputTokensTrigger FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaInputTokensTrigger.FromRawUnchecked(rawData);

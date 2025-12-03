@@ -34,6 +34,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
         init { ModelBase.Set(this._rawData, "path", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -68,6 +69,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMemoryTool20250818DeleteCommandFromRaw.FromRawUnchecked"/>
     public static BetaMemoryTool20250818DeleteCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -85,6 +87,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
 
 class BetaMemoryTool20250818DeleteCommandFromRaw : IFromRaw<BetaMemoryTool20250818DeleteCommand>
 {
+    /// <inheritdoc/>
     public BetaMemoryTool20250818DeleteCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMemoryTool20250818DeleteCommand.FromRawUnchecked(rawData);

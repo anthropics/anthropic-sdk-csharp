@@ -25,6 +25,7 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Error.Validate();
@@ -59,6 +60,7 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageBatchErroredResultFromRaw.FromRawUnchecked"/>
     public static BetaMessageBatchErroredResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -76,6 +78,7 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
 
 class BetaMessageBatchErroredResultFromRaw : IFromRaw<BetaMessageBatchErroredResult>
 {
+    /// <inheritdoc/>
     public BetaMessageBatchErroredResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMessageBatchErroredResult.FromRawUnchecked(rawData);

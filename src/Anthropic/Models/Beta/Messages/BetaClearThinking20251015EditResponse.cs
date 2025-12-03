@@ -43,6 +43,7 @@ public sealed record class BetaClearThinking20251015EditResponse : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ClearedInputTokens;
@@ -78,6 +79,7 @@ public sealed record class BetaClearThinking20251015EditResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaClearThinking20251015EditResponseFromRaw.FromRawUnchecked"/>
     public static BetaClearThinking20251015EditResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -88,6 +90,7 @@ public sealed record class BetaClearThinking20251015EditResponse : ModelBase
 
 class BetaClearThinking20251015EditResponseFromRaw : IFromRaw<BetaClearThinking20251015EditResponse>
 {
+    /// <inheritdoc/>
     public BetaClearThinking20251015EditResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaClearThinking20251015EditResponse.FromRawUnchecked(rawData);

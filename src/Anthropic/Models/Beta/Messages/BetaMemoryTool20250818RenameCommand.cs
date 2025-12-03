@@ -43,6 +43,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
         init { ModelBase.Set(this._rawData, "old_path", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -78,6 +79,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMemoryTool20250818RenameCommandFromRaw.FromRawUnchecked"/>
     public static BetaMemoryTool20250818RenameCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -88,6 +90,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
 
 class BetaMemoryTool20250818RenameCommandFromRaw : IFromRaw<BetaMemoryTool20250818RenameCommand>
 {
+    /// <inheritdoc/>
     public BetaMemoryTool20250818RenameCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMemoryTool20250818RenameCommand.FromRawUnchecked(rawData);

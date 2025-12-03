@@ -49,6 +49,7 @@ public sealed record class BetaCitationCharLocationParam : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CitedText;
@@ -87,6 +88,7 @@ public sealed record class BetaCitationCharLocationParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationCharLocationParamFromRaw.FromRawUnchecked"/>
     public static BetaCitationCharLocationParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -97,6 +99,7 @@ public sealed record class BetaCitationCharLocationParam : ModelBase
 
 class BetaCitationCharLocationParamFromRaw : IFromRaw<BetaCitationCharLocationParam>
 {
+    /// <inheritdoc/>
     public BetaCitationCharLocationParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCitationCharLocationParam.FromRawUnchecked(rawData);

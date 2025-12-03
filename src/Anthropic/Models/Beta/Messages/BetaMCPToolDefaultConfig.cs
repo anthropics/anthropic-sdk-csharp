@@ -41,6 +41,7 @@ public sealed record class BetaMCPToolDefaultConfig : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.DeferLoading;
@@ -62,6 +63,7 @@ public sealed record class BetaMCPToolDefaultConfig : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMCPToolDefaultConfigFromRaw.FromRawUnchecked"/>
     public static BetaMCPToolDefaultConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -72,6 +74,7 @@ public sealed record class BetaMCPToolDefaultConfig : ModelBase
 
 class BetaMCPToolDefaultConfigFromRaw : IFromRaw<BetaMCPToolDefaultConfig>
 {
+    /// <inheritdoc/>
     public BetaMCPToolDefaultConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMCPToolDefaultConfig.FromRawUnchecked(rawData);

@@ -28,6 +28,7 @@ public sealed record class BetaServerToolUsage : ModelBase
         init { ModelBase.Set(this._rawData, "web_search_requests", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.WebFetchRequests;
@@ -49,6 +50,7 @@ public sealed record class BetaServerToolUsage : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaServerToolUsageFromRaw.FromRawUnchecked"/>
     public static BetaServerToolUsage FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -59,6 +61,7 @@ public sealed record class BetaServerToolUsage : ModelBase
 
 class BetaServerToolUsageFromRaw : IFromRaw<BetaServerToolUsage>
 {
+    /// <inheritdoc/>
     public BetaServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaServerToolUsage.FromRawUnchecked(rawData);
 }

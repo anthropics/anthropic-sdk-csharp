@@ -61,6 +61,7 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
         init { ModelBase.Set(this._rawData, "server_tool_use", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CacheCreationInputTokens;
@@ -85,6 +86,7 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageDeltaUsageFromRaw.FromRawUnchecked"/>
     public static BetaMessageDeltaUsage FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -95,6 +97,7 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
 
 class BetaMessageDeltaUsageFromRaw : IFromRaw<BetaMessageDeltaUsage>
 {
+    /// <inheritdoc/>
     public BetaMessageDeltaUsage FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMessageDeltaUsage.FromRawUnchecked(rawData);

@@ -19,6 +19,7 @@ public sealed record class ServerToolUsage : ModelBase
         init { ModelBase.Set(this._rawData, "web_search_requests", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.WebSearchRequests;
@@ -39,6 +40,7 @@ public sealed record class ServerToolUsage : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ServerToolUsageFromRaw.FromRawUnchecked"/>
     public static ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -54,6 +56,7 @@ public sealed record class ServerToolUsage : ModelBase
 
 class ServerToolUsageFromRaw : IFromRaw<ServerToolUsage>
 {
+    /// <inheritdoc/>
     public ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ServerToolUsage.FromRawUnchecked(rawData);
 }

@@ -10,7 +10,7 @@ using Anthropic.Models.Beta.Messages.Batches;
 
 namespace Anthropic.Services.Beta.Messages;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class BatchService : IBatchService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)
