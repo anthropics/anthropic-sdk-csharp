@@ -2065,6 +2065,11 @@ public abstract class AnthropicClientExtensionsTestsBase
             .FirstOrDefault();
         Assert.NotNull(functionCall);
         Assert.Equal("test_tool", functionCall.Name);
+
+        // Verify arguments were properly accumulated from multiple delta events
+        Assert.NotNull(functionCall.Arguments);
+        Assert.True(functionCall.Arguments.ContainsKey("arg"));
+        Assert.Equal("value", functionCall.Arguments["arg"]?.ToString());
     }
 
     [Fact]
@@ -2127,6 +2132,317 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal("get_time", functionCall.Name);
         Assert.Equal("toolu_stream_paramless_1", functionCall.CallId);
         Assert.True(functionCall.Arguments == null || functionCall.Arguments.Count == 0);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithMultipleToolCalls_DoesNotDuplicateFunctionCalls()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Call multiple tools"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_multi_tool_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_1","name":"tool_a","input":{}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"a\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_2","name":"tool_b","input":{}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"b\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":1}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":2,"content_block":{"type":"tool_use","id":"toolu_3","name":"tool_c","input":{}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":2,"delta":{"type":"input_json_delta","partial_json":"{\"arg\":\"c\"}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":2}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":15}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (var update in chatClient.GetStreamingResponseAsync("Call multiple tools"))
+        {
+            updates.Add(update);
+        }
+
+        var allFunctionCalls = updates
+            .SelectMany(u => u.Contents.OfType<FunctionCallContent>())
+            .ToList();
+
+        Assert.Equal(3, allFunctionCalls.Count);
+
+        var fccA = allFunctionCalls.First(fc => fc.Name == "tool_a");
+        Assert.Equal("toolu_1", fccA.CallId);
+        Assert.Equal("a", fccA.Arguments?["arg"]?.ToString());
+
+        var fccB = allFunctionCalls.First(fc => fc.Name == "tool_b");
+        Assert.Equal("toolu_2", fccB.CallId);
+        Assert.Equal("b", fccB.Arguments?["arg"]?.ToString());
+
+        var fccC = allFunctionCalls.First(fc => fc.Name == "tool_c");
+        Assert.Equal("toolu_3", fccC.CallId);
+        Assert.Equal("c", fccC.Arguments?["arg"]?.ToString());
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithManyToolCallsAndFragmentedArguments()
+    {
+        // Build a streaming response with 5 tool calls, each with arguments spread across many small delta events
+        var responseBuilder = new StringBuilder();
+        responseBuilder.AppendLine(
+            """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_many_tools_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            """
+        );
+
+        // Create 5 tool calls, each with complex arguments spread over multiple deltas
+        for (int toolIndex = 0; toolIndex < 5; toolIndex++)
+        {
+            char toolLetter = (char)('a' + toolIndex);
+            string toolId = $"toolu_{toolIndex + 1}";
+            string toolName = $"tool_{toolLetter}";
+
+            // Start the tool use block
+            responseBuilder.AppendLine(
+                $"event: content_block_start\n"
+                    + $"data: {{\"type\":\"content_block_start\",\"index\":{toolIndex},\"content_block\":{{\"type\":\"tool_use\",\"id\":\"{toolId}\",\"name\":\"{toolName}\",\"input\":{{}}}}}}\n"
+            );
+
+            // Build the JSON argument piece by piece
+            string fullJson =
+                $"{{\"name\":\"tool_{toolLetter}_value\",\"count\":{toolIndex + 1},\"description\":\"This is tool {toolLetter} with a longer description to test accumulation\"}}";
+
+            // Split the JSON into small chunks (3 characters each) to simulate realistic streaming
+            int chunkSize = 3;
+            for (int i = 0; i < fullJson.Length; i += chunkSize)
+            {
+                string chunk = fullJson.Substring(i, Math.Min(chunkSize, fullJson.Length - i));
+                // Escape the chunk for JSON embedding
+                string escapedChunk = chunk.Replace("\\", "\\\\").Replace("\"", "\\\"");
+                responseBuilder.AppendLine(
+                    $"event: content_block_delta\n"
+                        + $"data: {{\"type\":\"content_block_delta\",\"index\":{toolIndex},\"delta\":{{\"type\":\"input_json_delta\",\"partial_json\":\"{escapedChunk}\"}}}}\n"
+                );
+            }
+
+            // Stop the content block
+            responseBuilder.AppendLine(
+                $"event: content_block_stop\n"
+                    + $"data: {{\"type\":\"content_block_stop\",\"index\":{toolIndex}}}\n"
+            );
+        }
+
+        // End the message
+        responseBuilder.AppendLine(
+            """
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":50}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Call many tools"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: responseBuilder.ToString()
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (var update in chatClient.GetStreamingResponseAsync("Call many tools"))
+        {
+            updates.Add(update);
+        }
+
+        var allFunctionCalls = updates
+            .SelectMany(u => u.Contents.OfType<FunctionCallContent>())
+            .ToList();
+
+        Assert.Equal(5, allFunctionCalls.Count);
+        for (int i = 0; i < 5; i++)
+        {
+            string expectedCallId = $"toolu_{i + 1}";
+            string expectedName = $"tool_{(char)('a' + i)}";
+            string expectedNameValue = $"tool_{(char)('a' + i)}_value";
+            int expectedCount = i + 1;
+
+            var functionCall = allFunctionCalls.SingleOrDefault(fc => fc.CallId == expectedCallId);
+            Assert.NotNull(functionCall);
+            Assert.Equal(expectedName, functionCall.Name);
+
+            Assert.NotNull(functionCall.Arguments);
+            Assert.Equal(expectedNameValue, functionCall.Arguments["name"]?.ToString());
+            Assert.Equal(expectedCount.ToString(), functionCall.Arguments["count"]?.ToString());
+            Assert.Contains(
+                $"This is tool {(char)('a' + i)}",
+                functionCall.Arguments["description"]?.ToString()
+            );
+        }
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_WithInterleavedToolCallDeltas()
+    {
+        // This test simulates a scenario where multiple tool calls are being streamed
+        // with their argument deltas interleaved (receiving parts of all tools before any completes)
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Call interleaved tools"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_interleaved_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_alpha","name":"tool_alpha","input":{}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_beta","name":"tool_beta","input":{}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":2,"content_block":{"type":"tool_use","id":"toolu_gamma","name":"tool_gamma","input":{}}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"{\"city\":"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"{\"query\":"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":2,"delta":{"type":"input_json_delta","partial_json":"{\"id\":"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"\"San Fran"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"\"weather "}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":2,"delta":{"type":"input_json_delta","partial_json":"123,\"act"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"input_json_delta","partial_json":"cisco\"}"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":1,"delta":{"type":"input_json_delta","partial_json":"forecast\"}"}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":2,"delta":{"type":"input_json_delta","partial_json":"ive\":true}"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":1}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":2}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"tool_use","stop_sequence":null},"usage":{"output_tokens":25}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (var update in chatClient.GetStreamingResponseAsync("Call interleaved tools"))
+        {
+            updates.Add(update);
+        }
+
+        var allFunctionCalls = updates
+            .SelectMany(u => u.Contents.OfType<FunctionCallContent>())
+            .ToList();
+
+        Assert.Equal(3, allFunctionCalls.Count);
+
+        var alphaCall = allFunctionCalls.SingleOrDefault(fc => fc.CallId == "toolu_alpha");
+        Assert.NotNull(alphaCall);
+        Assert.Equal("tool_alpha", alphaCall.Name);
+        Assert.NotNull(alphaCall.Arguments);
+        Assert.Equal("San Francisco", alphaCall.Arguments["city"]?.ToString());
+
+        var betaCall = allFunctionCalls.SingleOrDefault(fc => fc.CallId == "toolu_beta");
+        Assert.NotNull(betaCall);
+        Assert.Equal("tool_beta", betaCall.Name);
+        Assert.NotNull(betaCall.Arguments);
+        Assert.Equal("weather forecast", betaCall.Arguments["query"]?.ToString());
+
+        var gammaCall = allFunctionCalls.SingleOrDefault(fc => fc.CallId == "toolu_gamma");
+        Assert.NotNull(gammaCall);
+        Assert.Equal("tool_gamma", gammaCall.Name);
+        Assert.NotNull(gammaCall.Arguments);
+        Assert.Equal("123", gammaCall.Arguments["id"]?.ToString());
+        Assert.Equal("True", gammaCall.Arguments["active"]?.ToString());
     }
 
     [Fact]

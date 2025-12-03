@@ -392,6 +392,8 @@ public static class AnthropicBetaClientExtensions
                                     )
                                 );
                             }
+
+                            streamingFunctions.Clear();
                         }
                         break;
                 }
