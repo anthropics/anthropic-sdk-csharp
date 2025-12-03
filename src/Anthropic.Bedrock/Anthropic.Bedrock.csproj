@@ -7,7 +7,11 @@
     <LangVersion>13.0</LangVersion>
   </PropertyGroup>
 
-  
+  <PropertyGroup>
+    <PackageId>Anthropic.Bedrock</PackageId>
+    <VersionPrefix>0.1.0</VersionPrefix>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
   </ItemGroup>
@@ -15,5 +19,4 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.Core" Version="4.0.3.3" />
   </ItemGroup>
-
 </Project>
