@@ -186,9 +186,15 @@ public sealed record class MessageCreateParams : ParamsBase
     /// <para>A system prompt is a way of providing context and instructions to Claude,
     /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
     /// </summary>
-    public SystemModel? System
+    public MessageCreateParamsSystem? System
     {
-        get { return ModelBase.GetNullableClass<SystemModel>(this.RawBodyData, "system"); }
+        get
+        {
+            return ModelBase.GetNullableClass<MessageCreateParamsSystem>(
+                this.RawBodyData,
+                "system"
+            );
+        }
         init
         {
             if (value == null)
@@ -496,8 +502,8 @@ sealed class ServiceTierConverter : JsonConverter<ServiceTier>
 /// <para>A system prompt is a way of providing context and instructions to Claude,
 /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
-[JsonConverter(typeof(SystemModelConverter))]
-public record class SystemModel
+[JsonConverter(typeof(MessageCreateParamsSystemConverter))]
+public record class MessageCreateParamsSystem
 {
     public object? Value { get; } = null;
 
@@ -508,19 +514,19 @@ public record class SystemModel
         get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public SystemModel(string value, JsonElement? json = null)
+    public MessageCreateParamsSystem(string value, JsonElement? json = null)
     {
         this.Value = value;
         this._json = json;
     }
 
-    public SystemModel(IReadOnlyList<TextBlockParam> value, JsonElement? json = null)
+    public MessageCreateParamsSystem(IReadOnlyList<TextBlockParam> value, JsonElement? json = null)
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
         this._json = json;
     }
 
-    public SystemModel(JsonElement json)
+    public MessageCreateParamsSystem(JsonElement json)
     {
         this._json = json;
     }
@@ -552,7 +558,7 @@ public record class SystemModel
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of SystemModel"
+                    "Data did not match any variant of MessageCreateParamsSystem"
                 );
         }
     }
@@ -567,14 +573,14 @@ public record class SystemModel
             string value => @string(value),
             IReadOnlyList<TextBlockParam> value => textBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SystemModel"
+                "Data did not match any variant of MessageCreateParamsSystem"
             ),
         };
     }
 
-    public static implicit operator SystemModel(string value) => new(value);
+    public static implicit operator MessageCreateParamsSystem(string value) => new(value);
 
-    public static implicit operator SystemModel(List<TextBlockParam> value) =>
+    public static implicit operator MessageCreateParamsSystem(List<TextBlockParam> value) =>
         new((IReadOnlyList<TextBlockParam>)value);
 
     public void Validate()
@@ -582,12 +588,12 @@ public record class SystemModel
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SystemModel"
+                "Data did not match any variant of MessageCreateParamsSystem"
             );
         }
     }
 
-    public virtual bool Equals(SystemModel? other)
+    public virtual bool Equals(MessageCreateParamsSystem? other)
     {
         return other != null && JsonElement.DeepEquals(this.Json, other.Json);
     }
@@ -598,9 +604,9 @@ public record class SystemModel
     }
 }
 
-sealed class SystemModelConverter : JsonConverter<SystemModel>
+sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreateParamsSystem>
 {
-    public override SystemModel? Read(
+    public override MessageCreateParamsSystem? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -638,7 +644,7 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
 
     public override void Write(
         Utf8JsonWriter writer,
-        SystemModel value,
+        MessageCreateParamsSystem value,
         JsonSerializerOptions options
     )
     {

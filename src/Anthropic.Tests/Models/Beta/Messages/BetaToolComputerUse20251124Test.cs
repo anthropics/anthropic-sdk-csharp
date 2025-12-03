@@ -14,7 +14,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            AllowedCallers = [AllowedCaller7.Direct],
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             DisplayNumber = 0,
@@ -33,7 +33,10 @@ public class BetaToolComputerUse20251124Test : TestBase
         long expectedDisplayWidthPx = 1;
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"computer_20251124\"");
-        List<ApiEnum<string, AllowedCaller7>> expectedAllowedCallers = [AllowedCaller7.Direct];
+        List<ApiEnum<string, BetaToolComputerUse20251124AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaToolComputerUse20251124AllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         long expectedDisplayNumber = 0;
@@ -81,7 +84,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            AllowedCallers = [AllowedCaller7.Direct],
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             DisplayNumber = 0,
@@ -109,7 +112,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            AllowedCallers = [AllowedCaller7.Direct],
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             DisplayNumber = 0,
@@ -132,7 +135,10 @@ public class BetaToolComputerUse20251124Test : TestBase
         long expectedDisplayWidthPx = 1;
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"computer_20251124\"");
-        List<ApiEnum<string, AllowedCaller7>> expectedAllowedCallers = [AllowedCaller7.Direct];
+        List<ApiEnum<string, BetaToolComputerUse20251124AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaToolComputerUse20251124AllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         long expectedDisplayNumber = 0;
@@ -180,7 +186,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            AllowedCallers = [AllowedCaller7.Direct],
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             DisplayNumber = 0,
@@ -293,7 +299,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            AllowedCallers = [AllowedCaller7.Direct],
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
             DeferLoading = true,
             EnableZoom = true,
             InputExamples =
@@ -319,7 +325,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            AllowedCallers = [AllowedCaller7.Direct],
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
             DeferLoading = true,
             EnableZoom = true,
             InputExamples =
@@ -342,7 +348,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            AllowedCallers = [AllowedCaller7.Direct],
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
             DeferLoading = true,
             EnableZoom = true,
             InputExamples =
@@ -371,7 +377,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            AllowedCallers = [AllowedCaller7.Direct],
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
             DeferLoading = true,
             EnableZoom = true,
             InputExamples =

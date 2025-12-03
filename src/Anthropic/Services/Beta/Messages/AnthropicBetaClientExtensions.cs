@@ -951,7 +951,7 @@ public static class AnthropicBetaClientExtensions
                                             List<Dictionary<string, JsonElement>>
                                         >(af, nameof(BetaTool.InputExamples)),
                                         AllowedCallers = GetValue<
-                                            List<ApiEnum<string, AllowedCaller2>>
+                                            List<ApiEnum<string, BetaToolAllowedCaller>>
                                         >(af, nameof(BetaTool.AllowedCallers)),
                                     }
                                 );

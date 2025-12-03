@@ -12,7 +12,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            AllowedCallers = [AllowedCaller12.Direct],
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -31,7 +31,10 @@ public class BetaToolTextEditor20250429Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_20250429\""
         );
-        List<ApiEnum<string, AllowedCaller12>> expectedAllowedCallers = [AllowedCaller12.Direct];
+        List<ApiEnum<string, BetaToolTextEditor20250429AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaToolTextEditor20250429AllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -71,7 +74,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            AllowedCallers = [AllowedCaller12.Direct],
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -95,7 +98,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            AllowedCallers = [AllowedCaller12.Direct],
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -118,7 +121,10 @@ public class BetaToolTextEditor20250429Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_20250429\""
         );
-        List<ApiEnum<string, AllowedCaller12>> expectedAllowedCallers = [AllowedCaller12.Direct];
+        List<ApiEnum<string, BetaToolTextEditor20250429AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaToolTextEditor20250429AllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -158,7 +164,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            AllowedCallers = [AllowedCaller12.Direct],
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -243,7 +249,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            AllowedCallers = [AllowedCaller12.Direct],
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -264,7 +270,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            AllowedCallers = [AllowedCaller12.Direct],
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -284,7 +290,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            AllowedCallers = [AllowedCaller12.Direct],
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -307,7 +313,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            AllowedCallers = [AllowedCaller12.Direct],
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [

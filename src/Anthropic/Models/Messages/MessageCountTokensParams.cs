@@ -101,9 +101,15 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <para>A system prompt is a way of providing context and instructions to Claude,
     /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
     /// </summary>
-    public System1? System
+    public MessageCountTokensParamsSystem? System
     {
-        get { return ModelBase.GetNullableClass<System1>(this.RawBodyData, "system"); }
+        get
+        {
+            return ModelBase.GetNullableClass<MessageCountTokensParamsSystem>(
+                this.RawBodyData,
+                "system"
+            );
+        }
         init
         {
             if (value == null)
@@ -298,8 +304,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
 /// <para>A system prompt is a way of providing context and instructions to Claude,
 /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
-[JsonConverter(typeof(System1Converter))]
-public record class System1
+[JsonConverter(typeof(MessageCountTokensParamsSystemConverter))]
+public record class MessageCountTokensParamsSystem
 {
     public object? Value { get; } = null;
 
@@ -310,19 +316,22 @@ public record class System1
         get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public System1(string value, JsonElement? json = null)
+    public MessageCountTokensParamsSystem(string value, JsonElement? json = null)
     {
         this.Value = value;
         this._json = json;
     }
 
-    public System1(IReadOnlyList<TextBlockParam> value, JsonElement? json = null)
+    public MessageCountTokensParamsSystem(
+        IReadOnlyList<TextBlockParam> value,
+        JsonElement? json = null
+    )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
         this._json = json;
     }
 
-    public System1(JsonElement json)
+    public MessageCountTokensParamsSystem(JsonElement json)
     {
         this._json = json;
     }
@@ -354,7 +363,7 @@ public record class System1
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of System1"
+                    "Data did not match any variant of MessageCountTokensParamsSystem"
                 );
         }
     }
@@ -369,25 +378,27 @@ public record class System1
             string value => @string(value),
             IReadOnlyList<TextBlockParam> value => textBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of System1"
+                "Data did not match any variant of MessageCountTokensParamsSystem"
             ),
         };
     }
 
-    public static implicit operator System1(string value) => new(value);
+    public static implicit operator MessageCountTokensParamsSystem(string value) => new(value);
 
-    public static implicit operator System1(List<TextBlockParam> value) =>
+    public static implicit operator MessageCountTokensParamsSystem(List<TextBlockParam> value) =>
         new((IReadOnlyList<TextBlockParam>)value);
 
     public void Validate()
     {
         if (this.Value == null)
         {
-            throw new AnthropicInvalidDataException("Data did not match any variant of System1");
+            throw new AnthropicInvalidDataException(
+                "Data did not match any variant of MessageCountTokensParamsSystem"
+            );
         }
     }
 
-    public virtual bool Equals(System1? other)
+    public virtual bool Equals(MessageCountTokensParamsSystem? other)
     {
         return other != null && JsonElement.DeepEquals(this.Json, other.Json);
     }
@@ -398,9 +409,9 @@ public record class System1
     }
 }
 
-sealed class System1Converter : JsonConverter<System1>
+sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCountTokensParamsSystem>
 {
-    public override System1? Read(
+    public override MessageCountTokensParamsSystem? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -436,7 +447,11 @@ sealed class System1Converter : JsonConverter<System1>
         return new(json);
     }
 
-    public override void Write(Utf8JsonWriter writer, System1 value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        MessageCountTokensParamsSystem value,
+        JsonSerializerOptions options
+    )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
     }

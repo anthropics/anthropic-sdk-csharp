@@ -12,7 +12,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            AllowedCallers = [AllowedCaller3.Direct],
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -27,7 +27,10 @@ public class BetaToolBash20241022Test : TestBase
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"bash_20241022\"");
-        List<ApiEnum<string, AllowedCaller3>> expectedAllowedCallers = [AllowedCaller3.Direct];
+        List<ApiEnum<string, BetaToolBash20241022AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaToolBash20241022AllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -67,7 +70,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            AllowedCallers = [AllowedCaller3.Direct],
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -91,7 +94,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            AllowedCallers = [AllowedCaller3.Direct],
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -110,7 +113,10 @@ public class BetaToolBash20241022Test : TestBase
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"bash_20241022\"");
-        List<ApiEnum<string, AllowedCaller3>> expectedAllowedCallers = [AllowedCaller3.Direct];
+        List<ApiEnum<string, BetaToolBash20241022AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaToolBash20241022AllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -150,7 +156,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            AllowedCallers = [AllowedCaller3.Direct],
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -235,7 +241,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            AllowedCallers = [AllowedCaller3.Direct],
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -256,7 +262,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            AllowedCallers = [AllowedCaller3.Direct],
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -276,7 +282,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            AllowedCallers = [AllowedCaller3.Direct],
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -299,7 +305,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            AllowedCallers = [AllowedCaller3.Direct],
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [

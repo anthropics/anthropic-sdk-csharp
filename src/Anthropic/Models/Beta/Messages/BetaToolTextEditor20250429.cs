@@ -31,14 +31,13 @@ public sealed record class BetaToolTextEditor20250429 : ModelBase
         init { ModelBase.Set(this._rawData, "type", value); }
     }
 
-    public IReadOnlyList<ApiEnum<string, AllowedCaller12>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, BetaToolTextEditor20250429AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ApiEnum<string, AllowedCaller12>>>(
-                this.RawData,
-                "allowed_callers"
-            );
+            return ModelBase.GetNullableClass<
+                List<ApiEnum<string, BetaToolTextEditor20250429AllowedCaller>>
+            >(this.RawData, "allowed_callers");
         }
         init
         {
@@ -185,16 +184,17 @@ class BetaToolTextEditor20250429FromRaw : IFromRaw<BetaToolTextEditor20250429>
     ) => BetaToolTextEditor20250429.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(AllowedCaller12Converter))]
-public enum AllowedCaller12
+[JsonConverter(typeof(BetaToolTextEditor20250429AllowedCallerConverter))]
+public enum BetaToolTextEditor20250429AllowedCaller
 {
     Direct,
     CodeExecution20250825,
 }
 
-sealed class AllowedCaller12Converter : JsonConverter<AllowedCaller12>
+sealed class BetaToolTextEditor20250429AllowedCallerConverter
+    : JsonConverter<BetaToolTextEditor20250429AllowedCaller>
 {
-    public override AllowedCaller12 Read(
+    public override BetaToolTextEditor20250429AllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -202,15 +202,16 @@ sealed class AllowedCaller12Converter : JsonConverter<AllowedCaller12>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => AllowedCaller12.Direct,
-            "code_execution_20250825" => AllowedCaller12.CodeExecution20250825,
-            _ => (AllowedCaller12)(-1),
+            "direct" => BetaToolTextEditor20250429AllowedCaller.Direct,
+            "code_execution_20250825" =>
+                BetaToolTextEditor20250429AllowedCaller.CodeExecution20250825,
+            _ => (BetaToolTextEditor20250429AllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        AllowedCaller12 value,
+        BetaToolTextEditor20250429AllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -218,8 +219,9 @@ sealed class AllowedCaller12Converter : JsonConverter<AllowedCaller12>
             writer,
             value switch
             {
-                AllowedCaller12.Direct => "direct",
-                AllowedCaller12.CodeExecution20250825 => "code_execution_20250825",
+                BetaToolTextEditor20250429AllowedCaller.Direct => "direct",
+                BetaToolTextEditor20250429AllowedCaller.CodeExecution20250825 =>
+                    "code_execution_20250825",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

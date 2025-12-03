@@ -12,7 +12,7 @@ public class BetaWebFetchTool20250910Test : TestBase
     {
         var model = new BetaWebFetchTool20250910
         {
-            AllowedCallers = [AllowedCaller14.Direct],
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { TTL = TTL.TTL5m },
@@ -27,7 +27,10 @@ public class BetaWebFetchTool20250910Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"web_fetch_20250910\""
         );
-        List<ApiEnum<string, AllowedCaller14>> expectedAllowedCallers = [AllowedCaller14.Direct];
+        List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaWebFetchTool20250910AllowedCaller.Direct,
+        ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
@@ -67,7 +70,7 @@ public class BetaWebFetchTool20250910Test : TestBase
     {
         var model = new BetaWebFetchTool20250910
         {
-            AllowedCallers = [AllowedCaller14.Direct],
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { TTL = TTL.TTL5m },
@@ -89,7 +92,7 @@ public class BetaWebFetchTool20250910Test : TestBase
     {
         var model = new BetaWebFetchTool20250910
         {
-            AllowedCallers = [AllowedCaller14.Direct],
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { TTL = TTL.TTL5m },
@@ -108,7 +111,10 @@ public class BetaWebFetchTool20250910Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"web_fetch_20250910\""
         );
-        List<ApiEnum<string, AllowedCaller14>> expectedAllowedCallers = [AllowedCaller14.Direct];
+        List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaWebFetchTool20250910AllowedCaller.Direct,
+        ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
@@ -148,7 +154,7 @@ public class BetaWebFetchTool20250910Test : TestBase
     {
         var model = new BetaWebFetchTool20250910
         {
-            AllowedCallers = [AllowedCaller14.Direct],
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { TTL = TTL.TTL5m },
@@ -251,7 +257,7 @@ public class BetaWebFetchTool20250910Test : TestBase
     {
         var model = new BetaWebFetchTool20250910
         {
-            AllowedCallers = [AllowedCaller14.Direct],
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -275,7 +281,7 @@ public class BetaWebFetchTool20250910Test : TestBase
     {
         var model = new BetaWebFetchTool20250910
         {
-            AllowedCallers = [AllowedCaller14.Direct],
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -288,7 +294,7 @@ public class BetaWebFetchTool20250910Test : TestBase
     {
         var model = new BetaWebFetchTool20250910
         {
-            AllowedCallers = [AllowedCaller14.Direct],
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
@@ -319,7 +325,7 @@ public class BetaWebFetchTool20250910Test : TestBase
     {
         var model = new BetaWebFetchTool20250910
         {
-            AllowedCallers = [AllowedCaller14.Direct],
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 

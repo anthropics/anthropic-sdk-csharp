@@ -12,7 +12,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            AllowedCallers = [AllowedCallerModel.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Strict = true,
@@ -22,9 +22,9 @@ public class BetaCodeExecutionTool20250825Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"code_execution_20250825\""
         );
-        List<ApiEnum<string, AllowedCallerModel>> expectedAllowedCallers =
+        List<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>> expectedAllowedCallers =
         [
-            AllowedCallerModel.Direct,
+            BetaCodeExecutionTool20250825AllowedCaller.Direct,
         ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
@@ -47,7 +47,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            AllowedCallers = [AllowedCallerModel.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Strict = true,
@@ -64,7 +64,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            AllowedCallers = [AllowedCallerModel.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Strict = true,
@@ -78,9 +78,9 @@ public class BetaCodeExecutionTool20250825Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"code_execution_20250825\""
         );
-        List<ApiEnum<string, AllowedCallerModel>> expectedAllowedCallers =
+        List<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>> expectedAllowedCallers =
         [
-            AllowedCallerModel.Direct,
+            BetaCodeExecutionTool20250825AllowedCaller.Direct,
         ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
@@ -103,7 +103,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            AllowedCallers = [AllowedCallerModel.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Strict = true,
@@ -175,7 +175,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            AllowedCallers = [AllowedCallerModel.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -189,7 +189,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            AllowedCallers = [AllowedCallerModel.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -202,7 +202,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            AllowedCallers = [AllowedCallerModel.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
@@ -218,7 +218,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            AllowedCallers = [AllowedCallerModel.Direct],
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 

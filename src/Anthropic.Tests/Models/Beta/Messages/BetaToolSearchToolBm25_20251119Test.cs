@@ -13,7 +13,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         var model = new BetaToolSearchToolBm25_20251119
         {
             Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-            AllowedCallers = [AllowedCaller8.Direct],
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Strict = true,
@@ -24,7 +24,9 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         );
         ApiEnum<string, BetaToolSearchToolBm25_20251119Type> expectedType =
             BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119;
-        List<ApiEnum<string, AllowedCaller8>> expectedAllowedCallers = [AllowedCaller8.Direct];
+        List<
+            ApiEnum<string, BetaToolSearchToolBm25_20251119AllowedCaller>
+        > expectedAllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
@@ -47,7 +49,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         var model = new BetaToolSearchToolBm25_20251119
         {
             Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-            AllowedCallers = [AllowedCaller8.Direct],
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Strict = true,
@@ -65,7 +67,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         var model = new BetaToolSearchToolBm25_20251119
         {
             Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-            AllowedCallers = [AllowedCaller8.Direct],
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Strict = true,
@@ -80,7 +82,9 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         );
         ApiEnum<string, BetaToolSearchToolBm25_20251119Type> expectedType =
             BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119;
-        List<ApiEnum<string, AllowedCaller8>> expectedAllowedCallers = [AllowedCaller8.Direct];
+        List<
+            ApiEnum<string, BetaToolSearchToolBm25_20251119AllowedCaller>
+        > expectedAllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
@@ -103,7 +107,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         var model = new BetaToolSearchToolBm25_20251119
         {
             Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-            AllowedCallers = [AllowedCaller8.Direct],
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Strict = true,
@@ -186,7 +190,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         var model = new BetaToolSearchToolBm25_20251119
         {
             Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-            AllowedCallers = [AllowedCaller8.Direct],
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -201,7 +205,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         var model = new BetaToolSearchToolBm25_20251119
         {
             Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-            AllowedCallers = [AllowedCaller8.Direct],
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -215,7 +219,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         var model = new BetaToolSearchToolBm25_20251119
         {
             Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-            AllowedCallers = [AllowedCaller8.Direct],
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
@@ -232,7 +236,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
         var model = new BetaToolSearchToolBm25_20251119
         {
             Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-            AllowedCallers = [AllowedCaller8.Direct],
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 

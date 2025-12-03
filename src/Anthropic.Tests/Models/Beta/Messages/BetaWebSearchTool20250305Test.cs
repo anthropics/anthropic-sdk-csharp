@@ -12,7 +12,7 @@ public class BetaWebSearchTool20250305Test : TestBase
     {
         var model = new BetaWebSearchTool20250305
         {
-            AllowedCallers = [AllowedCaller15.Direct],
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { TTL = TTL.TTL5m },
@@ -32,7 +32,10 @@ public class BetaWebSearchTool20250305Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"web_search_20250305\""
         );
-        List<ApiEnum<string, AllowedCaller15>> expectedAllowedCallers = [AllowedCaller15.Direct];
+        List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaWebSearchTool20250305AllowedCaller.Direct,
+        ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
@@ -76,7 +79,7 @@ public class BetaWebSearchTool20250305Test : TestBase
     {
         var model = new BetaWebSearchTool20250305
         {
-            AllowedCallers = [AllowedCaller15.Direct],
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { TTL = TTL.TTL5m },
@@ -103,7 +106,7 @@ public class BetaWebSearchTool20250305Test : TestBase
     {
         var model = new BetaWebSearchTool20250305
         {
-            AllowedCallers = [AllowedCaller15.Direct],
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { TTL = TTL.TTL5m },
@@ -127,7 +130,10 @@ public class BetaWebSearchTool20250305Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"web_search_20250305\""
         );
-        List<ApiEnum<string, AllowedCaller15>> expectedAllowedCallers = [AllowedCaller15.Direct];
+        List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaWebSearchTool20250305AllowedCaller.Direct,
+        ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
@@ -171,7 +177,7 @@ public class BetaWebSearchTool20250305Test : TestBase
     {
         var model = new BetaWebSearchTool20250305
         {
-            AllowedCallers = [AllowedCaller15.Direct],
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             CacheControl = new() { TTL = TTL.TTL5m },
@@ -299,7 +305,7 @@ public class BetaWebSearchTool20250305Test : TestBase
     {
         var model = new BetaWebSearchTool20250305
         {
-            AllowedCallers = [AllowedCaller15.Direct],
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -321,7 +327,7 @@ public class BetaWebSearchTool20250305Test : TestBase
     {
         var model = new BetaWebSearchTool20250305
         {
-            AllowedCallers = [AllowedCaller15.Direct],
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
         };
@@ -334,7 +340,7 @@ public class BetaWebSearchTool20250305Test : TestBase
     {
         var model = new BetaWebSearchTool20250305
         {
-            AllowedCallers = [AllowedCaller15.Direct],
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 
@@ -362,7 +368,7 @@ public class BetaWebSearchTool20250305Test : TestBase
     {
         var model = new BetaWebSearchTool20250305
         {
-            AllowedCallers = [AllowedCaller15.Direct],
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             DeferLoading = true,
             Strict = true,
 

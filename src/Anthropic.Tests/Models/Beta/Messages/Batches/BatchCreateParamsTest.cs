@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Messages.Batches;
-using Messages = Anthropic.Models.Messages;
+using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages.Batches;
 
@@ -17,16 +17,9 @@ public class RequestTest : TestBase
             Params = new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                    },
-                ],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
-                Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+                Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+                Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
                     Skills =
@@ -34,12 +27,7 @@ public class RequestTest : TestBase
                         new()
                         {
                             SkillID = "x",
-                            Type = global::Anthropic
-                                .Models
-                                .Beta
-                                .Messages
-                                .BetaSkillParamsType
-                                .Anthropic,
+                            Type = Messages::BetaSkillParamsType.Anthropic,
                             Version = "x",
                         },
                     ],
@@ -48,16 +36,13 @@ public class RequestTest : TestBase
                 {
                     Edits =
                     [
-                        new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                        new Messages::BetaClearToolUses20250919Edit()
                         {
                             ClearAtLeast = new(0),
                             ClearToolInputs = true,
                             ExcludeTools = ["string"],
                             Keep = new(0),
-                            Trigger =
-                                new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                                    1
-                                ),
+                            Trigger = new Messages::BetaInputTokensTrigger(1),
                         },
                     ],
                 },
@@ -72,7 +57,7 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+                OutputConfig = new() { Effort = Messages::Effort.Low },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -88,13 +73,10 @@ public class RequestTest : TestBase
                         new()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new()
-                            {
-                                TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                            },
+                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
                             Citations =
                             [
-                                new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                                new Messages::BetaCitationCharLocationParam()
                                 {
                                     CitedText = "cited_text",
                                     DocumentIndex = 0,
@@ -107,16 +89,11 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(
-                    1024
-                ),
-                ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-                {
-                    DisableParallelToolUse = true,
-                },
+                Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaTool()
+                    new Messages::BetaTool()
                     {
                         InputSchema = new()
                         {
@@ -128,14 +105,8 @@ public class RequestTest : TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        AllowedCallers =
-                        [
-                            global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct,
-                        ],
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
                         InputExamples =
@@ -146,7 +117,7 @@ public class RequestTest : TestBase
                             },
                         ],
                         Strict = true,
-                        Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                        Type = Messages::BetaToolType.Custom,
                     },
                 ],
                 TopK = 5,
@@ -158,16 +129,9 @@ public class RequestTest : TestBase
         Params expectedParams = new()
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -175,7 +139,7 @@ public class RequestTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -184,15 +148,13 @@ public class RequestTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -207,7 +169,7 @@ public class RequestTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -223,13 +185,10 @@ public class RequestTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -242,14 +201,11 @@ public class RequestTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -261,8 +217,8 @@ public class RequestTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -273,7 +229,7 @@ public class RequestTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -293,16 +249,9 @@ public class RequestTest : TestBase
             Params = new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                    },
-                ],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
-                Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+                Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+                Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
                     Skills =
@@ -310,12 +259,7 @@ public class RequestTest : TestBase
                         new()
                         {
                             SkillID = "x",
-                            Type = global::Anthropic
-                                .Models
-                                .Beta
-                                .Messages
-                                .BetaSkillParamsType
-                                .Anthropic,
+                            Type = Messages::BetaSkillParamsType.Anthropic,
                             Version = "x",
                         },
                     ],
@@ -324,16 +268,13 @@ public class RequestTest : TestBase
                 {
                     Edits =
                     [
-                        new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                        new Messages::BetaClearToolUses20250919Edit()
                         {
                             ClearAtLeast = new(0),
                             ClearToolInputs = true,
                             ExcludeTools = ["string"],
                             Keep = new(0),
-                            Trigger =
-                                new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                                    1
-                                ),
+                            Trigger = new Messages::BetaInputTokensTrigger(1),
                         },
                     ],
                 },
@@ -348,7 +289,7 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+                OutputConfig = new() { Effort = Messages::Effort.Low },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -364,13 +305,10 @@ public class RequestTest : TestBase
                         new()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new()
-                            {
-                                TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                            },
+                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
                             Citations =
                             [
-                                new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                                new Messages::BetaCitationCharLocationParam()
                                 {
                                     CitedText = "cited_text",
                                     DocumentIndex = 0,
@@ -383,16 +321,11 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(
-                    1024
-                ),
-                ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-                {
-                    DisableParallelToolUse = true,
-                },
+                Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaTool()
+                    new Messages::BetaTool()
                     {
                         InputSchema = new()
                         {
@@ -404,14 +337,8 @@ public class RequestTest : TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        AllowedCallers =
-                        [
-                            global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct,
-                        ],
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
                         InputExamples =
@@ -422,7 +349,7 @@ public class RequestTest : TestBase
                             },
                         ],
                         Strict = true,
-                        Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                        Type = Messages::BetaToolType.Custom,
                     },
                 ],
                 TopK = 5,
@@ -445,16 +372,9 @@ public class RequestTest : TestBase
             Params = new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                    },
-                ],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
-                Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+                Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+                Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
                     Skills =
@@ -462,12 +382,7 @@ public class RequestTest : TestBase
                         new()
                         {
                             SkillID = "x",
-                            Type = global::Anthropic
-                                .Models
-                                .Beta
-                                .Messages
-                                .BetaSkillParamsType
-                                .Anthropic,
+                            Type = Messages::BetaSkillParamsType.Anthropic,
                             Version = "x",
                         },
                     ],
@@ -476,16 +391,13 @@ public class RequestTest : TestBase
                 {
                     Edits =
                     [
-                        new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                        new Messages::BetaClearToolUses20250919Edit()
                         {
                             ClearAtLeast = new(0),
                             ClearToolInputs = true,
                             ExcludeTools = ["string"],
                             Keep = new(0),
-                            Trigger =
-                                new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                                    1
-                                ),
+                            Trigger = new Messages::BetaInputTokensTrigger(1),
                         },
                     ],
                 },
@@ -500,7 +412,7 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+                OutputConfig = new() { Effort = Messages::Effort.Low },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -516,13 +428,10 @@ public class RequestTest : TestBase
                         new()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new()
-                            {
-                                TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                            },
+                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
                             Citations =
                             [
-                                new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                                new Messages::BetaCitationCharLocationParam()
                                 {
                                     CitedText = "cited_text",
                                     DocumentIndex = 0,
@@ -535,16 +444,11 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(
-                    1024
-                ),
-                ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-                {
-                    DisableParallelToolUse = true,
-                },
+                Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaTool()
+                    new Messages::BetaTool()
                     {
                         InputSchema = new()
                         {
@@ -556,14 +460,8 @@ public class RequestTest : TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        AllowedCallers =
-                        [
-                            global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct,
-                        ],
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
                         InputExamples =
@@ -574,7 +472,7 @@ public class RequestTest : TestBase
                             },
                         ],
                         Strict = true,
-                        Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                        Type = Messages::BetaToolType.Custom,
                     },
                 ],
                 TopK = 5,
@@ -590,16 +488,9 @@ public class RequestTest : TestBase
         Params expectedParams = new()
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -607,7 +498,7 @@ public class RequestTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -616,15 +507,13 @@ public class RequestTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -639,7 +528,7 @@ public class RequestTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -655,13 +544,10 @@ public class RequestTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -674,14 +560,11 @@ public class RequestTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -693,8 +576,8 @@ public class RequestTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -705,7 +588,7 @@ public class RequestTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -725,16 +608,9 @@ public class RequestTest : TestBase
             Params = new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                    },
-                ],
-                Model = Messages::Model.ClaudeOpus4_5_20251101,
-                Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+                Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+                Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
                     Skills =
@@ -742,12 +618,7 @@ public class RequestTest : TestBase
                         new()
                         {
                             SkillID = "x",
-                            Type = global::Anthropic
-                                .Models
-                                .Beta
-                                .Messages
-                                .BetaSkillParamsType
-                                .Anthropic,
+                            Type = Messages::BetaSkillParamsType.Anthropic,
                             Version = "x",
                         },
                     ],
@@ -756,16 +627,13 @@ public class RequestTest : TestBase
                 {
                     Edits =
                     [
-                        new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                        new Messages::BetaClearToolUses20250919Edit()
                         {
                             ClearAtLeast = new(0),
                             ClearToolInputs = true,
                             ExcludeTools = ["string"],
                             Keep = new(0),
-                            Trigger =
-                                new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                                    1
-                                ),
+                            Trigger = new Messages::BetaInputTokensTrigger(1),
                         },
                     ],
                 },
@@ -780,7 +648,7 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+                OutputConfig = new() { Effort = Messages::Effort.Low },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -796,13 +664,10 @@ public class RequestTest : TestBase
                         new()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new()
-                            {
-                                TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                            },
+                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
                             Citations =
                             [
-                                new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                                new Messages::BetaCitationCharLocationParam()
                                 {
                                     CitedText = "cited_text",
                                     DocumentIndex = 0,
@@ -815,16 +680,11 @@ public class RequestTest : TestBase
                     ]
                 ),
                 Temperature = 1,
-                Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(
-                    1024
-                ),
-                ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-                {
-                    DisableParallelToolUse = true,
-                },
+                Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaTool()
+                    new Messages::BetaTool()
                     {
                         InputSchema = new()
                         {
@@ -836,14 +696,8 @@ public class RequestTest : TestBase
                             Required = ["location"],
                         },
                         Name = "name",
-                        AllowedCallers =
-                        [
-                            global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct,
-                        ],
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
                         InputExamples =
@@ -854,7 +708,7 @@ public class RequestTest : TestBase
                             },
                         ],
                         Strict = true,
-                        Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                        Type = Messages::BetaToolType.Custom,
                     },
                 ],
                 TopK = 5,
@@ -874,16 +728,9 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -891,7 +738,7 @@ public class ParamsTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -900,15 +747,13 @@ public class ParamsTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -923,7 +768,7 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -939,13 +784,10 @@ public class ParamsTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -958,14 +800,11 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -977,8 +816,8 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -989,7 +828,7 @@ public class ParamsTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -997,47 +836,43 @@ public class ParamsTest : TestBase
         };
 
         long expectedMaxTokens = 1024;
-        List<global::Anthropic.Models.Beta.Messages.BetaMessageParam> expectedMessages =
+        List<Messages::BetaMessageParam> expectedMessages =
         [
-            new()
-            {
-                Content = "Hello, world",
-                Role = global::Anthropic.Models.Beta.Messages.Role.User,
-            },
+            new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_5_20251101;
-        Container expectedContainer =
-            new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
-            {
-                ID = "id",
-                Skills =
-                [
-                    new()
-                    {
-                        SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
-                        Version = "x",
-                    },
-                ],
-            };
-        global::Anthropic.Models.Beta.Messages.BetaContextManagementConfig expectedContextManagement =
-            new()
-            {
-                Edits =
-                [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
-                    {
-                        ClearAtLeast = new(0),
-                        ClearToolInputs = true,
-                        ExcludeTools = ["string"],
-                        Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
-                    },
-                ],
-            };
-        List<global::Anthropic.Models.Beta.Messages.BetaRequestMCPServerURLDefinition> expectedMCPServers =
+        ApiEnum<string, global::Anthropic.Models.Messages.Model> expectedModel = global::Anthropic
+            .Models
+            .Messages
+            .Model
+            .ClaudeOpus4_5_20251101;
+        Container expectedContainer = new Messages::BetaContainerParams()
+        {
+            ID = "id",
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "x",
+                    Type = Messages::BetaSkillParamsType.Anthropic,
+                    Version = "x",
+                },
+            ],
+        };
+        Messages::BetaContextManagementConfig expectedContextManagement = new()
+        {
+            Edits =
+            [
+                new Messages::BetaClearToolUses20250919Edit()
+                {
+                    ClearAtLeast = new(0),
+                    ClearToolInputs = true,
+                    ExcludeTools = ["string"],
+                    Keep = new(0),
+                    Trigger = new Messages::BetaInputTokensTrigger(1),
+                },
+            ],
+        };
+        List<Messages::BetaRequestMCPServerURLDefinition> expectedMCPServers =
         [
             new()
             {
@@ -1047,15 +882,12 @@ public class ParamsTest : TestBase
                 ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
             },
         ];
-        global::Anthropic.Models.Beta.Messages.BetaMetadata expectedMetadata = new()
+        Messages::BetaMetadata expectedMetadata = new()
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
-        global::Anthropic.Models.Beta.Messages.BetaOutputConfig expectedOutputConfig = new()
-        {
-            Effort = global::Anthropic.Models.Beta.Messages.Effort.Low,
-        };
-        global::Anthropic.Models.Beta.Messages.BetaJSONOutputFormat expectedOutputFormat = new()
+        Messages::BetaOutputConfig expectedOutputConfig = new() { Effort = Messages::Effort.Low };
+        Messages::BetaJSONOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
             {
@@ -1070,10 +902,10 @@ public class ParamsTest : TestBase
                 new()
                 {
                     Text = "Today's date is 2024-06-01.",
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     Citations =
                     [
-                        new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                        new Messages::BetaCitationCharLocationParam()
                         {
                             CitedText = "cited_text",
                             DocumentIndex = 0,
@@ -1086,16 +918,15 @@ public class ParamsTest : TestBase
             ]
         );
         double expectedTemperature = 1;
-        global::Anthropic.Models.Beta.Messages.BetaThinkingConfigParam expectedThinking =
-            new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024);
-        global::Anthropic.Models.Beta.Messages.BetaToolChoice expectedToolChoice =
-            new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            };
-        List<global::Anthropic.Models.Beta.Messages.BetaToolUnion> expectedTools =
+        Messages::BetaThinkingConfigParam expectedThinking =
+            new Messages::BetaThinkingConfigEnabled(1024);
+        Messages::BetaToolChoice expectedToolChoice = new Messages::BetaToolChoiceAuto()
+        {
+            DisableParallelToolUse = true,
+        };
+        List<Messages::BetaToolUnion> expectedTools =
         [
-            new global::Anthropic.Models.Beta.Messages.BetaTool()
+            new Messages::BetaTool()
             {
                 InputSchema = new()
                 {
@@ -1107,8 +938,8 @@ public class ParamsTest : TestBase
                     Required = ["location"],
                 },
                 Name = "name",
-                AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                CacheControl = new() { TTL = Messages::TTL.TTL5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 InputExamples =
@@ -1119,7 +950,7 @@ public class ParamsTest : TestBase
                     },
                 ],
                 Strict = true,
-                Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                Type = Messages::BetaToolType.Custom,
             },
         ];
         long expectedTopK = 5;
@@ -1168,16 +999,9 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -1185,7 +1009,7 @@ public class ParamsTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -1194,15 +1018,13 @@ public class ParamsTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -1217,7 +1039,7 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1233,13 +1055,10 @@ public class ParamsTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -1252,14 +1071,11 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -1271,8 +1087,8 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -1283,7 +1099,7 @@ public class ParamsTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -1302,16 +1118,9 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -1319,7 +1128,7 @@ public class ParamsTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -1328,15 +1137,13 @@ public class ParamsTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -1351,7 +1158,7 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1367,13 +1174,10 @@ public class ParamsTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -1386,14 +1190,11 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -1405,8 +1206,8 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -1417,7 +1218,7 @@ public class ParamsTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -1429,47 +1230,43 @@ public class ParamsTest : TestBase
         Assert.NotNull(deserialized);
 
         long expectedMaxTokens = 1024;
-        List<global::Anthropic.Models.Beta.Messages.BetaMessageParam> expectedMessages =
+        List<Messages::BetaMessageParam> expectedMessages =
         [
-            new()
-            {
-                Content = "Hello, world",
-                Role = global::Anthropic.Models.Beta.Messages.Role.User,
-            },
+            new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_5_20251101;
-        Container expectedContainer =
-            new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
-            {
-                ID = "id",
-                Skills =
-                [
-                    new()
-                    {
-                        SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
-                        Version = "x",
-                    },
-                ],
-            };
-        global::Anthropic.Models.Beta.Messages.BetaContextManagementConfig expectedContextManagement =
-            new()
-            {
-                Edits =
-                [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
-                    {
-                        ClearAtLeast = new(0),
-                        ClearToolInputs = true,
-                        ExcludeTools = ["string"],
-                        Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
-                    },
-                ],
-            };
-        List<global::Anthropic.Models.Beta.Messages.BetaRequestMCPServerURLDefinition> expectedMCPServers =
+        ApiEnum<string, global::Anthropic.Models.Messages.Model> expectedModel = global::Anthropic
+            .Models
+            .Messages
+            .Model
+            .ClaudeOpus4_5_20251101;
+        Container expectedContainer = new Messages::BetaContainerParams()
+        {
+            ID = "id",
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "x",
+                    Type = Messages::BetaSkillParamsType.Anthropic,
+                    Version = "x",
+                },
+            ],
+        };
+        Messages::BetaContextManagementConfig expectedContextManagement = new()
+        {
+            Edits =
+            [
+                new Messages::BetaClearToolUses20250919Edit()
+                {
+                    ClearAtLeast = new(0),
+                    ClearToolInputs = true,
+                    ExcludeTools = ["string"],
+                    Keep = new(0),
+                    Trigger = new Messages::BetaInputTokensTrigger(1),
+                },
+            ],
+        };
+        List<Messages::BetaRequestMCPServerURLDefinition> expectedMCPServers =
         [
             new()
             {
@@ -1479,15 +1276,12 @@ public class ParamsTest : TestBase
                 ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
             },
         ];
-        global::Anthropic.Models.Beta.Messages.BetaMetadata expectedMetadata = new()
+        Messages::BetaMetadata expectedMetadata = new()
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
-        global::Anthropic.Models.Beta.Messages.BetaOutputConfig expectedOutputConfig = new()
-        {
-            Effort = global::Anthropic.Models.Beta.Messages.Effort.Low,
-        };
-        global::Anthropic.Models.Beta.Messages.BetaJSONOutputFormat expectedOutputFormat = new()
+        Messages::BetaOutputConfig expectedOutputConfig = new() { Effort = Messages::Effort.Low };
+        Messages::BetaJSONOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
             {
@@ -1502,10 +1296,10 @@ public class ParamsTest : TestBase
                 new()
                 {
                     Text = "Today's date is 2024-06-01.",
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     Citations =
                     [
-                        new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                        new Messages::BetaCitationCharLocationParam()
                         {
                             CitedText = "cited_text",
                             DocumentIndex = 0,
@@ -1518,16 +1312,15 @@ public class ParamsTest : TestBase
             ]
         );
         double expectedTemperature = 1;
-        global::Anthropic.Models.Beta.Messages.BetaThinkingConfigParam expectedThinking =
-            new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024);
-        global::Anthropic.Models.Beta.Messages.BetaToolChoice expectedToolChoice =
-            new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            };
-        List<global::Anthropic.Models.Beta.Messages.BetaToolUnion> expectedTools =
+        Messages::BetaThinkingConfigParam expectedThinking =
+            new Messages::BetaThinkingConfigEnabled(1024);
+        Messages::BetaToolChoice expectedToolChoice = new Messages::BetaToolChoiceAuto()
+        {
+            DisableParallelToolUse = true,
+        };
+        List<Messages::BetaToolUnion> expectedTools =
         [
-            new global::Anthropic.Models.Beta.Messages.BetaTool()
+            new Messages::BetaTool()
             {
                 InputSchema = new()
                 {
@@ -1539,8 +1332,8 @@ public class ParamsTest : TestBase
                     Required = ["location"],
                 },
                 Name = "name",
-                AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                CacheControl = new() { TTL = Messages::TTL.TTL5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 InputExamples =
@@ -1551,7 +1344,7 @@ public class ParamsTest : TestBase
                     },
                 ],
                 Strict = true,
-                Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                Type = Messages::BetaToolType.Custom,
             },
         ];
         long expectedTopK = 5;
@@ -1600,16 +1393,9 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -1617,7 +1403,7 @@ public class ParamsTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -1626,15 +1412,13 @@ public class ParamsTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -1649,7 +1433,7 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1665,13 +1449,10 @@ public class ParamsTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -1684,14 +1465,11 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -1703,8 +1481,8 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -1715,7 +1493,7 @@ public class ParamsTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -1731,16 +1509,9 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -1748,7 +1519,7 @@ public class ParamsTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -1757,15 +1528,13 @@ public class ParamsTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -1812,16 +1581,9 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -1829,7 +1591,7 @@ public class ParamsTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -1838,15 +1600,13 @@ public class ParamsTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -1868,16 +1628,9 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -1885,7 +1638,7 @@ public class ParamsTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -1894,15 +1647,13 @@ public class ParamsTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -1964,16 +1715,9 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
-            Container = new global::Anthropic.Models.Beta.Messages.BetaContainerParams()
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -1981,7 +1725,7 @@ public class ParamsTest : TestBase
                     new()
                     {
                         SkillID = "x",
-                        Type = global::Anthropic.Models.Beta.Messages.BetaSkillParamsType.Anthropic,
+                        Type = Messages::BetaSkillParamsType.Anthropic,
                         Version = "x",
                     },
                 ],
@@ -1990,15 +1734,13 @@ public class ParamsTest : TestBase
             {
                 Edits =
                 [
-                    new global::Anthropic.Models.Beta.Messages.BetaClearToolUses20250919Edit()
+                    new Messages::BetaClearToolUses20250919Edit()
                     {
                         ClearAtLeast = new(0),
                         ClearToolInputs = true,
                         ExcludeTools = ["string"],
                         Keep = new(0),
-                        Trigger = new global::Anthropic.Models.Beta.Messages.BetaInputTokensTrigger(
-                            1
-                        ),
+                        Trigger = new Messages::BetaInputTokensTrigger(1),
                     },
                 ],
             },
@@ -2035,15 +1777,8 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
             MCPServers =
             [
                 new()
@@ -2055,7 +1790,7 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2064,13 +1799,10 @@ public class ParamsTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -2083,14 +1815,11 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -2102,8 +1831,8 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -2114,7 +1843,7 @@ public class ParamsTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -2135,15 +1864,8 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
             MCPServers =
             [
                 new()
@@ -2155,7 +1877,7 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2164,13 +1886,10 @@ public class ParamsTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -2183,14 +1902,11 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -2202,8 +1918,8 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -2214,7 +1930,7 @@ public class ParamsTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -2230,15 +1946,8 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
             MCPServers =
             [
                 new()
@@ -2250,7 +1959,7 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2259,13 +1968,10 @@ public class ParamsTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -2278,14 +1984,11 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -2297,8 +2000,8 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -2309,7 +2012,7 @@ public class ParamsTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,
@@ -2334,15 +2037,8 @@ public class ParamsTest : TestBase
         var model = new Params
         {
             MaxTokens = 1024,
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = global::Anthropic.Models.Beta.Messages.Role.User,
-                },
-            ],
-            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
             MCPServers =
             [
                 new()
@@ -2354,7 +2050,7 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = global::Anthropic.Models.Beta.Messages.Effort.Low },
+            OutputConfig = new() { Effort = Messages::Effort.Low },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2363,13 +2059,10 @@ public class ParamsTest : TestBase
                     new()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new()
-                        {
-                            TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m,
-                        },
+                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
                         Citations =
                         [
-                            new global::Anthropic.Models.Beta.Messages.BetaCitationCharLocationParam()
+                            new Messages::BetaCitationCharLocationParam()
                             {
                                 CitedText = "cited_text",
                                 DocumentIndex = 0,
@@ -2382,14 +2075,11 @@ public class ParamsTest : TestBase
                 ]
             ),
             Temperature = 1,
-            Thinking = new global::Anthropic.Models.Beta.Messages.BetaThinkingConfigEnabled(1024),
-            ToolChoice = new global::Anthropic.Models.Beta.Messages.BetaToolChoiceAuto()
-            {
-                DisableParallelToolUse = true,
-            },
+            Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+            ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
-                new global::Anthropic.Models.Beta.Messages.BetaTool()
+                new Messages::BetaTool()
                 {
                     InputSchema = new()
                     {
@@ -2401,8 +2091,8 @@ public class ParamsTest : TestBase
                         Required = ["location"],
                     },
                     Name = "name",
-                    AllowedCallers = [global::Anthropic.Models.Beta.Messages.AllowedCaller2.Direct],
-                    CacheControl = new() { TTL = global::Anthropic.Models.Beta.Messages.TTL.TTL5m },
+                    AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -2413,7 +2103,7 @@ public class ParamsTest : TestBase
                         },
                     ],
                     Strict = true,
-                    Type = global::Anthropic.Models.Beta.Messages.BetaToolType.Custom,
+                    Type = Messages::BetaToolType.Custom,
                 },
             ],
             TopK = 5,

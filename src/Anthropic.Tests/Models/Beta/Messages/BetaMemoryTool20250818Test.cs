@@ -12,7 +12,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            AllowedCallers = [AllowedCaller1.Direct],
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -27,7 +27,10 @@ public class BetaMemoryTool20250818Test : TestBase
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
-        List<ApiEnum<string, AllowedCaller1>> expectedAllowedCallers = [AllowedCaller1.Direct];
+        List<ApiEnum<string, BetaMemoryTool20250818AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaMemoryTool20250818AllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -67,7 +70,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            AllowedCallers = [AllowedCaller1.Direct],
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -91,7 +94,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            AllowedCallers = [AllowedCaller1.Direct],
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -110,7 +113,10 @@ public class BetaMemoryTool20250818Test : TestBase
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"memory\"");
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"memory_20250818\"");
-        List<ApiEnum<string, AllowedCaller1>> expectedAllowedCallers = [AllowedCaller1.Direct];
+        List<ApiEnum<string, BetaMemoryTool20250818AllowedCaller>> expectedAllowedCallers =
+        [
+            BetaMemoryTool20250818AllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -150,7 +156,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            AllowedCallers = [AllowedCaller1.Direct],
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             InputExamples =
@@ -235,7 +241,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            AllowedCallers = [AllowedCaller1.Direct],
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -256,7 +262,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            AllowedCallers = [AllowedCaller1.Direct],
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -276,7 +282,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            AllowedCallers = [AllowedCaller1.Direct],
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [
@@ -299,7 +305,7 @@ public class BetaMemoryTool20250818Test : TestBase
     {
         var model = new BetaMemoryTool20250818
         {
-            AllowedCallers = [AllowedCaller1.Direct],
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
             DeferLoading = true,
             InputExamples =
             [

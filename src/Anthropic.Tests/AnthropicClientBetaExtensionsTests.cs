@@ -1128,7 +1128,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     {
                         new() { ["query"] = JsonSerializer.SerializeToElement("example query") },
                     },
-                    [nameof(BetaTool.AllowedCallers)] = new List<ApiEnum<string, AllowedCaller2>>
+                    [nameof(BetaTool.AllowedCallers)] = new List<
+                        ApiEnum<string, BetaToolAllowedCaller>
+                    >
                     {
                         new(JsonSerializer.SerializeToElement("direct")),
                     },

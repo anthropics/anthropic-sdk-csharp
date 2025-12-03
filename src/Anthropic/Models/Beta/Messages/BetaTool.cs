@@ -35,11 +35,11 @@ public sealed record class BetaTool : ModelBase
         init { ModelBase.Set(this._rawData, "name", value); }
     }
 
-    public IReadOnlyList<ApiEnum<string, AllowedCaller2>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, BetaToolAllowedCaller>>? AllowedCallers
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ApiEnum<string, AllowedCaller2>>>(
+            return ModelBase.GetNullableClass<List<ApiEnum<string, BetaToolAllowedCaller>>>(
                 this.RawData,
                 "allowed_callers"
             );
@@ -276,16 +276,16 @@ class InputSchemaFromRaw : IFromRaw<InputSchema>
         InputSchema.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(AllowedCaller2Converter))]
-public enum AllowedCaller2
+[JsonConverter(typeof(BetaToolAllowedCallerConverter))]
+public enum BetaToolAllowedCaller
 {
     Direct,
     CodeExecution20250825,
 }
 
-sealed class AllowedCaller2Converter : JsonConverter<AllowedCaller2>
+sealed class BetaToolAllowedCallerConverter : JsonConverter<BetaToolAllowedCaller>
 {
-    public override AllowedCaller2 Read(
+    public override BetaToolAllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -293,15 +293,15 @@ sealed class AllowedCaller2Converter : JsonConverter<AllowedCaller2>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => AllowedCaller2.Direct,
-            "code_execution_20250825" => AllowedCaller2.CodeExecution20250825,
-            _ => (AllowedCaller2)(-1),
+            "direct" => BetaToolAllowedCaller.Direct,
+            "code_execution_20250825" => BetaToolAllowedCaller.CodeExecution20250825,
+            _ => (BetaToolAllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        AllowedCaller2 value,
+        BetaToolAllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -309,8 +309,8 @@ sealed class AllowedCaller2Converter : JsonConverter<AllowedCaller2>
             writer,
             value switch
             {
-                AllowedCaller2.Direct => "direct",
-                AllowedCaller2.CodeExecution20250825 => "code_execution_20250825",
+                BetaToolAllowedCaller.Direct => "direct",
+                BetaToolAllowedCaller.CodeExecution20250825 => "code_execution_20250825",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

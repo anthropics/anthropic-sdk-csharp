@@ -22,7 +22,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            AllowedCallers = [AllowedCaller2.Direct],
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
@@ -47,7 +47,10 @@ public class BetaToolTest : TestBase
             Required = ["location"],
         };
         string expectedName = "name";
-        List<ApiEnum<string, AllowedCaller2>> expectedAllowedCallers = [AllowedCaller2.Direct];
+        List<ApiEnum<string, BetaToolAllowedCaller>> expectedAllowedCallers =
+        [
+            BetaToolAllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
@@ -101,7 +104,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            AllowedCallers = [AllowedCaller2.Direct],
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
@@ -137,7 +140,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            AllowedCallers = [AllowedCaller2.Direct],
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
@@ -166,7 +169,10 @@ public class BetaToolTest : TestBase
             Required = ["location"],
         };
         string expectedName = "name";
-        List<ApiEnum<string, AllowedCaller2>> expectedAllowedCallers = [AllowedCaller2.Direct];
+        List<ApiEnum<string, BetaToolAllowedCaller>> expectedAllowedCallers =
+        [
+            BetaToolAllowedCaller.Direct,
+        ];
         BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
         bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
@@ -220,7 +226,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            AllowedCallers = [AllowedCaller2.Direct],
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
             CacheControl = new() { TTL = TTL.TTL5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
@@ -373,7 +379,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            AllowedCallers = [AllowedCaller2.Direct],
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -407,7 +413,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            AllowedCallers = [AllowedCaller2.Direct],
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -438,7 +444,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            AllowedCallers = [AllowedCaller2.Direct],
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -475,7 +481,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            AllowedCallers = [AllowedCaller2.Direct],
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
