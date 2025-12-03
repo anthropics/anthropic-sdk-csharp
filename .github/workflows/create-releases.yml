@@ -1,0 +1,45 @@
+name: Create releases
+on:
+  schedule:
+    - cron: '0 5 * * *' # every day at 5am UTC
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: release
+    if: github.ref == 'refs/heads/main' && github.repository == 'anthropics/anthropic-sdk-csharp'
+    runs-on: ubuntu-latest
+    environment: production-release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: stainless-api/trigger-release-please@v1
+        id: release
+        with:
+          repo: ${{ github.event.repository.full_name }}
+          stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
+
+      - name: Set up .NET
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build and pack
+        if: ${{ steps.release.outputs.releases_created }}
+        run: dotnet pack
+          --configuration Release
+          --output "${{github.workspace}}/artifacts/packages"
+
+      - name: Publish package to nuget.org
+        if: ${{ steps.release.outputs.releases_created }}
+        run: dotnet nuget push
+          ${{ github.workspace }}/artifacts/packages/*.nupkg
+          --source https://api.nuget.org/v3/index.json
+          --api-key $NUGET_API_KEY
+          --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ secrets.ANTHROPIC_NUGET_API_KEY || secrets.NUGET_API_KEY }}

@@ -1,9 +1,4 @@
-#if NETSTANDARD2_0
-global using ValueTask = System.Threading.Tasks.Task;
 using Anthropic.Core;
-#else
-using Anthropic.Core;
-#endif
 
 namespace Anthropic.Foundry;
 
@@ -65,6 +60,6 @@ public class AnthropicFoundryClient : AnthropicClient
     {
         _azureCredentials.Apply(requestMessage);
 
-        return ValueTask.CompletedTask;
+        return default;
     }
 }

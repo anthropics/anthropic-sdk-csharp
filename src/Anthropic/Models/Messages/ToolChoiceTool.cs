@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -12,56 +11,22 @@ namespace Anthropic.Models.Messages;
 /// <summary>
 /// The model will use the specified tool with `tool_choice.name`.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<ToolChoiceTool>))]
-public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
+[JsonConverter(typeof(ModelConverter<ToolChoiceTool, ToolChoiceToolFromRaw>))]
+public sealed record class ToolChoiceTool : ModelBase
 {
     /// <summary>
     /// The name of the tool to use.
     /// </summary>
     public required string Name
     {
-        get
-        {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new ArgumentOutOfRangeException("name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new ArgumentNullException("name")
-                );
-        }
-        init
-        {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
+        init { ModelBase.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -72,13 +37,7 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get
-        {
-            if (!this._properties.TryGetValue("disable_parallel_tool_use", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
         init
         {
             if (value == null)
@@ -86,13 +45,11 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
                 return;
             }
 
-            this._properties["disable_parallel_tool_use"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "disable_parallel_tool_use", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Name;
@@ -108,26 +65,28 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
     }
 
-    public ToolChoiceTool(IReadOnlyDictionary<string, JsonElement> properties)
+    public ToolChoiceTool(ToolChoiceTool toolChoiceTool)
+        : base(toolChoiceTool) { }
+
+    public ToolChoiceTool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ToolChoiceTool(FrozenDictionary<string, JsonElement> properties)
+    ToolChoiceTool(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ToolChoiceTool FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    /// <inheritdoc cref="ToolChoiceToolFromRaw.FromRawUnchecked"/>
+    public static ToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -136,4 +95,11 @@ public sealed record class ToolChoiceTool : ModelBase, IFromRaw<ToolChoiceTool>
     {
         this.Name = name;
     }
+}
+
+class ToolChoiceToolFromRaw : IFromRaw<ToolChoiceTool>
+{
+    /// <inheritdoc/>
+    public ToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ToolChoiceTool.FromRawUnchecked(rawData);
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,32 +8,16 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatchExpiredResult>))]
-public sealed record class MessageBatchExpiredResult
-    : ModelBase,
-        IFromRaw<MessageBatchExpiredResult>
+[JsonConverter(typeof(ModelConverter<MessageBatchExpiredResult, MessageBatchExpiredResultFromRaw>))]
+public sealed record class MessageBatchExpiredResult : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -53,25 +36,37 @@ public sealed record class MessageBatchExpiredResult
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
     }
 
-    public MessageBatchExpiredResult(IReadOnlyDictionary<string, JsonElement> properties)
+    public MessageBatchExpiredResult(MessageBatchExpiredResult messageBatchExpiredResult)
+        : base(messageBatchExpiredResult) { }
+
+    public MessageBatchExpiredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageBatchExpiredResult(FrozenDictionary<string, JsonElement> properties)
+    MessageBatchExpiredResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchExpiredResultFromRaw.FromRawUnchecked"/>
     public static MessageBatchExpiredResult FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MessageBatchExpiredResultFromRaw : IFromRaw<MessageBatchExpiredResult>
+{
+    /// <inheritdoc/>
+    public MessageBatchExpiredResult FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => MessageBatchExpiredResult.FromRawUnchecked(rawData);
 }

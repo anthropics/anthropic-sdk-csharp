@@ -11,6 +11,11 @@ namespace Anthropic.Services;
 /// </summary>
 public interface IBetaService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     IBetaService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     Beta::IModelService Models { get; }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,73 +8,28 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaErrorResponse>))]
-public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResponse>
+[JsonConverter(typeof(ModelConverter<BetaErrorResponse, BetaErrorResponseFromRaw>))]
+public sealed record class BetaErrorResponse : ModelBase
 {
     public required BetaError Error
     {
-        get
-        {
-            if (!this._properties.TryGetValue("error", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error' cannot be null",
-                    new ArgumentOutOfRangeException("error", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<BetaError>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'error' cannot be null",
-                    new ArgumentNullException("error")
-                );
-        }
-        init
-        {
-            this._properties["error"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<BetaError>(this.RawData, "error"); }
+        init { ModelBase.Set(this._rawData, "error", value); }
     }
 
     public required string? RequestID
     {
-        get
-        {
-            if (!this._properties.TryGetValue("request_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["request_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "request_id"); }
+        init { ModelBase.Set(this._rawData, "request_id", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Error.Validate();
@@ -93,25 +47,36 @@ public sealed record class BetaErrorResponse : ModelBase, IFromRaw<BetaErrorResp
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
     }
 
-    public BetaErrorResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaErrorResponse(BetaErrorResponse betaErrorResponse)
+        : base(betaErrorResponse) { }
+
+    public BetaErrorResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaErrorResponse(FrozenDictionary<string, JsonElement> properties)
+    BetaErrorResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaErrorResponseFromRaw.FromRawUnchecked"/>
     public static BetaErrorResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaErrorResponseFromRaw : IFromRaw<BetaErrorResponse>
+{
+    /// <inheritdoc/>
+    public BetaErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaErrorResponse.FromRawUnchecked(rawData);
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,33 +8,21 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMemoryTool20250818ViewCommand>))]
-public sealed record class BetaMemoryTool20250818ViewCommand
-    : ModelBase,
-        IFromRaw<BetaMemoryTool20250818ViewCommand>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaMemoryTool20250818ViewCommand,
+        BetaMemoryTool20250818ViewCommandFromRaw
+    >)
+)]
+public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get
-        {
-            if (!this._properties.TryGetValue("command", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'command' cannot be null",
-                    new ArgumentOutOfRangeException("command", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["command"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
+        init { ModelBase.Set(this._rawData, "command", value); }
     }
 
     /// <summary>
@@ -43,41 +30,16 @@ public sealed record class BetaMemoryTool20250818ViewCommand
     /// </summary>
     public required string Path
     {
-        get
-        {
-            if (!this._properties.TryGetValue("path", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'path' cannot be null",
-                    new ArgumentOutOfRangeException("path", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'path' cannot be null",
-                    new ArgumentNullException("path")
-                );
-        }
-        init
-        {
-            this._properties["path"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
+        init { ModelBase.Set(this._rawData, "path", value); }
     }
 
     /// <summary>
     /// Optional line range for viewing specific lines
     /// </summary>
-    public List<long>? ViewRange
+    public IReadOnlyList<long>? ViewRange
     {
-        get
-        {
-            if (!this._properties.TryGetValue("view_range", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<long>?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<List<long>>(this.RawData, "view_range"); }
         init
         {
             if (value == null)
@@ -85,13 +47,11 @@ public sealed record class BetaMemoryTool20250818ViewCommand
                 return;
             }
 
-            this._properties["view_range"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "view_range", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -112,26 +72,32 @@ public sealed record class BetaMemoryTool20250818ViewCommand
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"view\"");
     }
 
-    public BetaMemoryTool20250818ViewCommand(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMemoryTool20250818ViewCommand(
+        BetaMemoryTool20250818ViewCommand betaMemoryTool20250818ViewCommand
+    )
+        : base(betaMemoryTool20250818ViewCommand) { }
+
+    public BetaMemoryTool20250818ViewCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"view\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMemoryTool20250818ViewCommand(FrozenDictionary<string, JsonElement> properties)
+    BetaMemoryTool20250818ViewCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMemoryTool20250818ViewCommandFromRaw.FromRawUnchecked"/>
     public static BetaMemoryTool20250818ViewCommand FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -140,4 +106,12 @@ public sealed record class BetaMemoryTool20250818ViewCommand
     {
         this.Path = path;
     }
+}
+
+class BetaMemoryTool20250818ViewCommandFromRaw : IFromRaw<BetaMemoryTool20250818ViewCommand>
+{
+    /// <inheritdoc/>
+    public BetaMemoryTool20250818ViewCommand FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMemoryTool20250818ViewCommand.FromRawUnchecked(rawData);
 }

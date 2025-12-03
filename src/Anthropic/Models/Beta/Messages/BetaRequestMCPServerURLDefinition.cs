@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,121 +8,51 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRequestMCPServerURLDefinition>))]
-public sealed record class BetaRequestMCPServerURLDefinition
-    : ModelBase,
-        IFromRaw<BetaRequestMCPServerURLDefinition>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaRequestMCPServerURLDefinition,
+        BetaRequestMCPServerURLDefinitionFromRaw
+    >)
+)]
+public sealed record class BetaRequestMCPServerURLDefinition : ModelBase
 {
     public required string Name
     {
-        get
-        {
-            if (!this._properties.TryGetValue("name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new ArgumentOutOfRangeException("name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new ArgumentNullException("name")
-                );
-        }
-        init
-        {
-            this._properties["name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
+        init { ModelBase.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get
-        {
-            if (!this._properties.TryGetValue("url", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentOutOfRangeException("url", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentNullException("url")
-                );
-        }
-        init
-        {
-            this._properties["url"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
+        init { ModelBase.Set(this._rawData, "url", value); }
     }
 
     public string? AuthorizationToken
     {
-        get
-        {
-            if (!this._properties.TryGetValue("authorization_token", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["authorization_token"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "authorization_token"); }
+        init { ModelBase.Set(this._rawData, "authorization_token", value); }
     }
 
     public BetaRequestMCPServerToolConfiguration? ToolConfiguration
     {
         get
         {
-            if (!this._properties.TryGetValue("tool_configuration", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaRequestMCPServerToolConfiguration?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaRequestMCPServerToolConfiguration>(
+                this.RawData,
+                "tool_configuration"
             );
         }
-        init
-        {
-            this._properties["tool_configuration"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "tool_configuration", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Name;
@@ -141,25 +70,39 @@ public sealed record class BetaRequestMCPServerURLDefinition
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
 
-    public BetaRequestMCPServerURLDefinition(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaRequestMCPServerURLDefinition(
+        BetaRequestMCPServerURLDefinition betaRequestMCPServerURLDefinition
+    )
+        : base(betaRequestMCPServerURLDefinition) { }
+
+    public BetaRequestMCPServerURLDefinition(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRequestMCPServerURLDefinition(FrozenDictionary<string, JsonElement> properties)
+    BetaRequestMCPServerURLDefinition(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaRequestMCPServerURLDefinitionFromRaw.FromRawUnchecked"/>
     public static BetaRequestMCPServerURLDefinition FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaRequestMCPServerURLDefinitionFromRaw : IFromRaw<BetaRequestMCPServerURLDefinition>
+{
+    /// <inheritdoc/>
+    public BetaRequestMCPServerURLDefinition FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRequestMCPServerURLDefinition.FromRawUnchecked(rawData);
 }

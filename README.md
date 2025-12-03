@@ -24,16 +24,15 @@ The REST API documentation can be found on [docs.anthropic.com](https://docs.ant
 
 ## Installation
 
+Install the package from [NuGet](https://www.nuget.org/packages/Anthropic):
+
 ```bash
 dotnet add package Anthropic
 ```
 
 ## Requirements
 
-This library requires .NET 8 or later.
-
-> [!NOTE]
-> The library is currently in **beta**. The requirements will be lowered in the future.
+This library requires .NET Standard 2.0 or later.
 
 ## Usage
 
@@ -57,7 +56,7 @@ MessageCreateParams parameters = new()
             Content = "Hello, Claude",
         },
     ],
-    Model = Model.Claude3_7SonnetLatest,
+    Model = Model.ClaudeOpus4_5_20251101,
 };
 
 var message = await client.Messages.Create(parameters);
@@ -147,7 +146,7 @@ MessageCreateParams parameters = new()
             Content = "Hello, Claude",
         },
     ],
-    Model = Model.Claude3_7SonnetLatest,
+    Model = Model.ClaudeOpus4_5_20251101,
 };
 
 await foreach (var message in client.Messages.CreateStreaming(parameters))

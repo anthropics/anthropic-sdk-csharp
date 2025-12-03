@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,60 +8,24 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageBatchErroredResult>))]
-public sealed record class BetaMessageBatchErroredResult
-    : ModelBase,
-        IFromRaw<BetaMessageBatchErroredResult>
+[JsonConverter(
+    typeof(ModelConverter<BetaMessageBatchErroredResult, BetaMessageBatchErroredResultFromRaw>)
+)]
+public sealed record class BetaMessageBatchErroredResult : ModelBase
 {
     public required BetaErrorResponse Error
     {
-        get
-        {
-            if (!this._properties.TryGetValue("error", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error' cannot be null",
-                    new ArgumentOutOfRangeException("error", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<BetaErrorResponse>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'error' cannot be null",
-                    new ArgumentNullException("error")
-                );
-        }
-        init
-        {
-            this._properties["error"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<BetaErrorResponse>(this.RawData, "error"); }
+        init { ModelBase.Set(this._rawData, "error", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Error.Validate();
@@ -82,26 +45,32 @@ public sealed record class BetaMessageBatchErroredResult
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
     }
 
-    public BetaMessageBatchErroredResult(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMessageBatchErroredResult(
+        BetaMessageBatchErroredResult betaMessageBatchErroredResult
+    )
+        : base(betaMessageBatchErroredResult) { }
+
+    public BetaMessageBatchErroredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageBatchErroredResult(FrozenDictionary<string, JsonElement> properties)
+    BetaMessageBatchErroredResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageBatchErroredResultFromRaw.FromRawUnchecked"/>
     public static BetaMessageBatchErroredResult FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -110,4 +79,12 @@ public sealed record class BetaMessageBatchErroredResult
     {
         this.Error = error;
     }
+}
+
+class BetaMessageBatchErroredResultFromRaw : IFromRaw<BetaMessageBatchErroredResult>
+{
+    /// <inheritdoc/>
+    public BetaMessageBatchErroredResult FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMessageBatchErroredResult.FromRawUnchecked(rawData);
 }

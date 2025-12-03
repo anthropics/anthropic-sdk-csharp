@@ -12,35 +12,16 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Specification for a skill to be loaded in a container (request model).
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaSkillParams>))]
-public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams>
+[JsonConverter(typeof(ModelConverter<BetaSkillParams, BetaSkillParamsFromRaw>))]
+public sealed record class BetaSkillParams : ModelBase
 {
     /// <summary>
     /// Skill ID
     /// </summary>
     public required string SkillID
     {
-        get
-        {
-            if (!this._properties.TryGetValue("skill_id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'skill_id' cannot be null",
-                    new System::ArgumentOutOfRangeException("skill_id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'skill_id' cannot be null",
-                    new System::ArgumentNullException("skill_id")
-                );
-        }
-        init
-        {
-            this._properties["skill_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "skill_id"); }
+        init { ModelBase.Set(this._rawData, "skill_id", value); }
     }
 
     /// <summary>
@@ -50,24 +31,12 @@ public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, BetaSkillParamsType>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, BetaSkillParamsType>>(
+                this.RawData,
+                "type"
             );
         }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -75,13 +44,7 @@ public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams
     /// </summary>
     public string? Version
     {
-        get
-        {
-            if (!this._properties.TryGetValue("version", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "version"); }
         init
         {
             if (value == null)
@@ -89,13 +52,11 @@ public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams
                 return;
             }
 
-            this._properties["version"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "version", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.SkillID;
@@ -105,25 +66,34 @@ public sealed record class BetaSkillParams : ModelBase, IFromRaw<BetaSkillParams
 
     public BetaSkillParams() { }
 
-    public BetaSkillParams(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaSkillParams(BetaSkillParams betaSkillParams)
+        : base(betaSkillParams) { }
+
+    public BetaSkillParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaSkillParams(FrozenDictionary<string, JsonElement> properties)
+    BetaSkillParams(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaSkillParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    /// <inheritdoc cref="BetaSkillParamsFromRaw.FromRawUnchecked"/>
+    public static BetaSkillParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaSkillParamsFromRaw : IFromRaw<BetaSkillParams>
+{
+    /// <inheritdoc/>
+    public BetaSkillParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaSkillParams.FromRawUnchecked(rawData);
 }
 
 /// <summary>

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,55 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaInputJSONDelta>))]
-public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSONDelta>
+[JsonConverter(typeof(ModelConverter<BetaInputJSONDelta, BetaInputJSONDeltaFromRaw>))]
+public sealed record class BetaInputJSONDelta : ModelBase
 {
     public required string PartialJSON
     {
-        get
-        {
-            if (!this._properties.TryGetValue("partial_json", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'partial_json' cannot be null",
-                    new ArgumentOutOfRangeException("partial_json", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'partial_json' cannot be null",
-                    new ArgumentNullException("partial_json")
-                );
-        }
-        init
-        {
-            this._properties["partial_json"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "partial_json"); }
+        init { ModelBase.Set(this._rawData, "partial_json", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.PartialJSON;
@@ -77,26 +43,30 @@ public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSO
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
     }
 
-    public BetaInputJSONDelta(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaInputJSONDelta(BetaInputJSONDelta betaInputJSONDelta)
+        : base(betaInputJSONDelta) { }
+
+    public BetaInputJSONDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaInputJSONDelta(FrozenDictionary<string, JsonElement> properties)
+    BetaInputJSONDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaInputJSONDeltaFromRaw.FromRawUnchecked"/>
     public static BetaInputJSONDelta FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -105,4 +75,11 @@ public sealed record class BetaInputJSONDelta : ModelBase, IFromRaw<BetaInputJSO
     {
         this.PartialJSON = partialJSON;
     }
+}
+
+class BetaInputJSONDeltaFromRaw : IFromRaw<BetaInputJSONDelta>
+{
+    /// <inheritdoc/>
+    public BetaInputJSONDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaInputJSONDelta.FromRawUnchecked(rawData);
 }

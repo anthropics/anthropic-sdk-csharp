@@ -9,55 +9,22 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationsDelta>))]
-public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitationsDelta>
+[JsonConverter(typeof(ModelConverter<BetaCitationsDelta, BetaCitationsDeltaFromRaw>))]
+public sealed record class BetaCitationsDelta : ModelBase
 {
     public required Citation Citation
     {
-        get
-        {
-            if (!this._properties.TryGetValue("citation", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'citation' cannot be null",
-                    new System::ArgumentOutOfRangeException("citation", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<Citation>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'citation' cannot be null",
-                    new System::ArgumentNullException("citation")
-                );
-        }
-        init
-        {
-            this._properties["citation"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<Citation>(this.RawData, "citation"); }
+        init { ModelBase.Set(this._rawData, "citation", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Citation.Validate();
@@ -77,26 +44,30 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
     }
 
-    public BetaCitationsDelta(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaCitationsDelta(BetaCitationsDelta betaCitationsDelta)
+        : base(betaCitationsDelta) { }
+
+    public BetaCitationsDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCitationsDelta(FrozenDictionary<string, JsonElement> properties)
+    BetaCitationsDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationsDeltaFromRaw.FromRawUnchecked"/>
     public static BetaCitationsDelta FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -105,6 +76,13 @@ public sealed record class BetaCitationsDelta : ModelBase, IFromRaw<BetaCitation
     {
         this.Citation = citation;
     }
+}
+
+class BetaCitationsDeltaFromRaw : IFromRaw<BetaCitationsDelta>
+{
+    /// <inheritdoc/>
+    public BetaCitationsDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaCitationsDelta.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(CitationConverter))]
@@ -266,6 +244,21 @@ public record class Citation
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationCharLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationCharLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationCharLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationCharLocation(
         [NotNullWhen(true)] out BetaCitationCharLocation? value
     )
@@ -274,6 +267,21 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationPageLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationPageLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationPageLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationPageLocation(
         [NotNullWhen(true)] out BetaCitationPageLocation? value
     )
@@ -282,6 +290,21 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationContentBlockLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationContentBlockLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationContentBlockLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationContentBlockLocation(
         [NotNullWhen(true)] out BetaCitationContentBlockLocation? value
     )
@@ -290,6 +313,21 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationsWebSearchResultLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationsWebSearchResultLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationsWebSearchResultLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationsWebSearchResultLocation(
         [NotNullWhen(true)] out BetaCitationsWebSearchResultLocation? value
     )
@@ -298,6 +336,21 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationSearchResultLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCitationSearchResultLocation(out var value)) {
+    ///     // `value` is of type `BetaCitationSearchResultLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCitationSearchResultLocation(
         [NotNullWhen(true)] out BetaCitationSearchResultLocation? value
     )
@@ -306,6 +359,29 @@ public record class Citation
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaCitationCharLocation value) => {...},
+    ///     (BetaCitationPageLocation value) => {...},
+    ///     (BetaCitationContentBlockLocation value) => {...},
+    ///     (BetaCitationsWebSearchResultLocation value) => {...},
+    ///     (BetaCitationSearchResultLocation value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaCitationCharLocation> betaCitationCharLocation,
         System::Action<BetaCitationPageLocation> betaCitationPageLocation,
@@ -338,6 +414,30 @@ public record class Citation
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaCitationCharLocation value) => {...},
+    ///     (BetaCitationPageLocation value) => {...},
+    ///     (BetaCitationContentBlockLocation value) => {...},
+    ///     (BetaCitationsWebSearchResultLocation value) => {...},
+    ///     (BetaCitationSearchResultLocation value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaCitationCharLocation, T> betaCitationCharLocation,
         System::Func<BetaCitationPageLocation, T> betaCitationPageLocation,
@@ -372,12 +472,32 @@ public record class Citation
 
     public static implicit operator Citation(BetaCitationSearchResultLocation value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Citation");
         }
+    }
+
+    public virtual bool Equals(Citation? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

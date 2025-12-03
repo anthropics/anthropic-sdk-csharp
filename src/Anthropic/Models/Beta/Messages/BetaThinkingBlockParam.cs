@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,80 +8,28 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaThinkingBlockParam>))]
-public sealed record class BetaThinkingBlockParam : ModelBase, IFromRaw<BetaThinkingBlockParam>
+[JsonConverter(typeof(ModelConverter<BetaThinkingBlockParam, BetaThinkingBlockParamFromRaw>))]
+public sealed record class BetaThinkingBlockParam : ModelBase
 {
     public required string Signature
     {
-        get
-        {
-            if (!this._properties.TryGetValue("signature", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'signature' cannot be null",
-                    new ArgumentOutOfRangeException("signature", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'signature' cannot be null",
-                    new ArgumentNullException("signature")
-                );
-        }
-        init
-        {
-            this._properties["signature"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "signature"); }
+        init { ModelBase.Set(this._rawData, "signature", value); }
     }
 
     public required string Thinking
     {
-        get
-        {
-            if (!this._properties.TryGetValue("thinking", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'thinking' cannot be null",
-                    new ArgumentOutOfRangeException("thinking", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'thinking' cannot be null",
-                    new ArgumentNullException("thinking")
-                );
-        }
-        init
-        {
-            this._properties["thinking"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "thinking"); }
+        init { ModelBase.Set(this._rawData, "thinking", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Signature;
@@ -103,25 +50,37 @@ public sealed record class BetaThinkingBlockParam : ModelBase, IFromRaw<BetaThin
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
     }
 
-    public BetaThinkingBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaThinkingBlockParam(BetaThinkingBlockParam betaThinkingBlockParam)
+        : base(betaThinkingBlockParam) { }
+
+    public BetaThinkingBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaThinkingBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaThinkingBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaThinkingBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaThinkingBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaThinkingBlockParamFromRaw : IFromRaw<BetaThinkingBlockParam>
+{
+    /// <inheritdoc/>
+    public BetaThinkingBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaThinkingBlockParam.FromRawUnchecked(rawData);
 }

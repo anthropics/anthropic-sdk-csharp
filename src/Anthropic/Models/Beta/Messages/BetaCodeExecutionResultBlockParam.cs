@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,131 +8,51 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCodeExecutionResultBlockParam>))]
-public sealed record class BetaCodeExecutionResultBlockParam
-    : ModelBase,
-        IFromRaw<BetaCodeExecutionResultBlockParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaCodeExecutionResultBlockParam,
+        BetaCodeExecutionResultBlockParamFromRaw
+    >)
+)]
+public sealed record class BetaCodeExecutionResultBlockParam : ModelBase
 {
-    public required List<BetaCodeExecutionOutputBlockParam> Content
+    public required IReadOnlyList<BetaCodeExecutionOutputBlockParam> Content
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new ArgumentOutOfRangeException("content", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<List<BetaCodeExecutionOutputBlockParam>>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new ArgumentNullException("content")
-                );
-        }
-        init
-        {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<List<BetaCodeExecutionOutputBlockParam>>(
+                this.RawData,
+                "content"
             );
         }
+        init { ModelBase.Set(this._rawData, "content", value); }
     }
 
     public required long ReturnCode
     {
-        get
-        {
-            if (!this._properties.TryGetValue("return_code", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'return_code' cannot be null",
-                    new ArgumentOutOfRangeException("return_code", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["return_code"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "return_code"); }
+        init { ModelBase.Set(this._rawData, "return_code", value); }
     }
 
     public required string Stderr
     {
-        get
-        {
-            if (!this._properties.TryGetValue("stderr", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'stderr' cannot be null",
-                    new ArgumentOutOfRangeException("stderr", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'stderr' cannot be null",
-                    new ArgumentNullException("stderr")
-                );
-        }
-        init
-        {
-            this._properties["stderr"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "stderr"); }
+        init { ModelBase.Set(this._rawData, "stderr", value); }
     }
 
     public required string Stdout
     {
-        get
-        {
-            if (!this._properties.TryGetValue("stdout", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'stdout' cannot be null",
-                    new ArgumentOutOfRangeException("stdout", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'stdout' cannot be null",
-                    new ArgumentNullException("stdout")
-                );
-        }
-        init
-        {
-            this._properties["stdout"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "stdout"); }
+        init { ModelBase.Set(this._rawData, "stdout", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Content)
@@ -159,25 +78,39 @@ public sealed record class BetaCodeExecutionResultBlockParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_result\"");
     }
 
-    public BetaCodeExecutionResultBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaCodeExecutionResultBlockParam(
+        BetaCodeExecutionResultBlockParam betaCodeExecutionResultBlockParam
+    )
+        : base(betaCodeExecutionResultBlockParam) { }
+
+    public BetaCodeExecutionResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCodeExecutionResultBlockParam(FrozenDictionary<string, JsonElement> properties)
+    BetaCodeExecutionResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCodeExecutionResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaCodeExecutionResultBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaCodeExecutionResultBlockParamFromRaw : IFromRaw<BetaCodeExecutionResultBlockParam>
+{
+    /// <inheritdoc/>
+    public BetaCodeExecutionResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCodeExecutionResultBlockParam.FromRawUnchecked(rawData);
 }

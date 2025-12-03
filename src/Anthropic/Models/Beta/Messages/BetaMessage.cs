@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -10,8 +9,8 @@ using Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessage>))]
-public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
+[JsonConverter(typeof(ModelConverter<BetaMessage, BetaMessageFromRaw>))]
+public sealed record class BetaMessage : ModelBase
 {
     /// <summary>
     /// Unique object identifier.
@@ -20,27 +19,8 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// </summary>
     public required string ID
     {
-        get
-        {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -48,20 +28,8 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// </summary>
     public required BetaContainer? Container
     {
-        get
-        {
-            if (!this._properties.TryGetValue("container", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaContainer?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["container"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<BetaContainer>(this.RawData, "container"); }
+        init { ModelBase.Set(this._rawData, "container", value); }
     }
 
     /// <summary>
@@ -86,32 +54,10 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     ///
     /// <para>```json [{"type": "text", "text": "B)"}] ```</para>
     /// </summary>
-    public required List<BetaContentBlock> Content
+    public required IReadOnlyList<BetaContentBlock> Content
     {
-        get
-        {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new ArgumentOutOfRangeException("content", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<List<BetaContentBlock>>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new ArgumentNullException("content")
-                );
-        }
-        init
-        {
-            this._properties["content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<List<BetaContentBlock>>(this.RawData, "content"); }
+        init { ModelBase.Set(this._rawData, "content", value); }
     }
 
     /// <summary>
@@ -123,21 +69,12 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     {
         get
         {
-            if (!this._properties.TryGetValue("context_management", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaContextManagementResponse?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaContextManagementResponse>(
+                this.RawData,
+                "context_management"
             );
         }
-        init
-        {
-            this._properties["context_management"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "context_management", value); }
     }
 
     /// <summary>
@@ -146,26 +83,8 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get
-        {
-            if (!this._properties.TryGetValue("model", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'model' cannot be null",
-                    new ArgumentOutOfRangeException("model", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._properties["model"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
+        init { ModelBase.Set(this._rawData, "model", value); }
     }
 
     /// <summary>
@@ -175,23 +94,8 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// </summary>
     public JsonElement Role
     {
-        get
-        {
-            if (!this._properties.TryGetValue("role", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'role' cannot be null",
-                    new ArgumentOutOfRangeException("role", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["role"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "role"); }
+        init { ModelBase.Set(this._rawData, "role", value); }
     }
 
     /// <summary>
@@ -212,21 +116,12 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     {
         get
         {
-            if (!this._properties.TryGetValue("stop_reason", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, BetaStopReason>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<ApiEnum<string, BetaStopReason>>(
+                this.RawData,
+                "stop_reason"
             );
         }
-        init
-        {
-            this._properties["stop_reason"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "stop_reason", value); }
     }
 
     /// <summary>
@@ -237,20 +132,8 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// </summary>
     public required string? StopSequence
     {
-        get
-        {
-            if (!this._properties.TryGetValue("stop_sequence", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["stop_sequence"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "stop_sequence"); }
+        init { ModelBase.Set(this._rawData, "stop_sequence", value); }
     }
 
     /// <summary>
@@ -260,23 +143,8 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// </summary>
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -298,29 +166,11 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
     /// </summary>
     public required BetaUsage Usage
     {
-        get
-        {
-            if (!this._properties.TryGetValue("usage", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'usage' cannot be null",
-                    new ArgumentOutOfRangeException("usage", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<BetaUsage>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'usage' cannot be null",
-                    new ArgumentNullException("usage")
-                );
-        }
-        init
-        {
-            this._properties["usage"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<BetaUsage>(this.RawData, "usage"); }
+        init { ModelBase.Set(this._rawData, "usage", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -360,9 +210,12 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
     }
 
-    public BetaMessage(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMessage(BetaMessage betaMessage)
+        : base(betaMessage) { }
+
+    public BetaMessage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
@@ -370,14 +223,22 @@ public sealed record class BetaMessage : ModelBase, IFromRaw<BetaMessage>
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessage(FrozenDictionary<string, JsonElement> properties)
+    BetaMessage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaMessage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    /// <inheritdoc cref="BetaMessageFromRaw.FromRawUnchecked"/>
+    public static BetaMessage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageFromRaw : IFromRaw<BetaMessage>
+{
+    /// <inheritdoc/>
+    public BetaMessage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaMessage.FromRawUnchecked(rawData);
 }

@@ -382,10 +382,13 @@ public static class AnthropicBetaClientExtensions
                                         sf.Value.CallId,
                                         sf.Value.Name,
                                         json =>
-                                            JsonSerializer.Deserialize<Dictionary<string, object?>>(
-                                                json,
-                                                AIJsonUtilities.DefaultOptions
-                                            )
+                                            (Dictionary<string, object?>?)
+                                                JsonSerializer.Deserialize(
+                                                    json,
+                                                    AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                        typeof(Dictionary<string, object?>)
+                                                    )
+                                                )
                                     )
                                 );
                             }
@@ -524,7 +527,11 @@ public static class AnthropicBetaClientExtensions
                                     Source = new(
                                         new BetaPlainTextSource()
                                         {
+#if NET
+                                            Data = Encoding.UTF8.GetString(dc.Data.Span),
+#else
                                             Data = Encoding.UTF8.GetString(dc.Data.ToArray()),
+#endif
                                         }
                                     ),
                                 }
@@ -581,7 +588,9 @@ public static class AnthropicBetaClientExtensions
                                                     ? je
                                                     : JsonSerializer.SerializeToElement(
                                                         e.Value,
-                                                        AIJsonUtilities.DefaultOptions
+                                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                            typeof(object)
+                                                        )
                                                     )
                                         ) ?? [],
                                 }
@@ -589,17 +598,157 @@ public static class AnthropicBetaClientExtensions
                             break;
 
                         case FunctionResultContent frc:
+                            BetaToolResultBlockParamContent result = frc.Result switch
+                            {
+                                BetaToolResultBlockParamContent btrbpc => btrbpc,
+
+                                AIContent aiContent => new(ToResultBlocks([aiContent])),
+
+                                IEnumerable<AIContent> aiContents => new(
+                                    ToResultBlocks(aiContents)
+                                ),
+
+                                _ => new(
+                                    JsonSerializer.Serialize(
+                                        frc.Result,
+                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(typeof(object))
+                                    )
+                                ),
+                            };
+
+                            static IReadOnlyList<Block> ToResultBlocks(
+                                IEnumerable<AIContent> aiContents
+                            )
+                            {
+                                List<Block> blocks = [];
+                                foreach (AIContent ac in aiContents)
+                                {
+                                    blocks.Add(
+                                        ac switch
+                                        {
+                                            AIContent ai
+                                                when ai.RawRepresentation is Block rawBlock =>
+                                                rawBlock,
+
+                                            TextContent tc => new Block(
+                                                new BetaTextBlockParam() { Text = tc.Text }
+                                            ),
+
+                                            DataContent dc when dc.HasTopLevelMediaType("image") =>
+                                                new Block(
+                                                    new BetaImageBlockParam()
+                                                    {
+                                                        Source = new(
+                                                            new BetaBase64ImageSource()
+                                                            {
+                                                                Data = dc.Base64Data.ToString(),
+                                                                MediaType = dc.MediaType,
+                                                            }
+                                                        ),
+                                                    }
+                                                ),
+
+                                            DataContent dc
+                                                when string.Equals(
+                                                    dc.MediaType,
+                                                    "application/pdf",
+                                                    StringComparison.OrdinalIgnoreCase
+                                                ) => new Block(
+                                                new BetaRequestDocumentBlock()
+                                                {
+                                                    Source = new(
+                                                        new BetaBase64PDFSource()
+                                                        {
+                                                            Data = dc.Base64Data.ToString(),
+                                                        }
+                                                    ),
+                                                }
+                                            ),
+
+                                            DataContent dc when dc.HasTopLevelMediaType("text") =>
+                                                new Block(
+                                                    new BetaRequestDocumentBlock()
+                                                    {
+                                                        Source = new(
+                                                            new BetaPlainTextSource()
+                                                            {
+#if NET
+                                                                Data = Encoding.UTF8.GetString(
+                                                                    dc.Data.Span
+                                                                ),
+#else
+                                                                Data = Encoding.UTF8.GetString(
+                                                                    dc.Data.ToArray()
+                                                                ),
+#endif
+                                                            }
+                                                        ),
+                                                    }
+                                                ),
+
+                                            UriContent uc when uc.HasTopLevelMediaType("image") =>
+                                                new Block(
+                                                    new BetaImageBlockParam()
+                                                    {
+                                                        Source = new(
+                                                            new BetaURLImageSource()
+                                                            {
+                                                                URL = uc.Uri.AbsoluteUri,
+                                                            }
+                                                        ),
+                                                    }
+                                                ),
+
+                                            UriContent uc
+                                                when string.Equals(
+                                                    uc.MediaType,
+                                                    "application/pdf",
+                                                    StringComparison.OrdinalIgnoreCase
+                                                ) => new Block(
+                                                new BetaRequestDocumentBlock()
+                                                {
+                                                    Source = new(
+                                                        new BetaURLPDFSource()
+                                                        {
+                                                            URL = uc.Uri.AbsoluteUri,
+                                                        }
+                                                    ),
+                                                }
+                                            ),
+
+                                            HostedFileContent fc => new Block(
+                                                new BetaRequestDocumentBlock()
+                                                {
+                                                    Source = new(
+                                                        new BetaFileDocumentSource(fc.FileId)
+                                                    ),
+                                                }
+                                            ),
+
+                                            _ => new Block(
+                                                new BetaTextBlockParam()
+                                                {
+                                                    Text = JsonSerializer.Serialize(
+                                                        ac,
+                                                        AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                                            typeof(object)
+                                                        )
+                                                    ),
+                                                }
+                                            ),
+                                        }
+                                    );
+                                }
+
+                                return blocks;
+                            }
+
                             contents.Add(
                                 new BetaToolResultBlockParam()
                                 {
                                     ToolUseID = frc.CallId,
                                     IsError = frc.Exception is not null,
-                                    Content = new(
-                                        JsonSerializer.Serialize(
-                                            frc.Result,
-                                            AIJsonUtilities.DefaultOptions
-                                        )
-                                    ),
+                                    Content = result,
                                 }
                             );
                             break;
@@ -690,7 +839,7 @@ public static class AnthropicBetaClientExtensions
                                 {
                                     OutputFormat = new BetaJSONOutputFormat()
                                     {
-                                        Schema = new()
+                                        Schema = new Dictionary<string, JsonElement>
                                         {
                                             ["type"] = JsonElement.Parse("\"object\""),
                                             ["properties"] = properties,
@@ -734,8 +883,9 @@ public static class AnthropicBetaClientExtensions
 
                 if (options.Tools is { } tools)
                 {
-                    List<BetaToolUnion>? createdTools = createParams.Tools;
-                    List<BetaRequestMCPServerURLDefinition>? mcpServers = createParams.MCPServers;
+                    List<BetaToolUnion>? createdTools = createParams.Tools?.ToList();
+                    List<BetaRequestMCPServerURLDefinition>? mcpServers =
+                        createParams.MCPServers?.ToList();
                     foreach (var tool in tools)
                     {
                         switch (tool)
@@ -792,8 +942,26 @@ public static class AnthropicBetaClientExtensions
                                         Name = af.Name,
                                         Description = af.Description,
                                         InputSchema = new(properties) { Required = required },
+                                        DeferLoading = GetValue<bool?>(
+                                            af,
+                                            nameof(BetaTool.DeferLoading)
+                                        ),
+                                        Strict = GetValue<bool?>(af, nameof(BetaTool.Strict)),
+                                        InputExamples = GetValue<
+                                            List<Dictionary<string, JsonElement>>
+                                        >(af, nameof(BetaTool.InputExamples)),
+                                        AllowedCallers = GetValue<
+                                            List<ApiEnum<string, BetaToolAllowedCaller>>
+                                        >(af, nameof(BetaTool.AllowedCallers)),
                                     }
                                 );
+
+                                static T? GetValue<T>(AIFunctionDeclaration af, string name) =>
+                                    af.AdditionalProperties?.TryGetValue(name, out var value)
+                                        is true
+                                    && value is T tValue
+                                        ? tValue
+                                        : default;
                                 break;
 
                             case HostedWebSearchTool:
@@ -981,11 +1149,14 @@ public static class AnthropicBetaClientExtensions
                     return new FunctionCallContent(
                         toolUse.ID,
                         toolUse.Name,
-                        toolUse.Properties.TryGetValue("input", out JsonElement element)
-                            ? JsonSerializer.Deserialize<Dictionary<string, object?>>(
-                                element,
-                                AIJsonUtilities.DefaultOptions
-                            )
+                        toolUse.RawData.TryGetValue("input", out JsonElement element)
+                            ? (Dictionary<string, object?>?)
+                                JsonSerializer.Deserialize(
+                                    element,
+                                    AIJsonUtilities.DefaultOptions.GetTypeInfo(
+                                        typeof(Dictionary<string, object?>)
+                                    )
+                                )
                             : null
                     )
                     {

@@ -10,54 +10,28 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Container parameters with skills to be loaded.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainerParams>))]
-public sealed record class BetaContainerParams : ModelBase, IFromRaw<BetaContainerParams>
+[JsonConverter(typeof(ModelConverter<BetaContainerParams, BetaContainerParamsFromRaw>))]
+public sealed record class BetaContainerParams : ModelBase
 {
     /// <summary>
     /// Container id
     /// </summary>
     public string? ID
     {
-        get
-        {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
     /// List of skills to load in the container
     /// </summary>
-    public List<BetaSkillParams>? Skills
+    public IReadOnlyList<BetaSkillParams>? Skills
     {
-        get
-        {
-            if (!this._properties.TryGetValue("skills", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<BetaSkillParams>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._properties["skills"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<BetaSkillParams>>(this.RawData, "skills"); }
+        init { ModelBase.Set(this._rawData, "skills", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -69,23 +43,34 @@ public sealed record class BetaContainerParams : ModelBase, IFromRaw<BetaContain
 
     public BetaContainerParams() { }
 
-    public BetaContainerParams(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaContainerParams(BetaContainerParams betaContainerParams)
+        : base(betaContainerParams) { }
+
+    public BetaContainerParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaContainerParams(FrozenDictionary<string, JsonElement> properties)
+    BetaContainerParams(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaContainerParamsFromRaw.FromRawUnchecked"/>
     public static BetaContainerParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaContainerParamsFromRaw : IFromRaw<BetaContainerParams>
+{
+    /// <inheritdoc/>
+    public BetaContainerParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaContainerParams.FromRawUnchecked(rawData);
 }

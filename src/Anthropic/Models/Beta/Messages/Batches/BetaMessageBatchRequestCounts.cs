@@ -1,18 +1,16 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageBatchRequestCounts>))]
-public sealed record class BetaMessageBatchRequestCounts
-    : ModelBase,
-        IFromRaw<BetaMessageBatchRequestCounts>
+[JsonConverter(
+    typeof(ModelConverter<BetaMessageBatchRequestCounts, BetaMessageBatchRequestCountsFromRaw>)
+)]
+public sealed record class BetaMessageBatchRequestCounts : ModelBase
 {
     /// <summary>
     /// Number of requests in the Message Batch that have been canceled.
@@ -21,23 +19,8 @@ public sealed record class BetaMessageBatchRequestCounts
     /// </summary>
     public required long Canceled
     {
-        get
-        {
-            if (!this._properties.TryGetValue("canceled", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'canceled' cannot be null",
-                    new ArgumentOutOfRangeException("canceled", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["canceled"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "canceled"); }
+        init { ModelBase.Set(this._rawData, "canceled", value); }
     }
 
     /// <summary>
@@ -47,23 +30,8 @@ public sealed record class BetaMessageBatchRequestCounts
     /// </summary>
     public required long Errored
     {
-        get
-        {
-            if (!this._properties.TryGetValue("errored", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'errored' cannot be null",
-                    new ArgumentOutOfRangeException("errored", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["errored"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "errored"); }
+        init { ModelBase.Set(this._rawData, "errored", value); }
     }
 
     /// <summary>
@@ -73,23 +41,8 @@ public sealed record class BetaMessageBatchRequestCounts
     /// </summary>
     public required long Expired
     {
-        get
-        {
-            if (!this._properties.TryGetValue("expired", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'expired' cannot be null",
-                    new ArgumentOutOfRangeException("expired", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["expired"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "expired"); }
+        init { ModelBase.Set(this._rawData, "expired", value); }
     }
 
     /// <summary>
@@ -97,23 +50,8 @@ public sealed record class BetaMessageBatchRequestCounts
     /// </summary>
     public required long Processing
     {
-        get
-        {
-            if (!this._properties.TryGetValue("processing", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'processing' cannot be null",
-                    new ArgumentOutOfRangeException("processing", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["processing"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "processing"); }
+        init { ModelBase.Set(this._rawData, "processing", value); }
     }
 
     /// <summary>
@@ -123,25 +61,11 @@ public sealed record class BetaMessageBatchRequestCounts
     /// </summary>
     public required long Succeeded
     {
-        get
-        {
-            if (!this._properties.TryGetValue("succeeded", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'succeeded' cannot be null",
-                    new ArgumentOutOfRangeException("succeeded", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["succeeded"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "succeeded"); }
+        init { ModelBase.Set(this._rawData, "succeeded", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Canceled;
@@ -153,23 +77,37 @@ public sealed record class BetaMessageBatchRequestCounts
 
     public BetaMessageBatchRequestCounts() { }
 
-    public BetaMessageBatchRequestCounts(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaMessageBatchRequestCounts(
+        BetaMessageBatchRequestCounts betaMessageBatchRequestCounts
+    )
+        : base(betaMessageBatchRequestCounts) { }
+
+    public BetaMessageBatchRequestCounts(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaMessageBatchRequestCounts(FrozenDictionary<string, JsonElement> properties)
+    BetaMessageBatchRequestCounts(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageBatchRequestCountsFromRaw.FromRawUnchecked"/>
     public static BetaMessageBatchRequestCounts FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaMessageBatchRequestCountsFromRaw : IFromRaw<BetaMessageBatchRequestCounts>
+{
+    /// <inheritdoc/>
+    public BetaMessageBatchRequestCounts FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaMessageBatchRequestCounts.FromRawUnchecked(rawData);
 }

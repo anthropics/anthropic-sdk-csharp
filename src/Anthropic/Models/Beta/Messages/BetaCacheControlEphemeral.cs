@@ -9,30 +9,13 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCacheControlEphemeral>))]
-public sealed record class BetaCacheControlEphemeral
-    : ModelBase,
-        IFromRaw<BetaCacheControlEphemeral>
+[JsonConverter(typeof(ModelConverter<BetaCacheControlEphemeral, BetaCacheControlEphemeralFromRaw>))]
+public sealed record class BetaCacheControlEphemeral : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -44,16 +27,7 @@ public sealed record class BetaCacheControlEphemeral
     /// </summary>
     public ApiEnum<string, TTL>? TTL
     {
-        get
-        {
-            if (!this._properties.TryGetValue("ttl", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, TTL>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<ApiEnum<string, TTL>>(this.RawData, "ttl"); }
         init
         {
             if (value == null)
@@ -61,13 +35,11 @@ public sealed record class BetaCacheControlEphemeral
                 return;
             }
 
-            this._properties["ttl"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "ttl", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -87,27 +59,39 @@ public sealed record class BetaCacheControlEphemeral
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
-    public BetaCacheControlEphemeral(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaCacheControlEphemeral(BetaCacheControlEphemeral betaCacheControlEphemeral)
+        : base(betaCacheControlEphemeral) { }
+
+    public BetaCacheControlEphemeral(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCacheControlEphemeral(FrozenDictionary<string, JsonElement> properties)
+    BetaCacheControlEphemeral(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCacheControlEphemeralFromRaw.FromRawUnchecked"/>
     public static BetaCacheControlEphemeral FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaCacheControlEphemeralFromRaw : IFromRaw<BetaCacheControlEphemeral>
+{
+    /// <inheritdoc/>
+    public BetaCacheControlEphemeral FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCacheControlEphemeral.FromRawUnchecked(rawData);
 }
 
 /// <summary>

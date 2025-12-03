@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,55 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaAPIError>))]
-public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
+[JsonConverter(typeof(ModelConverter<BetaAPIError, BetaAPIErrorFromRaw>))]
+public sealed record class BetaAPIError : ModelBase
 {
     public required string Message
     {
-        get
-        {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -77,24 +43,28 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
     }
 
-    public BetaAPIError(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaAPIError(BetaAPIError betaAPIError)
+        : base(betaAPIError) { }
+
+    public BetaAPIError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"api_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaAPIError(FrozenDictionary<string, JsonElement> properties)
+    BetaAPIError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaAPIError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    /// <inheritdoc cref="BetaAPIErrorFromRaw.FromRawUnchecked"/>
+    public static BetaAPIError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -103,4 +73,11 @@ public sealed record class BetaAPIError : ModelBase, IFromRaw<BetaAPIError>
     {
         this.Message = message;
     }
+}
+
+class BetaAPIErrorFromRaw : IFromRaw<BetaAPIError>
+{
+    /// <inheritdoc/>
+    public BetaAPIError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaAPIError.FromRawUnchecked(rawData);
 }

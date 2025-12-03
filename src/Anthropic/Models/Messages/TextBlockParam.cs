@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,53 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<TextBlockParam>))]
-public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
+[JsonConverter(typeof(ModelConverter<TextBlockParam, TextBlockParamFromRaw>))]
+public sealed record class TextBlockParam : ModelBase
 {
     public required string Text
     {
-        get
-        {
-            if (!this._properties.TryGetValue("text", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'text' cannot be null",
-                    new ArgumentOutOfRangeException("text", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'text' cannot be null",
-                    new ArgumentNullException("text")
-                );
-        }
-        init
-        {
-            this._properties["text"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
+        init { ModelBase.Set(this._rawData, "text", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -65,44 +30,21 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<CacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init
-        {
-            this._properties["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
-    public List<TextCitationParam>? Citations
+    public IReadOnlyList<TextCitationParam>? Citations
     {
         get
         {
-            if (!this._properties.TryGetValue("citations", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<TextCitationParam>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<List<TextCitationParam>>(this.RawData, "citations");
         }
-        init
-        {
-            this._properties["citations"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "citations", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
@@ -122,26 +64,28 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
-    public TextBlockParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public TextBlockParam(TextBlockParam textBlockParam)
+        : base(textBlockParam) { }
+
+    public TextBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    TextBlockParam(FrozenDictionary<string, JsonElement> properties)
+    TextBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static TextBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    /// <inheritdoc cref="TextBlockParamFromRaw.FromRawUnchecked"/>
+    public static TextBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -150,4 +94,11 @@ public sealed record class TextBlockParam : ModelBase, IFromRaw<TextBlockParam>
     {
         this.Text = text;
     }
+}
+
+class TextBlockParamFromRaw : IFromRaw<TextBlockParam>
+{
+    /// <inheritdoc/>
+    public TextBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        TextBlockParam.FromRawUnchecked(rawData);
 }

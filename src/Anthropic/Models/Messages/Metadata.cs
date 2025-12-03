@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Metadata>))]
-public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
+[JsonConverter(typeof(ModelConverter<Metadata, MetadataFromRaw>))]
+public sealed record class Metadata : ModelBase
 {
     /// <summary>
     /// An external identifier for the user who is associated with the request.
@@ -19,22 +19,11 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     /// </summary>
     public string? UserID
     {
-        get
-        {
-            if (!this._properties.TryGetValue("user_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["user_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "user_id"); }
+        init { ModelBase.Set(this._rawData, "user_id", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.UserID;
@@ -42,21 +31,32 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
 
     public Metadata() { }
 
-    public Metadata(IReadOnlyDictionary<string, JsonElement> properties)
+    public Metadata(Metadata metadata)
+        : base(metadata) { }
+
+    public Metadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Metadata(FrozenDictionary<string, JsonElement> properties)
+    Metadata(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    /// <inheritdoc cref="MetadataFromRaw.FromRawUnchecked"/>
+    public static Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MetadataFromRaw : IFromRaw<Metadata>
+{
+    /// <inheritdoc/>
+    public Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Metadata.FromRawUnchecked(rawData);
 }

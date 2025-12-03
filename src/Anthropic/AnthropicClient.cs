@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ using Anthropic.Services;
 
 namespace Anthropic;
 
+/// <inheritdoc/>
 public class AnthropicClient : IAnthropicClient
 {
     static readonly ThreadLocal<Random> _threadLocalRandom = new(() => new Random());
@@ -23,48 +23,56 @@ public class AnthropicClient : IAnthropicClient
 
     protected readonly ClientOptions _options;
 
+    /// <inheritdoc/>
     public HttpClient HttpClient
     {
         get { return this._options.HttpClient; }
         init { this._options.HttpClient = value; }
     }
 
+    /// <inheritdoc/>
     public Uri BaseUrl
     {
         get { return this._options.BaseUrl; }
         init { this._options.BaseUrl = value; }
     }
 
+    /// <inheritdoc/>
     public bool ResponseValidation
     {
         get { return this._options.ResponseValidation; }
         init { this._options.ResponseValidation = value; }
     }
 
+    /// <inheritdoc/>
     public int? MaxRetries
     {
         get { return this._options.MaxRetries; }
         init { this._options.MaxRetries = value; }
     }
 
+    /// <inheritdoc/>
     public TimeSpan? Timeout
     {
         get { return this._options.Timeout; }
         init { this._options.Timeout = value; }
     }
 
+    /// <inheritdoc/>
     public virtual string? APIKey
     {
         get { return this._options.APIKey; }
         init { this._options.APIKey = value; }
     }
 
+    /// <inheritdoc/>
     public virtual string? AuthToken
     {
         get { return this._options.AuthToken; }
         init { this._options.AuthToken = value; }
     }
 
+    /// <inheritdoc/>
     public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new AnthropicClient(modifier(this._options));
@@ -88,6 +96,7 @@ public class AnthropicClient : IAnthropicClient
         get { return _beta.Value; }
     }
 
+    /// <inheritdoc/>
     public async Task<HttpResponse> Execute<T>(
         HttpRequest<T> request,
         CancellationToken cancellationToken = default
@@ -95,11 +104,6 @@ public class AnthropicClient : IAnthropicClient
         where T : ParamsBase
     {
         var maxRetries = this.MaxRetries ?? ClientOptions.DefaultMaxRetries;
-        if (maxRetries <= 0)
-        {
-            return await ExecuteOnce(request, cancellationToken).ConfigureAwait(false);
-        }
-
         var retries = 0;
         while (true)
         {
@@ -153,7 +157,7 @@ public class AnthropicClient : IAnthropicClient
     )
         where T : ParamsBase
     {
-        return ValueTask.CompletedTask;
+        return default;
     }
 
     protected virtual ValueTask AfterSend<T>(
@@ -163,7 +167,7 @@ public class AnthropicClient : IAnthropicClient
     )
         where T : ParamsBase
     {
-        return ValueTask.CompletedTask;
+        return default;
     }
 
     async Task<HttpResponse> ExecuteOnce<T>(
@@ -233,11 +237,7 @@ public class AnthropicClient : IAnthropicClient
             return null;
         }
 
-        if (float.TryParse(headerValue
-#if NET5_0_OR_GREATER
-                .AsSpan()
-#endif
-                , out var retryAfterMs))
+        if (float.TryParse(headerValue, out var retryAfterMs))
         {
             return TimeSpan.FromMilliseconds(retryAfterMs);
         }
@@ -255,19 +255,11 @@ public class AnthropicClient : IAnthropicClient
             return null;
         }
 
-        if (float.TryParse(headerValue
-#if NET5_0_OR_GREATER
-                .AsSpan()
-#endif
-                , out var retryAfterSeconds))
+        if (float.TryParse(headerValue, out var retryAfterSeconds))
         {
             return TimeSpan.FromSeconds(retryAfterSeconds);
         }
-        else if (DateTimeOffset.TryParse(headerValue
-#if NET5_0_OR_GREATER
-                .AsSpan()
-#endif
-                , out var retryAfterDate))
+        else if (DateTimeOffset.TryParse(headerValue, out var retryAfterDate))
         {
             return retryAfterDate - DateTimeOffset.Now;
         }
@@ -286,21 +278,21 @@ public class AnthropicClient : IAnthropicClient
             return shouldRetry;
         }
 
-        return response.Message.StatusCode switch
+        return (int)response.Message.StatusCode switch
         {
             // Retry on request timeouts
-            HttpStatusCode.RequestTimeout
+            408
             or
             // Retry on lock timeouts
-            HttpStatusCode.Conflict
+            409
             or
 #if !NETSTANDARD2_0_OR_GREATER
             // Retry on rate limits
-            HttpStatusCode.TooManyRequests
+            429
             or
 #endif
             // Retry internal errors
-            >= HttpStatusCode.InternalServerError => true,
+            >= 500 => true,
             _ => false,
         };
     }

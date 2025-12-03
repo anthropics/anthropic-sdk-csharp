@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,57 +8,24 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatchSucceededResult>))]
-public sealed record class MessageBatchSucceededResult
-    : ModelBase,
-        IFromRaw<MessageBatchSucceededResult>
+[JsonConverter(
+    typeof(ModelConverter<MessageBatchSucceededResult, MessageBatchSucceededResultFromRaw>)
+)]
+public sealed record class MessageBatchSucceededResult : ModelBase
 {
     public required Message Message
     {
-        get
-        {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<Message>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<Message>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Message.Validate();
@@ -79,26 +45,30 @@ public sealed record class MessageBatchSucceededResult
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
     }
 
-    public MessageBatchSucceededResult(IReadOnlyDictionary<string, JsonElement> properties)
+    public MessageBatchSucceededResult(MessageBatchSucceededResult messageBatchSucceededResult)
+        : base(messageBatchSucceededResult) { }
+
+    public MessageBatchSucceededResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageBatchSucceededResult(FrozenDictionary<string, JsonElement> properties)
+    MessageBatchSucceededResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchSucceededResultFromRaw.FromRawUnchecked"/>
     public static MessageBatchSucceededResult FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -107,4 +77,12 @@ public sealed record class MessageBatchSucceededResult
     {
         this.Message = message;
     }
+}
+
+class MessageBatchSucceededResultFromRaw : IFromRaw<MessageBatchSucceededResult>
+{
+    /// <inheritdoc/>
+    public MessageBatchSucceededResult FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => MessageBatchSucceededResult.FromRawUnchecked(rawData);
 }

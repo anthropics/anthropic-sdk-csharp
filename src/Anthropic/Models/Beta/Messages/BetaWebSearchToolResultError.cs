@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,56 +8,30 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebSearchToolResultError>))]
-public sealed record class BetaWebSearchToolResultError
-    : ModelBase,
-        IFromRaw<BetaWebSearchToolResultError>
+[JsonConverter(
+    typeof(ModelConverter<BetaWebSearchToolResultError, BetaWebSearchToolResultErrorFromRaw>)
+)]
+public sealed record class BetaWebSearchToolResultError : ModelBase
 {
     public required ApiEnum<string, BetaWebSearchToolResultErrorCode> ErrorCode
     {
         get
         {
-            if (!this._properties.TryGetValue("error_code", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error_code' cannot be null",
-                    new ArgumentOutOfRangeException("error_code", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
+                this.RawData,
+                "error_code"
             );
         }
-        init
-        {
-            this._properties["error_code"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -78,26 +51,30 @@ public sealed record class BetaWebSearchToolResultError
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
-    public BetaWebSearchToolResultError(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaWebSearchToolResultError(BetaWebSearchToolResultError betaWebSearchToolResultError)
+        : base(betaWebSearchToolResultError) { }
+
+    public BetaWebSearchToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaWebSearchToolResultError(FrozenDictionary<string, JsonElement> properties)
+    BetaWebSearchToolResultError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebSearchToolResultErrorFromRaw.FromRawUnchecked"/>
     public static BetaWebSearchToolResultError FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -106,4 +83,12 @@ public sealed record class BetaWebSearchToolResultError
     {
         this.ErrorCode = errorCode;
     }
+}
+
+class BetaWebSearchToolResultErrorFromRaw : IFromRaw<BetaWebSearchToolResultError>
+{
+    /// <inheritdoc/>
+    public BetaWebSearchToolResultError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaWebSearchToolResultError.FromRawUnchecked(rawData);
 }

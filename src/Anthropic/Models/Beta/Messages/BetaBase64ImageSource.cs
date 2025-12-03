@@ -9,82 +9,34 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBase64ImageSource>))]
-public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase64ImageSource>
+[JsonConverter(typeof(ModelConverter<BetaBase64ImageSource, BetaBase64ImageSourceFromRaw>))]
+public sealed record class BetaBase64ImageSource : ModelBase
 {
     public required string Data
     {
-        get
-        {
-            if (!this._properties.TryGetValue("data", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'data' cannot be null",
-                    new System::ArgumentOutOfRangeException("data", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'data' cannot be null",
-                    new System::ArgumentNullException("data")
-                );
-        }
-        init
-        {
-            this._properties["data"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
+        init { ModelBase.Set(this._rawData, "data", value); }
     }
 
     public required ApiEnum<string, MediaType> MediaType
     {
         get
         {
-            if (!this._properties.TryGetValue("media_type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'media_type' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "media_type",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, MediaType>>(
+                this.RawData,
+                "media_type"
             );
         }
-        init
-        {
-            this._properties["media_type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Data;
@@ -105,27 +57,39 @@ public sealed record class BetaBase64ImageSource : ModelBase, IFromRaw<BetaBase6
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
     }
 
-    public BetaBase64ImageSource(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaBase64ImageSource(BetaBase64ImageSource betaBase64ImageSource)
+        : base(betaBase64ImageSource) { }
+
+    public BetaBase64ImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaBase64ImageSource(FrozenDictionary<string, JsonElement> properties)
+    BetaBase64ImageSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaBase64ImageSourceFromRaw.FromRawUnchecked"/>
     public static BetaBase64ImageSource FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaBase64ImageSourceFromRaw : IFromRaw<BetaBase64ImageSource>
+{
+    /// <inheritdoc/>
+    public BetaBase64ImageSource FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaBase64ImageSource.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(MediaTypeConverter))]

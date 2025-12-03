@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,138 +8,46 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationCharLocationParam>))]
-public sealed record class CitationCharLocationParam
-    : ModelBase,
-        IFromRaw<CitationCharLocationParam>
+[JsonConverter(typeof(ModelConverter<CitationCharLocationParam, CitationCharLocationParamFromRaw>))]
+public sealed record class CitationCharLocationParam : ModelBase
 {
     public required string CitedText
     {
-        get
-        {
-            if (!this._properties.TryGetValue("cited_text", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'cited_text' cannot be null",
-                    new ArgumentOutOfRangeException("cited_text", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'cited_text' cannot be null",
-                    new ArgumentNullException("cited_text")
-                );
-        }
-        init
-        {
-            this._properties["cited_text"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
+        init { ModelBase.Set(this._rawData, "cited_text", value); }
     }
 
     public required long DocumentIndex
     {
-        get
-        {
-            if (!this._properties.TryGetValue("document_index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'document_index' cannot be null",
-                    new ArgumentOutOfRangeException("document_index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["document_index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "document_index"); }
+        init { ModelBase.Set(this._rawData, "document_index", value); }
     }
 
     public required string? DocumentTitle
     {
-        get
-        {
-            if (!this._properties.TryGetValue("document_title", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["document_title"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "document_title"); }
+        init { ModelBase.Set(this._rawData, "document_title", value); }
     }
 
     public required long EndCharIndex
     {
-        get
-        {
-            if (!this._properties.TryGetValue("end_char_index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'end_char_index' cannot be null",
-                    new ArgumentOutOfRangeException("end_char_index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["end_char_index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "end_char_index"); }
+        init { ModelBase.Set(this._rawData, "end_char_index", value); }
     }
 
     public required long StartCharIndex
     {
-        get
-        {
-            if (!this._properties.TryGetValue("start_char_index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'start_char_index' cannot be null",
-                    new ArgumentOutOfRangeException("start_char_index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["start_char_index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "start_char_index"); }
+        init { ModelBase.Set(this._rawData, "start_char_index", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CitedText;
@@ -164,25 +71,37 @@ public sealed record class CitationCharLocationParam
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
     }
 
-    public CitationCharLocationParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public CitationCharLocationParam(CitationCharLocationParam citationCharLocationParam)
+        : base(citationCharLocationParam) { }
+
+    public CitationCharLocationParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    CitationCharLocationParam(FrozenDictionary<string, JsonElement> properties)
+    CitationCharLocationParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="CitationCharLocationParamFromRaw.FromRawUnchecked"/>
     public static CitationCharLocationParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class CitationCharLocationParamFromRaw : IFromRaw<CitationCharLocationParam>
+{
+    /// <inheritdoc/>
+    public CitationCharLocationParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => CitationCharLocationParam.FromRawUnchecked(rawData);
 }

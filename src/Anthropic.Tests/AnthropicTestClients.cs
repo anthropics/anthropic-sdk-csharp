@@ -10,6 +10,11 @@ namespace Anthropic.Tests;
 
 public class AnthropicTestClientsAttribute : DataAttribute
 {
+    public static string DataServiceUrl { get; } =
+        Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
+    public static string ApiKey { get; } = "YourApiKeyHere";
+    public static string Resource { get; } = "YourRegionOrResourceHere";
+
     public AnthropicTestClientsAttribute(TestSupportTypes testSupportTypes = TestSupportTypes.All)
     {
         TestSupportTypes = testSupportTypes;
@@ -19,11 +24,6 @@ public class AnthropicTestClientsAttribute : DataAttribute
 
     public override IEnumerable<object[]> GetData(MethodInfo testMethod)
     {
-        var dataServiceUrl =
-            Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
-        string apiKey = "YourApiKeyHere";
-        var resource = "YourRegionOrResourceHere";
-
         var testData = testMethod.GetCustomAttributes<AnthropicTestDataAttribute>().ToArray();
         if (TestSupportTypes.HasFlag(TestSupportTypes.Anthropic))
         {
@@ -31,7 +31,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
             {
                 yield return
                 [
-                     new AnthropicClient() { BaseUrl = new Uri(dataServiceUrl), APIKey = apiKey },
+                     new AnthropicClient() { BaseUrl = new Uri(DataServiceUrl), APIKey = ApiKey },
                     .. item.TestData,
                 ];
             }
@@ -42,9 +42,9 @@ public class AnthropicTestClientsAttribute : DataAttribute
             {
                 yield return
                 [
-                    new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(apiKey, resource!))
+                    new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(ApiKey, resource!))
                     {
-                        BaseUrl = new Uri(dataServiceUrl),
+                        BaseUrl = new Uri(DataServiceUrl),
                     },
                     .. item.TestData,
                 ];
@@ -56,9 +56,9 @@ public class AnthropicTestClientsAttribute : DataAttribute
             {
                 yield return
                 [
-                    new AnthropicBedrockClient(new AnthropicBedrockApiTokenCredentials(apiKey, resource))
+                    new AnthropicBedrockClient(new AnthropicBedrockApiTokenCredentials(ApiKey, resource))
                     {
-                        BaseUrl = new Uri(dataServiceUrl),
+                        BaseUrl = new Uri(DataServiceUrl),
                     },
                     .. item.TestData,
                 ];

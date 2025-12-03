@@ -9,59 +9,28 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolRequestError>))]
-public sealed record class WebSearchToolRequestError
-    : ModelBase,
-        IFromRaw<WebSearchToolRequestError>
+[JsonConverter(typeof(ModelConverter<WebSearchToolRequestError, WebSearchToolRequestErrorFromRaw>))]
+public sealed record class WebSearchToolRequestError : ModelBase
 {
     public required ApiEnum<string, ErrorCode> ErrorCode
     {
         get
         {
-            if (!this._properties.TryGetValue("error_code", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error_code' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "error_code",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, ErrorCode>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, ErrorCode>>(
+                this.RawData,
+                "error_code"
             );
         }
-        init
-        {
-            this._properties["error_code"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -81,26 +50,30 @@ public sealed record class WebSearchToolRequestError
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
-    public WebSearchToolRequestError(IReadOnlyDictionary<string, JsonElement> properties)
+    public WebSearchToolRequestError(WebSearchToolRequestError webSearchToolRequestError)
+        : base(webSearchToolRequestError) { }
+
+    public WebSearchToolRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    WebSearchToolRequestError(FrozenDictionary<string, JsonElement> properties)
+    WebSearchToolRequestError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="WebSearchToolRequestErrorFromRaw.FromRawUnchecked"/>
     public static WebSearchToolRequestError FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -109,6 +82,14 @@ public sealed record class WebSearchToolRequestError
     {
         this.ErrorCode = errorCode;
     }
+}
+
+class WebSearchToolRequestErrorFromRaw : IFromRaw<WebSearchToolRequestError>
+{
+    /// <inheritdoc/>
+    public WebSearchToolRequestError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => WebSearchToolRequestError.FromRawUnchecked(rawData);
 }
 
 [JsonConverter(typeof(ErrorCodeConverter))]

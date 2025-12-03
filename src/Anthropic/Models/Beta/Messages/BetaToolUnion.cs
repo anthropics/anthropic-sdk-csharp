@@ -6,6 +6,12 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
+/// <summary>
+/// Configuration for a group of tools from an MCP server.
+///
+/// <para>Allows configuring enabled status and defer_loading for all tools from
+/// an MCP server, with optional per-tool overrides.</para>
+/// </summary>
 [JsonConverter(typeof(BetaToolUnionConverter))]
 public record class BetaToolUnion
 {
@@ -32,11 +38,42 @@ public record class BetaToolUnion
                 memoryTool20250818: (x) => x.CacheControl,
                 computerUse20250124: (x) => x.CacheControl,
                 textEditor20241022: (x) => x.CacheControl,
+                computerUse20251124: (x) => x.CacheControl,
                 textEditor20250124: (x) => x.CacheControl,
                 textEditor20250429: (x) => x.CacheControl,
                 textEditor20250728: (x) => x.CacheControl,
                 webSearchTool20250305: (x) => x.CacheControl,
-                webFetchTool20250910: (x) => x.CacheControl
+                webFetchTool20250910: (x) => x.CacheControl,
+                searchToolBm25_20251119: (x) => x.CacheControl,
+                searchToolRegex20251119: (x) => x.CacheControl,
+                mcpToolset: (x) => x.CacheControl
+            );
+        }
+    }
+
+    public bool? DeferLoading
+    {
+        get
+        {
+            return Match<bool?>(
+                betaTool: (x) => x.DeferLoading,
+                bash20241022: (x) => x.DeferLoading,
+                bash20250124: (x) => x.DeferLoading,
+                codeExecutionTool20250522: (x) => x.DeferLoading,
+                codeExecutionTool20250825: (x) => x.DeferLoading,
+                computerUse20241022: (x) => x.DeferLoading,
+                memoryTool20250818: (x) => x.DeferLoading,
+                computerUse20250124: (x) => x.DeferLoading,
+                textEditor20241022: (x) => x.DeferLoading,
+                computerUse20251124: (x) => x.DeferLoading,
+                textEditor20250124: (x) => x.DeferLoading,
+                textEditor20250429: (x) => x.DeferLoading,
+                textEditor20250728: (x) => x.DeferLoading,
+                webSearchTool20250305: (x) => x.DeferLoading,
+                webFetchTool20250910: (x) => x.DeferLoading,
+                searchToolBm25_20251119: (x) => x.DeferLoading,
+                searchToolRegex20251119: (x) => x.DeferLoading,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -55,11 +92,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (x) => x.Strict,
                 computerUse20250124: (x) => x.Strict,
                 textEditor20241022: (x) => x.Strict,
+                computerUse20251124: (x) => x.Strict,
                 textEditor20250124: (x) => x.Strict,
                 textEditor20250429: (x) => x.Strict,
                 textEditor20250728: (x) => x.Strict,
                 webSearchTool20250305: (x) => x.Strict,
-                webFetchTool20250910: (x) => x.Strict
+                webFetchTool20250910: (x) => x.Strict,
+                searchToolBm25_20251119: (x) => x.Strict,
+                searchToolRegex20251119: (x) => x.Strict,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -78,11 +119,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayHeightPx,
                 textEditor20241022: (_) => null,
+                computerUse20251124: (x) => x.DisplayHeightPx,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
-                webFetchTool20250910: (_) => null
+                webFetchTool20250910: (_) => null,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -101,11 +146,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayWidthPx,
                 textEditor20241022: (_) => null,
+                computerUse20251124: (x) => x.DisplayWidthPx,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
-                webFetchTool20250910: (_) => null
+                webFetchTool20250910: (_) => null,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -124,11 +173,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (x) => x.DisplayNumber,
                 textEditor20241022: (_) => null,
+                computerUse20251124: (x) => x.DisplayNumber,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (_) => null,
-                webFetchTool20250910: (_) => null
+                webFetchTool20250910: (_) => null,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -147,11 +200,15 @@ public record class BetaToolUnion
                 memoryTool20250818: (_) => null,
                 computerUse20250124: (_) => null,
                 textEditor20241022: (_) => null,
+                computerUse20251124: (_) => null,
                 textEditor20250124: (_) => null,
                 textEditor20250429: (_) => null,
                 textEditor20250728: (_) => null,
                 webSearchTool20250305: (x) => x.MaxUses,
-                webFetchTool20250910: (x) => x.MaxUses
+                webFetchTool20250910: (x) => x.MaxUses,
+                searchToolBm25_20251119: (_) => null,
+                searchToolRegex20251119: (_) => null,
+                mcpToolset: (_) => null
             );
         }
     }
@@ -210,6 +267,12 @@ public record class BetaToolUnion
         this._json = json;
     }
 
+    public BetaToolUnion(BetaToolComputerUse20251124 value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
     public BetaToolUnion(BetaToolTextEditor20250124 value, JsonElement? json = null)
     {
         this.Value = value;
@@ -240,29 +303,107 @@ public record class BetaToolUnion
         this._json = json;
     }
 
+    public BetaToolUnion(BetaToolSearchToolBm25_20251119 value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public BetaToolUnion(BetaToolSearchToolRegex20251119 value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
+    public BetaToolUnion(BetaMCPToolset value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
     public BetaToolUnion(JsonElement json)
     {
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTool"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaTool(out var value)) {
+    ///     // `value` is of type `BetaTool`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaTool([NotNullWhen(true)] out BetaTool? value)
     {
         value = this.Value as BetaTool;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolBash20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBash20241022(out var value)) {
+    ///     // `value` is of type `BetaToolBash20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBash20241022([NotNullWhen(true)] out BetaToolBash20241022? value)
     {
         value = this.Value as BetaToolBash20241022;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolBash20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBash20250124(out var value)) {
+    ///     // `value` is of type `BetaToolBash20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBash20250124([NotNullWhen(true)] out BetaToolBash20250124? value)
     {
         value = this.Value as BetaToolBash20250124;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20250522"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionTool20250522(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20250522`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCodeExecutionTool20250522(
         [NotNullWhen(true)] out BetaCodeExecutionTool20250522? value
     )
@@ -271,6 +412,21 @@ public record class BetaToolUnion
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionTool20250825"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionTool20250825(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionTool20250825`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCodeExecutionTool20250825(
         [NotNullWhen(true)] out BetaCodeExecutionTool20250825? value
     )
@@ -279,6 +435,21 @@ public record class BetaToolUnion
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickComputerUse20241022(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickComputerUse20241022(
         [NotNullWhen(true)] out BetaToolComputerUse20241022? value
     )
@@ -287,12 +458,42 @@ public record class BetaToolUnion
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickMemoryTool20250818(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickMemoryTool20250818([NotNullWhen(true)] out BetaMemoryTool20250818? value)
     {
         value = this.Value as BetaMemoryTool20250818;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickComputerUse20250124(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickComputerUse20250124(
         [NotNullWhen(true)] out BetaToolComputerUse20250124? value
     )
@@ -301,30 +502,128 @@ public record class BetaToolUnion
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20241022"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTextEditor20241022(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20241022`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTextEditor20241022([NotNullWhen(true)] out BetaToolTextEditor20241022? value)
     {
         value = this.Value as BetaToolTextEditor20241022;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolComputerUse20251124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickComputerUse20251124(out var value)) {
+    ///     // `value` is of type `BetaToolComputerUse20251124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickComputerUse20251124(
+        [NotNullWhen(true)] out BetaToolComputerUse20251124? value
+    )
+    {
+        value = this.Value as BetaToolComputerUse20251124;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250124"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTextEditor20250124(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250124`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTextEditor20250124([NotNullWhen(true)] out BetaToolTextEditor20250124? value)
     {
         value = this.Value as BetaToolTextEditor20250124;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250429"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTextEditor20250429(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250429`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTextEditor20250429([NotNullWhen(true)] out BetaToolTextEditor20250429? value)
     {
         value = this.Value as BetaToolTextEditor20250429;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolTextEditor20250728"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTextEditor20250728(out var value)) {
+    ///     // `value` is of type `BetaToolTextEditor20250728`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTextEditor20250728([NotNullWhen(true)] out BetaToolTextEditor20250728? value)
     {
         value = this.Value as BetaToolTextEditor20250728;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchTool20250305"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchTool20250305(out var value)) {
+    ///     // `value` is of type `BetaWebSearchTool20250305`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickWebSearchTool20250305(
         [NotNullWhen(true)] out BetaWebSearchTool20250305? value
     )
@@ -333,12 +632,130 @@ public record class BetaToolUnion
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchTool20250910"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchTool20250910(out var value)) {
+    ///     // `value` is of type `BetaWebFetchTool20250910`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickWebFetchTool20250910([NotNullWhen(true)] out BetaWebFetchTool20250910? value)
     {
         value = this.Value as BetaWebFetchTool20250910;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolSearchToolBm25_20251119"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSearchToolBm25_20251119(out var value)) {
+    ///     // `value` is of type `BetaToolSearchToolBm25_20251119`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSearchToolBm25_20251119(
+        [NotNullWhen(true)] out BetaToolSearchToolBm25_20251119? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolBm25_20251119;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolSearchToolRegex20251119"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSearchToolRegex20251119(out var value)) {
+    ///     // `value` is of type `BetaToolSearchToolRegex20251119`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSearchToolRegex20251119(
+        [NotNullWhen(true)] out BetaToolSearchToolRegex20251119? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolRegex20251119;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMCPToolset"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickMCPToolset(out var value)) {
+    ///     // `value` is of type `BetaMCPToolset`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickMCPToolset([NotNullWhen(true)] out BetaMCPToolset? value)
+    {
+        value = this.Value as BetaMCPToolset;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaTool value) => {...},
+    ///     (BetaToolBash20241022 value) => {...},
+    ///     (BetaToolBash20250124 value) => {...},
+    ///     (BetaCodeExecutionTool20250522 value) => {...},
+    ///     (BetaCodeExecutionTool20250825 value) => {...},
+    ///     (BetaToolComputerUse20241022 value) => {...},
+    ///     (BetaMemoryTool20250818 value) => {...},
+    ///     (BetaToolComputerUse20250124 value) => {...},
+    ///     (BetaToolTextEditor20241022 value) => {...},
+    ///     (BetaToolComputerUse20251124 value) => {...},
+    ///     (BetaToolTextEditor20250124 value) => {...},
+    ///     (BetaToolTextEditor20250429 value) => {...},
+    ///     (BetaToolTextEditor20250728 value) => {...},
+    ///     (BetaWebSearchTool20250305 value) => {...},
+    ///     (BetaWebFetchTool20250910 value) => {...},
+    ///     (BetaToolSearchToolBm25_20251119 value) => {...},
+    ///     (BetaToolSearchToolRegex20251119 value) => {...},
+    ///     (BetaMCPToolset value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaTool> betaTool,
         System::Action<BetaToolBash20241022> bash20241022,
@@ -349,11 +766,15 @@ public record class BetaToolUnion
         System::Action<BetaMemoryTool20250818> memoryTool20250818,
         System::Action<BetaToolComputerUse20250124> computerUse20250124,
         System::Action<BetaToolTextEditor20241022> textEditor20241022,
+        System::Action<BetaToolComputerUse20251124> computerUse20251124,
         System::Action<BetaToolTextEditor20250124> textEditor20250124,
         System::Action<BetaToolTextEditor20250429> textEditor20250429,
         System::Action<BetaToolTextEditor20250728> textEditor20250728,
         System::Action<BetaWebSearchTool20250305> webSearchTool20250305,
-        System::Action<BetaWebFetchTool20250910> webFetchTool20250910
+        System::Action<BetaWebFetchTool20250910> webFetchTool20250910,
+        System::Action<BetaToolSearchToolBm25_20251119> searchToolBm25_20251119,
+        System::Action<BetaToolSearchToolRegex20251119> searchToolRegex20251119,
+        System::Action<BetaMCPToolset> mcpToolset
     )
     {
         switch (this.Value)
@@ -385,6 +806,9 @@ public record class BetaToolUnion
             case BetaToolTextEditor20241022 value:
                 textEditor20241022(value);
                 break;
+            case BetaToolComputerUse20251124 value:
+                computerUse20251124(value);
+                break;
             case BetaToolTextEditor20250124 value:
                 textEditor20250124(value);
                 break;
@@ -400,6 +824,15 @@ public record class BetaToolUnion
             case BetaWebFetchTool20250910 value:
                 webFetchTool20250910(value);
                 break;
+            case BetaToolSearchToolBm25_20251119 value:
+                searchToolBm25_20251119(value);
+                break;
+            case BetaToolSearchToolRegex20251119 value:
+                searchToolRegex20251119(value);
+                break;
+            case BetaMCPToolset value:
+                mcpToolset(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaToolUnion"
@@ -407,6 +840,43 @@ public record class BetaToolUnion
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaTool value) => {...},
+    ///     (BetaToolBash20241022 value) => {...},
+    ///     (BetaToolBash20250124 value) => {...},
+    ///     (BetaCodeExecutionTool20250522 value) => {...},
+    ///     (BetaCodeExecutionTool20250825 value) => {...},
+    ///     (BetaToolComputerUse20241022 value) => {...},
+    ///     (BetaMemoryTool20250818 value) => {...},
+    ///     (BetaToolComputerUse20250124 value) => {...},
+    ///     (BetaToolTextEditor20241022 value) => {...},
+    ///     (BetaToolComputerUse20251124 value) => {...},
+    ///     (BetaToolTextEditor20250124 value) => {...},
+    ///     (BetaToolTextEditor20250429 value) => {...},
+    ///     (BetaToolTextEditor20250728 value) => {...},
+    ///     (BetaWebSearchTool20250305 value) => {...},
+    ///     (BetaWebFetchTool20250910 value) => {...},
+    ///     (BetaToolSearchToolBm25_20251119 value) => {...},
+    ///     (BetaToolSearchToolRegex20251119 value) => {...},
+    ///     (BetaMCPToolset value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaTool, T> betaTool,
         System::Func<BetaToolBash20241022, T> bash20241022,
@@ -417,11 +887,15 @@ public record class BetaToolUnion
         System::Func<BetaMemoryTool20250818, T> memoryTool20250818,
         System::Func<BetaToolComputerUse20250124, T> computerUse20250124,
         System::Func<BetaToolTextEditor20241022, T> textEditor20241022,
+        System::Func<BetaToolComputerUse20251124, T> computerUse20251124,
         System::Func<BetaToolTextEditor20250124, T> textEditor20250124,
         System::Func<BetaToolTextEditor20250429, T> textEditor20250429,
         System::Func<BetaToolTextEditor20250728, T> textEditor20250728,
         System::Func<BetaWebSearchTool20250305, T> webSearchTool20250305,
-        System::Func<BetaWebFetchTool20250910, T> webFetchTool20250910
+        System::Func<BetaWebFetchTool20250910, T> webFetchTool20250910,
+        System::Func<BetaToolSearchToolBm25_20251119, T> searchToolBm25_20251119,
+        System::Func<BetaToolSearchToolRegex20251119, T> searchToolRegex20251119,
+        System::Func<BetaMCPToolset, T> mcpToolset
     )
     {
         return this.Value switch
@@ -435,11 +909,15 @@ public record class BetaToolUnion
             BetaMemoryTool20250818 value => memoryTool20250818(value),
             BetaToolComputerUse20250124 value => computerUse20250124(value),
             BetaToolTextEditor20241022 value => textEditor20241022(value),
+            BetaToolComputerUse20251124 value => computerUse20251124(value),
             BetaToolTextEditor20250124 value => textEditor20250124(value),
             BetaToolTextEditor20250429 value => textEditor20250429(value),
             BetaToolTextEditor20250728 value => textEditor20250728(value),
             BetaWebSearchTool20250305 value => webSearchTool20250305(value),
             BetaWebFetchTool20250910 value => webFetchTool20250910(value),
+            BetaToolSearchToolBm25_20251119 value => searchToolBm25_20251119(value),
+            BetaToolSearchToolRegex20251119 value => searchToolRegex20251119(value),
+            BetaMCPToolset value => mcpToolset(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaToolUnion"
             ),
@@ -466,6 +944,8 @@ public record class BetaToolUnion
 
     public static implicit operator BetaToolUnion(BetaToolTextEditor20241022 value) => new(value);
 
+    public static implicit operator BetaToolUnion(BetaToolComputerUse20251124 value) => new(value);
+
     public static implicit operator BetaToolUnion(BetaToolTextEditor20250124 value) => new(value);
 
     public static implicit operator BetaToolUnion(BetaToolTextEditor20250429 value) => new(value);
@@ -476,6 +956,24 @@ public record class BetaToolUnion
 
     public static implicit operator BetaToolUnion(BetaWebFetchTool20250910 value) => new(value);
 
+    public static implicit operator BetaToolUnion(BetaToolSearchToolBm25_20251119 value) =>
+        new(value);
+
+    public static implicit operator BetaToolUnion(BetaToolSearchToolRegex20251119 value) =>
+        new(value);
+
+    public static implicit operator BetaToolUnion(BetaMCPToolset value) => new(value);
+
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -484,6 +982,16 @@ public record class BetaToolUnion
                 "Data did not match any variant of BetaToolUnion"
             );
         }
+    }
+
+    public virtual bool Equals(BetaToolUnion? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 
@@ -639,6 +1147,23 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
 
         try
         {
+            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(
+                json,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250124>(
                 json,
                 options
@@ -705,6 +1230,54 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(json, options);
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolBm25_20251119>(
+                json,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(
+                json,
+                options
+            );
+            if (deserialized != null)
+            {
+                deserialized.Validate();
+                return new(deserialized, json);
+            }
+        }
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        {
+            // ignore
+        }
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(json, options);
             if (deserialized != null)
             {
                 deserialized.Validate();

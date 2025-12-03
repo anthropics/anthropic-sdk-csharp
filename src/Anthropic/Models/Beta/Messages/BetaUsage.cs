@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaUsage>))]
-public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
+[JsonConverter(typeof(ModelConverter<BetaUsage, BetaUsageFromRaw>))]
+public sealed record class BetaUsage : ModelBase
 {
     /// <summary>
     /// Breakdown of cached tokens by TTL
@@ -19,21 +19,9 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     {
         get
         {
-            if (!this._properties.TryGetValue("cache_creation", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheCreation?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<BetaCacheCreation>(this.RawData, "cache_creation");
         }
-        init
-        {
-            this._properties["cache_creation"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_creation", value); }
     }
 
     /// <summary>
@@ -43,23 +31,9 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     {
         get
         {
-            if (
-                !this._properties.TryGetValue(
-                    "cache_creation_input_tokens",
-                    out JsonElement element
-                )
-            )
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return ModelBase.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
         }
-        init
-        {
-            this._properties["cache_creation_input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_creation_input_tokens", value); }
     }
 
     /// <summary>
@@ -67,20 +41,8 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     /// </summary>
     public required long? CacheReadInputTokens
     {
-        get
-        {
-            if (!this._properties.TryGetValue("cache_read_input_tokens", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["cache_read_input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
+        init { ModelBase.Set(this._rawData, "cache_read_input_tokens", value); }
     }
 
     /// <summary>
@@ -88,26 +50,8 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     /// </summary>
     public required long InputTokens
     {
-        get
-        {
-            if (!this._properties.TryGetValue("input_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'input_tokens' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "input_tokens",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
+        init { ModelBase.Set(this._rawData, "input_tokens", value); }
     }
 
     /// <summary>
@@ -115,26 +59,8 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     /// </summary>
     public required long OutputTokens
     {
-        get
-        {
-            if (!this._properties.TryGetValue("output_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'output_tokens' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "output_tokens",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["output_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
+        init { ModelBase.Set(this._rawData, "output_tokens", value); }
     }
 
     /// <summary>
@@ -144,21 +70,9 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     {
         get
         {
-            if (!this._properties.TryGetValue("server_tool_use", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaServerToolUsage?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<BetaServerToolUsage>(this.RawData, "server_tool_use");
         }
-        init
-        {
-            this._properties["server_tool_use"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "server_tool_use", value); }
     }
 
     /// <summary>
@@ -168,23 +82,15 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
     {
         get
         {
-            if (!this._properties.TryGetValue("service_tier", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, BetaUsageServiceTier>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<ApiEnum<string, BetaUsageServiceTier>>(
+                this.RawData,
+                "service_tier"
             );
         }
-        init
-        {
-            this._properties["service_tier"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "service_tier", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.CacheCreation?.Validate();
@@ -198,23 +104,34 @@ public sealed record class BetaUsage : ModelBase, IFromRaw<BetaUsage>
 
     public BetaUsage() { }
 
-    public BetaUsage(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaUsage(BetaUsage betaUsage)
+        : base(betaUsage) { }
+
+    public BetaUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaUsage(FrozenDictionary<string, JsonElement> properties)
+    BetaUsage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    /// <inheritdoc cref="BetaUsageFromRaw.FromRawUnchecked"/>
+    public static BetaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaUsageFromRaw : IFromRaw<BetaUsage>
+{
+    /// <inheritdoc/>
+    public BetaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaUsage.FromRawUnchecked(rawData);
 }
 
 /// <summary>

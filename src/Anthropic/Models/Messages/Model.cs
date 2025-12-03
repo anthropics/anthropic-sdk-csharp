@@ -13,6 +13,16 @@ namespace Anthropic.Models.Messages;
 public enum Model
 {
     /// <summary>
+    /// Premium model combining maximum intelligence with practical performance
+    /// </summary>
+    ClaudeOpus4_5_20251101,
+
+    /// <summary>
+    /// Premium model combining maximum intelligence with practical performance
+    /// </summary>
+    ClaudeOpus4_5,
+
+    /// <summary>
     /// High-performance model with early extended thinking
     /// </summary>
     [System::Obsolete(
@@ -125,6 +135,8 @@ sealed class ModelConverter1 : JsonConverter<Model>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "claude-opus-4-5-20251101" => Model.ClaudeOpus4_5_20251101,
+            "claude-opus-4-5" => Model.ClaudeOpus4_5,
             "claude-3-7-sonnet-latest" => Model.Claude3_7SonnetLatest,
             "claude-3-7-sonnet-20250219" => Model.Claude3_7Sonnet20250219,
             "claude-3-5-haiku-latest" => Model.Claude3_5HaikuLatest,
@@ -153,6 +165,8 @@ sealed class ModelConverter1 : JsonConverter<Model>
             writer,
             value switch
             {
+                Model.ClaudeOpus4_5_20251101 => "claude-opus-4-5-20251101",
+                Model.ClaudeOpus4_5 => "claude-opus-4-5",
                 Model.Claude3_7SonnetLatest => "claude-3-7-sonnet-latest",
                 Model.Claude3_7Sonnet20250219 => "claude-3-7-sonnet-20250219",
                 Model.Claude3_5HaikuLatest => "claude-3-5-haiku-latest",

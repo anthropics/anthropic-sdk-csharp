@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,55 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaGatewayTimeoutError>))]
-public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGatewayTimeoutError>
+[JsonConverter(typeof(ModelConverter<BetaGatewayTimeoutError, BetaGatewayTimeoutErrorFromRaw>))]
+public sealed record class BetaGatewayTimeoutError : ModelBase
 {
     public required string Message
     {
-        get
-        {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -77,26 +43,30 @@ public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGat
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
     }
 
-    public BetaGatewayTimeoutError(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaGatewayTimeoutError(BetaGatewayTimeoutError betaGatewayTimeoutError)
+        : base(betaGatewayTimeoutError) { }
+
+    public BetaGatewayTimeoutError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaGatewayTimeoutError(FrozenDictionary<string, JsonElement> properties)
+    BetaGatewayTimeoutError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaGatewayTimeoutErrorFromRaw.FromRawUnchecked"/>
     public static BetaGatewayTimeoutError FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -105,4 +75,12 @@ public sealed record class BetaGatewayTimeoutError : ModelBase, IFromRaw<BetaGat
     {
         this.Message = message;
     }
+}
+
+class BetaGatewayTimeoutErrorFromRaw : IFromRaw<BetaGatewayTimeoutError>
+{
+    /// <inheritdoc/>
+    public BetaGatewayTimeoutError FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaGatewayTimeoutError.FromRawUnchecked(rawData);
 }

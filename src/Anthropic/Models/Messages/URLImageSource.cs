@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,55 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<URLImageSource>))]
-public sealed record class URLImageSource : ModelBase, IFromRaw<URLImageSource>
+[JsonConverter(typeof(ModelConverter<URLImageSource, URLImageSourceFromRaw>))]
+public sealed record class URLImageSource : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get
-        {
-            if (!this._properties.TryGetValue("url", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentOutOfRangeException("url", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentNullException("url")
-                );
-        }
-        init
-        {
-            this._properties["url"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
+        init { ModelBase.Set(this._rawData, "url", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"url\"")))
@@ -72,26 +38,28 @@ public sealed record class URLImageSource : ModelBase, IFromRaw<URLImageSource>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
 
-    public URLImageSource(IReadOnlyDictionary<string, JsonElement> properties)
+    public URLImageSource(URLImageSource urlImageSource)
+        : base(urlImageSource) { }
+
+    public URLImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    URLImageSource(FrozenDictionary<string, JsonElement> properties)
+    URLImageSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static URLImageSource FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    /// <inheritdoc cref="URLImageSourceFromRaw.FromRawUnchecked"/>
+    public static URLImageSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -100,4 +68,11 @@ public sealed record class URLImageSource : ModelBase, IFromRaw<URLImageSource>
     {
         this.URL = url;
     }
+}
+
+class URLImageSourceFromRaw : IFromRaw<URLImageSource>
+{
+    /// <inheritdoc/>
+    public URLImageSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        URLImageSource.FromRawUnchecked(rawData);
 }

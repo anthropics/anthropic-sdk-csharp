@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,55 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<AuthenticationError>))]
-public sealed record class AuthenticationError : ModelBase, IFromRaw<AuthenticationError>
+[JsonConverter(typeof(ModelConverter<AuthenticationError, AuthenticationErrorFromRaw>))]
+public sealed record class AuthenticationError : ModelBase
 {
     public required string Message
     {
-        get
-        {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -77,26 +43,30 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
     }
 
-    public AuthenticationError(IReadOnlyDictionary<string, JsonElement> properties)
+    public AuthenticationError(AuthenticationError authenticationError)
+        : base(authenticationError) { }
+
+    public AuthenticationError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    AuthenticationError(FrozenDictionary<string, JsonElement> properties)
+    AuthenticationError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="AuthenticationErrorFromRaw.FromRawUnchecked"/>
     public static AuthenticationError FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -105,4 +75,11 @@ public sealed record class AuthenticationError : ModelBase, IFromRaw<Authenticat
     {
         this.Message = message;
     }
+}
+
+class AuthenticationErrorFromRaw : IFromRaw<AuthenticationError>
+{
+    /// <inheritdoc/>
+    public AuthenticationError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        AuthenticationError.FromRawUnchecked(rawData);
 }

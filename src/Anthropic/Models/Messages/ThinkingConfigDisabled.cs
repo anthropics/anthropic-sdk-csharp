@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,30 +8,16 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingConfigDisabled>))]
-public sealed record class ThinkingConfigDisabled : ModelBase, IFromRaw<ThinkingConfigDisabled>
+[JsonConverter(typeof(ModelConverter<ThinkingConfigDisabled, ThinkingConfigDisabledFromRaw>))]
+public sealed record class ThinkingConfigDisabled : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -51,25 +36,37 @@ public sealed record class ThinkingConfigDisabled : ModelBase, IFromRaw<Thinking
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
     }
 
-    public ThinkingConfigDisabled(IReadOnlyDictionary<string, JsonElement> properties)
+    public ThinkingConfigDisabled(ThinkingConfigDisabled thinkingConfigDisabled)
+        : base(thinkingConfigDisabled) { }
+
+    public ThinkingConfigDisabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ThinkingConfigDisabled(FrozenDictionary<string, JsonElement> properties)
+    ThinkingConfigDisabled(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ThinkingConfigDisabledFromRaw.FromRawUnchecked"/>
     public static ThinkingConfigDisabled FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ThinkingConfigDisabledFromRaw : IFromRaw<ThinkingConfigDisabled>
+{
+    /// <inheritdoc/>
+    public ThinkingConfigDisabled FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ThinkingConfigDisabled.FromRawUnchecked(rawData);
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,126 +8,40 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchResultBlock>))]
-public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchResultBlock>
+[JsonConverter(typeof(ModelConverter<WebSearchResultBlock, WebSearchResultBlockFromRaw>))]
+public sealed record class WebSearchResultBlock : ModelBase
 {
     public required string EncryptedContent
     {
-        get
-        {
-            if (!this._properties.TryGetValue("encrypted_content", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'encrypted_content' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "encrypted_content",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'encrypted_content' cannot be null",
-                    new ArgumentNullException("encrypted_content")
-                );
-        }
-        init
-        {
-            this._properties["encrypted_content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "encrypted_content"); }
+        init { ModelBase.Set(this._rawData, "encrypted_content", value); }
     }
 
     public required string? PageAge
     {
-        get
-        {
-            if (!this._properties.TryGetValue("page_age", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["page_age"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "page_age"); }
+        init { ModelBase.Set(this._rawData, "page_age", value); }
     }
 
     public required string Title
     {
-        get
-        {
-            if (!this._properties.TryGetValue("title", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'title' cannot be null",
-                    new ArgumentOutOfRangeException("title", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'title' cannot be null",
-                    new ArgumentNullException("title")
-                );
-        }
-        init
-        {
-            this._properties["title"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "title"); }
+        init { ModelBase.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get
-        {
-            if (!this._properties.TryGetValue("url", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentOutOfRangeException("url", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentNullException("url")
-                );
-        }
-        init
-        {
-            this._properties["url"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
+        init { ModelBase.Set(this._rawData, "url", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.EncryptedContent;
@@ -151,25 +64,37 @@ public sealed record class WebSearchResultBlock : ModelBase, IFromRaw<WebSearchR
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
     }
 
-    public WebSearchResultBlock(IReadOnlyDictionary<string, JsonElement> properties)
+    public WebSearchResultBlock(WebSearchResultBlock webSearchResultBlock)
+        : base(webSearchResultBlock) { }
+
+    public WebSearchResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    WebSearchResultBlock(FrozenDictionary<string, JsonElement> properties)
+    WebSearchResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="WebSearchResultBlockFromRaw.FromRawUnchecked"/>
     public static WebSearchResultBlock FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class WebSearchResultBlockFromRaw : IFromRaw<WebSearchResultBlock>
+{
+    /// <inheritdoc/>
+    public WebSearchResultBlock FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => WebSearchResultBlock.FromRawUnchecked(rawData);
 }

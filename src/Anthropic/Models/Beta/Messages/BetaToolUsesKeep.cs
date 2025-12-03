@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,51 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaToolUsesKeep>))]
-public sealed record class BetaToolUsesKeep : ModelBase, IFromRaw<BetaToolUsesKeep>
+[JsonConverter(typeof(ModelConverter<BetaToolUsesKeep, BetaToolUsesKeepFromRaw>))]
+public sealed record class BetaToolUsesKeep : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public required long Value
     {
-        get
-        {
-            if (!this._properties.TryGetValue("value", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'value' cannot be null",
-                    new ArgumentOutOfRangeException("value", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["value"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "value"); }
+        init { ModelBase.Set(this._rawData, "value", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -73,26 +43,30 @@ public sealed record class BetaToolUsesKeep : ModelBase, IFromRaw<BetaToolUsesKe
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
     }
 
-    public BetaToolUsesKeep(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaToolUsesKeep(BetaToolUsesKeep betaToolUsesKeep)
+        : base(betaToolUsesKeep) { }
+
+    public BetaToolUsesKeep(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaToolUsesKeep(FrozenDictionary<string, JsonElement> properties)
+    BetaToolUsesKeep(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolUsesKeepFromRaw.FromRawUnchecked"/>
     public static BetaToolUsesKeep FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -101,4 +75,11 @@ public sealed record class BetaToolUsesKeep : ModelBase, IFromRaw<BetaToolUsesKe
     {
         this.Value = value;
     }
+}
+
+class BetaToolUsesKeepFromRaw : IFromRaw<BetaToolUsesKeep>
+{
+    /// <inheritdoc/>
+    public BetaToolUsesKeep FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaToolUsesKeep.FromRawUnchecked(rawData);
 }

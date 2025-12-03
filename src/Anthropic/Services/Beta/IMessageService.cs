@@ -15,6 +15,11 @@ namespace Anthropic.Services.Beta;
 /// </summary>
 public interface IMessageService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     global::Anthropic.Services.Beta.IMessageService WithOptions(
         Func<ClientOptions, ClientOptions> modifier
     );

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,55 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<NotFoundError>))]
-public sealed record class NotFoundError : ModelBase, IFromRaw<NotFoundError>
+[JsonConverter(typeof(ModelConverter<NotFoundError, NotFoundErrorFromRaw>))]
+public sealed record class NotFoundError : ModelBase
 {
     public required string Message
     {
-        get
-        {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -77,26 +43,28 @@ public sealed record class NotFoundError : ModelBase, IFromRaw<NotFoundError>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
     }
 
-    public NotFoundError(IReadOnlyDictionary<string, JsonElement> properties)
+    public NotFoundError(NotFoundError notFoundError)
+        : base(notFoundError) { }
+
+    public NotFoundError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    NotFoundError(FrozenDictionary<string, JsonElement> properties)
+    NotFoundError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static NotFoundError FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    /// <inheritdoc cref="NotFoundErrorFromRaw.FromRawUnchecked"/>
+    public static NotFoundError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -105,4 +73,11 @@ public sealed record class NotFoundError : ModelBase, IFromRaw<NotFoundError>
     {
         this.Message = message;
     }
+}
+
+class NotFoundErrorFromRaw : IFromRaw<NotFoundError>
+{
+    /// <inheritdoc/>
+    public NotFoundError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        NotFoundError.FromRawUnchecked(rawData);
 }

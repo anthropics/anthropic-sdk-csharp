@@ -7,18 +7,12 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationsConfigParam>))]
-public sealed record class BetaCitationsConfigParam : ModelBase, IFromRaw<BetaCitationsConfigParam>
+[JsonConverter(typeof(ModelConverter<BetaCitationsConfigParam, BetaCitationsConfigParamFromRaw>))]
+public sealed record class BetaCitationsConfigParam : ModelBase
 {
     public bool? Enabled
     {
-        get
-        {
-            if (!this._properties.TryGetValue("enabled", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "enabled"); }
         init
         {
             if (value == null)
@@ -26,13 +20,11 @@ public sealed record class BetaCitationsConfigParam : ModelBase, IFromRaw<BetaCi
                 return;
             }
 
-            this._properties["enabled"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "enabled", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Enabled;
@@ -40,23 +32,35 @@ public sealed record class BetaCitationsConfigParam : ModelBase, IFromRaw<BetaCi
 
     public BetaCitationsConfigParam() { }
 
-    public BetaCitationsConfigParam(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaCitationsConfigParam(BetaCitationsConfigParam betaCitationsConfigParam)
+        : base(betaCitationsConfigParam) { }
+
+    public BetaCitationsConfigParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaCitationsConfigParam(FrozenDictionary<string, JsonElement> properties)
+    BetaCitationsConfigParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationsConfigParamFromRaw.FromRawUnchecked"/>
     public static BetaCitationsConfigParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaCitationsConfigParamFromRaw : IFromRaw<BetaCitationsConfigParam>
+{
+    /// <inheritdoc/>
+    public BetaCitationsConfigParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaCitationsConfigParam.FromRawUnchecked(rawData);
 }

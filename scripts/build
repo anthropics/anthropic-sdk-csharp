@@ -5,4 +5,5 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "==> Running dotnet build"
-dotnet build
+dotnet build Anthropic.sln
+dotnet build examples/Anthropic.Examples.sln

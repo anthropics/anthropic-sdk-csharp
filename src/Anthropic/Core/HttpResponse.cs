@@ -22,10 +22,14 @@ public sealed class HttpResponse : IDisposable
         );
         try
         {
-            return JsonSerializer.Deserialize<T>(
-                    await this.ReadAsStream(cts.Token).ConfigureAwait(false),
-                    ModelBase.SerializerOptions
-                ) ?? throw new AnthropicInvalidDataException("Response cannot be null");
+            return await JsonSerializer
+                    .DeserializeAsync<T>(
+                        await this.ReadAsStream(cts.Token).ConfigureAwait(false),
+                        ModelBase.SerializerOptions,
+                        cts.Token
+                    )
+                    .ConfigureAwait(false)
+                ?? throw new AnthropicInvalidDataException("Response cannot be null");
         }
         catch (HttpRequestException e)
         {
@@ -39,11 +43,11 @@ public sealed class HttpResponse : IDisposable
             this.CancellationToken,
             cancellationToken
         );
-#if NET5_0_OR_GREATER
-        return await Message.Content.ReadAsStreamAsync(cts.Token).ConfigureAwait(false);
-#else
-        return await Message.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        return await Message.Content.ReadAsStreamAsync(
+#if NET
+            cts.Token
 #endif
+        ).ConfigureAwait(false);
     }
 
     public async Task<string> ReadAsString(CancellationToken cancellationToken = default)
@@ -52,11 +56,11 @@ public sealed class HttpResponse : IDisposable
             this.CancellationToken,
             cancellationToken
         );
-#if NET5_0_OR_GREATER
-        return await Message.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false);
-#else
-        return await Message.Content.ReadAsStringAsync().ConfigureAwait(false);
+        return await Message.Content.ReadAsStringAsync(
+#if NET
+            cts.Token
 #endif
+        ).ConfigureAwait(false);
     }
 
     public void Dispose()

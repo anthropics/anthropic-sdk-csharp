@@ -1,16 +1,14 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageDeltaUsage>))]
-public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaUsage>
+[JsonConverter(typeof(ModelConverter<MessageDeltaUsage, MessageDeltaUsageFromRaw>))]
+public sealed record class MessageDeltaUsage : ModelBase
 {
     /// <summary>
     /// The cumulative number of input tokens used to create the cache entry.
@@ -19,23 +17,9 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
     {
         get
         {
-            if (
-                !this._properties.TryGetValue(
-                    "cache_creation_input_tokens",
-                    out JsonElement element
-                )
-            )
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return ModelBase.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
         }
-        init
-        {
-            this._properties["cache_creation_input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_creation_input_tokens", value); }
     }
 
     /// <summary>
@@ -43,20 +27,8 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
     /// </summary>
     public required long? CacheReadInputTokens
     {
-        get
-        {
-            if (!this._properties.TryGetValue("cache_read_input_tokens", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["cache_read_input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
+        init { ModelBase.Set(this._rawData, "cache_read_input_tokens", value); }
     }
 
     /// <summary>
@@ -64,20 +36,8 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
     /// </summary>
     public required long? InputTokens
     {
-        get
-        {
-            if (!this._properties.TryGetValue("input_tokens", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "input_tokens"); }
+        init { ModelBase.Set(this._rawData, "input_tokens", value); }
     }
 
     /// <summary>
@@ -85,23 +45,8 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
     /// </summary>
     public required long OutputTokens
     {
-        get
-        {
-            if (!this._properties.TryGetValue("output_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'output_tokens' cannot be null",
-                    new ArgumentOutOfRangeException("output_tokens", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["output_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
+        init { ModelBase.Set(this._rawData, "output_tokens", value); }
     }
 
     /// <summary>
@@ -109,25 +54,11 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
     /// </summary>
     public required ServerToolUsage? ServerToolUse
     {
-        get
-        {
-            if (!this._properties.TryGetValue("server_tool_use", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ServerToolUsage?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._properties["server_tool_use"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<ServerToolUsage>(this.RawData, "server_tool_use"); }
+        init { ModelBase.Set(this._rawData, "server_tool_use", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CacheCreationInputTokens;
@@ -139,23 +70,34 @@ public sealed record class MessageDeltaUsage : ModelBase, IFromRaw<MessageDeltaU
 
     public MessageDeltaUsage() { }
 
-    public MessageDeltaUsage(IReadOnlyDictionary<string, JsonElement> properties)
+    public MessageDeltaUsage(MessageDeltaUsage messageDeltaUsage)
+        : base(messageDeltaUsage) { }
+
+    public MessageDeltaUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    MessageDeltaUsage(FrozenDictionary<string, JsonElement> properties)
+    MessageDeltaUsage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageDeltaUsageFromRaw.FromRawUnchecked"/>
     public static MessageDeltaUsage FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MessageDeltaUsageFromRaw : IFromRaw<MessageDeltaUsage>
+{
+    /// <inheritdoc/>
+    public MessageDeltaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        MessageDeltaUsage.FromRawUnchecked(rawData);
 }

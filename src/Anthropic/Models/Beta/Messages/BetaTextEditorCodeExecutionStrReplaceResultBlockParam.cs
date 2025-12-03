@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,122 +8,51 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTextEditorCodeExecutionStrReplaceResultBlockParam>))]
-public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
-    : ModelBase,
-        IFromRaw<BetaTextEditorCodeExecutionStrReplaceResultBlockParam>
+[JsonConverter(
+    typeof(ModelConverter<
+        BetaTextEditorCodeExecutionStrReplaceResultBlockParam,
+        BetaTextEditorCodeExecutionStrReplaceResultBlockParamFromRaw
+    >)
+)]
+public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
-    public List<string>? Lines
+    public IReadOnlyList<string>? Lines
     {
-        get
-        {
-            if (!this._properties.TryGetValue("lines", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["lines"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "lines"); }
+        init { ModelBase.Set(this._rawData, "lines", value); }
     }
 
     public long? NewLines
     {
-        get
-        {
-            if (!this._properties.TryGetValue("new_lines", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["new_lines"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "new_lines"); }
+        init { ModelBase.Set(this._rawData, "new_lines", value); }
     }
 
     public long? NewStart
     {
-        get
-        {
-            if (!this._properties.TryGetValue("new_start", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["new_start"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "new_start"); }
+        init { ModelBase.Set(this._rawData, "new_start", value); }
     }
 
     public long? OldLines
     {
-        get
-        {
-            if (!this._properties.TryGetValue("old_lines", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["old_lines"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "old_lines"); }
+        init { ModelBase.Set(this._rawData, "old_lines", value); }
     }
 
     public long? OldStart
     {
-        get
-        {
-            if (!this._properties.TryGetValue("old_start", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["old_start"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "old_start"); }
+        init { ModelBase.Set(this._rawData, "old_start", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -153,10 +81,15 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
     }
 
     public BetaTextEditorCodeExecutionStrReplaceResultBlockParam(
-        IReadOnlyDictionary<string, JsonElement> properties
+        BetaTextEditorCodeExecutionStrReplaceResultBlockParam betaTextEditorCodeExecutionStrReplaceResultBlockParam
+    )
+        : base(betaTextEditorCodeExecutionStrReplaceResultBlockParam) { }
+
+    public BetaTextEditorCodeExecutionStrReplaceResultBlockParam(
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_code_execution_str_replace_result\""
@@ -166,17 +99,27 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionStrReplaceResultBlockParam(
-        FrozenDictionary<string, JsonElement> properties
+        FrozenDictionary<string, JsonElement> rawData
     )
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextEditorCodeExecutionStrReplaceResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaTextEditorCodeExecutionStrReplaceResultBlockParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaTextEditorCodeExecutionStrReplaceResultBlockParamFromRaw
+    : IFromRaw<BetaTextEditorCodeExecutionStrReplaceResultBlockParam>
+{
+    /// <inheritdoc/>
+    public BetaTextEditorCodeExecutionStrReplaceResultBlockParam FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaTextEditorCodeExecutionStrReplaceResultBlockParam.FromRawUnchecked(rawData);
 }

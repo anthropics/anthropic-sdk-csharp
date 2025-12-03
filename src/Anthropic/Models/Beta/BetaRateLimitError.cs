@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,55 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaRateLimitError>))]
-public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimitError>
+[JsonConverter(typeof(ModelConverter<BetaRateLimitError, BetaRateLimitErrorFromRaw>))]
+public sealed record class BetaRateLimitError : ModelBase
 {
     public required string Message
     {
-        get
-        {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -77,26 +43,30 @@ public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimi
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
     }
 
-    public BetaRateLimitError(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaRateLimitError(BetaRateLimitError betaRateLimitError)
+        : base(betaRateLimitError) { }
+
+    public BetaRateLimitError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRateLimitError(FrozenDictionary<string, JsonElement> properties)
+    BetaRateLimitError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaRateLimitErrorFromRaw.FromRawUnchecked"/>
     public static BetaRateLimitError FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -105,4 +75,11 @@ public sealed record class BetaRateLimitError : ModelBase, IFromRaw<BetaRateLimi
     {
         this.Message = message;
     }
+}
+
+class BetaRateLimitErrorFromRaw : IFromRaw<BetaRateLimitError>
+{
+    /// <inheritdoc/>
+    public BetaRateLimitError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaRateLimitError.FromRawUnchecked(rawData);
 }

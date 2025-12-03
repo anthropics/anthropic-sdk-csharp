@@ -9,84 +9,33 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawContentBlockStartEvent>))]
-public sealed record class BetaRawContentBlockStartEvent
-    : ModelBase,
-        IFromRaw<BetaRawContentBlockStartEvent>
+[JsonConverter(
+    typeof(ModelConverter<BetaRawContentBlockStartEvent, BetaRawContentBlockStartEventFromRaw>)
+)]
+public sealed record class BetaRawContentBlockStartEvent : ModelBase
 {
     /// <summary>
     /// Response model for a file uploaded to the container.
     /// </summary>
     public required ContentBlock ContentBlock
     {
-        get
-        {
-            if (!this._properties.TryGetValue("content_block", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'content_block' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "content_block",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<ContentBlock>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'content_block' cannot be null",
-                    new System::ArgumentNullException("content_block")
-                );
-        }
-        init
-        {
-            this._properties["content_block"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<ContentBlock>(this.RawData, "content_block"); }
+        init { ModelBase.Set(this._rawData, "content_block", value); }
     }
 
     public required long Index
     {
-        get
-        {
-            if (!this._properties.TryGetValue("index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'index' cannot be null",
-                    new System::ArgumentOutOfRangeException("index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "index"); }
+        init { ModelBase.Set(this._rawData, "index", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ContentBlock.Validate();
@@ -107,27 +56,41 @@ public sealed record class BetaRawContentBlockStartEvent
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
-    public BetaRawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaRawContentBlockStartEvent(
+        BetaRawContentBlockStartEvent betaRawContentBlockStartEvent
+    )
+        : base(betaRawContentBlockStartEvent) { }
+
+    public BetaRawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRawContentBlockStartEvent(FrozenDictionary<string, JsonElement> properties)
+    BetaRawContentBlockStartEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaRawContentBlockStartEventFromRaw.FromRawUnchecked"/>
     public static BetaRawContentBlockStartEvent FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaRawContentBlockStartEventFromRaw : IFromRaw<BetaRawContentBlockStartEvent>
+{
+    /// <inheritdoc/>
+    public BetaRawContentBlockStartEvent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaRawContentBlockStartEvent.FromRawUnchecked(rawData);
 }
 
 /// <summary>
@@ -160,6 +123,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (x) => x.Type,
                 betaBashCodeExecutionToolResult: (x) => x.Type,
                 betaTextEditorCodeExecutionToolResult: (x) => x.Type,
+                betaToolSearchToolResult: (x) => x.Type,
                 betaMCPToolUse: (x) => x.Type,
                 betaMCPToolResult: (x) => x.Type,
                 betaContainerUpload: (x) => x.Type
@@ -182,6 +146,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (_) => null,
                 betaBashCodeExecutionToolResult: (_) => null,
                 betaTextEditorCodeExecutionToolResult: (_) => null,
+                betaToolSearchToolResult: (_) => null,
                 betaMCPToolUse: (x) => x.ID,
                 betaMCPToolResult: (_) => null,
                 betaContainerUpload: (_) => null
@@ -204,6 +169,7 @@ public record class ContentBlock
                 betaCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaBashCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaTextEditorCodeExecutionToolResult: (x) => x.ToolUseID,
+                betaToolSearchToolResult: (x) => x.ToolUseID,
                 betaMCPToolUse: (_) => null,
                 betaMCPToolResult: (x) => x.ToolUseID,
                 betaContainerUpload: (_) => null
@@ -271,6 +237,12 @@ public record class ContentBlock
         this._json = json;
     }
 
+    public ContentBlock(BetaToolSearchToolResultBlock value, JsonElement? json = null)
+    {
+        this.Value = value;
+        this._json = json;
+    }
+
     public ContentBlock(BetaMCPToolUseBlock value, JsonElement? json = null)
     {
         this.Value = value;
@@ -294,18 +266,63 @@ public record class ContentBlock
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaText(out var value)) {
+    ///     // `value` is of type `BetaTextBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaText([NotNullWhen(true)] out BetaTextBlock? value)
     {
         value = this.Value as BetaTextBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaThinkingBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaThinking(out var value)) {
+    ///     // `value` is of type `BetaThinkingBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaThinking([NotNullWhen(true)] out BetaThinkingBlock? value)
     {
         value = this.Value as BetaThinkingBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRedactedThinkingBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaRedactedThinking(out var value)) {
+    ///     // `value` is of type `BetaRedactedThinkingBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaRedactedThinking(
         [NotNullWhen(true)] out BetaRedactedThinkingBlock? value
     )
@@ -314,18 +331,63 @@ public record class ContentBlock
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolUseBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolUse(out var value)) {
+    ///     // `value` is of type `BetaToolUseBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaToolUse([NotNullWhen(true)] out BetaToolUseBlock? value)
     {
         value = this.Value as BetaToolUseBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaServerToolUseBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaServerToolUse(out var value)) {
+    ///     // `value` is of type `BetaServerToolUseBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaServerToolUse([NotNullWhen(true)] out BetaServerToolUseBlock? value)
     {
         value = this.Value as BetaServerToolUseBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWebSearchToolResult(out var value)) {
+    ///     // `value` is of type `BetaWebSearchToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaWebSearchToolResult(
         [NotNullWhen(true)] out BetaWebSearchToolResultBlock? value
     )
@@ -334,6 +396,21 @@ public record class ContentBlock
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWebFetchToolResult(out var value)) {
+    ///     // `value` is of type `BetaWebFetchToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaWebFetchToolResult(
         [NotNullWhen(true)] out BetaWebFetchToolResultBlock? value
     )
@@ -342,6 +419,21 @@ public record class ContentBlock
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaCodeExecutionToolResultBlock? value
     )
@@ -350,6 +442,21 @@ public record class ContentBlock
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBashCodeExecutionToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaBashCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `BetaBashCodeExecutionToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaBashCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaBashCodeExecutionToolResultBlock? value
     )
@@ -358,6 +465,21 @@ public record class ContentBlock
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextEditorCodeExecutionToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaTextEditorCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `BetaTextEditorCodeExecutionToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaTextEditorCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionToolResultBlock? value
     )
@@ -366,24 +488,124 @@ public record class ContentBlock
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolSearchToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaToolSearchToolResult(out var value)) {
+    ///     // `value` is of type `BetaToolSearchToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaToolSearchToolResult(
+        [NotNullWhen(true)] out BetaToolSearchToolResultBlock? value
+    )
+    {
+        value = this.Value as BetaToolSearchToolResultBlock;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMCPToolUseBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaMCPToolUse(out var value)) {
+    ///     // `value` is of type `BetaMCPToolUseBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlock? value)
     {
         value = this.Value as BetaMCPToolUseBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMCPToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaMCPToolResult(out var value)) {
+    ///     // `value` is of type `BetaMCPToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaMCPToolResult([NotNullWhen(true)] out BetaMCPToolResultBlock? value)
     {
         value = this.Value as BetaMCPToolResultBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaContainerUploadBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaContainerUpload(out var value)) {
+    ///     // `value` is of type `BetaContainerUploadBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaContainerUpload([NotNullWhen(true)] out BetaContainerUploadBlock? value)
     {
         value = this.Value as BetaContainerUploadBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaTextBlock value) => {...},
+    ///     (BetaThinkingBlock value) => {...},
+    ///     (BetaRedactedThinkingBlock value) => {...},
+    ///     (BetaToolUseBlock value) => {...},
+    ///     (BetaServerToolUseBlock value) => {...},
+    ///     (BetaWebSearchToolResultBlock value) => {...},
+    ///     (BetaWebFetchToolResultBlock value) => {...},
+    ///     (BetaCodeExecutionToolResultBlock value) => {...},
+    ///     (BetaBashCodeExecutionToolResultBlock value) => {...},
+    ///     (BetaTextEditorCodeExecutionToolResultBlock value) => {...},
+    ///     (BetaToolSearchToolResultBlock value) => {...},
+    ///     (BetaMCPToolUseBlock value) => {...},
+    ///     (BetaMCPToolResultBlock value) => {...},
+    ///     (BetaContainerUploadBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaTextBlock> betaText,
         System::Action<BetaThinkingBlock> betaThinking,
@@ -395,6 +617,7 @@ public record class ContentBlock
         System::Action<BetaCodeExecutionToolResultBlock> betaCodeExecutionToolResult,
         System::Action<BetaBashCodeExecutionToolResultBlock> betaBashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlock> betaTextEditorCodeExecutionToolResult,
+        System::Action<BetaToolSearchToolResultBlock> betaToolSearchToolResult,
         System::Action<BetaMCPToolUseBlock> betaMCPToolUse,
         System::Action<BetaMCPToolResultBlock> betaMCPToolResult,
         System::Action<BetaContainerUploadBlock> betaContainerUpload
@@ -432,6 +655,9 @@ public record class ContentBlock
             case BetaTextEditorCodeExecutionToolResultBlock value:
                 betaTextEditorCodeExecutionToolResult(value);
                 break;
+            case BetaToolSearchToolResultBlock value:
+                betaToolSearchToolResult(value);
+                break;
             case BetaMCPToolUseBlock value:
                 betaMCPToolUse(value);
                 break;
@@ -448,6 +674,39 @@ public record class ContentBlock
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaTextBlock value) => {...},
+    ///     (BetaThinkingBlock value) => {...},
+    ///     (BetaRedactedThinkingBlock value) => {...},
+    ///     (BetaToolUseBlock value) => {...},
+    ///     (BetaServerToolUseBlock value) => {...},
+    ///     (BetaWebSearchToolResultBlock value) => {...},
+    ///     (BetaWebFetchToolResultBlock value) => {...},
+    ///     (BetaCodeExecutionToolResultBlock value) => {...},
+    ///     (BetaBashCodeExecutionToolResultBlock value) => {...},
+    ///     (BetaTextEditorCodeExecutionToolResultBlock value) => {...},
+    ///     (BetaToolSearchToolResultBlock value) => {...},
+    ///     (BetaMCPToolUseBlock value) => {...},
+    ///     (BetaMCPToolResultBlock value) => {...},
+    ///     (BetaContainerUploadBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaTextBlock, T> betaText,
         System::Func<BetaThinkingBlock, T> betaThinking,
@@ -462,6 +721,7 @@ public record class ContentBlock
             BetaTextEditorCodeExecutionToolResultBlock,
             T
         > betaTextEditorCodeExecutionToolResult,
+        System::Func<BetaToolSearchToolResultBlock, T> betaToolSearchToolResult,
         System::Func<BetaMCPToolUseBlock, T> betaMCPToolUse,
         System::Func<BetaMCPToolResultBlock, T> betaMCPToolResult,
         System::Func<BetaContainerUploadBlock, T> betaContainerUpload
@@ -480,6 +740,7 @@ public record class ContentBlock
             BetaBashCodeExecutionToolResultBlock value => betaBashCodeExecutionToolResult(value),
             BetaTextEditorCodeExecutionToolResultBlock value =>
                 betaTextEditorCodeExecutionToolResult(value),
+            BetaToolSearchToolResultBlock value => betaToolSearchToolResult(value),
             BetaMCPToolUseBlock value => betaMCPToolUse(value),
             BetaMCPToolResultBlock value => betaMCPToolResult(value),
             BetaContainerUploadBlock value => betaContainerUpload(value),
@@ -513,12 +774,24 @@ public record class ContentBlock
         BetaTextEditorCodeExecutionToolResultBlock value
     ) => new(value);
 
+    public static implicit operator ContentBlock(BetaToolSearchToolResultBlock value) => new(value);
+
     public static implicit operator ContentBlock(BetaMCPToolUseBlock value) => new(value);
 
     public static implicit operator ContentBlock(BetaMCPToolResultBlock value) => new(value);
 
     public static implicit operator ContentBlock(BetaContainerUploadBlock value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -527,6 +800,16 @@ public record class ContentBlock
                 "Data did not match any variant of ContentBlock"
             );
         }
+    }
+
+    public virtual bool Equals(ContentBlock? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 
@@ -750,6 +1033,28 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                             json,
                             options
                         );
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(json);
+            }
+            case "tool_search_tool_result":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(
+                        json,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();

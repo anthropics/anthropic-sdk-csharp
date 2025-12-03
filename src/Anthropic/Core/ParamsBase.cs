@@ -13,12 +13,12 @@ namespace Anthropic.Core;
 
 public abstract record class ParamsBase
 {
-    static readonly IReadOnlyDictionary<string, string> s_defaultHeaders;
+    static readonly IReadOnlyDictionary<string, string> defaultHeaders;
 
     static ParamsBase()
     {
         var runtime = GetRuntime();
-        s_defaultHeaders = new Dictionary<string, string>
+        defaultHeaders = new Dictionary<string, string>
         {
             ["User-Agent"] = GetUserAgent(),
             ["X-Stainless-Arch"] = GetOSArch(),
@@ -31,18 +31,24 @@ public abstract record class ParamsBase
         };
     }
 
-    private protected FreezableDictionary<string, JsonElement> _queryProperties = [];
+    private protected FreezableDictionary<string, JsonElement> _rawQueryData = [];
 
-    public IReadOnlyDictionary<string, JsonElement> QueryProperties
+    private protected FreezableDictionary<string, JsonElement> _rawHeaderData = [];
+
+    protected ParamsBase(ParamsBase paramsBase)
     {
-        get { return this._queryProperties.Freeze(); }
+        this._rawHeaderData = [.. paramsBase._rawHeaderData];
+        this._rawQueryData = [.. paramsBase._rawQueryData];
     }
 
-    private protected FreezableDictionary<string, JsonElement> _headerProperties = [];
-
-    public IReadOnlyDictionary<string, JsonElement> HeaderProperties
+    public IReadOnlyDictionary<string, JsonElement> RawQueryData
     {
-        get { return this._headerProperties.Freeze(); }
+        get { return this._rawQueryData.Freeze(); }
+    }
+
+    public IReadOnlyDictionary<string, JsonElement> RawHeaderData
+    {
+        get { return this._rawHeaderData.Freeze(); }
     }
 
     public abstract Uri Url(ClientOptions options);
@@ -154,7 +160,7 @@ public abstract record class ParamsBase
     protected string QueryString(ClientOptions options)
     {
         NameValueCollection collection = [];
-        foreach (var item in this.QueryProperties)
+        foreach (var item in this.RawQueryData)
         {
             ParamsBase.AddQueryElementToCollection(collection, item.Key, item.Value);
         }
@@ -186,7 +192,7 @@ public abstract record class ParamsBase
 
     protected static void AddDefaultHeaders(HttpRequestMessage request, ClientOptions options)
     {
-        foreach (var header in s_defaultHeaders)
+        foreach (var header in defaultHeaders)
         {
             request.Headers.Add(header.Key, header.Value);
         }
@@ -213,12 +219,9 @@ public abstract record class ParamsBase
             Architecture.X86 => "x32",
             Architecture.X64 => "x64",
             Architecture.Arm => "arm",
-            Architecture.Arm64
-#if NET5_0_OR_GREATER
-            or Architecture.Armv6
-#endif
-            => "arm64",
-#if NET5_0_OR_GREATER
+            Architecture.Arm64 => "arm64",
+#if !NETSTANDARD2_0
+            Architecture.Armv6 => "arm64",
             Architecture.Wasm
             or Architecture.S390x
             or Architecture.LoongArch64

@@ -1,16 +1,14 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Skills;
 
-[JsonConverter(typeof(ModelConverter<SkillDeleteResponse>))]
-public sealed record class SkillDeleteResponse : ModelBase, IFromRaw<SkillDeleteResponse>
+[JsonConverter(typeof(ModelConverter<SkillDeleteResponse, SkillDeleteResponseFromRaw>))]
+public sealed record class SkillDeleteResponse : ModelBase
 {
     /// <summary>
     /// Unique identifier for the skill.
@@ -19,27 +17,8 @@ public sealed record class SkillDeleteResponse : ModelBase, IFromRaw<SkillDelete
     /// </summary>
     public required string ID
     {
-        get
-        {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -49,29 +28,11 @@ public sealed record class SkillDeleteResponse : ModelBase, IFromRaw<SkillDelete
     /// </summary>
     public required string Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentNullException("type")
-                );
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -80,23 +41,34 @@ public sealed record class SkillDeleteResponse : ModelBase, IFromRaw<SkillDelete
 
     public SkillDeleteResponse() { }
 
-    public SkillDeleteResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public SkillDeleteResponse(SkillDeleteResponse skillDeleteResponse)
+        : base(skillDeleteResponse) { }
+
+    public SkillDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    SkillDeleteResponse(FrozenDictionary<string, JsonElement> properties)
+    SkillDeleteResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="SkillDeleteResponseFromRaw.FromRawUnchecked"/>
     public static SkillDeleteResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class SkillDeleteResponseFromRaw : IFromRaw<SkillDeleteResponse>
+{
+    /// <inheritdoc/>
+    public SkillDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        SkillDeleteResponse.FromRawUnchecked(rawData);
 }

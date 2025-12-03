@@ -13,6 +13,11 @@ namespace Anthropic.Services.Beta;
 /// </summary>
 public interface IModelService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     global::Anthropic.Services.Beta.IModelService WithOptions(
         Func<ClientOptions, ClientOptions> modifier
     );
@@ -28,12 +33,7 @@ public interface IModelService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Get a specific model.
-    ///
-    /// <para>The Models API response can be used to determine information about a
-    /// specific model or resolve a model alias to a model ID.</para>
-    /// </summary>
+    /// <inheritdoc cref="Retrieve(ModelRetrieveParams, CancellationToken)"/>
     Task<BetaModelInfo> Retrieve(
         string modelID,
         ModelRetrieveParams? parameters = null,

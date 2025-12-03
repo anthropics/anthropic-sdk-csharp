@@ -12,8 +12,10 @@ using Anthropic.Services.Messages;
 
 namespace Anthropic.Services;
 
+/// <inheritdoc/>
 public sealed class MessageService : IMessageService
 {
+    /// <inheritdoc/>
     public IMessageService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new MessageService(this._client.WithOptions(modifier));
@@ -33,6 +35,7 @@ public sealed class MessageService : IMessageService
         get { return _batches.Value; }
     }
 
+    /// <inheritdoc/>
     public async Task<Message> Create(
         MessageCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -60,24 +63,18 @@ public sealed class MessageService : IMessageService
         return message;
     }
 
+    /// <inheritdoc/>
     public async IAsyncEnumerable<RawMessageStreamEvent> CreateStreaming(
         MessageCreateParams parameters,
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
-#if NET5_0_OR_GREATER
-        Dictionary<string, JsonElement> bodyProperties = new(parameters.BodyProperties)
-        {
-            ["stream"] = JsonSerializer.Deserialize<JsonElement>("true"),
-        };
-#else
-        var bodyProperties = parameters.BodyProperties.ToDictionary(e => e.Key, e => e.Value);
-        bodyProperties["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
-#endif
+        var rawBodyData = Enumerable.ToDictionary(parameters.RawBodyData, e => e.Key, e => e.Value);
+        rawBodyData["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
         parameters = MessageCreateParams.FromRawUnchecked(
-            parameters.HeaderProperties,
-            parameters.QueryProperties,
-            bodyProperties
+            parameters.RawHeaderData,
+            parameters.RawQueryData,
+            rawBodyData
         );
 
         HttpRequest<MessageCreateParams> request = new()
@@ -94,17 +91,19 @@ public sealed class MessageService : IMessageService
             )
             .Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
+        await foreach (
+            var message in Sse.Enumerate<RawMessageStreamEvent>(response.Message, cancellationToken)
+        )
         {
-            var deserializedMessage = message.Deserialize<RawMessageStreamEvent>();
             if (this._client.ResponseValidation)
             {
-                deserializedMessage.Validate();
+                message.Validate();
             }
-            yield return deserializedMessage;
+            yield return message;
         }
     }
 
+    /// <inheritdoc/>
     public async Task<MessageTokensCount> CountTokens(
         MessageCountTokensParams parameters,
         CancellationToken cancellationToken = default

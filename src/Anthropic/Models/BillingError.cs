@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,55 +8,22 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<BillingError>))]
-public sealed record class BillingError : ModelBase, IFromRaw<BillingError>
+[JsonConverter(typeof(ModelConverter<BillingError, BillingErrorFromRaw>))]
+public sealed record class BillingError : ModelBase
 {
     public required string Message
     {
-        get
-        {
-            if (!this._properties.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._properties["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -77,24 +43,28 @@ public sealed record class BillingError : ModelBase, IFromRaw<BillingError>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
     }
 
-    public BillingError(IReadOnlyDictionary<string, JsonElement> properties)
+    public BillingError(BillingError billingError)
+        : base(billingError) { }
+
+    public BillingError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BillingError(FrozenDictionary<string, JsonElement> properties)
+    BillingError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BillingError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    /// <inheritdoc cref="BillingErrorFromRaw.FromRawUnchecked"/>
+    public static BillingError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 
     [SetsRequiredMembers]
@@ -103,4 +73,11 @@ public sealed record class BillingError : ModelBase, IFromRaw<BillingError>
     {
         this.Message = message;
     }
+}
+
+class BillingErrorFromRaw : IFromRaw<BillingError>
+{
+    /// <inheritdoc/>
+    public BillingError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BillingError.FromRawUnchecked(rawData);
 }

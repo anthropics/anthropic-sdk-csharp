@@ -9,35 +9,16 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Models;
 
-[JsonConverter(typeof(ModelConverter<BetaModelInfo>))]
-public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
+[JsonConverter(typeof(ModelConverter<BetaModelInfo, BetaModelInfoFromRaw>))]
+public sealed record class BetaModelInfo : ModelBase
 {
     /// <summary>
     /// Unique model identifier.
     /// </summary>
     public required string ID
     {
-        get
-        {
-            if (!this._properties.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._properties["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -46,23 +27,8 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get
-        {
-            if (!this._properties.TryGetValue("created_at", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'created_at' cannot be null",
-                    new ArgumentOutOfRangeException("created_at", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<DateTimeOffset>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["created_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
+        init { ModelBase.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -70,27 +36,8 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
     /// </summary>
     public required string DisplayName
     {
-        get
-        {
-            if (!this._properties.TryGetValue("display_name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'display_name' cannot be null",
-                    new ArgumentOutOfRangeException("display_name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'display_name' cannot be null",
-                    new ArgumentNullException("display_name")
-                );
-        }
-        init
-        {
-            this._properties["display_name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "display_name"); }
+        init { ModelBase.Set(this._rawData, "display_name", value); }
     }
 
     /// <summary>
@@ -100,25 +47,11 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
     /// </summary>
     public JsonElement Type
     {
-        get
-        {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._properties["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -137,25 +70,34 @@ public sealed record class BetaModelInfo : ModelBase, IFromRaw<BetaModelInfo>
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
     }
 
-    public BetaModelInfo(IReadOnlyDictionary<string, JsonElement> properties)
+    public BetaModelInfo(BetaModelInfo betaModelInfo)
+        : base(betaModelInfo) { }
+
+    public BetaModelInfo(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaModelInfo(FrozenDictionary<string, JsonElement> properties)
+    BetaModelInfo(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static BetaModelInfo FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
-    )
+    /// <inheritdoc cref="BetaModelInfoFromRaw.FromRawUnchecked"/>
+    public static BetaModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class BetaModelInfoFromRaw : IFromRaw<BetaModelInfo>
+{
+    /// <inheritdoc/>
+    public BetaModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        BetaModelInfo.FromRawUnchecked(rawData);
 }
