@@ -12,15 +12,33 @@ namespace Anthropic.Bedrock;
 /// </remarks>
 public class AWSSigner
 {
-    public static string GetAuthorizationHeader(string service, string region, string httpMethod, Uri uri, DateTime now,
+    public static string GetAuthorizationHeader(
+        string service,
+        string region,
+        string httpMethod,
+        Uri uri,
+        DateTime now,
         string awsAccessKey,
         string awsSecretKey,
-        string? awsSessionToken = null)
+        string? awsSessionToken = null
+    )
     {
-        return GetAuthorizationHeader(service, region, httpMethod, uri, now, new Dictionary<string, string>(), CalculateHash(""), awsAccessKey, awsSecretKey, awsSessionToken);
+        return GetAuthorizationHeader(
+            service,
+            region,
+            httpMethod,
+            uri,
+            now,
+            new Dictionary<string, string>(),
+            CalculateHash(""),
+            awsAccessKey,
+            awsSecretKey,
+            awsSessionToken
+        );
     }
 
-    public static string GetAuthorizationHeader(string service,
+    public static string GetAuthorizationHeader(
+        string service,
         string region,
         string httpMethod,
         Uri uri,
@@ -29,7 +47,8 @@ public class AWSSigner
         string payloadHash,
         string awsAccessKey,
         string awsSecretKey,
-        string? awsSessionToken = null)
+        string? awsSessionToken = null
+    )
     {
         var ALGORITHM = "AWS4-HMAC-SHA256";
 
@@ -42,11 +61,12 @@ public class AWSSigner
             headers.Add("x-amz-security-token", awsSessionToken);
         }
 
-        // Create the canonical request        
+        // Create the canonical request
         var canonicalQuerystring = "";
         var canonicalHeaders = CanonicalizeHeaders(headers);
         var signedHeaders = CanonicalizeHeaderNames(headers);
-        var canonicalRequest = $"{httpMethod}\n{string.Join("/", uri.AbsolutePath.Split("/").Select(WebUtility.UrlEncode))}\n{canonicalQuerystring}\n{canonicalHeaders}\n{signedHeaders}\n{payloadHash}";
+        var canonicalRequest =
+            $"{httpMethod}\n{string.Join("/", uri.AbsolutePath.Split("/").Select(WebUtility.UrlEncode))}\n{canonicalQuerystring}\n{canonicalHeaders}\n{signedHeaders}\n{payloadHash}";
 
         // Create the string to sign
         var credentialScope = $"{datestamp}/{region}/{service}/aws4_request";
@@ -84,7 +104,10 @@ public class AWSSigner
     static string CanonicalizeHeaders(IDictionary<string, string> headers)
     {
         var canonicalHeaders = new StringBuilder();
-        var sortedHeaders = new SortedDictionary<string, string>(headers, StringComparer.OrdinalIgnoreCase);
+        var sortedHeaders = new SortedDictionary<string, string>(
+            headers,
+            StringComparer.OrdinalIgnoreCase
+        );
         foreach (var header in sortedHeaders)
         {
             canonicalHeaders.Append($"{header.Key.ToLowerInvariant()}:{header.Value.Trim()}\n");
@@ -92,7 +115,12 @@ public class AWSSigner
         return canonicalHeaders.ToString();
     }
 
-    static byte[] GetSignatureKey(string key, string dateStamp, string regionName, string serviceName)
+    static byte[] GetSignatureKey(
+        string key,
+        string dateStamp,
+        string regionName,
+        string serviceName
+    )
     {
         var kSecret = Encoding.UTF8.GetBytes($"AWS4{key}");
         var kDate = HmacSha256(kSecret, dateStamp);

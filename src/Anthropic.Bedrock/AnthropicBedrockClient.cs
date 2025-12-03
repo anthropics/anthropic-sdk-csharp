@@ -37,9 +37,11 @@ public class AnthropicBedrockClient : AnthropicClient
     /// Creates a new Instance of the <see cref="AnthropicBedrockClient"/>.
     /// </summary>
     /// <param name="bedrockCredentials">The credential Provider used to authenticate with the AWS Bedrock service.</param>
-    public AnthropicBedrockClient(IAnthropicBedrockCredentials bedrockCredentials) : base()
+    public AnthropicBedrockClient(IAnthropicBedrockCredentials bedrockCredentials)
+        : base()
     {
-        _bedrockCredentials = bedrockCredentials ?? throw new ArgumentNullException(nameof(bedrockCredentials));
+        _bedrockCredentials =
+            bedrockCredentials ?? throw new ArgumentNullException(nameof(bedrockCredentials));
         BaseUrl = new Uri($"https://{ServiceName}.{_bedrockCredentials.Region}.amazonaws.com");
     }
 
@@ -48,7 +50,11 @@ public class AnthropicBedrockClient : AnthropicClient
     /// </summary>
     public bool AsyncStreaming { get; set; }
 
-    private AnthropicBedrockClient(IAnthropicBedrockCredentials bedrockCredentials, ClientOptions clientOptions) : base(clientOptions)
+    private AnthropicBedrockClient(
+        IAnthropicBedrockCredentials bedrockCredentials,
+        ClientOptions clientOptions
+    )
+        : base(clientOptions)
     {
         _bedrockCredentials = bedrockCredentials;
     }
@@ -58,23 +64,35 @@ public class AnthropicBedrockClient : AnthropicClient
         return new AnthropicBedrockClient(_bedrockCredentials, modifier(this._options));
     }
 
-    protected override async ValueTask BeforeSend<T>(HttpRequest<T> request, HttpRequestMessage requestMessage, CancellationToken cancellationToken)
+    protected override async ValueTask BeforeSend<T>(
+        HttpRequest<T> request,
+        HttpRequestMessage requestMessage,
+        CancellationToken cancellationToken
+    )
     {
         ValidateRequest(requestMessage);
 
         if (requestMessage.Content is not null)
         {
-            var bodyContent = JsonNode.Parse(await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false));
+            var bodyContent = JsonNode.Parse(
+                await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false)
+            );
 
             if (bodyContent?["model"] == null)
             {
-                throw new AnthropicInvalidDataException("Expected to find property model in request json but found none.");
+                throw new AnthropicInvalidDataException(
+                    "Expected to find property model in request json but found none."
+                );
             }
 
-            var betaVersions = requestMessage.Headers.Contains(HEADER_ANTHROPIC_BETA) ? requestMessage.Headers.GetValues(HEADER_ANTHROPIC_BETA).Distinct().ToArray() : [];
+            var betaVersions = requestMessage.Headers.Contains(HEADER_ANTHROPIC_BETA)
+                ? requestMessage.Headers.GetValues(HEADER_ANTHROPIC_BETA).Distinct().ToArray()
+                : [];
             if (betaVersions is not { Length: 0 })
             {
-                bodyContent["anthropic_beta"] = new JsonArray(betaVersions.Select(v => JsonValue.Create(v)).ToArray());
+                bodyContent["anthropic_beta"] = new JsonArray(
+                    betaVersions.Select(v => JsonValue.Create(v)).ToArray()
+                );
             }
 
             bodyContent["anthropic_version"] = JsonValue.Create(AnthropicVersion);
@@ -83,7 +101,9 @@ public class AnthropicBedrockClient : AnthropicClient
 
             if (modelValue is null)
             {
-                throw new AnthropicInvalidDataException("Expected to find property model in request json but found none.");
+                throw new AnthropicInvalidDataException(
+                    "Expected to find property model in request json but found none."
+                );
             }
 
             bodyContent.Root.AsObject().Remove("model");
@@ -98,14 +118,21 @@ public class AnthropicBedrockClient : AnthropicClient
                 await writer.FlushAsync().ConfigureAwait(false);
             }
             contentStream.Seek(0, SeekOrigin.Begin);
-            requestMessage.Headers.TryAddWithoutValidation("content-length", contentStream.Length.ToString());
-            var url = $"{requestMessage.RequestUri.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue.ToString()}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
-            requestMessage.RequestUri = new Uri(url, new UriCreationOptions()
-            {
-                DangerousDisablePathAndQueryCanonicalization = true
-            });
+            requestMessage.Headers.TryAddWithoutValidation(
+                "content-length",
+                contentStream.Length.ToString()
+            );
+            var url =
+                $"{requestMessage.RequestUri.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue.ToString()}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
+            requestMessage.RequestUri = new Uri(
+                url,
+                new UriCreationOptions() { DangerousDisablePathAndQueryCanonicalization = true }
+            );
             requestMessage.Headers.TryAddWithoutValidation("Host", requestMessage.RequestUri.Host);
-            requestMessage.Headers.TryAddWithoutValidation("X-Amzn-Bedrock-Accept", "application/json");
+            requestMessage.Headers.TryAddWithoutValidation(
+                "X-Amzn-Bedrock-Accept",
+                "application/json"
+            );
             requestMessage.Headers.TryAddWithoutValidation("content-type", "application/json");
             if (parsedStreamValue)
             {
@@ -120,42 +147,70 @@ public class AnthropicBedrockClient : AnthropicClient
     {
         if (requestMessage.RequestUri is null)
         {
-            throw new AnthropicInvalidDataException("Request is missing required path segments. Expected > 1 segments found none.");
+            throw new AnthropicInvalidDataException(
+                "Request is missing required path segments. Expected > 1 segments found none."
+            );
         }
 
         if (requestMessage.RequestUri.Segments.Length < 1)
         {
-            throw new AnthropicInvalidDataException("Request is missing required path segments. Expected > 1 segments found none.");
+            throw new AnthropicInvalidDataException(
+                "Request is missing required path segments. Expected > 1 segments found none."
+            );
         }
 
         if (requestMessage.RequestUri.Segments[1].Trim('/') != "v1")
         {
-            throw new AnthropicInvalidDataException($"Request is missing required path segments. Expected [0] segment to be 'v1' found {requestMessage.RequestUri.Segments[0]}.");
+            throw new AnthropicInvalidDataException(
+                $"Request is missing required path segments. Expected [0] segment to be 'v1' found {requestMessage.RequestUri.Segments[0]}."
+            );
         }
 
-        if (requestMessage.RequestUri.Segments.Length >= 4 && requestMessage.RequestUri.Segments[2].Trim('/') is "messages" && requestMessage.RequestUri.Segments[3].Trim('/') is "batches" or "count_tokens")
+        if (
+            requestMessage.RequestUri.Segments.Length >= 4
+            && requestMessage.RequestUri.Segments[2].Trim('/') is "messages"
+            && requestMessage.RequestUri.Segments[3].Trim('/') is "batches" or "count_tokens"
+        )
         {
-            throw new AnthropicInvalidDataException($"The requested endpoint '{requestMessage.RequestUri.Segments[3].Trim('/')}' is not yet supported.");
+            throw new AnthropicInvalidDataException(
+                $"The requested endpoint '{requestMessage.RequestUri.Segments[3].Trim('/')}' is not yet supported."
+            );
         }
     }
 
-    protected override async ValueTask AfterSend<T>(HttpRequest<T> request, HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+    protected override async ValueTask AfterSend<T>(
+        HttpRequest<T> request,
+        HttpResponseMessage httpResponseMessage,
+        CancellationToken cancellationToken
+    )
     {
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             return;
         }
 
-        if (string.Equals(httpResponseMessage.Content.Headers.ContentType?.MediaType, CONTENT_TYPE_AWS_EVENT_STREAM, StringComparison.CurrentCultureIgnoreCase) != true)
+        if (
+            string.Equals(
+                httpResponseMessage.Content.Headers.ContentType?.MediaType,
+                CONTENT_TYPE_AWS_EVENT_STREAM,
+                StringComparison.CurrentCultureIgnoreCase
+            ) != true
+        )
         {
             return;
         }
 
         var headerPayloads = httpResponseMessage.Headers.GetValues(HEADER_PAYLOAD_CONTENT_TYPE);
 
-        if (!headerPayloads.Any(f => f.Equals("application/json", StringComparison.OrdinalIgnoreCase)))
+        if (
+            !headerPayloads.Any(f =>
+                f.Equals("application/json", StringComparison.OrdinalIgnoreCase)
+            )
+        )
         {
-            throw new AnthropicInvalidDataException($"Expected streaming bedrock events to have content type of application/json but found {string.Join(", ", headerPayloads)}");
+            throw new AnthropicInvalidDataException(
+                $"Expected streaming bedrock events to have content type of application/json but found {string.Join(", ", headerPayloads)}"
+            );
         }
 
         // A decoded AWS EventStream message's payload is JSON. It might look like this (abridged):
@@ -177,7 +232,9 @@ public class AnthropicBedrockClient : AnthropicClient
         // Print the SSE (with a blank line after) to the piped output stream to complete the
         // translation process.
 
-        var originalStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        var originalStream = await httpResponseMessage
+            .Content.ReadAsStreamAsync()
+            .ConfigureAwait(false);
         if (AsyncStreaming)
         {
             httpResponseMessage.Content = new AsyncSseEventContentWrapper(originalStream);
@@ -186,6 +243,9 @@ public class AnthropicBedrockClient : AnthropicClient
         {
             httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
         }
-        httpResponseMessage.Content.Headers.ContentType = new(CONTENT_TYPE_SSE_STREAM_MEDIA_TYPE, "utf-8");
+        httpResponseMessage.Content.Headers.ContentType = new(
+            CONTENT_TYPE_SSE_STREAM_MEDIA_TYPE,
+            "utf-8"
+        );
     }
 }

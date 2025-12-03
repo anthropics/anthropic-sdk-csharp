@@ -17,10 +17,7 @@ namespace Anthropic.Bedrock;
 /// </remarks>
 internal static class SseEventHelpers
 {
-    private static readonly JsonSerializerOptions? _jsonOptions = new()
-    {
-        WriteIndented = false
-    };
+    private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };
 
     public static async Task<bool> SyncStreamMessage(Stream source, Stream target)
     {
@@ -35,7 +32,7 @@ internal static class SseEventHelpers
 
     public static async Task<(string? Data, bool readData)> ReadStreamMessage(Stream source)
     {
-        /** 
+        /**
         events come in the form of the event stream.
         https://docs.aws.amazon.com/lexv2/latest/dg/event-stream-encoding.html
         |                Prelude                  |             |            Data                 |
@@ -52,19 +49,24 @@ internal static class SseEventHelpers
                 return (null, false);
             }
 
-            throw new InvalidDataException($"The preamble at position {source.Position} is invalid");
+            throw new InvalidDataException(
+                $"The preamble at position {source.Position} is invalid"
+            );
         }
 
-        if (!BinaryPrimitives.TryReadInt32BigEndian(preamble[0..4], out var totalLength) 
-            || !BinaryPrimitives.TryReadInt32BigEndian(preamble[4..8], out var headerLength) 
-            || totalLength <= 0 
-            || headerLength <= 0)
+        if (
+            !BinaryPrimitives.TryReadInt32BigEndian(preamble[0..4], out var totalLength)
+            || !BinaryPrimitives.TryReadInt32BigEndian(preamble[4..8], out var headerLength)
+            || totalLength <= 0
+            || headerLength <= 0
+        )
         {
             throw new InvalidDataException($"The preamble lengths are invalid");
         }
 
         // we dont care about headers so skip them
-        Span<byte> header = headerLength < 1024 ? stackalloc byte[headerLength] : new byte[headerLength];
+        Span<byte> header =
+            headerLength < 1024 ? stackalloc byte[headerLength] : new byte[headerLength];
         source.ReadExactly(header);
 
         // total length is without the preamble (8bytes) + preamble crc (4bytes) + headers but do not take the message crc (4 bytes)
@@ -79,7 +81,9 @@ internal static class SseEventHelpers
             source.ReadExactly(messageCrc); // advance 4 bytes for EOM crc sum
             if (!Crc32ChecksumValidation([.. preamble, .. header, .. messageSpan.Span], messageCrc))
             {
-                throw new InvalidDataException("The calculated crc checksum for the message content does not match the provided value from the server.");
+                throw new InvalidDataException(
+                    "The calculated crc checksum for the message content does not match the provided value from the server."
+                );
             }
             var result = await Parse(new ReadOnlySequence<byte>(messageSpan)).ConfigureAwait(false);
             return (result, true);
@@ -93,14 +97,23 @@ internal static class SseEventHelpers
     private static async Task<string?> Parse(ReadOnlySequence<byte> bodyData)
     {
         var reader = PipeReader.Create(bodyData);
-        var eventLine = await JsonSerializer.DeserializeAsync<JsonObject>(reader, _jsonOptions).ConfigureAwait(false);
+        var eventLine = await JsonSerializer
+            .DeserializeAsync<JsonObject>(reader, _jsonOptions)
+            .ConfigureAwait(false);
         var eventContents = eventLine?["bytes"]?.AsValue().GetValue<string>();
         if (string.IsNullOrWhiteSpace(eventContents))
         {
             return null;
         }
 
-        var parsedEvent = await JsonSerializer.DeserializeAsync<JsonObject>(PipeReader.Create(new ReadOnlySequence<byte>(Convert.FromBase64String(eventContents))), _jsonOptions).ConfigureAwait(false);
+        var parsedEvent = await JsonSerializer
+            .DeserializeAsync<JsonObject>(
+                PipeReader.Create(
+                    new ReadOnlySequence<byte>(Convert.FromBase64String(eventContents))
+                ),
+                _jsonOptions
+            )
+            .ConfigureAwait(false);
         if (parsedEvent is null)
         {
             return null;
@@ -109,7 +122,10 @@ internal static class SseEventHelpers
         return $"event:{parsedEvent["type"]}\ndata:{parsedEvent.ToJsonString(_jsonOptions)}\n\n"; // add double linebreaks at the end to force the StreamReader to emit an empty line for parsing.
     }
 
-    private static bool Crc32ChecksumValidation(ReadOnlySpan<byte> data, ReadOnlySpan<byte> checksum)
+    private static bool Crc32ChecksumValidation(
+        ReadOnlySpan<byte> data,
+        ReadOnlySpan<byte> checksum
+    )
     {
         var dataChecksum = CRC32.ComputeChecksum(data);
         var reference = BinaryPrimitives.ReadUInt32BigEndian(checksum);

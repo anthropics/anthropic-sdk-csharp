@@ -2,7 +2,11 @@ namespace Anthropic.Bedrock;
 
 public class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCredentials
 {
-    public AnthropicBedrockPrivateKeyCredentials(string apiSecret, string apiAccessKey, string region)
+    public AnthropicBedrockPrivateKeyCredentials(
+        string apiSecret,
+        string apiAccessKey,
+        string region
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(apiSecret, nameof(apiSecret));
         ArgumentException.ThrowIfNullOrWhiteSpace(apiAccessKey, nameof(apiAccessKey));
@@ -28,16 +32,21 @@ public class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCredential
         var payloadHash = AWSSigner.CalculateHash(content);
         requestMessage.Headers.TryAddWithoutValidation("x-amz-content-sha256", payloadHash);
 
-        var authorizationHeader = AWSSigner.GetAuthorizationHeader("bedrock",
+        var authorizationHeader = AWSSigner.GetAuthorizationHeader(
+            "bedrock",
             Region,
             requestMessage.Method.ToString(),
             requestMessage.RequestUri,
             now,
-            requestMessage.Headers.ToDictionary(e => e.Key, e => string.Join(" ", e.Value), StringComparer.InvariantCultureIgnoreCase),
+            requestMessage.Headers.ToDictionary(
+                e => e.Key,
+                e => string.Join(" ", e.Value),
+                StringComparer.InvariantCultureIgnoreCase
+            ),
             payloadHash,
             ApiAccessKey,
             ApiSecret
-            );
+        );
         // requestMessage.Headers.TryAddWithoutValidation("Host", requestMessage.RequestUri.Host);
         requestMessage.Headers.TryAddWithoutValidation("Authorization", authorizationHeader);
     }

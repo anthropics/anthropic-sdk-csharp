@@ -29,7 +29,7 @@ public interface IAnthropicBedrockCredentials
         {
             return new AnthropicBedrockApiTokenCredentials(token, region);
         }
-        
+
         var defaultIdentity = DefaultAWSCredentialsIdentityResolver.GetCredentials();
         if (defaultIdentity is null)
         {
@@ -47,6 +47,10 @@ public interface IAnthropicBedrockCredentials
             return new AnthropicBedrockApiTokenCredentials(defaultCreds.Token, region);
         }
 
-        return new AnthropicBedrockPrivateKeyCredentials(defaultCreds.SecretKey, defaultCreds.AccessKey, region);
+        return new AnthropicBedrockPrivateKeyCredentials(
+            defaultCreds.SecretKey,
+            defaultCreds.AccessKey,
+            region
+        );
     }
 }

@@ -23,7 +23,9 @@ internal class SseEventContentWrapper : HttpContent
         _originalStream = originalStream;
     }
 
-    protected override Task<Stream> CreateContentReadStreamAsync(CancellationToken cancellationToken)
+    protected override Task<Stream> CreateContentReadStreamAsync(
+        CancellationToken cancellationToken
+    )
     {
         return Task.FromResult<Stream>(new SseLazyEventStream(_originalStream));
     }
@@ -58,13 +60,16 @@ internal class SseEventContentWrapper : HttpContent
 
         public override long Position { get; set; }
 
-        public override void Flush()
-        {
-        }
+        public override void Flush() { }
 
-        public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+        public override async ValueTask<int> ReadAsync(
+            Memory<byte> buffer,
+            CancellationToken cancellationToken = default
+        )
         {
-            var (data, success) = await SseEventHelpers.ReadStreamMessage(_sourceStream).ConfigureAwait(false);
+            var (data, success) = await SseEventHelpers
+                .ReadStreamMessage(_sourceStream)
+                .ConfigureAwait(false);
             if (!success)
             {
                 return 0;

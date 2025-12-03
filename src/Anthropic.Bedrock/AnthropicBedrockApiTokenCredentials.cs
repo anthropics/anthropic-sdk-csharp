@@ -8,7 +8,7 @@ public class AnthropicBedrockApiTokenCredentials : IAnthropicBedrockCredentials
         ArgumentException.ThrowIfNullOrWhiteSpace(region, nameof(region));
 
         BearerToken = bearerToken;
-        Region = region;                
+        Region = region;
     }
 
     public string BearerToken { get; private set; }
@@ -17,7 +17,8 @@ public class AnthropicBedrockApiTokenCredentials : IAnthropicBedrockCredentials
 
     public Task Apply(HttpRequestMessage requestMessage)
     {
-        requestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", BearerToken);
+        requestMessage.Headers.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", BearerToken);
         return Task.CompletedTask;
     }
 }

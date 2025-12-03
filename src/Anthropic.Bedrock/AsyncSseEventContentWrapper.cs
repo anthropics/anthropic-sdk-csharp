@@ -22,28 +22,33 @@ internal class AsyncSseEventContentWrapper : HttpContent
         _originalStream = originalStream;
     }
 
-    protected override Task<Stream> CreateContentReadStreamAsync(CancellationToken cancellationToken)
+    protected override Task<Stream> CreateContentReadStreamAsync(
+        CancellationToken cancellationToken
+    )
     {
         var stream = new LimitedMemoryStream();
-        Task.Run(async () =>
-        {
-            try
+        Task.Run(
+            async () =>
             {
-                await SerializeToStreamAsync(stream, null).ConfigureAwait(false);
-            }
-            finally
-            {
-                stream.WriteComplete();
-            }
-        }, cancellationToken);
+                try
+                {
+                    await SerializeToStreamAsync(stream, null).ConfigureAwait(false);
+                }
+                finally
+                {
+                    stream.WriteComplete();
+                }
+            },
+            cancellationToken
+        );
         return Task.FromResult<Stream>(stream);
     }
 
     protected override async Task SerializeToStreamAsync(Stream stream, TransportContext? context)
     {
-        while (await SseEventHelpers.SyncStreamMessage(_originalStream, stream).ConfigureAwait(false))
-        {
-        }
+        while (
+            await SseEventHelpers.SyncStreamMessage(_originalStream, stream).ConfigureAwait(false)
+        ) { }
     }
 
     protected override bool TryComputeLength(out long length)
@@ -88,7 +93,10 @@ internal class AsyncSseEventContentWrapper : HttpContent
                 _readerWriterLockSlim.EnterReadLock();
                 try
                 {
-                    if (_dataStream.Length - Position >= count || _writeComplete.IsCancellationRequested)
+                    if (
+                        _dataStream.Length - Position >= count
+                        || _writeComplete.IsCancellationRequested
+                    )
                     {
                         break;
                     }
@@ -115,7 +123,10 @@ internal class AsyncSseEventContentWrapper : HttpContent
             }
         }
 
-        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+        public override ValueTask WriteAsync(
+            ReadOnlyMemory<byte> buffer,
+            CancellationToken cancellationToken = default
+        )
         {
             _readerWriterLockSlim.EnterWriteLock();
             try
@@ -144,9 +155,7 @@ internal class AsyncSseEventContentWrapper : HttpContent
             }
         }
 
-        public override void Flush()
-        {
-        }
+        public override void Flush() { }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
