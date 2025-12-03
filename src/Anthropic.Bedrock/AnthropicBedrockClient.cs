@@ -1,5 +1,4 @@
-using System.Net;
-using System.Text;
+using System.Buffers;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Anthropic.Core;
@@ -30,7 +29,7 @@ public class AnthropicBedrockClient : AnthropicClient
     /// The content type for Anthropic responses containing Bedrock data after it has been
     /// translated into the Server-Sent Events (SSE) stream format.
     /// </summary>
-    private const string CONTENT_TYPE_SSE_STREAM = "text/event-stream; charset=utf-8";
+    private const string CONTENT_TYPE_SSE_STREAM_MEDIA_TYPE = "text/event-stream";
 
     private readonly IAnthropicBedrockCredentials _bedrockCredentials;
 
@@ -43,6 +42,11 @@ public class AnthropicBedrockClient : AnthropicClient
         _bedrockCredentials = bedrockCredentials ?? throw new ArgumentNullException(nameof(bedrockCredentials));
         BaseUrl = new Uri($"https://{ServiceName}.{_bedrockCredentials.Region}.amazonaws.com");
     }
+
+    /// <summary>
+    /// When set to true Streaming endpoints are called async to the caller and are buffered in memory until consumed, when set to false data is requested from the server on demand.
+    /// </summary>
+    public bool AsyncStreaming { get; set; }
 
     private AnthropicBedrockClient(IAnthropicBedrockCredentials bedrockCredentials, ClientOptions clientOptions) : base(clientOptions)
     {
@@ -81,9 +85,10 @@ public class AnthropicBedrockClient : AnthropicClient
             {
                 throw new AnthropicInvalidDataException("Expected to find property model in request json but found none.");
             }
-            
+
             bodyContent.Root.AsObject().Remove("model");
             var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
+            bodyContent.Root.AsObject().Remove("stream");
 
             var contentStream = new MemoryStream();
             requestMessage.Content = new StreamContent(contentStream);
@@ -100,9 +105,13 @@ public class AnthropicBedrockClient : AnthropicClient
                 DangerousDisablePathAndQueryCanonicalization = true
             });
             requestMessage.Headers.TryAddWithoutValidation("Host", requestMessage.RequestUri.Host);
-            requestMessage.Headers.TryAddWithoutValidation("accept", "application/json");
+            requestMessage.Headers.TryAddWithoutValidation("X-Amzn-Bedrock-Accept", "application/json");
             requestMessage.Headers.TryAddWithoutValidation("content-type", "application/json");
-        }    
+            if (parsedStreamValue)
+            {
+                requestMessage.Headers.TryAddWithoutValidation("Accept-Encoding", "gzip");
+            }
+        }
 
         await _bedrockCredentials.Apply(requestMessage).ConfigureAwait(false);
     }
@@ -136,9 +145,8 @@ public class AnthropicBedrockClient : AnthropicClient
         {
             return;
         }
-        
-        if (httpResponseMessage.Content.Headers.ContentType?
-            .Parameters.Any(f => string.Equals(f.Value, CONTENT_TYPE_AWS_EVENT_STREAM, StringComparison.CurrentCultureIgnoreCase)) != true)
+
+        if (string.Equals(httpResponseMessage.Content.Headers.ContentType?.MediaType, CONTENT_TYPE_AWS_EVENT_STREAM, StringComparison.CurrentCultureIgnoreCase) != true)
         {
             return;
         }
@@ -170,65 +178,14 @@ public class AnthropicBedrockClient : AnthropicClient
         // translation process.
 
         var originalStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
-        httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
-        httpResponseMessage.Headers.Remove("Content-Type");
-        httpResponseMessage.Headers.TryAddWithoutValidation("Content-Type", CONTENT_TYPE_SSE_STREAM);
-    }
-
-    private class SseEventContentWrapper : HttpContent
-    {
-        private Stream _originalStream;
-
-        public SseEventContentWrapper(Stream originalStream)
+        if (AsyncStreaming)
         {
-            _originalStream = originalStream;
+            httpResponseMessage.Content = new AsyncSseEventContentWrapper(originalStream);
         }
-
-        protected override async Task SerializeToStreamAsync(Stream stream, TransportContext? context)
+        else
         {
-            var nodeOptions = new JsonNodeOptions();
-            var documentOption = new JsonDocumentOptions();
-            var eventBuilder = new StringBuilder();
-
-            using var streamReader = new StreamReader(_originalStream, true);
-            while (!streamReader.EndOfStream)
-            {
-                var line = await streamReader.ReadLineAsync().ConfigureAwait(false);
-                if (line is null)
-                {
-                    continue;
-                }
-
-                var eventLine = JsonNode.Parse(line, nodeOptions, documentOption);
-                var eventContents = eventLine?["bytes"]?.AsValue().GetValue<string>();
-                if (string.IsNullOrWhiteSpace(eventContents))
-                {
-                    continue;
-                }
-
-                var parsedEvent = JsonNode.Parse(Convert.FromBase64String(eventContents), nodeOptions, documentOption);
-                if (parsedEvent is null)
-                {
-                    continue;
-                }
-
-                eventBuilder.AppendLine($"event: {parsedEvent["type"]}\ndata: {parsedEvent}");
-
-                await stream.WriteAsync(Encoding.UTF8.GetBytes(eventBuilder.ToString())).ConfigureAwait(false);
-                eventBuilder.Clear();
-            }
+            httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
         }
-
-        protected override bool TryComputeLength(out long length)
-        {
-            length = -1;
-            return false;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _originalStream.Dispose();
-            base.Dispose(disposing);
-        }
+        httpResponseMessage.Content.Headers.ContentType = new(CONTENT_TYPE_SSE_STREAM_MEDIA_TYPE, "utf-8");
     }
 }
