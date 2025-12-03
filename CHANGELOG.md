@@ -1,6 +1,45 @@
 <<<<<<< HEAD
 # Changelog
 
+## 11.1.0 (2025-12-03)
+
+Full Changelog: [v11.0.0...v11.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v11.0.0...v11.1.0)
+
+### Features
+
+* **client:** improve some names ([8d28ac4](https://github.com/anthropics/anthropic-sdk-csharp/commit/8d28ac49a9a77b1486607c4fd4ddcfb40a138a3c))
+* **internal:** add additional object tests ([267ee6e](https://github.com/anthropics/anthropic-sdk-csharp/commit/267ee6eeaf5d4a957feb9aff1884362c9f579f5e))
+
+
+### Bug Fixes
+
+* **client:** check response status when `MaxRetries = 0` ([6e568ec](https://github.com/anthropics/anthropic-sdk-csharp/commit/6e568ec525ca23e933660c6fec61fc81c27f9f7c))
+* **client:** handling of null value type ([eb6a775](https://github.com/anthropics/anthropic-sdk-csharp/commit/eb6a775164392f1a55bdfecee3ac402b5a0fdd0a))
+* remove bad preprocessor directive ([9420cfd](https://github.com/anthropics/anthropic-sdk-csharp/commit/9420cfd8cb741c0e5c79491e04ed4ea6df284f52))
+
+
+### Chores
+
+* **ci:** lint and build examples ([#43](https://github.com/anthropics/anthropic-sdk-csharp/issues/43)) ([f482b0d](https://github.com/anthropics/anthropic-sdk-csharp/commit/f482b0d066c6e04053a7b53445c9f907fc406b25))
+* **internal:** add tests for constants ([25b6f4f](https://github.com/anthropics/anthropic-sdk-csharp/commit/25b6f4f526fdc2b268ac850f2d73cdb5d39cb685))
+* **internal:** equality and more unit tests ([f270a7e](https://github.com/anthropics/anthropic-sdk-csharp/commit/f270a7ecbef5fb86d1193b48ae957ac1f3b4f563))
+* **internal:** suppress diagnostic for .netstandard2.0 ([9ede62d](https://github.com/anthropics/anthropic-sdk-csharp/commit/9ede62de370abcad1fc1a5211700a6c967d360ca))
+* **internal:** suppress diagnostic for .netstandard2.0 ([1b0714d](https://github.com/anthropics/anthropic-sdk-csharp/commit/1b0714dc78ba2e69ab149d7cf768963379ec73e5))
+* **internal:** update csproj formatting ([6036c7f](https://github.com/anthropics/anthropic-sdk-csharp/commit/6036c7fa2683bc18299fa6d994b4cd117988d86a))
+* **internal:** update testing setup ([f97af3a](https://github.com/anthropics/anthropic-sdk-csharp/commit/f97af3a3ef1cd096b405052aec110f1c4c97f747))
+
+
+### Documentation
+
+* add link to nuget ([e2d6db0](https://github.com/anthropics/anthropic-sdk-csharp/commit/e2d6db005eb59d1f486e6b3519a613403adcf61f))
+* add more comments ([8ade211](https://github.com/anthropics/anthropic-sdk-csharp/commit/8ade21175fb18a01e79a8393e49ee163c50e9e94))
+
+
+### Refactors
+
+* **client:** use `System.Net.ServerSentEvents` ([b733f32](https://github.com/anthropics/anthropic-sdk-csharp/commit/b733f32912e9b5a0ff1bd90c9a56de8ba14950a2))
+* **internal:** share get/set logic ([eb6a775](https://github.com/anthropics/anthropic-sdk-csharp/commit/eb6a775164392f1a55bdfecee3ac402b5a0fdd0a))
+
 ## 11.0.0 (2025-12-01)
 
 Full Changelog: [v10.4.0...v11.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v10.4.0...v11.0.0)

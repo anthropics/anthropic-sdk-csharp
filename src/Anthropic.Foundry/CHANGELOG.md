@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.1 (2025-12-03)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/v0.1.0...v0.1.1)
+
+### Chores
+
+* fix ci ([#196](https://github.com/anthropics/anthropic-sdk-csharp/issues/196)) ([8dede61](https://github.com/anthropics/anthropic-sdk-csharp/commit/8dede6176cb86e1ae85db9c8d0fae50c595ef964))
+* **internal:** suppress diagnostic for .netstandard2.0 ([9ede62d](https://github.com/anthropics/anthropic-sdk-csharp/commit/9ede62de370abcad1fc1a5211700a6c967d360ca))
+* **internal:** suppress diagnostic for .netstandard2.0 ([1b0714d](https://github.com/anthropics/anthropic-sdk-csharp/commit/1b0714dc78ba2e69ab149d7cf768963379ec73e5))
+* sync with release-please ([2f5aa29](https://github.com/anthropics/anthropic-sdk-csharp/commit/2f5aa2992a2d462bb1f547efa09355e4f0b60656))
+* sync with release-please ([191236b](https://github.com/anthropics/anthropic-sdk-csharp/commit/191236bf5fb39092a2e2afc062e9cd222b859d2d))
+
 ## 0.1.0 (2025-12-01)
 
 Full Changelog: [v0.0.3...v0.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/v0.0.3...v0.1.0)
