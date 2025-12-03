@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
 
@@ -19,6 +20,85 @@ namespace Microsoft.Extensions.AI;
 
 public static class AnthropicBetaClientExtensions
 {
+    /// <summary>
+    /// Configures the <see cref="ChatOptions"/> to use the specified skills in a container.
+    /// </summary>
+    /// <param name="options">The chat options to configure.</param>
+    /// <param name="skills">The skills to load in the container.</param>
+    /// <returns>The same <see cref="ChatOptions"/> instance for method chaining.</returns>
+    /// <remarks>
+    /// <para>
+    /// This method sets the <see cref="ChatOptions.RawRepresentationFactory"/> to include the skills
+    /// in a container parameter. The factory creates a <see cref="MessageCreateParams"/> instance
+    /// with the specified skills and the required beta headers.
+    /// </para>
+    /// <para>
+    /// Skills allow Claude to use specialized capabilities like document creation (pptx, xlsx, docx, pdf)
+    /// or custom user-defined skills. Skills require the code execution tool to be enabled, which will
+    /// be automatically added if not already present in <see cref="ChatOptions.Tools"/>.
+    /// </para>
+    /// <para>
+    /// The following beta headers are automatically included:
+    /// <list type="bullet">
+    /// <item><description><c>code-execution-2025-08-25</c> - Enables code execution (required for Skills)</description></item>
+    /// <item><description><c>skills-2025-10-02</c> - Enables Skills API</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Example usage:
+    /// <code>
+    /// var options = new ChatOptions { ModelId = "claude-sonnet-4-5-20250929", MaxOutputTokens = 4096 }
+    ///     .WithSkills([
+    ///         new BetaSkillParams { Type = BetaSkillParamsType.Anthropic, SkillID = "pptx", Version = "latest" }
+    ///     ]);
+    /// </code>
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="options"/> or <paramref name="skills"/> is <see langword="null"/>.
+    /// </exception>
+    public static ChatOptions WithSkills(
+        this ChatOptions options,
+        IReadOnlyList<BetaSkillParams> skills
+    )
+    {
+        if (options is null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
+        if (skills is null)
+        {
+            throw new ArgumentNullException(nameof(skills));
+        }
+
+        options.RawRepresentationFactory = _ =>
+            new MessageCreateParams
+            {
+                Model =
+                    options.ModelId
+                    ?? throw new InvalidOperationException(
+                        "Model ID must be specified in ChatOptions when using WithSkills."
+                    ),
+                MaxTokens =
+                    options.MaxOutputTokens
+                    ?? throw new InvalidOperationException(
+                        "MaxOutputTokens must be specified in ChatOptions when using WithSkills."
+                    ),
+                Messages = [],
+                Container = new BetaContainerParams() { Skills = skills },
+                // Required beta headers for skills
+                Betas =
+                [
+                    "code-execution-2025-08-25", // Enables code execution (required for Skills)
+                    AnthropicBeta.Skills2025_10_02, // Enables Skills API
+                ],
+            };
+
+        return options;
+    }
+
+
     /// <summary>Gets an <see cref="IChatClient"/> for use with this <see cref="IBetaService"/>.</summary>
     /// <param name="betaService">The beta service.</param>
     /// <param name="defaultModelId">
@@ -1044,6 +1124,26 @@ public static class AnthropicBetaClientExtensions
                 }
 
                 createParams = createParams with { System = systemMessages };
+            }
+
+            // If skills are configured in the container, ensure the code execution tool is present
+            if (
+                createParams.Container is { } container
+                && container.TryPickBetaContainerParams(out var containerParams)
+                && containerParams.Skills is { Count: > 0 }
+            )
+            {
+                // Check if code execution tool is already present
+                bool hasCodeExecutionTool =
+                    createParams.Tools?.Any(t => t.Value is BetaCodeExecutionTool20250825) == true;
+
+                if (!hasCodeExecutionTool)
+                {
+                    createParams = createParams with
+                    {
+                        Tools = [.. createParams.Tools ?? [], new BetaCodeExecutionTool20250825()],
+                    };
+                }
             }
 
             return createParams;
