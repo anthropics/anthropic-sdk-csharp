@@ -1,7 +1,25 @@
 namespace Anthropic.Bedrock;
 
+/// <summary>
+/// Provides AWS private key-based credentials for authenticating requests to Amazon Bedrock's Anthropic models.
+/// </summary>
+/// <remarks>
+/// This class implements the AWS Signature Version 4 signing process to authenticate HTTP requests
+/// to Amazon Bedrock using AWS access key and secret key credentials. The credentials are applied
+/// to each request by adding the necessary AWS authentication headers including the authorization
+/// signature, date, and content hash.
+/// </remarks>
 public class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCredentials
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AnthropicBedrockPrivateKeyCredentials"/> class with the specified AWS credentials and region.
+    /// </summary>
+    /// <param name="apiSecret">The AWS secret access key used for authentication.</param>
+    /// <param name="apiAccessKey">The AWS access key ID used for authentication.</param>
+    /// <param name="region">The AWS region where the Bedrock service is hosted (e.g., "us-east-1").</param>
+    /// <exception cref="ArgumentException">
+    /// Thrown when <paramref name="apiSecret"/>, <paramref name="apiAccessKey"/>, or <paramref name="region"/> is null, empty, or contains only whitespace.
+    /// </exception>
     public AnthropicBedrockPrivateKeyCredentials(
         string apiSecret,
         string apiAccessKey,
@@ -17,12 +35,22 @@ public class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCredential
         ApiAccessKey = apiAccessKey;
     }
 
+    /// <summary>
+    /// Gets the Aws Region.
+    /// </summary>
     public string Region { get; private set; }
 
+    /// <summary>
+    /// Gets the ApiSecret.
+    /// </summary>
     public string ApiSecret { get; private set; }
 
+    /// <summary>
+    /// Gets the ApiKey.
+    /// </summary>
     public string ApiAccessKey { get; private set; }
 
+    // <inheritdoc />
     public async Task Apply(HttpRequestMessage requestMessage)
     {
         var now = DateTime.UtcNow;

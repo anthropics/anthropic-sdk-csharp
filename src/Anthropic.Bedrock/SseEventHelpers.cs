@@ -4,6 +4,7 @@ using System.IO.Pipelines;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Amazon.Runtime.Internal.Util;
 
 namespace Anthropic.Bedrock;
 
@@ -96,9 +97,8 @@ internal static class SseEventHelpers
 
     private static async Task<string?> Parse(ReadOnlySequence<byte> bodyData)
     {
-        var reader = PipeReader.Create(bodyData);
         var eventLine = await JsonSerializer
-            .DeserializeAsync<JsonObject>(reader, _jsonOptions)
+            .DeserializeAsync<JsonObject>(PipeReader.Create(bodyData), _jsonOptions)
             .ConfigureAwait(false);
         var eventContents = eventLine?["bytes"]?.AsValue().GetValue<string>();
         if (string.IsNullOrWhiteSpace(eventContents))

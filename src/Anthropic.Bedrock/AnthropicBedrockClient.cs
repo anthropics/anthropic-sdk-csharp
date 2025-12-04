@@ -6,30 +6,33 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Bedrock;
 
+/// <summary>
+/// Provides an Anthropic client implementation for AWS Bedrock integration.
+/// </summary>
 public class AnthropicBedrockClient : AnthropicClient
 {
     private const string ServiceName = "bedrock-runtime";
     private const string AnthropicVersion = "bedrock-2023-05-31";
-    private const string HEADER_ANTHROPIC_BETA = "anthropic-beta";
+    private const string HeaderAnthropicBeta = "anthropic-beta";
 
     /// <summary>
     /// The name of the header that identifies the content type for the "payloads" of AWS
     /// _EventStream_ messages in streaming responses from Bedrock.
     /// </summary>
-    private const string HEADER_PAYLOAD_CONTENT_TYPE = "x-amzn-bedrock-content-type";
+    private const string HeaderPayloadContentType = "x-amzn-bedrock-content-type";
 
     /// <summary>
     /// The content type for Bedrock responses containing data in the AWS _EventStream_ format.
     /// The value of the[HEADER_PAYLOAD_CONTENT_TYPE] header identifies the content type of the
     /// "payloads" in this stream.
     /// </summary>
-    private const string CONTENT_TYPE_AWS_EVENT_STREAM = "application/vnd.amazon.eventstream";
+    private const string ContentTypeAwsEventStream = "application/vnd.amazon.eventstream";
 
     /// <summary>
     /// The content type for Anthropic responses containing Bedrock data after it has been
     /// translated into the Server-Sent Events (SSE) stream format.
     /// </summary>
-    private const string CONTENT_TYPE_SSE_STREAM_MEDIA_TYPE = "text/event-stream";
+    private const string ContentTypeSseStreamMediaType = "text/event-stream";
 
     private readonly IAnthropicBedrockCredentials _bedrockCredentials;
 
@@ -59,11 +62,13 @@ public class AnthropicBedrockClient : AnthropicClient
         _bedrockCredentials = bedrockCredentials;
     }
 
+    // <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new AnthropicBedrockClient(_bedrockCredentials, modifier(this._options));
     }
 
+    // <inheritdoc />
     protected override async ValueTask BeforeSend<T>(
         HttpRequest<T> request,
         HttpRequestMessage requestMessage,
@@ -85,8 +90,8 @@ public class AnthropicBedrockClient : AnthropicClient
                 );
             }
 
-            var betaVersions = requestMessage.Headers.Contains(HEADER_ANTHROPIC_BETA)
-                ? requestMessage.Headers.GetValues(HEADER_ANTHROPIC_BETA).Distinct().ToArray()
+            var betaVersions = requestMessage.Headers.Contains(HeaderAnthropicBeta)
+                ? requestMessage.Headers.GetValues(HeaderAnthropicBeta).Distinct().ToArray()
                 : [];
             if (betaVersions is not { Length: 0 })
             {
@@ -178,6 +183,7 @@ public class AnthropicBedrockClient : AnthropicClient
         }
     }
 
+    // <inheritdoc />
     protected override async ValueTask AfterSend<T>(
         HttpRequest<T> request,
         HttpResponseMessage httpResponseMessage,
@@ -192,7 +198,7 @@ public class AnthropicBedrockClient : AnthropicClient
         if (
             string.Equals(
                 httpResponseMessage.Content.Headers.ContentType?.MediaType,
-                CONTENT_TYPE_AWS_EVENT_STREAM,
+                ContentTypeAwsEventStream,
                 StringComparison.CurrentCultureIgnoreCase
             ) != true
         )
@@ -200,7 +206,7 @@ public class AnthropicBedrockClient : AnthropicClient
             return;
         }
 
-        var headerPayloads = httpResponseMessage.Headers.GetValues(HEADER_PAYLOAD_CONTENT_TYPE);
+        var headerPayloads = httpResponseMessage.Headers.GetValues(HeaderPayloadContentType);
 
         if (
             !headerPayloads.Any(f =>
@@ -244,7 +250,7 @@ public class AnthropicBedrockClient : AnthropicClient
             httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
         }
         httpResponseMessage.Content.Headers.ContentType = new(
-            CONTENT_TYPE_SSE_STREAM_MEDIA_TYPE,
+            ContentTypeSseStreamMediaType,
             "utf-8"
         );
     }
