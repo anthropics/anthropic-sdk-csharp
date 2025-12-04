@@ -80,7 +80,7 @@ public static class AnthropicBetaClientExtensions
             throw new ArgumentNullException(nameof(tool));
         }
 
-        return new ToolUnionAITool(tool);
+        return new BetaToolUnionAITool(tool);
     }
 
     private sealed class AnthropicChatClient(
@@ -812,6 +812,11 @@ public static class AnthropicBetaClientExtensions
                 };
             }
 
+            HashSet<string>? betaHeaders = createParams.Betas is { Count: > 0 } ?
+                [.. createParams.Betas] :
+                null;
+            int originalBetaHeadersCount = betaHeaders?.Count ?? 0;
+
             if (options is not null)
             {
                 if (options.Instructions is { } instructions)
@@ -892,7 +897,7 @@ public static class AnthropicBetaClientExtensions
                     {
                         switch (tool)
                         {
-                            case ToolUnionAITool raw:
+                            case BetaToolUnionAITool raw:
                                 (createdTools ??= []).Add(raw.Tool);
                                 break;
 
@@ -971,10 +976,12 @@ public static class AnthropicBetaClientExtensions
                                 break;
 
                             case HostedCodeInterpreterTool:
+                                (betaHeaders ??= []).Add("code-execution-2025-08-25");
                                 (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
                                 break;
 
                             case HostedMcpServerTool mcp:
+                                (betaHeaders ??= []).Add("mcp-client-2025-11-20");
                                 (mcpServers ??= []).Add(
                                     mcp.AllowedTools is { Count: > 0 } allowedTools
                                         ? new()
@@ -1046,6 +1053,11 @@ public static class AnthropicBetaClientExtensions
                 }
 
                 createParams = createParams with { System = systemMessages };
+            }
+
+            if (betaHeaders is not null && betaHeaders.Count != originalBetaHeadersCount)
+            {
+                createParams = createParams with { Betas = [.. betaHeaders] };
             }
 
             return createParams;
@@ -1345,7 +1357,7 @@ public static class AnthropicBetaClientExtensions
         }
     }
 
-    private sealed class ToolUnionAITool(BetaToolUnion tool) : AITool
+    private sealed class BetaToolUnionAITool(BetaToolUnion tool) : AITool
     {
         public BetaToolUnion Tool => tool;
 

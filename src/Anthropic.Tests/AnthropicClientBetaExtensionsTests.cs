@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Anthropic;
@@ -1964,5 +1965,148 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
 
         HostedFileContent fileOutput2 = Assert.IsType<HostedFileContent>(codeResult.Outputs[2]);
         Assert.Equal("file_bash_456", fileOutput2.FileId);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithHostedTools_AddsBetaHeaders()
+    {
+        IEnumerable<string>? capturedBetaHeaders = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Use both tools"
+                    }]
+                }],
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }],
+                "mcp_servers": [{
+                    "name": "mcp",
+                    "type": "url",
+                    "url": "https://mcp.example.com/server"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_both_beta_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "I have access to both tools."
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 10
+                }
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers => headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            Tools =
+            [
+                new HostedCodeInterpreterTool(),
+                new HostedMcpServerTool("my-mcp-server", new Uri("https://mcp.example.com/server")),
+            ],
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync("Use both tools", options);
+        Assert.NotNull(response);
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Contains("code-execution-2025-08-25", capturedBetaHeaders);
+        Assert.Contains("mcp-client-2025-11-20", capturedBetaHeaders);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithHostedToolsAndExistingBetas_PreservesAndDeduplicatesBetas()
+    {
+        IEnumerable<string>? capturedBetaHeaders = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }],
+                "tools": [{
+                    "type": "code_execution_20250825",
+                    "name": "code_execution"
+                }],
+                "mcp_servers": [{
+                    "name": "mcp",
+                    "type": "url",
+                    "url": "https://mcp.example.com/server"
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_preserve_beta_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers => headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                Betas = ["custom-beta-feature", "code-execution-2025-08-25"],
+            },
+            Tools =
+            [
+                new HostedCodeInterpreterTool(),
+                new HostedMcpServerTool("my-mcp-server", new Uri("https://mcp.example.com/server")),
+            ],
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync("Test", options);
+        Assert.NotNull(response);
+        Assert.NotNull(capturedBetaHeaders);
+        Assert.Equal(3, capturedBetaHeaders.Count());
+        Assert.Contains("custom-beta-feature", capturedBetaHeaders);
+        Assert.Contains("code-execution-2025-08-25", capturedBetaHeaders);
+        Assert.Contains("mcp-client-2025-11-20", capturedBetaHeaders);
     }
 }
