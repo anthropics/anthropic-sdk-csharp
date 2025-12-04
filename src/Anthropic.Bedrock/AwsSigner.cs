@@ -10,7 +10,7 @@ namespace Anthropic.Bedrock;
 /// <remarks>
 /// Taken from: https://github.com/aws-samples/sigv4-signing-examples/blob/main/no-sdk/dotnet/AWSSigner.cs
 /// </remarks>
-public class AWSSigner
+public static class AWSSigner
 {
     public static string GetAuthorizationHeader(
         string service,
