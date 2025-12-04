@@ -38,17 +38,17 @@ public class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCredential
     /// <summary>
     /// Gets the Aws Region.
     /// </summary>
-    public string Region { get; private set; }
+    public string Region { get; private init; }
 
     /// <summary>
     /// Gets the ApiSecret.
     /// </summary>
-    public string ApiSecret { get; private set; }
+    public string ApiSecret { get; private init; }
 
     /// <summary>
     /// Gets the ApiKey.
     /// </summary>
-    public string ApiAccessKey { get; private set; }
+    public string ApiAccessKey { get; private init; }
 
     // <inheritdoc />
     public async Task Apply(HttpRequestMessage requestMessage)
