@@ -95,7 +95,7 @@ public class AWSSigner
         foreach (var header in headersToSign)
         {
             if (sb.Length > 0)
-                sb.Append(";");
+                sb.Append(';');
             sb.Append(header.ToLower());
         }
         return sb.ToString();
@@ -132,20 +132,31 @@ public class AWSSigner
     static string CalculateHmacHex(byte[] key, string data)
     {
         var hash = HmacSha256(key, data);
+#if NET
+        return Convert.ToHexStringLower(hash).Replace("-", "");
+#else
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+#endif
     }
 
     static byte[] HmacSha256(byte[] key, string data)
     {
-        using HMACSHA256 hmac = new HMACSHA256(key);
+        using HMACSHA256 hmac = new(key);
         return hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
     }
 
     public static string CalculateHash(string data)
     {
+#if NET
+        return Convert
+            .ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(data)))
+            .Replace("-", "");
+#else
         using SHA256 sha256 = SHA256.Create();
         var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
+
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+#endif
     }
 
     public static string ToHexString(byte[] data, bool lowercase)

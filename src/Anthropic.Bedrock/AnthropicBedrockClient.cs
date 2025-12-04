@@ -75,7 +75,13 @@ public class AnthropicBedrockClient : AnthropicClient
         if (requestMessage.Content is not null)
         {
             var bodyContent = JsonNode.Parse(
+#if NET
+                await requestMessage
+                    .Content!.ReadAsStringAsync(cancellationToken)
+                    .ConfigureAwait(false)
+#else
                 await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false)
+#endif
             );
 
             if (bodyContent?["model"] == null)
@@ -91,21 +97,17 @@ public class AnthropicBedrockClient : AnthropicClient
             if (betaVersions is not { Length: 0 })
             {
                 bodyContent["anthropic_beta"] = new JsonArray(
-                    betaVersions.Select(v => JsonValue.Create(v)).ToArray()
+                    [.. betaVersions.Select(v => JsonValue.Create(v))]
                 );
             }
 
             bodyContent["anthropic_version"] = JsonValue.Create(AnthropicVersion);
 
-            var modelValue = bodyContent["model"];
-
-            if (modelValue is null)
-            {
-                throw new AnthropicInvalidDataException(
+            var modelValue =
+                bodyContent["model"]
+                ?? throw new AnthropicInvalidDataException(
                     "Expected to find property model in request json but found none."
                 );
-            }
-
             bodyContent.Root.AsObject().Remove("model");
             var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
             bodyContent.Root.AsObject().Remove("stream");
@@ -115,7 +117,7 @@ public class AnthropicBedrockClient : AnthropicClient
             using var writer = new Utf8JsonWriter(contentStream);
             {
                 bodyContent.WriteTo(writer);
-                await writer.FlushAsync().ConfigureAwait(false);
+                await writer.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
             contentStream.Seek(0, SeekOrigin.Begin);
             requestMessage.Headers.TryAddWithoutValidation(
@@ -123,7 +125,7 @@ public class AnthropicBedrockClient : AnthropicClient
                 contentStream.Length.ToString()
             );
             var strUri =
-                $"{requestMessage.RequestUri.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue.ToString()}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
+                $"{requestMessage.RequestUri.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
 
 #if NET8_0_OR_GREATER
             // The UriCreationOptions and DangerousDisablePathAndQueryCanonicalization were added in .NET 6 and allows
@@ -249,7 +251,11 @@ public class AnthropicBedrockClient : AnthropicClient
         // translation process.
 
         var originalStream = await httpResponseMessage
+#if NET
+            .Content.ReadAsStreamAsync(cancellationToken)
+#else
             .Content.ReadAsStreamAsync()
+#endif
             .ConfigureAwait(false);
         httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
 #if NET

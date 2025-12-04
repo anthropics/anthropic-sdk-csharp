@@ -75,7 +75,7 @@ public class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCredential
             ApiAccessKey,
             ApiSecret
         );
-        
+
         requestMessage.Headers.TryAddWithoutValidation("Authorization", authorizationHeader);
     }
 }
