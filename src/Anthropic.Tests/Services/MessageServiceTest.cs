@@ -44,7 +44,7 @@ public class MessageServiceTest
         {
             message.Validate();
         }
-    }  
+    }
 
     [Theory]
     [AnthropicTestClients]

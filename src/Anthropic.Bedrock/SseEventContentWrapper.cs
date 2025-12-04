@@ -22,6 +22,7 @@ internal class SseEventContentWrapper : HttpContent
     {
         _originalStream = originalStream;
     }
+
 #if NET
     protected override Task<Stream> CreateContentReadStreamAsync(
         CancellationToken cancellationToken
@@ -67,6 +68,7 @@ internal class SseEventContentWrapper : HttpContent
         public override long Position { get; set; }
 
         public override void Flush() { }
+
 #if NET
         public override async ValueTask<int> ReadAsync(
             Memory<byte> buffer,
@@ -86,7 +88,12 @@ internal class SseEventContentWrapper : HttpContent
             return encodedData.Length;
         }
 #else
-        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        public override async Task<int> ReadAsync(
+            byte[] buffer,
+            int offset,
+            int count,
+            CancellationToken cancellationToken
+        )
         {
             var (data, success) = await SseEventHelpers
                 .ReadStreamMessage(_sourceStream, cancellationToken)

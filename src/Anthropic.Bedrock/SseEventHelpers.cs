@@ -19,18 +19,28 @@ internal static class SseEventHelpers
 {
     private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };
 
-    public static async Task<bool> SyncStreamMessage(Stream source, Stream target, CancellationToken cancellationToken)
+    public static async Task<bool> SyncStreamMessage(
+        Stream source,
+        Stream target,
+        CancellationToken cancellationToken
+    )
     {
-        var (data, success) = await ReadStreamMessage(source, cancellationToken).ConfigureAwait(false);
+        var (data, success) = await ReadStreamMessage(source, cancellationToken)
+            .ConfigureAwait(false);
         if (!success)
         {
             return false;
         }
-        await target.WriteAsync(Encoding.UTF8.GetBytes(data!), cancellationToken).ConfigureAwait(false);
+        await target
+            .WriteAsync(Encoding.UTF8.GetBytes(data!), cancellationToken)
+            .ConfigureAwait(false);
         return true;
     }
 
-    public static async Task<(string? Data, bool readData)> ReadStreamMessage(Stream source, CancellationToken cancellationToken)
+    public static async Task<(string? Data, bool readData)> ReadStreamMessage(
+        Stream source,
+        CancellationToken cancellationToken
+    )
     {
         /**
         events come in the form of the event stream.
@@ -85,7 +95,8 @@ internal static class SseEventHelpers
                     "The calculated crc checksum for the message content does not match the provided value from the server."
                 );
             }
-            var result = await Parse(new ReadOnlySequence<byte>(messageSpan), cancellationToken).ConfigureAwait(false);
+            var result = await Parse(new ReadOnlySequence<byte>(messageSpan), cancellationToken)
+                .ConfigureAwait(false);
             return (result, true);
         } // do not catch the EndOfStream exception here as its still unexpected to happen here and should bubble up
         finally
@@ -94,10 +105,17 @@ internal static class SseEventHelpers
         }
     }
 
-    private static async Task<string?> Parse(ReadOnlySequence<byte> bodyData, CancellationToken cancellationToken)
+    private static async Task<string?> Parse(
+        ReadOnlySequence<byte> bodyData,
+        CancellationToken cancellationToken
+    )
     {
         var eventLine = await JsonSerializer
-            .DeserializeAsync<JsonObject>(PipeReader.Create(bodyData), _jsonOptions, cancellationToken)
+            .DeserializeAsync<JsonObject>(
+                PipeReader.Create(bodyData),
+                _jsonOptions,
+                cancellationToken
+            )
             .ConfigureAwait(false);
         var eventContents = eventLine?["bytes"]?.AsValue().GetValue<string>();
         if (string.IsNullOrWhiteSpace(eventContents))

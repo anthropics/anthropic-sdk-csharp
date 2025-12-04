@@ -46,9 +46,11 @@ namespace System.Shims
     {
         public static void ThrowIfNullOrWhiteSpace(string? value, string fieldName)
         {
-            if(string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrWhiteSpace(value))
             {
-                throw new System.ArgumentException($"The parameter '{fieldName}' should be not null or an empty string but was either.");
+                throw new System.ArgumentException(
+                    $"The parameter '{fieldName}' should be not null or an empty string but was either."
+                );
             }
         }
     }

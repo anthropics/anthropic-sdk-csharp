@@ -19,7 +19,7 @@ public interface IAnthropicBedrockCredentials
     /// <param name="requestMessage">The <see cref="HttpRequestMessage"/> to authenticate.</param>
     /// <returns>A task that resolves once the request has been modified.</returns>
     public Task Apply(HttpRequestMessage requestMessage);
-    
+
 #if NET
     public static async ValueTask<IAnthropicBedrockCredentials?> FromEnv()
     {

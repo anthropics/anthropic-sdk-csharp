@@ -6,9 +6,15 @@ using System.Buffers;
 /// </summary>
 internal static class StreamExtensions
 {
-    public static ValueTask WriteAsync(this Stream stream, Span<byte> bytes, CancellationToken cancellationToken)
+    public static ValueTask WriteAsync(
+        this Stream stream,
+        Span<byte> bytes,
+        CancellationToken cancellationToken
+    )
     {
-        return new ValueTask(stream.WriteAsync(bytes.ToArray(), 0, bytes.Length, cancellationToken));
+        return new ValueTask(
+            stream.WriteAsync(bytes.ToArray(), 0, bytes.Length, cancellationToken)
+        );
     }
 
     /// <summary>
@@ -25,7 +31,12 @@ internal static class StreamExtensions
         _ = stream.ReadAtLeastCore(buffer, buffer.Length, throwOnEndOfStream: true);
 
     // No argument checking is done here. It is up to the caller.
-    private static int ReadAtLeastCore(this Stream stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream)
+    private static int ReadAtLeastCore(
+        this Stream stream,
+        Span<byte> buffer,
+        int minimumBytes,
+        bool throwOnEndOfStream
+    )
     {
         int totalRead = 0;
         while (totalRead < minimumBytes)
