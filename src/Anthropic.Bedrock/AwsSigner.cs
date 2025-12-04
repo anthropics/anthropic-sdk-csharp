@@ -132,8 +132,8 @@ public class AWSSigner
     static string CalculateHmacHex(byte[] key, string data)
     {
         var hash = HmacSha256(key, data);
-#if NET
-        return Convert.ToHexStringLower(hash).Replace("-", "");
+#if NET9_0_OR_GREATER
+        return System.Convert.ToHexStringLower(hash).Replace("-", "");
 #else
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
 #endif
@@ -147,7 +147,7 @@ public class AWSSigner
 
     public static string CalculateHash(string data)
     {
-#if NET
+#if NET9_0_OR_GREATER
         return Convert
             .ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(data)))
             .Replace("-", "");

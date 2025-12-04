@@ -31,12 +31,12 @@ public class AnthropicBedrockApiTokenCredentials : IAnthropicBedrockCredentials
     /// <value>
     /// A string representing the bearer token. This value is set privately and can only be modified within the class.
     /// </value>
-    public string BearerToken { get; private set; }
+    public string BearerToken { get; private init; }
 
     /// <summary>
     /// Gets the AWS region.
     /// </summary>
-    public string Region { get; private set; }
+    public string Region { get; private init; }
 
     // <inheritdoc />
     public Task Apply(HttpRequestMessage requestMessage)
