@@ -21,83 +21,70 @@ namespace Microsoft.Extensions.AI;
 public static class AnthropicBetaClientExtensions
 {
     /// <summary>
-    /// Configures the <see cref="ChatOptions"/> to use the specified skills in a container.
+    /// An <see cref="AITool"/> that wraps a <see cref="BetaSkillParams"/> for use with the Anthropic Skills API.
     /// </summary>
-    /// <param name="options">The chat options to configure.</param>
-    /// <param name="skills">The skills to load in the container.</param>
-    /// <returns>The same <see cref="ChatOptions"/> instance for method chaining.</returns>
+    /// <remarks>
+    /// This tool is used internally to carry skill configuration through the MEAI tools pipeline.
+    /// When detected by the <see cref="IChatClient"/> returned by <see cref="AsIChatClient"/>,
+    /// it will automatically configure the container with skills, add required beta headers,
+    /// and ensure the code execution tool is present.
+    /// </remarks>
+    internal sealed class HostedSkillTool(BetaSkillParams skillParams) : AITool
+    {
+        /// <summary>
+        /// The parameters defining the skill.
+        /// </summary>
+        public BetaSkillParams SkillParams { get; } = skillParams;
+
+        /// <inheritdoc />
+        public override string Name => SkillParams.SkillID;
+    }
+
+    /// <summary>
+    /// Creates an <see cref="AITool"/> to represent a skill for use with the Anthropic Skills API.
+    /// </summary>
+    /// <param name="skillParams">The skill parameters to wrap as an <see cref="AITool"/>.</param>
+    /// <returns>The <paramref name="skillParams"/> wrapped as an <see cref="AITool"/>.</returns>
     /// <remarks>
     /// <para>
-    /// This method sets the <see cref="ChatOptions.RawRepresentationFactory"/> to include the skills
-    /// in a container parameter. The factory creates a <see cref="MessageCreateParams"/> instance
-    /// with the specified skills and the required beta headers.
+    /// The returned tool is only suitable for use with the <see cref="IChatClient"/> returned by
+    /// <see cref="AsIChatClient"/> (or <see cref="IChatClient"/>s that delegate
+    /// to such an instance). It is likely to be ignored by any other <see cref="IChatClient"/> implementation.
     /// </para>
     /// <para>
-    /// Skills allow Claude to use specialized capabilities like document creation (pptx, xlsx, docx, pdf)
-    /// or custom user-defined skills. Skills require the code execution tool to be enabled, which will
-    /// be automatically added if not already present in <see cref="ChatOptions.Tools"/>.
-    /// </para>
-    /// <para>
-    /// The following beta headers are automatically included:
+    /// When this tool is included in <see cref="ChatOptions.Tools"/>, the <see cref="IChatClient"/> will automatically:
     /// <list type="bullet">
-    /// <item><description><c>code-execution-2025-08-25</c> - Enables code execution (required for Skills)</description></item>
-    /// <item><description><c>skills-2025-10-02</c> - Enables Skills API</description></item>
+    /// <item><description>Configure the container with the skill(s)</description></item>
+    /// <item><description>Add the required beta headers (<c>code-execution-2025-08-25</c> and <c>skills-2025-10-02</c>)</description></item>
+    /// <item><description>Add the code execution tool if not already present</description></item>
     /// </list>
     /// </para>
     /// <para>
     /// Example usage:
     /// <code>
-    /// var options = new ChatOptions { ModelId = "claude-sonnet-4-5-20250929", MaxOutputTokens = 4096 }
-    ///     .WithSkills([
-    ///         new BetaSkillParams { Type = BetaSkillParamsType.Anthropic, SkillID = "pptx", Version = "latest" }
-    ///     ]);
+    /// var options = new ChatOptions
+    /// {
+    ///     ModelId = "claude-sonnet-4-5-20250929",
+    ///     MaxOutputTokens = 4096,
+    ///     Tools =
+    ///     [
+    ///         new BetaSkillParams { Type = BetaSkillParamsType.Anthropic, SkillID = "pptx", Version = "latest" }.AsAITool(),
+    ///         new BetaSkillParams { Type = BetaSkillParamsType.Anthropic, SkillID = "xlsx", Version = "latest" }.AsAITool(),
+    ///     ]
+    /// };
     /// </code>
     /// </para>
     /// </remarks>
-    /// <exception cref="ArgumentNullException">
-    /// <paramref name="options"/> or <paramref name="skills"/> is <see langword="null"/>.
-    /// </exception>
-    public static ChatOptions WithSkills(
-        this ChatOptions options,
-        IReadOnlyList<BetaSkillParams> skills
-    )
+    /// <exception cref="ArgumentNullException"><paramref name="skillParams"/> is <see langword="null"/>.</exception>
+    public static AITool AsAITool(this BetaSkillParams skillParams)
     {
-        if (options is null)
+        if (skillParams is null)
         {
-            throw new ArgumentNullException(nameof(options));
+            throw new ArgumentNullException(nameof(skillParams));
         }
 
-        if (skills is null)
-        {
-            throw new ArgumentNullException(nameof(skills));
-        }
-
-        options.RawRepresentationFactory = _ =>
-            new MessageCreateParams
-            {
-                Model =
-                    options.ModelId
-                    ?? throw new InvalidOperationException(
-                        "Model ID must be specified in ChatOptions when using WithSkills."
-                    ),
-                MaxTokens =
-                    options.MaxOutputTokens
-                    ?? throw new InvalidOperationException(
-                        "MaxOutputTokens must be specified in ChatOptions when using WithSkills."
-                    ),
-                Messages = [],
-                Container = new BetaContainerParams() { Skills = skills },
-                // Required beta headers for skills
-                Betas =
-                [
-                    "code-execution-2025-08-25", // Enables code execution (required for Skills)
-                    AnthropicBeta.Skills2025_10_02, // Enables Skills API
-                ],
-            };
-
-        return options;
+        return new HostedSkillTool(skillParams);
     }
-
 
     /// <summary>Gets an <see cref="IChatClient"/> for use with this <see cref="IBetaService"/>.</summary>
     /// <param name="betaService">The beta service.</param>
@@ -966,10 +953,15 @@ public static class AnthropicBetaClientExtensions
                     List<BetaToolUnion>? createdTools = createParams.Tools?.ToList();
                     List<BetaRequestMCPServerURLDefinition>? mcpServers =
                         createParams.MCPServers?.ToList();
+                    List<BetaSkillParams>? skills = null;
                     foreach (var tool in tools)
                     {
                         switch (tool)
                         {
+                            case HostedSkillTool skillTool:
+                                (skills ??= []).Add(skillTool.SkillParams);
+                                break;
+
                             case ToolUnionAITool raw:
                                 (createdTools ??= []).Add(raw.Tool);
                                 break;
@@ -1079,6 +1071,55 @@ public static class AnthropicBetaClientExtensions
                     if (mcpServers?.Count > 0)
                     {
                         createParams = createParams with { MCPServers = mcpServers };
+                    }
+
+                    // If skills were specified via HostedSkillTool, configure the container and beta headers
+                    if (skills?.Count > 0)
+                    {
+                        // Merge with any existing skills in the container
+                        if (
+                            createParams.Container is { } existingContainer
+                            && existingContainer.TryPickBetaContainerParams(
+                                out var existingContainerParams
+                            )
+                            && existingContainerParams.Skills is { Count: > 0 } existingSkills
+                        )
+                        {
+                            skills.InsertRange(0, existingSkills);
+                        }
+
+                        createParams = createParams with
+                        {
+                            Container = new BetaContainerParams() { Skills = skills },
+                        };
+
+                        // Add required beta headers for skills
+                        List<ApiEnum<string, AnthropicBeta>> betas =
+                            createParams.Betas?.ToList() ?? [];
+                        if (!betas.Any(b => b.Raw() == "code-execution-2025-08-25"))
+                        {
+                            betas.Add("code-execution-2025-08-25");
+                        }
+                        if (
+                            !betas.Any(b =>
+                                b.Value() == AnthropicBeta.Skills2025_10_02
+                                || b.Raw() == "skills-2025-10-02"
+                            )
+                        )
+                        {
+                            betas.Add(AnthropicBeta.Skills2025_10_02);
+                        }
+                        createParams = createParams with { Betas = betas };
+
+                        // Ensure code execution tool is present
+                        bool hasCodeExecutionTool =
+                            createdTools?.Any(t => t.Value is BetaCodeExecutionTool20250825)
+                            == true;
+                        if (!hasCodeExecutionTool)
+                        {
+                            (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
+                            createParams = createParams with { Tools = createdTools };
+                        }
                     }
                 }
 
