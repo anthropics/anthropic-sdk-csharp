@@ -1072,7 +1072,8 @@ public static class AnthropicBetaClientExtensions
                         };                        
 
                         // Ensure code execution tool is present
-                        if (!createdTools?.Any(t => t.Value is BetaCodeExecutionTool20250825) is true)
+                        bool hasCodeExecutionTool = createdTools?.Any(t => t.Value is BetaCodeExecutionTool20250825) == true;
+                        if (!hasCodeExecutionTool)
                         {
                             (betaHeaders ??= []).Add("code-execution-2025-08-25");
                             (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
