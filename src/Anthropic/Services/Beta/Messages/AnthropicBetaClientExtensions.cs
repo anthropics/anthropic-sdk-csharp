@@ -21,26 +21,6 @@ namespace Microsoft.Extensions.AI;
 public static class AnthropicBetaClientExtensions
 {
     /// <summary>
-    /// An <see cref="AITool"/> that wraps a <see cref="BetaSkillParams"/> for use with the Anthropic Skills API.
-    /// </summary>
-    /// <remarks>
-    /// This tool is used internally to carry skill configuration through the MEAI tools pipeline.
-    /// When detected by the <see cref="IChatClient"/> returned by <see cref="AsIChatClient"/>,
-    /// it will automatically configure the container with skills, add required beta headers,
-    /// and ensure the code execution tool is present.
-    /// </remarks>
-    internal sealed class HostedSkillTool(BetaSkillParams skillParams) : AITool
-    {
-        /// <summary>
-        /// The parameters defining the skill.
-        /// </summary>
-        public BetaSkillParams SkillParams { get; } = skillParams;
-
-        /// <inheritdoc />
-        public override string Name => SkillParams.SkillID;
-    }
-
-    /// <summary>
     /// Creates an <see cref="AITool"/> to represent a skill for use with the Anthropic Skills API.
     /// </summary>
     /// <param name="skillParams">The skill parameters to wrap as an <see cref="AITool"/>.</param>
@@ -83,7 +63,7 @@ public static class AnthropicBetaClientExtensions
             throw new ArgumentNullException(nameof(skillParams));
         }
 
-        return new HostedSkillTool(skillParams);
+        return new BetaSkillsParamsAITool(skillParams);
     }
 
     /// <summary>Gets an <see cref="IChatClient"/> for use with this <see cref="IBetaService"/>.</summary>
@@ -958,7 +938,7 @@ public static class AnthropicBetaClientExtensions
                     {
                         switch (tool)
                         {
-                            case HostedSkillTool skillTool:
+                            case BetaSkillsParamsAITool skillTool:
                                 (skills ??= []).Add(skillTool.SkillParams);
                                 break;
 
@@ -1493,6 +1473,18 @@ public static class AnthropicBetaClientExtensions
         public override object? GetService(System.Type serviceType, object? serviceKey = null) =>
             serviceKey is null && serviceType?.IsInstanceOfType(tool) is true
                 ? tool
+                : base.GetService(serviceType!, serviceKey);
+    }
+
+    private sealed class BetaSkillsParamsAITool(BetaSkillParams skillParams) : AITool
+    {
+        public BetaSkillParams SkillParams => skillParams;
+
+        public override string Name => SkillParams.SkillID;
+
+        public override object? GetService(System.Type serviceType, object? serviceKey = null) =>
+            serviceKey is null && serviceType?.IsInstanceOfType(skillParams) is true
+                ? skillParams
                 : base.GetService(serviceType!, serviceKey);
     }
 }
