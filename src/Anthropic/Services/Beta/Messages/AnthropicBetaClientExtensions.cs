@@ -857,6 +857,11 @@ public static class AnthropicBetaClientExtensions
                 };
             }
 
+            HashSet<string>? betaHeaders = createParams.Betas is { Count: > 0 } ?
+                [.. createParams.Betas] :
+                null;
+            int originalBetaHeadersCount = betaHeaders?.Count ?? 0;
+
             if (options is not null)
             {
                 if (options.Instructions is { } instructions)
@@ -939,6 +944,8 @@ public static class AnthropicBetaClientExtensions
                         switch (tool)
                         {
                             case BetaSkillsParamsAITool skillTool:
+                                (betaHeaders ??= []).Add("skills-2025-10-02");
+                                (betaHeaders ??= []).Add("code-execution-2025-08-25");
                                 (skills ??= []).Add(skillTool.SkillParams);
                                 break;
 
@@ -1021,10 +1028,12 @@ public static class AnthropicBetaClientExtensions
                                 break;
 
                             case HostedCodeInterpreterTool:
+                                (betaHeaders ??= []).Add("code-execution-2025-08-25");
                                 (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
                                 break;
 
                             case HostedMcpServerTool mcp:
+                                (betaHeaders ??= []).Add("mcp-client-2025-11-20");
                                 (mcpServers ??= []).Add(
                                     mcp.AllowedTools is { Count: > 0 } allowedTools
                                         ? new()
@@ -1043,17 +1052,6 @@ public static class AnthropicBetaClientExtensions
                         }
                     }
 
-                    if (createdTools?.Count > 0)
-                    {
-                        createParams = createParams with { Tools = createdTools };
-                    }
-
-                    if (mcpServers?.Count > 0)
-                    {
-                        createParams = createParams with { MCPServers = mcpServers };
-                    }
-
-                    // If skills were specified via HostedSkillTool, configure the container and beta headers
                     if (skills?.Count > 0)
                     {
                         // Merge with any existing skills in the container
@@ -1071,35 +1069,24 @@ public static class AnthropicBetaClientExtensions
                         createParams = createParams with
                         {
                             Container = new BetaContainerParams() { Skills = skills },
-                        };
-
-                        // Add required beta headers for skills
-                        List<ApiEnum<string, AnthropicBeta>> betas =
-                            createParams.Betas?.ToList() ?? [];
-                        if (!betas.Any(b => b.Raw() == "code-execution-2025-08-25"))
-                        {
-                            betas.Add("code-execution-2025-08-25");
-                        }
-                        if (
-                            !betas.Any(b =>
-                                b.Value() == AnthropicBeta.Skills2025_10_02
-                                || b.Raw() == "skills-2025-10-02"
-                            )
-                        )
-                        {
-                            betas.Add(AnthropicBeta.Skills2025_10_02);
-                        }
-                        createParams = createParams with { Betas = betas };
+                        };                        
 
                         // Ensure code execution tool is present
-                        bool hasCodeExecutionTool =
-                            createdTools?.Any(t => t.Value is BetaCodeExecutionTool20250825)
-                            == true;
-                        if (!hasCodeExecutionTool)
+                        if (!createdTools?.Any(t => t.Value is BetaCodeExecutionTool20250825) is true)
                         {
+                            (betaHeaders ??= []).Add("code-execution-2025-08-25");
                             (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
-                            createParams = createParams with { Tools = createdTools };
                         }
+                    }
+
+                    if (createdTools?.Count > 0)
+                    {
+                        createParams = createParams with { Tools = createdTools };
+                    }
+
+                    if (mcpServers?.Count > 0)
+                    {
+                        createParams = createParams with { MCPServers = mcpServers };
                     }
                 }
 
@@ -1147,24 +1134,9 @@ public static class AnthropicBetaClientExtensions
                 createParams = createParams with { System = systemMessages };
             }
 
-            // If skills are configured in the container, ensure the code execution tool is present
-            if (
-                createParams.Container is { } container
-                && container.TryPickBetaContainerParams(out var containerParams)
-                && containerParams.Skills is { Count: > 0 }
-            )
+            if (betaHeaders is not null && betaHeaders.Count != originalBetaHeadersCount)
             {
-                // Check if code execution tool is already present
-                bool hasCodeExecutionTool =
-                    createParams.Tools?.Any(t => t.Value is BetaCodeExecutionTool20250825) == true;
-
-                if (!hasCodeExecutionTool)
-                {
-                    createParams = createParams with
-                    {
-                        Tools = [.. createParams.Tools ?? [], new BetaCodeExecutionTool20250825()],
-                    };
-                }
+                createParams = createParams with { Betas = [.. betaHeaders] };
             }
 
             return createParams;
