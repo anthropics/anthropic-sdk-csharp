@@ -47,7 +47,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
                 yield return
                 [
                     new AnthropicFoundryClient(
-                        new AnthropicFoundryApiKeyCredentials(ApiKey, resource!)
+                        new AnthropicFoundryApiKeyCredentials(ApiKey, Resource!)
                     )
                     {
                         BaseUrl = new Uri(DataServiceUrl),
@@ -65,7 +65,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
                 yield return
                 [
                     new AnthropicBedrockClient(
-                        new AnthropicBedrockApiTokenCredentials(ApiKey, resource)
+                        new AnthropicBedrockApiTokenCredentials(ApiKey, Resource)
                     )
                     {
                         BaseUrl = new Uri(DataServiceUrl),

@@ -48,11 +48,6 @@ public class AnthropicBedrockClient : AnthropicClient
         BaseUrl = new Uri($"https://{ServiceName}.{_bedrockCredentials.Region}.amazonaws.com");
     }
 
-    /// <summary>
-    /// When set to true Streaming endpoints are called async to the caller and are buffered in memory until consumed, when set to false data is requested from the server on demand.
-    /// </summary>
-    public bool AsyncStreaming { get; set; }
-
     private AnthropicBedrockClient(
         IAnthropicBedrockCredentials bedrockCredentials,
         ClientOptions clientOptions
@@ -127,12 +122,28 @@ public class AnthropicBedrockClient : AnthropicClient
                 "content-length",
                 contentStream.Length.ToString()
             );
-            var url =
+            var strUri =
                 $"{requestMessage.RequestUri.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue.ToString()}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
-            requestMessage.RequestUri = new Uri(
-                url,
-                new UriCreationOptions() { DangerousDisablePathAndQueryCanonicalization = true }
-            );
+
+
+#if NET8_0_OR_GREATER
+            // The UriCreationOptions and DangerousDisablePathAndQueryCanonicalization were added in .NET 6 and allows
+            // us to turn off the Uri behavior of canonicalizing Uri. For example if the resource path was "foo/../bar.txt"
+            // the URI class will change the canonicalize path to bar.txt. This behavior of changing the Uri after the 
+            // request has been signed will trigger a signature mismatch error. It is valid especially for S3 for the resource
+            // path to contain ".." segments.
+
+            // as this is only available in net8 or greater we can only enable it there. NetStandard may not support those paths
+            var uriCreationOptions = new UriCreationOptions()
+            {
+                DangerousDisablePathAndQueryCanonicalization = true;
+            };
+
+            requestMessage.RequestUri = new Uri(strUri, uriCreationOptions);
+#else
+            requestMessage.RequestUri = new Uri(strUri);
+#endif
+
             requestMessage.Headers.TryAddWithoutValidation("Host", requestMessage.RequestUri.Host);
             requestMessage.Headers.TryAddWithoutValidation(
                 "X-Amzn-Bedrock-Accept",
@@ -241,17 +252,17 @@ public class AnthropicBedrockClient : AnthropicClient
         var originalStream = await httpResponseMessage
             .Content.ReadAsStreamAsync()
             .ConfigureAwait(false);
-        if (AsyncStreaming)
-        {
-            httpResponseMessage.Content = new AsyncSseEventContentWrapper(originalStream);
-        }
-        else
-        {
-            httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
-        }
+        httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
+#if NET
         httpResponseMessage.Content.Headers.ContentType = new(
             ContentTypeSseStreamMediaType,
             "utf-8"
         );
+#else
+        httpResponseMessage.Content.Headers.ContentType = new(
+            $"{ContentTypeSseStreamMediaType}; charset=utf-8"
+        );
+#endif
+
     }
 }

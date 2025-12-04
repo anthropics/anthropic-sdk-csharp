@@ -58,7 +58,7 @@ public class AWSSigner
         headers["x-amz-date"] = amzDate;
         if (!string.IsNullOrWhiteSpace(awsSessionToken))
         {
-            headers.Add("x-amz-security-token", awsSessionToken);
+            headers["x-amz-security-token"] = awsSessionToken!;
         }
 
         // Create the canonical request
@@ -66,7 +66,7 @@ public class AWSSigner
         var canonicalHeaders = CanonicalizeHeaders(headers);
         var signedHeaders = CanonicalizeHeaderNames(headers);
         var canonicalRequest =
-            $"{httpMethod}\n{string.Join("/", uri.AbsolutePath.Split("/").Select(WebUtility.UrlEncode))}\n{canonicalQuerystring}\n{canonicalHeaders}\n{signedHeaders}\n{payloadHash}";
+            $"{httpMethod}\n{string.Join("/", uri.AbsolutePath.Split('/').Select(WebUtility.UrlEncode))}\n{canonicalQuerystring}\n{canonicalHeaders}\n{signedHeaders}\n{payloadHash}";
 
         // Create the string to sign
         var credentialScope = $"{datestamp}/{region}/{service}/aws4_request";

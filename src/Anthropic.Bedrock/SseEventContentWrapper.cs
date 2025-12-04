@@ -22,13 +22,19 @@ internal class SseEventContentWrapper : HttpContent
     {
         _originalStream = originalStream;
     }
-
+#if NET
     protected override Task<Stream> CreateContentReadStreamAsync(
         CancellationToken cancellationToken
     )
     {
         return Task.FromResult<Stream>(new SseLazyEventStream(_originalStream));
     }
+#else
+    protected override Task<Stream> CreateContentReadStreamAsync()
+    {
+        return Task.FromResult<Stream>(new SseLazyEventStream(_originalStream));
+    }
+#endif
 
     protected override Task SerializeToStreamAsync(Stream stream, TransportContext? context)
     {
@@ -61,14 +67,14 @@ internal class SseEventContentWrapper : HttpContent
         public override long Position { get; set; }
 
         public override void Flush() { }
-
+#if NET
         public override async ValueTask<int> ReadAsync(
             Memory<byte> buffer,
             CancellationToken cancellationToken = default
         )
         {
             var (data, success) = await SseEventHelpers
-                .ReadStreamMessage(_sourceStream)
+                .ReadStreamMessage(_sourceStream, cancellationToken)
                 .ConfigureAwait(false);
             if (!success)
             {
@@ -79,6 +85,22 @@ internal class SseEventContentWrapper : HttpContent
             encodedData.CopyTo(buffer);
             return encodedData.Length;
         }
+#else
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        {
+            var (data, success) = await SseEventHelpers
+                .ReadStreamMessage(_sourceStream, cancellationToken)
+                .ConfigureAwait(false);
+            if (!success)
+            {
+                return 0;
+            }
+
+            var encodedData = Encoding.UTF8.GetBytes(data!);
+            encodedData.CopyTo(buffer, offset);
+            return encodedData.Length;
+        }
+#endif
 
         public override int Read(byte[] buffer, int offset, int count)
         {

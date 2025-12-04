@@ -4,7 +4,6 @@ using System.IO.Pipelines;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Amazon.Runtime.Internal.Util;
 
 namespace Anthropic.Bedrock;
 
@@ -20,18 +19,18 @@ internal static class SseEventHelpers
 {
     private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };
 
-    public static async Task<bool> SyncStreamMessage(Stream source, Stream target)
+    public static async Task<bool> SyncStreamMessage(Stream source, Stream target, CancellationToken cancellationToken)
     {
-        var (data, success) = await ReadStreamMessage(source).ConfigureAwait(false);
+        var (data, success) = await ReadStreamMessage(source, cancellationToken).ConfigureAwait(false);
         if (!success)
         {
             return false;
         }
-        await target.WriteAsync(Encoding.UTF8.GetBytes(data!)).ConfigureAwait(false);
+        await target.WriteAsync(Encoding.UTF8.GetBytes(data!), cancellationToken).ConfigureAwait(false);
         return true;
     }
 
-    public static async Task<(string? Data, bool readData)> ReadStreamMessage(Stream source)
+    public static async Task<(string? Data, bool readData)> ReadStreamMessage(Stream source, CancellationToken cancellationToken)
     {
         /**
         events come in the form of the event stream.
@@ -86,7 +85,7 @@ internal static class SseEventHelpers
                     "The calculated crc checksum for the message content does not match the provided value from the server."
                 );
             }
-            var result = await Parse(new ReadOnlySequence<byte>(messageSpan)).ConfigureAwait(false);
+            var result = await Parse(new ReadOnlySequence<byte>(messageSpan), cancellationToken).ConfigureAwait(false);
             return (result, true);
         } // do not catch the EndOfStream exception here as its still unexpected to happen here and should bubble up
         finally
@@ -95,10 +94,10 @@ internal static class SseEventHelpers
         }
     }
 
-    private static async Task<string?> Parse(ReadOnlySequence<byte> bodyData)
+    private static async Task<string?> Parse(ReadOnlySequence<byte> bodyData, CancellationToken cancellationToken)
     {
         var eventLine = await JsonSerializer
-            .DeserializeAsync<JsonObject>(PipeReader.Create(bodyData), _jsonOptions)
+            .DeserializeAsync<JsonObject>(PipeReader.Create(bodyData), _jsonOptions, cancellationToken)
             .ConfigureAwait(false);
         var eventContents = eventLine?["bytes"]?.AsValue().GetValue<string>();
         if (string.IsNullOrWhiteSpace(eventContents))
@@ -111,7 +110,8 @@ internal static class SseEventHelpers
                 PipeReader.Create(
                     new ReadOnlySequence<byte>(Convert.FromBase64String(eventContents))
                 ),
-                _jsonOptions
+                _jsonOptions,
+                cancellationToken
             )
             .ConfigureAwait(false);
         if (parsedEvent is null)

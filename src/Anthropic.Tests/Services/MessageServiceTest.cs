@@ -44,41 +44,7 @@ public class MessageServiceTest
         {
             message.Validate();
         }
-    }
-
-    [Theory]
-    [AnthropicTestClients(TestSupportTypes.Bedrock)]
-    [AnthropicTestData(
-        TestSupportTypes.Bedrock,
-        "global.anthropic.claude-haiku-4-5-20251001-v1:0",
-        true
-    )]
-    [AnthropicTestData(
-        TestSupportTypes.Bedrock,
-        "global.anthropic.claude-haiku-4-5-20251001-v1:0",
-        false
-    )]
-    public async Task CreateStreaming_BedrockAsyncProjection_Works(
-        AnthropicBedrockClient client,
-        string modelName,
-        bool useAsyncProjection
-    )
-    {
-        client.AsyncStreaming = useAsyncProjection;
-        var stream = client.Messages.CreateStreaming(
-            new()
-            {
-                MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                Model = modelName,
-            }
-        );
-
-        await foreach (var message in stream)
-        {
-            message.Validate();
-        }
-    }
+    }  
 
     [Theory]
     [AnthropicTestClients]
