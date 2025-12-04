@@ -60,7 +60,7 @@
       "hidden": true
     }
   ],
-  "release-type": "simple",
+  "release-type": "csharp",
   "extra-files": [
     {
       "type": "xml",
