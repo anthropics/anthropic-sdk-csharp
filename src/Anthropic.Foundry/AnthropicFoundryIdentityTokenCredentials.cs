@@ -23,12 +23,18 @@ public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredent
     /// <param name="tokenCredential">The credential provider. Use any specialization of <see cref="TokenCredential"/> to get your access token in supported environments.</param>
     /// <param name="resourceName">The service resource subdomain name to use in the anthropic azure endpoint</param>
     /// <param name="scopes">The scopes to use when requesting the token. If null, defaults to "https://ai.azure.com/.default"</param>
-    /// <param name="tokenCachingTime">The time to cache the token before requesting a new one. If null, defaults to 5 minutes.</param>
+    /// <param name="tokenCachingTime">The time to cache the token before requesting a new one. Set for TimeSpan.Zero for no caching. If null, defaults to 5 minutes.</param>
     public AnthropicFoundryIdentityTokenCredentials(TokenCredential tokenCredential, string resourceName, string[]? scopes = null, TimeSpan? tokenCachingTime = null)
     {
         ResourceName = resourceName ?? throw new ArgumentNullException(nameof(resourceName));
         _tokenCredential = tokenCredential ?? throw new ArgumentNullException(nameof(tokenCredential));
         _scopes = scopes ?? _scopes;
+
+        if (tokenCachingTime.HasValue && tokenCachingTime.Value < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(tokenCachingTime), "Token caching time must be 0 or greater.");
+        }
+
         _tokenCachingTime = tokenCachingTime ?? TimeSpan.FromMinutes(5);
     }
 
