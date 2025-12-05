@@ -1,9 +1,9 @@
-using Anthropic.Foundry;
-using Azure.Core;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Anthropic.Foundry;
+using Azure.Core;
 
 namespace Anthropic.Tests.Foundry;
 
@@ -22,7 +22,8 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(() =>
-            new AnthropicFoundryIdentityTokenCredentials(nullCredential!, TestResourceName));
+            new AnthropicFoundryIdentityTokenCredentials(nullCredential!, TestResourceName)
+        );
 
         Assert.Equal("tokenCredential", exception.ParamName);
     }
@@ -35,7 +36,8 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(() =>
-            new AnthropicFoundryIdentityTokenCredentials(credential, null!));
+            new AnthropicFoundryIdentityTokenCredentials(credential, null!)
+        );
 
         Assert.Equal("resourceName", exception.ParamName);
     }
@@ -60,14 +62,21 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         // Arrange
         var credential = CreateFakeTokenCredential("test-token");
         string[]? receivedScopes = null;
-        var trackingCredential = CreateTrackingTokenCredential("test-token", ctx =>
-        {
-            receivedScopes = ctx.Scopes;
-        });
+        var trackingCredential = CreateTrackingTokenCredential(
+            "test-token",
+            ctx =>
+            {
+                receivedScopes = ctx.Scopes;
+            }
+        );
         var customScopes = new[] { "https://custom.scope/.default" };
 
         // Act
-        var instance = new AnthropicFoundryIdentityTokenCredentials(trackingCredential, TestResourceName, customScopes);
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            trackingCredential,
+            TestResourceName,
+            customScopes
+        );
         var request = new HttpRequestMessage();
         instance.Apply(request);
 
@@ -82,13 +91,20 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         // Arrange
         var credential = CreateFakeTokenCredential("test-token");
         string[]? receivedScopes = null;
-        var trackingCredential = CreateTrackingTokenCredential("test-token", ctx =>
-        {
-            receivedScopes = ctx.Scopes;
-        });
+        var trackingCredential = CreateTrackingTokenCredential(
+            "test-token",
+            ctx =>
+            {
+                receivedScopes = ctx.Scopes;
+            }
+        );
 
         // Act
-        var instance = new AnthropicFoundryIdentityTokenCredentials(trackingCredential, TestResourceName, null);
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            trackingCredential,
+            TestResourceName,
+            null
+        );
         var request = new HttpRequestMessage();
         instance.Apply(request);
 
@@ -105,7 +121,13 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
-            new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName, null, TimeSpan.FromMinutes(-1)));
+            new AnthropicFoundryIdentityTokenCredentials(
+                credential,
+                TestResourceName,
+                null,
+                TimeSpan.FromMinutes(-1)
+            )
+        );
 
         Assert.Equal("tokenCachingTime", exception.ParamName);
         Assert.Contains("Token caching time must be 0 or greater", exception.Message);
@@ -118,7 +140,12 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         var credential = CreateFakeTokenCredential("test-token");
 
         // Act
-        var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName, null, TimeSpan.Zero);
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            credential,
+            TestResourceName,
+            null,
+            TimeSpan.Zero
+        );
 
         // Assert
         Assert.NotNull(instance);
@@ -131,7 +158,12 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         var credential = CreateFakeTokenCredential("test-token");
 
         // Act
-        var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName, null, TimeSpan.FromMinutes(10));
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            credential,
+            TestResourceName,
+            null,
+            TimeSpan.FromMinutes(10)
+        );
 
         // Assert
         Assert.NotNull(instance);
@@ -181,7 +213,9 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
     [InlineData(" ")]
     [InlineData("  ")]
     [InlineData("\t")]
-    public void Apply_WithWhitespaceToken_SetsWhitespaceAuthorizationParameter(string whitespaceToken)
+    public void Apply_WithWhitespaceToken_SetsWhitespaceAuthorizationParameter(
+        string whitespaceToken
+    )
     {
         // Arrange
         var credential = CreateFakeTokenCredential(whitespaceToken);
@@ -202,7 +236,9 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
     [InlineData("token.with.dots")]
     [InlineData("token/with/slashes")]
     [InlineData("token=with=equals")]
-    [InlineData("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U")]
+    [InlineData(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U"
+    )]
     public void Apply_WithSpecialCharacterTokens_SetsAuthorizationParameter(string specialToken)
     {
         // Arrange
@@ -267,7 +303,12 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         // Arrange
         var callCount = 0;
         var credential = CreateCountingTokenCredential("test-token", () => callCount++);
-        var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName, null, TimeSpan.Zero);
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            credential,
+            TestResourceName,
+            null,
+            TimeSpan.Zero
+        );
 
         // Act - Multiple calls
         for (var i = 0; i < 5; i++)
@@ -286,7 +327,12 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         // Arrange
         var callCount = 0;
         var credential = CreateCountingTokenCredential("test-token", () => callCount++);
-        var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName, null, TimeSpan.FromHours(1));
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            credential,
+            TestResourceName,
+            null,
+            TimeSpan.FromHours(1)
+        );
 
         // Act - Multiple calls within cache window
         for (var i = 0; i < 5; i++)
@@ -306,7 +352,12 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         var callCount = 0;
         var credential = CreateCountingTokenCredential("test-token", () => callCount++);
         var cacheTime = TimeSpan.FromMilliseconds(50);
-        var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName, null, cacheTime);
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            credential,
+            TestResourceName,
+            null,
+            cacheTime
+        );
 
         // Act - First call should fetch token
         var request1 = new HttpRequestMessage();
@@ -354,10 +405,18 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
     public void Apply_WithCustomScopes_PassesCustomScopesToGetToken()
     {
         // Arrange
-        var customScopes = new[] { "https://custom.api.com/.default", "https://another.api.com/.default" };
+        var customScopes = new[]
+        {
+            "https://custom.api.com/.default",
+            "https://another.api.com/.default",
+        };
         TokenRequestContext? capturedContext = null;
         var credential = CreateTrackingTokenCredential("test-token", ctx => capturedContext = ctx);
-        var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName, customScopes);
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            credential,
+            TestResourceName,
+            customScopes
+        );
         var request = new HttpRequestMessage();
 
         // Act
@@ -382,7 +441,9 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         var request = new HttpRequestMessage();
 
         // Act & Assert
-        var thrownException = Assert.Throws<InvalidOperationException>(() => instance.Apply(request));
+        var thrownException = Assert.Throws<InvalidOperationException>(() =>
+            instance.Apply(request)
+        );
         Assert.Same(expectedException, thrownException);
     }
 
@@ -390,13 +451,17 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
     public void Apply_WhenTokenCredentialThrowsAuthenticationException_PropagatesException()
     {
         // Arrange
-        var expectedException = new Azure.Identity.AuthenticationFailedException("Authentication failed");
+        var expectedException = new Azure.Identity.AuthenticationFailedException(
+            "Authentication failed"
+        );
         var credential = CreateThrowingTokenCredential(expectedException);
         var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName);
         var request = new HttpRequestMessage();
 
         // Act & Assert
-        var thrownException = Assert.Throws<Azure.Identity.AuthenticationFailedException>(() => instance.Apply(request));
+        var thrownException = Assert.Throws<Azure.Identity.AuthenticationFailedException>(() =>
+            instance.Apply(request)
+        );
         Assert.Same(expectedException, thrownException);
     }
 
@@ -410,13 +475,16 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         // Arrange
         var callCount = 0;
         var lockObject = new object();
-        var credential = CreateCountingTokenCredential("test-token", () =>
-        {
-            lock (lockObject)
+        var credential = CreateCountingTokenCredential(
+            "test-token",
+            () =>
             {
-                callCount++;
+                lock (lockObject)
+                {
+                    callCount++;
+                }
             }
-        });
+        );
         var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName);
         var tasks = new List<Task>();
         const int concurrentCalls = 100;
@@ -424,11 +492,13 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         // Act
         for (var i = 0; i < concurrentCalls; i++)
         {
-            tasks.Add(Task.Run(() =>
-            {
-                var request = new HttpRequestMessage();
-                instance.Apply(request);
-            }));
+            tasks.Add(
+                Task.Run(() =>
+                {
+                    var request = new HttpRequestMessage();
+                    instance.Apply(request);
+                })
+            );
         }
 
         await Task.WhenAll(tasks);
@@ -445,25 +515,35 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
         // Arrange
         var callCount = 0;
         var lockObject = new object();
-        var credential = CreateCountingTokenCredential("test-token", () =>
-        {
-            lock (lockObject)
+        var credential = CreateCountingTokenCredential(
+            "test-token",
+            () =>
             {
-                callCount++;
+                lock (lockObject)
+                {
+                    callCount++;
+                }
             }
-        });
-        var instance = new AnthropicFoundryIdentityTokenCredentials(credential, TestResourceName, null, TimeSpan.Zero);
+        );
+        var instance = new AnthropicFoundryIdentityTokenCredentials(
+            credential,
+            TestResourceName,
+            null,
+            TimeSpan.Zero
+        );
         var tasks = new List<Task>();
         const int concurrentCalls = 50;
 
         // Act
         for (var i = 0; i < concurrentCalls; i++)
         {
-            tasks.Add(Task.Run(() =>
-            {
-                var request = new HttpRequestMessage();
-                instance.Apply(request);
-            }));
+            tasks.Add(
+                Task.Run(() =>
+                {
+                    var request = new HttpRequestMessage();
+                    instance.Apply(request);
+                })
+            );
         }
 
         await Task.WhenAll(tasks);
@@ -509,36 +589,46 @@ public class AnthropicFoundryIdentityTokenCredentialsTests
 
     private static TokenCredential CreateFakeTokenCredential(string token)
     {
-        return DelegatedTokenCredential.Create((context, cancellationToken) =>
-            new AccessToken(token, DateTimeOffset.UtcNow.AddHours(1)));
+        return DelegatedTokenCredential.Create(
+            (context, cancellationToken) =>
+                new AccessToken(token, DateTimeOffset.UtcNow.AddHours(1))
+        );
     }
 
-    private static TokenCredential CreateTrackingTokenCredential(string token, Action<TokenRequestContext> onGetToken)
+    private static TokenCredential CreateTrackingTokenCredential(
+        string token,
+        Action<TokenRequestContext> onGetToken
+    )
     {
-        return DelegatedTokenCredential.Create((context, cancellationToken) =>
-        {
-            onGetToken(context);
-            return new AccessToken(token, DateTimeOffset.UtcNow.AddHours(1));
-        });
+        return DelegatedTokenCredential.Create(
+            (context, cancellationToken) =>
+            {
+                onGetToken(context);
+                return new AccessToken(token, DateTimeOffset.UtcNow.AddHours(1));
+            }
+        );
     }
 
     private static TokenCredential CreateCountingTokenCredential(string token, Action onGetToken)
     {
-        return DelegatedTokenCredential.Create((context, cancellationToken) =>
-        {
-            onGetToken();
-            return new AccessToken(token, DateTimeOffset.UtcNow.AddHours(1));
-        });
+        return DelegatedTokenCredential.Create(
+            (context, cancellationToken) =>
+            {
+                onGetToken();
+                return new AccessToken(token, DateTimeOffset.UtcNow.AddHours(1));
+            }
+        );
     }
 
     private static TokenCredential CreateThrowingTokenCredential(Exception exception)
     {
-        return DelegatedTokenCredential.Create((context, cancellationToken) =>
-        {
-            throw exception;
-        });
+        return DelegatedTokenCredential.Create(
+            (context, cancellationToken) =>
+            {
+                throw exception;
+            }
+        );
     }
 
     #endregion
 }
-

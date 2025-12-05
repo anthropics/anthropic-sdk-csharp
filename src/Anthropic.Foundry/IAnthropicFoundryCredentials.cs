@@ -59,6 +59,7 @@ public class DefaultAnthropicFoundryCredentials
 
         return new AnthropicFoundryIdentityTokenCredentials(
             new DefaultAzureCredential(),
-            resourceName ?? envResourceName);
+            resourceName ?? envResourceName
+        );
     }
 }

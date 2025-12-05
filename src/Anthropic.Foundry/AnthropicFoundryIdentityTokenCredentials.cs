@@ -1,5 +1,5 @@
-using Azure.Core;
 using System.Net.Http.Headers;
+using Azure.Core;
 
 namespace Anthropic.Foundry;
 
@@ -24,15 +24,24 @@ public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredent
     /// <param name="resourceName">The service resource subdomain name to use in the anthropic azure endpoint</param>
     /// <param name="scopes">The scopes to use when requesting the token. If null, defaults to "https://ai.azure.com/.default"</param>
     /// <param name="tokenCachingTime">The time to cache the token before requesting a new one. Set for TimeSpan.Zero for no caching. If null, defaults to 5 minutes.</param>
-    public AnthropicFoundryIdentityTokenCredentials(TokenCredential tokenCredential, string resourceName, string[]? scopes = null, TimeSpan? tokenCachingTime = null)
+    public AnthropicFoundryIdentityTokenCredentials(
+        TokenCredential tokenCredential,
+        string resourceName,
+        string[]? scopes = null,
+        TimeSpan? tokenCachingTime = null
+    )
     {
         ResourceName = resourceName ?? throw new ArgumentNullException(nameof(resourceName));
-        _tokenCredential = tokenCredential ?? throw new ArgumentNullException(nameof(tokenCredential));
+        _tokenCredential =
+            tokenCredential ?? throw new ArgumentNullException(nameof(tokenCredential));
         _scopes = scopes ?? _scopes;
 
         if (tokenCachingTime.HasValue && tokenCachingTime.Value < TimeSpan.Zero)
         {
-            throw new ArgumentOutOfRangeException(nameof(tokenCachingTime), "Token caching time must be 0 or greater.");
+            throw new ArgumentOutOfRangeException(
+                nameof(tokenCachingTime),
+                "Token caching time must be 0 or greater."
+            );
         }
 
         _tokenCachingTime = tokenCachingTime ?? TimeSpan.FromMinutes(5);
@@ -53,7 +62,10 @@ public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredent
             lock (this._tokenLock)
             {
                 // This will also get the first or refresh the token which is the responsibility of the underlying TokenCredential.GetToken implementation
-                this._cachedAccessToken = this._tokenCredential.GetToken(new TokenRequestContext(this._scopes), CancellationToken.None);
+                this._cachedAccessToken = this._tokenCredential.GetToken(
+                    new TokenRequestContext(this._scopes),
+                    CancellationToken.None
+                );
 
                 this._tokenExpiresOn = DateTimeOffset.Now.Add(_tokenCachingTime);
             }
