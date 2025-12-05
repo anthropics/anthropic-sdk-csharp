@@ -9,7 +9,11 @@ namespace Anthropic.Foundry;
 public class AnthropicFoundryIdentityTokenCredentials : IAnthropicFoundryCredentials
 {
     private readonly TokenCredential _tokenCredential;
-    private readonly object _tokenLock = new object();
+#if NET9_0_OR_GREATER
+    private readonly System.Threading.Lock _tokenLock = new();
+#else
+    private readonly object _tokenLock = new();
+#endif
     private AccessToken? _cachedAccessToken;
     private DateTimeOffset _tokenExpiresOn;
     private readonly string[] _scopes = ["https://ai.azure.com/.default"];
