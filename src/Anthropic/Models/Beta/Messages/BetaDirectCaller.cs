@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -17,25 +16,11 @@ public sealed record class BetaDirectCaller : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -54,6 +39,9 @@ public sealed record class BetaDirectCaller : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
     }
 
+    public BetaDirectCaller(BetaDirectCaller betaDirectCaller)
+        : base(betaDirectCaller) { }
+
     public BetaDirectCaller(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -69,6 +57,7 @@ public sealed record class BetaDirectCaller : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaDirectCallerFromRaw.FromRawUnchecked"/>
     public static BetaDirectCaller FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -79,6 +68,7 @@ public sealed record class BetaDirectCaller : ModelBase
 
 class BetaDirectCallerFromRaw : IFromRaw<BetaDirectCaller>
 {
+    /// <inheritdoc/>
     public BetaDirectCaller FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaDirectCaller.FromRawUnchecked(rawData);
 }

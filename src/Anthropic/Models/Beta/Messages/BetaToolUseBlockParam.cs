@@ -14,101 +14,32 @@ public sealed record class BetaToolUseBlockParam : ModelBase
 {
     public required string ID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new System::ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._rawData["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            if (!this._rawData.TryGetValue("input", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'input' cannot be null",
-                    new System::ArgumentOutOfRangeException("input", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'input' cannot be null",
-                    new System::ArgumentNullException("input")
-                );
-        }
-        init
-        {
-            this._rawData["input"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<Dictionary<string, JsonElement>>(
+                this.RawData,
+                "input"
             );
         }
+        init { ModelBase.Set(this._rawData, "input", value); }
     }
 
     public required string Name
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new System::ArgumentNullException("name")
-                );
-        }
-        init
-        {
-            this._rawData["name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
+        init { ModelBase.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -118,21 +49,12 @@ public sealed record class BetaToolUseBlockParam : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+                this.RawData,
+                "cache_control"
             );
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -142,13 +64,7 @@ public sealed record class BetaToolUseBlockParam : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("caller", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaToolUseBlockParamCaller?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<BetaToolUseBlockParamCaller>(this.RawData, "caller");
         }
         init
         {
@@ -157,13 +73,11 @@ public sealed record class BetaToolUseBlockParam : ModelBase
                 return;
             }
 
-            this._rawData["caller"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "caller", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -187,6 +101,9 @@ public sealed record class BetaToolUseBlockParam : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
     }
 
+    public BetaToolUseBlockParam(BetaToolUseBlockParam betaToolUseBlockParam)
+        : base(betaToolUseBlockParam) { }
+
     public BetaToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -202,6 +119,7 @@ public sealed record class BetaToolUseBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolUseBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaToolUseBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -212,6 +130,7 @@ public sealed record class BetaToolUseBlockParam : ModelBase
 
 class BetaToolUseBlockParamFromRaw : IFromRaw<BetaToolUseBlockParam>
 {
+    /// <inheritdoc/>
     public BetaToolUseBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaToolUseBlockParam.FromRawUnchecked(rawData);
@@ -254,18 +173,68 @@ public record class BetaToolUseBlockParamCaller
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaDirectCaller"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaDirect(out var value)) {
+    ///     // `value` is of type `BetaDirectCaller`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaDirect([NotNullWhen(true)] out BetaDirectCaller? value)
     {
         value = this.Value as BetaDirectCaller;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaServerToolCaller"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaServerTool(out var value)) {
+    ///     // `value` is of type `BetaServerToolCaller`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaServerTool([NotNullWhen(true)] out BetaServerToolCaller? value)
     {
         value = this.Value as BetaServerToolCaller;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaDirectCaller value) => {...},
+    ///     (BetaServerToolCaller value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaDirectCaller> betaDirect,
         System::Action<BetaServerToolCaller> betaServerTool
@@ -286,6 +255,27 @@ public record class BetaToolUseBlockParamCaller
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaDirectCaller value) => {...},
+    ///     (BetaServerToolCaller value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaDirectCaller, T> betaDirect,
         System::Func<BetaServerToolCaller, T> betaServerTool
@@ -307,6 +297,16 @@ public record class BetaToolUseBlockParamCaller
     public static implicit operator BetaToolUseBlockParamCaller(BetaServerToolCaller value) =>
         new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -315,6 +315,16 @@ public record class BetaToolUseBlockParamCaller
                 "Data did not match any variant of BetaToolUseBlockParamCaller"
             );
         }
+    }
+
+    public virtual bool Equals(BetaToolUseBlockParamCaller? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

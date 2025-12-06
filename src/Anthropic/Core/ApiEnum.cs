@@ -21,7 +21,7 @@ namespace Anthropic.Core;
 /// unaware of.</para>
 /// </param>
 /// </summary>
-public record struct ApiEnum<TRaw, TEnum>(JsonElement Json)
+public record class ApiEnum<TRaw, TEnum>(JsonElement Json)
     where TEnum : struct, Enum
 {
     /// <summary>
@@ -36,7 +36,7 @@ public record struct ApiEnum<TRaw, TEnum>(JsonElement Json)
     /// <see cref="Json"/> to access the raw value.
     /// </exception>
     /// </summary>
-    public readonly TRaw Raw() =>
+    public TRaw Raw() =>
         JsonSerializer.Deserialize<TRaw>(this.Json, ModelBase.SerializerOptions)
         ?? throw new AnthropicInvalidDataException(
             string.Format("{0} cannot be null", nameof(this.Json))
@@ -48,7 +48,7 @@ public record struct ApiEnum<TRaw, TEnum>(JsonElement Json)
     ///
     /// <para>Use <see cref="Raw"/> to access the raw <typeparamref name="TRaw"/> value.</para>.
     /// </summary>
-    public readonly TEnum Value() =>
+    public TEnum Value() =>
         JsonSerializer.Deserialize<TEnum>(this.Json, ModelBase.SerializerOptions);
 
     /// <summary>
@@ -58,12 +58,22 @@ public record struct ApiEnum<TRaw, TEnum>(JsonElement Json)
     /// Thrown when this instance's raw value isn't a member of <typeparamref name="TEnum"/>.
     /// </exception>
     /// </summary>
-    public readonly void Validate()
+    public void Validate()
     {
         if (!Enum.IsDefined(typeof(TEnum), Value()))
         {
             throw new AnthropicInvalidDataException("Invalid enum value");
         }
+    }
+
+    public virtual bool Equals(ApiEnum<TRaw, TEnum>? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 
     public static implicit operator TRaw(ApiEnum<TRaw, TEnum> value) => value.Raw();

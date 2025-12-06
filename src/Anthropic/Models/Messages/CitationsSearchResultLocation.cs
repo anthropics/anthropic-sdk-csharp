@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,162 +15,47 @@ public sealed record class CitationsSearchResultLocation : ModelBase
 {
     public required string CitedText
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("cited_text", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'cited_text' cannot be null",
-                    new ArgumentOutOfRangeException("cited_text", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'cited_text' cannot be null",
-                    new ArgumentNullException("cited_text")
-                );
-        }
-        init
-        {
-            this._rawData["cited_text"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
+        init { ModelBase.Set(this._rawData, "cited_text", value); }
     }
 
     public required long EndBlockIndex
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("end_block_index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'end_block_index' cannot be null",
-                    new ArgumentOutOfRangeException("end_block_index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["end_block_index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "end_block_index"); }
+        init { ModelBase.Set(this._rawData, "end_block_index", value); }
     }
 
     public required long SearchResultIndex
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("search_result_index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'search_result_index' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "search_result_index",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["search_result_index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "search_result_index"); }
+        init { ModelBase.Set(this._rawData, "search_result_index", value); }
     }
 
     public required string Source
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("source", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'source' cannot be null",
-                    new ArgumentOutOfRangeException("source", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'source' cannot be null",
-                    new ArgumentNullException("source")
-                );
-        }
-        init
-        {
-            this._rawData["source"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
+        init { ModelBase.Set(this._rawData, "source", value); }
     }
 
     public required long StartBlockIndex
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("start_block_index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'start_block_index' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "start_block_index",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["start_block_index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "start_block_index"); }
+        init { ModelBase.Set(this._rawData, "start_block_index", value); }
     }
 
     public required string? Title
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("title", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["title"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
+        init { ModelBase.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CitedText;
@@ -196,6 +80,11 @@ public sealed record class CitationsSearchResultLocation : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result_location\"");
     }
 
+    public CitationsSearchResultLocation(
+        CitationsSearchResultLocation citationsSearchResultLocation
+    )
+        : base(citationsSearchResultLocation) { }
+
     public CitationsSearchResultLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -211,6 +100,7 @@ public sealed record class CitationsSearchResultLocation : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="CitationsSearchResultLocationFromRaw.FromRawUnchecked"/>
     public static CitationsSearchResultLocation FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -221,6 +111,7 @@ public sealed record class CitationsSearchResultLocation : ModelBase
 
 class CitationsSearchResultLocationFromRaw : IFromRaw<CitationsSearchResultLocation>
 {
+    /// <inheritdoc/>
     public CitationsSearchResultLocation FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => CitationsSearchResultLocation.FromRawUnchecked(rawData);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,53 +15,17 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
 {
     public required BetaErrorResponse Error
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("error", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error' cannot be null",
-                    new ArgumentOutOfRangeException("error", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<BetaErrorResponse>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'error' cannot be null",
-                    new ArgumentNullException("error")
-                );
-        }
-        init
-        {
-            this._rawData["error"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<BetaErrorResponse>(this.RawData, "error"); }
+        init { ModelBase.Set(this._rawData, "error", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Error.Validate();
@@ -82,6 +45,11 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
     }
 
+    public BetaMessageBatchErroredResult(
+        BetaMessageBatchErroredResult betaMessageBatchErroredResult
+    )
+        : base(betaMessageBatchErroredResult) { }
+
     public BetaMessageBatchErroredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -97,6 +65,7 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageBatchErroredResultFromRaw.FromRawUnchecked"/>
     public static BetaMessageBatchErroredResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -114,6 +83,7 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
 
 class BetaMessageBatchErroredResultFromRaw : IFromRaw<BetaMessageBatchErroredResult>
 {
+    /// <inheritdoc/>
     public BetaMessageBatchErroredResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMessageBatchErroredResult.FromRawUnchecked(rawData);

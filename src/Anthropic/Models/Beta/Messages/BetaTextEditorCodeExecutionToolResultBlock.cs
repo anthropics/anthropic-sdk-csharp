@@ -21,79 +21,27 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : ModelBas
     {
         get
         {
-            if (!this._rawData.TryGetValue("content", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new System::ArgumentOutOfRangeException("content", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new System::ArgumentNullException("content")
-                );
-        }
-        init
-        {
-            this._rawData["content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<BetaTextEditorCodeExecutionToolResultBlockContent>(
+                this.RawData,
+                "content"
             );
         }
+        init { ModelBase.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("tool_use_id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'tool_use_id' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "tool_use_id",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'tool_use_id' cannot be null",
-                    new System::ArgumentNullException("tool_use_id")
-                );
-        }
-        init
-        {
-            this._rawData["tool_use_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
@@ -119,6 +67,11 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : ModelBas
     }
 
     public BetaTextEditorCodeExecutionToolResultBlock(
+        BetaTextEditorCodeExecutionToolResultBlock betaTextEditorCodeExecutionToolResultBlock
+    )
+        : base(betaTextEditorCodeExecutionToolResultBlock) { }
+
+    public BetaTextEditorCodeExecutionToolResultBlock(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -137,6 +90,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : ModelBas
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextEditorCodeExecutionToolResultBlockFromRaw.FromRawUnchecked"/>
     public static BetaTextEditorCodeExecutionToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -148,6 +102,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : ModelBas
 class BetaTextEditorCodeExecutionToolResultBlockFromRaw
     : IFromRaw<BetaTextEditorCodeExecutionToolResultBlock>
 {
+    /// <inheritdoc/>
     public BetaTextEditorCodeExecutionToolResultBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaTextEditorCodeExecutionToolResultBlock.FromRawUnchecked(rawData);
@@ -219,6 +174,21 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextEditorCodeExecutionToolResultError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaTextEditorCodeExecutionToolResultError(out var value)) {
+    ///     // `value` is of type `BetaTextEditorCodeExecutionToolResultError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaTextEditorCodeExecutionToolResultError(
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionToolResultError? value
     )
@@ -227,6 +197,21 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextEditorCodeExecutionViewResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaTextEditorCodeExecutionViewResultBlock(out var value)) {
+    ///     // `value` is of type `BetaTextEditorCodeExecutionViewResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaTextEditorCodeExecutionViewResultBlock(
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionViewResultBlock? value
     )
@@ -235,6 +220,21 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextEditorCodeExecutionCreateResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaTextEditorCodeExecutionCreateResultBlock(out var value)) {
+    ///     // `value` is of type `BetaTextEditorCodeExecutionCreateResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaTextEditorCodeExecutionCreateResultBlock(
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionCreateResultBlock? value
     )
@@ -243,6 +243,21 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextEditorCodeExecutionStrReplaceResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaTextEditorCodeExecutionStrReplaceResultBlock(out var value)) {
+    ///     // `value` is of type `BetaTextEditorCodeExecutionStrReplaceResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaTextEditorCodeExecutionStrReplaceResultBlock(
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionStrReplaceResultBlock? value
     )
@@ -251,6 +266,28 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaTextEditorCodeExecutionToolResultError value) => {...},
+    ///     (BetaTextEditorCodeExecutionViewResultBlock value) => {...},
+    ///     (BetaTextEditorCodeExecutionCreateResultBlock value) => {...},
+    ///     (BetaTextEditorCodeExecutionStrReplaceResultBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaTextEditorCodeExecutionToolResultError> betaTextEditorCodeExecutionToolResultError,
         System::Action<BetaTextEditorCodeExecutionViewResultBlock> betaTextEditorCodeExecutionViewResultBlock,
@@ -279,6 +316,29 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaTextEditorCodeExecutionToolResultError value) => {...},
+    ///     (BetaTextEditorCodeExecutionViewResultBlock value) => {...},
+    ///     (BetaTextEditorCodeExecutionCreateResultBlock value) => {...},
+    ///     (BetaTextEditorCodeExecutionStrReplaceResultBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<
             BetaTextEditorCodeExecutionToolResultError,
@@ -330,6 +390,16 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
         BetaTextEditorCodeExecutionStrReplaceResultBlock value
     ) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -338,6 +408,16 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
                 "Data did not match any variant of BetaTextEditorCodeExecutionToolResultBlockContent"
             );
         }
+    }
+
+    public virtual bool Equals(BetaTextEditorCodeExecutionToolResultBlockContent? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

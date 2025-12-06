@@ -165,18 +165,63 @@ public record class TextCitation
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="CitationCharLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationCharLocation(out var value)) {
+    ///     // `value` is of type `CitationCharLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationCharLocation([NotNullWhen(true)] out CitationCharLocation? value)
     {
         value = this.Value as CitationCharLocation;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="CitationPageLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationPageLocation(out var value)) {
+    ///     // `value` is of type `CitationPageLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationPageLocation([NotNullWhen(true)] out CitationPageLocation? value)
     {
         value = this.Value as CitationPageLocation;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="CitationContentBlockLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationContentBlockLocation(out var value)) {
+    ///     // `value` is of type `CitationContentBlockLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationContentBlockLocation(
         [NotNullWhen(true)] out CitationContentBlockLocation? value
     )
@@ -185,6 +230,21 @@ public record class TextCitation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="CitationsWebSearchResultLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationsWebSearchResultLocation(out var value)) {
+    ///     // `value` is of type `CitationsWebSearchResultLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationsWebSearchResultLocation(
         [NotNullWhen(true)] out CitationsWebSearchResultLocation? value
     )
@@ -193,6 +253,21 @@ public record class TextCitation
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="CitationsSearchResultLocation"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitationsSearchResultLocation(out var value)) {
+    ///     // `value` is of type `CitationsSearchResultLocation`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitationsSearchResultLocation(
         [NotNullWhen(true)] out CitationsSearchResultLocation? value
     )
@@ -201,6 +276,29 @@ public record class TextCitation
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (CitationCharLocation value) => {...},
+    ///     (CitationPageLocation value) => {...},
+    ///     (CitationContentBlockLocation value) => {...},
+    ///     (CitationsWebSearchResultLocation value) => {...},
+    ///     (CitationsSearchResultLocation value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<CitationCharLocation> citationCharLocation,
         System::Action<CitationPageLocation> citationPageLocation,
@@ -233,6 +331,30 @@ public record class TextCitation
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (CitationCharLocation value) => {...},
+    ///     (CitationPageLocation value) => {...},
+    ///     (CitationContentBlockLocation value) => {...},
+    ///     (CitationsWebSearchResultLocation value) => {...},
+    ///     (CitationsSearchResultLocation value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<CitationCharLocation, T> citationCharLocation,
         System::Func<CitationPageLocation, T> citationPageLocation,
@@ -265,6 +387,16 @@ public record class TextCitation
 
     public static implicit operator TextCitation(CitationsSearchResultLocation value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -273,6 +405,16 @@ public record class TextCitation
                 "Data did not match any variant of TextCitation"
             );
         }
+    }
+
+    public virtual bool Equals(TextCitation? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

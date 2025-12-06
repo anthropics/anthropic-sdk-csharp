@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -24,46 +23,17 @@ public sealed record class ThinkingConfigEnabled : ModelBase
     /// </summary>
     public required long BudgetTokens
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("budget_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'budget_tokens' cannot be null",
-                    new ArgumentOutOfRangeException("budget_tokens", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["budget_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "budget_tokens"); }
+        init { ModelBase.Set(this._rawData, "budget_tokens", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.BudgetTokens;
@@ -83,6 +53,9 @@ public sealed record class ThinkingConfigEnabled : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
     }
 
+    public ThinkingConfigEnabled(ThinkingConfigEnabled thinkingConfigEnabled)
+        : base(thinkingConfigEnabled) { }
+
     public ThinkingConfigEnabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -98,6 +71,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ThinkingConfigEnabledFromRaw.FromRawUnchecked"/>
     public static ThinkingConfigEnabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -115,6 +89,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase
 
 class ThinkingConfigEnabledFromRaw : IFromRaw<ThinkingConfigEnabled>
 {
+    /// <inheritdoc/>
     public ThinkingConfigEnabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ThinkingConfigEnabled.FromRawUnchecked(rawData);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -22,23 +21,8 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     /// </summary>
     public JsonElement Command
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("command", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'command' cannot be null",
-                    new ArgumentOutOfRangeException("command", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["command"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
+        init { ModelBase.Set(this._rawData, "command", value); }
     }
 
     /// <summary>
@@ -46,27 +30,8 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     /// </summary>
     public required string NewPath
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("new_path", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'new_path' cannot be null",
-                    new ArgumentOutOfRangeException("new_path", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'new_path' cannot be null",
-                    new ArgumentNullException("new_path")
-                );
-        }
-        init
-        {
-            this._rawData["new_path"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "new_path"); }
+        init { ModelBase.Set(this._rawData, "new_path", value); }
     }
 
     /// <summary>
@@ -74,29 +39,11 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     /// </summary>
     public required string OldPath
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("old_path", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'old_path' cannot be null",
-                    new ArgumentOutOfRangeException("old_path", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'old_path' cannot be null",
-                    new ArgumentNullException("old_path")
-                );
-        }
-        init
-        {
-            this._rawData["old_path"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "old_path"); }
+        init { ModelBase.Set(this._rawData, "old_path", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -117,6 +64,11 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
     }
 
+    public BetaMemoryTool20250818RenameCommand(
+        BetaMemoryTool20250818RenameCommand betaMemoryTool20250818RenameCommand
+    )
+        : base(betaMemoryTool20250818RenameCommand) { }
+
     public BetaMemoryTool20250818RenameCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -132,6 +84,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMemoryTool20250818RenameCommandFromRaw.FromRawUnchecked"/>
     public static BetaMemoryTool20250818RenameCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -142,6 +95,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
 
 class BetaMemoryTool20250818RenameCommandFromRaw : IFromRaw<BetaMemoryTool20250818RenameCommand>
 {
+    /// <inheritdoc/>
     public BetaMemoryTool20250818RenameCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMemoryTool20250818RenameCommand.FromRawUnchecked(rawData);

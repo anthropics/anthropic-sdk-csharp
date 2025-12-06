@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,101 +15,26 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
 {
     public required IReadOnlyList<BetaTextBlockParam> Content
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("content", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new ArgumentOutOfRangeException("content", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new ArgumentNullException("content")
-                );
-        }
-        init
-        {
-            this._rawData["content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<List<BetaTextBlockParam>>(this.RawData, "content"); }
+        init { ModelBase.Set(this._rawData, "content", value); }
     }
 
     public required string Source
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("source", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'source' cannot be null",
-                    new ArgumentOutOfRangeException("source", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'source' cannot be null",
-                    new ArgumentNullException("source")
-                );
-        }
-        init
-        {
-            this._rawData["source"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
+        init { ModelBase.Set(this._rawData, "source", value); }
     }
 
     public required string Title
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("title", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'title' cannot be null",
-                    new ArgumentOutOfRangeException("title", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'title' cannot be null",
-                    new ArgumentNullException("title")
-                );
-        }
-        init
-        {
-            this._rawData["title"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "title"); }
+        init { ModelBase.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -120,34 +44,19 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+                this.RawData,
+                "cache_control"
             );
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
     public BetaCitationsConfigParam? Citations
     {
         get
         {
-            if (!this._rawData.TryGetValue("citations", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
         }
         init
         {
@@ -156,13 +65,11 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
                 return;
             }
 
-            this._rawData["citations"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "citations", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Content)
@@ -189,6 +96,9 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
     }
 
+    public BetaSearchResultBlockParam(BetaSearchResultBlockParam betaSearchResultBlockParam)
+        : base(betaSearchResultBlockParam) { }
+
     public BetaSearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -204,6 +114,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaSearchResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaSearchResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -214,6 +125,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
 
 class BetaSearchResultBlockParamFromRaw : IFromRaw<BetaSearchResultBlockParam>
 {
+    /// <inheritdoc/>
     public BetaSearchResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaSearchResultBlockParam.FromRawUnchecked(rawData);

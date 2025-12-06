@@ -28,11 +28,7 @@ public class BatchServiceTest
                             MaxTokens = 1024,
                             Messages =
                             [
-                                new()
-                                {
-                                    Content = "Hello, world",
-                                    Role = Models.Messages.Role.User,
-                                },
+                                new() { Content = "Hello, world", Role = Messages::Role.User },
                             ],
                             Model = modelName,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
@@ -41,7 +37,7 @@ public class BatchServiceTest
                             Stream = true,
                             System = new(
                                 [
-                                    new Models.Messages.TextBlockParam()
+                                    new Messages::TextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
                                         CacheControl = new() { TTL = Messages::TTL.TTL5m },

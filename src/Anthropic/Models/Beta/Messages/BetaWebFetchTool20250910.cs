@@ -19,57 +19,23 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
+        init { ModelBase.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
-    public IReadOnlyList<ApiEnum<string, AllowedCaller14>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>>? AllowedCallers
     {
         get
         {
-            if (!this._rawData.TryGetValue("allowed_callers", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ApiEnum<string, AllowedCaller14>>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<
+                List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>>
+            >(this.RawData, "allowed_callers");
         }
         init
         {
@@ -78,10 +44,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
                 return;
             }
 
-            this._rawData["allowed_callers"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "allowed_callers", value);
         }
     }
 
@@ -90,20 +53,8 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public IReadOnlyList<string>? AllowedDomains
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("allowed_domains", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["allowed_domains"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "allowed_domains"); }
+        init { ModelBase.Set(this._rawData, "allowed_domains", value); }
     }
 
     /// <summary>
@@ -111,20 +62,8 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public IReadOnlyList<string>? BlockedDomains
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("blocked_domains", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["blocked_domains"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "blocked_domains"); }
+        init { ModelBase.Set(this._rawData, "blocked_domains", value); }
     }
 
     /// <summary>
@@ -134,21 +73,12 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+                this.RawData,
+                "cache_control"
             );
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -158,21 +88,9 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("citations", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCitationsConfigParam?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
         }
-        init
-        {
-            this._rawData["citations"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "citations", value); }
     }
 
     /// <summary>
@@ -181,13 +99,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public bool? DeferLoading
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("defer_loading", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
         init
         {
             if (value == null)
@@ -195,10 +107,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
                 return;
             }
 
-            this._rawData["defer_loading"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "defer_loading", value);
         }
     }
 
@@ -208,20 +117,8 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public long? MaxContentTokens
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("max_content_tokens", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["max_content_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "max_content_tokens"); }
+        init { ModelBase.Set(this._rawData, "max_content_tokens", value); }
     }
 
     /// <summary>
@@ -229,31 +126,13 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public long? MaxUses
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("max_uses", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["max_uses"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "max_uses"); }
+        init { ModelBase.Set(this._rawData, "max_uses", value); }
     }
 
     public bool? Strict
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("strict", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "strict"); }
         init
         {
             if (value == null)
@@ -261,13 +140,11 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
                 return;
             }
 
-            this._rawData["strict"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "strict", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -308,6 +185,9 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_20250910\"");
     }
 
+    public BetaWebFetchTool20250910(BetaWebFetchTool20250910 betaWebFetchTool20250910)
+        : base(betaWebFetchTool20250910) { }
+
     public BetaWebFetchTool20250910(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -324,6 +204,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebFetchTool20250910FromRaw.FromRawUnchecked"/>
     public static BetaWebFetchTool20250910 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -334,21 +215,23 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
 
 class BetaWebFetchTool20250910FromRaw : IFromRaw<BetaWebFetchTool20250910>
 {
+    /// <inheritdoc/>
     public BetaWebFetchTool20250910 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaWebFetchTool20250910.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(AllowedCaller14Converter))]
-public enum AllowedCaller14
+[JsonConverter(typeof(BetaWebFetchTool20250910AllowedCallerConverter))]
+public enum BetaWebFetchTool20250910AllowedCaller
 {
     Direct,
     CodeExecution20250825,
 }
 
-sealed class AllowedCaller14Converter : JsonConverter<AllowedCaller14>
+sealed class BetaWebFetchTool20250910AllowedCallerConverter
+    : JsonConverter<BetaWebFetchTool20250910AllowedCaller>
 {
-    public override AllowedCaller14 Read(
+    public override BetaWebFetchTool20250910AllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -356,15 +239,16 @@ sealed class AllowedCaller14Converter : JsonConverter<AllowedCaller14>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => AllowedCaller14.Direct,
-            "code_execution_20250825" => AllowedCaller14.CodeExecution20250825,
-            _ => (AllowedCaller14)(-1),
+            "direct" => BetaWebFetchTool20250910AllowedCaller.Direct,
+            "code_execution_20250825" =>
+                BetaWebFetchTool20250910AllowedCaller.CodeExecution20250825,
+            _ => (BetaWebFetchTool20250910AllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        AllowedCaller14 value,
+        BetaWebFetchTool20250910AllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -372,8 +256,9 @@ sealed class AllowedCaller14Converter : JsonConverter<AllowedCaller14>
             writer,
             value switch
             {
-                AllowedCaller14.Direct => "direct",
-                AllowedCaller14.CodeExecution20250825 => "code_execution_20250825",
+                BetaWebFetchTool20250910AllowedCaller.Direct => "direct",
+                BetaWebFetchTool20250910AllowedCaller.CodeExecution20250825 =>
+                    "code_execution_20250825",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

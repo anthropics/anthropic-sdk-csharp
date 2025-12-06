@@ -20,30 +20,8 @@ public sealed record class Tool : ModelBase
     /// </summary>
     public required InputSchema InputSchema
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("input_schema", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'input_schema' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "input_schema",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<InputSchema>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'input_schema' cannot be null",
-                    new System::ArgumentNullException("input_schema")
-                );
-        }
-        init
-        {
-            this._rawData["input_schema"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<InputSchema>(this.RawData, "input_schema"); }
+        init { ModelBase.Set(this._rawData, "input_schema", value); }
     }
 
     /// <summary>
@@ -53,27 +31,8 @@ public sealed record class Tool : ModelBase
     /// </summary>
     public required string Name
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new System::ArgumentNullException("name")
-                );
-        }
-        init
-        {
-            this._rawData["name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
+        init { ModelBase.Set(this._rawData, "name", value); }
     }
 
     /// <summary>
@@ -83,21 +42,9 @@ public sealed record class Tool : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<CacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -110,13 +57,7 @@ public sealed record class Tool : ModelBase
     /// </summary>
     public string? Description
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("description", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "description"); }
         init
         {
             if (value == null)
@@ -124,10 +65,7 @@ public sealed record class Tool : ModelBase
                 return;
             }
 
-            this._rawData["description"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "description", value);
         }
     }
 
@@ -135,23 +73,14 @@ public sealed record class Tool : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<
-                string,
-                global::Anthropic.Models.Messages.Type
-            >?>(element, ModelBase.SerializerOptions);
+            return ModelBase.GetNullableClass<
+                ApiEnum<string, global::Anthropic.Models.Messages.Type>
+            >(this.RawData, "type");
         }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.InputSchema.Validate();
@@ -162,6 +91,9 @@ public sealed record class Tool : ModelBase
     }
 
     public Tool() { }
+
+    public Tool(Tool tool)
+        : base(tool) { }
 
     public Tool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -176,6 +108,7 @@ public sealed record class Tool : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ToolFromRaw.FromRawUnchecked"/>
     public static Tool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -184,6 +117,7 @@ public sealed record class Tool : ModelBase
 
 class ToolFromRaw : IFromRaw<Tool>
 {
+    /// <inheritdoc/>
     public Tool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Tool.FromRawUnchecked(rawData);
 }
@@ -199,64 +133,29 @@ public sealed record class InputSchema : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public IReadOnlyDictionary<string, JsonElement>? Properties
     {
         get
         {
-            if (!this._rawData.TryGetValue("properties", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<Dictionary<string, JsonElement>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<Dictionary<string, JsonElement>>(
+                this.RawData,
+                "properties"
             );
         }
-        init
-        {
-            this._rawData["properties"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "properties", value); }
     }
 
     public IReadOnlyList<string>? Required
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("required", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["required"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "required"); }
+        init { ModelBase.Set(this._rawData, "required", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -277,6 +176,9 @@ public sealed record class InputSchema : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
     }
 
+    public InputSchema(InputSchema inputSchema)
+        : base(inputSchema) { }
+
     public InputSchema(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -292,6 +194,7 @@ public sealed record class InputSchema : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="InputSchemaFromRaw.FromRawUnchecked"/>
     public static InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -300,6 +203,7 @@ public sealed record class InputSchema : ModelBase
 
 class InputSchemaFromRaw : IFromRaw<InputSchema>
 {
+    /// <inheritdoc/>
     public InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         InputSchema.FromRawUnchecked(rawData);
 }

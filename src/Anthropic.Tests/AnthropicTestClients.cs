@@ -9,6 +9,11 @@ namespace Anthropic.Tests;
 
 public class AnthropicTestClientsAttribute : DataAttribute
 {
+    public static string DataServiceUrl { get; } =
+        Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
+    public static string ApiKey { get; } = "YourApiKeyHere";
+    public static string Resource { get; } = "YourRegionOrResourceHere";
+
     public AnthropicTestClientsAttribute(TestSupportTypes testSupportTypes = TestSupportTypes.All)
     {
         TestSupportTypes = testSupportTypes;
@@ -18,17 +23,12 @@ public class AnthropicTestClientsAttribute : DataAttribute
 
     public override IEnumerable<object[]> GetData(MethodInfo testMethod)
     {
-        var dataServiceUrl =
-            Environment.GetEnvironmentVariable("TEST_API_BASE_URL") ?? "http://localhost:4010";
-        string apiKey = "YourApiKeyHere";
-        var resource = "YourRegionOrResourceHere";
-
         var testData = testMethod.GetCustomAttributes<AnthropicTestDataAttribute>().ToArray();
         if (TestSupportTypes.HasFlag(TestSupportTypes.Anthropic))
         {
             yield return
             [
-                new AnthropicClient() { BaseUrl = new Uri(dataServiceUrl), APIKey = apiKey },
+                new AnthropicClient() { BaseUrl = new Uri(DataServiceUrl), APIKey = ApiKey },
                 .. testData
                     .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
                     .Select(f => f.TestData)
@@ -39,9 +39,9 @@ public class AnthropicTestClientsAttribute : DataAttribute
         {
             yield return
             [
-                new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(apiKey, resource!))
+                new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(ApiKey, Resource!))
                 {
-                    BaseUrl = new Uri(dataServiceUrl),
+                    BaseUrl = new Uri(DataServiceUrl),
                 },
                 .. testData
                     .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,74 +15,23 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
 {
     public required BetaRawContentBlockDelta Delta
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("delta", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'delta' cannot be null",
-                    new ArgumentOutOfRangeException("delta", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'delta' cannot be null",
-                    new ArgumentNullException("delta")
-                );
-        }
-        init
-        {
-            this._rawData["delta"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<BetaRawContentBlockDelta>(this.RawData, "delta"); }
+        init { ModelBase.Set(this._rawData, "delta", value); }
     }
 
     public required long Index
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'index' cannot be null",
-                    new ArgumentOutOfRangeException("index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "index"); }
+        init { ModelBase.Set(this._rawData, "index", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Delta.Validate();
@@ -104,6 +52,11 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"");
     }
 
+    public BetaRawContentBlockDeltaEvent(
+        BetaRawContentBlockDeltaEvent betaRawContentBlockDeltaEvent
+    )
+        : base(betaRawContentBlockDeltaEvent) { }
+
     public BetaRawContentBlockDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -119,6 +72,7 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaRawContentBlockDeltaEventFromRaw.FromRawUnchecked"/>
     public static BetaRawContentBlockDeltaEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -129,6 +83,7 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
 
 class BetaRawContentBlockDeltaEventFromRaw : IFromRaw<BetaRawContentBlockDeltaEvent>
 {
+    /// <inheritdoc/>
     public BetaRawContentBlockDeltaEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaRawContentBlockDeltaEvent.FromRawUnchecked(rawData);

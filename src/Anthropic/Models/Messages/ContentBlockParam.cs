@@ -181,60 +181,210 @@ public record class ContentBlockParam
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="TextBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickText(out var value)) {
+    ///     // `value` is of type `TextBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickText([NotNullWhen(true)] out TextBlockParam? value)
     {
         value = this.Value as TextBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ImageBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickImage(out var value)) {
+    ///     // `value` is of type `ImageBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickImage([NotNullWhen(true)] out ImageBlockParam? value)
     {
         value = this.Value as ImageBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="DocumentBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickDocument(out var value)) {
+    ///     // `value` is of type `DocumentBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickDocument([NotNullWhen(true)] out DocumentBlockParam? value)
     {
         value = this.Value as DocumentBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="SearchResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSearchResult(out var value)) {
+    ///     // `value` is of type `SearchResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickSearchResult([NotNullWhen(true)] out SearchResultBlockParam? value)
     {
         value = this.Value as SearchResultBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ThinkingBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickThinking(out var value)) {
+    ///     // `value` is of type `ThinkingBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickThinking([NotNullWhen(true)] out ThinkingBlockParam? value)
     {
         value = this.Value as ThinkingBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="RedactedThinkingBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRedactedThinking(out var value)) {
+    ///     // `value` is of type `RedactedThinkingBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickRedactedThinking([NotNullWhen(true)] out RedactedThinkingBlockParam? value)
     {
         value = this.Value as RedactedThinkingBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ToolUseBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolUse(out var value)) {
+    ///     // `value` is of type `ToolUseBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickToolUse([NotNullWhen(true)] out ToolUseBlockParam? value)
     {
         value = this.Value as ToolUseBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolResult(out var value)) {
+    ///     // `value` is of type `ToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickToolResult([NotNullWhen(true)] out ToolResultBlockParam? value)
     {
         value = this.Value as ToolResultBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ServerToolUseBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickServerToolUse(out var value)) {
+    ///     // `value` is of type `ServerToolUseBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickServerToolUse([NotNullWhen(true)] out ServerToolUseBlockParam? value)
     {
         value = this.Value as ServerToolUseBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebSearchToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchToolResult(out var value)) {
+    ///     // `value` is of type `WebSearchToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickWebSearchToolResult(
         [NotNullWhen(true)] out WebSearchToolResultBlockParam? value
     )
@@ -243,6 +393,34 @@ public record class ContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (TextBlockParam value) => {...},
+    ///     (ImageBlockParam value) => {...},
+    ///     (DocumentBlockParam value) => {...},
+    ///     (SearchResultBlockParam value) => {...},
+    ///     (ThinkingBlockParam value) => {...},
+    ///     (RedactedThinkingBlockParam value) => {...},
+    ///     (ToolUseBlockParam value) => {...},
+    ///     (ToolResultBlockParam value) => {...},
+    ///     (ServerToolUseBlockParam value) => {...},
+    ///     (WebSearchToolResultBlockParam value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<TextBlockParam> text,
         System::Action<ImageBlockParam> image,
@@ -295,6 +473,35 @@ public record class ContentBlockParam
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (TextBlockParam value) => {...},
+    ///     (ImageBlockParam value) => {...},
+    ///     (DocumentBlockParam value) => {...},
+    ///     (SearchResultBlockParam value) => {...},
+    ///     (ThinkingBlockParam value) => {...},
+    ///     (RedactedThinkingBlockParam value) => {...},
+    ///     (ToolUseBlockParam value) => {...},
+    ///     (ToolResultBlockParam value) => {...},
+    ///     (ServerToolUseBlockParam value) => {...},
+    ///     (WebSearchToolResultBlockParam value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<TextBlockParam, T> text,
         System::Func<ImageBlockParam, T> image,
@@ -348,6 +555,16 @@ public record class ContentBlockParam
     public static implicit operator ContentBlockParam(WebSearchToolResultBlockParam value) =>
         new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -356,6 +573,16 @@ public record class ContentBlockParam
                 "Data did not match any variant of ContentBlockParam"
             );
         }
+    }
+
+    public virtual bool Equals(ContentBlockParam? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

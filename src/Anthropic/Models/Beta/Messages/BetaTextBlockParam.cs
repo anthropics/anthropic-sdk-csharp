@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,48 +13,14 @@ public sealed record class BetaTextBlockParam : ModelBase
 {
     public required string Text
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("text", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'text' cannot be null",
-                    new ArgumentOutOfRangeException("text", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'text' cannot be null",
-                    new ArgumentNullException("text")
-                );
-        }
-        init
-        {
-            this._rawData["text"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
+        init { ModelBase.Set(this._rawData, "text", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -65,44 +30,27 @@ public sealed record class BetaTextBlockParam : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+                this.RawData,
+                "cache_control"
             );
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
     public IReadOnlyList<BetaTextCitationParam>? Citations
     {
         get
         {
-            if (!this._rawData.TryGetValue("citations", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<BetaTextCitationParam>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<List<BetaTextCitationParam>>(
+                this.RawData,
+                "citations"
             );
         }
-        init
-        {
-            this._rawData["citations"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "citations", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
@@ -122,6 +70,9 @@ public sealed record class BetaTextBlockParam : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
+    public BetaTextBlockParam(BetaTextBlockParam betaTextBlockParam)
+        : base(betaTextBlockParam) { }
+
     public BetaTextBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -137,6 +88,7 @@ public sealed record class BetaTextBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaTextBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -154,6 +106,7 @@ public sealed record class BetaTextBlockParam : ModelBase
 
 class BetaTextBlockParamFromRaw : IFromRaw<BetaTextBlockParam>
 {
+    /// <inheritdoc/>
     public BetaTextBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaTextBlockParam.FromRawUnchecked(rawData);
 }

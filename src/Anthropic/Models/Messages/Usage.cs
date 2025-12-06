@@ -17,20 +17,8 @@ public sealed record class Usage : ModelBase
     /// </summary>
     public required CacheCreation? CacheCreation
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("cache_creation", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<CacheCreation?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["cache_creation"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<CacheCreation>(this.RawData, "cache_creation"); }
+        init { ModelBase.Set(this._rawData, "cache_creation", value); }
     }
 
     /// <summary>
@@ -40,18 +28,9 @@ public sealed record class Usage : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_creation_input_tokens", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
+            return ModelBase.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
         }
-        init
-        {
-            this._rawData["cache_creation_input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_creation_input_tokens", value); }
     }
 
     /// <summary>
@@ -59,20 +38,8 @@ public sealed record class Usage : ModelBase
     /// </summary>
     public required long? CacheReadInputTokens
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("cache_read_input_tokens", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["cache_read_input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
+        init { ModelBase.Set(this._rawData, "cache_read_input_tokens", value); }
     }
 
     /// <summary>
@@ -80,26 +47,8 @@ public sealed record class Usage : ModelBase
     /// </summary>
     public required long InputTokens
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("input_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'input_tokens' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "input_tokens",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
+        init { ModelBase.Set(this._rawData, "input_tokens", value); }
     }
 
     /// <summary>
@@ -107,26 +56,8 @@ public sealed record class Usage : ModelBase
     /// </summary>
     public required long OutputTokens
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("output_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'output_tokens' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "output_tokens",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["output_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
+        init { ModelBase.Set(this._rawData, "output_tokens", value); }
     }
 
     /// <summary>
@@ -134,23 +65,8 @@ public sealed record class Usage : ModelBase
     /// </summary>
     public required ServerToolUsage? ServerToolUse
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("server_tool_use", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ServerToolUsage?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._rawData["server_tool_use"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<ServerToolUsage>(this.RawData, "server_tool_use"); }
+        init { ModelBase.Set(this._rawData, "server_tool_use", value); }
     }
 
     /// <summary>
@@ -160,23 +76,15 @@ public sealed record class Usage : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("service_tier", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, UsageServiceTier>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<ApiEnum<string, UsageServiceTier>>(
+                this.RawData,
+                "service_tier"
             );
         }
-        init
-        {
-            this._rawData["service_tier"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "service_tier", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.CacheCreation?.Validate();
@@ -189,6 +97,9 @@ public sealed record class Usage : ModelBase
     }
 
     public Usage() { }
+
+    public Usage(Usage usage)
+        : base(usage) { }
 
     public Usage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -203,6 +114,7 @@ public sealed record class Usage : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="UsageFromRaw.FromRawUnchecked"/>
     public static Usage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -211,6 +123,7 @@ public sealed record class Usage : ModelBase
 
 class UsageFromRaw : IFromRaw<Usage>
 {
+    /// <inheritdoc/>
     public Usage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Usage.FromRawUnchecked(rawData);
 }

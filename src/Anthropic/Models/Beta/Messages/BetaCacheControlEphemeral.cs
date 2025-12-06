@@ -14,23 +14,8 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -42,16 +27,7 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
     /// </summary>
     public ApiEnum<string, TTL>? TTL
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("ttl", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, TTL>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<ApiEnum<string, TTL>>(this.RawData, "ttl"); }
         init
         {
             if (value == null)
@@ -59,13 +35,11 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
                 return;
             }
 
-            this._rawData["ttl"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "ttl", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -85,6 +59,9 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
 
+    public BetaCacheControlEphemeral(BetaCacheControlEphemeral betaCacheControlEphemeral)
+        : base(betaCacheControlEphemeral) { }
+
     public BetaCacheControlEphemeral(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -100,6 +77,7 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCacheControlEphemeralFromRaw.FromRawUnchecked"/>
     public static BetaCacheControlEphemeral FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -110,6 +88,7 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
 
 class BetaCacheControlEphemeralFromRaw : IFromRaw<BetaCacheControlEphemeral>
 {
+    /// <inheritdoc/>
     public BetaCacheControlEphemeral FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCacheControlEphemeral.FromRawUnchecked(rawData);

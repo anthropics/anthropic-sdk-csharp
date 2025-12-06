@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -17,50 +16,17 @@ public sealed record class BetaServerToolCaller : ModelBase
 {
     public required string ToolID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("tool_id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'tool_id' cannot be null",
-                    new ArgumentOutOfRangeException("tool_id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'tool_id' cannot be null",
-                    new ArgumentNullException("tool_id")
-                );
-        }
-        init
-        {
-            this._rawData["tool_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_id"); }
+        init { ModelBase.Set(this._rawData, "tool_id", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ToolID;
@@ -80,6 +46,9 @@ public sealed record class BetaServerToolCaller : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250825\"");
     }
 
+    public BetaServerToolCaller(BetaServerToolCaller betaServerToolCaller)
+        : base(betaServerToolCaller) { }
+
     public BetaServerToolCaller(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -95,6 +64,7 @@ public sealed record class BetaServerToolCaller : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaServerToolCallerFromRaw.FromRawUnchecked"/>
     public static BetaServerToolCaller FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -112,6 +82,7 @@ public sealed record class BetaServerToolCaller : ModelBase
 
 class BetaServerToolCallerFromRaw : IFromRaw<BetaServerToolCaller>
 {
+    /// <inheritdoc/>
     public BetaServerToolCaller FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaServerToolCaller.FromRawUnchecked(rawData);

@@ -17,48 +17,14 @@ public sealed record class BetaDocumentBlock : ModelBase
     /// </summary>
     public required BetaCitationConfig? Citations
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("citations", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCitationConfig?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._rawData["citations"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<BetaCitationConfig>(this.RawData, "citations"); }
+        init { ModelBase.Set(this._rawData, "citations", value); }
     }
 
     public required Source Source
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("source", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'source' cannot be null",
-                    new System::ArgumentOutOfRangeException("source", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'source' cannot be null",
-                    new System::ArgumentNullException("source")
-                );
-        }
-        init
-        {
-            this._rawData["source"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<Source>(this.RawData, "source"); }
+        init { ModelBase.Set(this._rawData, "source", value); }
     }
 
     /// <summary>
@@ -66,43 +32,17 @@ public sealed record class BetaDocumentBlock : ModelBase
     /// </summary>
     public required string? Title
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("title", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["title"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
+        init { ModelBase.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Citations?.Validate();
@@ -124,6 +64,9 @@ public sealed record class BetaDocumentBlock : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
 
+    public BetaDocumentBlock(BetaDocumentBlock betaDocumentBlock)
+        : base(betaDocumentBlock) { }
+
     public BetaDocumentBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -139,6 +82,7 @@ public sealed record class BetaDocumentBlock : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaDocumentBlockFromRaw.FromRawUnchecked"/>
     public static BetaDocumentBlock FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -149,6 +93,7 @@ public sealed record class BetaDocumentBlock : ModelBase
 
 class BetaDocumentBlockFromRaw : IFromRaw<BetaDocumentBlock>
 {
+    /// <inheritdoc/>
     public BetaDocumentBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaDocumentBlock.FromRawUnchecked(rawData);
 }
@@ -197,18 +142,68 @@ public record class Source
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBase64PDFSource"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaBase64PDF(out var value)) {
+    ///     // `value` is of type `BetaBase64PDFSource`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaBase64PDF([NotNullWhen(true)] out BetaBase64PDFSource? value)
     {
         value = this.Value as BetaBase64PDFSource;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaPlainTextSource"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaPlainText(out var value)) {
+    ///     // `value` is of type `BetaPlainTextSource`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaPlainText([NotNullWhen(true)] out BetaPlainTextSource? value)
     {
         value = this.Value as BetaPlainTextSource;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaBase64PDFSource value) => {...},
+    ///     (BetaPlainTextSource value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaBase64PDFSource> betaBase64PDF,
         System::Action<BetaPlainTextSource> betaPlainText
@@ -227,6 +222,27 @@ public record class Source
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaBase64PDFSource value) => {...},
+    ///     (BetaPlainTextSource value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaBase64PDFSource, T> betaBase64PDF,
         System::Func<BetaPlainTextSource, T> betaPlainText
@@ -246,12 +262,32 @@ public record class Source
 
     public static implicit operator Source(BetaPlainTextSource value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
+    }
+
+    public virtual bool Equals(Source? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

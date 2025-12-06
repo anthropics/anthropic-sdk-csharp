@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,71 +13,23 @@ public sealed record class PlainTextSource : ModelBase
 {
     public required string Data
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("data", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'data' cannot be null",
-                    new ArgumentOutOfRangeException("data", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'data' cannot be null",
-                    new ArgumentNullException("data")
-                );
-        }
-        init
-        {
-            this._rawData["data"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
+        init { ModelBase.Set(this._rawData, "data", value); }
     }
 
     public JsonElement MediaType
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("media_type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'media_type' cannot be null",
-                    new ArgumentOutOfRangeException("media_type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["media_type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
+        init { ModelBase.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Data;
@@ -103,6 +54,9 @@ public sealed record class PlainTextSource : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
 
+    public PlainTextSource(PlainTextSource plainTextSource)
+        : base(plainTextSource) { }
+
     public PlainTextSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -119,6 +73,7 @@ public sealed record class PlainTextSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="PlainTextSourceFromRaw.FromRawUnchecked"/>
     public static PlainTextSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -134,6 +89,7 @@ public sealed record class PlainTextSource : ModelBase
 
 class PlainTextSourceFromRaw : IFromRaw<PlainTextSource>
 {
+    /// <inheritdoc/>
     public PlainTextSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         PlainTextSource.FromRawUnchecked(rawData);
 }

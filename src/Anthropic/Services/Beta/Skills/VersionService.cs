@@ -8,7 +8,7 @@ using Anthropic.Models.Beta.Skills.Versions;
 
 namespace Anthropic.Services.Beta.Skills;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class VersionService : IVersionService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)

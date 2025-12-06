@@ -107,6 +107,21 @@ public record class BetaMemoryTool20250818Command
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818ViewCommand"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTool20250818View(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818ViewCommand`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTool20250818View(
         [NotNullWhen(true)] out BetaMemoryTool20250818ViewCommand? value
     )
@@ -115,6 +130,21 @@ public record class BetaMemoryTool20250818Command
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818CreateCommand"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTool20250818Create(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818CreateCommand`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTool20250818Create(
         [NotNullWhen(true)] out BetaMemoryTool20250818CreateCommand? value
     )
@@ -123,6 +153,21 @@ public record class BetaMemoryTool20250818Command
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818StrReplaceCommand"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTool20250818StrReplace(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818StrReplaceCommand`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTool20250818StrReplace(
         [NotNullWhen(true)] out BetaMemoryTool20250818StrReplaceCommand? value
     )
@@ -131,6 +176,21 @@ public record class BetaMemoryTool20250818Command
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818InsertCommand"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTool20250818Insert(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818InsertCommand`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTool20250818Insert(
         [NotNullWhen(true)] out BetaMemoryTool20250818InsertCommand? value
     )
@@ -139,6 +199,21 @@ public record class BetaMemoryTool20250818Command
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818DeleteCommand"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTool20250818Delete(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818DeleteCommand`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTool20250818Delete(
         [NotNullWhen(true)] out BetaMemoryTool20250818DeleteCommand? value
     )
@@ -147,6 +222,21 @@ public record class BetaMemoryTool20250818Command
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMemoryTool20250818RenameCommand"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTool20250818Rename(out var value)) {
+    ///     // `value` is of type `BetaMemoryTool20250818RenameCommand`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTool20250818Rename(
         [NotNullWhen(true)] out BetaMemoryTool20250818RenameCommand? value
     )
@@ -155,6 +245,30 @@ public record class BetaMemoryTool20250818Command
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaMemoryTool20250818ViewCommand value) => {...},
+    ///     (BetaMemoryTool20250818CreateCommand value) => {...},
+    ///     (BetaMemoryTool20250818StrReplaceCommand value) => {...},
+    ///     (BetaMemoryTool20250818InsertCommand value) => {...},
+    ///     (BetaMemoryTool20250818DeleteCommand value) => {...},
+    ///     (BetaMemoryTool20250818RenameCommand value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaMemoryTool20250818ViewCommand> tool20250818View,
         System::Action<BetaMemoryTool20250818CreateCommand> tool20250818Create,
@@ -191,6 +305,31 @@ public record class BetaMemoryTool20250818Command
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaMemoryTool20250818ViewCommand value) => {...},
+    ///     (BetaMemoryTool20250818CreateCommand value) => {...},
+    ///     (BetaMemoryTool20250818StrReplaceCommand value) => {...},
+    ///     (BetaMemoryTool20250818InsertCommand value) => {...},
+    ///     (BetaMemoryTool20250818DeleteCommand value) => {...},
+    ///     (BetaMemoryTool20250818RenameCommand value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaMemoryTool20250818ViewCommand, T> tool20250818View,
         System::Func<BetaMemoryTool20250818CreateCommand, T> tool20250818Create,
@@ -238,6 +377,16 @@ public record class BetaMemoryTool20250818Command
         BetaMemoryTool20250818RenameCommand value
     ) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -246,6 +395,16 @@ public record class BetaMemoryTool20250818Command
                 "Data did not match any variant of BetaMemoryTool20250818Command"
             );
         }
+    }
+
+    public virtual bool Equals(BetaMemoryTool20250818Command? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

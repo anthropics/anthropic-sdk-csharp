@@ -16,75 +16,27 @@ public sealed record class RawContentBlockStartEvent : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("content_block", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'content_block' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "content_block",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'content_block' cannot be null",
-                    new System::ArgumentNullException("content_block")
-                );
-        }
-        init
-        {
-            this._rawData["content_block"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<RawContentBlockStartEventContentBlock>(
+                this.RawData,
+                "content_block"
             );
         }
+        init { ModelBase.Set(this._rawData, "content_block", value); }
     }
 
     public required long Index
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'index' cannot be null",
-                    new System::ArgumentOutOfRangeException("index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "index"); }
+        init { ModelBase.Set(this._rawData, "index", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ContentBlock.Validate();
@@ -105,6 +57,9 @@ public sealed record class RawContentBlockStartEvent : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
 
+    public RawContentBlockStartEvent(RawContentBlockStartEvent rawContentBlockStartEvent)
+        : base(rawContentBlockStartEvent) { }
+
     public RawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -120,6 +75,7 @@ public sealed record class RawContentBlockStartEvent : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="RawContentBlockStartEventFromRaw.FromRawUnchecked"/>
     public static RawContentBlockStartEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -130,6 +86,7 @@ public sealed record class RawContentBlockStartEvent : ModelBase
 
 class RawContentBlockStartEventFromRaw : IFromRaw<RawContentBlockStartEvent>
 {
+    /// <inheritdoc/>
     public RawContentBlockStartEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => RawContentBlockStartEvent.FromRawUnchecked(rawData);
@@ -224,42 +181,156 @@ public record class RawContentBlockStartEventContentBlock
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="TextBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickText(out var value)) {
+    ///     // `value` is of type `TextBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickText([NotNullWhen(true)] out TextBlock? value)
     {
         value = this.Value as TextBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ThinkingBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickThinking(out var value)) {
+    ///     // `value` is of type `ThinkingBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickThinking([NotNullWhen(true)] out ThinkingBlock? value)
     {
         value = this.Value as ThinkingBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="RedactedThinkingBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRedactedThinking(out var value)) {
+    ///     // `value` is of type `RedactedThinkingBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickRedactedThinking([NotNullWhen(true)] out RedactedThinkingBlock? value)
     {
         value = this.Value as RedactedThinkingBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ToolUseBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolUse(out var value)) {
+    ///     // `value` is of type `ToolUseBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickToolUse([NotNullWhen(true)] out ToolUseBlock? value)
     {
         value = this.Value as ToolUseBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ServerToolUseBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickServerToolUse(out var value)) {
+    ///     // `value` is of type `ServerToolUseBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickServerToolUse([NotNullWhen(true)] out ServerToolUseBlock? value)
     {
         value = this.Value as ServerToolUseBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WebSearchToolResultBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchToolResult(out var value)) {
+    ///     // `value` is of type `WebSearchToolResultBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickWebSearchToolResult([NotNullWhen(true)] out WebSearchToolResultBlock? value)
     {
         value = this.Value as WebSearchToolResultBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (TextBlock value) => {...},
+    ///     (ThinkingBlock value) => {...},
+    ///     (RedactedThinkingBlock value) => {...},
+    ///     (ToolUseBlock value) => {...},
+    ///     (ServerToolUseBlock value) => {...},
+    ///     (WebSearchToolResultBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<TextBlock> text,
         System::Action<ThinkingBlock> thinking,
@@ -296,6 +367,31 @@ public record class RawContentBlockStartEventContentBlock
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (TextBlock value) => {...},
+    ///     (ThinkingBlock value) => {...},
+    ///     (RedactedThinkingBlock value) => {...},
+    ///     (ToolUseBlock value) => {...},
+    ///     (ServerToolUseBlock value) => {...},
+    ///     (WebSearchToolResultBlock value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<TextBlock, T> text,
         System::Func<ThinkingBlock, T> thinking,
@@ -340,6 +436,16 @@ public record class RawContentBlockStartEventContentBlock
         WebSearchToolResultBlock value
     ) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -348,6 +454,16 @@ public record class RawContentBlockStartEventContentBlock
                 "Data did not match any variant of RawContentBlockStartEventContentBlock"
             );
         }
+    }
+
+    public virtual bool Equals(RawContentBlockStartEventContentBlock? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 
