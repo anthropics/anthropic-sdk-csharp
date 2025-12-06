@@ -812,9 +812,9 @@ public static class AnthropicBetaClientExtensions
                 };
             }
 
-            HashSet<string>? betaHeaders = createParams.Betas is { Count: > 0 } ?
-                [.. createParams.Betas] :
-                null;
+            HashSet<string>? betaHeaders = createParams.Betas is { Count: > 0 }
+                ? [.. createParams.Betas]
+                : null;
             int originalBetaHeadersCount = betaHeaders?.Count ?? 0;
 
             if (options is not null)

@@ -2013,7 +2013,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             """
         )
         {
-            OnRequestHeaders = headers => headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
         };
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
@@ -2080,7 +2081,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             """
         )
         {
-            OnRequestHeaders = headers => headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
         };
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
