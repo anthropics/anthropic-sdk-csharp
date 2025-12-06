@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Anthropic.Bedrock;
 using Anthropic.Foundry;
 using Xunit.Sdk;
 
@@ -26,28 +27,52 @@ public class AnthropicTestClientsAttribute : DataAttribute
         var testData = testMethod.GetCustomAttributes<AnthropicTestDataAttribute>().ToArray();
         if (TestSupportTypes.HasFlag(TestSupportTypes.Anthropic))
         {
-            yield return
-            [
-                new AnthropicClient() { BaseUrl = new Uri(DataServiceUrl), APIKey = ApiKey },
-                .. testData
-                    .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
-                    .Select(f => f.TestData)
-                    .ToArray(),
-            ];
+            foreach (
+                var item in testData.Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
+            )
+            {
+                yield return
+                [
+                    new AnthropicClient() { BaseUrl = new Uri(DataServiceUrl), APIKey = ApiKey },
+                    .. item.TestData,
+                ];
+            }
         }
         if (TestSupportTypes.HasFlag(TestSupportTypes.Foundry))
         {
-            yield return
-            [
-                new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(ApiKey, Resource!))
-                {
-                    BaseUrl = new Uri(DataServiceUrl),
-                },
-                .. testData
-                    .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))
-                    .Select(f => f.TestData)
-                    .ToArray(),
-            ];
+            foreach (
+                var item in testData.Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))
+            )
+            {
+                yield return
+                [
+                    new AnthropicFoundryClient(
+                        new AnthropicFoundryApiKeyCredentials(ApiKey, Resource!)
+                    )
+                    {
+                        BaseUrl = new Uri(DataServiceUrl),
+                    },
+                    .. item.TestData,
+                ];
+            }
+        }
+        if (TestSupportTypes.HasFlag(TestSupportTypes.Bedrock))
+        {
+            foreach (
+                var item in testData.Where(e => e.TestSupport.HasFlag(TestSupportTypes.Bedrock))
+            )
+            {
+                yield return
+                [
+                    new AnthropicBedrockClient(
+                        new AnthropicBedrockApiTokenCredentials(ApiKey, Resource)
+                    )
+                    {
+                        BaseUrl = new Uri(DataServiceUrl),
+                    },
+                    .. item.TestData,
+                ];
+            }
         }
     }
 }
@@ -55,20 +80,21 @@ public class AnthropicTestClientsAttribute : DataAttribute
 [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
 sealed class AnthropicTestDataAttribute : Attribute
 {
-    public AnthropicTestDataAttribute(TestSupportTypes testSupport, object testData)
+    public AnthropicTestDataAttribute(TestSupportTypes testSupport, params object[] testData)
     {
         TestSupport = testSupport;
         TestData = testData;
     }
 
     public TestSupportTypes TestSupport { get; }
-    public object TestData { get; }
+    public object[] TestData { get; }
 }
 
 [Flags]
 public enum TestSupportTypes
 {
-    All = Anthropic | Foundry,
+    All = Anthropic | Foundry | Bedrock,
     Anthropic = 1 << 1,
     Foundry = 1 << 2,
+    Bedrock = 1 << 3,
 }
