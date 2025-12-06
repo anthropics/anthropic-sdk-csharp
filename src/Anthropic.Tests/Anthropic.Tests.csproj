@@ -27,4 +27,7 @@
     <ProjectReference Include="..\Anthropic.Foundry\Anthropic.Foundry.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Foundry\" />
+  </ItemGroup>
 </Project>
