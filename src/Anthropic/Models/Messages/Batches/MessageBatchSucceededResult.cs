@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,50 +15,17 @@ public sealed record class MessageBatchSucceededResult : ModelBase
 {
     public required Message Message
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<Message>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._rawData["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<Message>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Message.Validate();
@@ -79,6 +45,9 @@ public sealed record class MessageBatchSucceededResult : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
     }
 
+    public MessageBatchSucceededResult(MessageBatchSucceededResult messageBatchSucceededResult)
+        : base(messageBatchSucceededResult) { }
+
     public MessageBatchSucceededResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -94,6 +63,7 @@ public sealed record class MessageBatchSucceededResult : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchSucceededResultFromRaw.FromRawUnchecked"/>
     public static MessageBatchSucceededResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -111,6 +81,7 @@ public sealed record class MessageBatchSucceededResult : ModelBase
 
 class MessageBatchSucceededResultFromRaw : IFromRaw<MessageBatchSucceededResult>
 {
+    /// <inheritdoc/>
     public MessageBatchSucceededResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MessageBatchSucceededResult.FromRawUnchecked(rawData);

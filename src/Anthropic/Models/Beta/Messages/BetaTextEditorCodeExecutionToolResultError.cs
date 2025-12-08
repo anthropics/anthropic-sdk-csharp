@@ -21,67 +21,26 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : ModelBas
     {
         get
         {
-            if (!this._rawData.TryGetValue("error_code", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error_code' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "error_code",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<
+            return ModelBase.GetNotNullClass<
                 ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorErrorCode>
-            >(element, ModelBase.SerializerOptions);
+            >(this.RawData, "error_code");
         }
-        init
-        {
-            this._rawData["error_code"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "error_code", value); }
     }
 
     public required string? ErrorMessage
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("error_message", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["error_message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "error_message"); }
+        init { ModelBase.Set(this._rawData, "error_message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -107,6 +66,11 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : ModelBas
     }
 
     public BetaTextEditorCodeExecutionToolResultError(
+        BetaTextEditorCodeExecutionToolResultError betaTextEditorCodeExecutionToolResultError
+    )
+        : base(betaTextEditorCodeExecutionToolResultError) { }
+
+    public BetaTextEditorCodeExecutionToolResultError(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -125,6 +89,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : ModelBas
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextEditorCodeExecutionToolResultErrorFromRaw.FromRawUnchecked"/>
     public static BetaTextEditorCodeExecutionToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -136,6 +101,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : ModelBas
 class BetaTextEditorCodeExecutionToolResultErrorFromRaw
     : IFromRaw<BetaTextEditorCodeExecutionToolResultError>
 {
+    /// <inheritdoc/>
     public BetaTextEditorCodeExecutionToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaTextEditorCodeExecutionToolResultError.FromRawUnchecked(rawData);

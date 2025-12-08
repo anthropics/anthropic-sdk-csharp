@@ -18,20 +18,8 @@ public sealed record class BetaContainerParams : ModelBase
     /// </summary>
     public string? ID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -39,25 +27,11 @@ public sealed record class BetaContainerParams : ModelBase
     /// </summary>
     public IReadOnlyList<BetaSkillParams>? Skills
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("skills", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<BetaSkillParams>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._rawData["skills"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<BetaSkillParams>>(this.RawData, "skills"); }
+        init { ModelBase.Set(this._rawData, "skills", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -68,6 +42,9 @@ public sealed record class BetaContainerParams : ModelBase
     }
 
     public BetaContainerParams() { }
+
+    public BetaContainerParams(BetaContainerParams betaContainerParams)
+        : base(betaContainerParams) { }
 
     public BetaContainerParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -82,6 +59,7 @@ public sealed record class BetaContainerParams : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaContainerParamsFromRaw.FromRawUnchecked"/>
     public static BetaContainerParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -92,6 +70,7 @@ public sealed record class BetaContainerParams : ModelBase
 
 class BetaContainerParamsFromRaw : IFromRaw<BetaContainerParams>
 {
+    /// <inheritdoc/>
     public BetaContainerParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaContainerParams.FromRawUnchecked(rawData);
 }

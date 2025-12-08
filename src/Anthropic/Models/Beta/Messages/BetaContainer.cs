@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -20,27 +19,8 @@ public sealed record class BetaContainer : ModelBase
     /// </summary>
     public required string ID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._rawData["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -48,23 +28,8 @@ public sealed record class BetaContainer : ModelBase
     /// </summary>
     public required DateTimeOffset ExpiresAt
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("expires_at", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'expires_at' cannot be null",
-                    new ArgumentOutOfRangeException("expires_at", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<DateTimeOffset>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["expires_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<DateTimeOffset>(this.RawData, "expires_at"); }
+        init { ModelBase.Set(this._rawData, "expires_at", value); }
     }
 
     /// <summary>
@@ -72,25 +37,11 @@ public sealed record class BetaContainer : ModelBase
     /// </summary>
     public required IReadOnlyList<BetaSkill>? Skills
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("skills", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<BetaSkill>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._rawData["skills"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<BetaSkill>>(this.RawData, "skills"); }
+        init { ModelBase.Set(this._rawData, "skills", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -102,6 +53,9 @@ public sealed record class BetaContainer : ModelBase
     }
 
     public BetaContainer() { }
+
+    public BetaContainer(BetaContainer betaContainer)
+        : base(betaContainer) { }
 
     public BetaContainer(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -116,6 +70,7 @@ public sealed record class BetaContainer : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaContainerFromRaw.FromRawUnchecked"/>
     public static BetaContainer FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -124,6 +79,7 @@ public sealed record class BetaContainer : ModelBase
 
 class BetaContainerFromRaw : IFromRaw<BetaContainer>
 {
+    /// <inheritdoc/>
     public BetaContainer FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaContainer.FromRawUnchecked(rawData);
 }

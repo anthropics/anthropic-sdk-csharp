@@ -35,30 +35,17 @@ public sealed record class BatchCreateParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<Request> Requests
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("requests", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'requests' cannot be null",
-                    new System::ArgumentOutOfRangeException("requests", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<List<Request>>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'requests' cannot be null",
-                    new System::ArgumentNullException("requests")
-                );
-        }
-        init
-        {
-            this._rawBodyData["requests"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<List<Request>>(this.RawBodyData, "requests"); }
+        init { ModelBase.Set(this._rawBodyData, "requests", value); }
     }
 
     public BatchCreateParams() { }
+
+    public BatchCreateParams(BatchCreateParams batchCreateParams)
+        : base(batchCreateParams)
+    {
+        this._rawBodyData = [.. batchCreateParams._rawBodyData];
+    }
 
     public BatchCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -85,6 +72,7 @@ public sealed record class BatchCreateParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static BatchCreateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -134,30 +122,8 @@ public sealed record class Request : ModelBase
     /// </summary>
     public required string CustomID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("custom_id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'custom_id' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "custom_id",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'custom_id' cannot be null",
-                    new System::ArgumentNullException("custom_id")
-                );
-        }
-        init
-        {
-            this._rawData["custom_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "custom_id"); }
+        init { ModelBase.Set(this._rawData, "custom_id", value); }
     }
 
     /// <summary>
@@ -168,29 +134,11 @@ public sealed record class Request : ModelBase
     /// </summary>
     public required Params Params
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("params", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'params' cannot be null",
-                    new System::ArgumentOutOfRangeException("params", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<Params>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'params' cannot be null",
-                    new System::ArgumentNullException("params")
-                );
-        }
-        init
-        {
-            this._rawData["params"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<Params>(this.RawData, "params"); }
+        init { ModelBase.Set(this._rawData, "params", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CustomID;
@@ -198,6 +146,9 @@ public sealed record class Request : ModelBase
     }
 
     public Request() { }
+
+    public Request(Request request)
+        : base(request) { }
 
     public Request(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -212,6 +163,7 @@ public sealed record class Request : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="RequestFromRaw.FromRawUnchecked"/>
     public static Request FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -220,6 +172,7 @@ public sealed record class Request : ModelBase
 
 class RequestFromRaw : IFromRaw<Request>
 {
+    /// <inheritdoc/>
     public Request FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Request.FromRawUnchecked(rawData);
 }
@@ -244,26 +197,8 @@ public sealed record class Params : ModelBase
     /// </summary>
     public required long MaxTokens
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("max_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'max_tokens' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "max_tokens",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["max_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "max_tokens"); }
+        init { ModelBase.Set(this._rawData, "max_tokens", value); }
     }
 
     /// <summary>
@@ -319,30 +254,8 @@ public sealed record class Params : ModelBase
     /// </summary>
     public required IReadOnlyList<MessageParam> Messages
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("messages", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'messages' cannot be null",
-                    new System::ArgumentOutOfRangeException("messages", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<List<MessageParam>>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'messages' cannot be null",
-                    new System::ArgumentNullException("messages")
-                );
-        }
-        init
-        {
-            this._rawData["messages"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<List<MessageParam>>(this.RawData, "messages"); }
+        init { ModelBase.Set(this._rawData, "messages", value); }
     }
 
     /// <summary>
@@ -351,26 +264,8 @@ public sealed record class Params : ModelBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("model", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'model' cannot be null",
-                    new System::ArgumentOutOfRangeException("model", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._rawData["model"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
+        init { ModelBase.Set(this._rawData, "model", value); }
     }
 
     /// <summary>
@@ -378,13 +273,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public Metadata? Metadata
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("metadata", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<Metadata?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<Metadata>(this.RawData, "metadata"); }
         init
         {
             if (value == null)
@@ -392,10 +281,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["metadata"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "metadata", value);
         }
     }
 
@@ -410,13 +296,9 @@ public sealed record class Params : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("service_tier", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<
-                string,
-                global::Anthropic.Models.Messages.Batches.ServiceTier
-            >?>(element, ModelBase.SerializerOptions);
+            return ModelBase.GetNullableClass<
+                ApiEnum<string, global::Anthropic.Models.Messages.Batches.ServiceTier>
+            >(this.RawData, "service_tier");
         }
         init
         {
@@ -425,10 +307,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["service_tier"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "service_tier", value);
         }
     }
 
@@ -446,13 +325,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public IReadOnlyList<string>? StopSequences
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("stop_sequences", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "stop_sequences"); }
         init
         {
             if (value == null)
@@ -460,10 +333,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["stop_sequences"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "stop_sequences", value);
         }
     }
 
@@ -475,13 +345,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public bool? Stream
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("stream", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "stream"); }
         init
         {
             if (value == null)
@@ -489,10 +353,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["stream"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "stream", value);
         }
     }
 
@@ -504,13 +365,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public ParamsSystem? System
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("system", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ParamsSystem?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<ParamsSystem>(this.RawData, "system"); }
         init
         {
             if (value == null)
@@ -518,10 +373,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["system"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "system", value);
         }
     }
 
@@ -537,13 +389,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public double? Temperature
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("temperature", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<double>(this.RawData, "temperature"); }
         init
         {
             if (value == null)
@@ -551,10 +397,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["temperature"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "temperature", value);
         }
     }
 
@@ -570,16 +413,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public ThinkingConfigParam? Thinking
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("thinking", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ThinkingConfigParam?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<ThinkingConfigParam>(this.RawData, "thinking"); }
         init
         {
             if (value == null)
@@ -587,10 +421,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["thinking"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "thinking", value);
         }
     }
 
@@ -600,13 +431,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public ToolChoice? ToolChoice
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("tool_choice", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ToolChoice?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<ToolChoice>(this.RawData, "tool_choice"); }
         init
         {
             if (value == null)
@@ -614,10 +439,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["tool_choice"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "tool_choice", value);
         }
     }
 
@@ -670,16 +492,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public IReadOnlyList<ToolUnion>? Tools
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("tools", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ToolUnion>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<ToolUnion>>(this.RawData, "tools"); }
         init
         {
             if (value == null)
@@ -687,10 +500,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["tools"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "tools", value);
         }
     }
 
@@ -704,13 +514,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public long? TopK
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("top_k", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "top_k"); }
         init
         {
             if (value == null)
@@ -718,10 +522,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["top_k"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "top_k", value);
         }
     }
 
@@ -737,13 +538,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public double? TopP
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("top_p", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<double>(this.RawData, "top_p"); }
         init
         {
             if (value == null)
@@ -751,13 +546,11 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            this._rawData["top_p"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "top_p", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.MaxTokens;
@@ -784,6 +577,9 @@ public sealed record class Params : ModelBase
 
     public Params() { }
 
+    public Params(Params params1)
+        : base(params1) { }
+
     public Params(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -797,6 +593,7 @@ public sealed record class Params : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ParamsFromRaw.FromRawUnchecked"/>
     public static Params FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -805,6 +602,7 @@ public sealed record class Params : ModelBase
 
 class ParamsFromRaw : IFromRaw<Params>
 {
+    /// <inheritdoc/>
     public Params FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Params.FromRawUnchecked(rawData);
 }
@@ -897,18 +695,68 @@ public record class ParamsSystem
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="string"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickString(out var value)) {
+    ///     // `value` is of type `string`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickString([NotNullWhen(true)] out string? value)
     {
         value = this.Value as string;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="IReadOnlyList<TextBlockParam>"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTextBlockParams(out var value)) {
+    ///     // `value` is of type `IReadOnlyList<TextBlockParam>`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTextBlockParams([NotNullWhen(true)] out IReadOnlyList<TextBlockParam>? value)
     {
         value = this.Value as IReadOnlyList<TextBlockParam>;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (string value) => {...},
+    ///     (IReadOnlyList<TextBlockParam> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<string> @string,
         System::Action<IReadOnlyList<TextBlockParam>> textBlockParams
@@ -929,6 +777,27 @@ public record class ParamsSystem
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (string value) => {...},
+    ///     (IReadOnlyList<TextBlockParam> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<string, T> @string,
         System::Func<IReadOnlyList<TextBlockParam>, T> textBlockParams
@@ -949,6 +818,16 @@ public record class ParamsSystem
     public static implicit operator ParamsSystem(List<TextBlockParam> value) =>
         new((IReadOnlyList<TextBlockParam>)value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -957,6 +836,16 @@ public record class ParamsSystem
                 "Data did not match any variant of ParamsSystem"
             );
         }
+    }
+
+    public virtual bool Equals(ParamsSystem? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

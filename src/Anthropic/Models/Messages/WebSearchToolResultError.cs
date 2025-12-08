@@ -16,50 +16,21 @@ public sealed record class WebSearchToolResultError : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("error_code", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error_code' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "error_code",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, WebSearchToolResultErrorErrorCode>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, WebSearchToolResultErrorErrorCode>>(
+                this.RawData,
+                "error_code"
             );
         }
-        init
-        {
-            this._rawData["error_code"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -79,6 +50,9 @@ public sealed record class WebSearchToolResultError : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
+    public WebSearchToolResultError(WebSearchToolResultError webSearchToolResultError)
+        : base(webSearchToolResultError) { }
+
     public WebSearchToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -94,6 +68,7 @@ public sealed record class WebSearchToolResultError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="WebSearchToolResultErrorFromRaw.FromRawUnchecked"/>
     public static WebSearchToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -111,6 +86,7 @@ public sealed record class WebSearchToolResultError : ModelBase
 
 class WebSearchToolResultErrorFromRaw : IFromRaw<WebSearchToolResultError>
 {
+    /// <inheritdoc/>
     public WebSearchToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => WebSearchToolResultError.FromRawUnchecked(rawData);

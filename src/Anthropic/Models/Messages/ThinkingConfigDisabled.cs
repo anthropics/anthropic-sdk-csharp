@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,25 +13,11 @@ public sealed record class ThinkingConfigDisabled : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -51,6 +36,9 @@ public sealed record class ThinkingConfigDisabled : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
     }
 
+    public ThinkingConfigDisabled(ThinkingConfigDisabled thinkingConfigDisabled)
+        : base(thinkingConfigDisabled) { }
+
     public ThinkingConfigDisabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -66,6 +54,7 @@ public sealed record class ThinkingConfigDisabled : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ThinkingConfigDisabledFromRaw.FromRawUnchecked"/>
     public static ThinkingConfigDisabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -76,6 +65,7 @@ public sealed record class ThinkingConfigDisabled : ModelBase
 
 class ThinkingConfigDisabledFromRaw : IFromRaw<ThinkingConfigDisabled>
 {
+    /// <inheritdoc/>
     public ThinkingConfigDisabled FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ThinkingConfigDisabled.FromRawUnchecked(rawData);

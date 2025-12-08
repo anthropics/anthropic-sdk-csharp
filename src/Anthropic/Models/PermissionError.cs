@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,50 +13,17 @@ public sealed record class PermissionError : ModelBase
 {
     public required string Message
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("message", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentOutOfRangeException("message", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'message' cannot be null",
-                    new ArgumentNullException("message")
-                );
-        }
-        init
-        {
-            this._rawData["message"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
+        init { ModelBase.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
@@ -77,6 +43,9 @@ public sealed record class PermissionError : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
     }
 
+    public PermissionError(PermissionError permissionError)
+        : base(permissionError) { }
+
     public PermissionError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -92,6 +61,7 @@ public sealed record class PermissionError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="PermissionErrorFromRaw.FromRawUnchecked"/>
     public static PermissionError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -107,6 +77,7 @@ public sealed record class PermissionError : ModelBase
 
 class PermissionErrorFromRaw : IFromRaw<PermissionError>
 {
+    /// <inheritdoc/>
     public PermissionError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         PermissionError.FromRawUnchecked(rawData);
 }

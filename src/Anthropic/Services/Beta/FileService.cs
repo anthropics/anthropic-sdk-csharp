@@ -8,7 +8,7 @@ using Anthropic.Models.Beta.Files;
 
 namespace Anthropic.Services.Beta;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class FileService : IFileService
 {
     internal static void AddDefaultHeaders(HttpRequestMessage request)

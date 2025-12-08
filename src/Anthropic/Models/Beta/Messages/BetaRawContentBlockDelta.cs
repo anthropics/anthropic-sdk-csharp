@@ -67,36 +67,134 @@ public record class BetaRawContentBlockDelta
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextDelta"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickText(out var value)) {
+    ///     // `value` is of type `BetaTextDelta`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickText([NotNullWhen(true)] out BetaTextDelta? value)
     {
         value = this.Value as BetaTextDelta;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaInputJSONDelta"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickInputJSON(out var value)) {
+    ///     // `value` is of type `BetaInputJSONDelta`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickInputJSON([NotNullWhen(true)] out BetaInputJSONDelta? value)
     {
         value = this.Value as BetaInputJSONDelta;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCitationsDelta"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCitations(out var value)) {
+    ///     // `value` is of type `BetaCitationsDelta`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCitations([NotNullWhen(true)] out BetaCitationsDelta? value)
     {
         value = this.Value as BetaCitationsDelta;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaThinkingDelta"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickThinking(out var value)) {
+    ///     // `value` is of type `BetaThinkingDelta`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickThinking([NotNullWhen(true)] out BetaThinkingDelta? value)
     {
         value = this.Value as BetaThinkingDelta;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaSignatureDelta"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSignature(out var value)) {
+    ///     // `value` is of type `BetaSignatureDelta`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickSignature([NotNullWhen(true)] out BetaSignatureDelta? value)
     {
         value = this.Value as BetaSignatureDelta;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaTextDelta value) => {...},
+    ///     (BetaInputJSONDelta value) => {...},
+    ///     (BetaCitationsDelta value) => {...},
+    ///     (BetaThinkingDelta value) => {...},
+    ///     (BetaSignatureDelta value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaTextDelta> text,
         System::Action<BetaInputJSONDelta> inputJSON,
@@ -129,6 +227,30 @@ public record class BetaRawContentBlockDelta
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaTextDelta value) => {...},
+    ///     (BetaInputJSONDelta value) => {...},
+    ///     (BetaCitationsDelta value) => {...},
+    ///     (BetaThinkingDelta value) => {...},
+    ///     (BetaSignatureDelta value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaTextDelta, T> text,
         System::Func<BetaInputJSONDelta, T> inputJSON,
@@ -163,6 +285,16 @@ public record class BetaRawContentBlockDelta
     public static implicit operator BetaRawContentBlockDelta(BetaSignatureDelta value) =>
         new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -171,6 +303,16 @@ public record class BetaRawContentBlockDelta
                 "Data did not match any variant of BetaRawContentBlockDelta"
             );
         }
+    }
+
+    public virtual bool Equals(BetaRawContentBlockDelta? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

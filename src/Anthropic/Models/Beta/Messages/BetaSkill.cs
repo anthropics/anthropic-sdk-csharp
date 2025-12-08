@@ -20,27 +20,8 @@ public sealed record class BetaSkill : ModelBase
     /// </summary>
     public required string SkillID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("skill_id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'skill_id' cannot be null",
-                    new System::ArgumentOutOfRangeException("skill_id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'skill_id' cannot be null",
-                    new System::ArgumentNullException("skill_id")
-                );
-        }
-        init
-        {
-            this._rawData["skill_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "skill_id"); }
+        init { ModelBase.Set(this._rawData, "skill_id", value); }
     }
 
     /// <summary>
@@ -50,23 +31,11 @@ public sealed record class BetaSkill : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<
+            return ModelBase.GetNotNullClass<
                 ApiEnum<string, global::Anthropic.Models.Beta.Messages.Type>
-            >(element, ModelBase.SerializerOptions);
+            >(this.RawData, "type");
         }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -74,29 +43,11 @@ public sealed record class BetaSkill : ModelBase
     /// </summary>
     public required string Version
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("version", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'version' cannot be null",
-                    new System::ArgumentOutOfRangeException("version", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'version' cannot be null",
-                    new System::ArgumentNullException("version")
-                );
-        }
-        init
-        {
-            this._rawData["version"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "version"); }
+        init { ModelBase.Set(this._rawData, "version", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.SkillID;
@@ -105,6 +56,9 @@ public sealed record class BetaSkill : ModelBase
     }
 
     public BetaSkill() { }
+
+    public BetaSkill(BetaSkill betaSkill)
+        : base(betaSkill) { }
 
     public BetaSkill(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -119,6 +73,7 @@ public sealed record class BetaSkill : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaSkillFromRaw.FromRawUnchecked"/>
     public static BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -127,6 +82,7 @@ public sealed record class BetaSkill : ModelBase
 
 class BetaSkillFromRaw : IFromRaw<BetaSkill>
 {
+    /// <inheritdoc/>
     public BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaSkill.FromRawUnchecked(rawData);
 }

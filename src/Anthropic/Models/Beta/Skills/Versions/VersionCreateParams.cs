@@ -31,20 +31,8 @@ public sealed record class VersionCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<string>? Files
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("files", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawBodyData["files"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<string>>(this.RawBodyData, "files"); }
+        init { ModelBase.Set(this._rawBodyData, "files", value); }
     }
 
     /// <summary>
@@ -54,12 +42,9 @@ public sealed record class VersionCreateParams : ParamsBase
     {
         get
         {
-            if (!this._rawHeaderData.TryGetValue("anthropic-beta", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
+                this.RawHeaderData,
+                "anthropic-beta"
             );
         }
         init
@@ -69,14 +54,17 @@ public sealed record class VersionCreateParams : ParamsBase
                 return;
             }
 
-            this._rawHeaderData["anthropic-beta"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawHeaderData, "anthropic-beta", value);
         }
     }
 
     public VersionCreateParams() { }
+
+    public VersionCreateParams(VersionCreateParams versionCreateParams)
+        : base(versionCreateParams)
+    {
+        this._rawBodyData = [.. versionCreateParams._rawBodyData];
+    }
 
     public VersionCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -103,6 +91,7 @@ public sealed record class VersionCreateParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static VersionCreateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,

@@ -127,7 +127,7 @@ public static class AnthropicBetaClientExtensions
             throw new ArgumentNullException(nameof(tool));
         }
 
-        return new ToolUnionAITool(tool);
+        return new BetaToolUnionAITool(tool);
     }
 
     private sealed class AnthropicChatClient(
@@ -439,6 +439,8 @@ public static class AnthropicBetaClientExtensions
                                     )
                                 );
                             }
+
+                            streamingFunctions.Clear();
                         }
                         break;
                 }
@@ -950,7 +952,7 @@ public static class AnthropicBetaClientExtensions
                                 (skills ??= []).Add(skillTool.SkillParams);
                                 break;
 
-                            case ToolUnionAITool raw:
+                            case BetaToolUnionAITool raw:
                                 (createdTools ??= []).Add(raw.Tool);
                                 break;
 
@@ -1011,7 +1013,7 @@ public static class AnthropicBetaClientExtensions
                                             List<Dictionary<string, JsonElement>>
                                         >(af, nameof(BetaTool.InputExamples)),
                                         AllowedCallers = GetValue<
-                                            List<ApiEnum<string, AllowedCaller2>>
+                                            List<ApiEnum<string, BetaToolAllowedCaller>>
                                         >(af, nameof(BetaTool.AllowedCallers)),
                                     }
                                 );
@@ -1440,7 +1442,7 @@ public static class AnthropicBetaClientExtensions
         }
     }
 
-    private sealed class ToolUnionAITool(BetaToolUnion tool) : AITool
+    private sealed class BetaToolUnionAITool(BetaToolUnion tool) : AITool
     {
         public BetaToolUnion Tool => tool;
 

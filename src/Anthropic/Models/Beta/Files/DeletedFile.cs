@@ -17,27 +17,8 @@ public sealed record class DeletedFile : ModelBase
     /// </summary>
     public required string ID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new System::ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._rawData["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -49,13 +30,9 @@ public sealed record class DeletedFile : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<
-                string,
-                global::Anthropic.Models.Beta.Files.Type
-            >?>(element, ModelBase.SerializerOptions);
+            return ModelBase.GetNullableClass<
+                ApiEnum<string, global::Anthropic.Models.Beta.Files.Type>
+            >(this.RawData, "type");
         }
         init
         {
@@ -64,13 +41,11 @@ public sealed record class DeletedFile : ModelBase
                 return;
             }
 
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "type", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -78,6 +53,9 @@ public sealed record class DeletedFile : ModelBase
     }
 
     public DeletedFile() { }
+
+    public DeletedFile(DeletedFile deletedFile)
+        : base(deletedFile) { }
 
     public DeletedFile(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -92,6 +70,7 @@ public sealed record class DeletedFile : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="DeletedFileFromRaw.FromRawUnchecked"/>
     public static DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -107,6 +86,7 @@ public sealed record class DeletedFile : ModelBase
 
 class DeletedFileFromRaw : IFromRaw<DeletedFile>
 {
+    /// <inheritdoc/>
     public DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         DeletedFile.FromRawUnchecked(rawData);
 }

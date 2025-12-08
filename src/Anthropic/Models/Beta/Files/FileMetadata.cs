@@ -19,27 +19,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string ID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._rawData["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -47,23 +28,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("created_at", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'created_at' cannot be null",
-                    new ArgumentOutOfRangeException("created_at", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<DateTimeOffset>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["created_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
+        init { ModelBase.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -71,27 +37,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string Filename
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("filename", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'filename' cannot be null",
-                    new ArgumentOutOfRangeException("filename", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'filename' cannot be null",
-                    new ArgumentNullException("filename")
-                );
-        }
-        init
-        {
-            this._rawData["filename"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "filename"); }
+        init { ModelBase.Set(this._rawData, "filename", value); }
     }
 
     /// <summary>
@@ -99,27 +46,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string MimeType
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("mime_type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'mime_type' cannot be null",
-                    new ArgumentOutOfRangeException("mime_type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'mime_type' cannot be null",
-                    new ArgumentNullException("mime_type")
-                );
-        }
-        init
-        {
-            this._rawData["mime_type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "mime_type"); }
+        init { ModelBase.Set(this._rawData, "mime_type", value); }
     }
 
     /// <summary>
@@ -127,23 +55,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required long SizeBytes
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("size_bytes", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'size_bytes' cannot be null",
-                    new ArgumentOutOfRangeException("size_bytes", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["size_bytes"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "size_bytes"); }
+        init { ModelBase.Set(this._rawData, "size_bytes", value); }
     }
 
     /// <summary>
@@ -153,23 +66,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -177,13 +75,7 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public bool? Downloadable
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("downloadable", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "downloadable"); }
         init
         {
             if (value == null)
@@ -191,13 +83,11 @@ public sealed record class FileMetadata : ModelBase
                 return;
             }
 
-            this._rawData["downloadable"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "downloadable", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -217,6 +107,9 @@ public sealed record class FileMetadata : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
     }
 
+    public FileMetadata(FileMetadata fileMetadata)
+        : base(fileMetadata) { }
+
     public FileMetadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -232,6 +125,7 @@ public sealed record class FileMetadata : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="FileMetadataFromRaw.FromRawUnchecked"/>
     public static FileMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -240,6 +134,7 @@ public sealed record class FileMetadata : ModelBase
 
 class FileMetadataFromRaw : IFromRaw<FileMetadata>
 {
+    /// <inheritdoc/>
     public FileMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         FileMetadata.FromRawUnchecked(rawData);
 }

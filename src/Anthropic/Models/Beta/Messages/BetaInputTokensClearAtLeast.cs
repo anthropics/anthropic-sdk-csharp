@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,46 +15,17 @@ public sealed record class BetaInputTokensClearAtLeast : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public required long Value
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("value", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'value' cannot be null",
-                    new ArgumentOutOfRangeException("value", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["value"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "value"); }
+        init { ModelBase.Set(this._rawData, "value", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -75,6 +45,9 @@ public sealed record class BetaInputTokensClearAtLeast : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");
     }
 
+    public BetaInputTokensClearAtLeast(BetaInputTokensClearAtLeast betaInputTokensClearAtLeast)
+        : base(betaInputTokensClearAtLeast) { }
+
     public BetaInputTokensClearAtLeast(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -90,6 +63,7 @@ public sealed record class BetaInputTokensClearAtLeast : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaInputTokensClearAtLeastFromRaw.FromRawUnchecked"/>
     public static BetaInputTokensClearAtLeast FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -107,6 +81,7 @@ public sealed record class BetaInputTokensClearAtLeast : ModelBase
 
 class BetaInputTokensClearAtLeastFromRaw : IFromRaw<BetaInputTokensClearAtLeast>
 {
+    /// <inheritdoc/>
     public BetaInputTokensClearAtLeast FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaInputTokensClearAtLeast.FromRawUnchecked(rawData);

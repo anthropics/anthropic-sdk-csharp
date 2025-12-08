@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -18,47 +17,21 @@ public sealed record class BetaWebSearchToolResultError : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("error_code", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error_code' cannot be null",
-                    new ArgumentOutOfRangeException("error_code", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
+                this.RawData,
+                "error_code"
             );
         }
-        init
-        {
-            this._rawData["error_code"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -78,6 +51,9 @@ public sealed record class BetaWebSearchToolResultError : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
 
+    public BetaWebSearchToolResultError(BetaWebSearchToolResultError betaWebSearchToolResultError)
+        : base(betaWebSearchToolResultError) { }
+
     public BetaWebSearchToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -93,6 +69,7 @@ public sealed record class BetaWebSearchToolResultError : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaWebSearchToolResultErrorFromRaw.FromRawUnchecked"/>
     public static BetaWebSearchToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -110,6 +87,7 @@ public sealed record class BetaWebSearchToolResultError : ModelBase
 
 class BetaWebSearchToolResultErrorFromRaw : IFromRaw<BetaWebSearchToolResultError>
 {
+    /// <inheritdoc/>
     public BetaWebSearchToolResultError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaWebSearchToolResultError.FromRawUnchecked(rawData);

@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages.Batches;
 
@@ -14,30 +12,8 @@ public sealed record class BatchListPageResponse : ModelBase
 {
     public required IReadOnlyList<MessageBatch> Data
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("data", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'data' cannot be null",
-                    new ArgumentOutOfRangeException("data", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<List<MessageBatch>>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'data' cannot be null",
-                    new ArgumentNullException("data")
-                );
-        }
-        init
-        {
-            this._rawData["data"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<List<MessageBatch>>(this.RawData, "data"); }
+        init { ModelBase.Set(this._rawData, "data", value); }
     }
 
     /// <summary>
@@ -45,20 +21,8 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required string? FirstID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("first_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["first_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "first_id"); }
+        init { ModelBase.Set(this._rawData, "first_id", value); }
     }
 
     /// <summary>
@@ -66,23 +30,8 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required bool HasMore
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("has_more", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'has_more' cannot be null",
-                    new ArgumentOutOfRangeException("has_more", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["has_more"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "has_more"); }
+        init { ModelBase.Set(this._rawData, "has_more", value); }
     }
 
     /// <summary>
@@ -90,22 +39,11 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required string? LastID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("last_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["last_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "last_id"); }
+        init { ModelBase.Set(this._rawData, "last_id", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Data)
@@ -118,6 +56,9 @@ public sealed record class BatchListPageResponse : ModelBase
     }
 
     public BatchListPageResponse() { }
+
+    public BatchListPageResponse(BatchListPageResponse batchListPageResponse)
+        : base(batchListPageResponse) { }
 
     public BatchListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -132,6 +73,7 @@ public sealed record class BatchListPageResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BatchListPageResponseFromRaw.FromRawUnchecked"/>
     public static BatchListPageResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -142,6 +84,7 @@ public sealed record class BatchListPageResponse : ModelBase
 
 class BatchListPageResponseFromRaw : IFromRaw<BatchListPageResponse>
 {
+    /// <inheritdoc/>
     public BatchListPageResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BatchListPageResponse.FromRawUnchecked(rawData);

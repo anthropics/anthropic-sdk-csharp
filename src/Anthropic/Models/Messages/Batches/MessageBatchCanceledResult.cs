@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,25 +15,11 @@ public sealed record class MessageBatchCanceledResult : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -53,6 +38,9 @@ public sealed record class MessageBatchCanceledResult : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
     }
 
+    public MessageBatchCanceledResult(MessageBatchCanceledResult messageBatchCanceledResult)
+        : base(messageBatchCanceledResult) { }
+
     public MessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -68,6 +56,7 @@ public sealed record class MessageBatchCanceledResult : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchCanceledResultFromRaw.FromRawUnchecked"/>
     public static MessageBatchCanceledResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -78,6 +67,7 @@ public sealed record class MessageBatchCanceledResult : ModelBase
 
 class MessageBatchCanceledResultFromRaw : IFromRaw<MessageBatchCanceledResult>
 {
+    /// <inheritdoc/>
     public MessageBatchCanceledResult FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MessageBatchCanceledResult.FromRawUnchecked(rawData);

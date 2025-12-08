@@ -14,77 +14,29 @@ public sealed record class BetaBase64ImageSource : ModelBase
 {
     public required string Data
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("data", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'data' cannot be null",
-                    new System::ArgumentOutOfRangeException("data", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'data' cannot be null",
-                    new System::ArgumentNullException("data")
-                );
-        }
-        init
-        {
-            this._rawData["data"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
+        init { ModelBase.Set(this._rawData, "data", value); }
     }
 
     public required ApiEnum<string, MediaType> MediaType
     {
         get
         {
-            if (!this._rawData.TryGetValue("media_type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'media_type' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "media_type",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, MediaType>>(
+                this.RawData,
+                "media_type"
             );
         }
-        init
-        {
-            this._rawData["media_type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Data;
@@ -105,6 +57,9 @@ public sealed record class BetaBase64ImageSource : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
     }
 
+    public BetaBase64ImageSource(BetaBase64ImageSource betaBase64ImageSource)
+        : base(betaBase64ImageSource) { }
+
     public BetaBase64ImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -120,6 +75,7 @@ public sealed record class BetaBase64ImageSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaBase64ImageSourceFromRaw.FromRawUnchecked"/>
     public static BetaBase64ImageSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -130,6 +86,7 @@ public sealed record class BetaBase64ImageSource : ModelBase
 
 class BetaBase64ImageSourceFromRaw : IFromRaw<BetaBase64ImageSource>
 {
+    /// <inheritdoc/>
     public BetaBase64ImageSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaBase64ImageSource.FromRawUnchecked(rawData);

@@ -23,13 +23,7 @@ public sealed record class ModelListParams : ParamsBase
     /// </summary>
     public string? AfterID
     {
-        get
-        {
-            if (!this._rawQueryData.TryGetValue("after_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawQueryData, "after_id"); }
         init
         {
             if (value == null)
@@ -37,10 +31,7 @@ public sealed record class ModelListParams : ParamsBase
                 return;
             }
 
-            this._rawQueryData["after_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawQueryData, "after_id", value);
         }
     }
 
@@ -50,13 +41,7 @@ public sealed record class ModelListParams : ParamsBase
     /// </summary>
     public string? BeforeID
     {
-        get
-        {
-            if (!this._rawQueryData.TryGetValue("before_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawQueryData, "before_id"); }
         init
         {
             if (value == null)
@@ -64,10 +49,7 @@ public sealed record class ModelListParams : ParamsBase
                 return;
             }
 
-            this._rawQueryData["before_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawQueryData, "before_id", value);
         }
     }
 
@@ -78,13 +60,7 @@ public sealed record class ModelListParams : ParamsBase
     /// </summary>
     public long? Limit
     {
-        get
-        {
-            if (!this._rawQueryData.TryGetValue("limit", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawQueryData, "limit"); }
         init
         {
             if (value == null)
@@ -92,10 +68,7 @@ public sealed record class ModelListParams : ParamsBase
                 return;
             }
 
-            this._rawQueryData["limit"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawQueryData, "limit", value);
         }
     }
 
@@ -106,12 +79,9 @@ public sealed record class ModelListParams : ParamsBase
     {
         get
         {
-            if (!this._rawHeaderData.TryGetValue("anthropic-beta", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
+                this.RawHeaderData,
+                "anthropic-beta"
             );
         }
         init
@@ -121,14 +91,14 @@ public sealed record class ModelListParams : ParamsBase
                 return;
             }
 
-            this._rawHeaderData["anthropic-beta"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawHeaderData, "anthropic-beta", value);
         }
     }
 
     public ModelListParams() { }
+
+    public ModelListParams(ModelListParams modelListParams)
+        : base(modelListParams) { }
 
     public ModelListParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -151,6 +121,7 @@ public sealed record class ModelListParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static ModelListParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData

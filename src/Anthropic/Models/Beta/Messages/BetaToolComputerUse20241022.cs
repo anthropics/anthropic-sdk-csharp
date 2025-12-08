@@ -19,26 +19,8 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
     /// </summary>
     public required long DisplayHeightPx
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("display_height_px", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'display_height_px' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "display_height_px",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["display_height_px"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "display_height_px"); }
+        init { ModelBase.Set(this._rawData, "display_height_px", value); }
     }
 
     /// <summary>
@@ -46,26 +28,8 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
     /// </summary>
     public required long DisplayWidthPx
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("display_width_px", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'display_width_px' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "display_width_px",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["display_width_px"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "display_width_px"); }
+        init { ModelBase.Set(this._rawData, "display_width_px", value); }
     }
 
     /// <summary>
@@ -75,57 +39,23 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
+        init { ModelBase.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
-    public IReadOnlyList<ApiEnum<string, AllowedCaller5>>? AllowedCallers
+    public IReadOnlyList<ApiEnum<string, BetaToolComputerUse20241022AllowedCaller>>? AllowedCallers
     {
         get
         {
-            if (!this._rawData.TryGetValue("allowed_callers", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ApiEnum<string, AllowedCaller5>>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<
+                List<ApiEnum<string, BetaToolComputerUse20241022AllowedCaller>>
+            >(this.RawData, "allowed_callers");
         }
         init
         {
@@ -134,10 +64,7 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
                 return;
             }
 
-            this._rawData["allowed_callers"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "allowed_callers", value);
         }
     }
 
@@ -148,21 +75,12 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+                this.RawData,
+                "cache_control"
             );
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -171,13 +89,7 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
     /// </summary>
     public bool? DeferLoading
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("defer_loading", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
         init
         {
             if (value == null)
@@ -185,10 +97,7 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
                 return;
             }
 
-            this._rawData["defer_loading"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "defer_loading", value);
         }
     }
 
@@ -197,32 +106,17 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
     /// </summary>
     public long? DisplayNumber
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("display_number", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["display_number"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "display_number"); }
+        init { ModelBase.Set(this._rawData, "display_number", value); }
     }
 
     public IReadOnlyList<Dictionary<string, JsonElement>>? InputExamples
     {
         get
         {
-            if (!this._rawData.TryGetValue("input_examples", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<List<Dictionary<string, JsonElement>>>(
+                this.RawData,
+                "input_examples"
             );
         }
         init
@@ -232,22 +126,13 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
                 return;
             }
 
-            this._rawData["input_examples"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "input_examples", value);
         }
     }
 
     public bool? Strict
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("strict", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "strict"); }
         init
         {
             if (value == null)
@@ -255,13 +140,11 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
                 return;
             }
 
-            this._rawData["strict"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "strict", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.DisplayHeightPx;
@@ -301,6 +184,9 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"computer_20241022\"");
     }
 
+    public BetaToolComputerUse20241022(BetaToolComputerUse20241022 betaToolComputerUse20241022)
+        : base(betaToolComputerUse20241022) { }
+
     public BetaToolComputerUse20241022(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -317,6 +203,7 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolComputerUse20241022FromRaw.FromRawUnchecked"/>
     public static BetaToolComputerUse20241022 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -327,21 +214,23 @@ public sealed record class BetaToolComputerUse20241022 : ModelBase
 
 class BetaToolComputerUse20241022FromRaw : IFromRaw<BetaToolComputerUse20241022>
 {
+    /// <inheritdoc/>
     public BetaToolComputerUse20241022 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaToolComputerUse20241022.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(AllowedCaller5Converter))]
-public enum AllowedCaller5
+[JsonConverter(typeof(BetaToolComputerUse20241022AllowedCallerConverter))]
+public enum BetaToolComputerUse20241022AllowedCaller
 {
     Direct,
     CodeExecution20250825,
 }
 
-sealed class AllowedCaller5Converter : JsonConverter<AllowedCaller5>
+sealed class BetaToolComputerUse20241022AllowedCallerConverter
+    : JsonConverter<BetaToolComputerUse20241022AllowedCaller>
 {
-    public override AllowedCaller5 Read(
+    public override BetaToolComputerUse20241022AllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -349,15 +238,16 @@ sealed class AllowedCaller5Converter : JsonConverter<AllowedCaller5>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => AllowedCaller5.Direct,
-            "code_execution_20250825" => AllowedCaller5.CodeExecution20250825,
-            _ => (AllowedCaller5)(-1),
+            "direct" => BetaToolComputerUse20241022AllowedCaller.Direct,
+            "code_execution_20250825" =>
+                BetaToolComputerUse20241022AllowedCaller.CodeExecution20250825,
+            _ => (BetaToolComputerUse20241022AllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        AllowedCaller5 value,
+        BetaToolComputerUse20241022AllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -365,8 +255,9 @@ sealed class AllowedCaller5Converter : JsonConverter<AllowedCaller5>
             writer,
             value switch
             {
-                AllowedCaller5.Direct => "direct",
-                AllowedCaller5.CodeExecution20250825 => "code_execution_20250825",
+                BetaToolComputerUse20241022AllowedCaller.Direct => "direct",
+                BetaToolComputerUse20241022AllowedCaller.CodeExecution20250825 =>
+                    "code_execution_20250825",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

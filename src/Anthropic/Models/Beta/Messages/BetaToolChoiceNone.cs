@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -17,25 +16,11 @@ public sealed record class BetaToolChoiceNone : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"none\"")))
@@ -48,6 +33,9 @@ public sealed record class BetaToolChoiceNone : ModelBase
     {
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"none\"");
     }
+
+    public BetaToolChoiceNone(BetaToolChoiceNone betaToolChoiceNone)
+        : base(betaToolChoiceNone) { }
 
     public BetaToolChoiceNone(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -64,6 +52,7 @@ public sealed record class BetaToolChoiceNone : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolChoiceNoneFromRaw.FromRawUnchecked"/>
     public static BetaToolChoiceNone FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +63,7 @@ public sealed record class BetaToolChoiceNone : ModelBase
 
 class BetaToolChoiceNoneFromRaw : IFromRaw<BetaToolChoiceNone>
 {
+    /// <inheritdoc/>
     public BetaToolChoiceNone FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaToolChoiceNone.FromRawUnchecked(rawData);
 }

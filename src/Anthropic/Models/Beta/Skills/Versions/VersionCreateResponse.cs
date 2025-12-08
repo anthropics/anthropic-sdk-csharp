@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
@@ -19,27 +17,8 @@ public sealed record class VersionCreateResponse : ModelBase
     /// </summary>
     public required string ID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._rawData["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -47,27 +26,8 @@ public sealed record class VersionCreateResponse : ModelBase
     /// </summary>
     public required string CreatedAt
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("created_at", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'created_at' cannot be null",
-                    new ArgumentOutOfRangeException("created_at", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'created_at' cannot be null",
-                    new ArgumentNullException("created_at")
-                );
-        }
-        init
-        {
-            this._rawData["created_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "created_at"); }
+        init { ModelBase.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -77,27 +37,8 @@ public sealed record class VersionCreateResponse : ModelBase
     /// </summary>
     public required string Description
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("description", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'description' cannot be null",
-                    new ArgumentOutOfRangeException("description", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'description' cannot be null",
-                    new ArgumentNullException("description")
-                );
-        }
-        init
-        {
-            this._rawData["description"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "description"); }
+        init { ModelBase.Set(this._rawData, "description", value); }
     }
 
     /// <summary>
@@ -107,27 +48,8 @@ public sealed record class VersionCreateResponse : ModelBase
     /// </summary>
     public required string Directory
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("directory", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'directory' cannot be null",
-                    new ArgumentOutOfRangeException("directory", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'directory' cannot be null",
-                    new ArgumentNullException("directory")
-                );
-        }
-        init
-        {
-            this._rawData["directory"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "directory"); }
+        init { ModelBase.Set(this._rawData, "directory", value); }
     }
 
     /// <summary>
@@ -137,27 +59,8 @@ public sealed record class VersionCreateResponse : ModelBase
     /// </summary>
     public required string Name
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new ArgumentOutOfRangeException("name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new ArgumentNullException("name")
-                );
-        }
-        init
-        {
-            this._rawData["name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
+        init { ModelBase.Set(this._rawData, "name", value); }
     }
 
     /// <summary>
@@ -165,27 +68,8 @@ public sealed record class VersionCreateResponse : ModelBase
     /// </summary>
     public required string SkillID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("skill_id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'skill_id' cannot be null",
-                    new ArgumentOutOfRangeException("skill_id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'skill_id' cannot be null",
-                    new ArgumentNullException("skill_id")
-                );
-        }
-        init
-        {
-            this._rawData["skill_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "skill_id"); }
+        init { ModelBase.Set(this._rawData, "skill_id", value); }
     }
 
     /// <summary>
@@ -195,27 +79,8 @@ public sealed record class VersionCreateResponse : ModelBase
     /// </summary>
     public required string Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentNullException("type")
-                );
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -225,29 +90,11 @@ public sealed record class VersionCreateResponse : ModelBase
     /// </summary>
     public required string Version
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("version", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'version' cannot be null",
-                    new ArgumentOutOfRangeException("version", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'version' cannot be null",
-                    new ArgumentNullException("version")
-                );
-        }
-        init
-        {
-            this._rawData["version"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "version"); }
+        init { ModelBase.Set(this._rawData, "version", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -262,6 +109,9 @@ public sealed record class VersionCreateResponse : ModelBase
 
     public VersionCreateResponse() { }
 
+    public VersionCreateResponse(VersionCreateResponse versionCreateResponse)
+        : base(versionCreateResponse) { }
+
     public VersionCreateResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -275,6 +125,7 @@ public sealed record class VersionCreateResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="VersionCreateResponseFromRaw.FromRawUnchecked"/>
     public static VersionCreateResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -285,6 +136,7 @@ public sealed record class VersionCreateResponse : ModelBase
 
 class VersionCreateResponseFromRaw : IFromRaw<VersionCreateResponse>
 {
+    /// <inheritdoc/>
     public VersionCreateResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => VersionCreateResponse.FromRawUnchecked(rawData);

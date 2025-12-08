@@ -12,7 +12,7 @@ using Anthropic.Services.Beta.Messages;
 
 namespace Anthropic.Services.Beta;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class MessageService : global::Anthropic.Services.Beta.IMessageService
 {
     /// <inheritdoc/>
@@ -97,9 +97,13 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
             )
             .Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        await foreach (var message in SseMessage.GetEnumerable(response.Message, cancellationToken))
+        await foreach (
+            var betaMessage in Sse.Enumerate<BetaRawMessageStreamEvent>(
+                response.Message,
+                cancellationToken
+            )
+        )
         {
-            var betaMessage = message.Deserialize<BetaRawMessageStreamEvent>();
             if (this._client.ResponseValidation)
             {
                 betaMessage.Validate();

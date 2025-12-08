@@ -104,18 +104,14 @@ public class AnthropicClient : IAnthropicClient
         where T : ParamsBase
     {
         var maxRetries = this.MaxRetries ?? ClientOptions.DefaultMaxRetries;
-        if (maxRetries <= 0)
-        {
-            return await ExecuteOnce(request, cancellationToken).ConfigureAwait(false);
-        }
-
         var retries = 0;
         while (true)
         {
             HttpResponse? response = null;
             try
             {
-                response = await ExecuteOnce(request, cancellationToken).ConfigureAwait(false);
+                response = await ExecuteOnce(request, retries, cancellationToken)
+                    .ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -177,6 +173,7 @@ public class AnthropicClient : IAnthropicClient
 
     async Task<HttpResponse> ExecuteOnce<T>(
         HttpRequest<T> request,
+        int retryCount,
         CancellationToken cancellationToken = default
     )
         where T : ParamsBase
@@ -189,6 +186,10 @@ public class AnthropicClient : IAnthropicClient
             Content = request.Params.BodyContent(),
         };
         request.Params.AddHeadersToRequest(requestMessage, this._options);
+        if (!requestMessage.Headers.Contains("x-stainless-retry-count"))
+        {
+            requestMessage.Headers.Add("x-stainless-retry-count", retryCount.ToString());
+        }
         using CancellationTokenSource timeoutCts = new(
             this.Timeout ?? ClientOptions.DefaultTimeout
         );

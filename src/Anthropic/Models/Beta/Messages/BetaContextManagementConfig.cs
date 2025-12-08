@@ -19,13 +19,7 @@ public sealed record class BetaContextManagementConfig : ModelBase
     /// </summary>
     public IReadOnlyList<Edit>? Edits
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("edits", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<Edit>?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<List<Edit>>(this.RawData, "edits"); }
         init
         {
             if (value == null)
@@ -33,13 +27,11 @@ public sealed record class BetaContextManagementConfig : ModelBase
                 return;
             }
 
-            this._rawData["edits"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "edits", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Edits ?? [])
@@ -49,6 +41,9 @@ public sealed record class BetaContextManagementConfig : ModelBase
     }
 
     public BetaContextManagementConfig() { }
+
+    public BetaContextManagementConfig(BetaContextManagementConfig betaContextManagementConfig)
+        : base(betaContextManagementConfig) { }
 
     public BetaContextManagementConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -63,6 +58,7 @@ public sealed record class BetaContextManagementConfig : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaContextManagementConfigFromRaw.FromRawUnchecked"/>
     public static BetaContextManagementConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -73,6 +69,7 @@ public sealed record class BetaContextManagementConfig : ModelBase
 
 class BetaContextManagementConfigFromRaw : IFromRaw<BetaContextManagementConfig>
 {
+    /// <inheritdoc/>
     public BetaContextManagementConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaContextManagementConfig.FromRawUnchecked(rawData);
@@ -118,6 +115,21 @@ public record class Edit
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaClearToolUses20250919Edit"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaClearToolUses20250919(out var value)) {
+    ///     // `value` is of type `BetaClearToolUses20250919Edit`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaClearToolUses20250919(
         [NotNullWhen(true)] out BetaClearToolUses20250919Edit? value
     )
@@ -126,6 +138,21 @@ public record class Edit
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaClearThinking20251015Edit"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaClearThinking20251015(out var value)) {
+    ///     // `value` is of type `BetaClearThinking20251015Edit`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBetaClearThinking20251015(
         [NotNullWhen(true)] out BetaClearThinking20251015Edit? value
     )
@@ -134,6 +161,26 @@ public record class Edit
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaClearToolUses20250919Edit value) => {...},
+    ///     (BetaClearThinking20251015Edit value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaClearToolUses20250919Edit> betaClearToolUses20250919,
         System::Action<BetaClearThinking20251015Edit> betaClearThinking20251015
@@ -152,6 +199,27 @@ public record class Edit
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaClearToolUses20250919Edit value) => {...},
+    ///     (BetaClearThinking20251015Edit value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaClearToolUses20250919Edit, T> betaClearToolUses20250919,
         System::Func<BetaClearThinking20251015Edit, T> betaClearThinking20251015
@@ -169,12 +237,32 @@ public record class Edit
 
     public static implicit operator Edit(BetaClearThinking20251015Edit value) => new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Edit");
         }
+    }
+
+    public virtual bool Equals(Edit? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

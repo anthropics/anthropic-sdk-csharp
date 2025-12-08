@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,50 +13,17 @@ public sealed record class URLPDFSource : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("url", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentOutOfRangeException("url", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentNullException("url")
-                );
-        }
-        init
-        {
-            this._rawData["url"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
+        init { ModelBase.Set(this._rawData, "url", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"url\"")))
@@ -71,6 +37,9 @@ public sealed record class URLPDFSource : ModelBase
     {
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
+
+    public URLPDFSource(URLPDFSource urlpdfSource)
+        : base(urlpdfSource) { }
 
     public URLPDFSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -87,6 +56,7 @@ public sealed record class URLPDFSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="URLPDFSourceFromRaw.FromRawUnchecked"/>
     public static URLPDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -102,6 +72,7 @@ public sealed record class URLPDFSource : ModelBase
 
 class URLPDFSourceFromRaw : IFromRaw<URLPDFSource>
 {
+    /// <inheritdoc/>
     public URLPDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         URLPDFSource.FromRawUnchecked(rawData);
 }

@@ -19,27 +19,8 @@ public sealed record class BetaMessageBatch : ModelBase
     /// </summary>
     public required string ID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new System::ArgumentOutOfRangeException("id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'id' cannot be null",
-                    new System::ArgumentNullException("id")
-                );
-        }
-        init
-        {
-            this._rawData["id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
+        init { ModelBase.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -50,21 +31,9 @@ public sealed record class BetaMessageBatch : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("archived_at", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<System::DateTimeOffset?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableStruct<System::DateTimeOffset>(this.RawData, "archived_at");
         }
-        init
-        {
-            this._rawData["archived_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "archived_at", value); }
     }
 
     /// <summary>
@@ -75,21 +44,12 @@ public sealed record class BetaMessageBatch : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cancel_initiated_at", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<System::DateTimeOffset?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableStruct<System::DateTimeOffset>(
+                this.RawData,
+                "cancel_initiated_at"
             );
         }
-        init
-        {
-            this._rawData["cancel_initiated_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cancel_initiated_at", value); }
     }
 
     /// <summary>
@@ -100,27 +60,9 @@ public sealed record class BetaMessageBatch : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("created_at", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'created_at' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "created_at",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<System::DateTimeOffset>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNotNullStruct<System::DateTimeOffset>(this.RawData, "created_at");
         }
-        init
-        {
-            this._rawData["created_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -134,21 +76,9 @@ public sealed record class BetaMessageBatch : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("ended_at", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<System::DateTimeOffset?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableStruct<System::DateTimeOffset>(this.RawData, "ended_at");
         }
-        init
-        {
-            this._rawData["ended_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "ended_at", value); }
     }
 
     /// <summary>
@@ -159,27 +89,9 @@ public sealed record class BetaMessageBatch : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("expires_at", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'expires_at' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "expires_at",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<System::DateTimeOffset>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNotNullStruct<System::DateTimeOffset>(this.RawData, "expires_at");
         }
-        init
-        {
-            this._rawData["expires_at"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "expires_at", value); }
     }
 
     /// <summary>
@@ -189,27 +101,12 @@ public sealed record class BetaMessageBatch : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("processing_status", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'processing_status' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "processing_status",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, ProcessingStatus>>(
+                this.RawData,
+                "processing_status"
             );
         }
-        init
-        {
-            this._rawData["processing_status"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "processing_status", value); }
     }
 
     /// <summary>
@@ -223,31 +120,12 @@ public sealed record class BetaMessageBatch : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("request_counts", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'request_counts' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "request_counts",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<BetaMessageBatchRequestCounts>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'request_counts' cannot be null",
-                    new System::ArgumentNullException("request_counts")
-                );
-        }
-        init
-        {
-            this._rawData["request_counts"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<BetaMessageBatchRequestCounts>(
+                this.RawData,
+                "request_counts"
             );
         }
+        init { ModelBase.Set(this._rawData, "request_counts", value); }
     }
 
     /// <summary>
@@ -259,20 +137,8 @@ public sealed record class BetaMessageBatch : ModelBase
     /// </summary>
     public required string? ResultsURL
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("results_url", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["results_url"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "results_url"); }
+        init { ModelBase.Set(this._rawData, "results_url", value); }
     }
 
     /// <summary>
@@ -282,25 +148,11 @@ public sealed record class BetaMessageBatch : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ID;
@@ -328,6 +180,9 @@ public sealed record class BetaMessageBatch : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
     }
 
+    public BetaMessageBatch(BetaMessageBatch betaMessageBatch)
+        : base(betaMessageBatch) { }
+
     public BetaMessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -343,6 +198,7 @@ public sealed record class BetaMessageBatch : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageBatchFromRaw.FromRawUnchecked"/>
     public static BetaMessageBatch FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -353,6 +209,7 @@ public sealed record class BetaMessageBatch : ModelBase
 
 class BetaMessageBatchFromRaw : IFromRaw<BetaMessageBatch>
 {
+    /// <inheritdoc/>
     public BetaMessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaMessageBatch.FromRawUnchecked(rawData);
 }

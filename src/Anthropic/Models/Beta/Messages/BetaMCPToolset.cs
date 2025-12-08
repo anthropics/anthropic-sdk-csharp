@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -23,48 +22,14 @@ public sealed record class BetaMCPToolset : ModelBase
     /// </summary>
     public required string MCPServerName
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("mcp_server_name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'mcp_server_name' cannot be null",
-                    new ArgumentOutOfRangeException("mcp_server_name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'mcp_server_name' cannot be null",
-                    new ArgumentNullException("mcp_server_name")
-                );
-        }
-        init
-        {
-            this._rawData["mcp_server_name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "mcp_server_name"); }
+        init { ModelBase.Set(this._rawData, "mcp_server_name", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -74,21 +39,12 @@ public sealed record class BetaMCPToolset : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+                this.RawData,
+                "cache_control"
             );
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -98,21 +54,12 @@ public sealed record class BetaMCPToolset : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("configs", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<Dictionary<string, BetaMCPToolConfig>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<Dictionary<string, BetaMCPToolConfig>>(
+                this.RawData,
+                "configs"
             );
         }
-        init
-        {
-            this._rawData["configs"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "configs", value); }
     }
 
     /// <summary>
@@ -122,12 +69,9 @@ public sealed record class BetaMCPToolset : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("default_config", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaMCPToolDefaultConfig?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaMCPToolDefaultConfig>(
+                this.RawData,
+                "default_config"
             );
         }
         init
@@ -137,13 +81,11 @@ public sealed record class BetaMCPToolset : ModelBase
                 return;
             }
 
-            this._rawData["default_config"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "default_config", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.MCPServerName;
@@ -172,6 +114,9 @@ public sealed record class BetaMCPToolset : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_toolset\"");
     }
 
+    public BetaMCPToolset(BetaMCPToolset betaMCPToolset)
+        : base(betaMCPToolset) { }
+
     public BetaMCPToolset(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -187,6 +132,7 @@ public sealed record class BetaMCPToolset : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMCPToolsetFromRaw.FromRawUnchecked"/>
     public static BetaMCPToolset FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -202,6 +148,7 @@ public sealed record class BetaMCPToolset : ModelBase
 
 class BetaMCPToolsetFromRaw : IFromRaw<BetaMCPToolset>
 {
+    /// <inheritdoc/>
     public BetaMCPToolset FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaMCPToolset.FromRawUnchecked(rawData);
 }

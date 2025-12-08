@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -19,51 +18,21 @@ public sealed record class BetaJSONOutputFormat : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("schema", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'schema' cannot be null",
-                    new ArgumentOutOfRangeException("schema", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'schema' cannot be null",
-                    new ArgumentNullException("schema")
-                );
-        }
-        init
-        {
-            this._rawData["schema"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<Dictionary<string, JsonElement>>(
+                this.RawData,
+                "schema"
             );
         }
+        init { ModelBase.Set(this._rawData, "schema", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Schema;
@@ -83,6 +52,9 @@ public sealed record class BetaJSONOutputFormat : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"json_schema\"");
     }
 
+    public BetaJSONOutputFormat(BetaJSONOutputFormat betaJSONOutputFormat)
+        : base(betaJSONOutputFormat) { }
+
     public BetaJSONOutputFormat(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -98,6 +70,7 @@ public sealed record class BetaJSONOutputFormat : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaJSONOutputFormatFromRaw.FromRawUnchecked"/>
     public static BetaJSONOutputFormat FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -108,6 +81,7 @@ public sealed record class BetaJSONOutputFormat : ModelBase
 
 class BetaJSONOutputFormatFromRaw : IFromRaw<BetaJSONOutputFormat>
 {
+    /// <inheritdoc/>
     public BetaJSONOutputFormat FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaJSONOutputFormat.FromRawUnchecked(rawData);

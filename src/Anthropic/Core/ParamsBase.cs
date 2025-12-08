@@ -13,12 +13,12 @@ namespace Anthropic.Core;
 
 public abstract record class ParamsBase
 {
-    static readonly IReadOnlyDictionary<string, string> s_defaultHeaders;
+    static readonly IReadOnlyDictionary<string, string> defaultHeaders;
 
     static ParamsBase()
     {
         var runtime = GetRuntime();
-        s_defaultHeaders = new Dictionary<string, string>
+        defaultHeaders = new Dictionary<string, string>
         {
             ["User-Agent"] = GetUserAgent(),
             ["X-Stainless-Arch"] = GetOSArch(),
@@ -33,12 +33,18 @@ public abstract record class ParamsBase
 
     private protected FreezableDictionary<string, JsonElement> _rawQueryData = [];
 
+    private protected FreezableDictionary<string, JsonElement> _rawHeaderData = [];
+
+    protected ParamsBase(ParamsBase paramsBase)
+    {
+        this._rawHeaderData = [.. paramsBase._rawHeaderData];
+        this._rawQueryData = [.. paramsBase._rawQueryData];
+    }
+
     public IReadOnlyDictionary<string, JsonElement> RawQueryData
     {
         get { return this._rawQueryData.Freeze(); }
     }
-
-    private protected FreezableDictionary<string, JsonElement> _rawHeaderData = [];
 
     public IReadOnlyDictionary<string, JsonElement> RawHeaderData
     {
@@ -186,7 +192,7 @@ public abstract record class ParamsBase
 
     protected static void AddDefaultHeaders(HttpRequestMessage request, ClientOptions options)
     {
-        foreach (var header in s_defaultHeaders)
+        foreach (var header in defaultHeaders)
         {
             request.Headers.Add(header.Key, header.Value);
         }

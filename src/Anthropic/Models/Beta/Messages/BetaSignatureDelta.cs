@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,50 +13,17 @@ public sealed record class BetaSignatureDelta : ModelBase
 {
     public required string Signature
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("signature", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'signature' cannot be null",
-                    new ArgumentOutOfRangeException("signature", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'signature' cannot be null",
-                    new ArgumentNullException("signature")
-                );
-        }
-        init
-        {
-            this._rawData["signature"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "signature"); }
+        init { ModelBase.Set(this._rawData, "signature", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Signature;
@@ -77,6 +43,9 @@ public sealed record class BetaSignatureDelta : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"");
     }
 
+    public BetaSignatureDelta(BetaSignatureDelta betaSignatureDelta)
+        : base(betaSignatureDelta) { }
+
     public BetaSignatureDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -92,6 +61,7 @@ public sealed record class BetaSignatureDelta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaSignatureDeltaFromRaw.FromRawUnchecked"/>
     public static BetaSignatureDelta FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -109,6 +79,7 @@ public sealed record class BetaSignatureDelta : ModelBase
 
 class BetaSignatureDeltaFromRaw : IFromRaw<BetaSignatureDelta>
 {
+    /// <inheritdoc/>
     public BetaSignatureDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaSignatureDelta.FromRawUnchecked(rawData);
 }

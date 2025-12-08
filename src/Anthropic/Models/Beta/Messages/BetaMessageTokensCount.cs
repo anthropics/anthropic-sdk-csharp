@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -19,21 +17,12 @@ public sealed record class BetaMessageTokensCount : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("context_management", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCountTokensContextManagementResponse?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCountTokensContextManagementResponse>(
+                this.RawData,
+                "context_management"
             );
         }
-        init
-        {
-            this._rawData["context_management"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "context_management", value); }
     }
 
     /// <summary>
@@ -42,25 +31,11 @@ public sealed record class BetaMessageTokensCount : ModelBase
     /// </summary>
     public required long InputTokens
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("input_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'input_tokens' cannot be null",
-                    new ArgumentOutOfRangeException("input_tokens", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
+        init { ModelBase.Set(this._rawData, "input_tokens", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ContextManagement?.Validate();
@@ -68,6 +43,9 @@ public sealed record class BetaMessageTokensCount : ModelBase
     }
 
     public BetaMessageTokensCount() { }
+
+    public BetaMessageTokensCount(BetaMessageTokensCount betaMessageTokensCount)
+        : base(betaMessageTokensCount) { }
 
     public BetaMessageTokensCount(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -82,6 +60,7 @@ public sealed record class BetaMessageTokensCount : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMessageTokensCountFromRaw.FromRawUnchecked"/>
     public static BetaMessageTokensCount FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -92,6 +71,7 @@ public sealed record class BetaMessageTokensCount : ModelBase
 
 class BetaMessageTokensCountFromRaw : IFromRaw<BetaMessageTokensCount>
 {
+    /// <inheritdoc/>
     public BetaMessageTokensCount FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMessageTokensCount.FromRawUnchecked(rawData);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,25 +13,11 @@ public sealed record class BetaAllThinkingTurns : ModelBase
 {
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"all\"")))
@@ -45,6 +30,9 @@ public sealed record class BetaAllThinkingTurns : ModelBase
     {
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"all\"");
     }
+
+    public BetaAllThinkingTurns(BetaAllThinkingTurns betaAllThinkingTurns)
+        : base(betaAllThinkingTurns) { }
 
     public BetaAllThinkingTurns(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -61,6 +49,7 @@ public sealed record class BetaAllThinkingTurns : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaAllThinkingTurnsFromRaw.FromRawUnchecked"/>
     public static BetaAllThinkingTurns FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -71,6 +60,7 @@ public sealed record class BetaAllThinkingTurns : ModelBase
 
 class BetaAllThinkingTurnsFromRaw : IFromRaw<BetaAllThinkingTurns>
 {
+    /// <inheritdoc/>
     public BetaAllThinkingTurns FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAllThinkingTurns.FromRawUnchecked(rawData);

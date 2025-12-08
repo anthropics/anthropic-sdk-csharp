@@ -39,26 +39,8 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required long MaxTokens
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("max_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'max_tokens' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "max_tokens",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawBodyData["max_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawBodyData, "max_tokens"); }
+        init { ModelBase.Set(this._rawBodyData, "max_tokens", value); }
     }
 
     /// <summary>
@@ -114,30 +96,8 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<MessageParam> Messages
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("messages", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'messages' cannot be null",
-                    new System::ArgumentOutOfRangeException("messages", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<List<MessageParam>>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'messages' cannot be null",
-                    new System::ArgumentNullException("messages")
-                );
-        }
-        init
-        {
-            this._rawBodyData["messages"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<List<MessageParam>>(this.RawBodyData, "messages"); }
+        init { ModelBase.Set(this._rawBodyData, "messages", value); }
     }
 
     /// <summary>
@@ -146,26 +106,8 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("model", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'model' cannot be null",
-                    new System::ArgumentOutOfRangeException("model", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, Model>>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        init
-        {
-            this._rawBodyData["model"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<ApiEnum<string, Model>>(this.RawBodyData, "model"); }
+        init { ModelBase.Set(this._rawBodyData, "model", value); }
     }
 
     /// <summary>
@@ -173,13 +115,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public Metadata? Metadata
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("metadata", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<Metadata?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<Metadata>(this.RawBodyData, "metadata"); }
         init
         {
             if (value == null)
@@ -187,10 +123,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["metadata"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "metadata", value);
         }
     }
 
@@ -205,12 +138,9 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this._rawBodyData.TryGetValue("service_tier", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<ApiEnum<string, ServiceTier>>(
+                this.RawBodyData,
+                "service_tier"
             );
         }
         init
@@ -220,10 +150,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["service_tier"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "service_tier", value);
         }
     }
 
@@ -241,13 +168,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<string>? StopSequences
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("stop_sequences", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<List<string>>(this.RawBodyData, "stop_sequences"); }
         init
         {
             if (value == null)
@@ -255,10 +176,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["stop_sequences"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "stop_sequences", value);
         }
     }
 
@@ -268,14 +186,14 @@ public sealed record class MessageCreateParams : ParamsBase
     /// <para>A system prompt is a way of providing context and instructions to Claude,
     /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
     /// </summary>
-    public SystemModel? System
+    public MessageCreateParamsSystem? System
     {
         get
         {
-            if (!this._rawBodyData.TryGetValue("system", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<SystemModel?>(element, ModelBase.SerializerOptions);
+            return ModelBase.GetNullableClass<MessageCreateParamsSystem>(
+                this.RawBodyData,
+                "system"
+            );
         }
         init
         {
@@ -284,10 +202,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["system"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "system", value);
         }
     }
 
@@ -303,13 +218,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public double? Temperature
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("temperature", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<double>(this.RawBodyData, "temperature"); }
         init
         {
             if (value == null)
@@ -317,10 +226,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["temperature"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "temperature", value);
         }
     }
 
@@ -338,13 +244,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            if (!this._rawBodyData.TryGetValue("thinking", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ThinkingConfigParam?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<ThinkingConfigParam>(this.RawBodyData, "thinking");
         }
         init
         {
@@ -353,10 +253,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["thinking"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "thinking", value);
         }
     }
 
@@ -366,13 +263,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public ToolChoice? ToolChoice
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("tool_choice", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ToolChoice?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<ToolChoice>(this.RawBodyData, "tool_choice"); }
         init
         {
             if (value == null)
@@ -380,10 +271,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["tool_choice"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "tool_choice", value);
         }
     }
 
@@ -436,16 +324,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<ToolUnion>? Tools
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("tools", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ToolUnion>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<ToolUnion>>(this.RawBodyData, "tools"); }
         init
         {
             if (value == null)
@@ -453,10 +332,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["tools"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "tools", value);
         }
     }
 
@@ -470,13 +346,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public long? TopK
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("top_k", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawBodyData, "top_k"); }
         init
         {
             if (value == null)
@@ -484,10 +354,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["top_k"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "top_k", value);
         }
     }
 
@@ -503,13 +370,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public double? TopP
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("top_p", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<double>(this.RawBodyData, "top_p"); }
         init
         {
             if (value == null)
@@ -517,14 +378,17 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["top_p"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "top_p", value);
         }
     }
 
     public MessageCreateParams() { }
+
+    public MessageCreateParams(MessageCreateParams messageCreateParams)
+        : base(messageCreateParams)
+    {
+        this._rawBodyData = [.. messageCreateParams._rawBodyData];
+    }
 
     public MessageCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -551,6 +415,7 @@ public sealed record class MessageCreateParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static MessageCreateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -644,8 +509,8 @@ sealed class ServiceTierConverter : JsonConverter<ServiceTier>
 /// <para>A system prompt is a way of providing context and instructions to Claude,
 /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
-[JsonConverter(typeof(SystemModelConverter))]
-public record class SystemModel
+[JsonConverter(typeof(MessageCreateParamsSystemConverter))]
+public record class MessageCreateParamsSystem
 {
     public object? Value { get; } = null;
 
@@ -656,35 +521,85 @@ public record class SystemModel
         get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public SystemModel(string value, JsonElement? json = null)
+    public MessageCreateParamsSystem(string value, JsonElement? json = null)
     {
         this.Value = value;
         this._json = json;
     }
 
-    public SystemModel(IReadOnlyList<TextBlockParam> value, JsonElement? json = null)
+    public MessageCreateParamsSystem(IReadOnlyList<TextBlockParam> value, JsonElement? json = null)
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
         this._json = json;
     }
 
-    public SystemModel(JsonElement json)
+    public MessageCreateParamsSystem(JsonElement json)
     {
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="string"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickString(out var value)) {
+    ///     // `value` is of type `string`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickString([NotNullWhen(true)] out string? value)
     {
         value = this.Value as string;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="IReadOnlyList<TextBlockParam>"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTextBlockParams(out var value)) {
+    ///     // `value` is of type `IReadOnlyList<TextBlockParam>`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTextBlockParams([NotNullWhen(true)] out IReadOnlyList<TextBlockParam>? value)
     {
         value = this.Value as IReadOnlyList<TextBlockParam>;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (string value) => {...},
+    ///     (IReadOnlyList<TextBlockParam> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<string> @string,
         System::Action<IReadOnlyList<TextBlockParam>> textBlockParams
@@ -700,11 +615,32 @@ public record class SystemModel
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of SystemModel"
+                    "Data did not match any variant of MessageCreateParamsSystem"
                 );
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (string value) => {...},
+    ///     (IReadOnlyList<TextBlockParam> value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<string, T> @string,
         System::Func<IReadOnlyList<TextBlockParam>, T> textBlockParams
@@ -715,30 +651,50 @@ public record class SystemModel
             string value => @string(value),
             IReadOnlyList<TextBlockParam> value => textBlockParams(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SystemModel"
+                "Data did not match any variant of MessageCreateParamsSystem"
             ),
         };
     }
 
-    public static implicit operator SystemModel(string value) => new(value);
+    public static implicit operator MessageCreateParamsSystem(string value) => new(value);
 
-    public static implicit operator SystemModel(List<TextBlockParam> value) =>
+    public static implicit operator MessageCreateParamsSystem(List<TextBlockParam> value) =>
         new((IReadOnlyList<TextBlockParam>)value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of SystemModel"
+                "Data did not match any variant of MessageCreateParamsSystem"
             );
         }
     }
+
+    public virtual bool Equals(MessageCreateParamsSystem? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
 }
 
-sealed class SystemModelConverter : JsonConverter<SystemModel>
+sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreateParamsSystem>
 {
-    public override SystemModel? Read(
+    public override MessageCreateParamsSystem? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -776,7 +732,7 @@ sealed class SystemModelConverter : JsonConverter<SystemModel>
 
     public override void Write(
         Utf8JsonWriter writer,
-        SystemModel value,
+        MessageCreateParamsSystem value,
         JsonSerializerOptions options
     )
     {

@@ -8,7 +8,7 @@ using Anthropic.Models.Models;
 
 namespace Anthropic.Services;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class ModelService : IModelService
 {
     /// <inheritdoc/>

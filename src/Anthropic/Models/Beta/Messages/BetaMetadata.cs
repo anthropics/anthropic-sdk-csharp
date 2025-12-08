@@ -19,28 +19,20 @@ public sealed record class BetaMetadata : ModelBase
     /// </summary>
     public string? UserID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("user_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["user_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "user_id"); }
+        init { ModelBase.Set(this._rawData, "user_id", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.UserID;
     }
 
     public BetaMetadata() { }
+
+    public BetaMetadata(BetaMetadata betaMetadata)
+        : base(betaMetadata) { }
 
     public BetaMetadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -55,6 +47,7 @@ public sealed record class BetaMetadata : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMetadataFromRaw.FromRawUnchecked"/>
     public static BetaMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -63,6 +56,7 @@ public sealed record class BetaMetadata : ModelBase
 
 class BetaMetadataFromRaw : IFromRaw<BetaMetadata>
 {
+    /// <inheritdoc/>
     public BetaMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaMetadata.FromRawUnchecked(rawData);
 }

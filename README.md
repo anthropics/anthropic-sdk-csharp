@@ -24,6 +24,8 @@ The REST API documentation can be found on [docs.anthropic.com](https://docs.ant
 
 ## Installation
 
+Install the package from [NuGet](https://www.nuget.org/packages/Anthropic):
+
 ```bash
 dotnet add package Anthropic
 ```

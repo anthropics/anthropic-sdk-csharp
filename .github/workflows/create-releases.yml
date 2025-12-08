@@ -40,6 +40,5 @@ jobs:
           ${{ github.workspace }}/artifacts/packages/*.nupkg
           --source https://api.nuget.org/v3/index.json
           --api-key $NUGET_API_KEY
-          --skip-duplicate
         env:
           NUGET_API_KEY: ${{ secrets.ANTHROPIC_NUGET_API_KEY || secrets.NUGET_API_KEY }}

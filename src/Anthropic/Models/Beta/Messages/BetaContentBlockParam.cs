@@ -305,36 +305,126 @@ public record class BetaContentBlockParam
         this._json = json;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickText(out var value)) {
+    ///     // `value` is of type `BetaTextBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickText([NotNullWhen(true)] out BetaTextBlockParam? value)
     {
         value = this.Value as BetaTextBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaImageBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickImage(out var value)) {
+    ///     // `value` is of type `BetaImageBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickImage([NotNullWhen(true)] out BetaImageBlockParam? value)
     {
         value = this.Value as BetaImageBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRequestDocumentBlock"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRequestDocumentBlock(out var value)) {
+    ///     // `value` is of type `BetaRequestDocumentBlock`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickRequestDocumentBlock([NotNullWhen(true)] out BetaRequestDocumentBlock? value)
     {
         value = this.Value as BetaRequestDocumentBlock;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaSearchResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSearchResult(out var value)) {
+    ///     // `value` is of type `BetaSearchResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickSearchResult([NotNullWhen(true)] out BetaSearchResultBlockParam? value)
     {
         value = this.Value as BetaSearchResultBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaThinkingBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickThinking(out var value)) {
+    ///     // `value` is of type `BetaThinkingBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickThinking([NotNullWhen(true)] out BetaThinkingBlockParam? value)
     {
         value = this.Value as BetaThinkingBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRedactedThinkingBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRedactedThinking(out var value)) {
+    ///     // `value` is of type `BetaRedactedThinkingBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickRedactedThinking(
         [NotNullWhen(true)] out BetaRedactedThinkingBlockParam? value
     )
@@ -343,24 +433,84 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolUseBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolUse(out var value)) {
+    ///     // `value` is of type `BetaToolUseBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickToolUse([NotNullWhen(true)] out BetaToolUseBlockParam? value)
     {
         value = this.Value as BetaToolUseBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolResult(out var value)) {
+    ///     // `value` is of type `BetaToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickToolResult([NotNullWhen(true)] out BetaToolResultBlockParam? value)
     {
         value = this.Value as BetaToolResultBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaServerToolUseBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickServerToolUse(out var value)) {
+    ///     // `value` is of type `BetaServerToolUseBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickServerToolUse([NotNullWhen(true)] out BetaServerToolUseBlockParam? value)
     {
         value = this.Value as BetaServerToolUseBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebSearchToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebSearchToolResult(out var value)) {
+    ///     // `value` is of type `BetaWebSearchToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickWebSearchToolResult(
         [NotNullWhen(true)] out BetaWebSearchToolResultBlockParam? value
     )
@@ -369,6 +519,21 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebFetchToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWebFetchToolResult(out var value)) {
+    ///     // `value` is of type `BetaWebFetchToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickWebFetchToolResult(
         [NotNullWhen(true)] out BetaWebFetchToolResultBlockParam? value
     )
@@ -377,6 +542,21 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCodeExecutionToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `BetaCodeExecutionToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaCodeExecutionToolResultBlockParam? value
     )
@@ -385,6 +565,21 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBashCodeExecutionToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBashCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `BetaBashCodeExecutionToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickBashCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaBashCodeExecutionToolResultBlockParam? value
     )
@@ -393,6 +588,21 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaTextEditorCodeExecutionToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickTextEditorCodeExecutionToolResult(out var value)) {
+    ///     // `value` is of type `BetaTextEditorCodeExecutionToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickTextEditorCodeExecutionToolResult(
         [NotNullWhen(true)] out BetaTextEditorCodeExecutionToolResultBlockParam? value
     )
@@ -401,6 +611,21 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaToolSearchToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickToolSearchToolResult(out var value)) {
+    ///     // `value` is of type `BetaToolSearchToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickToolSearchToolResult(
         [NotNullWhen(true)] out BetaToolSearchToolResultBlockParam? value
     )
@@ -409,12 +634,42 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaMCPToolUseBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickMCPToolUse(out var value)) {
+    ///     // `value` is of type `BetaMCPToolUseBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlockParam? value)
     {
         value = this.Value as BetaMCPToolUseBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRequestMCPToolResultBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRequestMCPToolResult(out var value)) {
+    ///     // `value` is of type `BetaRequestMCPToolResultBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickRequestMCPToolResult(
         [NotNullWhen(true)] out BetaRequestMCPToolResultBlockParam? value
     )
@@ -423,12 +678,63 @@ public record class BetaContentBlockParam
         return value != null;
     }
 
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaContainerUploadBlockParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickContainerUpload(out var value)) {
+    ///     // `value` is of type `BetaContainerUploadBlockParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
     public bool TryPickContainerUpload([NotNullWhen(true)] out BetaContainerUploadBlockParam? value)
     {
         value = this.Value as BetaContainerUploadBlockParam;
         return value != null;
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match">
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaTextBlockParam value) => {...},
+    ///     (BetaImageBlockParam value) => {...},
+    ///     (BetaRequestDocumentBlock value) => {...},
+    ///     (BetaSearchResultBlockParam value) => {...},
+    ///     (BetaThinkingBlockParam value) => {...},
+    ///     (BetaRedactedThinkingBlockParam value) => {...},
+    ///     (BetaToolUseBlockParam value) => {...},
+    ///     (BetaToolResultBlockParam value) => {...},
+    ///     (BetaServerToolUseBlockParam value) => {...},
+    ///     (BetaWebSearchToolResultBlockParam value) => {...},
+    ///     (BetaWebFetchToolResultBlockParam value) => {...},
+    ///     (BetaCodeExecutionToolResultBlockParam value) => {...},
+    ///     (BetaBashCodeExecutionToolResultBlockParam value) => {...},
+    ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) => {...},
+    ///     (BetaToolSearchToolResultBlockParam value) => {...},
+    ///     (BetaMCPToolUseBlockParam value) => {...},
+    ///     (BetaRequestMCPToolResultBlockParam value) => {...},
+    ///     (BetaContainerUploadBlockParam value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public void Switch(
         System::Action<BetaTextBlockParam> text,
         System::Action<BetaImageBlockParam> image,
@@ -513,6 +819,43 @@ public record class BetaContentBlockParam
         }
     }
 
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch">
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaTextBlockParam value) => {...},
+    ///     (BetaImageBlockParam value) => {...},
+    ///     (BetaRequestDocumentBlock value) => {...},
+    ///     (BetaSearchResultBlockParam value) => {...},
+    ///     (BetaThinkingBlockParam value) => {...},
+    ///     (BetaRedactedThinkingBlockParam value) => {...},
+    ///     (BetaToolUseBlockParam value) => {...},
+    ///     (BetaToolResultBlockParam value) => {...},
+    ///     (BetaServerToolUseBlockParam value) => {...},
+    ///     (BetaWebSearchToolResultBlockParam value) => {...},
+    ///     (BetaWebFetchToolResultBlockParam value) => {...},
+    ///     (BetaCodeExecutionToolResultBlockParam value) => {...},
+    ///     (BetaBashCodeExecutionToolResultBlockParam value) => {...},
+    ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) => {...},
+    ///     (BetaToolSearchToolResultBlockParam value) => {...},
+    ///     (BetaMCPToolUseBlockParam value) => {...},
+    ///     (BetaRequestMCPToolResultBlockParam value) => {...},
+    ///     (BetaContainerUploadBlockParam value) => {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
     public T Match<T>(
         System::Func<BetaTextBlockParam, T> text,
         System::Func<BetaImageBlockParam, T> image,
@@ -622,6 +965,16 @@ public record class BetaContentBlockParam
     public static implicit operator BetaContentBlockParam(BetaContainerUploadBlockParam value) =>
         new(value);
 
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
     public void Validate()
     {
         if (this.Value == null)
@@ -630,6 +983,16 @@ public record class BetaContentBlockParam
                 "Data did not match any variant of BetaContentBlockParam"
             );
         }
+    }
+
+    public virtual bool Equals(BetaContentBlockParam? other)
+    {
+        return other != null && JsonElement.DeepEquals(this.Json, other.Json);
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
 

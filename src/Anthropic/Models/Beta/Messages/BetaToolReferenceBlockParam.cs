@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -19,48 +18,14 @@ public sealed record class BetaToolReferenceBlockParam : ModelBase
 {
     public required string ToolName
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("tool_name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'tool_name' cannot be null",
-                    new ArgumentOutOfRangeException("tool_name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'tool_name' cannot be null",
-                    new ArgumentNullException("tool_name")
-                );
-        }
-        init
-        {
-            this._rawData["tool_name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_name"); }
+        init { ModelBase.Set(this._rawData, "tool_name", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -70,23 +35,15 @@ public sealed record class BetaToolReferenceBlockParam : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+                this.RawData,
+                "cache_control"
             );
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ToolName;
@@ -107,6 +64,9 @@ public sealed record class BetaToolReferenceBlockParam : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
     }
 
+    public BetaToolReferenceBlockParam(BetaToolReferenceBlockParam betaToolReferenceBlockParam)
+        : base(betaToolReferenceBlockParam) { }
+
     public BetaToolReferenceBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -122,6 +82,7 @@ public sealed record class BetaToolReferenceBlockParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolReferenceBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaToolReferenceBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -139,6 +100,7 @@ public sealed record class BetaToolReferenceBlockParam : ModelBase
 
 class BetaToolReferenceBlockParamFromRaw : IFromRaw<BetaToolReferenceBlockParam>
 {
+    /// <inheritdoc/>
     public BetaToolReferenceBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaToolReferenceBlockParam.FromRawUnchecked(rawData);

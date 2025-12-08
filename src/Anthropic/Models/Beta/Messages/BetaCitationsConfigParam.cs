@@ -12,13 +12,7 @@ public sealed record class BetaCitationsConfigParam : ModelBase
 {
     public bool? Enabled
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("enabled", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "enabled"); }
         init
         {
             if (value == null)
@@ -26,19 +20,20 @@ public sealed record class BetaCitationsConfigParam : ModelBase
                 return;
             }
 
-            this._rawData["enabled"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "enabled", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Enabled;
     }
 
     public BetaCitationsConfigParam() { }
+
+    public BetaCitationsConfigParam(BetaCitationsConfigParam betaCitationsConfigParam)
+        : base(betaCitationsConfigParam) { }
 
     public BetaCitationsConfigParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -53,6 +48,7 @@ public sealed record class BetaCitationsConfigParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationsConfigParamFromRaw.FromRawUnchecked"/>
     public static BetaCitationsConfigParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -63,6 +59,7 @@ public sealed record class BetaCitationsConfigParam : ModelBase
 
 class BetaCitationsConfigParamFromRaw : IFromRaw<BetaCitationsConfigParam>
 {
+    /// <inheritdoc/>
     public BetaCitationsConfigParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCitationsConfigParam.FromRawUnchecked(rawData);
