@@ -115,6 +115,7 @@ public class BetaMCPToolsetTest : TestBase
         Assert.Equal(expectedMCPServerName, deserialized.MCPServerName);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.NotNull(deserialized.Configs);
         Assert.Equal(expectedConfigs.Count, deserialized.Configs.Count);
         foreach (var item in expectedConfigs)
         {

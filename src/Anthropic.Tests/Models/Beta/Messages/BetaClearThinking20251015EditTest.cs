@@ -169,6 +169,7 @@ public class UnionMember2Test : TestBase
         var constant = JsonSerializer.Deserialize<UnionMember2>(
             JsonSerializer.Deserialize<JsonElement>("\"all\"")
         );
+        Assert.NotNull(constant);
         constant.Validate();
     }
 
@@ -178,6 +179,7 @@ public class UnionMember2Test : TestBase
         var constant = JsonSerializer.Deserialize<UnionMember2>(
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\"")
         );
+        Assert.NotNull(constant);
         Assert.Throws<AnthropicInvalidDataException>(() => constant.Validate());
     }
 

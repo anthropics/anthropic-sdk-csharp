@@ -26,7 +26,7 @@ jobs:
         if: ${{ steps.release.outputs.releases_created }}
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Build and pack
         if: ${{ steps.release.outputs.releases_created }}
