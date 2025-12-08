@@ -14,12 +14,12 @@ namespace Anthropic;
 /// <inheritdoc/>
 public class AnthropicClient : IAnthropicClient
 {
+#if NET
+    static Random Random => Random.Shared;
+#else
     static readonly ThreadLocal<Random> _threadLocalRandom = new(() => new Random());
-
-    static Random Random
-    {
-        get { return _threadLocalRandom.Value!; }
-    }
+    static Random Random => _threadLocalRandom.Value!;
+#endif
 
     protected readonly ClientOptions _options;
 
