@@ -190,13 +190,10 @@ public class AnthropicClient : IAnthropicClient
         {
             requestMessage.Headers.Add("x-stainless-retry-count", retryCount.ToString());
         }
-        using CancellationTokenSource timeoutCts = new(
-            this.Timeout ?? ClientOptions.DefaultTimeout
-        );
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(
-            timeoutCts.Token,
-            cancellationToken
-        );
+
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        cts.CancelAfter(this.Timeout ?? ClientOptions.DefaultTimeout);
+
         HttpResponseMessage responseMessage;
         try
         {
