@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -3470,38 +3471,6 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal(2, usageContent.Details.OutputTokenCount);
     }
 
-    protected sealed class VerbatimHttpHandler(string expectedRequest, string actualResponse)
-        : HttpMessageHandler
-    {
-        protected override async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request,
-            CancellationToken cancellationToken
-        )
-        {
-            if (!string.IsNullOrEmpty(expectedRequest))
-            {
-                Assert.NotNull(request.Content);
-                string actualRequest = await request.Content.ReadAsStringAsync(
-#if NET
-                    cancellationToken
-#endif
-                );
-                Assert.True(
-                    JsonNode.DeepEquals(
-                        JsonNode.Parse(expectedRequest),
-                        JsonNode.Parse(actualRequest)
-                    ),
-                    $"Expected:\n{expectedRequest}\nActual:\n{actualRequest}"
-                );
-            }
-
-            return new()
-            {
-                Content = new StringContent(actualResponse, Encoding.UTF8, "application/json"),
-            };
-        }
-    }
-
     [Fact]
     public async Task GetResponseAsync_FunctionResult_WithSingleTextContent()
     {
@@ -4319,5 +4288,41 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         ChatResponse response = await chatClient.GetResponseAsync(messages);
         Assert.NotNull(response);
+    }
+
+    protected sealed class VerbatimHttpHandler(string expectedRequest, string actualResponse)
+        : HttpMessageHandler
+    {
+        public Action<HttpRequestHeaders>? OnRequestHeaders { get; set; }
+
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken
+        )
+        {
+            OnRequestHeaders?.Invoke(request.Headers);
+
+            if (!string.IsNullOrEmpty(expectedRequest))
+            {
+                Assert.NotNull(request.Content);
+                string actualRequest = await request.Content.ReadAsStringAsync(
+#if NET
+                    cancellationToken
+#endif
+                );
+                Assert.True(
+                    JsonNode.DeepEquals(
+                        JsonNode.Parse(expectedRequest),
+                        JsonNode.Parse(actualRequest)
+                    ),
+                    $"Expected:\n{expectedRequest}\nActual:\n{actualRequest}"
+                );
+            }
+
+            return new()
+            {
+                Content = new StringContent(actualResponse, Encoding.UTF8, "application/json"),
+            };
+        }
     }
 }
