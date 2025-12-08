@@ -121,11 +121,13 @@ public class WebSearchTool20250305Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.AllowedDomains);
         Assert.Equal(expectedAllowedDomains.Count, deserialized.AllowedDomains.Count);
         for (int i = 0; i < expectedAllowedDomains.Count; i++)
         {
             Assert.Equal(expectedAllowedDomains[i], deserialized.AllowedDomains[i]);
         }
+        Assert.NotNull(deserialized.BlockedDomains);
         Assert.Equal(expectedBlockedDomains.Count, deserialized.BlockedDomains.Count);
         for (int i = 0; i < expectedBlockedDomains.Count; i++)
         {

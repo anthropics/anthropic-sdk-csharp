@@ -70,7 +70,7 @@ public class MessageTest : TestBase
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_5_20251101;
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
-        string expectedStopSequence = null;
+        string? expectedStopSequence = null;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
         Usage expectedUsage = new()
         {
@@ -210,7 +210,7 @@ public class MessageTest : TestBase
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_5_20251101;
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
-        string expectedStopSequence = null;
+        string? expectedStopSequence = null;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
         Usage expectedUsage = new()
         {

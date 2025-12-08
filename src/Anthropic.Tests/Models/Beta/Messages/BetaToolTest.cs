@@ -188,6 +188,7 @@ public class BetaToolTest : TestBase
 
         Assert.Equal(expectedInputSchema, deserialized.InputSchema);
         Assert.Equal(expectedName, deserialized.Name);
+        Assert.NotNull(deserialized.AllowedCallers);
         Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
         for (int i = 0; i < expectedAllowedCallers.Count; i++)
         {
@@ -196,6 +197,7 @@ public class BetaToolTest : TestBase
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
         Assert.Equal(expectedDescription, deserialized.Description);
+        Assert.NotNull(deserialized.InputExamples);
         Assert.Equal(expectedInputExamples.Count, deserialized.InputExamples.Count);
         for (int i = 0; i < expectedInputExamples.Count; i++)
         {
@@ -584,6 +586,7 @@ public class InputSchemaTest : TestBase
         List<string> expectedRequired = ["location"];
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.Properties);
         Assert.Equal(expectedProperties.Count, deserialized.Properties.Count);
         foreach (var item in expectedProperties)
         {
@@ -591,6 +594,7 @@ public class InputSchemaTest : TestBase
 
             Assert.True(JsonElement.DeepEquals(value, deserialized.Properties[item.Key]));
         }
+        Assert.NotNull(deserialized.Required);
         Assert.Equal(expectedRequired.Count, deserialized.Required.Count);
         for (int i = 0; i < expectedRequired.Count; i++)
         {

@@ -84,6 +84,7 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
             "\"text_editor_code_execution_str_replace_result\""
         );
 
+        Assert.NotNull(deserialized.Lines);
         Assert.Equal(expectedLines.Count, deserialized.Lines.Count);
         for (int i = 0; i < expectedLines.Count; i++)
         {

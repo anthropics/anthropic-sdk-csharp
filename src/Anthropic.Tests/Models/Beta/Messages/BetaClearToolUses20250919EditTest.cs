@@ -85,6 +85,7 @@ public class BetaClearToolUses20250919EditTest : TestBase
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedClearAtLeast, deserialized.ClearAtLeast);
         Assert.Equal(expectedClearToolInputs, deserialized.ClearToolInputs);
+        Assert.NotNull(deserialized.ExcludeTools);
         Assert.Equal(expectedExcludeTools.Count, deserialized.ExcludeTools.Count);
         for (int i = 0; i < expectedExcludeTools.Count; i++)
         {

@@ -88,6 +88,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.AllowedCallers);
         Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
         for (int i = 0; i < expectedAllowedCallers.Count; i++)
         {

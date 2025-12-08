@@ -57,6 +57,7 @@ public class BetaRequestMCPServerToolConfigurationTest : TestBase
         List<string> expectedAllowedTools = ["string"];
         bool expectedEnabled = true;
 
+        Assert.NotNull(deserialized.AllowedTools);
         Assert.Equal(expectedAllowedTools.Count, deserialized.AllowedTools.Count);
         for (int i = 0; i < expectedAllowedTools.Count; i++)
         {
