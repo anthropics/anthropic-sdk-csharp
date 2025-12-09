@@ -1,9 +1,6 @@
 #if !NET
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 #pragma warning disable CS9113 // Unused parameters
-#pragma warning disable CS0436 // Type conflict. This is intentional
-
-global using ArgumentException = System.Shims.ArgumentException;
 
 namespace System.Runtime.CompilerServices
 {
@@ -38,21 +35,5 @@ namespace System.Diagnostics.CodeAnalysis
     // Allow `[NotNullWhen(...)]` to compile when targeting .NET Standard 2.0.
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
     internal sealed class NotNullWhenAttribute(bool returnValue) : Attribute;
-}
-
-namespace System.Shims
-{
-    public static class ArgumentException
-    {
-        public static void ThrowIfNullOrWhiteSpace(string? value, string fieldName)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new System.ArgumentException(
-                    $"The parameter '{fieldName}' should be not null or an empty string but was either."
-                );
-            }
-        }
-    }
 }
 #endif
