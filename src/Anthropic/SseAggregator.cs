@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace Anthropic.Client;
+namespace Anthropic;
 
 /// <summary>
 /// Defines the base for all Aggregators using ServerSideStreaming events.
 /// </summary>
 /// <typeparam name="TMessage"></typeparam>
 /// <typeparam name="TResult"></typeparam>
-public abstract class SseAggregator<TMessage, TResult> 
-    where TResult: new()
+public abstract class SseAggregator<TMessage, TResult>     
 {
     private readonly IAsyncEnumerable<TMessage> _messages;
 
     /// <summary>
-    /// Initialises a new instance of the <see cref="SseAggregator{TMessage, TResult}"/>.
+    /// Initialize a new instance of the <see cref="SseAggregator{TMessage, TResult}"/>.
     /// </summary>
     /// <param name="messages">The service attached enumerable for reading messages.</param>
     public SseAggregator(IAsyncEnumerable<TMessage> messages)
@@ -23,31 +23,32 @@ public abstract class SseAggregator<TMessage, TResult>
         this._messages = messages;
     }
 
-    private Task<TResult>? _collectionTask;
+    private Task<TResult?>? _collectionTask;
 
-    public virtual Task<TResult> BeginCollectionAsync()
+    public virtual Task<TResult?> BeginCollectionAsync()
     {
-        return _collectionTask = Task.Run<TResult>(async () =>
+        return _collectionTask ??= Task.Run<TResult?>(async () =>
         {
-            var messages = new List<TMessage>();
-            var allMessages = new List<TMessage>();
+            var messages = new Dictionary<FilterResult, IList<TMessage>>();
+            foreach (var item in Enum.GetValues<FilterResult>())
+            {
+                messages[item] = new List<TMessage>();
+            }
+
             var startMessageReceived = false;
             FilterResult filterResult = FilterResult.Ignore;
             await foreach (var item in _messages.ConfigureAwait(false))
             {
-                allMessages.Add(item);
                 if (!startMessageReceived && Filter(item) != FilterResult.StartMessage)
                 {
+                    messages[FilterResult.StartMessage].Add(item);
                     continue;
                 }
 
                 startMessageReceived = true;
                 filterResult = Filter(item);
-                if (filterResult == FilterResult.Content)
-                {
-                    messages.Add(item);
-                }
-                else if (filterResult == FilterResult.EndMessage)
+                messages[filterResult].Add(item);
+                if (filterResult == FilterResult.EndMessage)
                 {
                     break;
                 }
@@ -55,7 +56,7 @@ public abstract class SseAggregator<TMessage, TResult>
 
             if(messages is {Count: 0})
             {
-                return new TResult();
+                return default;
             }
 
             if (filterResult != FilterResult.EndMessage)
@@ -63,7 +64,7 @@ public abstract class SseAggregator<TMessage, TResult>
                 throw new InvalidOperationException($"Expected last message to be the End message but found: {filterResult}");
             }
 
-            return GetResult(messages);
+            return GetResult(new ReadOnlyDictionary<FilterResult, IReadOnlyCollection<TMessage>>(messages));
         });
     }
 
@@ -79,7 +80,7 @@ public abstract class SseAggregator<TMessage, TResult>
     /// </summary>
     /// <param name="messages">The read only list of messages.</param>
     /// <returns>The aggregation result.</returns>
-    protected abstract TResult GetResult(IReadOnlyCollection<TMessage> messages);
+    protected abstract TResult GetResult(IReadOnlyDictionary<FilterResult, IReadOnlyCollection<TMessage>> messages);
 
     /// <summary>
     /// Defines the filter result types.

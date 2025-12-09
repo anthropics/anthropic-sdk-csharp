@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Anthropic.Client.Models.Messages;
-using Anthropic.Client.Models.Messages.CitationsDeltaProperties;
+using Anthropic.Models.Messages;
 
 namespace Anthropic.Client.Services.Messages;
 

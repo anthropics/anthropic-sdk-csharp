@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Anthropic.Client.Models.Beta.Messages;
-using Anthropic.Client.Models.Messages;
 using Anthropic.Client.Services.Messages;
+using Anthropic.Models.Beta.Messages;
+using Anthropic.Models.Messages;
 
-namespace Anthropic.Client;
+namespace Anthropic;
 
 /// <summary>
 /// Extension methods for providing easy access to Aggregators

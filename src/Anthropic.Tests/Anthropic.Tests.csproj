@@ -17,6 +17,7 @@
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
