@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
 
@@ -19,6 +20,52 @@ namespace Microsoft.Extensions.AI;
 
 public static class AnthropicBetaClientExtensions
 {
+    /// <summary>
+    /// Creates an <see cref="AITool"/> to represent a skill for use with the Anthropic Skills API.
+    /// </summary>
+    /// <param name="skillParams">The skill parameters to wrap as an <see cref="AITool"/>.</param>
+    /// <returns>The <paramref name="skillParams"/> wrapped as an <see cref="AITool"/>.</returns>
+    /// <remarks>
+    /// <para>
+    /// The returned tool is only suitable for use with the <see cref="IChatClient"/> returned by
+    /// <see cref="AsIChatClient"/> (or <see cref="IChatClient"/>s that delegate
+    /// to such an instance). It is likely to be ignored by any other <see cref="IChatClient"/> implementation.
+    /// </para>
+    /// <para>
+    /// When this tool is included in <see cref="ChatOptions.Tools"/>, the <see cref="IChatClient"/> will automatically:
+    /// <list type="bullet">
+    /// <item><description>Configure the container with the skill(s)</description></item>
+    /// <item><description>Add the required beta headers (<c>code-execution-2025-08-25</c> and <c>skills-2025-10-02</c>)</description></item>
+    /// <item><description>Add the code execution tool if not already present</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Example usage:
+    /// <code>
+    /// var options = new ChatOptions
+    /// {
+    ///     ModelId = "claude-sonnet-4-5-20250929",
+    ///     MaxOutputTokens = 4096,
+    ///     Tools =
+    ///     [
+    ///         new BetaSkillParams { Type = BetaSkillParamsType.Anthropic, SkillID = "pptx", Version = "latest" }.AsAITool(),
+    ///         new BetaSkillParams { Type = BetaSkillParamsType.Anthropic, SkillID = "xlsx", Version = "latest" }.AsAITool(),
+    ///     ]
+    /// };
+    /// </code>
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ArgumentNullException"><paramref name="skillParams"/> is <see langword="null"/>.</exception>
+    public static AITool AsAITool(this BetaSkillParams skillParams)
+    {
+        if (skillParams is null)
+        {
+            throw new ArgumentNullException(nameof(skillParams));
+        }
+
+        return new BetaSkillsParamsAITool(skillParams);
+    }
+
     /// <summary>Gets an <see cref="IChatClient"/> for use with this <see cref="IBetaService"/>.</summary>
     /// <param name="betaService">The beta service.</param>
     /// <param name="defaultModelId">
@@ -893,10 +940,18 @@ public static class AnthropicBetaClientExtensions
                     List<BetaToolUnion>? createdTools = createParams.Tools?.ToList();
                     List<BetaRequestMCPServerURLDefinition>? mcpServers =
                         createParams.MCPServers?.ToList();
+                    List<BetaSkillParams>? skills = null;
                     foreach (var tool in tools)
                     {
                         switch (tool)
                         {
+                            case BetaSkillsParamsAITool skillTool:
+                                (betaHeaders ??= []).Add("skills-2025-10-02");
+                                betaHeaders.Add("code-execution-2025-08-25");
+
+                                (skills ??= []).Add(skillTool.SkillParams);
+                                break;
+
                             case BetaToolUnionAITool raw:
                                 (createdTools ??= []).Add(raw.Tool);
                                 break;
@@ -997,6 +1052,36 @@ public static class AnthropicBetaClientExtensions
                                         : new() { Name = mcp.Name, URL = mcp.ServerAddress }
                                 );
                                 break;
+                        }
+                    }
+
+                    if (skills?.Count > 0)
+                    {
+                        // Merge with any existing skills in the container
+                        if (
+                            createParams.Container is { } existingContainer
+                            && existingContainer.TryPickBetaContainerParams(
+                                out var existingContainerParams
+                            )
+                            && existingContainerParams.Skills is { Count: > 0 } existingSkills
+                        )
+                        {
+                            skills.InsertRange(0, existingSkills);
+                        }
+
+                        createParams = createParams with
+                        {
+                            Container = new BetaContainerParams() { Skills = skills },
+                        };
+
+                        // Ensure code execution tool is present
+                        bool hasCodeExecutionTool =
+                            createdTools?.Any(t => t.Value is BetaCodeExecutionTool20250825)
+                            == true;
+                        if (!hasCodeExecutionTool)
+                        {
+                            (betaHeaders ??= []).Add("code-execution-2025-08-25");
+                            (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
                         }
                     }
 
@@ -1366,6 +1451,18 @@ public static class AnthropicBetaClientExtensions
         public override object? GetService(System.Type serviceType, object? serviceKey = null) =>
             serviceKey is null && serviceType?.IsInstanceOfType(tool) is true
                 ? tool
+                : base.GetService(serviceType!, serviceKey);
+    }
+
+    private sealed class BetaSkillsParamsAITool(BetaSkillParams skillParams) : AITool
+    {
+        public BetaSkillParams SkillParams => skillParams;
+
+        public override string Name => SkillParams.SkillID;
+
+        public override object? GetService(System.Type serviceType, object? serviceKey = null) =>
+            serviceKey is null && serviceType?.IsInstanceOfType(skillParams) is true
+                ? skillParams
                 : base.GetService(serviceType!, serviceKey);
     }
 }
