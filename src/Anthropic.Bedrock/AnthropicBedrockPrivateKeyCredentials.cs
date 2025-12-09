@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Anthropic.Bedrock;
 
 /// <summary>
@@ -9,48 +11,24 @@ namespace Anthropic.Bedrock;
 /// to each request by adding the necessary AWS authentication headers including the authorization
 /// signature, date, and content hash.
 /// </remarks>
-public class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCredentials
+public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCredentials
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AnthropicBedrockPrivateKeyCredentials"/> class with the specified AWS credentials and region.
-    /// </summary>
-    /// <param name="apiSecret">The AWS secret access key used for authentication.</param>
-    /// <param name="apiAccessKey">The AWS access key ID used for authentication.</param>
-    /// <param name="region">The AWS region where the Bedrock service is hosted (e.g., "us-east-1").</param>
-    /// <exception cref="ArgumentException">
-    /// Thrown when <paramref name="apiSecret"/>, <paramref name="apiAccessKey"/>, or <paramref name="region"/> is null, empty, or contains only whitespace.
-    /// </exception>
-    public AnthropicBedrockPrivateKeyCredentials(
-        string apiSecret,
-        string apiAccessKey,
-        string region
-    )
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(apiSecret, nameof(apiSecret));
-        ArgumentException.ThrowIfNullOrWhiteSpace(apiAccessKey, nameof(apiAccessKey));
-        ArgumentException.ThrowIfNullOrWhiteSpace(region, nameof(region));
-
-        Region = region;
-        ApiSecret = apiSecret;
-        ApiAccessKey = apiAccessKey;
-    }
-
     /// <summary>
     /// Gets the Aws Region.
     /// </summary>
-    public string Region { get; private init; }
+    public required string Region { get; init; }
 
     /// <summary>
     /// Gets the ApiSecret.
     /// </summary>
-    public string ApiSecret { get; private init; }
+    public required string ApiSecret { get; init; }
 
     /// <summary>
     /// Gets the ApiKey.
     /// </summary>
-    public string ApiAccessKey { get; private init; }
+    public required string ApiAccessKey { get; init; }
 
-    // <inheritdoc />
+    /// <inheritdoc />
     public async Task Apply(HttpRequestMessage requestMessage)
     {
         var now = DateTime.UtcNow;

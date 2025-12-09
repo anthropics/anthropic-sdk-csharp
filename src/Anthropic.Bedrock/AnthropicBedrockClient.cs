@@ -9,7 +9,7 @@ namespace Anthropic.Bedrock;
 /// <summary>
 /// Provides an Anthropic client implementation for AWS Bedrock integration.
 /// </summary>
-public class AnthropicBedrockClient : AnthropicClient
+public sealed class AnthropicBedrockClient : AnthropicClient
 {
     private const string ServiceName = "bedrock-runtime";
     private const string AnthropicVersion = "bedrock-2023-05-31";
@@ -17,13 +17,13 @@ public class AnthropicBedrockClient : AnthropicClient
 
     /// <summary>
     /// The name of the header that identifies the content type for the "payloads" of AWS
-    /// _EventStream_ messages in streaming responses from Bedrock.
+    /// <i>EventStream</i> messages in streaming responses from Bedrock.
     /// </summary>
     private const string HeaderPayloadContentType = "x-amzn-bedrock-content-type";
 
     /// <summary>
-    /// The content type for Bedrock responses containing data in the AWS _EventStream_ format.
-    /// The value of the[HEADER_PAYLOAD_CONTENT_TYPE] header identifies the content type of the
+    /// The content type for Bedrock responses containing data in the AWS <i>EventStream</i> format.
+    /// The value of the <c>Content-Type</c> header identifies the content type of the
     /// "payloads" in this stream.
     /// </summary>
     private const string ContentTypeAwsEventStream = "application/vnd.amazon.eventstream";
@@ -57,13 +57,13 @@ public class AnthropicBedrockClient : AnthropicClient
         _bedrockCredentials = bedrockCredentials;
     }
 
-    // <inheritdoc />
+    /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new AnthropicBedrockClient(_bedrockCredentials, modifier(this._options));
     }
 
-    // <inheritdoc />
+    /// <inheritdoc />
     protected override async ValueTask BeforeSend<T>(
         HttpRequest<T> request,
         HttpRequestMessage requestMessage,
@@ -75,21 +75,12 @@ public class AnthropicBedrockClient : AnthropicClient
         if (requestMessage.Content is not null)
         {
             var bodyContent = JsonNode.Parse(
+                await requestMessage.Content!.ReadAsStringAsync(
 #if NET
-                await requestMessage
-                    .Content!.ReadAsStringAsync(cancellationToken)
-                    .ConfigureAwait(false)
-#else
-                await requestMessage.Content!.ReadAsStringAsync().ConfigureAwait(false)
+                        cancellationToken
 #endif
+                ).ConfigureAwait(false)
             );
-
-            if (bodyContent?["model"] == null)
-            {
-                throw new AnthropicInvalidDataException(
-                    "Expected to find property model in request json but found none."
-                );
-            }
 
             var betaVersions = requestMessage.Headers.Contains(HeaderAnthropicBeta)
                 ? requestMessage.Headers.GetValues(HeaderAnthropicBeta).Distinct().ToArray()
@@ -103,11 +94,7 @@ public class AnthropicBedrockClient : AnthropicClient
 
             bodyContent["anthropic_version"] = JsonValue.Create(AnthropicVersion);
 
-            var modelValue =
-                bodyContent["model"]
-                ?? throw new AnthropicInvalidDataException(
-                    "Expected to find property model in request json but found none."
-                );
+            var modelValue = bodyContent["model"]!;
             bodyContent.Root.AsObject().Remove("model");
             var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
             bodyContent.Root.AsObject().Remove("stream");
@@ -127,7 +114,7 @@ public class AnthropicBedrockClient : AnthropicClient
             var strUri =
                 $"{requestMessage.RequestUri.Scheme}://{requestMessage.RequestUri.Host}/model/{modelValue}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
 
-#if NET8_0_OR_GREATER
+#if NET6_0_OR_GREATER
             // The UriCreationOptions and DangerousDisablePathAndQueryCanonicalization were added in .NET 6 and allows
             // us to turn off the Uri behavior of canonicalizing Uri. For example if the resource path was "foo/../bar.txt"
             // the URI class will change the canonicalize path to bar.txt. This behavior of changing the Uri after the
@@ -195,7 +182,7 @@ public class AnthropicBedrockClient : AnthropicClient
         }
     }
 
-    // <inheritdoc />
+    /// <inheritdoc />
     protected override async ValueTask AfterSend<T>(
         HttpRequest<T> request,
         HttpResponseMessage httpResponseMessage,
@@ -208,11 +195,11 @@ public class AnthropicBedrockClient : AnthropicClient
         }
 
         if (
-            string.Equals(
+            !string.Equals(
                 httpResponseMessage.Content.Headers.ContentType?.MediaType,
                 ContentTypeAwsEventStream,
                 StringComparison.CurrentCultureIgnoreCase
-            ) != true
+            )
         )
         {
             return;
@@ -251,22 +238,21 @@ public class AnthropicBedrockClient : AnthropicClient
         // translation process.
 
         var originalStream = await httpResponseMessage
+            .Content.ReadAsStreamAsync(
 #if NET
-            .Content.ReadAsStreamAsync(cancellationToken)
-#else
-            .Content.ReadAsStreamAsync()
+                cancellationToken
 #endif
+            )
             .ConfigureAwait(false);
         httpResponseMessage.Content = new SseEventContentWrapper(originalStream);
-#if NET
+
         httpResponseMessage.Content.Headers.ContentType = new(
+#if NET
             ContentTypeSseStreamMediaType,
             "utf-8"
-        );
 #else
-        httpResponseMessage.Content.Headers.ContentType = new(
             $"{ContentTypeSseStreamMediaType}; charset=utf-8"
-        );
 #endif
+        );
     }
 }

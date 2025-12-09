@@ -91,7 +91,11 @@ public static class AnthropicBedrockCredentialsHelper
         var token = Environment.GetEnvironmentVariable(ENV_API_KEY);
         if (!string.IsNullOrWhiteSpace(token))
         {
-            return new AnthropicBedrockApiTokenCredentials(token, region);
+            return new AnthropicBedrockApiTokenCredentials()
+            {
+                BearerToken = token,
+                Region = region,
+            };
         }
 
         var defaultIdentity = DefaultAWSCredentialsIdentityResolver.GetCredentials();
@@ -108,13 +112,18 @@ public static class AnthropicBedrockCredentialsHelper
 
         if (defaultCreds.UseToken)
         {
-            return new AnthropicBedrockApiTokenCredentials(defaultCreds.Token, region);
+            return new AnthropicBedrockApiTokenCredentials()
+            {
+                BearerToken = defaultCreds.Token,
+                Region = region,
+            };
         }
 
-        return new AnthropicBedrockPrivateKeyCredentials(
-            defaultCreds.SecretKey,
-            defaultCreds.AccessKey,
-            region
-        );
+        return new AnthropicBedrockPrivateKeyCredentials
+        {
+            ApiAccessKey = defaultCreds.AccessKey,
+            ApiSecret = defaultCreds.SecretKey,
+            Region = region,
+        };
     }
 }
