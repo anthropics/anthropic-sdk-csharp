@@ -24,8 +24,8 @@ internal class SseEventContentWrapper : HttpContent
 
     protected override Task<Stream> CreateContentReadStreamAsync(
 #if NET
-        CancellationToken cancellationToken       
-#endif 
+        CancellationToken cancellationToken
+#endif
     )
     {
         return Task.FromResult<Stream>(new SseLazyEventStream(_originalStream));
