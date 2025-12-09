@@ -1,4 +1,3 @@
-using System.Buffers;
 using System.Net;
 using System.Text;
 
@@ -23,19 +22,14 @@ internal class SseEventContentWrapper : HttpContent
         _originalStream = originalStream;
     }
 
-#if NET
     protected override Task<Stream> CreateContentReadStreamAsync(
-        CancellationToken cancellationToken
+#if NET
+        CancellationToken cancellationToken       
+#endif 
     )
     {
         return Task.FromResult<Stream>(new SseLazyEventStream(_originalStream));
     }
-#else
-    protected override Task<Stream> CreateContentReadStreamAsync()
-    {
-        return Task.FromResult<Stream>(new SseLazyEventStream(_originalStream));
-    }
-#endif
 
     protected override Task SerializeToStreamAsync(Stream stream, TransportContext? context)
     {
