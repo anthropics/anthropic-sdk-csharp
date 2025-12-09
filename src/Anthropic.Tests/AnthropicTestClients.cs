@@ -65,7 +65,11 @@ public class AnthropicTestClientsAttribute : DataAttribute
                 yield return
                 [
                     new AnthropicBedrockClient(
-                        new AnthropicBedrockApiTokenCredentials(ApiKey, Resource)
+                        new AnthropicBedrockApiTokenCredentials
+                        {
+                            BearerToken = ApiKey,
+                            Region = Resource,
+                        }
                     )
                     {
                         BaseUrl = new Uri(DataServiceUrl),
