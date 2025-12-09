@@ -43,8 +43,7 @@ public sealed class AnthropicBedrockClient : AnthropicClient
     public AnthropicBedrockClient(IAnthropicBedrockCredentials bedrockCredentials)
         : base()
     {
-        _bedrockCredentials =
-            bedrockCredentials ?? throw new ArgumentNullException(nameof(bedrockCredentials));
+        _bedrockCredentials = bedrockCredentials;
         BaseUrl = new Uri($"https://{ServiceName}.{_bedrockCredentials.Region}.amazonaws.com");
     }
 
