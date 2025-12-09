@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Anthropic.Foundry</RootNamespace>
     <AssemblyName>Anthropic.Foundry</AssemblyName>
+    <AssemblyOriginatorKeyFile>..\..\Open.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
