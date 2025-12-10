@@ -190,6 +190,7 @@ public record class ThinkingConfigParam
                 "Data did not match any variant of ThinkingConfigParam"
             );
         }
+        this.Switch((enabled) => enabled.Validate(), (disabled) => disabled.Validate());
     }
 
     public virtual bool Equals(ThinkingConfigParam? other)

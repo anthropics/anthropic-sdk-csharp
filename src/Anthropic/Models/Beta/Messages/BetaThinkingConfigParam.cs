@@ -192,6 +192,7 @@ public record class BetaThinkingConfigParam
                 "Data did not match any variant of BetaThinkingConfigParam"
             );
         }
+        this.Switch((enabled) => enabled.Validate(), (disabled) => disabled.Validate());
     }
 
     public virtual bool Equals(BetaThinkingConfigParam? other)

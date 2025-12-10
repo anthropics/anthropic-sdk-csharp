@@ -194,6 +194,10 @@ public record class BetaCodeExecutionToolResultBlockParamContent
                 "Data did not match any variant of BetaCodeExecutionToolResultBlockParamContent"
             );
         }
+        this.Switch(
+            (errorParam) => errorParam.Validate(),
+            (resultBlockParam) => resultBlockParam.Validate()
+        );
     }
 
     public virtual bool Equals(BetaCodeExecutionToolResultBlockParamContent? other)

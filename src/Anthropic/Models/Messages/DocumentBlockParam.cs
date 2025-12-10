@@ -397,6 +397,12 @@ public record class Source
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
+        this.Switch(
+            (base64PDF) => base64PDF.Validate(),
+            (plainText) => plainText.Validate(),
+            (contentBlock) => contentBlock.Validate(),
+            (urlPDF) => urlPDF.Validate()
+        );
     }
 
     public virtual bool Equals(Source? other)

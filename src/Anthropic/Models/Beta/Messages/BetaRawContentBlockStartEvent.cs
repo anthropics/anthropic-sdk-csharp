@@ -800,6 +800,23 @@ public record class ContentBlock
                 "Data did not match any variant of ContentBlock"
             );
         }
+        this.Switch(
+            (betaText) => betaText.Validate(),
+            (betaThinking) => betaThinking.Validate(),
+            (betaRedactedThinking) => betaRedactedThinking.Validate(),
+            (betaToolUse) => betaToolUse.Validate(),
+            (betaServerToolUse) => betaServerToolUse.Validate(),
+            (betaWebSearchToolResult) => betaWebSearchToolResult.Validate(),
+            (betaWebFetchToolResult) => betaWebFetchToolResult.Validate(),
+            (betaCodeExecutionToolResult) => betaCodeExecutionToolResult.Validate(),
+            (betaBashCodeExecutionToolResult) => betaBashCodeExecutionToolResult.Validate(),
+            (betaTextEditorCodeExecutionToolResult) =>
+                betaTextEditorCodeExecutionToolResult.Validate(),
+            (betaToolSearchToolResult) => betaToolSearchToolResult.Validate(),
+            (betaMCPToolUse) => betaMCPToolUse.Validate(),
+            (betaMCPToolResult) => betaMCPToolResult.Validate(),
+            (betaContainerUpload) => betaContainerUpload.Validate()
+        );
     }
 
     public virtual bool Equals(ContentBlock? other)

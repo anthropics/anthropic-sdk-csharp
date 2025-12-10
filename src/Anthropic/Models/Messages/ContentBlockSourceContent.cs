@@ -191,6 +191,10 @@ public record class ContentBlockSourceContent
                 "Data did not match any variant of ContentBlockSourceContent"
             );
         }
+        this.Switch(
+            (textBlockParam) => textBlockParam.Validate(),
+            (imageBlockParam) => imageBlockParam.Validate()
+        );
     }
 
     public virtual bool Equals(ContentBlockSourceContent? other)

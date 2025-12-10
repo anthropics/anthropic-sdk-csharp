@@ -983,6 +983,26 @@ public record class BetaContentBlockParam
                 "Data did not match any variant of BetaContentBlockParam"
             );
         }
+        this.Switch(
+            (text) => text.Validate(),
+            (image) => image.Validate(),
+            (requestDocumentBlock) => requestDocumentBlock.Validate(),
+            (searchResult) => searchResult.Validate(),
+            (thinking) => thinking.Validate(),
+            (redactedThinking) => redactedThinking.Validate(),
+            (toolUse) => toolUse.Validate(),
+            (toolResult) => toolResult.Validate(),
+            (serverToolUse) => serverToolUse.Validate(),
+            (webSearchToolResult) => webSearchToolResult.Validate(),
+            (webFetchToolResult) => webFetchToolResult.Validate(),
+            (codeExecutionToolResult) => codeExecutionToolResult.Validate(),
+            (bashCodeExecutionToolResult) => bashCodeExecutionToolResult.Validate(),
+            (textEditorCodeExecutionToolResult) => textEditorCodeExecutionToolResult.Validate(),
+            (toolSearchToolResult) => toolSearchToolResult.Validate(),
+            (mcpToolUse) => mcpToolUse.Validate(),
+            (requestMCPToolResult) => requestMCPToolResult.Validate(),
+            (containerUpload) => containerUpload.Validate()
+        );
     }
 
     public virtual bool Equals(BetaContentBlockParam? other)

@@ -1631,6 +1631,26 @@ public record class Tool
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Tool");
         }
+        this.Switch(
+            (beta) => beta.Validate(),
+            (betaToolBash20241022) => betaToolBash20241022.Validate(),
+            (betaToolBash20250124) => betaToolBash20250124.Validate(),
+            (betaCodeExecutionTool20250522) => betaCodeExecutionTool20250522.Validate(),
+            (betaCodeExecutionTool20250825) => betaCodeExecutionTool20250825.Validate(),
+            (betaToolComputerUse20241022) => betaToolComputerUse20241022.Validate(),
+            (betaMemoryTool20250818) => betaMemoryTool20250818.Validate(),
+            (betaToolComputerUse20250124) => betaToolComputerUse20250124.Validate(),
+            (betaToolTextEditor20241022) => betaToolTextEditor20241022.Validate(),
+            (betaToolComputerUse20251124) => betaToolComputerUse20251124.Validate(),
+            (betaToolTextEditor20250124) => betaToolTextEditor20250124.Validate(),
+            (betaToolTextEditor20250429) => betaToolTextEditor20250429.Validate(),
+            (betaToolTextEditor20250728) => betaToolTextEditor20250728.Validate(),
+            (betaWebSearchTool20250305) => betaWebSearchTool20250305.Validate(),
+            (betaWebFetchTool20250910) => betaWebFetchTool20250910.Validate(),
+            (betaToolSearchToolBm25_20251119) => betaToolSearchToolBm25_20251119.Validate(),
+            (betaToolSearchToolRegex20251119) => betaToolSearchToolRegex20251119.Validate(),
+            (betaMCPToolset) => betaMCPToolset.Validate()
+        );
     }
 
     public virtual bool Equals(Tool? other)

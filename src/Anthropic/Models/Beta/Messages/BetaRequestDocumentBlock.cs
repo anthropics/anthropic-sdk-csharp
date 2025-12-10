@@ -459,6 +459,13 @@ public record class BetaRequestDocumentBlockSource
                 "Data did not match any variant of BetaRequestDocumentBlockSource"
             );
         }
+        this.Switch(
+            (betaBase64PDF) => betaBase64PDF.Validate(),
+            (betaPlainText) => betaPlainText.Validate(),
+            (betaContentBlock) => betaContentBlock.Validate(),
+            (betaURLPDF) => betaURLPDF.Validate(),
+            (betaFileDocument) => betaFileDocument.Validate()
+        );
     }
 
     public virtual bool Equals(BetaRequestDocumentBlockSource? other)

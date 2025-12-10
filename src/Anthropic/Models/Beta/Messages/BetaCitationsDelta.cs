@@ -488,6 +488,14 @@ public record class Citation
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Citation");
         }
+        this.Switch(
+            (betaCitationCharLocation) => betaCitationCharLocation.Validate(),
+            (betaCitationPageLocation) => betaCitationPageLocation.Validate(),
+            (betaCitationContentBlockLocation) => betaCitationContentBlockLocation.Validate(),
+            (betaCitationsWebSearchResultLocation) =>
+                betaCitationsWebSearchResultLocation.Validate(),
+            (betaCitationSearchResultLocation) => betaCitationSearchResultLocation.Validate()
+        );
     }
 
     public virtual bool Equals(Citation? other)

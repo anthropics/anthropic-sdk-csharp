@@ -278,6 +278,11 @@ public record class Content
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Content");
         }
+        this.Switch(
+            (betaBashCodeExecutionToolResultError) =>
+                betaBashCodeExecutionToolResultError.Validate(),
+            (betaBashCodeExecutionResultBlock) => betaBashCodeExecutionResultBlock.Validate()
+        );
     }
 
     public virtual bool Equals(Content? other)

@@ -336,6 +336,14 @@ public record class ToolUnion
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of ToolUnion");
         }
+        this.Switch(
+            (tool) => tool.Validate(),
+            (bash20250124) => bash20250124.Validate(),
+            (textEditor20250124) => textEditor20250124.Validate(),
+            (textEditor20250429) => textEditor20250429.Validate(),
+            (textEditor20250728) => textEditor20250728.Validate(),
+            (webSearchTool20250305) => webSearchTool20250305.Validate()
+        );
     }
 
     public virtual bool Equals(ToolUnion? other)

@@ -470,6 +470,17 @@ public record class ErrorObject
                 "Data did not match any variant of ErrorObject"
             );
         }
+        this.Switch(
+            (invalidRequestError) => invalidRequestError.Validate(),
+            (authenticationError) => authenticationError.Validate(),
+            (billingError) => billingError.Validate(),
+            (permissionError) => permissionError.Validate(),
+            (notFoundError) => notFoundError.Validate(),
+            (rateLimitError) => rateLimitError.Validate(),
+            (gatewayTimeoutError) => gatewayTimeoutError.Validate(),
+            (api) => api.Validate(),
+            (overloadedError) => overloadedError.Validate()
+        );
     }
 
     public virtual bool Equals(ErrorObject? other)

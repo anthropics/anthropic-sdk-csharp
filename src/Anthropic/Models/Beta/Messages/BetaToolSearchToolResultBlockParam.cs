@@ -313,6 +313,11 @@ public record class BetaToolSearchToolResultBlockParamContent
                 "Data did not match any variant of BetaToolSearchToolResultBlockParamContent"
             );
         }
+        this.Switch(
+            (betaToolSearchToolResultErrorParam) => betaToolSearchToolResultErrorParam.Validate(),
+            (betaToolSearchToolSearchResultBlockParam) =>
+                betaToolSearchToolSearchResultBlockParam.Validate()
+        );
     }
 
     public virtual bool Equals(BetaToolSearchToolResultBlockParamContent? other)

@@ -718,6 +718,22 @@ public record class BetaContentBlock
                 "Data did not match any variant of BetaContentBlock"
             );
         }
+        this.Switch(
+            (text) => text.Validate(),
+            (thinking) => thinking.Validate(),
+            (redactedThinking) => redactedThinking.Validate(),
+            (toolUse) => toolUse.Validate(),
+            (serverToolUse) => serverToolUse.Validate(),
+            (webSearchToolResult) => webSearchToolResult.Validate(),
+            (webFetchToolResult) => webFetchToolResult.Validate(),
+            (codeExecutionToolResult) => codeExecutionToolResult.Validate(),
+            (bashCodeExecutionToolResult) => bashCodeExecutionToolResult.Validate(),
+            (textEditorCodeExecutionToolResult) => textEditorCodeExecutionToolResult.Validate(),
+            (toolSearchToolResult) => toolSearchToolResult.Validate(),
+            (mcpToolUse) => mcpToolUse.Validate(),
+            (mcpToolResult) => mcpToolResult.Validate(),
+            (containerUpload) => containerUpload.Validate()
+        );
     }
 
     public virtual bool Equals(BetaContentBlock? other)

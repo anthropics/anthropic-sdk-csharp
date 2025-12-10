@@ -557,6 +557,10 @@ public record class Trigger
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Trigger");
         }
+        this.Switch(
+            (betaInputTokens) => betaInputTokens.Validate(),
+            (betaToolUses) => betaToolUses.Validate()
+        );
     }
 
     public virtual bool Equals(Trigger? other)

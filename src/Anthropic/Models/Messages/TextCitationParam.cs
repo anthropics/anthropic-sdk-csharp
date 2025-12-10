@@ -399,6 +399,13 @@ public record class TextCitationParam
                 "Data did not match any variant of TextCitationParam"
             );
         }
+        this.Switch(
+            (citationCharLocation) => citationCharLocation.Validate(),
+            (citationPageLocation) => citationPageLocation.Validate(),
+            (citationContentBlockLocation) => citationContentBlockLocation.Validate(),
+            (citationWebSearchResultLocation) => citationWebSearchResultLocation.Validate(),
+            (citationSearchResultLocation) => citationSearchResultLocation.Validate()
+        );
     }
 
     public virtual bool Equals(TextCitationParam? other)

@@ -746,6 +746,7 @@ public record class Container
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Container");
         }
+        this.Switch((betaContainerParams) => betaContainerParams.Validate(), (_) => { });
     }
 
     public virtual bool Equals(Container? other)

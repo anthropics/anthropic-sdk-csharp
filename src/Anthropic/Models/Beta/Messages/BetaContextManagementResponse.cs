@@ -280,6 +280,12 @@ public record class AppliedEdit
                 "Data did not match any variant of AppliedEdit"
             );
         }
+        this.Switch(
+            (betaClearToolUses20250919EditResponse) =>
+                betaClearToolUses20250919EditResponse.Validate(),
+            (betaClearThinking20251015EditResponse) =>
+                betaClearThinking20251015EditResponse.Validate()
+        );
     }
 
     public virtual bool Equals(AppliedEdit? other)

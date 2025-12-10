@@ -573,6 +573,18 @@ public record class ContentBlockParam
                 "Data did not match any variant of ContentBlockParam"
             );
         }
+        this.Switch(
+            (text) => text.Validate(),
+            (image) => image.Validate(),
+            (document) => document.Validate(),
+            (searchResult) => searchResult.Validate(),
+            (thinking) => thinking.Validate(),
+            (redactedThinking) => redactedThinking.Validate(),
+            (toolUse) => toolUse.Validate(),
+            (toolResult) => toolResult.Validate(),
+            (serverToolUse) => serverToolUse.Validate(),
+            (webSearchToolResult) => webSearchToolResult.Validate()
+        );
     }
 
     public virtual bool Equals(ContentBlockParam? other)

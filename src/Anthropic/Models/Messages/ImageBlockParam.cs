@@ -267,6 +267,7 @@ public record class ImageBlockParamSource
                 "Data did not match any variant of ImageBlockParamSource"
             );
         }
+        this.Switch((base64Image) => base64Image.Validate(), (urlImage) => urlImage.Validate());
     }
 
     public virtual bool Equals(ImageBlockParamSource? other)

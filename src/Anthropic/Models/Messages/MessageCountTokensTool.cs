@@ -342,6 +342,14 @@ public record class MessageCountTokensTool
                 "Data did not match any variant of MessageCountTokensTool"
             );
         }
+        this.Switch(
+            (tool) => tool.Validate(),
+            (toolBash20250124) => toolBash20250124.Validate(),
+            (toolTextEditor20250124) => toolTextEditor20250124.Validate(),
+            (toolTextEditor20250429) => toolTextEditor20250429.Validate(),
+            (toolTextEditor20250728) => toolTextEditor20250728.Validate(),
+            (webSearchTool20250305) => webSearchTool20250305.Validate()
+        );
     }
 
     public virtual bool Equals(MessageCountTokensTool? other)

@@ -311,6 +311,11 @@ public record class Keep
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Keep");
         }
+        this.Switch(
+            (betaThinkingTurns) => betaThinkingTurns.Validate(),
+            (betaAllThinkingTurns) => betaAllThinkingTurns.Validate(),
+            (all) => all.Validate()
+        );
     }
 
     public virtual bool Equals(Keep? other)

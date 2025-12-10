@@ -395,6 +395,14 @@ public record class BetaMemoryTool20250818Command
                 "Data did not match any variant of BetaMemoryTool20250818Command"
             );
         }
+        this.Switch(
+            (tool20250818View) => tool20250818View.Validate(),
+            (tool20250818Create) => tool20250818Create.Validate(),
+            (tool20250818StrReplace) => tool20250818StrReplace.Validate(),
+            (tool20250818Insert) => tool20250818Insert.Validate(),
+            (tool20250818Delete) => tool20250818Delete.Validate(),
+            (tool20250818Rename) => tool20250818Rename.Validate()
+        );
     }
 
     public virtual bool Equals(BetaMemoryTool20250818Command? other)

@@ -282,6 +282,10 @@ public record class BetaWebFetchToolResultBlockContent
                 "Data did not match any variant of BetaWebFetchToolResultBlockContent"
             );
         }
+        this.Switch(
+            (betaWebFetchToolResultErrorBlock) => betaWebFetchToolResultErrorBlock.Validate(),
+            (betaWebFetchBlock) => betaWebFetchBlock.Validate()
+        );
     }
 
     public virtual bool Equals(BetaWebFetchToolResultBlockContent? other)

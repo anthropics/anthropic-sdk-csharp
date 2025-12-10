@@ -273,6 +273,12 @@ public record class BetaMessageBatchResult
                 "Data did not match any variant of BetaMessageBatchResult"
             );
         }
+        this.Switch(
+            (succeeded) => succeeded.Validate(),
+            (errored) => errored.Validate(),
+            (canceled) => canceled.Validate(),
+            (expired) => expired.Validate()
+        );
     }
 
     public virtual bool Equals(BetaMessageBatchResult? other)

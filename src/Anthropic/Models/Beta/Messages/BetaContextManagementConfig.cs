@@ -253,6 +253,10 @@ public record class Edit
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Edit");
         }
+        this.Switch(
+            (betaClearToolUses20250919) => betaClearToolUses20250919.Validate(),
+            (betaClearThinking20251015) => betaClearThinking20251015.Validate()
+        );
     }
 
     public virtual bool Equals(Edit? other)

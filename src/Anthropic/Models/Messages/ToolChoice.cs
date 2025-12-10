@@ -277,6 +277,12 @@ public record class ToolChoice
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of ToolChoice");
         }
+        this.Switch(
+            (auto) => auto.Validate(),
+            (any) => any.Validate(),
+            (tool) => tool.Validate(),
+            (none) => none.Validate()
+        );
     }
 
     public virtual bool Equals(ToolChoice? other)

@@ -413,6 +413,13 @@ public record class BetaTextCitationParam
                 "Data did not match any variant of BetaTextCitationParam"
             );
         }
+        this.Switch(
+            (citationCharLocation) => citationCharLocation.Validate(),
+            (citationPageLocation) => citationPageLocation.Validate(),
+            (citationContentBlockLocation) => citationContentBlockLocation.Validate(),
+            (citationWebSearchResultLocation) => citationWebSearchResultLocation.Validate(),
+            (citationSearchResultLocation) => citationSearchResultLocation.Validate()
+        );
     }
 
     public virtual bool Equals(BetaTextCitationParam? other)

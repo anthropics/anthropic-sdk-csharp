@@ -186,6 +186,7 @@ public record class WebSearchToolResultBlockContent
                 "Data did not match any variant of WebSearchToolResultBlockContent"
             );
         }
+        this.Switch((error) => error.Validate(), (_) => { });
     }
 
     public virtual bool Equals(WebSearchToolResultBlockContent? other)

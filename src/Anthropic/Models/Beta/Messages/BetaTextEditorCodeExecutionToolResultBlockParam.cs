@@ -424,6 +424,16 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent
                 "Data did not match any variant of BetaTextEditorCodeExecutionToolResultBlockParamContent"
             );
         }
+        this.Switch(
+            (betaTextEditorCodeExecutionToolResultErrorParam) =>
+                betaTextEditorCodeExecutionToolResultErrorParam.Validate(),
+            (betaTextEditorCodeExecutionViewResultBlockParam) =>
+                betaTextEditorCodeExecutionViewResultBlockParam.Validate(),
+            (betaTextEditorCodeExecutionCreateResultBlockParam) =>
+                betaTextEditorCodeExecutionCreateResultBlockParam.Validate(),
+            (betaTextEditorCodeExecutionStrReplaceResultBlockParam) =>
+                betaTextEditorCodeExecutionStrReplaceResultBlockParam.Validate()
+        );
     }
 
     public virtual bool Equals(BetaTextEditorCodeExecutionToolResultBlockParamContent? other)

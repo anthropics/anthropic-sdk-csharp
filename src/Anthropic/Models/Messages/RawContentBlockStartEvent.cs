@@ -454,6 +454,14 @@ public record class RawContentBlockStartEventContentBlock
                 "Data did not match any variant of RawContentBlockStartEventContentBlock"
             );
         }
+        this.Switch(
+            (text) => text.Validate(),
+            (thinking) => thinking.Validate(),
+            (redactedThinking) => redactedThinking.Validate(),
+            (toolUse) => toolUse.Validate(),
+            (serverToolUse) => serverToolUse.Validate(),
+            (webSearchToolResult) => webSearchToolResult.Validate()
+        );
     }
 
     public virtual bool Equals(RawContentBlockStartEventContentBlock? other)

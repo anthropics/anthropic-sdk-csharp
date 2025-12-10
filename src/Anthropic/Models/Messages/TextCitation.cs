@@ -405,6 +405,13 @@ public record class TextCitation
                 "Data did not match any variant of TextCitation"
             );
         }
+        this.Switch(
+            (citationCharLocation) => citationCharLocation.Validate(),
+            (citationPageLocation) => citationPageLocation.Validate(),
+            (citationContentBlockLocation) => citationContentBlockLocation.Validate(),
+            (citationsWebSearchResultLocation) => citationsWebSearchResultLocation.Validate(),
+            (citationsSearchResultLocation) => citationsSearchResultLocation.Validate()
+        );
     }
 
     public virtual bool Equals(TextCitation? other)

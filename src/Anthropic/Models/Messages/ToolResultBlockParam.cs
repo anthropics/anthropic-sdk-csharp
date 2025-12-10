@@ -634,6 +634,12 @@ public record class Block
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Block");
         }
+        this.Switch(
+            (textBlockParam) => textBlockParam.Validate(),
+            (imageBlockParam) => imageBlockParam.Validate(),
+            (searchResultBlockParam) => searchResultBlockParam.Validate(),
+            (documentBlockParam) => documentBlockParam.Validate()
+        );
     }
 
     public virtual bool Equals(Block? other)

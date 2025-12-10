@@ -356,6 +356,14 @@ public record class RawMessageStreamEvent
                 "Data did not match any variant of RawMessageStreamEvent"
             );
         }
+        this.Switch(
+            (start) => start.Validate(),
+            (delta) => delta.Validate(),
+            (stop) => stop.Validate(),
+            (contentBlockStart) => contentBlockStart.Validate(),
+            (contentBlockDelta) => contentBlockDelta.Validate(),
+            (contentBlockStop) => contentBlockStop.Validate()
+        );
     }
 
     public virtual bool Equals(RawMessageStreamEvent? other)

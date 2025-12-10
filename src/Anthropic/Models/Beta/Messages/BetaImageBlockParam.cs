@@ -319,6 +319,11 @@ public record class BetaImageBlockParamSource
                 "Data did not match any variant of BetaImageBlockParamSource"
             );
         }
+        this.Switch(
+            (betaBase64Image) => betaBase64Image.Validate(),
+            (betaURLImage) => betaURLImage.Validate(),
+            (betaFileImage) => betaFileImage.Validate()
+        );
     }
 
     public virtual bool Equals(BetaImageBlockParamSource? other)

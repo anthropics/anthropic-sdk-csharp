@@ -468,6 +468,17 @@ public record class BetaError
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of BetaError");
         }
+        this.Switch(
+            (invalidRequest) => invalidRequest.Validate(),
+            (authentication) => authentication.Validate(),
+            (billing) => billing.Validate(),
+            (permission) => permission.Validate(),
+            (notFound) => notFound.Validate(),
+            (rateLimit) => rateLimit.Validate(),
+            (gatewayTimeout) => gatewayTimeout.Validate(),
+            (api) => api.Validate(),
+            (overloaded) => overloaded.Validate()
+        );
     }
 
     public virtual bool Equals(BetaError? other)

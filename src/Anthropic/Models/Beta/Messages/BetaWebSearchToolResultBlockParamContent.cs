@@ -189,6 +189,7 @@ public record class BetaWebSearchToolResultBlockParamContent
                 "Data did not match any variant of BetaWebSearchToolResultBlockParamContent"
             );
         }
+        this.Switch((_) => { }, (requestError) => requestError.Validate());
     }
 
     public virtual bool Equals(BetaWebSearchToolResultBlockParamContent? other)

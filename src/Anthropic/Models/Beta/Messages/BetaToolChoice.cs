@@ -279,6 +279,12 @@ public record class BetaToolChoice
                 "Data did not match any variant of BetaToolChoice"
             );
         }
+        this.Switch(
+            (auto) => auto.Validate(),
+            (any) => any.Validate(),
+            (tool) => tool.Validate(),
+            (none) => none.Validate()
+        );
     }
 
     public virtual bool Equals(BetaToolChoice? other)

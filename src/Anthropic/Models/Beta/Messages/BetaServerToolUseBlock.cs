@@ -282,6 +282,10 @@ public record class Caller
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Caller");
         }
+        this.Switch(
+            (betaDirect) => betaDirect.Validate(),
+            (betaServerTool) => betaServerTool.Validate()
+        );
     }
 
     public virtual bool Equals(Caller? other)

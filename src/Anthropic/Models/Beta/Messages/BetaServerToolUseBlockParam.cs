@@ -387,6 +387,10 @@ public record class BetaServerToolUseBlockParamCaller
                 "Data did not match any variant of BetaServerToolUseBlockParamCaller"
             );
         }
+        this.Switch(
+            (betaDirect) => betaDirect.Validate(),
+            (betaServerTool) => betaServerTool.Validate()
+        );
     }
 
     public virtual bool Equals(BetaServerToolUseBlockParamCaller? other)

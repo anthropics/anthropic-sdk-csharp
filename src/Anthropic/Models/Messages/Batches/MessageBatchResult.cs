@@ -273,6 +273,12 @@ public record class MessageBatchResult
                 "Data did not match any variant of MessageBatchResult"
             );
         }
+        this.Switch(
+            (succeeded) => succeeded.Validate(),
+            (errored) => errored.Validate(),
+            (canceled) => canceled.Validate(),
+            (expired) => expired.Validate()
+        );
     }
 
     public virtual bool Equals(MessageBatchResult? other)

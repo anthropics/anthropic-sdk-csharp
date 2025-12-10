@@ -318,6 +318,12 @@ public record class BetaBashCodeExecutionToolResultBlockParamContent
                 "Data did not match any variant of BetaBashCodeExecutionToolResultBlockParamContent"
             );
         }
+        this.Switch(
+            (betaBashCodeExecutionToolResultErrorParam) =>
+                betaBashCodeExecutionToolResultErrorParam.Validate(),
+            (betaBashCodeExecutionResultBlockParam) =>
+                betaBashCodeExecutionResultBlockParam.Validate()
+        );
     }
 
     public virtual bool Equals(BetaBashCodeExecutionToolResultBlockParamContent? other)

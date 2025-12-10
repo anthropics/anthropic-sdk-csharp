@@ -190,6 +190,7 @@ public record class BetaCodeExecutionToolResultBlockContent
                 "Data did not match any variant of BetaCodeExecutionToolResultBlockContent"
             );
         }
+        this.Switch((error) => error.Validate(), (resultBlock) => resultBlock.Validate());
     }
 
     public virtual bool Equals(BetaCodeExecutionToolResultBlockContent? other)

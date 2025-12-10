@@ -195,6 +195,10 @@ public record class MessageBetaContentBlockSourceContent
                 "Data did not match any variant of MessageBetaContentBlockSourceContent"
             );
         }
+        this.Switch(
+            (textBlockParam) => textBlockParam.Validate(),
+            (imageBlockParam) => imageBlockParam.Validate()
+        );
     }
 
     public virtual bool Equals(MessageBetaContentBlockSourceContent? other)

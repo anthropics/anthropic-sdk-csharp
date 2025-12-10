@@ -300,6 +300,13 @@ public record class RawContentBlockDelta
                 "Data did not match any variant of RawContentBlockDelta"
             );
         }
+        this.Switch(
+            (text) => text.Validate(),
+            (inputJSON) => inputJSON.Validate(),
+            (citations) => citations.Validate(),
+            (thinking) => thinking.Validate(),
+            (signature) => signature.Validate()
+        );
     }
 
     public virtual bool Equals(RawContentBlockDelta? other)

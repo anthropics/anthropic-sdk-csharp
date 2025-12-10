@@ -982,6 +982,26 @@ public record class BetaToolUnion
                 "Data did not match any variant of BetaToolUnion"
             );
         }
+        this.Switch(
+            (betaTool) => betaTool.Validate(),
+            (bash20241022) => bash20241022.Validate(),
+            (bash20250124) => bash20250124.Validate(),
+            (codeExecutionTool20250522) => codeExecutionTool20250522.Validate(),
+            (codeExecutionTool20250825) => codeExecutionTool20250825.Validate(),
+            (computerUse20241022) => computerUse20241022.Validate(),
+            (memoryTool20250818) => memoryTool20250818.Validate(),
+            (computerUse20250124) => computerUse20250124.Validate(),
+            (textEditor20241022) => textEditor20241022.Validate(),
+            (computerUse20251124) => computerUse20251124.Validate(),
+            (textEditor20250124) => textEditor20250124.Validate(),
+            (textEditor20250429) => textEditor20250429.Validate(),
+            (textEditor20250728) => textEditor20250728.Validate(),
+            (webSearchTool20250305) => webSearchTool20250305.Validate(),
+            (webFetchTool20250910) => webFetchTool20250910.Validate(),
+            (searchToolBm25_20251119) => searchToolBm25_20251119.Validate(),
+            (searchToolRegex20251119) => searchToolRegex20251119.Validate(),
+            (mcpToolset) => mcpToolset.Validate()
+        );
     }
 
     public virtual bool Equals(BetaToolUnion? other)
