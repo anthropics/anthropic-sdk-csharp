@@ -905,7 +905,8 @@ public static class AnthropicClientExtensions
                 usage.InputTokens,
                 usage.OutputTokens,
                 usage.CacheCreationInputTokens,
-                usage.CacheReadInputTokens
+                usage.CacheReadInputTokens,
+                usage.ServerToolUse
             );
 
         private static UsageDetails ToUsageDetails(MessageDeltaUsage usage) =>
@@ -913,39 +914,57 @@ public static class AnthropicClientExtensions
                 usage.InputTokens,
                 usage.OutputTokens,
                 usage.CacheCreationInputTokens,
-                usage.CacheReadInputTokens
+                usage.CacheReadInputTokens,
+                usage.ServerToolUse
             );
 
         private static UsageDetails ToUsageDetails(
             long? inputTokens,
             long? outputTokens,
             long? cacheCreationInputTokens,
-            long? cacheReadInputTokens
+            long? cacheReadInputTokens,
+            ServerToolUsage? serverToolUsage
         )
         {
-            UsageDetails usageDetails = new()
-            {
-                InputTokenCount = inputTokens,
-                OutputTokenCount = outputTokens,
-                TotalTokenCount =
-                    (inputTokens is not null || outputTokens is not null)
-                        ? (inputTokens ?? 0) + (outputTokens ?? 0)
-                        : null,
-            };
+            UsageDetails usageDetails = new();
 
-            if (cacheCreationInputTokens is not null)
+            // From https://platform.claude.com/docs/en/build-with-claude/prompt-caching:
+            // "To calculate total input tokens:"
+            // "total_input_tokens = cache_read_input_tokens + cache_creation_input_tokens + input_tokens"
+            usageDetails.InputTokenCount = NullableSum(
+                NullableSum(cacheReadInputTokens, cacheCreationInputTokens),
+                inputTokens
+            );
+
+            usageDetails.OutputTokenCount = outputTokens;
+
+            usageDetails.TotalTokenCount = NullableSum(
+                usageDetails.InputTokenCount,
+                usageDetails.OutputTokenCount
+            );
+
+            if (cacheCreationInputTokens is > 0)
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
             }
 
-            if (cacheReadInputTokens is not null)
+            if (cacheReadInputTokens is > 0)
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheReadInputTokens)] =
                     cacheReadInputTokens.Value;
             }
 
+            if (serverToolUsage?.WebSearchRequests is > 0)
+            {
+                (usageDetails.AdditionalCounts ??= [])[nameof(ServerToolUsage.WebSearchRequests)] =
+                    serverToolUsage.WebSearchRequests;
+            }
+
             return usageDetails;
+
+            static long? NullableSum(long? a, long? b) =>
+                a is not null || b is not null ? (a ?? 0) + (b ?? 0) : null;
         }
 
         private static ChatFinishReason? ToFinishReason(ApiEnum<string, StopReason>? stopReason) =>
