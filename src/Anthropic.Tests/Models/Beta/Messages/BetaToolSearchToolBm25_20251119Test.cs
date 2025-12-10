@@ -91,6 +91,7 @@ public class BetaToolSearchToolBm25_20251119Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.Equal(expectedType, deserialized.Type);
+        Assert.NotNull(deserialized.AllowedCallers);
         Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
         for (int i = 0; i < expectedAllowedCallers.Count; i++)
         {

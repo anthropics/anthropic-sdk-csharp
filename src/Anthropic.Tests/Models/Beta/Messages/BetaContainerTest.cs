@@ -106,6 +106,7 @@ public class BetaContainerTest : TestBase
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedExpiresAt, deserialized.ExpiresAt);
+        Assert.NotNull(deserialized.Skills);
         Assert.Equal(expectedSkills.Count, deserialized.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
         {

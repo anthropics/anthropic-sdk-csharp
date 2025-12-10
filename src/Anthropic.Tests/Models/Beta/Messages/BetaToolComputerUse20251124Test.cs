@@ -156,6 +156,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         Assert.Equal(expectedDisplayWidthPx, deserialized.DisplayWidthPx);
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.AllowedCallers);
         Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
         for (int i = 0; i < expectedAllowedCallers.Count; i++)
         {
@@ -165,6 +166,7 @@ public class BetaToolComputerUse20251124Test : TestBase
         Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
         Assert.Equal(expectedDisplayNumber, deserialized.DisplayNumber);
         Assert.Equal(expectedEnableZoom, deserialized.EnableZoom);
+        Assert.NotNull(deserialized.InputExamples);
         Assert.Equal(expectedInputExamples.Count, deserialized.InputExamples.Count);
         for (int i = 0; i < expectedInputExamples.Count; i++)
         {

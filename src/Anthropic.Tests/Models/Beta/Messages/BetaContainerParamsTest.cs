@@ -98,6 +98,7 @@ public class BetaContainerParamsTest : TestBase
         ];
 
         Assert.Equal(expectedID, deserialized.ID);
+        Assert.NotNull(deserialized.Skills);
         Assert.Equal(expectedSkills.Count, deserialized.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
         {

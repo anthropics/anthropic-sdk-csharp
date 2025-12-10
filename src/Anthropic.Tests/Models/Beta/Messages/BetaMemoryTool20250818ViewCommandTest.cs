@@ -62,6 +62,7 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedCommand, deserialized.Command));
         Assert.Equal(expectedPath, deserialized.Path);
+        Assert.NotNull(deserialized.ViewRange);
         Assert.Equal(expectedViewRange.Count, deserialized.ViewRange.Count);
         for (int i = 0; i < expectedViewRange.Count; i++)
         {

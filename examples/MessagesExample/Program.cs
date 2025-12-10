@@ -19,12 +19,11 @@ MessageCreateParams parameters = new()
 
 var response = await client.Messages.Create(parameters);
 
-var message = string.Join(
-    "",
+var message = string.Concat(
     response
         .Content.Where(message => message.Value is TextBlock)
         .Select(message => message.Value as TextBlock)
-        .Select((textBlock) => textBlock.Text)
+        .Select((textBlock) => textBlock?.Text ?? "")
 );
 
 Console.WriteLine(message);

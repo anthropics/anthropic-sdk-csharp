@@ -119,6 +119,7 @@ public class BetaTextBlockParamTest : TestBase
         Assert.Equal(expectedText, deserialized.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.NotNull(deserialized.Citations);
         Assert.Equal(expectedCitations.Count, deserialized.Citations.Count);
         for (int i = 0; i < expectedCitations.Count; i++)
         {
