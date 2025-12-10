@@ -55,6 +55,81 @@ public class BetaMessageParamTest : TestBase
     }
 }
 
+public class BetaMessageParamContentTest : TestBase
+{
+    [Fact]
+    public void stringValidation_Works()
+    {
+        BetaMessageParamContent value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaContentBlockParamsValidation_Works()
+    {
+        BetaMessageParamContent value = new(
+            [
+                new BetaTextBlockParam()
+                {
+                    Text = "What is a quaternion?",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        BetaMessageParamContent value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaContentBlockParamsSerializationRoundtrip_Works()
+    {
+        BetaMessageParamContent value = new(
+            [
+                new BetaTextBlockParam()
+                {
+                    Text = "What is a quaternion?",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
 public class RoleTest : TestBase
 {
     [Theory]

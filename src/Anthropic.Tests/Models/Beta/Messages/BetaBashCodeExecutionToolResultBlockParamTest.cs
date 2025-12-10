@@ -164,3 +164,62 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
+{
+    [Fact]
+    public void beta_bash_code_execution_tool_result_error_paramValidation_Works()
+    {
+        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+            new(BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput)
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_bash_code_execution_result_block_paramValidation_Works()
+    {
+        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+            new()
+            {
+                Content = [new("file_id")],
+                ReturnCode = 0,
+                Stderr = "stderr",
+                Stdout = "stdout",
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_bash_code_execution_tool_result_error_paramSerializationRoundtrip_Works()
+    {
+        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+            new(BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput)
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_bash_code_execution_result_block_paramSerializationRoundtrip_Works()
+    {
+        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+            new()
+            {
+                Content = [new("file_id")],
+                ReturnCode = 0,
+                Stderr = "stderr",
+                Stdout = "stdout",
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

@@ -80,3 +80,56 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
         model.Validate();
     }
 }
+
+public class ContentTest : TestBase
+{
+    [Fact]
+    public void beta_bash_code_execution_tool_result_errorValidation_Works()
+    {
+        Content value = new(new(ErrorCode.InvalidToolInput));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_bash_code_execution_result_blockValidation_Works()
+    {
+        Content value = new(
+            new()
+            {
+                Content = [new("file_id")],
+                ReturnCode = 0,
+                Stderr = "stderr",
+                Stdout = "stdout",
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_bash_code_execution_tool_result_errorSerializationRoundtrip_Works()
+    {
+        Content value = new(new(ErrorCode.InvalidToolInput));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Content>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_bash_code_execution_result_blockSerializationRoundtrip_Works()
+    {
+        Content value = new(
+            new()
+            {
+                Content = [new("file_id")],
+                ReturnCode = 0,
+                Stderr = "stderr",
+                Stdout = "stdout",
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Content>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

@@ -160,3 +160,68 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaToolSearchToolResultBlockParamContentTest : TestBase
+{
+    [Fact]
+    public void beta_tool_search_tool_result_error_paramValidation_Works()
+    {
+        BetaToolSearchToolResultBlockParamContent value = new(
+            new(BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput)
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_tool_search_tool_search_result_block_paramValidation_Works()
+    {
+        BetaToolSearchToolResultBlockParamContent value = new(
+            new(
+                [
+                    new()
+                    {
+                        ToolName = "tool_name",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                    },
+                ]
+            )
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_tool_search_tool_result_error_paramSerializationRoundtrip_Works()
+    {
+        BetaToolSearchToolResultBlockParamContent value = new(
+            new(BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput)
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
+            json
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_tool_search_tool_search_result_block_paramSerializationRoundtrip_Works()
+    {
+        BetaToolSearchToolResultBlockParamContent value = new(
+            new(
+                [
+                    new()
+                    {
+                        ToolName = "tool_name",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                    },
+                ]
+            )
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
+            json
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}

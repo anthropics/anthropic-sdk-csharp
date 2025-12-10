@@ -100,6 +100,60 @@ public class BetaClearThinking20251015EditTest : TestBase
     }
 }
 
+public class KeepTest : TestBase
+{
+    [Fact]
+    public void beta_thinking_turnsValidation_Works()
+    {
+        Keep value = new(new(1));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_all_thinking_turnsValidation_Works()
+    {
+        Keep value = new(new());
+        value.Validate();
+    }
+
+    [Fact]
+    public void allValidation_Works()
+    {
+        Keep value = new(new());
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_thinking_turnsSerializationRoundtrip_Works()
+    {
+        Keep value = new(new(1));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Keep>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_all_thinking_turnsSerializationRoundtrip_Works()
+    {
+        Keep value = new(new());
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Keep>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void allSerializationRoundtrip_Works()
+    {
+        Keep value = new(new());
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Keep>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
 public class UnionMember2Test : TestBase
 {
     [Fact]

@@ -191,3 +191,40 @@ public class BetaToolUseBlockTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaToolUseBlockCallerTest : TestBase
+{
+    [Fact]
+    public void beta_directValidation_Works()
+    {
+        BetaToolUseBlockCaller value = new(new());
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_server_toolValidation_Works()
+    {
+        BetaToolUseBlockCaller value = new(new("srvtoolu_SQfNkl1n_JR_"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_directSerializationRoundtrip_Works()
+    {
+        BetaToolUseBlockCaller value = new(new());
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockCaller>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_server_toolSerializationRoundtrip_Works()
+    {
+        BetaToolUseBlockCaller value = new(new("srvtoolu_SQfNkl1n_JR_"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockCaller>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

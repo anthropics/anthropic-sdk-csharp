@@ -122,6 +122,43 @@ public class BetaServerToolUseBlockTest : TestBase
     }
 }
 
+public class CallerTest : TestBase
+{
+    [Fact]
+    public void beta_directValidation_Works()
+    {
+        Caller value = new(new());
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_server_toolValidation_Works()
+    {
+        Caller value = new(new("srvtoolu_SQfNkl1n_JR_"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_directSerializationRoundtrip_Works()
+    {
+        Caller value = new(new());
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Caller>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_server_toolSerializationRoundtrip_Works()
+    {
+        Caller value = new(new("srvtoolu_SQfNkl1n_JR_"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Caller>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
 public class NameTest : TestBase
 {
     [Theory]

@@ -162,3 +162,61 @@ public class BetaImageBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaImageBlockParamSourceTest : TestBase
+{
+    [Fact]
+    public void beta_base64_imageValidation_Works()
+    {
+        BetaImageBlockParamSource value = new(
+            new() { Data = "U3RhaW5sZXNzIHJvY2tz", MediaType = MediaType.ImageJPEG }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_url_imageValidation_Works()
+    {
+        BetaImageBlockParamSource value = new(new("url"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_file_imageValidation_Works()
+    {
+        BetaImageBlockParamSource value = new(new("file_id"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_base64_imageSerializationRoundtrip_Works()
+    {
+        BetaImageBlockParamSource value = new(
+            new() { Data = "U3RhaW5sZXNzIHJvY2tz", MediaType = MediaType.ImageJPEG }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_url_imageSerializationRoundtrip_Works()
+    {
+        BetaImageBlockParamSource value = new(new("url"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_file_imageSerializationRoundtrip_Works()
+    {
+        BetaImageBlockParamSource value = new(new("file_id"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

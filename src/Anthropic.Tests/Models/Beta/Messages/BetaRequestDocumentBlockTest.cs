@@ -168,3 +168,95 @@ public class BetaRequestDocumentBlockTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaRequestDocumentBlockSourceTest : TestBase
+{
+    [Fact]
+    public void beta_base64_pdfValidation_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(new("U3RhaW5sZXNzIHJvY2tz"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_plain_textValidation_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(new("data"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_content_blockValidation_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(
+            new(new BetaContentBlockSourceContent("string"))
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_url_pdfValidation_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(new("url"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_file_documentValidation_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(new("file_id"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_base64_pdfSerializationRoundtrip_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(new("U3RhaW5sZXNzIHJvY2tz"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_plain_textSerializationRoundtrip_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(new("data"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_content_blockSerializationRoundtrip_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(
+            new(new BetaContentBlockSourceContent("string"))
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_url_pdfSerializationRoundtrip_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(new("url"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_file_documentSerializationRoundtrip_Works()
+    {
+        BetaRequestDocumentBlockSource value = new(new("file_id"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

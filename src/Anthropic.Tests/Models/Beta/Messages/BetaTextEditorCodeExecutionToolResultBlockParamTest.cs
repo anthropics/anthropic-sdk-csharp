@@ -192,3 +192,136 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBase
+{
+    [Fact]
+    public void beta_text_editor_code_execution_tool_result_error_paramValidation_Works()
+    {
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+            new()
+            {
+                ErrorCode =
+                    BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_text_editor_code_execution_view_result_block_paramValidation_Works()
+    {
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+            new()
+            {
+                Content = "content",
+                FileType = BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text,
+                NumLines = 0,
+                StartLine = 0,
+                TotalLines = 0,
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_text_editor_code_execution_create_result_block_paramValidation_Works()
+    {
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(new(true));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_text_editor_code_execution_str_replace_result_block_paramValidation_Works()
+    {
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+            new()
+            {
+                Lines = ["string"],
+                NewLines = 0,
+                NewStart = 0,
+                OldLines = 0,
+                OldStart = 0,
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_text_editor_code_execution_tool_result_error_paramSerializationRoundtrip_Works()
+    {
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+            new()
+            {
+                ErrorCode =
+                    BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
+                json
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_text_editor_code_execution_view_result_block_paramSerializationRoundtrip_Works()
+    {
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+            new()
+            {
+                Content = "content",
+                FileType = BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text,
+                NumLines = 0,
+                StartLine = 0,
+                TotalLines = 0,
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
+                json
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_text_editor_code_execution_create_result_block_paramSerializationRoundtrip_Works()
+    {
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(new(true));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
+                json
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_text_editor_code_execution_str_replace_result_block_paramSerializationRoundtrip_Works()
+    {
+        BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
+            new()
+            {
+                Lines = ["string"],
+                NewLines = 0,
+                NewStart = 0,
+                OldLines = 0,
+                OldStart = 0,
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized =
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
+                json
+            );
+
+        Assert.Equal(value, deserialized);
+    }
+}

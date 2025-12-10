@@ -111,3 +111,40 @@ public class BetaContextManagementResponseTest : TestBase
         model.Validate();
     }
 }
+
+public class AppliedEditTest : TestBase
+{
+    [Fact]
+    public void beta_clear_tool_uses_20250919_edit_responseValidation_Works()
+    {
+        AppliedEdit value = new(new() { ClearedInputTokens = 0, ClearedToolUses = 0 });
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_clear_thinking_20251015_edit_responseValidation_Works()
+    {
+        AppliedEdit value = new(new() { ClearedInputTokens = 0, ClearedThinkingTurns = 0 });
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_clear_tool_uses_20250919_edit_responseSerializationRoundtrip_Works()
+    {
+        AppliedEdit value = new(new() { ClearedInputTokens = 0, ClearedToolUses = 0 });
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_clear_thinking_20251015_edit_responseSerializationRoundtrip_Works()
+    {
+        AppliedEdit value = new(new() { ClearedInputTokens = 0, ClearedThinkingTurns = 0 });
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

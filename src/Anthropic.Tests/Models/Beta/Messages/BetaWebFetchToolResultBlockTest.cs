@@ -88,3 +88,68 @@ public class BetaWebFetchToolResultBlockTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaWebFetchToolResultBlockContentTest : TestBase
+{
+    [Fact]
+    public void beta_web_fetch_tool_result_error_blockValidation_Works()
+    {
+        BetaWebFetchToolResultBlockContent value = new(
+            new(BetaWebFetchToolResultErrorCode.InvalidToolInput)
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_web_fetch_blockValidation_Works()
+    {
+        BetaWebFetchToolResultBlockContent value = new(
+            new()
+            {
+                Content = new()
+                {
+                    Citations = new(true),
+                    Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                    Title = "title",
+                },
+                RetrievedAt = "retrieved_at",
+                URL = "url",
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_web_fetch_tool_result_error_blockSerializationRoundtrip_Works()
+    {
+        BetaWebFetchToolResultBlockContent value = new(
+            new(BetaWebFetchToolResultErrorCode.InvalidToolInput)
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_web_fetch_blockSerializationRoundtrip_Works()
+    {
+        BetaWebFetchToolResultBlockContent value = new(
+            new()
+            {
+                Content = new()
+                {
+                    Citations = new(true),
+                    Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                    Title = "title",
+                },
+                RetrievedAt = "retrieved_at",
+                URL = "url",
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

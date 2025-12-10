@@ -160,3 +160,76 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaWebFetchToolResultBlockParamContentTest : TestBase
+{
+    [Fact]
+    public void beta_web_fetch_tool_result_error_block_paramValidation_Works()
+    {
+        BetaWebFetchToolResultBlockParamContent value = new(
+            new(BetaWebFetchToolResultErrorCode.InvalidToolInput)
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_web_fetch_block_paramValidation_Works()
+    {
+        BetaWebFetchToolResultBlockParamContent value = new(
+            new()
+            {
+                Content = new()
+                {
+                    Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations = new() { Enabled = true },
+                    Context = "x",
+                    Title = "x",
+                },
+                URL = "url",
+                RetrievedAt = "retrieved_at",
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_web_fetch_tool_result_error_block_paramSerializationRoundtrip_Works()
+    {
+        BetaWebFetchToolResultBlockParamContent value = new(
+            new(BetaWebFetchToolResultErrorCode.InvalidToolInput)
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
+            json
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_web_fetch_block_paramSerializationRoundtrip_Works()
+    {
+        BetaWebFetchToolResultBlockParamContent value = new(
+            new()
+            {
+                Content = new()
+                {
+                    Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations = new() { Enabled = true },
+                    Context = "x",
+                    Title = "x",
+                },
+                URL = "url",
+                RetrievedAt = "retrieved_at",
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
+            json
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}

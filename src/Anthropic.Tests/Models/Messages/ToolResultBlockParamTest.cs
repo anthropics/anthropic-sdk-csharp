@@ -208,3 +208,275 @@ public class ToolResultBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class ToolResultBlockParamContentTest : TestBase
+{
+    [Fact]
+    public void stringValidation_Works()
+    {
+        ToolResultBlockParamContent value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void BlocksValidation_Works()
+    {
+        ToolResultBlockParamContent value = new(
+            [
+                new TextBlockParam()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new CitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        ToolResultBlockParamContent value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BlocksSerializationRoundtrip_Works()
+    {
+        ToolResultBlockParamContent value = new(
+            [
+                new TextBlockParam()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new CitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class BlockTest : TestBase
+{
+    [Fact]
+    public void text_block_paramValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Text = "x",
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations =
+                [
+                    new CitationCharLocationParam()
+                    {
+                        CitedText = "cited_text",
+                        DocumentIndex = 0,
+                        DocumentTitle = "x",
+                        EndCharIndex = 0,
+                        StartCharIndex = 0,
+                    },
+                ],
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void image_block_paramValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Source = new Base64ImageSource()
+                {
+                    Data = "U3RhaW5sZXNzIHJvY2tz",
+                    MediaType = MediaType.ImageJPEG,
+                },
+                CacheControl = new() { TTL = TTL.TTL5m },
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void search_result_block_paramValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Content =
+                [
+                    new()
+                    {
+                        Text = "x",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ],
+                Source = "source",
+                Title = "title",
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations = new() { Enabled = true },
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void document_block_paramValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations = new() { Enabled = true },
+                Context = "x",
+                Title = "x",
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void text_block_paramSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Text = "x",
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations =
+                [
+                    new CitationCharLocationParam()
+                    {
+                        CitedText = "cited_text",
+                        DocumentIndex = 0,
+                        DocumentTitle = "x",
+                        EndCharIndex = 0,
+                        StartCharIndex = 0,
+                    },
+                ],
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void image_block_paramSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Source = new Base64ImageSource()
+                {
+                    Data = "U3RhaW5sZXNzIHJvY2tz",
+                    MediaType = MediaType.ImageJPEG,
+                },
+                CacheControl = new() { TTL = TTL.TTL5m },
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void search_result_block_paramSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Content =
+                [
+                    new()
+                    {
+                        Text = "x",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ],
+                Source = "source",
+                Title = "title",
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations = new() { Enabled = true },
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void document_block_paramSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations = new() { Enabled = true },
+                Context = "x",
+                Title = "x",
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

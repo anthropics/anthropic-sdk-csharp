@@ -162,3 +162,44 @@ public class ImageBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class ImageBlockParamSourceTest : TestBase
+{
+    [Fact]
+    public void base64_imageValidation_Works()
+    {
+        ImageBlockParamSource value = new(
+            new() { Data = "U3RhaW5sZXNzIHJvY2tz", MediaType = MediaType.ImageJPEG }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void url_imageValidation_Works()
+    {
+        ImageBlockParamSource value = new(new("url"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void base64_imageSerializationRoundtrip_Works()
+    {
+        ImageBlockParamSource value = new(
+            new() { Data = "U3RhaW5sZXNzIHJvY2tz", MediaType = MediaType.ImageJPEG }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void url_imageSerializationRoundtrip_Works()
+    {
+        ImageBlockParamSource value = new(new("url"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

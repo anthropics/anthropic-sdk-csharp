@@ -158,3 +158,74 @@ public class DocumentBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class SourceTest : TestBase
+{
+    [Fact]
+    public void base64_pdfValidation_Works()
+    {
+        Source value = new(new("U3RhaW5sZXNzIHJvY2tz"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void plain_textValidation_Works()
+    {
+        Source value = new(new("data"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void content_blockValidation_Works()
+    {
+        Source value = new(new(new Content("string")));
+        value.Validate();
+    }
+
+    [Fact]
+    public void url_pdfValidation_Works()
+    {
+        Source value = new(new("url"));
+        value.Validate();
+    }
+
+    [Fact]
+    public void base64_pdfSerializationRoundtrip_Works()
+    {
+        Source value = new(new("U3RhaW5sZXNzIHJvY2tz"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void plain_textSerializationRoundtrip_Works()
+    {
+        Source value = new(new("data"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void content_blockSerializationRoundtrip_Works()
+    {
+        Source value = new(new(new Content("string")));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void url_pdfSerializationRoundtrip_Works()
+    {
+        Source value = new(new("url"));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

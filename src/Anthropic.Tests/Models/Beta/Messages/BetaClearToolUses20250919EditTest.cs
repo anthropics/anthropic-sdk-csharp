@@ -241,3 +241,77 @@ public class BetaClearToolUses20250919EditTest : TestBase
         model.Validate();
     }
 }
+
+public class ClearToolInputsTest : TestBase
+{
+    [Fact]
+    public void boolValidation_Works()
+    {
+        ClearToolInputs value = new(true);
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringsValidation_Works()
+    {
+        ClearToolInputs value = new(["string"]);
+        value.Validate();
+    }
+
+    [Fact]
+    public void boolSerializationRoundtrip_Works()
+    {
+        ClearToolInputs value = new(true);
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void stringsSerializationRoundtrip_Works()
+    {
+        ClearToolInputs value = new(["string"]);
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class TriggerTest : TestBase
+{
+    [Fact]
+    public void beta_input_tokensValidation_Works()
+    {
+        Trigger value = new(new(1));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_tool_usesValidation_Works()
+    {
+        Trigger value = new(new(1));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_input_tokensSerializationRoundtrip_Works()
+    {
+        Trigger value = new(new(1));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Trigger>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_tool_usesSerializationRoundtrip_Works()
+    {
+        Trigger value = new(new(1));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Trigger>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

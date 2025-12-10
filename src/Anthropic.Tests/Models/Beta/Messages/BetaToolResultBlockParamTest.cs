@@ -208,3 +208,304 @@ public class BetaToolResultBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaToolResultBlockParamContentTest : TestBase
+{
+    [Fact]
+    public void stringValidation_Works()
+    {
+        BetaToolResultBlockParamContent value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void BlocksValidation_Works()
+    {
+        BetaToolResultBlockParamContent value = new(
+            [
+                new BetaTextBlockParam()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        BetaToolResultBlockParamContent value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolResultBlockParamContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BlocksSerializationRoundtrip_Works()
+    {
+        BetaToolResultBlockParamContent value = new(
+            [
+                new BetaTextBlockParam()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolResultBlockParamContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class BlockTest : TestBase
+{
+    [Fact]
+    public void beta_text_block_paramValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Text = "x",
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations =
+                [
+                    new BetaCitationCharLocationParam()
+                    {
+                        CitedText = "cited_text",
+                        DocumentIndex = 0,
+                        DocumentTitle = "x",
+                        EndCharIndex = 0,
+                        StartCharIndex = 0,
+                    },
+                ],
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_image_block_paramValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Source = new BetaBase64ImageSource()
+                {
+                    Data = "U3RhaW5sZXNzIHJvY2tz",
+                    MediaType = MediaType.ImageJPEG,
+                },
+                CacheControl = new() { TTL = TTL.TTL5m },
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_search_result_block_paramValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Content =
+                [
+                    new()
+                    {
+                        Text = "x",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ],
+                Source = "source",
+                Title = "title",
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations = new() { Enabled = true },
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_request_documentValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations = new() { Enabled = true },
+                Context = "x",
+                Title = "x",
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_tool_reference_block_paramValidation_Works()
+    {
+        Block value = new(
+            new()
+            {
+                ToolName = "tool_name",
+                CacheControl = new() { TTL = TTL.TTL5m },
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_text_block_paramSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Text = "x",
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations =
+                [
+                    new BetaCitationCharLocationParam()
+                    {
+                        CitedText = "cited_text",
+                        DocumentIndex = 0,
+                        DocumentTitle = "x",
+                        EndCharIndex = 0,
+                        StartCharIndex = 0,
+                    },
+                ],
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_image_block_paramSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Source = new BetaBase64ImageSource()
+                {
+                    Data = "U3RhaW5sZXNzIHJvY2tz",
+                    MediaType = MediaType.ImageJPEG,
+                },
+                CacheControl = new() { TTL = TTL.TTL5m },
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_search_result_block_paramSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Content =
+                [
+                    new()
+                    {
+                        Text = "x",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ],
+                Source = "source",
+                Title = "title",
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations = new() { Enabled = true },
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_request_documentSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { TTL = TTL.TTL5m },
+                Citations = new() { Enabled = true },
+                Context = "x",
+                Title = "x",
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_tool_reference_block_paramSerializationRoundtrip_Works()
+    {
+        Block value = new(
+            new()
+            {
+                ToolName = "tool_name",
+                CacheControl = new() { TTL = TTL.TTL5m },
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

@@ -2119,6 +2119,71 @@ public class ParamsTest : TestBase
     }
 }
 
+public class ContainerTest : TestBase
+{
+    [Fact]
+    public void beta_container_paramsValidation_Works()
+    {
+        Container value = new(
+            new()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "x",
+                        Type = Messages::BetaSkillParamsType.Anthropic,
+                        Version = "x",
+                    },
+                ],
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringValidation_Works()
+    {
+        Container value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_container_paramsSerializationRoundtrip_Works()
+    {
+        Container value = new(
+            new()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "x",
+                        Type = Messages::BetaSkillParamsType.Anthropic,
+                        Version = "x",
+                    },
+                ],
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Container>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        Container value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Container>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
 public class ServiceTierTest : TestBase
 {
     [Theory]
@@ -2170,6 +2235,81 @@ public class ServiceTierTest : TestBase
             json,
             ModelBase.SerializerOptions
         );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class ParamsSystemTest : TestBase
+{
+    [Fact]
+    public void stringValidation_Works()
+    {
+        ParamsSystem value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaTextBlockParamsValidation_Works()
+    {
+        ParamsSystem value = new(
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    Citations =
+                    [
+                        new Messages::BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        ParamsSystem value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaTextBlockParamsSerializationRoundtrip_Works()
+    {
+        ParamsSystem value = new(
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    Citations =
+                    [
+                        new Messages::BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(json);
 
         Assert.Equal(value, deserialized);
     }

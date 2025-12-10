@@ -5,6 +5,71 @@ using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
+public class ContainerTest : TestBase
+{
+    [Fact]
+    public void beta_container_paramsValidation_Works()
+    {
+        Container value = new(
+            new()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "x",
+                        Type = BetaSkillParamsType.Anthropic,
+                        Version = "x",
+                    },
+                ],
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringValidation_Works()
+    {
+        Container value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_container_paramsSerializationRoundtrip_Works()
+    {
+        Container value = new(
+            new()
+            {
+                ID = "id",
+                Skills =
+                [
+                    new()
+                    {
+                        SkillID = "x",
+                        Type = BetaSkillParamsType.Anthropic,
+                        Version = "x",
+                    },
+                ],
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Container>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        Container value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Container>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
 public class ServiceTierTest : TestBase
 {
     [Theory]
@@ -56,6 +121,81 @@ public class ServiceTierTest : TestBase
             json,
             ModelBase.SerializerOptions
         );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class MessageCreateParamsSystemTest : TestBase
+{
+    [Fact]
+    public void stringValidation_Works()
+    {
+        MessageCreateParamsSystem value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaTextBlockParamsValidation_Works()
+    {
+        MessageCreateParamsSystem value = new(
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        MessageCreateParamsSystem value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaTextBlockParamsSerializationRoundtrip_Works()
+    {
+        MessageCreateParamsSystem value = new(
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(json);
 
         Assert.Equal(value, deserialized);
     }

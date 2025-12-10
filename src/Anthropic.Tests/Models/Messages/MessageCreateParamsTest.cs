@@ -60,3 +60,78 @@ public class ServiceTierTest : TestBase
         Assert.Equal(value, deserialized);
     }
 }
+
+public class MessageCreateParamsSystemTest : TestBase
+{
+    [Fact]
+    public void stringValidation_Works()
+    {
+        MessageCreateParamsSystem value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void TextBlockParamsValidation_Works()
+    {
+        MessageCreateParamsSystem value = new(
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new CitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        MessageCreateParamsSystem value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextBlockParamsSerializationRoundtrip_Works()
+    {
+        MessageCreateParamsSystem value = new(
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new CitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

@@ -100,3 +100,52 @@ public class BetaToolSearchToolResultBlockTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaToolSearchToolResultBlockContentTest : TestBase
+{
+    [Fact]
+    public void beta_tool_search_tool_result_errorValidation_Works()
+    {
+        BetaToolSearchToolResultBlockContent value = new(
+            new()
+            {
+                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            }
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_tool_search_tool_search_result_blockValidation_Works()
+    {
+        BetaToolSearchToolResultBlockContent value = new(new([new("tool_name")]));
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_tool_search_tool_result_errorSerializationRoundtrip_Works()
+    {
+        BetaToolSearchToolResultBlockContent value = new(
+            new()
+            {
+                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            }
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_tool_search_tool_search_result_blockSerializationRoundtrip_Works()
+    {
+        BetaToolSearchToolResultBlockContent value = new(new([new("tool_name")]));
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}

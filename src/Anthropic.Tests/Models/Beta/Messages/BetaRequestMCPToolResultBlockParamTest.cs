@@ -208,3 +208,82 @@ public class BetaRequestMCPToolResultBlockParamTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
+{
+    [Fact]
+    public void stringValidation_Works()
+    {
+        BetaRequestMCPToolResultBlockParamContent value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_mcp_tool_result_block_paramValidation_Works()
+    {
+        BetaRequestMCPToolResultBlockParamContent value = new(
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        BetaRequestMCPToolResultBlockParamContent value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamContent>(
+            json
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_mcp_tool_result_block_paramSerializationRoundtrip_Works()
+    {
+        BetaRequestMCPToolResultBlockParamContent value = new(
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamContent>(
+            json
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}

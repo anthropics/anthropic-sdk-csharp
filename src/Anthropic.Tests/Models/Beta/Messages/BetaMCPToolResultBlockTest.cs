@@ -80,3 +80,78 @@ public class BetaMCPToolResultBlockTest : TestBase
         model.Validate();
     }
 }
+
+public class BetaMCPToolResultBlockContentTest : TestBase
+{
+    [Fact]
+    public void stringValidation_Works()
+    {
+        BetaMCPToolResultBlockContent value = new("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void beta_mcp_tool_result_blockValidation_Works()
+    {
+        BetaMCPToolResultBlockContent value = new(
+            [
+                new()
+                {
+                    Citations =
+                    [
+                        new BetaCitationCharLocation()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "document_title",
+                            EndCharIndex = 0,
+                            FileID = "file_id",
+                            StartCharIndex = 0,
+                        },
+                    ],
+                    Text = "text",
+                },
+            ]
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void stringSerializationRoundtrip_Works()
+    {
+        BetaMCPToolResultBlockContent value = new("string");
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void beta_mcp_tool_result_blockSerializationRoundtrip_Works()
+    {
+        BetaMCPToolResultBlockContent value = new(
+            [
+                new()
+                {
+                    Citations =
+                    [
+                        new BetaCitationCharLocation()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "document_title",
+                            EndCharIndex = 0,
+                            FileID = "file_id",
+                            StartCharIndex = 0,
+                        },
+                    ],
+                    Text = "text",
+                },
+            ]
+        );
+        string json = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+}
