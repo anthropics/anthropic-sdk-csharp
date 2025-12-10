@@ -926,17 +926,18 @@ public static class AnthropicClientExtensions
             ServerToolUsage? serverToolUsage
         )
         {
-            UsageDetails usageDetails = new();
+            UsageDetails usageDetails = new()
+            {
+                // From https://platform.claude.com/docs/en/build-with-claude/prompt-caching:
+                // "To calculate total input tokens:"
+                // "total_input_tokens = cache_read_input_tokens + cache_creation_input_tokens + input_tokens"
+                InputTokenCount = NullableSum(
+                    NullableSum(cacheReadInputTokens, cacheCreationInputTokens),
+                    inputTokens
+                ),
 
-            // From https://platform.claude.com/docs/en/build-with-claude/prompt-caching:
-            // "To calculate total input tokens:"
-            // "total_input_tokens = cache_read_input_tokens + cache_creation_input_tokens + input_tokens"
-            usageDetails.InputTokenCount = NullableSum(
-                NullableSum(cacheReadInputTokens, cacheCreationInputTokens),
-                inputTokens
-            );
-
-            usageDetails.OutputTokenCount = outputTokens;
+                OutputTokenCount = outputTokens
+            };
 
             usageDetails.TotalTokenCount = NullableSum(
                 usageDetails.InputTokenCount,
