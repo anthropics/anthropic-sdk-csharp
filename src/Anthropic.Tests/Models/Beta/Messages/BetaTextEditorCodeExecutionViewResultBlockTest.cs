@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -103,5 +104,63 @@ public class BetaTextEditorCodeExecutionViewResultBlockTest : TestBase
         };
 
         model.Validate();
+    }
+}
+
+public class FileTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(FileType.Text)]
+    [InlineData(FileType.Image)]
+    [InlineData(FileType.PDF)]
+    public void Validation_Works(FileType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, FileType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(FileType.Text)]
+    [InlineData(FileType.Image)]
+    [InlineData(FileType.PDF)]
+    public void SerializationRoundtrip_Works(FileType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, FileType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

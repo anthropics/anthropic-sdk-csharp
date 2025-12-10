@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -115,5 +116,63 @@ public class UsageTest : TestBase
         };
 
         model.Validate();
+    }
+}
+
+public class UsageServiceTierTest : TestBase
+{
+    [Theory]
+    [InlineData(UsageServiceTier.Standard)]
+    [InlineData(UsageServiceTier.Priority)]
+    [InlineData(UsageServiceTier.Batch)]
+    public void Validation_Works(UsageServiceTier rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, UsageServiceTier> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, UsageServiceTier>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(UsageServiceTier.Standard)]
+    [InlineData(UsageServiceTier.Priority)]
+    [InlineData(UsageServiceTier.Batch)]
+    public void SerializationRoundtrip_Works(UsageServiceTier rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, UsageServiceTier> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UsageServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, UsageServiceTier>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UsageServiceTier>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

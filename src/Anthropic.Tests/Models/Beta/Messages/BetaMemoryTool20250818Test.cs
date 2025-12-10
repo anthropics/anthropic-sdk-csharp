@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -320,5 +321,63 @@ public class BetaMemoryTool20250818Test : TestBase
         };
 
         model.Validate();
+    }
+}
+
+public class BetaMemoryTool20250818AllowedCallerTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaMemoryTool20250818AllowedCaller.Direct)]
+    [InlineData(BetaMemoryTool20250818AllowedCaller.CodeExecution20250825)]
+    public void Validation_Works(BetaMemoryTool20250818AllowedCaller rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaMemoryTool20250818AllowedCaller> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaMemoryTool20250818AllowedCaller>
+        >(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaMemoryTool20250818AllowedCaller.Direct)]
+    [InlineData(BetaMemoryTool20250818AllowedCaller.CodeExecution20250825)]
+    public void SerializationRoundtrip_Works(BetaMemoryTool20250818AllowedCaller rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaMemoryTool20250818AllowedCaller> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaMemoryTool20250818AllowedCaller>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaMemoryTool20250818AllowedCaller>
+        >(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaMemoryTool20250818AllowedCaller>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

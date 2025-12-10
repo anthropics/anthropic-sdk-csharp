@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Messages.Batches;
 
 namespace Anthropic.Tests.Models.Messages.Batches;
@@ -180,5 +181,63 @@ public class MessageBatchTest : TestBase
         };
 
         model.Validate();
+    }
+}
+
+public class ProcessingStatusTest : TestBase
+{
+    [Theory]
+    [InlineData(ProcessingStatus.InProgress)]
+    [InlineData(ProcessingStatus.Canceling)]
+    [InlineData(ProcessingStatus.Ended)]
+    public void Validation_Works(ProcessingStatus rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ProcessingStatus> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ProcessingStatus.InProgress)]
+    [InlineData(ProcessingStatus.Canceling)]
+    [InlineData(ProcessingStatus.Ended)]
+    public void SerializationRoundtrip_Works(ProcessingStatus rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ProcessingStatus> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
