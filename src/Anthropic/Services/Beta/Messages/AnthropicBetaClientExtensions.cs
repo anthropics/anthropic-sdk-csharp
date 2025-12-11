@@ -1184,7 +1184,7 @@ public static class AnthropicBetaClientExtensions
                     inputTokens
                 ),
 
-                OutputTokenCount = outputTokens
+                OutputTokenCount = outputTokens,
             };
 
             usageDetails.TotalTokenCount = NullableSum(
