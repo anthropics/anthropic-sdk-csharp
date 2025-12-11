@@ -43,16 +43,19 @@ public class BetaWebFetchTool20250910Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.NotNull(model.AllowedCallers);
         Assert.Equal(expectedAllowedCallers.Count, model.AllowedCallers.Count);
         for (int i = 0; i < expectedAllowedCallers.Count; i++)
         {
             Assert.Equal(expectedAllowedCallers[i], model.AllowedCallers[i]);
         }
+        Assert.NotNull(model.AllowedDomains);
         Assert.Equal(expectedAllowedDomains.Count, model.AllowedDomains.Count);
         for (int i = 0; i < expectedAllowedDomains.Count; i++)
         {
             Assert.Equal(expectedAllowedDomains[i], model.AllowedDomains[i]);
         }
+        Assert.NotNull(model.BlockedDomains);
         Assert.Equal(expectedBlockedDomains.Count, model.BlockedDomains.Count);
         for (int i = 0; i < expectedBlockedDomains.Count; i++)
         {
@@ -127,16 +130,19 @@ public class BetaWebFetchTool20250910Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.AllowedCallers);
         Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
         for (int i = 0; i < expectedAllowedCallers.Count; i++)
         {
             Assert.Equal(expectedAllowedCallers[i], deserialized.AllowedCallers[i]);
         }
+        Assert.NotNull(deserialized.AllowedDomains);
         Assert.Equal(expectedAllowedDomains.Count, deserialized.AllowedDomains.Count);
         for (int i = 0; i < expectedAllowedDomains.Count; i++)
         {
             Assert.Equal(expectedAllowedDomains[i], deserialized.AllowedDomains[i]);
         }
+        Assert.NotNull(deserialized.BlockedDomains);
         Assert.Equal(expectedBlockedDomains.Count, deserialized.BlockedDomains.Count);
         for (int i = 0; i < expectedBlockedDomains.Count; i++)
         {

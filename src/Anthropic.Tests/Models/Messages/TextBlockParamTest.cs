@@ -44,6 +44,7 @@ public class TextBlockParamTest : TestBase
         Assert.Equal(expectedText, model.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.NotNull(model.Citations);
         Assert.Equal(expectedCitations.Count, model.Citations.Count);
         for (int i = 0; i < expectedCitations.Count; i++)
         {
@@ -119,6 +120,7 @@ public class TextBlockParamTest : TestBase
         Assert.Equal(expectedText, deserialized.Text);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.NotNull(deserialized.Citations);
         Assert.Equal(expectedCitations.Count, deserialized.Citations.Count);
         for (int i = 0; i < expectedCitations.Count; i++)
         {

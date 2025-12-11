@@ -36,6 +36,7 @@ public class BetaContextManagementConfigTest : TestBase
             },
         ];
 
+        Assert.NotNull(model.Edits);
         Assert.Equal(expectedEdits.Count, model.Edits.Count);
         for (int i = 0; i < expectedEdits.Count; i++)
         {
@@ -101,6 +102,7 @@ public class BetaContextManagementConfigTest : TestBase
             },
         ];
 
+        Assert.NotNull(deserialized.Edits);
         Assert.Equal(expectedEdits.Count, deserialized.Edits.Count);
         for (int i = 0; i < expectedEdits.Count; i++)
         {
