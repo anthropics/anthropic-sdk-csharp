@@ -1153,7 +1153,8 @@ public static class AnthropicBetaClientExtensions
                 usage.InputTokens,
                 usage.OutputTokens,
                 usage.CacheCreationInputTokens,
-                usage.CacheReadInputTokens
+                usage.CacheReadInputTokens,
+                usage.ServerToolUse
             );
 
         private static UsageDetails ToUsageDetails(BetaMessageDeltaUsage usage) =>
@@ -1161,39 +1162,66 @@ public static class AnthropicBetaClientExtensions
                 usage.InputTokens,
                 usage.OutputTokens,
                 usage.CacheCreationInputTokens,
-                usage.CacheReadInputTokens
+                usage.CacheReadInputTokens,
+                usage.ServerToolUse
             );
 
         private static UsageDetails ToUsageDetails(
             long? inputTokens,
             long? outputTokens,
             long? cacheCreationInputTokens,
-            long? cacheReadInputTokens
+            long? cacheReadInputTokens,
+            BetaServerToolUsage? serverToolUsage
         )
         {
             UsageDetails usageDetails = new()
             {
-                InputTokenCount = inputTokens,
+                // From https://platform.claude.com/docs/en/build-with-claude/prompt-caching:
+                // "To calculate total input tokens:"
+                // "total_input_tokens = cache_read_input_tokens + cache_creation_input_tokens + input_tokens"
+                InputTokenCount = NullableSum(
+                    NullableSum(cacheReadInputTokens, cacheCreationInputTokens),
+                    inputTokens
+                ),
+
                 OutputTokenCount = outputTokens,
-                TotalTokenCount =
-                    (inputTokens is not null || outputTokens is not null)
-                        ? (inputTokens ?? 0) + (outputTokens ?? 0)
-                        : null,
             };
 
-            if (cacheCreationInputTokens is not null)
+            usageDetails.TotalTokenCount = NullableSum(
+                usageDetails.InputTokenCount,
+                usageDetails.OutputTokenCount
+            );
+
+            if (cacheCreationInputTokens is > 0)
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(BetaUsage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
             }
 
-            if (cacheReadInputTokens is not null)
+            if (cacheReadInputTokens is > 0)
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(BetaUsage.CacheReadInputTokens)] =
                     cacheReadInputTokens.Value;
             }
 
+            if (serverToolUsage?.WebFetchRequests is > 0)
+            {
+                (usageDetails.AdditionalCounts ??= [])[
+                    nameof(BetaServerToolUsage.WebFetchRequests)
+                ] = serverToolUsage.WebFetchRequests;
+            }
+
+            if (serverToolUsage?.WebSearchRequests is > 0)
+            {
+                (usageDetails.AdditionalCounts ??= [])[
+                    nameof(BetaServerToolUsage.WebSearchRequests)
+                ] = serverToolUsage.WebSearchRequests;
+            }
+
             return usageDetails;
+
+            static long? NullableSum(long? a, long? b) =>
+                a is not null || b is not null ? (a ?? 0) + (b ?? 0) : null;
         }
 
         private static ChatFinishReason? ToFinishReason(

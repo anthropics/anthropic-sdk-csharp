@@ -1290,8 +1290,9 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.NotNull(response);
 
         Assert.NotNull(response.Usage);
-        Assert.Equal(100, response.Usage.InputTokenCount);
+        Assert.Equal(175, response.Usage.InputTokenCount);
         Assert.Equal(10, response.Usage.OutputTokenCount);
+        Assert.Equal(185, response.Usage.TotalTokenCount);
         Assert.NotNull(response.Usage.AdditionalCounts);
         Assert.Equal(50L, response.Usage.AdditionalCounts["CacheCreationInputTokens"]);
         Assert.Equal(25L, response.Usage.AdditionalCounts["CacheReadInputTokens"]);
@@ -2490,8 +2491,9 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.NotNull(response);
 
         Assert.NotNull(response.Usage);
-        Assert.Equal(100, response.Usage.InputTokenCount);
+        Assert.Equal(175, response.Usage.InputTokenCount);
         Assert.Equal(20, response.Usage.OutputTokenCount);
+        Assert.Equal(195, response.Usage.OutputTokenCount);
         Assert.NotNull(response.Usage.AdditionalCounts);
         Assert.Equal(50L, response.Usage.AdditionalCounts["CacheCreationInputTokens"]);
         Assert.Equal(25L, response.Usage.AdditionalCounts["CacheReadInputTokens"]);
