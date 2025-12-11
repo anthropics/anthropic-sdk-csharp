@@ -171,7 +171,9 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     public void beta_bash_code_execution_tool_result_error_paramValidation_Works()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
-            new(BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput)
+            new BetaBashCodeExecutionToolResultErrorParam(
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
+            )
         );
         value.Validate();
     }
@@ -180,7 +182,7 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     public void beta_bash_code_execution_result_block_paramValidation_Works()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
-            new()
+            new BetaBashCodeExecutionResultBlockParam()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,
@@ -195,7 +197,9 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     public void beta_bash_code_execution_tool_result_error_paramSerializationRoundtrip_Works()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
-            new(BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput)
+            new BetaBashCodeExecutionToolResultErrorParam(
+                BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
+            )
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized =
@@ -208,7 +212,7 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     public void beta_bash_code_execution_result_block_paramSerializationRoundtrip_Works()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
-            new()
+            new BetaBashCodeExecutionResultBlockParam()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,

@@ -11,7 +11,7 @@ public class MessageBatchResultTest : TestBase
     public void succeededValidation_Works()
     {
         MessageBatchResult value = new(
-            new(
+            new MessageBatchSucceededResult(
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
@@ -61,7 +61,7 @@ public class MessageBatchResultTest : TestBase
     public void erroredValidation_Works()
     {
         MessageBatchResult value = new(
-            new(
+            new MessageBatchErroredResult(
                 new ErrorResponse()
                 {
                     Error = new InvalidRequestError("message"),
@@ -75,14 +75,14 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void canceledValidation_Works()
     {
-        MessageBatchResult value = new(new());
+        MessageBatchResult value = new(new MessageBatchCanceledResult());
         value.Validate();
     }
 
     [Fact]
     public void expiredValidation_Works()
     {
-        MessageBatchResult value = new(new());
+        MessageBatchResult value = new(new MessageBatchExpiredResult());
         value.Validate();
     }
 
@@ -90,7 +90,7 @@ public class MessageBatchResultTest : TestBase
     public void succeededSerializationRoundtrip_Works()
     {
         MessageBatchResult value = new(
-            new(
+            new MessageBatchSucceededResult(
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
@@ -143,7 +143,7 @@ public class MessageBatchResultTest : TestBase
     public void erroredSerializationRoundtrip_Works()
     {
         MessageBatchResult value = new(
-            new(
+            new MessageBatchErroredResult(
                 new ErrorResponse()
                 {
                     Error = new InvalidRequestError("message"),
@@ -160,7 +160,7 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void canceledSerializationRoundtrip_Works()
     {
-        MessageBatchResult value = new(new());
+        MessageBatchResult value = new(new MessageBatchCanceledResult());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(json);
 
@@ -170,7 +170,7 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void expiredSerializationRoundtrip_Works()
     {
-        MessageBatchResult value = new(new());
+        MessageBatchResult value = new(new MessageBatchExpiredResult());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(json);
 

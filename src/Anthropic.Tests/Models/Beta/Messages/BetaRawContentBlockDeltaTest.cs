@@ -8,14 +8,14 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void textValidation_Works()
     {
-        BetaRawContentBlockDelta value = new(new("text"));
+        BetaRawContentBlockDelta value = new(new BetaTextDelta("text"));
         value.Validate();
     }
 
     [Fact]
     public void input_jsonValidation_Works()
     {
-        BetaRawContentBlockDelta value = new(new("partial_json"));
+        BetaRawContentBlockDelta value = new(new BetaInputJSONDelta("partial_json"));
         value.Validate();
     }
 
@@ -23,7 +23,7 @@ public class BetaRawContentBlockDeltaTest : TestBase
     public void citationsValidation_Works()
     {
         BetaRawContentBlockDelta value = new(
-            new(
+            new BetaCitationsDelta(
                 new Citation(
                     new BetaCitationCharLocation()
                     {
@@ -43,21 +43,21 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void thinkingValidation_Works()
     {
-        BetaRawContentBlockDelta value = new(new("thinking"));
+        BetaRawContentBlockDelta value = new(new BetaThinkingDelta("thinking"));
         value.Validate();
     }
 
     [Fact]
     public void signatureValidation_Works()
     {
-        BetaRawContentBlockDelta value = new(new("signature"));
+        BetaRawContentBlockDelta value = new(new BetaSignatureDelta("signature"));
         value.Validate();
     }
 
     [Fact]
     public void textSerializationRoundtrip_Works()
     {
-        BetaRawContentBlockDelta value = new(new("text"));
+        BetaRawContentBlockDelta value = new(new BetaTextDelta("text"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(json);
 
@@ -67,7 +67,7 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void input_jsonSerializationRoundtrip_Works()
     {
-        BetaRawContentBlockDelta value = new(new("partial_json"));
+        BetaRawContentBlockDelta value = new(new BetaInputJSONDelta("partial_json"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(json);
 
@@ -78,7 +78,7 @@ public class BetaRawContentBlockDeltaTest : TestBase
     public void citationsSerializationRoundtrip_Works()
     {
         BetaRawContentBlockDelta value = new(
-            new(
+            new BetaCitationsDelta(
                 new Citation(
                     new BetaCitationCharLocation()
                     {
@@ -101,7 +101,7 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void thinkingSerializationRoundtrip_Works()
     {
-        BetaRawContentBlockDelta value = new(new("thinking"));
+        BetaRawContentBlockDelta value = new(new BetaThinkingDelta("thinking"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(json);
 
@@ -111,7 +111,7 @@ public class BetaRawContentBlockDeltaTest : TestBase
     [Fact]
     public void signatureSerializationRoundtrip_Works()
     {
-        BetaRawContentBlockDelta value = new(new("signature"));
+        BetaRawContentBlockDelta value = new(new BetaSignatureDelta("signature"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(json);
 

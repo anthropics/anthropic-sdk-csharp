@@ -105,28 +105,28 @@ public class KeepTest : TestBase
     [Fact]
     public void beta_thinking_turnsValidation_Works()
     {
-        Keep value = new(new(1));
+        Keep value = new(new BetaThinkingTurns(1));
         value.Validate();
     }
 
     [Fact]
     public void beta_all_thinking_turnsValidation_Works()
     {
-        Keep value = new(new());
+        Keep value = new(new BetaAllThinkingTurns());
         value.Validate();
     }
 
     [Fact]
     public void allValidation_Works()
     {
-        Keep value = new(new());
+        Keep value = new(new UnionMember2());
         value.Validate();
     }
 
     [Fact]
     public void beta_thinking_turnsSerializationRoundtrip_Works()
     {
-        Keep value = new(new(1));
+        Keep value = new(new BetaThinkingTurns(1));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Keep>(json);
 
@@ -136,7 +136,7 @@ public class KeepTest : TestBase
     [Fact]
     public void beta_all_thinking_turnsSerializationRoundtrip_Works()
     {
-        Keep value = new(new());
+        Keep value = new(new BetaAllThinkingTurns());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Keep>(json);
 
@@ -146,7 +146,7 @@ public class KeepTest : TestBase
     [Fact]
     public void allSerializationRoundtrip_Works()
     {
-        Keep value = new(new());
+        Keep value = new(new UnionMember2());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Keep>(json);
 

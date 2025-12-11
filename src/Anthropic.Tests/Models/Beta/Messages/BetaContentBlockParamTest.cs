@@ -10,7 +10,7 @@ public class BetaContentBlockParamTest : TestBase
     public void textValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaTextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -34,7 +34,7 @@ public class BetaContentBlockParamTest : TestBase
     public void imageValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaImageBlockParam()
             {
                 Source = new BetaBase64ImageSource()
                 {
@@ -51,7 +51,7 @@ public class BetaContentBlockParamTest : TestBase
     public void request_document_blockValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaRequestDocumentBlock()
             {
                 Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -67,7 +67,7 @@ public class BetaContentBlockParamTest : TestBase
     public void search_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaSearchResultBlockParam()
             {
                 Content =
                 [
@@ -100,14 +100,16 @@ public class BetaContentBlockParamTest : TestBase
     [Fact]
     public void thinkingValidation_Works()
     {
-        BetaContentBlockParam value = new(new() { Signature = "signature", Thinking = "thinking" });
+        BetaContentBlockParam value = new(
+            new BetaThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
+        );
         value.Validate();
     }
 
     [Fact]
     public void redacted_thinkingValidation_Works()
     {
-        BetaContentBlockParam value = new(new("data"));
+        BetaContentBlockParam value = new(new BetaRedactedThinkingBlockParam("data"));
         value.Validate();
     }
 
@@ -115,7 +117,7 @@ public class BetaContentBlockParamTest : TestBase
     public void tool_useValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaToolUseBlockParam()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -134,7 +136,7 @@ public class BetaContentBlockParamTest : TestBase
     public void tool_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -149,7 +151,7 @@ public class BetaContentBlockParamTest : TestBase
     public void server_tool_useValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaServerToolUseBlockParam()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Input = new Dictionary<string, JsonElement>()
@@ -168,7 +170,7 @@ public class BetaContentBlockParamTest : TestBase
     public void web_search_tool_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaWebSearchToolResultBlockParam()
             {
                 Content = new(
                     [
@@ -192,7 +194,7 @@ public class BetaContentBlockParamTest : TestBase
     public void web_fetch_tool_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaWebFetchToolResultBlockParam()
             {
                 Content = new BetaWebFetchToolResultErrorBlockParam(
                     BetaWebFetchToolResultErrorCode.InvalidToolInput
@@ -208,7 +210,7 @@ public class BetaContentBlockParamTest : TestBase
     public void code_execution_tool_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaCodeExecutionToolResultBlockParam()
             {
                 Content = new BetaCodeExecutionToolResultErrorParam(
                     BetaCodeExecutionToolResultErrorCode.InvalidToolInput
@@ -224,7 +226,7 @@ public class BetaContentBlockParamTest : TestBase
     public void bash_code_execution_tool_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaBashCodeExecutionToolResultBlockParam()
             {
                 Content = new BetaBashCodeExecutionToolResultErrorParam(
                     BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
@@ -240,7 +242,7 @@ public class BetaContentBlockParamTest : TestBase
     public void text_editor_code_execution_tool_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaTextEditorCodeExecutionToolResultBlockParam()
             {
                 Content = new BetaTextEditorCodeExecutionToolResultErrorParam()
                 {
@@ -259,7 +261,7 @@ public class BetaContentBlockParamTest : TestBase
     public void tool_search_tool_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaToolSearchToolResultBlockParam()
             {
                 Content = new BetaToolSearchToolResultErrorParam(
                     BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
@@ -275,7 +277,7 @@ public class BetaContentBlockParamTest : TestBase
     public void mcp_tool_useValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaMCPToolUseBlockParam()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -294,7 +296,7 @@ public class BetaContentBlockParamTest : TestBase
     public void request_mcp_tool_resultValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaRequestMCPToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -309,7 +311,7 @@ public class BetaContentBlockParamTest : TestBase
     public void container_uploadValidation_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaContainerUploadBlockParam()
             {
                 FileID = "file_id",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -322,7 +324,7 @@ public class BetaContentBlockParamTest : TestBase
     public void textSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaTextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -349,7 +351,7 @@ public class BetaContentBlockParamTest : TestBase
     public void imageSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaImageBlockParam()
             {
                 Source = new BetaBase64ImageSource()
                 {
@@ -369,7 +371,7 @@ public class BetaContentBlockParamTest : TestBase
     public void request_document_blockSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaRequestDocumentBlock()
             {
                 Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -388,7 +390,7 @@ public class BetaContentBlockParamTest : TestBase
     public void search_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaSearchResultBlockParam()
             {
                 Content =
                 [
@@ -424,7 +426,9 @@ public class BetaContentBlockParamTest : TestBase
     [Fact]
     public void thinkingSerializationRoundtrip_Works()
     {
-        BetaContentBlockParam value = new(new() { Signature = "signature", Thinking = "thinking" });
+        BetaContentBlockParam value = new(
+            new BetaThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(json);
 
@@ -434,7 +438,7 @@ public class BetaContentBlockParamTest : TestBase
     [Fact]
     public void redacted_thinkingSerializationRoundtrip_Works()
     {
-        BetaContentBlockParam value = new(new("data"));
+        BetaContentBlockParam value = new(new BetaRedactedThinkingBlockParam("data"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockParam>(json);
 
@@ -445,7 +449,7 @@ public class BetaContentBlockParamTest : TestBase
     public void tool_useSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaToolUseBlockParam()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -467,7 +471,7 @@ public class BetaContentBlockParamTest : TestBase
     public void tool_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -485,7 +489,7 @@ public class BetaContentBlockParamTest : TestBase
     public void server_tool_useSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaServerToolUseBlockParam()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Input = new Dictionary<string, JsonElement>()
@@ -507,7 +511,7 @@ public class BetaContentBlockParamTest : TestBase
     public void web_search_tool_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaWebSearchToolResultBlockParam()
             {
                 Content = new(
                     [
@@ -534,7 +538,7 @@ public class BetaContentBlockParamTest : TestBase
     public void web_fetch_tool_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaWebFetchToolResultBlockParam()
             {
                 Content = new BetaWebFetchToolResultErrorBlockParam(
                     BetaWebFetchToolResultErrorCode.InvalidToolInput
@@ -553,7 +557,7 @@ public class BetaContentBlockParamTest : TestBase
     public void code_execution_tool_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaCodeExecutionToolResultBlockParam()
             {
                 Content = new BetaCodeExecutionToolResultErrorParam(
                     BetaCodeExecutionToolResultErrorCode.InvalidToolInput
@@ -572,7 +576,7 @@ public class BetaContentBlockParamTest : TestBase
     public void bash_code_execution_tool_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaBashCodeExecutionToolResultBlockParam()
             {
                 Content = new BetaBashCodeExecutionToolResultErrorParam(
                     BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
@@ -591,7 +595,7 @@ public class BetaContentBlockParamTest : TestBase
     public void text_editor_code_execution_tool_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaTextEditorCodeExecutionToolResultBlockParam()
             {
                 Content = new BetaTextEditorCodeExecutionToolResultErrorParam()
                 {
@@ -613,7 +617,7 @@ public class BetaContentBlockParamTest : TestBase
     public void tool_search_tool_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaToolSearchToolResultBlockParam()
             {
                 Content = new BetaToolSearchToolResultErrorParam(
                     BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
@@ -632,7 +636,7 @@ public class BetaContentBlockParamTest : TestBase
     public void mcp_tool_useSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaMCPToolUseBlockParam()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -654,7 +658,7 @@ public class BetaContentBlockParamTest : TestBase
     public void request_mcp_tool_resultSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaRequestMCPToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -672,7 +676,7 @@ public class BetaContentBlockParamTest : TestBase
     public void container_uploadSerializationRoundtrip_Works()
     {
         BetaContentBlockParam value = new(
-            new()
+            new BetaContainerUploadBlockParam()
             {
                 FileID = "file_id",
                 CacheControl = new() { TTL = TTL.TTL5m },

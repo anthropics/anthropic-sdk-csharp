@@ -167,7 +167,9 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     public void beta_web_fetch_tool_result_error_block_paramValidation_Works()
     {
         BetaWebFetchToolResultBlockParamContent value = new(
-            new(BetaWebFetchToolResultErrorCode.InvalidToolInput)
+            new BetaWebFetchToolResultErrorBlockParam(
+                BetaWebFetchToolResultErrorCode.InvalidToolInput
+            )
         );
         value.Validate();
     }
@@ -176,7 +178,7 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     public void beta_web_fetch_block_paramValidation_Works()
     {
         BetaWebFetchToolResultBlockParamContent value = new(
-            new()
+            new BetaWebFetchBlockParam()
             {
                 Content = new()
                 {
@@ -197,7 +199,9 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     public void beta_web_fetch_tool_result_error_block_paramSerializationRoundtrip_Works()
     {
         BetaWebFetchToolResultBlockParamContent value = new(
-            new(BetaWebFetchToolResultErrorCode.InvalidToolInput)
+            new BetaWebFetchToolResultErrorBlockParam(
+                BetaWebFetchToolResultErrorCode.InvalidToolInput
+            )
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
@@ -211,7 +215,7 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     public void beta_web_fetch_block_paramSerializationRoundtrip_Works()
     {
         BetaWebFetchToolResultBlockParamContent value = new(
-            new()
+            new BetaWebFetchBlockParam()
             {
                 Content = new()
                 {

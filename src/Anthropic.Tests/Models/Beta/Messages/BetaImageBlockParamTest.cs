@@ -169,7 +169,11 @@ public class BetaImageBlockParamSourceTest : TestBase
     public void beta_base64_imageValidation_Works()
     {
         BetaImageBlockParamSource value = new(
-            new() { Data = "U3RhaW5sZXNzIHJvY2tz", MediaType = MediaType.ImageJPEG }
+            new BetaBase64ImageSource()
+            {
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJPEG,
+            }
         );
         value.Validate();
     }
@@ -177,14 +181,14 @@ public class BetaImageBlockParamSourceTest : TestBase
     [Fact]
     public void beta_url_imageValidation_Works()
     {
-        BetaImageBlockParamSource value = new(new("url"));
+        BetaImageBlockParamSource value = new(new BetaURLImageSource("url"));
         value.Validate();
     }
 
     [Fact]
     public void beta_file_imageValidation_Works()
     {
-        BetaImageBlockParamSource value = new(new("file_id"));
+        BetaImageBlockParamSource value = new(new BetaFileImageSource("file_id"));
         value.Validate();
     }
 
@@ -192,7 +196,11 @@ public class BetaImageBlockParamSourceTest : TestBase
     public void beta_base64_imageSerializationRoundtrip_Works()
     {
         BetaImageBlockParamSource value = new(
-            new() { Data = "U3RhaW5sZXNzIHJvY2tz", MediaType = MediaType.ImageJPEG }
+            new BetaBase64ImageSource()
+            {
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJPEG,
+            }
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(json);
@@ -203,7 +211,7 @@ public class BetaImageBlockParamSourceTest : TestBase
     [Fact]
     public void beta_url_imageSerializationRoundtrip_Works()
     {
-        BetaImageBlockParamSource value = new(new("url"));
+        BetaImageBlockParamSource value = new(new BetaURLImageSource("url"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(json);
 
@@ -213,7 +221,7 @@ public class BetaImageBlockParamSourceTest : TestBase
     [Fact]
     public void beta_file_imageSerializationRoundtrip_Works()
     {
-        BetaImageBlockParamSource value = new(new("file_id"));
+        BetaImageBlockParamSource value = new(new BetaFileImageSource("file_id"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaImageBlockParamSource>(json);
 

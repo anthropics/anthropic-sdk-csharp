@@ -2125,7 +2125,7 @@ public class ContainerTest : TestBase
     public void beta_container_paramsValidation_Works()
     {
         Container value = new(
-            new()
+            new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =
@@ -2153,7 +2153,7 @@ public class ContainerTest : TestBase
     public void beta_container_paramsSerializationRoundtrip_Works()
     {
         Container value = new(
-            new()
+            new Messages::BetaContainerParams()
             {
                 ID = "id",
                 Skills =

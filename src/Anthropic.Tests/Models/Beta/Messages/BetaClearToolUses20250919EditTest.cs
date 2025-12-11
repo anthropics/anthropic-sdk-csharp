@@ -284,21 +284,21 @@ public class TriggerTest : TestBase
     [Fact]
     public void beta_input_tokensValidation_Works()
     {
-        Trigger value = new(new(1));
+        Trigger value = new(new BetaInputTokensTrigger(1));
         value.Validate();
     }
 
     [Fact]
     public void beta_tool_usesValidation_Works()
     {
-        Trigger value = new(new(1));
+        Trigger value = new(new BetaToolUsesTrigger(1));
         value.Validate();
     }
 
     [Fact]
     public void beta_input_tokensSerializationRoundtrip_Works()
     {
-        Trigger value = new(new(1));
+        Trigger value = new(new BetaInputTokensTrigger(1));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Trigger>(json);
 
@@ -308,7 +308,7 @@ public class TriggerTest : TestBase
     [Fact]
     public void beta_tool_usesSerializationRoundtrip_Works()
     {
-        Trigger value = new(new(1));
+        Trigger value = new(new BetaToolUsesTrigger(1));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Trigger>(json);
 

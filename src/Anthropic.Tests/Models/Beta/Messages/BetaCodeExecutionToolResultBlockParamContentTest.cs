@@ -9,7 +9,9 @@ public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
     public void error_paramValidation_Works()
     {
         BetaCodeExecutionToolResultBlockParamContent value = new(
-            new(BetaCodeExecutionToolResultErrorCode.InvalidToolInput)
+            new BetaCodeExecutionToolResultErrorParam(
+                BetaCodeExecutionToolResultErrorCode.InvalidToolInput
+            )
         );
         value.Validate();
     }
@@ -18,7 +20,7 @@ public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
     public void result_block_paramValidation_Works()
     {
         BetaCodeExecutionToolResultBlockParamContent value = new(
-            new()
+            new BetaCodeExecutionResultBlockParam()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,
@@ -33,7 +35,9 @@ public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
     public void error_paramSerializationRoundtrip_Works()
     {
         BetaCodeExecutionToolResultBlockParamContent value = new(
-            new(BetaCodeExecutionToolResultErrorCode.InvalidToolInput)
+            new BetaCodeExecutionToolResultErrorParam(
+                BetaCodeExecutionToolResultErrorCode.InvalidToolInput
+            )
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParamContent>(
@@ -47,7 +51,7 @@ public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
     public void result_block_paramSerializationRoundtrip_Works()
     {
         BetaCodeExecutionToolResultBlockParamContent value = new(
-            new()
+            new BetaCodeExecutionResultBlockParam()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,

@@ -9,7 +9,7 @@ public class BetaTextCitationTest : TestBase
     public void citation_char_locationValidation_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationCharLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -26,7 +26,7 @@ public class BetaTextCitationTest : TestBase
     public void citation_page_locationValidation_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationPageLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -43,7 +43,7 @@ public class BetaTextCitationTest : TestBase
     public void citation_content_block_locationValidation_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationContentBlockLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -60,7 +60,7 @@ public class BetaTextCitationTest : TestBase
     public void citations_web_search_result_locationValidation_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationsWebSearchResultLocation()
             {
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
@@ -75,7 +75,7 @@ public class BetaTextCitationTest : TestBase
     public void citation_search_result_locationValidation_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationSearchResultLocation()
             {
                 CitedText = "cited_text",
                 EndBlockIndex = 0,
@@ -92,7 +92,7 @@ public class BetaTextCitationTest : TestBase
     public void citation_char_locationSerializationRoundtrip_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationCharLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -112,7 +112,7 @@ public class BetaTextCitationTest : TestBase
     public void citation_page_locationSerializationRoundtrip_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationPageLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -132,7 +132,7 @@ public class BetaTextCitationTest : TestBase
     public void citation_content_block_locationSerializationRoundtrip_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationContentBlockLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -152,7 +152,7 @@ public class BetaTextCitationTest : TestBase
     public void citations_web_search_result_locationSerializationRoundtrip_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationsWebSearchResultLocation()
             {
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
@@ -170,7 +170,7 @@ public class BetaTextCitationTest : TestBase
     public void citation_search_result_locationSerializationRoundtrip_Works()
     {
         BetaTextCitation value = new(
-            new()
+            new BetaCitationSearchResultLocation()
             {
                 CitedText = "cited_text",
                 EndBlockIndex = 0,

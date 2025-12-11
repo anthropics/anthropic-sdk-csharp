@@ -178,7 +178,7 @@ public class EditTest : TestBase
     public void beta_clear_tool_uses_20250919Validation_Works()
     {
         Edit value = new(
-            new()
+            new BetaClearToolUses20250919Edit()
             {
                 ClearAtLeast = new(0),
                 ClearToolInputs = true,
@@ -193,7 +193,7 @@ public class EditTest : TestBase
     [Fact]
     public void beta_clear_thinking_20251015Validation_Works()
     {
-        Edit value = new(new() { Keep = new BetaThinkingTurns(1) });
+        Edit value = new(new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) });
         value.Validate();
     }
 
@@ -201,7 +201,7 @@ public class EditTest : TestBase
     public void beta_clear_tool_uses_20250919SerializationRoundtrip_Works()
     {
         Edit value = new(
-            new()
+            new BetaClearToolUses20250919Edit()
             {
                 ClearAtLeast = new(0),
                 ClearToolInputs = true,
@@ -219,7 +219,7 @@ public class EditTest : TestBase
     [Fact]
     public void beta_clear_thinking_20251015SerializationRoundtrip_Works()
     {
-        Edit value = new(new() { Keep = new BetaThinkingTurns(1) });
+        Edit value = new(new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) });
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Edit>(json);
 

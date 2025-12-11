@@ -113,7 +113,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     public void beta_text_editor_code_execution_tool_result_errorValidation_Works()
     {
         BetaTextEditorCodeExecutionToolResultBlockContent value = new(
-            new()
+            new BetaTextEditorCodeExecutionToolResultError()
             {
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
@@ -126,7 +126,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     public void beta_text_editor_code_execution_view_result_blockValidation_Works()
     {
         BetaTextEditorCodeExecutionToolResultBlockContent value = new(
-            new()
+            new BetaTextEditorCodeExecutionViewResultBlock()
             {
                 Content = "content",
                 FileType = FileType.Text,
@@ -141,7 +141,9 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     [Fact]
     public void beta_text_editor_code_execution_create_result_blockValidation_Works()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(new(true));
+        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
+            new BetaTextEditorCodeExecutionCreateResultBlock(true)
+        );
         value.Validate();
     }
 
@@ -149,7 +151,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     public void beta_text_editor_code_execution_str_replace_result_blockValidation_Works()
     {
         BetaTextEditorCodeExecutionToolResultBlockContent value = new(
-            new()
+            new BetaTextEditorCodeExecutionStrReplaceResultBlock()
             {
                 Lines = ["string"],
                 NewLines = 0,
@@ -165,7 +167,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     public void beta_text_editor_code_execution_tool_result_errorSerializationRoundtrip_Works()
     {
         BetaTextEditorCodeExecutionToolResultBlockContent value = new(
-            new()
+            new BetaTextEditorCodeExecutionToolResultError()
             {
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
@@ -182,7 +184,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     public void beta_text_editor_code_execution_view_result_blockSerializationRoundtrip_Works()
     {
         BetaTextEditorCodeExecutionToolResultBlockContent value = new(
-            new()
+            new BetaTextEditorCodeExecutionViewResultBlock()
             {
                 Content = "content",
                 FileType = FileType.Text,
@@ -201,7 +203,9 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     [Fact]
     public void beta_text_editor_code_execution_create_result_blockSerializationRoundtrip_Works()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(new(true));
+        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
+            new BetaTextEditorCodeExecutionCreateResultBlock(true)
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(json);
@@ -213,7 +217,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     public void beta_text_editor_code_execution_str_replace_result_blockSerializationRoundtrip_Works()
     {
         BetaTextEditorCodeExecutionToolResultBlockContent value = new(
-            new()
+            new BetaTextEditorCodeExecutionStrReplaceResultBlock()
             {
                 Lines = ["string"],
                 NewLines = 0,

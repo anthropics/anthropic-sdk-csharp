@@ -10,7 +10,7 @@ public class ToolUnionTest : TestBase
     public void toolValidation_Works()
     {
         ToolUnion value = new(
-            new()
+            new Tool()
             {
                 InputSchema = new()
                 {
@@ -33,21 +33,25 @@ public class ToolUnionTest : TestBase
     [Fact]
     public void bash_20250124Validation_Works()
     {
-        ToolUnion value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        ToolUnion value = new(new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } });
         value.Validate();
     }
 
     [Fact]
     public void text_editor_20250124Validation_Works()
     {
-        ToolUnion value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        ToolUnion value = new(
+            new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         value.Validate();
     }
 
     [Fact]
     public void text_editor_20250429Validation_Works()
     {
-        ToolUnion value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        ToolUnion value = new(
+            new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         value.Validate();
     }
 
@@ -55,7 +59,7 @@ public class ToolUnionTest : TestBase
     public void text_editor_20250728Validation_Works()
     {
         ToolUnion value = new(
-            new()
+            new ToolTextEditor20250728()
             {
                 CacheControl = new() { TTL = TTL.TTL5m },
                 MaxCharacters = 1,
@@ -68,7 +72,7 @@ public class ToolUnionTest : TestBase
     public void web_search_tool_20250305Validation_Works()
     {
         ToolUnion value = new(
-            new()
+            new WebSearchTool20250305()
             {
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
@@ -90,7 +94,7 @@ public class ToolUnionTest : TestBase
     public void toolSerializationRoundtrip_Works()
     {
         ToolUnion value = new(
-            new()
+            new Tool()
             {
                 InputSchema = new()
                 {
@@ -116,7 +120,7 @@ public class ToolUnionTest : TestBase
     [Fact]
     public void bash_20250124SerializationRoundtrip_Works()
     {
-        ToolUnion value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        ToolUnion value = new(new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } });
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
 
@@ -126,7 +130,9 @@ public class ToolUnionTest : TestBase
     [Fact]
     public void text_editor_20250124SerializationRoundtrip_Works()
     {
-        ToolUnion value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        ToolUnion value = new(
+            new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
 
@@ -136,7 +142,9 @@ public class ToolUnionTest : TestBase
     [Fact]
     public void text_editor_20250429SerializationRoundtrip_Works()
     {
-        ToolUnion value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        ToolUnion value = new(
+            new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
 
@@ -147,7 +155,7 @@ public class ToolUnionTest : TestBase
     public void text_editor_20250728SerializationRoundtrip_Works()
     {
         ToolUnion value = new(
-            new()
+            new ToolTextEditor20250728()
             {
                 CacheControl = new() { TTL = TTL.TTL5m },
                 MaxCharacters = 1,
@@ -163,7 +171,7 @@ public class ToolUnionTest : TestBase
     public void web_search_tool_20250305SerializationRoundtrip_Works()
     {
         ToolUnion value = new(
-            new()
+            new WebSearchTool20250305()
             {
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],

@@ -86,7 +86,7 @@ public class ContentTest : TestBase
     [Fact]
     public void beta_bash_code_execution_tool_result_errorValidation_Works()
     {
-        Content value = new(new(ErrorCode.InvalidToolInput));
+        Content value = new(new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput));
         value.Validate();
     }
 
@@ -94,7 +94,7 @@ public class ContentTest : TestBase
     public void beta_bash_code_execution_result_blockValidation_Works()
     {
         Content value = new(
-            new()
+            new BetaBashCodeExecutionResultBlock()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,
@@ -108,7 +108,7 @@ public class ContentTest : TestBase
     [Fact]
     public void beta_bash_code_execution_tool_result_errorSerializationRoundtrip_Works()
     {
-        Content value = new(new(ErrorCode.InvalidToolInput));
+        Content value = new(new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Content>(json);
 
@@ -119,7 +119,7 @@ public class ContentTest : TestBase
     public void beta_bash_code_execution_result_blockSerializationRoundtrip_Works()
     {
         Content value = new(
-            new()
+            new BetaBashCodeExecutionResultBlock()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,

@@ -10,7 +10,7 @@ public class MessageCountTokensToolTest : TestBase
     public void toolValidation_Works()
     {
         MessageCountTokensTool value = new(
-            new()
+            new Tool()
             {
                 InputSchema = new()
                 {
@@ -33,21 +33,27 @@ public class MessageCountTokensToolTest : TestBase
     [Fact]
     public void tool_bash_20250124Validation_Works()
     {
-        MessageCountTokensTool value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        MessageCountTokensTool value = new(
+            new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         value.Validate();
     }
 
     [Fact]
     public void tool_text_editor_20250124Validation_Works()
     {
-        MessageCountTokensTool value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        MessageCountTokensTool value = new(
+            new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         value.Validate();
     }
 
     [Fact]
     public void tool_text_editor_20250429Validation_Works()
     {
-        MessageCountTokensTool value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        MessageCountTokensTool value = new(
+            new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         value.Validate();
     }
 
@@ -55,7 +61,7 @@ public class MessageCountTokensToolTest : TestBase
     public void tool_text_editor_20250728Validation_Works()
     {
         MessageCountTokensTool value = new(
-            new()
+            new ToolTextEditor20250728()
             {
                 CacheControl = new() { TTL = TTL.TTL5m },
                 MaxCharacters = 1,
@@ -68,7 +74,7 @@ public class MessageCountTokensToolTest : TestBase
     public void web_search_tool_20250305Validation_Works()
     {
         MessageCountTokensTool value = new(
-            new()
+            new WebSearchTool20250305()
             {
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
@@ -90,7 +96,7 @@ public class MessageCountTokensToolTest : TestBase
     public void toolSerializationRoundtrip_Works()
     {
         MessageCountTokensTool value = new(
-            new()
+            new Tool()
             {
                 InputSchema = new()
                 {
@@ -116,7 +122,9 @@ public class MessageCountTokensToolTest : TestBase
     [Fact]
     public void tool_bash_20250124SerializationRoundtrip_Works()
     {
-        MessageCountTokensTool value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        MessageCountTokensTool value = new(
+            new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
 
@@ -126,7 +134,9 @@ public class MessageCountTokensToolTest : TestBase
     [Fact]
     public void tool_text_editor_20250124SerializationRoundtrip_Works()
     {
-        MessageCountTokensTool value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        MessageCountTokensTool value = new(
+            new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
 
@@ -136,7 +146,9 @@ public class MessageCountTokensToolTest : TestBase
     [Fact]
     public void tool_text_editor_20250429SerializationRoundtrip_Works()
     {
-        MessageCountTokensTool value = new(new() { CacheControl = new() { TTL = TTL.TTL5m } });
+        MessageCountTokensTool value = new(
+            new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
 
@@ -147,7 +159,7 @@ public class MessageCountTokensToolTest : TestBase
     public void tool_text_editor_20250728SerializationRoundtrip_Works()
     {
         MessageCountTokensTool value = new(
-            new()
+            new ToolTextEditor20250728()
             {
                 CacheControl = new() { TTL = TTL.TTL5m },
                 MaxCharacters = 1,
@@ -163,7 +175,7 @@ public class MessageCountTokensToolTest : TestBase
     public void web_search_tool_20250305SerializationRoundtrip_Works()
     {
         MessageCountTokensTool value = new(
-            new()
+            new WebSearchTool20250305()
             {
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],

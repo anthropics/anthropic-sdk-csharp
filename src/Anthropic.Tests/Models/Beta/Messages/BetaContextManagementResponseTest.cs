@@ -117,21 +117,39 @@ public class AppliedEditTest : TestBase
     [Fact]
     public void beta_clear_tool_uses_20250919_edit_responseValidation_Works()
     {
-        AppliedEdit value = new(new() { ClearedInputTokens = 0, ClearedToolUses = 0 });
+        AppliedEdit value = new(
+            new BetaClearToolUses20250919EditResponse()
+            {
+                ClearedInputTokens = 0,
+                ClearedToolUses = 0,
+            }
+        );
         value.Validate();
     }
 
     [Fact]
     public void beta_clear_thinking_20251015_edit_responseValidation_Works()
     {
-        AppliedEdit value = new(new() { ClearedInputTokens = 0, ClearedThinkingTurns = 0 });
+        AppliedEdit value = new(
+            new BetaClearThinking20251015EditResponse()
+            {
+                ClearedInputTokens = 0,
+                ClearedThinkingTurns = 0,
+            }
+        );
         value.Validate();
     }
 
     [Fact]
     public void beta_clear_tool_uses_20250919_edit_responseSerializationRoundtrip_Works()
     {
-        AppliedEdit value = new(new() { ClearedInputTokens = 0, ClearedToolUses = 0 });
+        AppliedEdit value = new(
+            new BetaClearToolUses20250919EditResponse()
+            {
+                ClearedInputTokens = 0,
+                ClearedToolUses = 0,
+            }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<AppliedEdit>(json);
 
@@ -141,7 +159,13 @@ public class AppliedEditTest : TestBase
     [Fact]
     public void beta_clear_thinking_20251015_edit_responseSerializationRoundtrip_Works()
     {
-        AppliedEdit value = new(new() { ClearedInputTokens = 0, ClearedThinkingTurns = 0 });
+        AppliedEdit value = new(
+            new BetaClearThinking20251015EditResponse()
+            {
+                ClearedInputTokens = 0,
+                ClearedThinkingTurns = 0,
+            }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<AppliedEdit>(json);
 

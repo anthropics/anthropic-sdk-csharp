@@ -9,7 +9,7 @@ public class WebSearchToolResultBlockContentTest : TestBase
     public void errorValidation_Works()
     {
         WebSearchToolResultBlockContent value = new(
-            new(WebSearchToolResultErrorErrorCode.InvalidToolInput)
+            new WebSearchToolResultError(WebSearchToolResultErrorErrorCode.InvalidToolInput)
         );
         value.Validate();
     }
@@ -35,7 +35,7 @@ public class WebSearchToolResultBlockContentTest : TestBase
     public void errorSerializationRoundtrip_Works()
     {
         WebSearchToolResultBlockContent value = new(
-            new(WebSearchToolResultErrorErrorCode.InvalidToolInput)
+            new WebSearchToolResultError(WebSearchToolResultErrorErrorCode.InvalidToolInput)
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(json);

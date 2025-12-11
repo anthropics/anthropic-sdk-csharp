@@ -167,7 +167,9 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
     public void beta_tool_search_tool_result_error_paramValidation_Works()
     {
         BetaToolSearchToolResultBlockParamContent value = new(
-            new(BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput)
+            new BetaToolSearchToolResultErrorParam(
+                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
+            )
         );
         value.Validate();
     }
@@ -176,7 +178,7 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
     public void beta_tool_search_tool_search_result_block_paramValidation_Works()
     {
         BetaToolSearchToolResultBlockParamContent value = new(
-            new(
+            new BetaToolSearchToolSearchResultBlockParam(
                 [
                     new()
                     {
@@ -193,7 +195,9 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
     public void beta_tool_search_tool_result_error_paramSerializationRoundtrip_Works()
     {
         BetaToolSearchToolResultBlockParamContent value = new(
-            new(BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput)
+            new BetaToolSearchToolResultErrorParam(
+                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
+            )
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
@@ -207,7 +211,7 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
     public void beta_tool_search_tool_search_result_block_paramSerializationRoundtrip_Works()
     {
         BetaToolSearchToolResultBlockParamContent value = new(
-            new(
+            new BetaToolSearchToolSearchResultBlockParam(
                 [
                     new()
                     {

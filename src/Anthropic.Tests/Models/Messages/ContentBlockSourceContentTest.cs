@@ -9,7 +9,7 @@ public class ContentBlockSourceContentTest : TestBase
     public void text_block_paramValidation_Works()
     {
         ContentBlockSourceContent value = new(
-            new()
+            new TextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -33,7 +33,7 @@ public class ContentBlockSourceContentTest : TestBase
     public void image_block_paramValidation_Works()
     {
         ContentBlockSourceContent value = new(
-            new()
+            new ImageBlockParam()
             {
                 Source = new Base64ImageSource()
                 {
@@ -50,7 +50,7 @@ public class ContentBlockSourceContentTest : TestBase
     public void text_block_paramSerializationRoundtrip_Works()
     {
         ContentBlockSourceContent value = new(
-            new()
+            new TextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -77,7 +77,7 @@ public class ContentBlockSourceContentTest : TestBase
     public void image_block_paramSerializationRoundtrip_Works()
     {
         ContentBlockSourceContent value = new(
-            new()
+            new ImageBlockParam()
             {
                 Source = new Base64ImageSource()
                 {

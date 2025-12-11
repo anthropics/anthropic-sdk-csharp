@@ -9,7 +9,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     public void text_block_paramValidation_Works()
     {
         MessageBetaContentBlockSourceContent value = new(
-            new()
+            new BetaTextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -33,7 +33,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     public void image_block_paramValidation_Works()
     {
         MessageBetaContentBlockSourceContent value = new(
-            new()
+            new BetaImageBlockParam()
             {
                 Source = new BetaBase64ImageSource()
                 {
@@ -50,7 +50,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     public void text_block_paramSerializationRoundtrip_Works()
     {
         MessageBetaContentBlockSourceContent value = new(
-            new()
+            new BetaTextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -77,7 +77,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     public void image_block_paramSerializationRoundtrip_Works()
     {
         MessageBetaContentBlockSourceContent value = new(
-            new()
+            new BetaImageBlockParam()
             {
                 Source = new BetaBase64ImageSource()
                 {

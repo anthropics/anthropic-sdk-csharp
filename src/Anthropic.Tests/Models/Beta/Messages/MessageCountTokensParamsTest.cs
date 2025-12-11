@@ -85,7 +85,7 @@ public class ToolTest : TestBase
     public void betaValidation_Works()
     {
         Tool value = new(
-            new()
+            new BetaTool()
             {
                 InputSchema = new()
                 {
@@ -119,7 +119,7 @@ public class ToolTest : TestBase
     public void beta_tool_bash_20241022Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolBash20241022()
             {
                 AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -141,7 +141,7 @@ public class ToolTest : TestBase
     public void beta_tool_bash_20250124Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolBash20250124()
             {
                 AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -163,7 +163,7 @@ public class ToolTest : TestBase
     public void beta_code_execution_tool_20250522Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaCodeExecutionTool20250522()
             {
                 AllowedCallers = [AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -178,7 +178,7 @@ public class ToolTest : TestBase
     public void beta_code_execution_tool_20250825Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaCodeExecutionTool20250825()
             {
                 AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -193,7 +193,7 @@ public class ToolTest : TestBase
     public void beta_tool_computer_use_20241022Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolComputerUse20241022()
             {
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
@@ -218,7 +218,7 @@ public class ToolTest : TestBase
     public void beta_memory_tool_20250818Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaMemoryTool20250818()
             {
                 AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -240,7 +240,7 @@ public class ToolTest : TestBase
     public void beta_tool_computer_use_20250124Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolComputerUse20250124()
             {
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
@@ -265,7 +265,7 @@ public class ToolTest : TestBase
     public void beta_tool_text_editor_20241022Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolTextEditor20241022()
             {
                 AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -287,7 +287,7 @@ public class ToolTest : TestBase
     public void beta_tool_computer_use_20251124Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolComputerUse20251124()
             {
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
@@ -313,7 +313,7 @@ public class ToolTest : TestBase
     public void beta_tool_text_editor_20250124Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolTextEditor20250124()
             {
                 AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -335,7 +335,7 @@ public class ToolTest : TestBase
     public void beta_tool_text_editor_20250429Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolTextEditor20250429()
             {
                 AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -357,7 +357,7 @@ public class ToolTest : TestBase
     public void beta_tool_text_editor_20250728Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolTextEditor20250728()
             {
                 AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -380,7 +380,7 @@ public class ToolTest : TestBase
     public void beta_web_search_tool_20250305Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaWebSearchTool20250305()
             {
                 AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
                 AllowedDomains = ["string"],
@@ -405,7 +405,7 @@ public class ToolTest : TestBase
     public void beta_web_fetch_tool_20250910Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaWebFetchTool20250910()
             {
                 AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
                 AllowedDomains = ["string"],
@@ -425,7 +425,7 @@ public class ToolTest : TestBase
     public void beta_tool_search_tool_bm25_20251119Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolSearchToolBm25_20251119()
             {
                 Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
                 AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
@@ -441,7 +441,7 @@ public class ToolTest : TestBase
     public void beta_tool_search_tool_regex_20251119Validation_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolSearchToolRegex20251119()
             {
                 Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
                 AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
@@ -457,7 +457,7 @@ public class ToolTest : TestBase
     public void beta_mcp_toolsetValidation_Works()
     {
         Tool value = new(
-            new()
+            new BetaMCPToolset()
             {
                 MCPServerName = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -478,7 +478,7 @@ public class ToolTest : TestBase
     public void betaSerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaTool()
             {
                 InputSchema = new()
                 {
@@ -515,7 +515,7 @@ public class ToolTest : TestBase
     public void beta_tool_bash_20241022SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolBash20241022()
             {
                 AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -540,7 +540,7 @@ public class ToolTest : TestBase
     public void beta_tool_bash_20250124SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolBash20250124()
             {
                 AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -565,7 +565,7 @@ public class ToolTest : TestBase
     public void beta_code_execution_tool_20250522SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaCodeExecutionTool20250522()
             {
                 AllowedCallers = [AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -583,7 +583,7 @@ public class ToolTest : TestBase
     public void beta_code_execution_tool_20250825SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaCodeExecutionTool20250825()
             {
                 AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -601,7 +601,7 @@ public class ToolTest : TestBase
     public void beta_tool_computer_use_20241022SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolComputerUse20241022()
             {
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
@@ -629,7 +629,7 @@ public class ToolTest : TestBase
     public void beta_memory_tool_20250818SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaMemoryTool20250818()
             {
                 AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -654,7 +654,7 @@ public class ToolTest : TestBase
     public void beta_tool_computer_use_20250124SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolComputerUse20250124()
             {
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
@@ -682,7 +682,7 @@ public class ToolTest : TestBase
     public void beta_tool_text_editor_20241022SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolTextEditor20241022()
             {
                 AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -707,7 +707,7 @@ public class ToolTest : TestBase
     public void beta_tool_computer_use_20251124SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolComputerUse20251124()
             {
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
@@ -736,7 +736,7 @@ public class ToolTest : TestBase
     public void beta_tool_text_editor_20250124SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolTextEditor20250124()
             {
                 AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -761,7 +761,7 @@ public class ToolTest : TestBase
     public void beta_tool_text_editor_20250429SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolTextEditor20250429()
             {
                 AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -786,7 +786,7 @@ public class ToolTest : TestBase
     public void beta_tool_text_editor_20250728SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolTextEditor20250728()
             {
                 AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -812,7 +812,7 @@ public class ToolTest : TestBase
     public void beta_web_search_tool_20250305SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaWebSearchTool20250305()
             {
                 AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
                 AllowedDomains = ["string"],
@@ -840,7 +840,7 @@ public class ToolTest : TestBase
     public void beta_web_fetch_tool_20250910SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaWebFetchTool20250910()
             {
                 AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
                 AllowedDomains = ["string"],
@@ -863,7 +863,7 @@ public class ToolTest : TestBase
     public void beta_tool_search_tool_bm25_20251119SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolSearchToolBm25_20251119()
             {
                 Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
                 AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
@@ -882,7 +882,7 @@ public class ToolTest : TestBase
     public void beta_tool_search_tool_regex_20251119SerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaToolSearchToolRegex20251119()
             {
                 Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
                 AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
@@ -901,7 +901,7 @@ public class ToolTest : TestBase
     public void beta_mcp_toolsetSerializationRoundtrip_Works()
     {
         Tool value = new(
-            new()
+            new BetaMCPToolset()
             {
                 MCPServerName = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },

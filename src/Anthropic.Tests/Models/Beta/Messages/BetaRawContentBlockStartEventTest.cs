@@ -174,7 +174,7 @@ public class ContentBlockTest : TestBase
     public void beta_textValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaTextBlock()
             {
                 Citations =
                 [
@@ -197,14 +197,16 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void beta_thinkingValidation_Works()
     {
-        ContentBlock value = new(new() { Signature = "signature", Thinking = "thinking" });
+        ContentBlock value = new(
+            new BetaThinkingBlock() { Signature = "signature", Thinking = "thinking" }
+        );
         value.Validate();
     }
 
     [Fact]
     public void beta_redacted_thinkingValidation_Works()
     {
-        ContentBlock value = new(new("data"));
+        ContentBlock value = new(new BetaRedactedThinkingBlock("data"));
         value.Validate();
     }
 
@@ -212,7 +214,7 @@ public class ContentBlockTest : TestBase
     public void beta_tool_useValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -230,7 +232,7 @@ public class ContentBlockTest : TestBase
     public void beta_server_tool_useValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaServerToolUseBlock()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Caller = new BetaDirectCaller(),
@@ -248,7 +250,7 @@ public class ContentBlockTest : TestBase
     public void beta_web_search_tool_resultValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaWebSearchToolResultBlock()
             {
                 Content = new BetaWebSearchToolResultError(
                     BetaWebSearchToolResultErrorCode.InvalidToolInput
@@ -263,7 +265,7 @@ public class ContentBlockTest : TestBase
     public void beta_web_fetch_tool_resultValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaWebFetchToolResultBlock()
             {
                 Content = new BetaWebFetchToolResultErrorBlock(
                     BetaWebFetchToolResultErrorCode.InvalidToolInput
@@ -278,7 +280,7 @@ public class ContentBlockTest : TestBase
     public void beta_code_execution_tool_resultValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaCodeExecutionToolResultBlock()
             {
                 Content = new BetaCodeExecutionToolResultError(
                     BetaCodeExecutionToolResultErrorCode.InvalidToolInput
@@ -293,7 +295,7 @@ public class ContentBlockTest : TestBase
     public void beta_bash_code_execution_tool_resultValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaBashCodeExecutionToolResultBlock()
             {
                 Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
@@ -306,7 +308,7 @@ public class ContentBlockTest : TestBase
     public void beta_text_editor_code_execution_tool_resultValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaTextEditorCodeExecutionToolResultBlock()
             {
                 Content = new BetaTextEditorCodeExecutionToolResultError()
                 {
@@ -324,7 +326,7 @@ public class ContentBlockTest : TestBase
     public void beta_tool_search_tool_resultValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaToolSearchToolResultBlock()
             {
                 Content = new BetaToolSearchToolResultError()
                 {
@@ -341,7 +343,7 @@ public class ContentBlockTest : TestBase
     public void beta_mcp_tool_useValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaMCPToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -359,7 +361,7 @@ public class ContentBlockTest : TestBase
     public void beta_mcp_tool_resultValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaMCPToolResultBlock()
             {
                 Content = "string",
                 IsError = true,
@@ -372,7 +374,7 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void beta_container_uploadValidation_Works()
     {
-        ContentBlock value = new(new("file_id"));
+        ContentBlock value = new(new BetaContainerUploadBlock("file_id"));
         value.Validate();
     }
 
@@ -380,7 +382,7 @@ public class ContentBlockTest : TestBase
     public void beta_textSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaTextBlock()
             {
                 Citations =
                 [
@@ -406,7 +408,9 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void beta_thinkingSerializationRoundtrip_Works()
     {
-        ContentBlock value = new(new() { Signature = "signature", Thinking = "thinking" });
+        ContentBlock value = new(
+            new BetaThinkingBlock() { Signature = "signature", Thinking = "thinking" }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
 
@@ -416,7 +420,7 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void beta_redacted_thinkingSerializationRoundtrip_Works()
     {
-        ContentBlock value = new(new("data"));
+        ContentBlock value = new(new BetaRedactedThinkingBlock("data"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
 
@@ -427,7 +431,7 @@ public class ContentBlockTest : TestBase
     public void beta_tool_useSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -448,7 +452,7 @@ public class ContentBlockTest : TestBase
     public void beta_server_tool_useSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaServerToolUseBlock()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Caller = new BetaDirectCaller(),
@@ -469,7 +473,7 @@ public class ContentBlockTest : TestBase
     public void beta_web_search_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaWebSearchToolResultBlock()
             {
                 Content = new BetaWebSearchToolResultError(
                     BetaWebSearchToolResultErrorCode.InvalidToolInput
@@ -487,7 +491,7 @@ public class ContentBlockTest : TestBase
     public void beta_web_fetch_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaWebFetchToolResultBlock()
             {
                 Content = new BetaWebFetchToolResultErrorBlock(
                     BetaWebFetchToolResultErrorCode.InvalidToolInput
@@ -505,7 +509,7 @@ public class ContentBlockTest : TestBase
     public void beta_code_execution_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaCodeExecutionToolResultBlock()
             {
                 Content = new BetaCodeExecutionToolResultError(
                     BetaCodeExecutionToolResultErrorCode.InvalidToolInput
@@ -523,7 +527,7 @@ public class ContentBlockTest : TestBase
     public void beta_bash_code_execution_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaBashCodeExecutionToolResultBlock()
             {
                 Content = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
@@ -539,7 +543,7 @@ public class ContentBlockTest : TestBase
     public void beta_text_editor_code_execution_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaTextEditorCodeExecutionToolResultBlock()
             {
                 Content = new BetaTextEditorCodeExecutionToolResultError()
                 {
@@ -560,7 +564,7 @@ public class ContentBlockTest : TestBase
     public void beta_tool_search_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaToolSearchToolResultBlock()
             {
                 Content = new BetaToolSearchToolResultError()
                 {
@@ -580,7 +584,7 @@ public class ContentBlockTest : TestBase
     public void beta_mcp_tool_useSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaMCPToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -601,7 +605,7 @@ public class ContentBlockTest : TestBase
     public void beta_mcp_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new BetaMCPToolResultBlock()
             {
                 Content = "string",
                 IsError = true,
@@ -617,7 +621,7 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void beta_container_uploadSerializationRoundtrip_Works()
     {
-        ContentBlock value = new(new("file_id"));
+        ContentBlock value = new(new BetaContainerUploadBlock("file_id"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
 

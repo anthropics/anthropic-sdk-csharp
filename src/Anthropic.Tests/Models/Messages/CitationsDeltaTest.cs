@@ -119,7 +119,7 @@ public class CitationTest : TestBase
     public void char_locationValidation_Works()
     {
         Citation value = new(
-            new()
+            new CitationCharLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -136,7 +136,7 @@ public class CitationTest : TestBase
     public void page_locationValidation_Works()
     {
         Citation value = new(
-            new()
+            new CitationPageLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -153,7 +153,7 @@ public class CitationTest : TestBase
     public void content_block_locationValidation_Works()
     {
         Citation value = new(
-            new()
+            new CitationContentBlockLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -170,7 +170,7 @@ public class CitationTest : TestBase
     public void citations_web_search_result_locationValidation_Works()
     {
         Citation value = new(
-            new()
+            new CitationsWebSearchResultLocation()
             {
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
@@ -185,7 +185,7 @@ public class CitationTest : TestBase
     public void citations_search_result_locationValidation_Works()
     {
         Citation value = new(
-            new()
+            new CitationsSearchResultLocation()
             {
                 CitedText = "cited_text",
                 EndBlockIndex = 0,
@@ -202,7 +202,7 @@ public class CitationTest : TestBase
     public void char_locationSerializationRoundtrip_Works()
     {
         Citation value = new(
-            new()
+            new CitationCharLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -222,7 +222,7 @@ public class CitationTest : TestBase
     public void page_locationSerializationRoundtrip_Works()
     {
         Citation value = new(
-            new()
+            new CitationPageLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -242,7 +242,7 @@ public class CitationTest : TestBase
     public void content_block_locationSerializationRoundtrip_Works()
     {
         Citation value = new(
-            new()
+            new CitationContentBlockLocation()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -262,7 +262,7 @@ public class CitationTest : TestBase
     public void citations_web_search_result_locationSerializationRoundtrip_Works()
     {
         Citation value = new(
-            new()
+            new CitationsWebSearchResultLocation()
             {
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
@@ -280,7 +280,7 @@ public class CitationTest : TestBase
     public void citations_search_result_locationSerializationRoundtrip_Works()
     {
         Citation value = new(
-            new()
+            new CitationsSearchResultLocation()
             {
                 CitedText = "cited_text",
                 EndBlockIndex = 0,

@@ -164,35 +164,35 @@ public class SourceTest : TestBase
     [Fact]
     public void base64_pdfValidation_Works()
     {
-        Source value = new(new("U3RhaW5sZXNzIHJvY2tz"));
+        Source value = new(new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
         value.Validate();
     }
 
     [Fact]
     public void plain_textValidation_Works()
     {
-        Source value = new(new("data"));
+        Source value = new(new PlainTextSource("data"));
         value.Validate();
     }
 
     [Fact]
     public void content_blockValidation_Works()
     {
-        Source value = new(new(new Content("string")));
+        Source value = new(new ContentBlockSource(new Content("string")));
         value.Validate();
     }
 
     [Fact]
     public void url_pdfValidation_Works()
     {
-        Source value = new(new("url"));
+        Source value = new(new URLPDFSource("url"));
         value.Validate();
     }
 
     [Fact]
     public void base64_pdfSerializationRoundtrip_Works()
     {
-        Source value = new(new("U3RhaW5sZXNzIHJvY2tz"));
+        Source value = new(new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(json);
 
@@ -202,7 +202,7 @@ public class SourceTest : TestBase
     [Fact]
     public void plain_textSerializationRoundtrip_Works()
     {
-        Source value = new(new("data"));
+        Source value = new(new PlainTextSource("data"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(json);
 
@@ -212,7 +212,7 @@ public class SourceTest : TestBase
     [Fact]
     public void content_blockSerializationRoundtrip_Works()
     {
-        Source value = new(new(new Content("string")));
+        Source value = new(new ContentBlockSource(new Content("string")));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(json);
 
@@ -222,7 +222,7 @@ public class SourceTest : TestBase
     [Fact]
     public void url_pdfSerializationRoundtrip_Works()
     {
-        Source value = new(new("url"));
+        Source value = new(new URLPDFSource("url"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(json);
 

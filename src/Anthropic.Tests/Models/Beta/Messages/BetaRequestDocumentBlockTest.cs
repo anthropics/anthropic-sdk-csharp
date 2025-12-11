@@ -174,14 +174,14 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void beta_base64_pdfValidation_Works()
     {
-        BetaRequestDocumentBlockSource value = new(new("U3RhaW5sZXNzIHJvY2tz"));
+        BetaRequestDocumentBlockSource value = new(new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
         value.Validate();
     }
 
     [Fact]
     public void beta_plain_textValidation_Works()
     {
-        BetaRequestDocumentBlockSource value = new(new("data"));
+        BetaRequestDocumentBlockSource value = new(new BetaPlainTextSource("data"));
         value.Validate();
     }
 
@@ -189,7 +189,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     public void beta_content_blockValidation_Works()
     {
         BetaRequestDocumentBlockSource value = new(
-            new(new BetaContentBlockSourceContent("string"))
+            new BetaContentBlockSource(new BetaContentBlockSourceContent("string"))
         );
         value.Validate();
     }
@@ -197,21 +197,21 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void beta_url_pdfValidation_Works()
     {
-        BetaRequestDocumentBlockSource value = new(new("url"));
+        BetaRequestDocumentBlockSource value = new(new BetaURLPDFSource("url"));
         value.Validate();
     }
 
     [Fact]
     public void beta_file_documentValidation_Works()
     {
-        BetaRequestDocumentBlockSource value = new(new("file_id"));
+        BetaRequestDocumentBlockSource value = new(new BetaFileDocumentSource("file_id"));
         value.Validate();
     }
 
     [Fact]
     public void beta_base64_pdfSerializationRoundtrip_Works()
     {
-        BetaRequestDocumentBlockSource value = new(new("U3RhaW5sZXNzIHJvY2tz"));
+        BetaRequestDocumentBlockSource value = new(new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
 
@@ -221,7 +221,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void beta_plain_textSerializationRoundtrip_Works()
     {
-        BetaRequestDocumentBlockSource value = new(new("data"));
+        BetaRequestDocumentBlockSource value = new(new BetaPlainTextSource("data"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
 
@@ -232,7 +232,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     public void beta_content_blockSerializationRoundtrip_Works()
     {
         BetaRequestDocumentBlockSource value = new(
-            new(new BetaContentBlockSourceContent("string"))
+            new BetaContentBlockSource(new BetaContentBlockSourceContent("string"))
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
@@ -243,7 +243,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void beta_url_pdfSerializationRoundtrip_Works()
     {
-        BetaRequestDocumentBlockSource value = new(new("url"));
+        BetaRequestDocumentBlockSource value = new(new BetaURLPDFSource("url"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
 
@@ -253,7 +253,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void beta_file_documentSerializationRoundtrip_Works()
     {
-        BetaRequestDocumentBlockSource value = new(new("file_id"));
+        BetaRequestDocumentBlockSource value = new(new BetaFileDocumentSource("file_id"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(json);
 

@@ -107,7 +107,7 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     public void beta_tool_search_tool_result_errorValidation_Works()
     {
         BetaToolSearchToolResultBlockContent value = new(
-            new()
+            new BetaToolSearchToolResultError()
             {
                 ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
@@ -119,7 +119,9 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     [Fact]
     public void beta_tool_search_tool_search_result_blockValidation_Works()
     {
-        BetaToolSearchToolResultBlockContent value = new(new([new("tool_name")]));
+        BetaToolSearchToolResultBlockContent value = new(
+            new BetaToolSearchToolSearchResultBlock([new("tool_name")])
+        );
         value.Validate();
     }
 
@@ -127,7 +129,7 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     public void beta_tool_search_tool_result_errorSerializationRoundtrip_Works()
     {
         BetaToolSearchToolResultBlockContent value = new(
-            new()
+            new BetaToolSearchToolResultError()
             {
                 ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
@@ -142,7 +144,9 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     [Fact]
     public void beta_tool_search_tool_search_result_blockSerializationRoundtrip_Works()
     {
-        BetaToolSearchToolResultBlockContent value = new(new([new("tool_name")]));
+        BetaToolSearchToolResultBlockContent value = new(
+            new BetaToolSearchToolSearchResultBlock([new("tool_name")])
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(json);
 

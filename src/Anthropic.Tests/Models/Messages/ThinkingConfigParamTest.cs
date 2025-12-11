@@ -8,21 +8,21 @@ public class ThinkingConfigParamTest : TestBase
     [Fact]
     public void enabledValidation_Works()
     {
-        ThinkingConfigParam value = new(new(1024));
+        ThinkingConfigParam value = new(new ThinkingConfigEnabled(1024));
         value.Validate();
     }
 
     [Fact]
     public void disabledValidation_Works()
     {
-        ThinkingConfigParam value = new(new());
+        ThinkingConfigParam value = new(new ThinkingConfigDisabled());
         value.Validate();
     }
 
     [Fact]
     public void enabledSerializationRoundtrip_Works()
     {
-        ThinkingConfigParam value = new(new(1024));
+        ThinkingConfigParam value = new(new ThinkingConfigEnabled(1024));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(json);
 
@@ -32,7 +32,7 @@ public class ThinkingConfigParamTest : TestBase
     [Fact]
     public void disabledSerializationRoundtrip_Works()
     {
-        ThinkingConfigParam value = new(new());
+        ThinkingConfigParam value = new(new ThinkingConfigDisabled());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(json);
 

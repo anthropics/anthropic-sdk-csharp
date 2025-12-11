@@ -290,7 +290,7 @@ public class BlockTest : TestBase
     public void text_block_paramValidation_Works()
     {
         Block value = new(
-            new()
+            new TextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -314,7 +314,7 @@ public class BlockTest : TestBase
     public void image_block_paramValidation_Works()
     {
         Block value = new(
-            new()
+            new ImageBlockParam()
             {
                 Source = new Base64ImageSource()
                 {
@@ -331,7 +331,7 @@ public class BlockTest : TestBase
     public void search_result_block_paramValidation_Works()
     {
         Block value = new(
-            new()
+            new SearchResultBlockParam()
             {
                 Content =
                 [
@@ -365,7 +365,7 @@ public class BlockTest : TestBase
     public void document_block_paramValidation_Works()
     {
         Block value = new(
-            new()
+            new DocumentBlockParam()
             {
                 Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -381,7 +381,7 @@ public class BlockTest : TestBase
     public void text_block_paramSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new TextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -408,7 +408,7 @@ public class BlockTest : TestBase
     public void image_block_paramSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new ImageBlockParam()
             {
                 Source = new Base64ImageSource()
                 {
@@ -428,7 +428,7 @@ public class BlockTest : TestBase
     public void search_result_block_paramSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new SearchResultBlockParam()
             {
                 Content =
                 [
@@ -465,7 +465,7 @@ public class BlockTest : TestBase
     public void document_block_paramSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new DocumentBlockParam()
             {
                 Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
                 CacheControl = new() { TTL = TTL.TTL5m },

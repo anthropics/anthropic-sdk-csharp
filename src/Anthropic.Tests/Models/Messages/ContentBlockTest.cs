@@ -10,7 +10,7 @@ public class ContentBlockTest : TestBase
     public void textValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new TextBlock()
             {
                 Citations =
                 [
@@ -33,14 +33,16 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void thinkingValidation_Works()
     {
-        ContentBlock value = new(new() { Signature = "signature", Thinking = "thinking" });
+        ContentBlock value = new(
+            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
+        );
         value.Validate();
     }
 
     [Fact]
     public void redacted_thinkingValidation_Works()
     {
-        ContentBlock value = new(new("data"));
+        ContentBlock value = new(new RedactedThinkingBlock("data"));
         value.Validate();
     }
 
@@ -48,7 +50,7 @@ public class ContentBlockTest : TestBase
     public void tool_useValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new ToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -65,7 +67,7 @@ public class ContentBlockTest : TestBase
     public void server_tool_useValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new ServerToolUseBlock()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Input = new Dictionary<string, JsonElement>()
@@ -81,7 +83,7 @@ public class ContentBlockTest : TestBase
     public void web_search_tool_resultValidation_Works()
     {
         ContentBlock value = new(
-            new()
+            new WebSearchToolResultBlock()
             {
                 Content = new WebSearchToolResultError(
                     WebSearchToolResultErrorErrorCode.InvalidToolInput
@@ -96,7 +98,7 @@ public class ContentBlockTest : TestBase
     public void textSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new TextBlock()
             {
                 Citations =
                 [
@@ -122,7 +124,9 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void thinkingSerializationRoundtrip_Works()
     {
-        ContentBlock value = new(new() { Signature = "signature", Thinking = "thinking" });
+        ContentBlock value = new(
+            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
 
@@ -132,7 +136,7 @@ public class ContentBlockTest : TestBase
     [Fact]
     public void redacted_thinkingSerializationRoundtrip_Works()
     {
-        ContentBlock value = new(new("data"));
+        ContentBlock value = new(new RedactedThinkingBlock("data"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
 
@@ -143,7 +147,7 @@ public class ContentBlockTest : TestBase
     public void tool_useSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new ToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -163,7 +167,7 @@ public class ContentBlockTest : TestBase
     public void server_tool_useSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new ServerToolUseBlock()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Input = new Dictionary<string, JsonElement>()
@@ -182,7 +186,7 @@ public class ContentBlockTest : TestBase
     public void web_search_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlock value = new(
-            new()
+            new WebSearchToolResultBlock()
             {
                 Content = new WebSearchToolResultError(
                     WebSearchToolResultErrorErrorCode.InvalidToolInput

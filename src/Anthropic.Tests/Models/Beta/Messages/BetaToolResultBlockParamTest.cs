@@ -290,7 +290,7 @@ public class BlockTest : TestBase
     public void beta_text_block_paramValidation_Works()
     {
         Block value = new(
-            new()
+            new BetaTextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -314,7 +314,7 @@ public class BlockTest : TestBase
     public void beta_image_block_paramValidation_Works()
     {
         Block value = new(
-            new()
+            new BetaImageBlockParam()
             {
                 Source = new BetaBase64ImageSource()
                 {
@@ -331,7 +331,7 @@ public class BlockTest : TestBase
     public void beta_search_result_block_paramValidation_Works()
     {
         Block value = new(
-            new()
+            new BetaSearchResultBlockParam()
             {
                 Content =
                 [
@@ -365,7 +365,7 @@ public class BlockTest : TestBase
     public void beta_request_documentValidation_Works()
     {
         Block value = new(
-            new()
+            new BetaRequestDocumentBlock()
             {
                 Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -381,7 +381,7 @@ public class BlockTest : TestBase
     public void beta_tool_reference_block_paramValidation_Works()
     {
         Block value = new(
-            new()
+            new BetaToolReferenceBlockParam()
             {
                 ToolName = "tool_name",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -394,7 +394,7 @@ public class BlockTest : TestBase
     public void beta_text_block_paramSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new BetaTextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -421,7 +421,7 @@ public class BlockTest : TestBase
     public void beta_image_block_paramSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new BetaImageBlockParam()
             {
                 Source = new BetaBase64ImageSource()
                 {
@@ -441,7 +441,7 @@ public class BlockTest : TestBase
     public void beta_search_result_block_paramSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new BetaSearchResultBlockParam()
             {
                 Content =
                 [
@@ -478,7 +478,7 @@ public class BlockTest : TestBase
     public void beta_request_documentSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new BetaRequestDocumentBlock()
             {
                 Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -497,7 +497,7 @@ public class BlockTest : TestBase
     public void beta_tool_reference_block_paramSerializationRoundtrip_Works()
     {
         Block value = new(
-            new()
+            new BetaToolReferenceBlockParam()
             {
                 ToolName = "tool_name",
                 CacheControl = new() { TTL = TTL.TTL5m },

@@ -13,7 +13,7 @@ public class BetaMessageBatchResultTest : TestBase
     public void succeededValidation_Works()
     {
         BetaMessageBatchResult value = new(
-            new(
+            new BetaMessageBatchSucceededResult(
                 new Messages::BetaMessage()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
@@ -86,7 +86,7 @@ public class BetaMessageBatchResultTest : TestBase
     public void erroredValidation_Works()
     {
         BetaMessageBatchResult value = new(
-            new(
+            new BetaMessageBatchErroredResult(
                 new BetaErrorResponse()
                 {
                     Error = new BetaInvalidRequestError("message"),
@@ -100,14 +100,14 @@ public class BetaMessageBatchResultTest : TestBase
     [Fact]
     public void canceledValidation_Works()
     {
-        BetaMessageBatchResult value = new(new());
+        BetaMessageBatchResult value = new(new BetaMessageBatchCanceledResult());
         value.Validate();
     }
 
     [Fact]
     public void expiredValidation_Works()
     {
-        BetaMessageBatchResult value = new(new());
+        BetaMessageBatchResult value = new(new BetaMessageBatchExpiredResult());
         value.Validate();
     }
 
@@ -115,7 +115,7 @@ public class BetaMessageBatchResultTest : TestBase
     public void succeededSerializationRoundtrip_Works()
     {
         BetaMessageBatchResult value = new(
-            new(
+            new BetaMessageBatchSucceededResult(
                 new Messages::BetaMessage()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
@@ -191,7 +191,7 @@ public class BetaMessageBatchResultTest : TestBase
     public void erroredSerializationRoundtrip_Works()
     {
         BetaMessageBatchResult value = new(
-            new(
+            new BetaMessageBatchErroredResult(
                 new BetaErrorResponse()
                 {
                     Error = new BetaInvalidRequestError("message"),
@@ -208,7 +208,7 @@ public class BetaMessageBatchResultTest : TestBase
     [Fact]
     public void canceledSerializationRoundtrip_Works()
     {
-        BetaMessageBatchResult value = new(new());
+        BetaMessageBatchResult value = new(new BetaMessageBatchCanceledResult());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(json);
 
@@ -218,7 +218,7 @@ public class BetaMessageBatchResultTest : TestBase
     [Fact]
     public void expiredSerializationRoundtrip_Works()
     {
-        BetaMessageBatchResult value = new(new());
+        BetaMessageBatchResult value = new(new BetaMessageBatchExpiredResult());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(json);
 

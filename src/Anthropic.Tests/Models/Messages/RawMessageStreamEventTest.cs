@@ -9,7 +9,7 @@ public class RawMessageStreamEventTest : TestBase
     public void startValidation_Works()
     {
         RawMessageStreamEvent value = new(
-            new(
+            new RawMessageStartEvent(
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
@@ -59,7 +59,7 @@ public class RawMessageStreamEventTest : TestBase
     public void deltaValidation_Works()
     {
         RawMessageStreamEvent value = new(
-            new()
+            new RawMessageDeltaEvent()
             {
                 Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
                 Usage = new()
@@ -78,7 +78,7 @@ public class RawMessageStreamEventTest : TestBase
     [Fact]
     public void stopValidation_Works()
     {
-        RawMessageStreamEvent value = new(new());
+        RawMessageStreamEvent value = new(new RawMessageStopEvent());
         value.Validate();
     }
 
@@ -86,7 +86,7 @@ public class RawMessageStreamEventTest : TestBase
     public void content_block_startValidation_Works()
     {
         RawMessageStreamEvent value = new(
-            new()
+            new RawContentBlockStartEvent()
             {
                 ContentBlock = new TextBlock()
                 {
@@ -113,14 +113,16 @@ public class RawMessageStreamEventTest : TestBase
     [Fact]
     public void content_block_deltaValidation_Works()
     {
-        RawMessageStreamEvent value = new(new() { Delta = new TextDelta("text"), Index = 0 });
+        RawMessageStreamEvent value = new(
+            new RawContentBlockDeltaEvent() { Delta = new TextDelta("text"), Index = 0 }
+        );
         value.Validate();
     }
 
     [Fact]
     public void content_block_stopValidation_Works()
     {
-        RawMessageStreamEvent value = new(new(0));
+        RawMessageStreamEvent value = new(new RawContentBlockStopEvent(0));
         value.Validate();
     }
 
@@ -128,7 +130,7 @@ public class RawMessageStreamEventTest : TestBase
     public void startSerializationRoundtrip_Works()
     {
         RawMessageStreamEvent value = new(
-            new(
+            new RawMessageStartEvent(
                 new Message()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
@@ -181,7 +183,7 @@ public class RawMessageStreamEventTest : TestBase
     public void deltaSerializationRoundtrip_Works()
     {
         RawMessageStreamEvent value = new(
-            new()
+            new RawMessageDeltaEvent()
             {
                 Delta = new() { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" },
                 Usage = new()
@@ -203,7 +205,7 @@ public class RawMessageStreamEventTest : TestBase
     [Fact]
     public void stopSerializationRoundtrip_Works()
     {
-        RawMessageStreamEvent value = new(new());
+        RawMessageStreamEvent value = new(new RawMessageStopEvent());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
 
@@ -214,7 +216,7 @@ public class RawMessageStreamEventTest : TestBase
     public void content_block_startSerializationRoundtrip_Works()
     {
         RawMessageStreamEvent value = new(
-            new()
+            new RawContentBlockStartEvent()
             {
                 ContentBlock = new TextBlock()
                 {
@@ -244,7 +246,9 @@ public class RawMessageStreamEventTest : TestBase
     [Fact]
     public void content_block_deltaSerializationRoundtrip_Works()
     {
-        RawMessageStreamEvent value = new(new() { Delta = new TextDelta("text"), Index = 0 });
+        RawMessageStreamEvent value = new(
+            new RawContentBlockDeltaEvent() { Delta = new TextDelta("text"), Index = 0 }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
 
@@ -254,7 +258,7 @@ public class RawMessageStreamEventTest : TestBase
     [Fact]
     public void content_block_stopSerializationRoundtrip_Works()
     {
-        RawMessageStreamEvent value = new(new(0));
+        RawMessageStreamEvent value = new(new RawContentBlockStopEvent(0));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
 

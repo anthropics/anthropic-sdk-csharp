@@ -174,7 +174,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void textValidation_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new()
+            new TextBlock()
             {
                 Citations =
                 [
@@ -198,7 +198,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void thinkingValidation_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new() { Signature = "signature", Thinking = "thinking" }
+            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
         );
         value.Validate();
     }
@@ -206,7 +206,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     [Fact]
     public void redacted_thinkingValidation_Works()
     {
-        RawContentBlockStartEventContentBlock value = new(new("data"));
+        RawContentBlockStartEventContentBlock value = new(new RedactedThinkingBlock("data"));
         value.Validate();
     }
 
@@ -214,7 +214,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void tool_useValidation_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new()
+            new ToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -231,7 +231,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void server_tool_useValidation_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new()
+            new ServerToolUseBlock()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Input = new Dictionary<string, JsonElement>()
@@ -247,7 +247,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void web_search_tool_resultValidation_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new()
+            new WebSearchToolResultBlock()
             {
                 Content = new WebSearchToolResultError(
                     WebSearchToolResultErrorErrorCode.InvalidToolInput
@@ -262,7 +262,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void textSerializationRoundtrip_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new()
+            new TextBlock()
             {
                 Citations =
                 [
@@ -289,7 +289,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void thinkingSerializationRoundtrip_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new() { Signature = "signature", Thinking = "thinking" }
+            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(json);
@@ -300,7 +300,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     [Fact]
     public void redacted_thinkingSerializationRoundtrip_Works()
     {
-        RawContentBlockStartEventContentBlock value = new(new("data"));
+        RawContentBlockStartEventContentBlock value = new(new RedactedThinkingBlock("data"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(json);
 
@@ -311,7 +311,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void tool_useSerializationRoundtrip_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new()
+            new ToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -331,7 +331,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void server_tool_useSerializationRoundtrip_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new()
+            new ServerToolUseBlock()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Input = new Dictionary<string, JsonElement>()
@@ -350,7 +350,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void web_search_tool_resultSerializationRoundtrip_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
-            new()
+            new WebSearchToolResultBlock()
             {
                 Content = new WebSearchToolResultError(
                     WebSearchToolResultErrorErrorCode.InvalidToolInput

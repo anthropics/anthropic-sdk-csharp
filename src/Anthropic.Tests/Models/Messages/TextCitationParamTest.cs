@@ -9,7 +9,7 @@ public class TextCitationParamTest : TestBase
     public void citation_char_locationValidation_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationCharLocationParam()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -25,7 +25,7 @@ public class TextCitationParamTest : TestBase
     public void citation_page_locationValidation_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationPageLocationParam()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -41,7 +41,7 @@ public class TextCitationParamTest : TestBase
     public void citation_content_block_locationValidation_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationContentBlockLocationParam()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -57,7 +57,7 @@ public class TextCitationParamTest : TestBase
     public void citation_web_search_result_locationValidation_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationWebSearchResultLocationParam()
             {
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
@@ -72,7 +72,7 @@ public class TextCitationParamTest : TestBase
     public void citation_search_result_locationValidation_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationSearchResultLocationParam()
             {
                 CitedText = "cited_text",
                 EndBlockIndex = 0,
@@ -89,7 +89,7 @@ public class TextCitationParamTest : TestBase
     public void citation_char_locationSerializationRoundtrip_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationCharLocationParam()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -108,7 +108,7 @@ public class TextCitationParamTest : TestBase
     public void citation_page_locationSerializationRoundtrip_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationPageLocationParam()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -127,7 +127,7 @@ public class TextCitationParamTest : TestBase
     public void citation_content_block_locationSerializationRoundtrip_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationContentBlockLocationParam()
             {
                 CitedText = "cited_text",
                 DocumentIndex = 0,
@@ -146,7 +146,7 @@ public class TextCitationParamTest : TestBase
     public void citation_web_search_result_locationSerializationRoundtrip_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationWebSearchResultLocationParam()
             {
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
@@ -164,7 +164,7 @@ public class TextCitationParamTest : TestBase
     public void citation_search_result_locationSerializationRoundtrip_Works()
     {
         TextCitationParam value = new(
-            new()
+            new CitationSearchResultLocationParam()
             {
                 CitedText = "cited_text",
                 EndBlockIndex = 0,

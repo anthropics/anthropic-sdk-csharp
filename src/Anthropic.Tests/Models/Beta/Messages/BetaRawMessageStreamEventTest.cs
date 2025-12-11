@@ -11,7 +11,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void startValidation_Works()
     {
         Messages::BetaRawMessageStreamEvent value = new(
-            new(
+            new Messages::BetaRawMessageStartEvent(
                 new Messages::BetaMessage()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
@@ -84,7 +84,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void deltaValidation_Works()
     {
         Messages::BetaRawMessageStreamEvent value = new(
-            new()
+            new Messages::BetaRawMessageDeltaEvent()
             {
                 ContextManagement = new(
                     [
@@ -130,7 +130,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     [Fact]
     public void stopValidation_Works()
     {
-        Messages::BetaRawMessageStreamEvent value = new(new());
+        Messages::BetaRawMessageStreamEvent value = new(new Messages::BetaRawMessageStopEvent());
         value.Validate();
     }
 
@@ -138,7 +138,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void content_block_startValidation_Works()
     {
         Messages::BetaRawMessageStreamEvent value = new(
-            new()
+            new Messages::BetaRawContentBlockStartEvent()
             {
                 ContentBlock = new Messages::BetaTextBlock()
                 {
@@ -166,7 +166,11 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void content_block_deltaValidation_Works()
     {
         Messages::BetaRawMessageStreamEvent value = new(
-            new() { Delta = new Messages::BetaTextDelta("text"), Index = 0 }
+            new Messages::BetaRawContentBlockDeltaEvent()
+            {
+                Delta = new Messages::BetaTextDelta("text"),
+                Index = 0,
+            }
         );
         value.Validate();
     }
@@ -174,7 +178,9 @@ public class BetaRawMessageStreamEventTest : TestBase
     [Fact]
     public void content_block_stopValidation_Works()
     {
-        Messages::BetaRawMessageStreamEvent value = new(new(0));
+        Messages::BetaRawMessageStreamEvent value = new(
+            new Messages::BetaRawContentBlockStopEvent(0)
+        );
         value.Validate();
     }
 
@@ -182,7 +188,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void startSerializationRoundtrip_Works()
     {
         Messages::BetaRawMessageStreamEvent value = new(
-            new(
+            new Messages::BetaRawMessageStartEvent(
                 new Messages::BetaMessage()
                 {
                     ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
@@ -258,7 +264,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void deltaSerializationRoundtrip_Works()
     {
         Messages::BetaRawMessageStreamEvent value = new(
-            new()
+            new Messages::BetaRawMessageDeltaEvent()
             {
                 ContextManagement = new(
                     [
@@ -307,7 +313,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     [Fact]
     public void stopSerializationRoundtrip_Works()
     {
-        Messages::BetaRawMessageStreamEvent value = new(new());
+        Messages::BetaRawMessageStreamEvent value = new(new Messages::BetaRawMessageStopEvent());
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
 
@@ -318,7 +324,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void content_block_startSerializationRoundtrip_Works()
     {
         Messages::BetaRawMessageStreamEvent value = new(
-            new()
+            new Messages::BetaRawContentBlockStartEvent()
             {
                 ContentBlock = new Messages::BetaTextBlock()
                 {
@@ -349,7 +355,11 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void content_block_deltaSerializationRoundtrip_Works()
     {
         Messages::BetaRawMessageStreamEvent value = new(
-            new() { Delta = new Messages::BetaTextDelta("text"), Index = 0 }
+            new Messages::BetaRawContentBlockDeltaEvent()
+            {
+                Delta = new Messages::BetaTextDelta("text"),
+                Index = 0,
+            }
         );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
@@ -360,7 +370,9 @@ public class BetaRawMessageStreamEventTest : TestBase
     [Fact]
     public void content_block_stopSerializationRoundtrip_Works()
     {
-        Messages::BetaRawMessageStreamEvent value = new(new(0));
+        Messages::BetaRawMessageStreamEvent value = new(
+            new Messages::BetaRawContentBlockStopEvent(0)
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
 

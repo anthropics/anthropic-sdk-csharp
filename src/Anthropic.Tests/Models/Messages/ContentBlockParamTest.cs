@@ -10,7 +10,7 @@ public class ContentBlockParamTest : TestBase
     public void textValidation_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new TextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -34,7 +34,7 @@ public class ContentBlockParamTest : TestBase
     public void imageValidation_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new ImageBlockParam()
             {
                 Source = new Base64ImageSource()
                 {
@@ -51,7 +51,7 @@ public class ContentBlockParamTest : TestBase
     public void documentValidation_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new DocumentBlockParam()
             {
                 Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -67,7 +67,7 @@ public class ContentBlockParamTest : TestBase
     public void search_resultValidation_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new SearchResultBlockParam()
             {
                 Content =
                 [
@@ -100,14 +100,16 @@ public class ContentBlockParamTest : TestBase
     [Fact]
     public void thinkingValidation_Works()
     {
-        ContentBlockParam value = new(new() { Signature = "signature", Thinking = "thinking" });
+        ContentBlockParam value = new(
+            new ThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
+        );
         value.Validate();
     }
 
     [Fact]
     public void redacted_thinkingValidation_Works()
     {
-        ContentBlockParam value = new(new("data"));
+        ContentBlockParam value = new(new RedactedThinkingBlockParam("data"));
         value.Validate();
     }
 
@@ -115,7 +117,7 @@ public class ContentBlockParamTest : TestBase
     public void tool_useValidation_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new ToolUseBlockParam()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -133,7 +135,7 @@ public class ContentBlockParamTest : TestBase
     public void tool_resultValidation_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new ToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -148,7 +150,7 @@ public class ContentBlockParamTest : TestBase
     public void server_tool_useValidation_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new ServerToolUseBlockParam()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Input = new Dictionary<string, JsonElement>()
@@ -165,7 +167,7 @@ public class ContentBlockParamTest : TestBase
     public void web_search_tool_resultValidation_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new WebSearchToolResultBlockParam()
             {
                 Content = new(
                     [
@@ -189,7 +191,7 @@ public class ContentBlockParamTest : TestBase
     public void textSerializationRoundtrip_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new TextBlockParam()
             {
                 Text = "x",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -216,7 +218,7 @@ public class ContentBlockParamTest : TestBase
     public void imageSerializationRoundtrip_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new ImageBlockParam()
             {
                 Source = new Base64ImageSource()
                 {
@@ -236,7 +238,7 @@ public class ContentBlockParamTest : TestBase
     public void documentSerializationRoundtrip_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new DocumentBlockParam()
             {
                 Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -255,7 +257,7 @@ public class ContentBlockParamTest : TestBase
     public void search_resultSerializationRoundtrip_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new SearchResultBlockParam()
             {
                 Content =
                 [
@@ -291,7 +293,9 @@ public class ContentBlockParamTest : TestBase
     [Fact]
     public void thinkingSerializationRoundtrip_Works()
     {
-        ContentBlockParam value = new(new() { Signature = "signature", Thinking = "thinking" });
+        ContentBlockParam value = new(
+            new ThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
+        );
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
 
@@ -301,7 +305,7 @@ public class ContentBlockParamTest : TestBase
     [Fact]
     public void redacted_thinkingSerializationRoundtrip_Works()
     {
-        ContentBlockParam value = new(new("data"));
+        ContentBlockParam value = new(new RedactedThinkingBlockParam("data"));
         string json = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
 
@@ -312,7 +316,7 @@ public class ContentBlockParamTest : TestBase
     public void tool_useSerializationRoundtrip_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new ToolUseBlockParam()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -333,7 +337,7 @@ public class ContentBlockParamTest : TestBase
     public void tool_resultSerializationRoundtrip_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new ToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
                 CacheControl = new() { TTL = TTL.TTL5m },
@@ -351,7 +355,7 @@ public class ContentBlockParamTest : TestBase
     public void server_tool_useSerializationRoundtrip_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new ServerToolUseBlockParam()
             {
                 ID = "srvtoolu_SQfNkl1n_JR_",
                 Input = new Dictionary<string, JsonElement>()
@@ -371,7 +375,7 @@ public class ContentBlockParamTest : TestBase
     public void web_search_tool_resultSerializationRoundtrip_Works()
     {
         ContentBlockParam value = new(
-            new()
+            new WebSearchToolResultBlockParam()
             {
                 Content = new(
                     [
