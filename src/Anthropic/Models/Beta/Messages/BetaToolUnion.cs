@@ -1024,291 +1024,230 @@ sealed class BetaToolUnionConverter : JsonConverter<BetaToolUnion>
     )
     {
         var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+
+        // Check type field first to avoid trying all variants
+        string? typeStr = null;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaTool>(json, options);
-            if (deserialized != null)
+            if (json.TryGetProperty("type", out var typeElement))
             {
-                deserialized.Validate();
-                return new(deserialized, json);
+                typeStr = typeElement.GetString();
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch { }
+
+
+        // Route to specific type based on type field
+        switch (typeStr)
         {
-            // ignore
+            case "custom":
+            case null: // Fallback for tools without explicit type
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaTool>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "bash_20241022":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "bash_20250124":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "code_execution_20250522":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "code_execution_20250825":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "computer_20241022":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "memory_20250818":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "computer_20250124":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20250124>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "text_editor_20241022":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20241022>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "computer_20251124":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "text_editor_20250124":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250124>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "text_editor_20250429":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250429>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "text_editor_20250728":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "web_search_20250305":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "web_fetch_20250910":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "search_bm25_20251119":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolBm25_20251119>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "search_regex_20251119":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            case "mcp_toolset":
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(json, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, json);
+                    }
+                }
+                break;
+
+            default:
+                // Unknown tool type - throw exception with details so we can add support
+                var jsonStr = json.GetRawText();
+                throw new AnthropicInvalidDataException(
+                    $"Unknown tool type '{typeStr}'. Please add support for this tool type. JSON: {jsonStr}"
+                );
         }
 
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(json, options);
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(json, options);
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(json, options);
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20250124>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20241022>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250124>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250429>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(json, options);
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(json, options);
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolBm25_20251119>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(
-                json,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(json, options);
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, json);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
+        // If we get here, deserialization failed - return raw JSON as fallback
         return new(json);
     }
 

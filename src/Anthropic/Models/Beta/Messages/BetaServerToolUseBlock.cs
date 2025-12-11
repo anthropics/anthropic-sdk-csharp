@@ -1,4 +1,4 @@
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -20,10 +20,11 @@ public sealed record class BetaServerToolUseBlock : ModelBase
 
     /// <summary>
     /// Tool invocation directly from the model.
+    /// Optional - defaults to direct caller if absent.
     /// </summary>
-    public required Caller Caller
+    public Caller? Caller
     {
-        get { return ModelBase.GetNotNullClass<Caller>(this.RawData, "caller"); }
+        get { return ModelBase.GetNullableClass<Caller>(this.RawData, "caller"); }
         init { ModelBase.Set(this._rawData, "caller", value); }
     }
 
@@ -55,7 +56,7 @@ public sealed record class BetaServerToolUseBlock : ModelBase
     public override void Validate()
     {
         _ = this.ID;
-        this.Caller.Validate();
+        this.Caller?.Validate();
         _ = this.Input;
         this.Name.Validate();
         if (

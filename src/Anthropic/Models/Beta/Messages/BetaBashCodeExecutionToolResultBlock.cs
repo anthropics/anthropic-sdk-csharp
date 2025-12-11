@@ -1,4 +1,4 @@
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -305,40 +305,45 @@ sealed class ContentConverter : JsonConverter<Content>
     )
     {
         var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
-        try
+        
+        // Check type field first to avoid unnecessary deserialization attempts
+        var typeStr = json.TryGetProperty("type", out var typeElement) 
+            ? typeElement.GetString() 
+            : null;
+        
+        switch (typeStr)
         {
-            var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultError>(
-                json,
-                options
-            );
-            if (deserialized != null)
+            case "bash_code_execution_tool_result_error":
             {
-                deserialized.Validate();
-                return new(deserialized, json);
+                var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultError>(json, options);
+                if (deserialized != null)
+                {
+                    deserialized.Validate();
+                    return new(deserialized, json);
+                }
             }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlock>(
-                json,
-                options
-            );
-            if (deserialized != null)
+            break;
+            
+            case "bash_code_execution_result":
             {
-                deserialized.Validate();
-                return new(deserialized, json);
+                var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlock>(json, options);
+                if (deserialized != null)
+                {
+                    deserialized.Validate();
+                    return new(deserialized, json);
+                }
             }
+            break;
+            
+            default:
+                // Unknown type - throw exception with details
+                var jsonStr = json.GetRawText();
+                throw new AnthropicInvalidDataException(
+                    $"Unknown bash code execution result type '{typeStr}'. JSON: {jsonStr}"
+                );
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
+        
+        // Fallback if deserialization returned null
         return new(json);
     }
 

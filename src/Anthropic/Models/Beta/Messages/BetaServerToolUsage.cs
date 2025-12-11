@@ -1,4 +1,4 @@
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -12,25 +12,44 @@ public sealed record class BetaServerToolUsage : ModelBase
 {
     /// <summary>
     /// The number of web fetch tool requests.
+    /// Optional - only present when web_fetch was used.
     /// </summary>
-    public required long WebFetchRequests
+    public long? WebFetchRequests
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "web_fetch_requests"); }
-        init { ModelBase.Set(this._rawData, "web_fetch_requests", value); }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "web_fetch_requests"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawData, "web_fetch_requests", value);
+        }
     }
 
     /// <summary>
     /// The number of web search tool requests.
+    /// Optional - only present when web_search was used.
     /// </summary>
-    public required long WebSearchRequests
+    public long? WebSearchRequests
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
-        init { ModelBase.Set(this._rawData, "web_search_requests", value); }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "web_search_requests"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawData, "web_search_requests", value);
+        }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
+        // Both fields are optional - at least one should be present
         _ = this.WebFetchRequests;
         _ = this.WebSearchRequests;
     }
