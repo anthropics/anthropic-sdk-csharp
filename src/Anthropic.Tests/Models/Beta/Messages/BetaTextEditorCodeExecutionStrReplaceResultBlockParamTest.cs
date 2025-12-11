@@ -28,6 +28,7 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockParamTest : TestBas
         long expectedOldStart = 0;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.NotNull(model.Lines);
         Assert.Equal(expectedLines.Count, model.Lines.Count);
         for (int i = 0; i < expectedLines.Count; i++)
         {
@@ -85,6 +86,7 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockParamTest : TestBas
         long expectedOldStart = 0;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.Lines);
         Assert.Equal(expectedLines.Count, deserialized.Lines.Count);
         for (int i = 0; i < expectedLines.Count; i++)
         {

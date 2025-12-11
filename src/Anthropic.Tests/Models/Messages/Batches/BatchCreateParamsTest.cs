@@ -521,6 +521,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedMetadata, model.Metadata);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
+        Assert.NotNull(model.StopSequences);
         Assert.Equal(expectedStopSequences.Count, model.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
         {
@@ -531,6 +532,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedTemperature, model.Temperature);
         Assert.Equal(expectedThinking, model.Thinking);
         Assert.Equal(expectedToolChoice, model.ToolChoice);
+        Assert.NotNull(model.Tools);
         Assert.Equal(expectedTools.Count, model.Tools.Count);
         for (int i = 0; i < expectedTools.Count; i++)
         {
@@ -736,6 +738,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedMetadata, deserialized.Metadata);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
+        Assert.NotNull(deserialized.StopSequences);
         Assert.Equal(expectedStopSequences.Count, deserialized.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
         {
@@ -746,6 +749,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedTemperature, deserialized.Temperature);
         Assert.Equal(expectedThinking, deserialized.Thinking);
         Assert.Equal(expectedToolChoice, deserialized.ToolChoice);
+        Assert.NotNull(deserialized.Tools);
         Assert.Equal(expectedTools.Count, deserialized.Tools.Count);
         for (int i = 0; i < expectedTools.Count; i++)
         {

@@ -966,6 +966,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedContainer, model.Container);
         Assert.Equal(expectedContextManagement, model.ContextManagement);
+        Assert.NotNull(model.MCPServers);
         Assert.Equal(expectedMCPServers.Count, model.MCPServers.Count);
         for (int i = 0; i < expectedMCPServers.Count; i++)
         {
@@ -975,6 +976,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedOutputConfig, model.OutputConfig);
         Assert.Equal(expectedOutputFormat, model.OutputFormat);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
+        Assert.NotNull(model.StopSequences);
         Assert.Equal(expectedStopSequences.Count, model.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
         {
@@ -985,6 +987,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedTemperature, model.Temperature);
         Assert.Equal(expectedThinking, model.Thinking);
         Assert.Equal(expectedToolChoice, model.ToolChoice);
+        Assert.NotNull(model.Tools);
         Assert.Equal(expectedTools.Count, model.Tools.Count);
         for (int i = 0; i < expectedTools.Count; i++)
         {
@@ -1360,6 +1363,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedContainer, deserialized.Container);
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
+        Assert.NotNull(deserialized.MCPServers);
         Assert.Equal(expectedMCPServers.Count, deserialized.MCPServers.Count);
         for (int i = 0; i < expectedMCPServers.Count; i++)
         {
@@ -1369,6 +1373,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedOutputConfig, deserialized.OutputConfig);
         Assert.Equal(expectedOutputFormat, deserialized.OutputFormat);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
+        Assert.NotNull(deserialized.StopSequences);
         Assert.Equal(expectedStopSequences.Count, deserialized.StopSequences.Count);
         for (int i = 0; i < expectedStopSequences.Count; i++)
         {
@@ -1379,6 +1384,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedTemperature, deserialized.Temperature);
         Assert.Equal(expectedThinking, deserialized.Thinking);
         Assert.Equal(expectedToolChoice, deserialized.ToolChoice);
+        Assert.NotNull(deserialized.Tools);
         Assert.Equal(expectedTools.Count, deserialized.Tools.Count);
         for (int i = 0; i < expectedTools.Count; i++)
         {

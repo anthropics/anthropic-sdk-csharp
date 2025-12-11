@@ -367,6 +367,7 @@ public class InputSchemaTest : TestBase
 
             Assert.True(JsonElement.DeepEquals(value, model.Properties[item.Key]));
         }
+        Assert.NotNull(model.Required);
         Assert.Equal(expectedRequired.Count, model.Required.Count);
         for (int i = 0; i < expectedRequired.Count; i++)
         {
@@ -426,6 +427,7 @@ public class InputSchemaTest : TestBase
 
             Assert.True(JsonElement.DeepEquals(value, deserialized.Properties[item.Key]));
         }
+        Assert.NotNull(deserialized.Required);
         Assert.Equal(expectedRequired.Count, deserialized.Required.Count);
         for (int i = 0; i < expectedRequired.Count; i++)
         {

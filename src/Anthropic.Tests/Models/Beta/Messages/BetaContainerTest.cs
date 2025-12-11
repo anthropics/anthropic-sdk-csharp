@@ -39,6 +39,7 @@ public class BetaContainerTest : TestBase
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedExpiresAt, model.ExpiresAt);
+        Assert.NotNull(model.Skills);
         Assert.Equal(expectedSkills.Count, model.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
         {
@@ -106,6 +107,7 @@ public class BetaContainerTest : TestBase
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedExpiresAt, deserialized.ExpiresAt);
+        Assert.NotNull(deserialized.Skills);
         Assert.Equal(expectedSkills.Count, deserialized.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
         {

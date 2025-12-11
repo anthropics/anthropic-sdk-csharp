@@ -51,6 +51,7 @@ public class BetaToolTextEditor20250728Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.NotNull(model.AllowedCallers);
         Assert.Equal(expectedAllowedCallers.Count, model.AllowedCallers.Count);
         for (int i = 0; i < expectedAllowedCallers.Count; i++)
         {
@@ -58,6 +59,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         }
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedDeferLoading, model.DeferLoading);
+        Assert.NotNull(model.InputExamples);
         Assert.Equal(expectedInputExamples.Count, model.InputExamples.Count);
         for (int i = 0; i < expectedInputExamples.Count; i++)
         {
@@ -145,6 +147,7 @@ public class BetaToolTextEditor20250728Test : TestBase
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.AllowedCallers);
         Assert.Equal(expectedAllowedCallers.Count, deserialized.AllowedCallers.Count);
         for (int i = 0; i < expectedAllowedCallers.Count; i++)
         {
@@ -152,6 +155,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         }
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedDeferLoading, deserialized.DeferLoading);
+        Assert.NotNull(deserialized.InputExamples);
         Assert.Equal(expectedInputExamples.Count, deserialized.InputExamples.Count);
         for (int i = 0; i < expectedInputExamples.Count; i++)
         {
