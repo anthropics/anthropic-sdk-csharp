@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11205.157 d18.0
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anthropic", "src\Anthropic\Anthropic.csproj", "{5816A0C1-3BA1-454E-8D08-85B23DEF309D}"
 EndProject
@@ -10,6 +10,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anthropic.Foundry", "src\Anthropic.Foundry\Anthropic.Foundry.csproj", "{DD0E539D-6D5F-45EB-A807-01BE0A443604}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{93E58BA5-CEFE-447E-AC0C-F2C5BC4C411D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		CHANGELOG.md = CHANGELOG.md
+		SECURITY.md = SECURITY.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,5 +73,8 @@ Global
 		{5816A0C1-3BA1-454E-8D08-85B23DEF309D} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{0732C8A6-7313-4C33-AE2E-FFAA82EFB481} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{DD0E539D-6D5F-45EB-A807-01BE0A443604} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {05805E01-315A-44CB-BFA0-0CC2F0F56F87}
 	EndGlobalSection
 EndGlobal
