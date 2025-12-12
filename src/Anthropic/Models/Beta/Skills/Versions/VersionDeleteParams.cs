@@ -25,12 +25,9 @@ public sealed record class VersionDeleteParams : ParamsBase
     {
         get
         {
-            if (!this._rawHeaderData.TryGetValue("anthropic-beta", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ApiEnum<string, AnthropicBeta>>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
+                this.RawHeaderData,
+                "anthropic-beta"
             );
         }
         init
@@ -40,14 +37,14 @@ public sealed record class VersionDeleteParams : ParamsBase
                 return;
             }
 
-            this._rawHeaderData["anthropic-beta"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawHeaderData, "anthropic-beta", value);
         }
     }
 
     public VersionDeleteParams() { }
+
+    public VersionDeleteParams(VersionDeleteParams versionDeleteParams)
+        : base(versionDeleteParams) { }
 
     public VersionDeleteParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -70,6 +67,7 @@ public sealed record class VersionDeleteParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static VersionDeleteParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData

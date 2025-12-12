@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -21,46 +20,21 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("error_code", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error_code' cannot be null",
-                    new ArgumentOutOfRangeException("error_code", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<
-                ApiEnum<string, BetaCodeExecutionToolResultErrorCode>
-            >(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["error_code"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, BetaCodeExecutionToolResultErrorCode>>(
+                this.RawData,
+                "error_code"
             );
         }
+        init { ModelBase.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.ErrorCode.Validate();
@@ -80,6 +54,11 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"");
     }
 
+    public BetaCodeExecutionToolResultErrorParam(
+        BetaCodeExecutionToolResultErrorParam betaCodeExecutionToolResultErrorParam
+    )
+        : base(betaCodeExecutionToolResultErrorParam) { }
+
     public BetaCodeExecutionToolResultErrorParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -95,6 +74,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCodeExecutionToolResultErrorParamFromRaw.FromRawUnchecked"/>
     public static BetaCodeExecutionToolResultErrorParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -114,6 +94,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
 
 class BetaCodeExecutionToolResultErrorParamFromRaw : IFromRaw<BetaCodeExecutionToolResultErrorParam>
 {
+    /// <inheritdoc/>
     public BetaCodeExecutionToolResultErrorParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCodeExecutionToolResultErrorParam.FromRawUnchecked(rawData);

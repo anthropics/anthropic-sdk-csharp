@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,50 +13,17 @@ public sealed record class TextDelta : ModelBase
 {
     public required string Text
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("text", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'text' cannot be null",
-                    new ArgumentOutOfRangeException("text", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'text' cannot be null",
-                    new ArgumentNullException("text")
-                );
-        }
-        init
-        {
-            this._rawData["text"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
+        init { ModelBase.Set(this._rawData, "text", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
@@ -77,6 +43,9 @@ public sealed record class TextDelta : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
     }
 
+    public TextDelta(TextDelta textDelta)
+        : base(textDelta) { }
+
     public TextDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -92,6 +61,7 @@ public sealed record class TextDelta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="TextDeltaFromRaw.FromRawUnchecked"/>
     public static TextDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -107,6 +77,7 @@ public sealed record class TextDelta : ModelBase
 
 class TextDeltaFromRaw : IFromRaw<TextDelta>
 {
+    /// <inheritdoc/>
     public TextDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         TextDelta.FromRawUnchecked(rawData);
 }

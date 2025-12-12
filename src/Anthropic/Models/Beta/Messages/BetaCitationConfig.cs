@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
@@ -14,31 +12,20 @@ public sealed record class BetaCitationConfig : ModelBase
 {
     public required bool Enabled
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("enabled", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'enabled' cannot be null",
-                    new ArgumentOutOfRangeException("enabled", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<bool>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["enabled"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "enabled"); }
+        init { ModelBase.Set(this._rawData, "enabled", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Enabled;
     }
 
     public BetaCitationConfig() { }
+
+    public BetaCitationConfig(BetaCitationConfig betaCitationConfig)
+        : base(betaCitationConfig) { }
 
     public BetaCitationConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -53,6 +40,7 @@ public sealed record class BetaCitationConfig : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationConfigFromRaw.FromRawUnchecked"/>
     public static BetaCitationConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -70,6 +58,7 @@ public sealed record class BetaCitationConfig : ModelBase
 
 class BetaCitationConfigFromRaw : IFromRaw<BetaCitationConfig>
 {
+    /// <inheritdoc/>
     public BetaCitationConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaCitationConfig.FromRawUnchecked(rawData);
 }

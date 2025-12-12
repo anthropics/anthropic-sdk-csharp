@@ -21,60 +21,31 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("name", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'name' cannot be null",
-                    new System::ArgumentOutOfRangeException("name", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["name"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
+        init { ModelBase.Set(this._rawData, "name", value); }
     }
 
     public required ApiEnum<string, BetaToolSearchToolRegex20251119Type> Type
     {
         get
         {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<ApiEnum<string, BetaToolSearchToolRegex20251119Type>>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullClass<ApiEnum<string, BetaToolSearchToolRegex20251119Type>>(
+                this.RawData,
+                "type"
             );
         }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
-    public IReadOnlyList<ApiEnum<string, AllowedCaller9>>? AllowedCallers
+    public IReadOnlyList<
+        ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
+    >? AllowedCallers
     {
         get
         {
-            if (!this._rawData.TryGetValue("allowed_callers", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ApiEnum<string, AllowedCaller9>>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<
+                List<ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>>
+            >(this.RawData, "allowed_callers");
         }
         init
         {
@@ -83,10 +54,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
                 return;
             }
 
-            this._rawData["allowed_callers"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "allowed_callers", value);
         }
     }
 
@@ -97,21 +65,12 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
     {
         get
         {
-            if (!this._rawData.TryGetValue("cache_control", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<BetaCacheControlEphemeral?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+                this.RawData,
+                "cache_control"
             );
         }
-        init
-        {
-            this._rawData["cache_control"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -120,13 +79,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
     /// </summary>
     public bool? DeferLoading
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("defer_loading", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
         init
         {
             if (value == null)
@@ -134,22 +87,13 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
                 return;
             }
 
-            this._rawData["defer_loading"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "defer_loading", value);
         }
     }
 
     public bool? Strict
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("strict", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "strict"); }
         init
         {
             if (value == null)
@@ -157,13 +101,11 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
                 return;
             }
 
-            this._rawData["strict"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "strict", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -190,6 +132,11 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
         this.Name = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_regex\"");
     }
 
+    public BetaToolSearchToolRegex20251119(
+        BetaToolSearchToolRegex20251119 betaToolSearchToolRegex20251119
+    )
+        : base(betaToolSearchToolRegex20251119) { }
+
     public BetaToolSearchToolRegex20251119(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -205,6 +152,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaToolSearchToolRegex20251119FromRaw.FromRawUnchecked"/>
     public static BetaToolSearchToolRegex20251119 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -224,6 +172,7 @@ public sealed record class BetaToolSearchToolRegex20251119 : ModelBase
 
 class BetaToolSearchToolRegex20251119FromRaw : IFromRaw<BetaToolSearchToolRegex20251119>
 {
+    /// <inheritdoc/>
     public BetaToolSearchToolRegex20251119 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaToolSearchToolRegex20251119.FromRawUnchecked(rawData);
@@ -276,16 +225,17 @@ sealed class BetaToolSearchToolRegex20251119TypeConverter
     }
 }
 
-[JsonConverter(typeof(AllowedCaller9Converter))]
-public enum AllowedCaller9
+[JsonConverter(typeof(BetaToolSearchToolRegex20251119AllowedCallerConverter))]
+public enum BetaToolSearchToolRegex20251119AllowedCaller
 {
     Direct,
     CodeExecution20250825,
 }
 
-sealed class AllowedCaller9Converter : JsonConverter<AllowedCaller9>
+sealed class BetaToolSearchToolRegex20251119AllowedCallerConverter
+    : JsonConverter<BetaToolSearchToolRegex20251119AllowedCaller>
 {
-    public override AllowedCaller9 Read(
+    public override BetaToolSearchToolRegex20251119AllowedCaller Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -293,15 +243,16 @@ sealed class AllowedCaller9Converter : JsonConverter<AllowedCaller9>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "direct" => AllowedCaller9.Direct,
-            "code_execution_20250825" => AllowedCaller9.CodeExecution20250825,
-            _ => (AllowedCaller9)(-1),
+            "direct" => BetaToolSearchToolRegex20251119AllowedCaller.Direct,
+            "code_execution_20250825" =>
+                BetaToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825,
+            _ => (BetaToolSearchToolRegex20251119AllowedCaller)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        AllowedCaller9 value,
+        BetaToolSearchToolRegex20251119AllowedCaller value,
         JsonSerializerOptions options
     )
     {
@@ -309,8 +260,9 @@ sealed class AllowedCaller9Converter : JsonConverter<AllowedCaller9>
             writer,
             value switch
             {
-                AllowedCaller9.Direct => "direct",
-                AllowedCaller9.CodeExecution20250825 => "code_execution_20250825",
+                BetaToolSearchToolRegex20251119AllowedCaller.Direct => "direct",
+                BetaToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825 =>
+                    "code_execution_20250825",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

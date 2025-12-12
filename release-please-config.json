@@ -1,6 +1,6 @@
 {
   "packages": {
-    ".": {},
+    "src/Anthropic": {},
     "src/Anthropic.Foundry": {}
   },
   "$schema": "https://raw.githubusercontent.com/stainless-api/release-please/main/schemas/config.json",
@@ -60,7 +60,7 @@
       "hidden": true
     }
   ],
-  "release-type": "simple",
+  "release-type": "csharp",
   "extra-files": [
     {
       "type": "xml",

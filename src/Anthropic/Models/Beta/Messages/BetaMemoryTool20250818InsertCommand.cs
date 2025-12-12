@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -22,23 +21,8 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     /// </summary>
     public JsonElement Command
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("command", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'command' cannot be null",
-                    new ArgumentOutOfRangeException("command", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["command"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
+        init { ModelBase.Set(this._rawData, "command", value); }
     }
 
     /// <summary>
@@ -46,23 +30,8 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     /// </summary>
     public required long InsertLine
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("insert_line", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'insert_line' cannot be null",
-                    new ArgumentOutOfRangeException("insert_line", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["insert_line"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "insert_line"); }
+        init { ModelBase.Set(this._rawData, "insert_line", value); }
     }
 
     /// <summary>
@@ -70,27 +39,8 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     /// </summary>
     public required string InsertText
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("insert_text", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'insert_text' cannot be null",
-                    new ArgumentOutOfRangeException("insert_text", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'insert_text' cannot be null",
-                    new ArgumentNullException("insert_text")
-                );
-        }
-        init
-        {
-            this._rawData["insert_text"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "insert_text"); }
+        init { ModelBase.Set(this._rawData, "insert_text", value); }
     }
 
     /// <summary>
@@ -98,29 +48,11 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("path", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'path' cannot be null",
-                    new ArgumentOutOfRangeException("path", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'path' cannot be null",
-                    new ArgumentNullException("path")
-                );
-        }
-        init
-        {
-            this._rawData["path"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
+        init { ModelBase.Set(this._rawData, "path", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         if (
@@ -142,6 +74,11 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"insert\"");
     }
 
+    public BetaMemoryTool20250818InsertCommand(
+        BetaMemoryTool20250818InsertCommand betaMemoryTool20250818InsertCommand
+    )
+        : base(betaMemoryTool20250818InsertCommand) { }
+
     public BetaMemoryTool20250818InsertCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -157,6 +94,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMemoryTool20250818InsertCommandFromRaw.FromRawUnchecked"/>
     public static BetaMemoryTool20250818InsertCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -167,6 +105,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
 
 class BetaMemoryTool20250818InsertCommandFromRaw : IFromRaw<BetaMemoryTool20250818InsertCommand>
 {
+    /// <inheritdoc/>
     public BetaMemoryTool20250818InsertCommand FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaMemoryTool20250818InsertCommand.FromRawUnchecked(rawData);

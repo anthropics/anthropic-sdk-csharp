@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
@@ -18,31 +16,20 @@ public sealed record class MessageTokensCount : ModelBase
     /// </summary>
     public required long InputTokens
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("input_tokens", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'input_tokens' cannot be null",
-                    new ArgumentOutOfRangeException("input_tokens", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["input_tokens"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
+        init { ModelBase.Set(this._rawData, "input_tokens", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.InputTokens;
     }
 
     public MessageTokensCount() { }
+
+    public MessageTokensCount(MessageTokensCount messageTokensCount)
+        : base(messageTokensCount) { }
 
     public MessageTokensCount(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -57,6 +44,7 @@ public sealed record class MessageTokensCount : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageTokensCountFromRaw.FromRawUnchecked"/>
     public static MessageTokensCount FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -74,6 +62,7 @@ public sealed record class MessageTokensCount : ModelBase
 
 class MessageTokensCountFromRaw : IFromRaw<MessageTokensCount>
 {
+    /// <inheritdoc/>
     public MessageTokensCount FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         MessageTokensCount.FromRawUnchecked(rawData);
 }

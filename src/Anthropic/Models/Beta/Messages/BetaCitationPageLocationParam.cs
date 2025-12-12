@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,134 +15,41 @@ public sealed record class BetaCitationPageLocationParam : ModelBase
 {
     public required string CitedText
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("cited_text", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'cited_text' cannot be null",
-                    new ArgumentOutOfRangeException("cited_text", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'cited_text' cannot be null",
-                    new ArgumentNullException("cited_text")
-                );
-        }
-        init
-        {
-            this._rawData["cited_text"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
+        init { ModelBase.Set(this._rawData, "cited_text", value); }
     }
 
     public required long DocumentIndex
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("document_index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'document_index' cannot be null",
-                    new ArgumentOutOfRangeException("document_index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["document_index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "document_index"); }
+        init { ModelBase.Set(this._rawData, "document_index", value); }
     }
 
     public required string? DocumentTitle
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("document_title", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["document_title"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "document_title"); }
+        init { ModelBase.Set(this._rawData, "document_title", value); }
     }
 
     public required long EndPageNumber
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("end_page_number", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'end_page_number' cannot be null",
-                    new ArgumentOutOfRangeException("end_page_number", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["end_page_number"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "end_page_number"); }
+        init { ModelBase.Set(this._rawData, "end_page_number", value); }
     }
 
     public required long StartPageNumber
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("start_page_number", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'start_page_number' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "start_page_number",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["start_page_number"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "start_page_number"); }
+        init { ModelBase.Set(this._rawData, "start_page_number", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CitedText;
@@ -167,6 +73,11 @@ public sealed record class BetaCitationPageLocationParam : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
     }
 
+    public BetaCitationPageLocationParam(
+        BetaCitationPageLocationParam betaCitationPageLocationParam
+    )
+        : base(betaCitationPageLocationParam) { }
+
     public BetaCitationPageLocationParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -182,6 +93,7 @@ public sealed record class BetaCitationPageLocationParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationPageLocationParamFromRaw.FromRawUnchecked"/>
     public static BetaCitationPageLocationParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -192,6 +104,7 @@ public sealed record class BetaCitationPageLocationParam : ModelBase
 
 class BetaCitationPageLocationParamFromRaw : IFromRaw<BetaCitationPageLocationParam>
 {
+    /// <inheritdoc/>
     public BetaCitationPageLocationParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCitationPageLocationParam.FromRawUnchecked(rawData);

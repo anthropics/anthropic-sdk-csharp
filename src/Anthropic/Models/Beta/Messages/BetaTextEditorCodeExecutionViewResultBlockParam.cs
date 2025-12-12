@@ -19,27 +19,8 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Mod
 {
     public required string Content
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("content", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new System::ArgumentOutOfRangeException("content", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'content' cannot be null",
-                    new System::ArgumentNullException("content")
-                );
-        }
-        init
-        {
-            this._rawData["content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "content"); }
+        init { ModelBase.Set(this._rawData, "content", value); }
     }
 
     public required ApiEnum<
@@ -49,103 +30,38 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Mod
     {
         get
         {
-            if (!this._rawData.TryGetValue("file_type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'file_type' cannot be null",
-                    new System::ArgumentOutOfRangeException(
-                        "file_type",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<
+            return ModelBase.GetNotNullClass<
                 ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>
-            >(element, ModelBase.SerializerOptions);
+            >(this.RawData, "file_type");
         }
-        init
-        {
-            this._rawData["file_type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        init { ModelBase.Set(this._rawData, "file_type", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new System::ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public long? NumLines
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("num_lines", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["num_lines"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "num_lines"); }
+        init { ModelBase.Set(this._rawData, "num_lines", value); }
     }
 
     public long? StartLine
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("start_line", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["start_line"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "start_line"); }
+        init { ModelBase.Set(this._rawData, "start_line", value); }
     }
 
     public long? TotalLines
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("total_lines", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<long?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["total_lines"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<long>(this.RawData, "total_lines"); }
+        init { ModelBase.Set(this._rawData, "total_lines", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Content;
@@ -174,6 +90,11 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Mod
     }
 
     public BetaTextEditorCodeExecutionViewResultBlockParam(
+        BetaTextEditorCodeExecutionViewResultBlockParam betaTextEditorCodeExecutionViewResultBlockParam
+    )
+        : base(betaTextEditorCodeExecutionViewResultBlockParam) { }
+
+    public BetaTextEditorCodeExecutionViewResultBlockParam(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -192,6 +113,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Mod
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaTextEditorCodeExecutionViewResultBlockParamFromRaw.FromRawUnchecked"/>
     public static BetaTextEditorCodeExecutionViewResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -203,6 +125,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Mod
 class BetaTextEditorCodeExecutionViewResultBlockParamFromRaw
     : IFromRaw<BetaTextEditorCodeExecutionViewResultBlockParam>
 {
+    /// <inheritdoc/>
     public BetaTextEditorCodeExecutionViewResultBlockParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaTextEditorCodeExecutionViewResultBlockParam.FromRawUnchecked(rawData);

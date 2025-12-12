@@ -1,4 +1,4 @@
 {
-  ".": "11.0.0",
+  "src/Anthropic": "11.0.0",
   "src/Anthropic.Foundry": "0.1.0"
 }

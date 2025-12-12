@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,50 +13,17 @@ public sealed record class BetaFileDocumentSource : ModelBase
 {
     public required string FileID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("file_id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'file_id' cannot be null",
-                    new ArgumentOutOfRangeException("file_id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'file_id' cannot be null",
-                    new ArgumentNullException("file_id")
-                );
-        }
-        init
-        {
-            this._rawData["file_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_id"); }
+        init { ModelBase.Set(this._rawData, "file_id", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.FileID;
@@ -71,6 +37,9 @@ public sealed record class BetaFileDocumentSource : ModelBase
     {
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
     }
+
+    public BetaFileDocumentSource(BetaFileDocumentSource betaFileDocumentSource)
+        : base(betaFileDocumentSource) { }
 
     public BetaFileDocumentSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -87,6 +56,7 @@ public sealed record class BetaFileDocumentSource : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaFileDocumentSourceFromRaw.FromRawUnchecked"/>
     public static BetaFileDocumentSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -104,6 +74,7 @@ public sealed record class BetaFileDocumentSource : ModelBase
 
 class BetaFileDocumentSourceFromRaw : IFromRaw<BetaFileDocumentSource>
 {
+    /// <inheritdoc/>
     public BetaFileDocumentSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaFileDocumentSource.FromRawUnchecked(rawData);

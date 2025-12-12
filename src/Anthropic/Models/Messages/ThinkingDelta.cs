@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,50 +13,17 @@ public sealed record class ThinkingDelta : ModelBase
 {
     public required string Thinking
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("thinking", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'thinking' cannot be null",
-                    new ArgumentOutOfRangeException("thinking", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'thinking' cannot be null",
-                    new ArgumentNullException("thinking")
-                );
-        }
-        init
-        {
-            this._rawData["thinking"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "thinking"); }
+        init { ModelBase.Set(this._rawData, "thinking", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Thinking;
@@ -77,6 +43,9 @@ public sealed record class ThinkingDelta : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
     }
 
+    public ThinkingDelta(ThinkingDelta thinkingDelta)
+        : base(thinkingDelta) { }
+
     public ThinkingDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -92,6 +61,7 @@ public sealed record class ThinkingDelta : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ThinkingDeltaFromRaw.FromRawUnchecked"/>
     public static ThinkingDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -107,6 +77,7 @@ public sealed record class ThinkingDelta : ModelBase
 
 class ThinkingDeltaFromRaw : IFromRaw<ThinkingDelta>
 {
+    /// <inheritdoc/>
     public ThinkingDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ThinkingDelta.FromRawUnchecked(rawData);
 }

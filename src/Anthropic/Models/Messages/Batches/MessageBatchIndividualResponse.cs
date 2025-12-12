@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages.Batches;
 
@@ -26,27 +24,8 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
     /// </summary>
     public required string CustomID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("custom_id", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'custom_id' cannot be null",
-                    new ArgumentOutOfRangeException("custom_id", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'custom_id' cannot be null",
-                    new ArgumentNullException("custom_id")
-                );
-        }
-        init
-        {
-            this._rawData["custom_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "custom_id"); }
+        init { ModelBase.Set(this._rawData, "custom_id", value); }
     }
 
     /// <summary>
@@ -58,32 +37,11 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
     /// </summary>
     public required MessageBatchResult Result
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("result", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'result' cannot be null",
-                    new ArgumentOutOfRangeException("result", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<MessageBatchResult>(
-                    element,
-                    ModelBase.SerializerOptions
-                )
-                ?? throw new AnthropicInvalidDataException(
-                    "'result' cannot be null",
-                    new ArgumentNullException("result")
-                );
-        }
-        init
-        {
-            this._rawData["result"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<MessageBatchResult>(this.RawData, "result"); }
+        init { ModelBase.Set(this._rawData, "result", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CustomID;
@@ -91,6 +49,11 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
     }
 
     public MessageBatchIndividualResponse() { }
+
+    public MessageBatchIndividualResponse(
+        MessageBatchIndividualResponse messageBatchIndividualResponse
+    )
+        : base(messageBatchIndividualResponse) { }
 
     public MessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -105,6 +68,7 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MessageBatchIndividualResponseFromRaw.FromRawUnchecked"/>
     public static MessageBatchIndividualResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -115,6 +79,7 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
 
 class MessageBatchIndividualResponseFromRaw : IFromRaw<MessageBatchIndividualResponse>
 {
+    /// <inheritdoc/>
     public MessageBatchIndividualResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MessageBatchIndividualResponse.FromRawUnchecked(rawData);

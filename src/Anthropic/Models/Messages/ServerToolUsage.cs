@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
@@ -17,34 +15,20 @@ public sealed record class ServerToolUsage : ModelBase
     /// </summary>
     public required long WebSearchRequests
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("web_search_requests", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'web_search_requests' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "web_search_requests",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<long>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["web_search_requests"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
+        init { ModelBase.Set(this._rawData, "web_search_requests", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.WebSearchRequests;
     }
 
     public ServerToolUsage() { }
+
+    public ServerToolUsage(ServerToolUsage serverToolUsage)
+        : base(serverToolUsage) { }
 
     public ServerToolUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -59,6 +43,7 @@ public sealed record class ServerToolUsage : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ServerToolUsageFromRaw.FromRawUnchecked"/>
     public static ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -74,6 +59,7 @@ public sealed record class ServerToolUsage : ModelBase
 
 class ServerToolUsageFromRaw : IFromRaw<ServerToolUsage>
 {
+    /// <inheritdoc/>
     public ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ServerToolUsage.FromRawUnchecked(rawData);
 }

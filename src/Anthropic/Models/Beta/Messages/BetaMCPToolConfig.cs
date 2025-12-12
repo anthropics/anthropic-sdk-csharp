@@ -15,13 +15,7 @@ public sealed record class BetaMCPToolConfig : ModelBase
 {
     public bool? DeferLoading
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("defer_loading", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
         init
         {
             if (value == null)
@@ -29,22 +23,13 @@ public sealed record class BetaMCPToolConfig : ModelBase
                 return;
             }
 
-            this._rawData["defer_loading"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "defer_loading", value);
         }
     }
 
     public bool? Enabled
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("enabled", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "enabled"); }
         init
         {
             if (value == null)
@@ -52,13 +37,11 @@ public sealed record class BetaMCPToolConfig : ModelBase
                 return;
             }
 
-            this._rawData["enabled"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "enabled", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.DeferLoading;
@@ -66,6 +49,9 @@ public sealed record class BetaMCPToolConfig : ModelBase
     }
 
     public BetaMCPToolConfig() { }
+
+    public BetaMCPToolConfig(BetaMCPToolConfig betaMCPToolConfig)
+        : base(betaMCPToolConfig) { }
 
     public BetaMCPToolConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -80,6 +66,7 @@ public sealed record class BetaMCPToolConfig : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaMCPToolConfigFromRaw.FromRawUnchecked"/>
     public static BetaMCPToolConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -90,6 +77,7 @@ public sealed record class BetaMCPToolConfig : ModelBase
 
 class BetaMCPToolConfigFromRaw : IFromRaw<BetaMCPToolConfig>
 {
+    /// <inheritdoc/>
     public BetaMCPToolConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaMCPToolConfig.FromRawUnchecked(rawData);
 }

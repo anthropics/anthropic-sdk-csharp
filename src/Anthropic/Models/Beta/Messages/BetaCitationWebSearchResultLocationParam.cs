@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -19,118 +18,35 @@ public sealed record class BetaCitationWebSearchResultLocationParam : ModelBase
 {
     public required string CitedText
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("cited_text", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'cited_text' cannot be null",
-                    new ArgumentOutOfRangeException("cited_text", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'cited_text' cannot be null",
-                    new ArgumentNullException("cited_text")
-                );
-        }
-        init
-        {
-            this._rawData["cited_text"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
+        init { ModelBase.Set(this._rawData, "cited_text", value); }
     }
 
     public required string EncryptedIndex
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("encrypted_index", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'encrypted_index' cannot be null",
-                    new ArgumentOutOfRangeException("encrypted_index", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'encrypted_index' cannot be null",
-                    new ArgumentNullException("encrypted_index")
-                );
-        }
-        init
-        {
-            this._rawData["encrypted_index"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "encrypted_index"); }
+        init { ModelBase.Set(this._rawData, "encrypted_index", value); }
     }
 
     public required string? Title
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("title", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["title"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
+        init { ModelBase.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("url", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentOutOfRangeException("url", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'url' cannot be null",
-                    new ArgumentNullException("url")
-                );
-        }
-        init
-        {
-            this._rawData["url"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
+        init { ModelBase.Set(this._rawData, "url", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.CitedText;
@@ -154,6 +70,11 @@ public sealed record class BetaCitationWebSearchResultLocationParam : ModelBase
     }
 
     public BetaCitationWebSearchResultLocationParam(
+        BetaCitationWebSearchResultLocationParam betaCitationWebSearchResultLocationParam
+    )
+        : base(betaCitationWebSearchResultLocationParam) { }
+
+    public BetaCitationWebSearchResultLocationParam(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -170,6 +91,7 @@ public sealed record class BetaCitationWebSearchResultLocationParam : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="BetaCitationWebSearchResultLocationParamFromRaw.FromRawUnchecked"/>
     public static BetaCitationWebSearchResultLocationParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -181,6 +103,7 @@ public sealed record class BetaCitationWebSearchResultLocationParam : ModelBase
 class BetaCitationWebSearchResultLocationParamFromRaw
     : IFromRaw<BetaCitationWebSearchResultLocationParam>
 {
+    /// <inheritdoc/>
     public BetaCitationWebSearchResultLocationParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaCitationWebSearchResultLocationParam.FromRawUnchecked(rawData);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,68 +13,23 @@ public sealed record class ErrorResponse : ModelBase
 {
     public required ErrorObject Error
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("error", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'error' cannot be null",
-                    new ArgumentOutOfRangeException("error", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<ErrorObject>(element, ModelBase.SerializerOptions)
-                ?? throw new AnthropicInvalidDataException(
-                    "'error' cannot be null",
-                    new ArgumentNullException("error")
-                );
-        }
-        init
-        {
-            this._rawData["error"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<ErrorObject>(this.RawData, "error"); }
+        init { ModelBase.Set(this._rawData, "error", value); }
     }
 
     public required string? RequestID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("request_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["request_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "request_id"); }
+        init { ModelBase.Set(this._rawData, "request_id", value); }
     }
 
     public JsonElement Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                throw new AnthropicInvalidDataException(
-                    "'type' cannot be null",
-                    new ArgumentOutOfRangeException("type", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<JsonElement>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { ModelBase.Set(this._rawData, "type", value); }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         this.Error.Validate();
@@ -93,6 +47,9 @@ public sealed record class ErrorResponse : ModelBase
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
     }
 
+    public ErrorResponse(ErrorResponse errorResponse)
+        : base(errorResponse) { }
+
     public ErrorResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -108,6 +65,7 @@ public sealed record class ErrorResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ErrorResponseFromRaw.FromRawUnchecked"/>
     public static ErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -116,6 +74,7 @@ public sealed record class ErrorResponse : ModelBase
 
 class ErrorResponseFromRaw : IFromRaw<ErrorResponse>
 {
+    /// <inheritdoc/>
     public ErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ErrorResponse.FromRawUnchecked(rawData);
 }
