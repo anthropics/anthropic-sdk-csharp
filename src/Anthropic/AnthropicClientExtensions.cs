@@ -936,6 +936,8 @@ public static class AnthropicClientExtensions
                     inputTokens
                 ),
 
+                CachedInputTokenCount = cacheReadInputTokens,
+
                 OutputTokenCount = outputTokens,
             };
 
@@ -948,12 +950,6 @@ public static class AnthropicClientExtensions
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
-            }
-
-            if (cacheReadInputTokens is > 0)
-            {
-                (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheReadInputTokens)] =
-                    cacheReadInputTokens.Value;
             }
 
             if (serverToolUsage?.WebSearchRequests is > 0)
