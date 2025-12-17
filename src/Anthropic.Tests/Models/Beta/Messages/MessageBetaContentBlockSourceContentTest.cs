@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class MessageBetaContentBlockSourceContentTest : TestBase
 {
     [Fact]
-    public void text_block_paramValidation_Works()
+    public void TextBlockParamValidationWorks()
     {
         MessageBetaContentBlockSourceContent value = new(
             new BetaTextBlockParam()
@@ -30,7 +30,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     }
 
     [Fact]
-    public void image_block_paramValidation_Works()
+    public void ImageBlockParamValidationWorks()
     {
         MessageBetaContentBlockSourceContent value = new(
             new BetaImageBlockParam()
@@ -47,7 +47,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     }
 
     [Fact]
-    public void text_block_paramSerializationRoundtrip_Works()
+    public void TextBlockParamSerializationRoundtripWorks()
     {
         MessageBetaContentBlockSourceContent value = new(
             new BetaTextBlockParam()
@@ -74,7 +74,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     }
 
     [Fact]
-    public void image_block_paramSerializationRoundtrip_Works()
+    public void ImageBlockParamSerializationRoundtripWorks()
     {
         MessageBetaContentBlockSourceContent value = new(
             new BetaImageBlockParam()

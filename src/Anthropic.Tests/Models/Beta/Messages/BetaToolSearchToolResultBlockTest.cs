@@ -104,7 +104,7 @@ public class BetaToolSearchToolResultBlockTest : TestBase
 public class BetaToolSearchToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void beta_tool_search_tool_result_errorValidation_Works()
+    public void BetaToolSearchToolResultErrorValidationWorks()
     {
         BetaToolSearchToolResultBlockContent value = new(
             new BetaToolSearchToolResultError()
@@ -117,7 +117,7 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_search_tool_search_result_blockValidation_Works()
+    public void BetaToolSearchToolSearchResultBlockValidationWorks()
     {
         BetaToolSearchToolResultBlockContent value = new(
             new BetaToolSearchToolSearchResultBlock([new("tool_name")])
@@ -126,7 +126,7 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_search_tool_result_errorSerializationRoundtrip_Works()
+    public void BetaToolSearchToolResultErrorSerializationRoundtripWorks()
     {
         BetaToolSearchToolResultBlockContent value = new(
             new BetaToolSearchToolResultError()
@@ -142,7 +142,7 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_search_tool_search_result_blockSerializationRoundtrip_Works()
+    public void BetaToolSearchToolSearchResultBlockSerializationRoundtripWorks()
     {
         BetaToolSearchToolResultBlockContent value = new(
             new BetaToolSearchToolSearchResultBlock([new("tool_name")])

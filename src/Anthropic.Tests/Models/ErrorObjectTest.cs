@@ -6,70 +6,70 @@ namespace Anthropic.Tests.Models;
 public class ErrorObjectTest : TestBase
 {
     [Fact]
-    public void invalid_request_errorValidation_Works()
+    public void InvalidRequestErrorValidationWorks()
     {
         ErrorObject value = new(new InvalidRequestError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void authentication_errorValidation_Works()
+    public void AuthenticationErrorValidationWorks()
     {
         ErrorObject value = new(new AuthenticationError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void billing_errorValidation_Works()
+    public void BillingErrorValidationWorks()
     {
         ErrorObject value = new(new BillingError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void permission_errorValidation_Works()
+    public void PermissionErrorValidationWorks()
     {
         ErrorObject value = new(new PermissionError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void not_found_errorValidation_Works()
+    public void NotFoundErrorValidationWorks()
     {
         ErrorObject value = new(new NotFoundError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void rate_limit_errorValidation_Works()
+    public void RateLimitErrorValidationWorks()
     {
         ErrorObject value = new(new RateLimitError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void gateway_timeout_errorValidation_Works()
+    public void GatewayTimeoutErrorValidationWorks()
     {
         ErrorObject value = new(new GatewayTimeoutError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void apiValidation_Works()
+    public void APIValidationWorks()
     {
         ErrorObject value = new(new APIErrorObject("message"));
         value.Validate();
     }
 
     [Fact]
-    public void overloaded_errorValidation_Works()
+    public void OverloadedErrorValidationWorks()
     {
         ErrorObject value = new(new OverloadedError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void invalid_request_errorSerializationRoundtrip_Works()
+    public void InvalidRequestErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new InvalidRequestError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -79,7 +79,7 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void authentication_errorSerializationRoundtrip_Works()
+    public void AuthenticationErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new AuthenticationError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -89,7 +89,7 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void billing_errorSerializationRoundtrip_Works()
+    public void BillingErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new BillingError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -99,7 +99,7 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void permission_errorSerializationRoundtrip_Works()
+    public void PermissionErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new PermissionError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -109,7 +109,7 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void not_found_errorSerializationRoundtrip_Works()
+    public void NotFoundErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new NotFoundError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -119,7 +119,7 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void rate_limit_errorSerializationRoundtrip_Works()
+    public void RateLimitErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new RateLimitError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -129,7 +129,7 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void gateway_timeout_errorSerializationRoundtrip_Works()
+    public void GatewayTimeoutErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new GatewayTimeoutError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -139,7 +139,7 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void apiSerializationRoundtrip_Works()
+    public void APISerializationRoundtripWorks()
     {
         ErrorObject value = new(new APIErrorObject("message"));
         string json = JsonSerializer.Serialize(value);
@@ -149,7 +149,7 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void overloaded_errorSerializationRoundtrip_Works()
+    public void OverloadedErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new OverloadedError("message"));
         string json = JsonSerializer.Serialize(value);

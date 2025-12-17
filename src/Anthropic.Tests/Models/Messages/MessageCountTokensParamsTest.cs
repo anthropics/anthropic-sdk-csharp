@@ -6,18 +6,18 @@ namespace Anthropic.Tests.Models.Messages;
 public class MessageCountTokensParamsSystemTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         MessageCountTokensParamsSystem value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void TextBlockParamsValidation_Works()
+    public void TextBlockParamsValidationWorks()
     {
         MessageCountTokensParamsSystem value = new(
             [
-                new()
+                new TextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -39,7 +39,7 @@ public class MessageCountTokensParamsSystemTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         MessageCountTokensParamsSystem value = new("string");
         string json = JsonSerializer.Serialize(value);
@@ -49,11 +49,11 @@ public class MessageCountTokensParamsSystemTest : TestBase
     }
 
     [Fact]
-    public void TextBlockParamsSerializationRoundtrip_Works()
+    public void TextBlockParamsSerializationRoundtripWorks()
     {
         MessageCountTokensParamsSystem value = new(
             [
-                new()
+                new TextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },

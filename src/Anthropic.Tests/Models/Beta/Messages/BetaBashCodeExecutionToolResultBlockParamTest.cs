@@ -168,7 +168,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
 public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void beta_bash_code_execution_tool_result_error_paramValidation_Works()
+    public void BetaBashCodeExecutionToolResultErrorParamValidationWorks()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
             new BetaBashCodeExecutionToolResultErrorParam(
@@ -179,7 +179,7 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void beta_bash_code_execution_result_block_paramValidation_Works()
+    public void BetaBashCodeExecutionResultBlockParamValidationWorks()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
             new BetaBashCodeExecutionResultBlockParam()
@@ -194,7 +194,7 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void beta_bash_code_execution_tool_result_error_paramSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionToolResultErrorParamSerializationRoundtripWorks()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
             new BetaBashCodeExecutionToolResultErrorParam(
@@ -209,7 +209,7 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void beta_bash_code_execution_result_block_paramSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionResultBlockParamSerializationRoundtripWorks()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
             new BetaBashCodeExecutionResultBlockParam()

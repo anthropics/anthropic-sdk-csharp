@@ -312,6 +312,8 @@ public class AnthropicClient : IAnthropicClient
         return e is IOException || e is AnthropicIOException;
     }
 
+    public void Dispose() => this.HttpClient.Dispose();
+
     public AnthropicClient()
     {
         _options = new();

@@ -12,7 +12,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
@@ -27,7 +27,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
 
         BetaWebSearchToolResultBlockParamContent expectedContent = new(
             [
-                new()
+                new BetaWebSearchResultBlockParam()
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
@@ -55,7 +55,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
@@ -81,7 +81,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
@@ -100,7 +100,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
 
         BetaWebSearchToolResultBlockParamContent expectedContent = new(
             [
-                new()
+                new BetaWebSearchResultBlockParam()
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
@@ -128,7 +128,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
@@ -151,7 +151,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
@@ -174,7 +174,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
@@ -196,7 +196,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
@@ -221,7 +221,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",

@@ -212,18 +212,18 @@ public class BetaRequestMCPToolResultBlockParamTest : TestBase
 public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void beta_mcp_tool_result_block_paramValidation_Works()
+    public void BetaMCPToolResultBlockParamValidationWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new(
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -245,7 +245,7 @@ public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new("string");
         string json = JsonSerializer.Serialize(value);
@@ -257,11 +257,11 @@ public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void beta_mcp_tool_result_block_paramSerializationRoundtrip_Works()
+    public void BetaMCPToolResultBlockParamSerializationRoundtripWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new(
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },

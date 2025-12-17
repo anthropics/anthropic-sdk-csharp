@@ -8,7 +8,7 @@ namespace Anthropic.Tests.Models.Messages.Batches;
 public class MessageBatchResultTest : TestBase
 {
     [Fact]
-    public void succeededValidation_Works()
+    public void SucceededValidationWorks()
     {
         MessageBatchResult value = new(
             new MessageBatchSucceededResult(
@@ -58,7 +58,7 @@ public class MessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void erroredValidation_Works()
+    public void ErroredValidationWorks()
     {
         MessageBatchResult value = new(
             new MessageBatchErroredResult(
@@ -73,21 +73,21 @@ public class MessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void canceledValidation_Works()
+    public void CanceledValidationWorks()
     {
         MessageBatchResult value = new(new MessageBatchCanceledResult());
         value.Validate();
     }
 
     [Fact]
-    public void expiredValidation_Works()
+    public void ExpiredValidationWorks()
     {
         MessageBatchResult value = new(new MessageBatchExpiredResult());
         value.Validate();
     }
 
     [Fact]
-    public void succeededSerializationRoundtrip_Works()
+    public void SucceededSerializationRoundtripWorks()
     {
         MessageBatchResult value = new(
             new MessageBatchSucceededResult(
@@ -140,7 +140,7 @@ public class MessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void erroredSerializationRoundtrip_Works()
+    public void ErroredSerializationRoundtripWorks()
     {
         MessageBatchResult value = new(
             new MessageBatchErroredResult(
@@ -158,7 +158,7 @@ public class MessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void canceledSerializationRoundtrip_Works()
+    public void CanceledSerializationRoundtripWorks()
     {
         MessageBatchResult value = new(new MessageBatchCanceledResult());
         string json = JsonSerializer.Serialize(value);
@@ -168,7 +168,7 @@ public class MessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void expiredSerializationRoundtrip_Works()
+    public void ExpiredSerializationRoundtripWorks()
     {
         MessageBatchResult value = new(new MessageBatchExpiredResult());
         string json = JsonSerializer.Serialize(value);

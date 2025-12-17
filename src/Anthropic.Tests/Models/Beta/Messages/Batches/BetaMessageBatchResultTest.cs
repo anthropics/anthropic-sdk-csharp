@@ -10,7 +10,7 @@ namespace Anthropic.Tests.Models.Beta.Messages.Batches;
 public class BetaMessageBatchResultTest : TestBase
 {
     [Fact]
-    public void succeededValidation_Works()
+    public void SucceededValidationWorks()
     {
         BetaMessageBatchResult value = new(
             new BetaMessageBatchSucceededResult(
@@ -83,7 +83,7 @@ public class BetaMessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void erroredValidation_Works()
+    public void ErroredValidationWorks()
     {
         BetaMessageBatchResult value = new(
             new BetaMessageBatchErroredResult(
@@ -98,21 +98,21 @@ public class BetaMessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void canceledValidation_Works()
+    public void CanceledValidationWorks()
     {
         BetaMessageBatchResult value = new(new BetaMessageBatchCanceledResult());
         value.Validate();
     }
 
     [Fact]
-    public void expiredValidation_Works()
+    public void ExpiredValidationWorks()
     {
         BetaMessageBatchResult value = new(new BetaMessageBatchExpiredResult());
         value.Validate();
     }
 
     [Fact]
-    public void succeededSerializationRoundtrip_Works()
+    public void SucceededSerializationRoundtripWorks()
     {
         BetaMessageBatchResult value = new(
             new BetaMessageBatchSucceededResult(
@@ -188,7 +188,7 @@ public class BetaMessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void erroredSerializationRoundtrip_Works()
+    public void ErroredSerializationRoundtripWorks()
     {
         BetaMessageBatchResult value = new(
             new BetaMessageBatchErroredResult(
@@ -206,7 +206,7 @@ public class BetaMessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void canceledSerializationRoundtrip_Works()
+    public void CanceledSerializationRoundtripWorks()
     {
         BetaMessageBatchResult value = new(new BetaMessageBatchCanceledResult());
         string json = JsonSerializer.Serialize(value);
@@ -216,7 +216,7 @@ public class BetaMessageBatchResultTest : TestBase
     }
 
     [Fact]
-    public void expiredSerializationRoundtrip_Works()
+    public void ExpiredSerializationRoundtripWorks()
     {
         BetaMessageBatchResult value = new(new BetaMessageBatchExpiredResult());
         string json = JsonSerializer.Serialize(value);

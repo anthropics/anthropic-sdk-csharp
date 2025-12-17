@@ -84,18 +84,18 @@ public class BetaMCPToolResultBlockTest : TestBase
 public class BetaMCPToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         BetaMCPToolResultBlockContent value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void beta_mcp_tool_result_blockValidation_Works()
+    public void BetaMCPToolResultBlockValidationWorks()
     {
         BetaMCPToolResultBlockContent value = new(
             [
-                new()
+                new BetaTextBlock()
                 {
                     Citations =
                     [
@@ -117,7 +117,7 @@ public class BetaMCPToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         BetaMCPToolResultBlockContent value = new("string");
         string json = JsonSerializer.Serialize(value);
@@ -127,11 +127,11 @@ public class BetaMCPToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void beta_mcp_tool_result_blockSerializationRoundtrip_Works()
+    public void BetaMCPToolResultBlockSerializationRoundtripWorks()
     {
         BetaMCPToolResultBlockContent value = new(
             [
-                new()
+                new BetaTextBlock()
                 {
                     Citations =
                     [

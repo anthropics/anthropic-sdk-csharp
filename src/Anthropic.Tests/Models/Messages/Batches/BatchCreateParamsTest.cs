@@ -26,7 +26,7 @@ public class RequestTest : TestBase
                 Stream = true,
                 System = new(
                     [
-                        new()
+                        new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
                             CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -83,7 +83,7 @@ public class RequestTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -148,7 +148,7 @@ public class RequestTest : TestBase
                 Stream = true,
                 System = new(
                     [
-                        new()
+                        new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
                             CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -216,7 +216,7 @@ public class RequestTest : TestBase
                 Stream = true,
                 System = new(
                     [
-                        new()
+                        new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
                             CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -277,7 +277,7 @@ public class RequestTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -342,7 +342,7 @@ public class RequestTest : TestBase
                 Stream = true,
                 System = new(
                     [
-                        new()
+                        new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
                             CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -407,7 +407,7 @@ public class ParamsTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -466,7 +466,7 @@ public class ParamsTest : TestBase
         bool expectedStream = true;
         ParamsSystem expectedSystem = new(
             [
-                new()
+                new Messages::TextBlockParam()
                 {
                     Text = "Today's date is 2024-06-01.",
                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -556,7 +556,7 @@ public class ParamsTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -620,7 +620,7 @@ public class ParamsTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -683,7 +683,7 @@ public class ParamsTest : TestBase
         bool expectedStream = true;
         ParamsSystem expectedSystem = new(
             [
-                new()
+                new Messages::TextBlockParam()
                 {
                     Text = "Today's date is 2024-06-01.",
                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -773,7 +773,7 @@ public class ParamsTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -1000,18 +1000,18 @@ public class ServiceTierTest : TestBase
 public class ParamsSystemTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         ParamsSystem value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void TextBlockParamsValidation_Works()
+    public void TextBlockParamsValidationWorks()
     {
         ParamsSystem value = new(
             [
-                new()
+                new Messages::TextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -1033,7 +1033,7 @@ public class ParamsSystemTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         ParamsSystem value = new("string");
         string json = JsonSerializer.Serialize(value);
@@ -1043,11 +1043,11 @@ public class ParamsSystemTest : TestBase
     }
 
     [Fact]
-    public void TextBlockParamsSerializationRoundtrip_Works()
+    public void TextBlockParamsSerializationRoundtripWorks()
     {
         ParamsSystem value = new(
             [
-                new()
+                new Messages::TextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = Messages::TTL.TTL5m },

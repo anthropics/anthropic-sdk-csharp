@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Messages;
 public class RawMessageStreamEventTest : TestBase
 {
     [Fact]
-    public void startValidation_Works()
+    public void StartValidationWorks()
     {
         RawMessageStreamEvent value = new(
             new RawMessageStartEvent(
@@ -56,7 +56,7 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void deltaValidation_Works()
+    public void DeltaValidationWorks()
     {
         RawMessageStreamEvent value = new(
             new RawMessageDeltaEvent()
@@ -76,14 +76,14 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void stopValidation_Works()
+    public void StopValidationWorks()
     {
         RawMessageStreamEvent value = new(new RawMessageStopEvent());
         value.Validate();
     }
 
     [Fact]
-    public void content_block_startValidation_Works()
+    public void ContentBlockStartValidationWorks()
     {
         RawMessageStreamEvent value = new(
             new RawContentBlockStartEvent()
@@ -111,7 +111,7 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_deltaValidation_Works()
+    public void ContentBlockDeltaValidationWorks()
     {
         RawMessageStreamEvent value = new(
             new RawContentBlockDeltaEvent() { Delta = new TextDelta("text"), Index = 0 }
@@ -120,14 +120,14 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_stopValidation_Works()
+    public void ContentBlockStopValidationWorks()
     {
         RawMessageStreamEvent value = new(new RawContentBlockStopEvent(0));
         value.Validate();
     }
 
     [Fact]
-    public void startSerializationRoundtrip_Works()
+    public void StartSerializationRoundtripWorks()
     {
         RawMessageStreamEvent value = new(
             new RawMessageStartEvent(
@@ -180,7 +180,7 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void deltaSerializationRoundtrip_Works()
+    public void DeltaSerializationRoundtripWorks()
     {
         RawMessageStreamEvent value = new(
             new RawMessageDeltaEvent()
@@ -203,7 +203,7 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void stopSerializationRoundtrip_Works()
+    public void StopSerializationRoundtripWorks()
     {
         RawMessageStreamEvent value = new(new RawMessageStopEvent());
         string json = JsonSerializer.Serialize(value);
@@ -213,7 +213,7 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_startSerializationRoundtrip_Works()
+    public void ContentBlockStartSerializationRoundtripWorks()
     {
         RawMessageStreamEvent value = new(
             new RawContentBlockStartEvent()
@@ -244,7 +244,7 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_deltaSerializationRoundtrip_Works()
+    public void ContentBlockDeltaSerializationRoundtripWorks()
     {
         RawMessageStreamEvent value = new(
             new RawContentBlockDeltaEvent() { Delta = new TextDelta("text"), Index = 0 }
@@ -256,7 +256,7 @@ public class RawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_stopSerializationRoundtrip_Works()
+    public void ContentBlockStopSerializationRoundtripWorks()
     {
         RawMessageStreamEvent value = new(new RawContentBlockStopEvent(0));
         string json = JsonSerializer.Serialize(value);

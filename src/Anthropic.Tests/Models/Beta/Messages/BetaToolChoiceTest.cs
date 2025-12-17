@@ -6,21 +6,21 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaToolChoiceTest : TestBase
 {
     [Fact]
-    public void autoValidation_Works()
+    public void AutoValidationWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceAuto() { DisableParallelToolUse = true });
         value.Validate();
     }
 
     [Fact]
-    public void anyValidation_Works()
+    public void AnyValidationWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceAny() { DisableParallelToolUse = true });
         value.Validate();
     }
 
     [Fact]
-    public void toolValidation_Works()
+    public void ToolValidationWorks()
     {
         BetaToolChoice value = new(
             new BetaToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
@@ -29,14 +29,14 @@ public class BetaToolChoiceTest : TestBase
     }
 
     [Fact]
-    public void noneValidation_Works()
+    public void NoneValidationWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceNone());
         value.Validate();
     }
 
     [Fact]
-    public void autoSerializationRoundtrip_Works()
+    public void AutoSerializationRoundtripWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceAuto() { DisableParallelToolUse = true });
         string json = JsonSerializer.Serialize(value);
@@ -46,7 +46,7 @@ public class BetaToolChoiceTest : TestBase
     }
 
     [Fact]
-    public void anySerializationRoundtrip_Works()
+    public void AnySerializationRoundtripWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceAny() { DisableParallelToolUse = true });
         string json = JsonSerializer.Serialize(value);
@@ -56,7 +56,7 @@ public class BetaToolChoiceTest : TestBase
     }
 
     [Fact]
-    public void toolSerializationRoundtrip_Works()
+    public void ToolSerializationRoundtripWorks()
     {
         BetaToolChoice value = new(
             new BetaToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
@@ -68,7 +68,7 @@ public class BetaToolChoiceTest : TestBase
     }
 
     [Fact]
-    public void noneSerializationRoundtrip_Works()
+    public void NoneSerializationRoundtripWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceNone());
         string json = JsonSerializer.Serialize(value);

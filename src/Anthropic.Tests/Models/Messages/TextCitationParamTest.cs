@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Messages;
 public class TextCitationParamTest : TestBase
 {
     [Fact]
-    public void citation_char_locationValidation_Works()
+    public void CitationCharLocationValidationWorks()
     {
         TextCitationParam value = new(
             new CitationCharLocationParam()
@@ -22,7 +22,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_page_locationValidation_Works()
+    public void CitationPageLocationValidationWorks()
     {
         TextCitationParam value = new(
             new CitationPageLocationParam()
@@ -38,7 +38,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_content_block_locationValidation_Works()
+    public void CitationContentBlockLocationValidationWorks()
     {
         TextCitationParam value = new(
             new CitationContentBlockLocationParam()
@@ -54,7 +54,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_web_search_result_locationValidation_Works()
+    public void CitationWebSearchResultLocationValidationWorks()
     {
         TextCitationParam value = new(
             new CitationWebSearchResultLocationParam()
@@ -69,7 +69,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_search_result_locationValidation_Works()
+    public void CitationSearchResultLocationValidationWorks()
     {
         TextCitationParam value = new(
             new CitationSearchResultLocationParam()
@@ -86,7 +86,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_char_locationSerializationRoundtrip_Works()
+    public void CitationCharLocationSerializationRoundtripWorks()
     {
         TextCitationParam value = new(
             new CitationCharLocationParam()
@@ -105,7 +105,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_page_locationSerializationRoundtrip_Works()
+    public void CitationPageLocationSerializationRoundtripWorks()
     {
         TextCitationParam value = new(
             new CitationPageLocationParam()
@@ -124,7 +124,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_content_block_locationSerializationRoundtrip_Works()
+    public void CitationContentBlockLocationSerializationRoundtripWorks()
     {
         TextCitationParam value = new(
             new CitationContentBlockLocationParam()
@@ -143,7 +143,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_web_search_result_locationSerializationRoundtrip_Works()
+    public void CitationWebSearchResultLocationSerializationRoundtripWorks()
     {
         TextCitationParam value = new(
             new CitationWebSearchResultLocationParam()
@@ -161,7 +161,7 @@ public class TextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_search_result_locationSerializationRoundtrip_Works()
+    public void CitationSearchResultLocationSerializationRoundtripWorks()
     {
         TextCitationParam value = new(
             new CitationSearchResultLocationParam()

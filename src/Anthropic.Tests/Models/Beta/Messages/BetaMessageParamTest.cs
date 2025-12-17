@@ -58,40 +58,42 @@ public class BetaMessageParamTest : TestBase
 public class BetaMessageParamContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         BetaMessageParamContent value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void BetaContentBlockParamsValidation_Works()
+    public void BetaContentBlockParamsValidationWorks()
     {
         BetaMessageParamContent value = new(
             [
-                new BetaTextBlockParam()
-                {
-                    Text = "What is a quaternion?",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new BetaContentBlockParam(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "What is a quaternion?",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         value.Validate();
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         BetaMessageParamContent value = new("string");
         string json = JsonSerializer.Serialize(value);
@@ -101,26 +103,28 @@ public class BetaMessageParamContentTest : TestBase
     }
 
     [Fact]
-    public void BetaContentBlockParamsSerializationRoundtrip_Works()
+    public void BetaContentBlockParamsSerializationRoundtripWorks()
     {
         BetaMessageParamContent value = new(
             [
-                new BetaTextBlockParam()
-                {
-                    Text = "What is a quaternion?",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new BetaContentBlockParam(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "What is a quaternion?",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         string json = JsonSerializer.Serialize(value);

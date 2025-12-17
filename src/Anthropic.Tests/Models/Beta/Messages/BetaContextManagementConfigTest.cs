@@ -177,7 +177,7 @@ public class BetaContextManagementConfigTest : TestBase
 public class EditTest : TestBase
 {
     [Fact]
-    public void beta_clear_tool_uses_20250919Validation_Works()
+    public void BetaClearToolUses20250919ValidationWorks()
     {
         Edit value = new(
             new BetaClearToolUses20250919Edit()
@@ -193,14 +193,14 @@ public class EditTest : TestBase
     }
 
     [Fact]
-    public void beta_clear_thinking_20251015Validation_Works()
+    public void BetaClearThinking20251015ValidationWorks()
     {
         Edit value = new(new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) });
         value.Validate();
     }
 
     [Fact]
-    public void beta_clear_tool_uses_20250919SerializationRoundtrip_Works()
+    public void BetaClearToolUses20250919SerializationRoundtripWorks()
     {
         Edit value = new(
             new BetaClearToolUses20250919Edit()
@@ -219,7 +219,7 @@ public class EditTest : TestBase
     }
 
     [Fact]
-    public void beta_clear_thinking_20251015SerializationRoundtrip_Works()
+    public void BetaClearThinking20251015SerializationRoundtripWorks()
     {
         Edit value = new(new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) });
         string json = JsonSerializer.Serialize(value);

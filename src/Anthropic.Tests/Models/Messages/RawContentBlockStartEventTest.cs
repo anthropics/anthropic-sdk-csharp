@@ -171,7 +171,7 @@ public class RawContentBlockStartEventTest : TestBase
 public class RawContentBlockStartEventContentBlockTest : TestBase
 {
     [Fact]
-    public void textValidation_Works()
+    public void TextValidationWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new TextBlock()
@@ -195,7 +195,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void thinkingValidation_Works()
+    public void ThinkingValidationWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
@@ -204,14 +204,14 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void redacted_thinkingValidation_Works()
+    public void RedactedThinkingValidationWorks()
     {
         RawContentBlockStartEventContentBlock value = new(new RedactedThinkingBlock("data"));
         value.Validate();
     }
 
     [Fact]
-    public void tool_useValidation_Works()
+    public void ToolUseValidationWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new ToolUseBlock()
@@ -228,7 +228,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void server_tool_useValidation_Works()
+    public void ServerToolUseValidationWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new ServerToolUseBlock()
@@ -244,7 +244,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_resultValidation_Works()
+    public void WebSearchToolResultValidationWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new WebSearchToolResultBlock()
@@ -259,7 +259,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void textSerializationRoundtrip_Works()
+    public void TextSerializationRoundtripWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new TextBlock()
@@ -286,7 +286,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void thinkingSerializationRoundtrip_Works()
+    public void ThinkingSerializationRoundtripWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
@@ -298,7 +298,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void redacted_thinkingSerializationRoundtrip_Works()
+    public void RedactedThinkingSerializationRoundtripWorks()
     {
         RawContentBlockStartEventContentBlock value = new(new RedactedThinkingBlock("data"));
         string json = JsonSerializer.Serialize(value);
@@ -308,7 +308,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void tool_useSerializationRoundtrip_Works()
+    public void ToolUseSerializationRoundtripWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new ToolUseBlock()
@@ -328,7 +328,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void server_tool_useSerializationRoundtrip_Works()
+    public void ServerToolUseSerializationRoundtripWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new ServerToolUseBlock()
@@ -347,7 +347,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_resultSerializationRoundtrip_Works()
+    public void WebSearchToolResultSerializationRoundtripWorks()
     {
         RawContentBlockStartEventContentBlock value = new(
             new WebSearchToolResultBlock()

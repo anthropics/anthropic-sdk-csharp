@@ -7,7 +7,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaContentBlockParamTest : TestBase
 {
     [Fact]
-    public void textValidation_Works()
+    public void TextValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaTextBlockParam()
@@ -31,7 +31,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void imageValidation_Works()
+    public void ImageValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaImageBlockParam()
@@ -48,7 +48,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void request_document_blockValidation_Works()
+    public void RequestDocumentBlockValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaRequestDocumentBlock()
@@ -64,7 +64,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void search_resultValidation_Works()
+    public void SearchResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaSearchResultBlockParam()
@@ -98,7 +98,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void thinkingValidation_Works()
+    public void ThinkingValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
@@ -107,14 +107,14 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void redacted_thinkingValidation_Works()
+    public void RedactedThinkingValidationWorks()
     {
         BetaContentBlockParam value = new(new BetaRedactedThinkingBlockParam("data"));
         value.Validate();
     }
 
     [Fact]
-    public void tool_useValidation_Works()
+    public void ToolUseValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaToolUseBlockParam()
@@ -133,7 +133,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void tool_resultValidation_Works()
+    public void ToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaToolResultBlockParam()
@@ -148,7 +148,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void server_tool_useValidation_Works()
+    public void ServerToolUseValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaServerToolUseBlockParam()
@@ -167,14 +167,14 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_resultValidation_Works()
+    public void WebSearchToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaWebSearchToolResultBlockParam()
             {
                 Content = new(
                     [
-                        new()
+                        new BetaWebSearchResultBlockParam()
                         {
                             EncryptedContent = "encrypted_content",
                             Title = "title",
@@ -191,7 +191,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void web_fetch_tool_resultValidation_Works()
+    public void WebFetchToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaWebFetchToolResultBlockParam()
@@ -207,7 +207,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void code_execution_tool_resultValidation_Works()
+    public void CodeExecutionToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaCodeExecutionToolResultBlockParam()
@@ -223,7 +223,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void bash_code_execution_tool_resultValidation_Works()
+    public void BashCodeExecutionToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaBashCodeExecutionToolResultBlockParam()
@@ -239,7 +239,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void text_editor_code_execution_tool_resultValidation_Works()
+    public void TextEditorCodeExecutionToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaTextEditorCodeExecutionToolResultBlockParam()
@@ -258,7 +258,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void tool_search_tool_resultValidation_Works()
+    public void ToolSearchToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaToolSearchToolResultBlockParam()
@@ -274,7 +274,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void mcp_tool_useValidation_Works()
+    public void MCPToolUseValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaMCPToolUseBlockParam()
@@ -293,7 +293,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void request_mcp_tool_resultValidation_Works()
+    public void RequestMCPToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaRequestMCPToolResultBlockParam()
@@ -308,7 +308,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void container_uploadValidation_Works()
+    public void ContainerUploadValidationWorks()
     {
         BetaContentBlockParam value = new(
             new BetaContainerUploadBlockParam()
@@ -321,7 +321,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void textSerializationRoundtrip_Works()
+    public void TextSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaTextBlockParam()
@@ -348,7 +348,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void imageSerializationRoundtrip_Works()
+    public void ImageSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaImageBlockParam()
@@ -368,7 +368,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void request_document_blockSerializationRoundtrip_Works()
+    public void RequestDocumentBlockSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaRequestDocumentBlock()
@@ -387,7 +387,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void search_resultSerializationRoundtrip_Works()
+    public void SearchResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaSearchResultBlockParam()
@@ -424,7 +424,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void thinkingSerializationRoundtrip_Works()
+    public void ThinkingSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
@@ -436,7 +436,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void redacted_thinkingSerializationRoundtrip_Works()
+    public void RedactedThinkingSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(new BetaRedactedThinkingBlockParam("data"));
         string json = JsonSerializer.Serialize(value);
@@ -446,7 +446,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void tool_useSerializationRoundtrip_Works()
+    public void ToolUseSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaToolUseBlockParam()
@@ -468,7 +468,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void tool_resultSerializationRoundtrip_Works()
+    public void ToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaToolResultBlockParam()
@@ -486,7 +486,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void server_tool_useSerializationRoundtrip_Works()
+    public void ServerToolUseSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaServerToolUseBlockParam()
@@ -508,14 +508,14 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_resultSerializationRoundtrip_Works()
+    public void WebSearchToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaWebSearchToolResultBlockParam()
             {
                 Content = new(
                     [
-                        new()
+                        new BetaWebSearchResultBlockParam()
                         {
                             EncryptedContent = "encrypted_content",
                             Title = "title",
@@ -535,7 +535,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void web_fetch_tool_resultSerializationRoundtrip_Works()
+    public void WebFetchToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaWebFetchToolResultBlockParam()
@@ -554,7 +554,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void code_execution_tool_resultSerializationRoundtrip_Works()
+    public void CodeExecutionToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaCodeExecutionToolResultBlockParam()
@@ -573,7 +573,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void bash_code_execution_tool_resultSerializationRoundtrip_Works()
+    public void BashCodeExecutionToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaBashCodeExecutionToolResultBlockParam()
@@ -592,7 +592,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void text_editor_code_execution_tool_resultSerializationRoundtrip_Works()
+    public void TextEditorCodeExecutionToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaTextEditorCodeExecutionToolResultBlockParam()
@@ -614,7 +614,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void tool_search_tool_resultSerializationRoundtrip_Works()
+    public void ToolSearchToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaToolSearchToolResultBlockParam()
@@ -633,7 +633,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void mcp_tool_useSerializationRoundtrip_Works()
+    public void MCPToolUseSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaMCPToolUseBlockParam()
@@ -655,7 +655,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void request_mcp_tool_resultSerializationRoundtrip_Works()
+    public void RequestMCPToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaRequestMCPToolResultBlockParam()
@@ -673,7 +673,7 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void container_uploadSerializationRoundtrip_Works()
+    public void ContainerUploadSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
             new BetaContainerUploadBlockParam()

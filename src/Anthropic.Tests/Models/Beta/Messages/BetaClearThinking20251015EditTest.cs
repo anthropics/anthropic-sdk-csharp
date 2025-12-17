@@ -103,28 +103,28 @@ public class BetaClearThinking20251015EditTest : TestBase
 public class KeepTest : TestBase
 {
     [Fact]
-    public void beta_thinking_turnsValidation_Works()
+    public void BetaThinkingTurnsValidationWorks()
     {
         Keep value = new(new BetaThinkingTurns(1));
         value.Validate();
     }
 
     [Fact]
-    public void beta_all_thinking_turnsValidation_Works()
+    public void BetaAllThinkingTurnsValidationWorks()
     {
         Keep value = new(new BetaAllThinkingTurns());
         value.Validate();
     }
 
     [Fact]
-    public void allValidation_Works()
+    public void AllValidationWorks()
     {
         Keep value = new(new UnionMember2());
         value.Validate();
     }
 
     [Fact]
-    public void beta_thinking_turnsSerializationRoundtrip_Works()
+    public void BetaThinkingTurnsSerializationRoundtripWorks()
     {
         Keep value = new(new BetaThinkingTurns(1));
         string json = JsonSerializer.Serialize(value);
@@ -134,7 +134,7 @@ public class KeepTest : TestBase
     }
 
     [Fact]
-    public void beta_all_thinking_turnsSerializationRoundtrip_Works()
+    public void BetaAllThinkingTurnsSerializationRoundtripWorks()
     {
         Keep value = new(new BetaAllThinkingTurns());
         string json = JsonSerializer.Serialize(value);
@@ -144,7 +144,7 @@ public class KeepTest : TestBase
     }
 
     [Fact]
-    public void allSerializationRoundtrip_Works()
+    public void AllSerializationRoundtripWorks()
     {
         Keep value = new(new UnionMember2());
         string json = JsonSerializer.Serialize(value);

@@ -56,40 +56,42 @@ public class BetaContentBlockSourceTest : TestBase
 public class BetaContentBlockSourceContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         BetaContentBlockSourceContent value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void beta_content_block_sourceValidation_Works()
+    public void BetaContentBlockSourceValidationWorks()
     {
         BetaContentBlockSourceContent value = new(
             [
-                new BetaTextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new MessageBetaContentBlockSourceContent(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "x",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         value.Validate();
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         BetaContentBlockSourceContent value = new("string");
         string json = JsonSerializer.Serialize(value);
@@ -99,26 +101,28 @@ public class BetaContentBlockSourceContentTest : TestBase
     }
 
     [Fact]
-    public void beta_content_block_sourceSerializationRoundtrip_Works()
+    public void BetaContentBlockSourceSerializationRoundtripWorks()
     {
         BetaContentBlockSourceContent value = new(
             [
-                new BetaTextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new MessageBetaContentBlockSourceContent(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "x",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         string json = JsonSerializer.Serialize(value);

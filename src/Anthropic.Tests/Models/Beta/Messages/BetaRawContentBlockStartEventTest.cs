@@ -171,7 +171,7 @@ public class BetaRawContentBlockStartEventTest : TestBase
 public class ContentBlockTest : TestBase
 {
     [Fact]
-    public void beta_textValidation_Works()
+    public void BetaTextValidationWorks()
     {
         ContentBlock value = new(
             new BetaTextBlock()
@@ -195,7 +195,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_thinkingValidation_Works()
+    public void BetaThinkingValidationWorks()
     {
         ContentBlock value = new(
             new BetaThinkingBlock() { Signature = "signature", Thinking = "thinking" }
@@ -204,14 +204,14 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_redacted_thinkingValidation_Works()
+    public void BetaRedactedThinkingValidationWorks()
     {
         ContentBlock value = new(new BetaRedactedThinkingBlock("data"));
         value.Validate();
     }
 
     [Fact]
-    public void beta_tool_useValidation_Works()
+    public void BetaToolUseValidationWorks()
     {
         ContentBlock value = new(
             new BetaToolUseBlock()
@@ -229,7 +229,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_server_tool_useValidation_Works()
+    public void BetaServerToolUseValidationWorks()
     {
         ContentBlock value = new(
             new BetaServerToolUseBlock()
@@ -247,7 +247,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_web_search_tool_resultValidation_Works()
+    public void BetaWebSearchToolResultValidationWorks()
     {
         ContentBlock value = new(
             new BetaWebSearchToolResultBlock()
@@ -262,7 +262,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_web_fetch_tool_resultValidation_Works()
+    public void BetaWebFetchToolResultValidationWorks()
     {
         ContentBlock value = new(
             new BetaWebFetchToolResultBlock()
@@ -277,7 +277,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_code_execution_tool_resultValidation_Works()
+    public void BetaCodeExecutionToolResultValidationWorks()
     {
         ContentBlock value = new(
             new BetaCodeExecutionToolResultBlock()
@@ -292,7 +292,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_bash_code_execution_tool_resultValidation_Works()
+    public void BetaBashCodeExecutionToolResultValidationWorks()
     {
         ContentBlock value = new(
             new BetaBashCodeExecutionToolResultBlock()
@@ -305,7 +305,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_text_editor_code_execution_tool_resultValidation_Works()
+    public void BetaTextEditorCodeExecutionToolResultValidationWorks()
     {
         ContentBlock value = new(
             new BetaTextEditorCodeExecutionToolResultBlock()
@@ -323,7 +323,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_search_tool_resultValidation_Works()
+    public void BetaToolSearchToolResultValidationWorks()
     {
         ContentBlock value = new(
             new BetaToolSearchToolResultBlock()
@@ -340,7 +340,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_mcp_tool_useValidation_Works()
+    public void BetaMCPToolUseValidationWorks()
     {
         ContentBlock value = new(
             new BetaMCPToolUseBlock()
@@ -358,7 +358,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_mcp_tool_resultValidation_Works()
+    public void BetaMCPToolResultValidationWorks()
     {
         ContentBlock value = new(
             new BetaMCPToolResultBlock()
@@ -372,14 +372,14 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_container_uploadValidation_Works()
+    public void BetaContainerUploadValidationWorks()
     {
         ContentBlock value = new(new BetaContainerUploadBlock("file_id"));
         value.Validate();
     }
 
     [Fact]
-    public void beta_textSerializationRoundtrip_Works()
+    public void BetaTextSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaTextBlock()
@@ -406,7 +406,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_thinkingSerializationRoundtrip_Works()
+    public void BetaThinkingSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaThinkingBlock() { Signature = "signature", Thinking = "thinking" }
@@ -418,7 +418,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_redacted_thinkingSerializationRoundtrip_Works()
+    public void BetaRedactedThinkingSerializationRoundtripWorks()
     {
         ContentBlock value = new(new BetaRedactedThinkingBlock("data"));
         string json = JsonSerializer.Serialize(value);
@@ -428,7 +428,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_useSerializationRoundtrip_Works()
+    public void BetaToolUseSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaToolUseBlock()
@@ -449,7 +449,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_server_tool_useSerializationRoundtrip_Works()
+    public void BetaServerToolUseSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaServerToolUseBlock()
@@ -470,7 +470,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_web_search_tool_resultSerializationRoundtrip_Works()
+    public void BetaWebSearchToolResultSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaWebSearchToolResultBlock()
@@ -488,7 +488,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_web_fetch_tool_resultSerializationRoundtrip_Works()
+    public void BetaWebFetchToolResultSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaWebFetchToolResultBlock()
@@ -506,7 +506,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_code_execution_tool_resultSerializationRoundtrip_Works()
+    public void BetaCodeExecutionToolResultSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaCodeExecutionToolResultBlock()
@@ -524,7 +524,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_bash_code_execution_tool_resultSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionToolResultSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaBashCodeExecutionToolResultBlock()
@@ -540,7 +540,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_text_editor_code_execution_tool_resultSerializationRoundtrip_Works()
+    public void BetaTextEditorCodeExecutionToolResultSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaTextEditorCodeExecutionToolResultBlock()
@@ -561,7 +561,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_search_tool_resultSerializationRoundtrip_Works()
+    public void BetaToolSearchToolResultSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaToolSearchToolResultBlock()
@@ -581,7 +581,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_mcp_tool_useSerializationRoundtrip_Works()
+    public void BetaMCPToolUseSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaMCPToolUseBlock()
@@ -602,7 +602,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_mcp_tool_resultSerializationRoundtrip_Works()
+    public void BetaMCPToolResultSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new BetaMCPToolResultBlock()
@@ -619,7 +619,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void beta_container_uploadSerializationRoundtrip_Works()
+    public void BetaContainerUploadSerializationRoundtripWorks()
     {
         ContentBlock value = new(new BetaContainerUploadBlock("file_id"));
         string json = JsonSerializer.Serialize(value);

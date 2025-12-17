@@ -6,21 +6,21 @@ namespace Anthropic.Tests.Models.Messages;
 public class ToolChoiceTest : TestBase
 {
     [Fact]
-    public void autoValidation_Works()
+    public void AutoValidationWorks()
     {
         ToolChoice value = new(new ToolChoiceAuto() { DisableParallelToolUse = true });
         value.Validate();
     }
 
     [Fact]
-    public void anyValidation_Works()
+    public void AnyValidationWorks()
     {
         ToolChoice value = new(new ToolChoiceAny() { DisableParallelToolUse = true });
         value.Validate();
     }
 
     [Fact]
-    public void toolValidation_Works()
+    public void ToolValidationWorks()
     {
         ToolChoice value = new(
             new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
@@ -29,14 +29,14 @@ public class ToolChoiceTest : TestBase
     }
 
     [Fact]
-    public void noneValidation_Works()
+    public void NoneValidationWorks()
     {
         ToolChoice value = new(new ToolChoiceNone());
         value.Validate();
     }
 
     [Fact]
-    public void autoSerializationRoundtrip_Works()
+    public void AutoSerializationRoundtripWorks()
     {
         ToolChoice value = new(new ToolChoiceAuto() { DisableParallelToolUse = true });
         string json = JsonSerializer.Serialize(value);
@@ -46,7 +46,7 @@ public class ToolChoiceTest : TestBase
     }
 
     [Fact]
-    public void anySerializationRoundtrip_Works()
+    public void AnySerializationRoundtripWorks()
     {
         ToolChoice value = new(new ToolChoiceAny() { DisableParallelToolUse = true });
         string json = JsonSerializer.Serialize(value);
@@ -56,7 +56,7 @@ public class ToolChoiceTest : TestBase
     }
 
     [Fact]
-    public void toolSerializationRoundtrip_Works()
+    public void ToolSerializationRoundtripWorks()
     {
         ToolChoice value = new(
             new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
@@ -68,7 +68,7 @@ public class ToolChoiceTest : TestBase
     }
 
     [Fact]
-    public void noneSerializationRoundtrip_Works()
+    public void NoneSerializationRoundtripWorks()
     {
         ToolChoice value = new(new ToolChoiceNone());
         string json = JsonSerializer.Serialize(value);

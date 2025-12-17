@@ -7,7 +7,7 @@ namespace Anthropic.Tests.Models.Messages;
 public class ContentBlockTest : TestBase
 {
     [Fact]
-    public void textValidation_Works()
+    public void TextValidationWorks()
     {
         ContentBlock value = new(
             new TextBlock()
@@ -31,7 +31,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void thinkingValidation_Works()
+    public void ThinkingValidationWorks()
     {
         ContentBlock value = new(
             new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
@@ -40,14 +40,14 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void redacted_thinkingValidation_Works()
+    public void RedactedThinkingValidationWorks()
     {
         ContentBlock value = new(new RedactedThinkingBlock("data"));
         value.Validate();
     }
 
     [Fact]
-    public void tool_useValidation_Works()
+    public void ToolUseValidationWorks()
     {
         ContentBlock value = new(
             new ToolUseBlock()
@@ -64,7 +64,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void server_tool_useValidation_Works()
+    public void ServerToolUseValidationWorks()
     {
         ContentBlock value = new(
             new ServerToolUseBlock()
@@ -80,7 +80,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_resultValidation_Works()
+    public void WebSearchToolResultValidationWorks()
     {
         ContentBlock value = new(
             new WebSearchToolResultBlock()
@@ -95,7 +95,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void textSerializationRoundtrip_Works()
+    public void TextSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new TextBlock()
@@ -122,7 +122,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void thinkingSerializationRoundtrip_Works()
+    public void ThinkingSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
@@ -134,7 +134,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void redacted_thinkingSerializationRoundtrip_Works()
+    public void RedactedThinkingSerializationRoundtripWorks()
     {
         ContentBlock value = new(new RedactedThinkingBlock("data"));
         string json = JsonSerializer.Serialize(value);
@@ -144,7 +144,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void tool_useSerializationRoundtrip_Works()
+    public void ToolUseSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new ToolUseBlock()
@@ -164,7 +164,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void server_tool_useSerializationRoundtrip_Works()
+    public void ServerToolUseSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new ServerToolUseBlock()
@@ -183,7 +183,7 @@ public class ContentBlockTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_resultSerializationRoundtrip_Works()
+    public void WebSearchToolResultSerializationRoundtripWorks()
     {
         ContentBlock value = new(
             new WebSearchToolResultBlock()

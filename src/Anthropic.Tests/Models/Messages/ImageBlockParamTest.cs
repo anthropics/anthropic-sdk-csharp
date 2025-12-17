@@ -166,7 +166,7 @@ public class ImageBlockParamTest : TestBase
 public class ImageBlockParamSourceTest : TestBase
 {
     [Fact]
-    public void base64_imageValidation_Works()
+    public void Base64ImageValidationWorks()
     {
         ImageBlockParamSource value = new(
             new Base64ImageSource()
@@ -179,14 +179,14 @@ public class ImageBlockParamSourceTest : TestBase
     }
 
     [Fact]
-    public void url_imageValidation_Works()
+    public void URLImageValidationWorks()
     {
         ImageBlockParamSource value = new(new URLImageSource("url"));
         value.Validate();
     }
 
     [Fact]
-    public void base64_imageSerializationRoundtrip_Works()
+    public void Base64ImageSerializationRoundtripWorks()
     {
         ImageBlockParamSource value = new(
             new Base64ImageSource()
@@ -202,7 +202,7 @@ public class ImageBlockParamSourceTest : TestBase
     }
 
     [Fact]
-    public void url_imageSerializationRoundtrip_Works()
+    public void URLImageSerializationRoundtripWorks()
     {
         ImageBlockParamSource value = new(new URLImageSource("url"));
         string json = JsonSerializer.Serialize(value);

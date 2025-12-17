@@ -58,40 +58,42 @@ public class MessageParamTest : TestBase
 public class MessageParamContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         MessageParamContent value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void ContentBlockParamsValidation_Works()
+    public void ContentBlockParamsValidationWorks()
     {
         MessageParamContent value = new(
             [
-                new TextBlockParam()
-                {
-                    Text = "What is a quaternion?",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new CitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new ContentBlockParam(
+                    new TextBlockParam()
+                    {
+                        Text = "What is a quaternion?",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         value.Validate();
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         MessageParamContent value = new("string");
         string json = JsonSerializer.Serialize(value);
@@ -101,26 +103,28 @@ public class MessageParamContentTest : TestBase
     }
 
     [Fact]
-    public void ContentBlockParamsSerializationRoundtrip_Works()
+    public void ContentBlockParamsSerializationRoundtripWorks()
     {
         MessageParamContent value = new(
             [
-                new TextBlockParam()
-                {
-                    Text = "What is a quaternion?",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new CitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new ContentBlockParam(
+                    new TextBlockParam()
+                    {
+                        Text = "What is a quaternion?",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         string json = JsonSerializer.Serialize(value);

@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaWebSearchToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void errorValidation_Works()
+    public void ErrorValidationWorks()
     {
         BetaWebSearchToolResultBlockContent value = new(
             new BetaWebSearchToolResultError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
@@ -15,11 +15,11 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void BetaWebSearchResultBlocksValidation_Works()
+    public void BetaWebSearchResultBlocksValidationWorks()
     {
         BetaWebSearchToolResultBlockContent value = new(
             [
-                new()
+                new BetaWebSearchResultBlock()
                 {
                     EncryptedContent = "encrypted_content",
                     PageAge = "page_age",
@@ -32,7 +32,7 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void errorSerializationRoundtrip_Works()
+    public void ErrorSerializationRoundtripWorks()
     {
         BetaWebSearchToolResultBlockContent value = new(
             new BetaWebSearchToolResultError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
@@ -44,11 +44,11 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void BetaWebSearchResultBlocksSerializationRoundtrip_Works()
+    public void BetaWebSearchResultBlocksSerializationRoundtripWorks()
     {
         BetaWebSearchToolResultBlockContent value = new(
             [
-                new()
+                new BetaWebSearchResultBlock()
                 {
                     EncryptedContent = "encrypted_content",
                     PageAge = "page_age",

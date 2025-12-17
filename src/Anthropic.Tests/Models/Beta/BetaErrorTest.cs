@@ -6,70 +6,70 @@ namespace Anthropic.Tests.Models.Beta;
 public class BetaErrorTest : TestBase
 {
     [Fact]
-    public void invalid_requestValidation_Works()
+    public void InvalidRequestValidationWorks()
     {
         BetaError value = new(new BetaInvalidRequestError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void authenticationValidation_Works()
+    public void AuthenticationValidationWorks()
     {
         BetaError value = new(new BetaAuthenticationError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void billingValidation_Works()
+    public void BillingValidationWorks()
     {
         BetaError value = new(new BetaBillingError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void permissionValidation_Works()
+    public void PermissionValidationWorks()
     {
         BetaError value = new(new BetaPermissionError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void not_foundValidation_Works()
+    public void NotFoundValidationWorks()
     {
         BetaError value = new(new BetaNotFoundError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void rate_limitValidation_Works()
+    public void RateLimitValidationWorks()
     {
         BetaError value = new(new BetaRateLimitError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void gateway_timeoutValidation_Works()
+    public void GatewayTimeoutValidationWorks()
     {
         BetaError value = new(new BetaGatewayTimeoutError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void apiValidation_Works()
+    public void APIValidationWorks()
     {
         BetaError value = new(new BetaAPIError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void overloadedValidation_Works()
+    public void OverloadedValidationWorks()
     {
         BetaError value = new(new BetaOverloadedError("message"));
         value.Validate();
     }
 
     [Fact]
-    public void invalid_requestSerializationRoundtrip_Works()
+    public void InvalidRequestSerializationRoundtripWorks()
     {
         BetaError value = new(new BetaInvalidRequestError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -79,7 +79,7 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void authenticationSerializationRoundtrip_Works()
+    public void AuthenticationSerializationRoundtripWorks()
     {
         BetaError value = new(new BetaAuthenticationError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -89,7 +89,7 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void billingSerializationRoundtrip_Works()
+    public void BillingSerializationRoundtripWorks()
     {
         BetaError value = new(new BetaBillingError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -99,7 +99,7 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void permissionSerializationRoundtrip_Works()
+    public void PermissionSerializationRoundtripWorks()
     {
         BetaError value = new(new BetaPermissionError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -109,7 +109,7 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void not_foundSerializationRoundtrip_Works()
+    public void NotFoundSerializationRoundtripWorks()
     {
         BetaError value = new(new BetaNotFoundError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -119,7 +119,7 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void rate_limitSerializationRoundtrip_Works()
+    public void RateLimitSerializationRoundtripWorks()
     {
         BetaError value = new(new BetaRateLimitError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -129,7 +129,7 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void gateway_timeoutSerializationRoundtrip_Works()
+    public void GatewayTimeoutSerializationRoundtripWorks()
     {
         BetaError value = new(new BetaGatewayTimeoutError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -139,7 +139,7 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void apiSerializationRoundtrip_Works()
+    public void APISerializationRoundtripWorks()
     {
         BetaError value = new(new BetaAPIError("message"));
         string json = JsonSerializer.Serialize(value);
@@ -149,7 +149,7 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void overloadedSerializationRoundtrip_Works()
+    public void OverloadedSerializationRoundtripWorks()
     {
         BetaError value = new(new BetaOverloadedError("message"));
         string json = JsonSerializer.Serialize(value);

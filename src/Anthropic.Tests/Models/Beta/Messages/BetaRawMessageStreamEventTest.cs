@@ -8,7 +8,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaRawMessageStreamEventTest : TestBase
 {
     [Fact]
-    public void startValidation_Works()
+    public void StartValidationWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawMessageStartEvent(
@@ -81,7 +81,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void deltaValidation_Works()
+    public void DeltaValidationWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawMessageDeltaEvent()
@@ -128,14 +128,14 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void stopValidation_Works()
+    public void StopValidationWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(new Messages::BetaRawMessageStopEvent());
         value.Validate();
     }
 
     [Fact]
-    public void content_block_startValidation_Works()
+    public void ContentBlockStartValidationWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawContentBlockStartEvent()
@@ -163,7 +163,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_deltaValidation_Works()
+    public void ContentBlockDeltaValidationWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawContentBlockDeltaEvent()
@@ -176,7 +176,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_stopValidation_Works()
+    public void ContentBlockStopValidationWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawContentBlockStopEvent(0)
@@ -185,7 +185,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void startSerializationRoundtrip_Works()
+    public void StartSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawMessageStartEvent(
@@ -261,7 +261,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void deltaSerializationRoundtrip_Works()
+    public void DeltaSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawMessageDeltaEvent()
@@ -311,7 +311,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void stopSerializationRoundtrip_Works()
+    public void StopSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(new Messages::BetaRawMessageStopEvent());
         string json = JsonSerializer.Serialize(value);
@@ -321,7 +321,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_startSerializationRoundtrip_Works()
+    public void ContentBlockStartSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawContentBlockStartEvent()
@@ -352,7 +352,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_deltaSerializationRoundtrip_Works()
+    public void ContentBlockDeltaSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawContentBlockDeltaEvent()
@@ -368,7 +368,7 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void content_block_stopSerializationRoundtrip_Works()
+    public void ContentBlockStopSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawContentBlockStopEvent(0)

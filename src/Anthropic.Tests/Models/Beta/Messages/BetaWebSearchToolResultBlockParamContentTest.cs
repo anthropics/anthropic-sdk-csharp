@@ -6,11 +6,11 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaWebSearchToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void result_blockValidation_Works()
+    public void ResultBlockValidationWorks()
     {
         BetaWebSearchToolResultBlockParamContent value = new(
             [
-                new()
+                new BetaWebSearchResultBlockParam()
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
@@ -23,7 +23,7 @@ public class BetaWebSearchToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void request_errorValidation_Works()
+    public void RequestErrorValidationWorks()
     {
         BetaWebSearchToolResultBlockParamContent value = new(
             new BetaWebSearchToolRequestError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
@@ -32,11 +32,11 @@ public class BetaWebSearchToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void result_blockSerializationRoundtrip_Works()
+    public void ResultBlockSerializationRoundtripWorks()
     {
         BetaWebSearchToolResultBlockParamContent value = new(
             [
-                new()
+                new BetaWebSearchResultBlockParam()
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
@@ -54,7 +54,7 @@ public class BetaWebSearchToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void request_errorSerializationRoundtrip_Works()
+    public void RequestErrorSerializationRoundtripWorks()
     {
         BetaWebSearchToolResultBlockParamContent value = new(
             new BetaWebSearchToolRequestError(BetaWebSearchToolResultErrorCode.InvalidToolInput)

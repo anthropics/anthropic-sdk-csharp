@@ -6,21 +6,21 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaThinkingConfigParamTest : TestBase
 {
     [Fact]
-    public void enabledValidation_Works()
+    public void EnabledValidationWorks()
     {
         BetaThinkingConfigParam value = new(new BetaThinkingConfigEnabled(1024));
         value.Validate();
     }
 
     [Fact]
-    public void disabledValidation_Works()
+    public void DisabledValidationWorks()
     {
         BetaThinkingConfigParam value = new(new BetaThinkingConfigDisabled());
         value.Validate();
     }
 
     [Fact]
-    public void enabledSerializationRoundtrip_Works()
+    public void EnabledSerializationRoundtripWorks()
     {
         BetaThinkingConfigParam value = new(new BetaThinkingConfigEnabled(1024));
         string json = JsonSerializer.Serialize(value);
@@ -30,7 +30,7 @@ public class BetaThinkingConfigParamTest : TestBase
     }
 
     [Fact]
-    public void disabledSerializationRoundtrip_Works()
+    public void DisabledSerializationRoundtripWorks()
     {
         BetaThinkingConfigParam value = new(new BetaThinkingConfigDisabled());
         string json = JsonSerializer.Serialize(value);
