@@ -1,13 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Anthropic.Models.Messages;
 
-namespace Anthropic.Client.Services.Messages;
+namespace Anthropic.Services.Messages;
 
 /// <summary>
-/// An implementaion of the <see cref="SseAggregator{TMessage, TResult}"/> for aggregating BlockDeltaEvents from the <see cref="IMessageService.CreateStreaming(MessageCreateParams)"/> method.
+/// An implementation of the <see cref="SseAggregator{TMessage, TResult}"/> for aggregating BlockDeltaEvents from the <see cref="IMessageService.CreateStreaming(MessageCreateParams)"/> method.
 /// </summary>
-public class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, MessageAggregationResult>
+public class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Message>
 {
     /// <summary>
     /// Creates a new instance of the <see cref="MessageContentAggregator"/>.
@@ -16,63 +17,88 @@ public class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Mes
     public MessageContentAggregator(IAsyncEnumerable<RawMessageStreamEvent> messages) : base(messages)
     {
     }
-    
-    protected override MessageAggregationResult GetResult(IReadOnlyCollection<RawMessageStreamEvent> messages)
+
+    protected override Message GetResult(IReadOnlyDictionary<FilterResult, IList<RawMessageStreamEvent>> messages)
     {
-        var aggregation = new MessageAggregationResult();
-        foreach (var item in messages.Select(e => e.Value).Cast<RawContentBlockDeltaEvent>().Select(e => e.Delta))
+        var content = messages[FilterResult.Content].GroupBy(e => e.Index);
+
+        var startMessage = messages[FilterResult.StartMessage].Select(e => e.Value!).OfType<RawMessageStartEvent>().Single()
+        ?? throw new InvalidOperationException($"Expected to find exactly one {nameof(RawMessageStartEvent)} but found either non or more then one.");
+
+        var contentBlocks = new List<ContentBlock>();
+        foreach (var item in messages.OrderBy(e => e.Key))
         {
-            item.Switch(
-                e => aggregation.Text += e.Text,
-                e => aggregation.PartialJson += e.PartialJSON,
-                e => aggregation.Citations.Add(e.Citation),
-                e => aggregation.Thinking += e.Thinking,
-                e => aggregation.Signature += e.Signature);
+            var blockContents = item.Value;
+            var startContent = blockContents.Select(e => e.Value).OfType<RawContentBlockStartEvent>().Single();
+            var blockContent = blockContents.Select(e => e.Value).OfType<RawContentBlockDelta>().ToArray();
+            var endContent = blockContents.Select(e => e.Value).OfType<RawContentBlockStartEvent>().Single();
+
+            var contentBlock = startContent.ContentBlock;
+            contentBlocks.Add(MergeBlock(contentBlock, blockContent));
         }
 
-        return aggregation;
+        return new()
+        {
+            Content = [.. contentBlocks],
+            ID = startMessage.Message.ID,
+            Model = startMessage.Message.Model,
+            StopReason = startMessage.Message.StopReason,
+            StopSequence = startMessage.Message.StopSequence,
+            Usage = startMessage.Message.Usage
+        };
+    }
+
+    private ContentBlock MergeBlock(RawContentBlockStartEventContentBlock contentBlock, IList<RawContentBlockDelta> blockContents)
+    {
+        ContentBlock resultBlock = null!;
+
+        string StringJoinHelper<T>(IEnumerable<T> sources, Func<T, string> expression)
+        {
+            return string.Join(null, sources.Select(expression));
+        }
+
+        void With<T>(T source, Func<IEnumerable<T>, ContentBlock> factory)
+        {
+            resultBlock = factory([source, .. blockContents.Select(e => e.Value).OfType<T>()]);
+        }
+
+        void Single<T>(T item)
+        {
+            resultBlock = (blockContents.Select(e => e.Value).OfType<T>().Single() as ContentBlock)!;
+        }
+
+        contentBlock.Switch(
+            e => With(e, blocks =>
+                new TextBlock()
+                {
+                    Text = StringJoinHelper(blocks, e => e.Text),
+                    Citations = [.. blocks.SelectMany(f => f.Citations!)],                    
+                }
+            ),
+            e => With(e, blocks =>
+                new ThinkingBlock()
+                {
+                    Signature = StringJoinHelper(blocks, e => e.Signature),
+                    Thinking = StringJoinHelper(blocks, e => e.Thinking),                    
+                }
+            ),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e)
+        );
+
+        return resultBlock;
     }
 
     protected override FilterResult Filter(RawMessageStreamEvent message) => message.Value switch
     {
-        RawContentBlockStartEvent _ => FilterResult.StartMessage,
-        RawContentBlockStopEvent _ => FilterResult.EndMessage,
+        RawContentBlockStartEvent _ => FilterResult.Content,
+        RawContentBlockStopEvent _ => FilterResult.Content,
         RawContentBlockDeltaEvent _ => FilterResult.Content,
+        RawMessageDeltaEvent => FilterResult.Content,
+        RawMessageStartEvent => FilterResult.StartMessage,
         RawMessageStopEvent _ => FilterResult.EndMessage,
         _ => FilterResult.Ignore
     };
-}
-
-/// <summary>
-/// The aggregation model for a stream of <see cref="RawContentBlockDeltaEvent"/>
-/// </summary>
-public class MessageAggregationResult
-{
-    /// <summary>
-    /// Gets or sets the aggregated Text from an <see cref="TextDelta"/>
-    /// </summary>
-    public string? Text { get; set; }
-
-    
-    /// <summary>
-    /// Gets or sets the aggregated Text from an <see cref="InputJSONDelta"/>
-    /// </summary>
-    public string? PartialJson { get; set; }
-
-
-    /// <summary>
-    /// Gets or sets the aggregated Text from an <see cref="CitationsDelta"/>
-    /// </summary>
-    public IList<Citation> Citations { get; set; } = [];
-    
-    
-    /// <summary>
-    /// Gets or sets the aggregated Text from an <see cref="ThinkingDelta"/>
-    /// </summary>
-    public string? Thinking { get; internal set; }
-    
-    /// <summary>
-    /// Gets or sets the aggregated Signature from an <see cref="SignatureDelta"/>
-    /// </summary>
-    public string? Signature { get; internal set; }    
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Anthropic.Models.Beta.Messages;
 
-namespace Anthropic.Client.Services.Messages;
+namespace Anthropic.Services.Messages;
 
 /// <summary>
 /// The aggregation model for a stream of <see cref="BetaRawContentBlockDeltaEvent"/>
@@ -18,91 +18,116 @@ public class BetaMessageContentAggregator : SseAggregator<BetaRawMessageStreamEv
     {
     }
 
-    /// <summary>
-    /// The aggregation model for a stream of <see cref="BetaRawContentBlockDeltaEvent"/>
-    /// </summary>
-    private record BetaMessageAggregationResult
+    protected override BetaMessage GetResult(IReadOnlyDictionary<FilterResult, IList<BetaRawMessageStreamEvent>> messages)
     {
-        /// <summary>
-        /// Gets or sets the aggregated Text from an <see cref="BetaTextDelta"/>
-        /// </summary>
-        public string? Text { get; set; }
+        var content = messages[FilterResult.Content].GroupBy(e => e.Index);
 
+        var startMessage = messages[FilterResult.StartMessage].Select(e => (BetaRawMessageStartEvent)e.Value!).Single();
+        var endMessage = messages[FilterResult.EndMessage].Select(e => (BetaRawMessageStopEvent)e.Value!).Single();
 
-        /// <summary>
-        /// Gets or sets the aggregated Text from an <see cref="BetaInputJSONDelta"/>
-        /// </summary>
-        public string? PartialJson { get; set; }
-
-
-        /// <summary>
-        /// Gets or sets the aggregated Text from an <see cref="BetaCitationsDelta"/>
-        /// </summary>
-        public IList<Citation> Citations { get; set; } = [];
-
-
-        /// <summary>
-        /// Gets or sets the aggregated Text from an <see cref="BetaThinkingDelta"/>
-        /// </summary>
-        public string? Thinking { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets the aggregated Text from an <see cref="BetaSignatureDelta"/>
-        /// </summary>
-        public string? Signature { get; internal set; }
-    }
-
-    protected override BetaMessage GetResult(IReadOnlyCollection<BetaRawMessageStreamEvent> messages)
-    {
-        var aggregation = new BetaMessageAggregationResult();
-
-        foreach (var item in messages.Select(e => e.Value).Cast<BetaRawContentBlockDelta>())
+        var contentBlocks = new List<BetaContentBlock>();
+        foreach (var item in messages.OrderBy(e => e.Key))
         {
-            item.Switch(
-                e => aggregation.Text += e.Text,
-                e => aggregation.PartialJson += e.PartialJSON,
-                e => aggregation.Citations.Add(e.Citation),
-                e => aggregation.Thinking += e.Thinking,
-                e => aggregation.Signature += e.Signature);
-        }
+            var blockContents = item.Value;
+            var startContent = blockContents.Select(e => e.Value).OfType<BetaRawContentBlockStartEvent>().Single();
+            var blockContent = blockContents.Select(e => e.Value).OfType<BetaRawContentBlockDelta>().ToArray();
+            var endContent = blockContents.Select(e => e.Value).OfType<BetaRawContentBlockStartEvent>().Single();
 
-        var messageContents = new List<BetaContentBlock>();
-        if (!string.IsNullOrWhiteSpace(aggregation.Text))
-        {
-            messageContents.Add(new BetaTextBlock()
-            {
-                Text = aggregation.Text!,
-                Citations = [.. aggregation.Citations.Select(e => new BetaTextCitation(e.Json))],                
-            });
-        }
-
-        if (!string.IsNullOrWhiteSpace(aggregation.Thinking))
-        {
-            messageContents.Add(new BetaThinkingBlock()
-            {
-                Thinking = aggregation.Thinking!,
-                Signature = aggregation.Signature!
-            });
+            var contentBlock = startContent.ContentBlock;
+            contentBlocks.Add(MergeBlock(contentBlock, blockContent));
         }
 
         return new()
         {
-            Content = [.. messageContents],
-            Container = null,
-            ContextManagement = null,
-            ID = Guid.NewGuid().ToString(),
-            Model = null!,
-            StopReason = null!,
-            StopSequence = null!,
-            Usage = null!            
+            Content = [.. contentBlocks],
+            Container = startMessage.Message.Container,
+            ContextManagement = startMessage.Message.ContextManagement,
+            ID = startMessage.Message.ID,
+            Model = startMessage.Message.Model,
+            StopReason = startMessage.Message.StopReason,
+            StopSequence = startMessage.Message.StopSequence,
+            Usage = startMessage.Message.Usage
         };
+    }
+
+    private BetaContentBlock MergeBlock(ContentBlock contentBlock, IList<BetaRawContentBlockDelta> blockContents)
+    {
+        BetaContentBlock resultBlock = null!;
+
+        string StringJoinHelper<T>(IEnumerable<T> sources, Func<T, string> expression)
+        {
+            return string.Join(null, sources.Select(expression));
+        }
+
+        IReadOnlyDictionary<TDicKey, TDicValue> DictionaryJoinHelper<TValue, TDicKey, TDicValue>(IEnumerable<TValue> sources,
+            Func<TValue, IEnumerable<KeyValuePair<TDicKey, TDicValue>>> expression)
+            where TDicValue : notnull
+            where TDicKey : notnull
+        {
+            return sources.SelectMany(expression).ToDictionary(e => e.Key, e => e.Value);
+        }
+
+        void With<T>(T source, Func<IEnumerable<T>, BetaContentBlock> factory)
+        {
+            resultBlock = factory([source, .. blockContents.Select(e => e.Value).OfType<T>()]);
+        }
+
+        void Single<T>(T item)
+        {
+            resultBlock = (blockContents.Select(e => e.Value).OfType<T>().Single() as BetaContentBlock)!;
+        }
+
+        contentBlock.Switch(
+            e => With(e, blocks =>
+                new BetaTextBlock()
+                {
+                    Text = StringJoinHelper(blocks, e => e.Text),
+                    Citations = [.. blocks.SelectMany(f => f.Citations!)],
+                }
+            ),
+            e => With(e, blocks =>
+                new BetaThinkingBlock()
+                {
+                    Signature = StringJoinHelper(blocks, e => e.Signature),
+                    Thinking = StringJoinHelper(blocks, e => e.Thinking),
+                }
+            ),
+            e => With(e, blocks =>
+                 new BetaRedactedThinkingBlock()
+                 {
+                     Data = StringJoinHelper(blocks, e => e.Data)
+                 }
+            ),
+            e => With(e, blocks =>
+                 new BetaToolUseBlock()
+                 {
+                     ID = StringJoinHelper(blocks, e => e.ID),
+                     Name = StringJoinHelper(blocks, e => e.Name),
+                     Input = DictionaryJoinHelper(blocks, e => e.Input)
+                 }
+            ),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e),
+            e => Single(e)
+        );
+
+        return resultBlock;
     }
 
     protected override FilterResult Filter(BetaRawMessageStreamEvent message) => message.Value switch
     {
-        BetaRawContentBlockStartEvent _ => FilterResult.StartMessage,
-        BetaRawContentBlockStopEvent _ => FilterResult.EndMessage,
+        BetaRawContentBlockStartEvent _ => FilterResult.Content,
+        BetaRawContentBlockStopEvent _ => FilterResult.Content,
         BetaRawContentBlockDeltaEvent _ => FilterResult.Content,
+        BetaRawMessageDeltaEvent => FilterResult.Content,
+        BetaRawMessageStartEvent => FilterResult.StartMessage,
         BetaRawMessageStopEvent _ => FilterResult.EndMessage,
         _ => FilterResult.Ignore
     };

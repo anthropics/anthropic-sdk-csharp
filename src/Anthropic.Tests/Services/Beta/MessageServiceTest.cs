@@ -86,13 +86,7 @@ public class MessageServiceTest
         ).Aggregate();
 
         // assert
-
-        Assert.NotNull(stream);
-        Assert.Null(stream.Text);
-        Assert.Null(stream.Thinking);
-        Assert.NotNull(stream.Citations);
-        Assert.Empty(stream.Citations);
-        Assert.Null(stream.Thinking);
+        stream.Validate();
     }
 
     [Fact]
@@ -156,13 +150,7 @@ public class MessageServiceTest
         ).Aggregate();
 
         // assert
-
-        Assert.NotNull(stream);
-        Assert.Null(stream.Text);
-        Assert.Null(stream.Thinking);
-        Assert.NotNull(stream.Citations);
-        Assert.Empty(stream.Citations);
-        Assert.Null(stream.Thinking);
+        stream.Validate();
     }
 
     [Fact]
@@ -203,13 +191,7 @@ public class MessageServiceTest
         ).Aggregate();
 
         // assert
-
-        Assert.NotNull(stream);
-        Assert.Null(stream.Text);
-        Assert.Null(stream.Thinking);
-        Assert.NotNull(stream.Citations);
-        Assert.Empty(stream.Citations);
-        Assert.Null(stream.Thinking);
+        stream.Validate();
     }
 
     [Fact]
@@ -267,12 +249,7 @@ public class MessageServiceTest
         ).Aggregate();
 
         // assert
-
-        Assert.NotNull(stream);
-        Assert.Equal("Test", stream.Text);
-        Assert.NotNull(stream.Citations);
-        Assert.NotEmpty(stream.Citations);
-        Assert.Equal("Other Test", stream.Thinking);
+        stream.Validate();
     }
 
     private static Message GenerateStartMessage()

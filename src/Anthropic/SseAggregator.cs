@@ -27,12 +27,12 @@ public abstract class SseAggregator<TMessage, TResult>
 
     public virtual Task<TResult?> BeginCollectionAsync()
     {
-        return _collectionTask ??= Task.Run<TResult?>(async () =>
+        return _collectionTask ??= Task.Run(async () =>
         {
             var messages = new Dictionary<FilterResult, IList<TMessage>>();
-            foreach (var item in Enum.GetValues<FilterResult>())
+            foreach (FilterResult item in Enum.GetValues(typeof(FilterResult)))
             {
-                messages[item] = new List<TMessage>();
+                messages[item] = [];
             }
 
             var startMessageReceived = false;
@@ -64,7 +64,7 @@ public abstract class SseAggregator<TMessage, TResult>
                 throw new InvalidOperationException($"Expected last message to be the End message but found: {filterResult}");
             }
 
-            return GetResult(new ReadOnlyDictionary<FilterResult, IReadOnlyCollection<TMessage>>(messages));
+            return GetResult(new ReadOnlyDictionary<FilterResult, IList<TMessage>>(messages));
         });
     }
 
@@ -80,7 +80,7 @@ public abstract class SseAggregator<TMessage, TResult>
     /// </summary>
     /// <param name="messages">The read only list of messages.</param>
     /// <returns>The aggregation result.</returns>
-    protected abstract TResult GetResult(IReadOnlyDictionary<FilterResult, IReadOnlyCollection<TMessage>> messages);
+    protected abstract TResult GetResult(IReadOnlyDictionary<FilterResult, IList<TMessage>> messages);
 
     /// <summary>
     /// Defines the filter result types.
