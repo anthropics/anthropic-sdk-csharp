@@ -64,7 +64,7 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         };
     }
 
-    private ContentBlock MergeBlock(
+    private static ContentBlock MergeBlock(
         RawContentBlockStartEventContentBlock contentBlock,
         IList<RawContentBlockDelta> blockContents
     )

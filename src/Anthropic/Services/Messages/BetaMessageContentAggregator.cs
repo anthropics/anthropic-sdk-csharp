@@ -65,7 +65,7 @@ public sealed class BetaMessageContentAggregator
         };
     }
 
-    private BetaContentBlock MergeBlock(
+    private static BetaContentBlock MergeBlock(
         ContentBlock contentBlock,
         IList<BetaRawContentBlockDelta> blockContents
     )
