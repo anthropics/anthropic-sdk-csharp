@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Anthropic.Helpers;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Models.Messages;
 using Anthropic.Services.Messages;
@@ -18,7 +19,7 @@ public static class SseAggregatorExtensions
     /// <returns>A task that completes once all messages have been received or in the event of improper streaming and exception.</returns>
     public static Task<Message?> Aggregate(this IAsyncEnumerable<RawMessageStreamEvent> source)
     {
-        return new MessageContentAggregator(source).BeginCollectionAsync();
+        return new MessageContentAggregator(source).AggregateAsync();
     }
 
     /// <summary>
@@ -30,6 +31,6 @@ public static class SseAggregatorExtensions
         this IAsyncEnumerable<BetaRawMessageStreamEvent> source
     )
     {
-        return new BetaMessageContentAggregator(source).BeginCollectionAsync();
+        return new BetaMessageContentAggregator(source).AggregateAsync();
     }
 }

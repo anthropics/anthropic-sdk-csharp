@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Anthropic.Exceptions;
 
-namespace Anthropic;
+namespace Anthropic.Helpers;
 
 /// <summary>
 /// Defines the base for all Aggregators using ServerSideStreaming events.
@@ -20,12 +21,16 @@ public abstract class SseAggregator<TMessage, TResult>
     /// <param name="messages">The service attached enumerable for reading messages.</param>
     public SseAggregator(IAsyncEnumerable<TMessage> messages)
     {
-        this._messages = messages;
+        _messages = messages;
     }
 
     private Task<TResult?>? _collectionTask;
 
-    public virtual Task<TResult?> BeginCollectionAsync()
+    /// <summary>
+    /// Aggregates all items based on the Anthropic streaming protocol present in the <see cref="IAsyncEnumerable{TMessage}"/> provided on initialization.
+    /// </summary>
+    /// <returns>A task that completes when all messages have been aggregated.</returns>
+    public virtual Task<TResult?> AggregateAsync()
     {
         return _collectionTask ??= Task.Run(async () =>
         {
@@ -61,7 +66,7 @@ public abstract class SseAggregator<TMessage, TResult>
 
             if (filterResult != FilterResult.EndMessage)
             {
-                throw new InvalidOperationException(
+                throw new AnthropicInvalidDataException(
                     $"Expected last message to be the End message but found: {filterResult}"
                 );
             }
@@ -102,12 +107,12 @@ public abstract class SseAggregator<TMessage, TResult>
         StartMessage = 1,
 
         /// <summary>
-        /// The message contains aggregatable content.
+        /// The message contains aggregate content.
         /// </summary>
         Content = 2,
 
         /// <summary>
-        /// The message defines the end boundry of the message package.
+        /// The message defines the end of the message stream.
         /// </summary>
         EndMessage = 3,
     }

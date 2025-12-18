@@ -1,55 +1,55 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Anthropic.Models.Beta.Messages;
+using Anthropic.Models.Messages;
+using Anthropic.Services;
 
-namespace Anthropic.Services.Messages;
+namespace Anthropic.Helpers;
 
 /// <summary>
-/// The aggregation model for a stream of <see cref="BetaRawContentBlockDeltaEvent"/>
+/// An implementation of the <see cref="SseAggregator{TMessage, TResult}"/> for aggregating BlockDeltaEvents from the <see cref="IMessageService.CreateStreaming(MessageCreateParams)"/> method.
 /// </summary>
-public sealed class BetaMessageContentAggregator
-    : SseAggregator<BetaRawMessageStreamEvent, BetaMessage>
+public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Message>
 {
     /// <summary>
-    /// Creates a new instance of the <see cref="BetaMessageContentAggregator"/>.
+    /// Creates a new instance of the <see cref="MessageContentAggregator"/>.
     /// </summary>
     /// <param name="messages">The async enumerable representing a stream of messages.</param>
-    public BetaMessageContentAggregator(IAsyncEnumerable<BetaRawMessageStreamEvent> messages)
+    public MessageContentAggregator(IAsyncEnumerable<RawMessageStreamEvent> messages)
         : base(messages) { }
 
-    protected override BetaMessage GetResult(
-        IReadOnlyDictionary<FilterResult, IList<BetaRawMessageStreamEvent>> messages
+    protected override Message GetResult(
+        IReadOnlyDictionary<FilterResult, IList<RawMessageStreamEvent>> messages
     )
     {
         var content = messages[FilterResult.Content].GroupBy(e => e.Index);
 
-        var startMessage = messages[FilterResult.StartMessage]
-            .Select(e => (BetaRawMessageStartEvent)e.Value!)
-            .Single();
-        var endMessage = messages[FilterResult.EndMessage]
-            .Select(e => (BetaRawMessageStopEvent)e.Value!)
-            .Single();
+        var startMessage =
+            messages[FilterResult.StartMessage]
+                .Select(e => e.Value!)
+                .OfType<RawMessageStartEvent>()
+                .Single()
+            ?? throw new InvalidOperationException(
+                $"Expected to find exactly one {nameof(RawMessageStartEvent)} but found either non or more then one."
+            );
 
-        var contentBlocks = new List<BetaContentBlock>();
+        var contentBlocks = new List<ContentBlock>();
         foreach (var item in content)
         {
             var startContent = item.Select(e => e.Value)
-                .OfType<BetaRawContentBlockStartEvent>()
+                .OfType<RawContentBlockStartEvent>()
                 .Single();
             var blockContent = item.Select(e => e.Value)
-                .OfType<BetaRawContentBlockDeltaEvent>()
+                .OfType<RawContentBlockDeltaEvent>()
                 .ToArray();
 
             var contentBlock = startContent.ContentBlock;
-            contentBlocks.Add(MergeBlock(contentBlock, blockContent.Select(e => e.Delta)));
+            contentBlocks.Add(MergeBlock(contentBlock, [.. blockContent.Select(e => e.Delta)]));
         }
 
         return new()
         {
             Content = [.. contentBlocks],
-            Container = startMessage.Message.Container,
-            ContextManagement = startMessage.Message.ContextManagement,
             ID = startMessage.Message.ID,
             Model = startMessage.Message.Model,
             StopReason = startMessage.Message.StopReason,
@@ -58,12 +58,12 @@ public sealed class BetaMessageContentAggregator
         };
     }
 
-    private static BetaContentBlock MergeBlock(
-        ContentBlock contentBlock,
-        IEnumerable<BetaRawContentBlockDelta> blockContents
+    private static ContentBlock MergeBlock(
+        RawContentBlockStartEventContentBlock contentBlock,
+        IEnumerable<RawContentBlockDelta> blockContents
     )
     {
-        BetaContentBlock resultBlock = null!;
+        ContentBlock resultBlock = null!;
 
         string StringJoinHelper<T>(
             string source,
@@ -74,7 +74,7 @@ public sealed class BetaMessageContentAggregator
             return string.Join(null, (string[])[source, .. sources.Select(expression)]);
         }
 
-        void As<TDelta>(Func<IEnumerable<TDelta>, BetaContentBlock> factory)
+        void As<TDelta>(Func<IEnumerable<TDelta>, ContentBlock> factory)
         {
             // those blocks are DELTA variants not the source block
             // e.g TextBlock and TextDelta
@@ -89,21 +89,21 @@ public sealed class BetaMessageContentAggregator
         void Single<T>(T item)
         {
             resultBlock = (
-                blockContents.Select(e => e.Value).OfType<T>().Single() as BetaContentBlock
+                blockContents.Select(e => e.Value).OfType<T>().Single() as ContentBlock
             )!;
         }
 
         contentBlock.Switch(
             textBlock =>
-                As<BetaTextDelta>(blocks => new BetaTextBlock()
+                As<TextDelta>(blocks => new TextBlock()
                 {
                     Text = StringJoinHelper(textBlock.Text, blocks, e => e.Text),
                     Citations =
                     [
                         .. textBlock.Citations!,
-                        .. Of<BetaCitationsDelta>()
+                        .. Of<CitationsDelta>()
                             .Select(e =>
-                                e.Citation.Match<BetaTextCitation>(
+                                e.Citation.Match<TextCitation>(
                                     f => f,
                                     f => f,
                                     f => f,
@@ -114,23 +114,15 @@ public sealed class BetaMessageContentAggregator
                     ],
                 }),
             thinkingBlock =>
-                As<BetaThinkingDelta>(blocks => new BetaThinkingBlock()
+                As<ThinkingDelta>(blocks => new ThinkingBlock()
                 {
                     Signature = StringJoinHelper(
                         thinkingBlock.Signature,
-                        Of<BetaSignatureDelta>(),
+                        Of<SignatureDelta>(),
                         e => e.Signature
                     ),
                     Thinking = StringJoinHelper(thinkingBlock.Thinking, blocks, e => e.Thinking),
                 }),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
-            e => Single(e),
             e => Single(e),
             e => Single(e),
             e => Single(e),
@@ -140,15 +132,15 @@ public sealed class BetaMessageContentAggregator
         return resultBlock;
     }
 
-    protected override FilterResult Filter(BetaRawMessageStreamEvent message) =>
+    protected override FilterResult Filter(RawMessageStreamEvent message) =>
         message.Value switch
         {
-            BetaRawContentBlockStartEvent _ => FilterResult.Content,
-            BetaRawContentBlockStopEvent _ => FilterResult.Content,
-            BetaRawContentBlockDeltaEvent _ => FilterResult.Content,
-            BetaRawMessageDeltaEvent => FilterResult.Content,
-            BetaRawMessageStartEvent => FilterResult.StartMessage,
-            BetaRawMessageStopEvent _ => FilterResult.EndMessage,
+            RawContentBlockStartEvent _ => FilterResult.Content,
+            RawContentBlockStopEvent _ => FilterResult.Content,
+            RawContentBlockDeltaEvent _ => FilterResult.Content,
+            RawMessageDeltaEvent => FilterResult.Content,
+            RawMessageStartEvent => FilterResult.StartMessage,
+            RawMessageStopEvent _ => FilterResult.EndMessage,
             _ => FilterResult.Ignore,
         };
 }
