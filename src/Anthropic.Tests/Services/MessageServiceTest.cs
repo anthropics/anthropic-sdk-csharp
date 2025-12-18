@@ -10,7 +10,7 @@ public class MessageServiceTest
     [Theory]
     [AnthropicTestClients]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
-    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
+    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     public async Task Create_Works(IAnthropicClient client, string modelName)
     {
         var message = await client.Messages.Create(
@@ -27,7 +27,7 @@ public class MessageServiceTest
     [Theory]
     [AnthropicTestClients]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
-    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
+    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     public async Task CreateStreaming_Works(IAnthropicClient client, string modelName)
     {
         var stream = client.Messages.CreateStreaming(
@@ -48,7 +48,7 @@ public class MessageServiceTest
     [Theory]
     [AnthropicTestClients]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
-    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
+    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     public async Task CountTokens_Works(IAnthropicClient client, string modelName)
     {
         var messageTokensCount = await client.Messages.CountTokens(
