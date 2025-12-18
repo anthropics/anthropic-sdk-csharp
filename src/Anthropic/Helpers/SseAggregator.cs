@@ -30,9 +30,9 @@ public abstract class SseAggregator<TMessage, TResult>
     /// Aggregates all items based on the Anthropic streaming protocol present in the <see cref="IAsyncEnumerable{TMessage}"/> provided on initialization.
     /// </summary>
     /// <returns>A task that completes when all messages have been aggregated.</returns>
-    public virtual Task<TResult?> AggregateAsync()
+    public virtual async Task<TResult?> AggregateAsync()
     {
-        return _collectionTask ??= Task.Run(async () =>
+        return await (_collectionTask ??= Task.Run(async () =>
         {
             var messages = new Dictionary<FilterResult, IList<TMessage>>();
             foreach (FilterResult item in Enum.GetValues(typeof(FilterResult)))
@@ -72,7 +72,7 @@ public abstract class SseAggregator<TMessage, TResult>
             }
 
             return GetResult(new ReadOnlyDictionary<FilterResult, IList<TMessage>>(messages));
-        });
+        }));
     }
 
     /// <summary>
