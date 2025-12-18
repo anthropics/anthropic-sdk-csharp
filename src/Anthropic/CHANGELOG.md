@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.0.1 (2025-12-18)
+
+Full Changelog: [Anthropic-v12.0.0...Anthropic-v12.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.0.0...Anthropic-v12.0.1)
+
+### Documentation
+
+* fix typos and resolve merge conflict in CHANGELOG ([#78](https://github.com/anthropics/anthropic-sdk-csharp/issues/78)) ([a6ccfa7](https://github.com/anthropics/anthropic-sdk-csharp/commit/a6ccfa7968391a00dc92db625e4344d252eb3c03))
+
 ## 12.0.0 (2025-12-10)
 
 Full Changelog: [Anthropic-v11.0.0...Anthropic-v12.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v11.0.0...Anthropic-v12.0.0)
