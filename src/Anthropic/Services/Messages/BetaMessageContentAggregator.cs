@@ -32,24 +32,17 @@ public sealed class BetaMessageContentAggregator
             .Single();
 
         var contentBlocks = new List<BetaContentBlock>();
-        foreach (var item in messages.OrderBy(e => e.Key))
+        foreach (var item in content)
         {
-            var blockContents = item.Value;
-            var startContent = blockContents
-                .Select(e => e.Value)
+            var startContent = item.Select(e => e.Value)
                 .OfType<BetaRawContentBlockStartEvent>()
                 .Single();
-            var blockContent = blockContents
-                .Select(e => e.Value)
-                .OfType<BetaRawContentBlockDelta>()
+            var blockContent = item.Select(e => e.Value)
+                .OfType<BetaRawContentBlockDeltaEvent>()
                 .ToArray();
-            var endContent = blockContents
-                .Select(e => e.Value)
-                .OfType<BetaRawContentBlockStartEvent>()
-                .Single();
 
             var contentBlock = startContent.ContentBlock;
-            contentBlocks.Add(MergeBlock(contentBlock, blockContent));
+            contentBlocks.Add(MergeBlock(contentBlock, blockContent.Select(e => e.Delta)));
         }
 
         return new()
@@ -67,29 +60,30 @@ public sealed class BetaMessageContentAggregator
 
     private static BetaContentBlock MergeBlock(
         ContentBlock contentBlock,
-        IList<BetaRawContentBlockDelta> blockContents
+        IEnumerable<BetaRawContentBlockDelta> blockContents
     )
     {
         BetaContentBlock resultBlock = null!;
 
-        string StringJoinHelper<T>(IEnumerable<T> sources, Func<T, string> expression)
-        {
-            return string.Join(null, sources.Select(expression));
-        }
-
-        IReadOnlyDictionary<TDicKey, TDicValue> DictionaryJoinHelper<TValue, TDicKey, TDicValue>(
-            IEnumerable<TValue> sources,
-            Func<TValue, IEnumerable<KeyValuePair<TDicKey, TDicValue>>> expression
+        string StringJoinHelper<T>(
+            string source,
+            IEnumerable<T> sources,
+            Func<T, string> expression
         )
-            where TDicValue : notnull
-            where TDicKey : notnull
         {
-            return sources.SelectMany(expression).ToDictionary(e => e.Key, e => e.Value);
+            return string.Join(null, (string[])[source, .. sources.Select(expression)]);
         }
 
-        void With<T>(T source, Func<IEnumerable<T>, BetaContentBlock> factory)
+        void As<TDelta>(Func<IEnumerable<TDelta>, BetaContentBlock> factory)
         {
-            resultBlock = factory([source, .. blockContents.Select(e => e.Value).OfType<T>()]);
+            // those blocks are DELTA variants not the source block
+            // e.g TextBlock and TextDelta
+            resultBlock = factory([.. blockContents.Select(e => e.Value).OfType<TDelta>()]);
+        }
+
+        IEnumerable<TDelta> Of<TDelta>()
+        {
+            return blockContents.Select(e => e.Value).OfType<TDelta>();
         }
 
         void Single<T>(T item)
@@ -100,42 +94,37 @@ public sealed class BetaMessageContentAggregator
         }
 
         contentBlock.Switch(
-            e =>
-                With(
-                    e,
-                    blocks => new BetaTextBlock()
-                    {
-                        Text = StringJoinHelper(blocks, e => e.Text),
-                        Citations = [.. blocks.SelectMany(f => f.Citations!)],
-                    }
-                ),
-            e =>
-                With(
-                    e,
-                    blocks => new BetaThinkingBlock()
-                    {
-                        Signature = StringJoinHelper(blocks, e => e.Signature),
-                        Thinking = StringJoinHelper(blocks, e => e.Thinking),
-                    }
-                ),
-            e =>
-                With(
-                    e,
-                    blocks => new BetaRedactedThinkingBlock()
-                    {
-                        Data = StringJoinHelper(blocks, e => e.Data),
-                    }
-                ),
-            e =>
-                With(
-                    e,
-                    blocks => new BetaToolUseBlock()
-                    {
-                        ID = StringJoinHelper(blocks, e => e.ID),
-                        Name = StringJoinHelper(blocks, e => e.Name),
-                        Input = DictionaryJoinHelper(blocks, e => e.Input),
-                    }
-                ),
+            textBlock =>
+                As<BetaTextDelta>(blocks => new BetaTextBlock()
+                {
+                    Text = StringJoinHelper(textBlock.Text, blocks, e => e.Text),
+                    Citations =
+                    [
+                        .. textBlock.Citations!,
+                        .. Of<BetaCitationsDelta>()
+                            .Select(e =>
+                                e.Citation.Match<BetaTextCitation>(
+                                    f => f,
+                                    f => f,
+                                    f => f,
+                                    f => f,
+                                    f => f
+                                )
+                            ),
+                    ],
+                }),
+            thinkingBlock =>
+                As<BetaThinkingDelta>(blocks => new BetaThinkingBlock()
+                {
+                    Signature = StringJoinHelper(
+                        thinkingBlock.Signature,
+                        Of<BetaSignatureDelta>(),
+                        e => e.Signature
+                    ),
+                    Thinking = StringJoinHelper(thinkingBlock.Thinking, blocks, e => e.Thinking),
+                }),
+            e => Single(e),
+            e => Single(e),
             e => Single(e),
             e => Single(e),
             e => Single(e),

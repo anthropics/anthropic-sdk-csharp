@@ -33,24 +33,17 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             );
 
         var contentBlocks = new List<ContentBlock>();
-        foreach (var item in messages.OrderBy(e => e.Key))
+        foreach (var item in content)
         {
-            var blockContents = item.Value;
-            var startContent = blockContents
-                .Select(e => e.Value)
+            var startContent = item.Select(e => e.Value)
                 .OfType<RawContentBlockStartEvent>()
                 .Single();
-            var blockContent = blockContents
-                .Select(e => e.Value)
-                .OfType<RawContentBlockDelta>()
+            var blockContent = item.Select(e => e.Value)
+                .OfType<RawContentBlockDeltaEvent>()
                 .ToArray();
-            var endContent = blockContents
-                .Select(e => e.Value)
-                .OfType<RawContentBlockStartEvent>()
-                .Single();
 
             var contentBlock = startContent.ContentBlock;
-            contentBlocks.Add(MergeBlock(contentBlock, blockContent));
+            contentBlocks.Add(MergeBlock(contentBlock, [.. blockContent.Select(e => e.Delta)]));
         }
 
         return new()
@@ -66,19 +59,30 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
 
     private static ContentBlock MergeBlock(
         RawContentBlockStartEventContentBlock contentBlock,
-        IList<RawContentBlockDelta> blockContents
+        IEnumerable<RawContentBlockDelta> blockContents
     )
     {
         ContentBlock resultBlock = null!;
 
-        string StringJoinHelper<T>(IEnumerable<T> sources, Func<T, string> expression)
+        string StringJoinHelper<T>(
+            string source,
+            IEnumerable<T> sources,
+            Func<T, string> expression
+        )
         {
-            return string.Join(null, sources.Select(expression));
+            return string.Join(null, (string[])[source, .. sources.Select(expression)]);
         }
 
-        void With<T>(T source, Func<IEnumerable<T>, ContentBlock> factory)
+        void As<TDelta>(Func<IEnumerable<TDelta>, ContentBlock> factory)
         {
-            resultBlock = factory([source, .. blockContents.Select(e => e.Value).OfType<T>()]);
+            // those blocks are DELTA variants not the source block
+            // e.g TextBlock and TextDelta
+            resultBlock = factory([.. blockContents.Select(e => e.Value).OfType<TDelta>()]);
+        }
+
+        IEnumerable<TDelta> Of<TDelta>()
+        {
+            return blockContents.Select(e => e.Value).OfType<TDelta>();
         }
 
         void Single<T>(T item)
@@ -89,24 +93,35 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
         }
 
         contentBlock.Switch(
-            e =>
-                With(
-                    e,
-                    blocks => new TextBlock()
-                    {
-                        Text = StringJoinHelper(blocks, e => e.Text),
-                        Citations = [.. blocks.SelectMany(f => f.Citations!)],
-                    }
-                ),
-            e =>
-                With(
-                    e,
-                    blocks => new ThinkingBlock()
-                    {
-                        Signature = StringJoinHelper(blocks, e => e.Signature),
-                        Thinking = StringJoinHelper(blocks, e => e.Thinking),
-                    }
-                ),
+            textBlock =>
+                As<TextDelta>(blocks => new TextBlock()
+                {
+                    Text = StringJoinHelper(textBlock.Text, blocks, e => e.Text),
+                    Citations =
+                    [
+                        .. textBlock.Citations!,
+                        .. Of<CitationsDelta>()
+                            .Select(e =>
+                                e.Citation.Match<TextCitation>(
+                                    f => f,
+                                    f => f,
+                                    f => f,
+                                    f => f,
+                                    f => f
+                                )
+                            ),
+                    ],
+                }),
+            thinkingBlock =>
+                As<ThinkingDelta>(blocks => new ThinkingBlock()
+                {
+                    Signature = StringJoinHelper(
+                        thinkingBlock.Signature,
+                        Of<SignatureDelta>(),
+                        e => e.Signature
+                    ),
+                    Thinking = StringJoinHelper(thinkingBlock.Thinking, blocks, e => e.Thinking),
+                }),
             e => Single(e),
             e => Single(e),
             e => Single(e),

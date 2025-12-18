@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Models.Beta.Messages;
@@ -12,25 +13,33 @@ namespace Anthropic.Tests.Services.Beta;
 
 public class MessageServiceTest
 {
-    private static Message GenerateStartMessage => new Message()
-    {
-        ID = "Test",
-        Content = [],
-        Model = Model.Claude3OpusLatest,
-        StopReason = StopReason.ToolUse,
-        StopSequence = "",
-        Usage = null,
-    };
+    private static Message GenerateStartMessage =>
+        new()
+        {
+            ID = "Test",
+            Content = [],
+            Model = Model.Claude3OpusLatest,
+            StopReason = StopReason.ToolUse,
+            StopSequence = "",
+            Usage = new()
+            {
+                CacheCreation = null,
+                CacheCreationInputTokens = null,
+                CacheReadInputTokens = null,
+                InputTokens = 25,
+                OutputTokens = 25,
+                ServerToolUse = null,
+                ServiceTier = UsageServiceTier.Standard,
+            },
+        };
 
-    private static Anthropic.Models.Messages.MessageCreateParams StreamingParam => new()
-    {
-        MaxTokens = 1024,
-        Messages =
-        [
-            new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User },
-        ],
-        Model = Model.Claude3_7SonnetLatest,
-    };
+    private static Anthropic.Models.Messages.MessageCreateParams StreamingParam =>
+        new()
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User }],
+            Model = Model.Claude3_7SonnetLatest,
+        };
 
     [Theory(Skip = "prism validates based on the non-beta endpoint")]
     [AnthropicTestClients]
@@ -120,15 +129,12 @@ public class MessageServiceTest
 
         // act
 
-        var stream = await messagesServiceMock
-            .Object.CreateStreaming(
-                StreamingParam
-            )
-            .Aggregate();
+        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
 
         // assert
 
         Assert.NotNull(stream);
+        Assert.Empty(stream.Content);
         stream.Validate();
     }
 
@@ -157,11 +163,7 @@ public class MessageServiceTest
         // assert
 
         await Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await messagesServiceMock
-                .Object.CreateStreaming(
-                    StreamingParam
-                )
-                .Aggregate()
+            await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate()
         );
     }
 
@@ -173,8 +175,16 @@ public class MessageServiceTest
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            yield return new(new RawContentBlockStartEvent() { Index = 0, ContentBlock = null });
-            yield return new(new RawContentBlockStopEvent() { Index = 1 });
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(new TextBlock() { Citations = [], Text = "Test Output" }),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
             await Task.CompletedTask;
         }
 
@@ -189,16 +199,16 @@ public class MessageServiceTest
 
         // act
 
-        var stream = await messagesServiceMock
-            .Object.CreateStreaming(
-                StreamingParam
-            )
-            .Aggregate();
+        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
 
         // assert
 
         Assert.NotNull(stream);
         stream.Validate();
+        Assert.NotEmpty(stream.Content);
+        Assert.Single(stream.Content);
+        Assert.IsType<TextBlock>(stream.Content[0].Value);
+        Assert.Equal("Test Output", ((TextBlock)stream.Content[0].Value!).Text);
     }
 
     [Fact]
@@ -209,11 +219,19 @@ public class MessageServiceTest
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            yield return new(new RawContentBlockStartEvent() { Index = 0, ContentBlock = null });
-            yield return new(new RawContentBlockStopEvent() { Index = 1 });
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
             yield return new(
-                new RawContentBlockDeltaEvent() { Index = 2, Delta = new(new TextDelta("Test")) }
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new TextBlock() { Citations = [], Text = "this is a " },
+                }
             );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(
+                new RawContentBlockDeltaEvent() { Index = 0, Delta = new(new TextDelta("Test")) }
+            );
+            yield return new(new RawMessageStopEvent());
             await Task.CompletedTask;
         }
         messagesServiceMock
@@ -227,16 +245,16 @@ public class MessageServiceTest
 
         // act
 
-        var stream = await messagesServiceMock
-            .Object.CreateStreaming(
-                StreamingParam
-            )
-            .Aggregate();
+        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
 
         // assert
 
         Assert.NotNull(stream);
         stream.Validate();
+        Assert.NotEmpty(stream.Content);
+        Assert.Single(stream.Content);
+        Assert.IsType<TextBlock>(stream.Content[0].Value);
+        Assert.Equal("this is a Test", ((TextBlock)stream.Content[0].Value!).Text);
     }
 
     [Fact]
@@ -247,21 +265,21 @@ public class MessageServiceTest
         var messagesServiceMock = new Mock<IMessageService>();
         static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
         {
-            int index = 0;
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
             yield return new(
-                new RawContentBlockStartEvent() { Index = index++, ContentBlock = null }
-            );
-            yield return new(
-                new RawContentBlockDeltaEvent()
+                new RawContentBlockStartEvent()
                 {
-                    Index = index++,
-                    Delta = new(new TextDelta("Test")),
+                    Index = 0,
+                    ContentBlock = new(new TextBlock() { Citations = [], Text = "This is a " }),
                 }
             );
             yield return new(
+                new RawContentBlockDeltaEvent() { Index = 0, Delta = new(new TextDelta("Test")) }
+            );
+            yield return new(
                 new RawContentBlockDeltaEvent()
                 {
-                    Index = index++,
+                    Index = 0,
                     Delta = new(
                         new CitationsDelta(
                             new Anthropic.Models.Messages.Citation(
@@ -277,14 +295,18 @@ public class MessageServiceTest
                     ),
                 }
             );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
             yield return new(
-                new RawContentBlockDeltaEvent()
+                new RawContentBlockStartEvent()
                 {
-                    Index = index++,
-                    Delta = new(new ThinkingDelta("Other Test")),
+                    Index = 1,
+                    ContentBlock = new(
+                        new ThinkingBlock() { Signature = "", Thinking = "Other Test" }
+                    ),
                 }
             );
-            yield return new(new RawContentBlockStopEvent() { Index = index++ });
+            yield return new(new RawContentBlockStopEvent() { Index = 1 });
+            yield return new(new RawMessageStopEvent());
             await Task.CompletedTask;
         }
         messagesServiceMock
@@ -298,15 +320,19 @@ public class MessageServiceTest
 
         // act
 
-        var stream = await messagesServiceMock
-            .Object.CreateStreaming(
-                StreamingParam
-            )
-            .Aggregate();
+        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
 
         // assert
 
         Assert.NotNull(stream);
         stream.Validate();
+        Assert.NotEmpty(stream.Content);
+        Assert.Equal(2, stream.Content.Count);
+        Assert.IsType<TextBlock>(stream.Content[0].Value);
+        Assert.IsType<ThinkingBlock>(stream.Content[1].Value);
+        Assert.Equal("This is a Test", ((TextBlock)stream.Content[0].Value!).Text);
+        Assert.NotNull(((TextBlock)stream.Content[0].Value!).Citations);
+        Assert.NotEmpty(((TextBlock)stream.Content[0].Value!).Citations!);
+        Assert.Equal("Other Test", ((ThinkingBlock)stream.Content[1].Value!).Thinking);
     }
 }
