@@ -14,7 +14,7 @@ Full Changelog: [Anthropic-v11.0.0...Anthropic-v12.0.0](https://github.com/anthr
 * **api:** add claude-opus-4-1-20250805 ([c38689c](https://github.com/anthropics/anthropic-sdk-csharp/commit/c38689ce56b61bd5259785cd0478c8cecdf01630))
 * **api:** add support for Search Result Content Blocks ([3300718](https://github.com/anthropics/anthropic-sdk-csharp/commit/33007185312999c941e9ece33dde30b397e1b2ec))
 * **api:** add support for structured outputs beta ([a809be6](https://github.com/anthropics/anthropic-sdk-csharp/commit/a809be6a3bddca622662670044c480ecdfec83eb))
-* **api:** adds support for Claude Opus 4.5, Effort, Advance Tool Use Features, Autocompaction, and Computer Use v5 ([144a820](https://github.com/anthropics/anthropic-sdk-csharp/commit/144a8209e522f5bba2174b1efd3d5607a2d7c145))
+* **api:** adds support for Claude Opus 4.5, Effort, Advanced Tool Use Features, Autocompaction, and Computer Use v5 ([144a820](https://github.com/anthropics/anthropic-sdk-csharp/commit/144a8209e522f5bba2174b1efd3d5607a2d7c145))
 * **api:** adds support for Documents in tool results ([a7b5086](https://github.com/anthropics/anthropic-sdk-csharp/commit/a7b5086b8dd0211e723b4d6f9b903091df387d37))
 * **api:** adds support for text_editor_20250728 tool ([159d728](https://github.com/anthropics/anthropic-sdk-csharp/commit/159d7280cc3347b2241833ec32e64ddd8d467fbf))
 * **api:** adds support for web_fetch_20250910 tool ([1d12859](https://github.com/anthropics/anthropic-sdk-csharp/commit/1d128598434a110447606a22c69394f9e24262d5))
