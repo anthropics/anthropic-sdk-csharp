@@ -12,7 +12,7 @@ public class BatchServiceTest
     [Theory]
     [AnthropicTestClients]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
-    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-45-2")]
+    [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     public async Task Create_Works(IAnthropicClient client, string modelName)
     {
         var messageBatch = await client.Messages.Batches.Create(
