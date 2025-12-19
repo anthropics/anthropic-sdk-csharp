@@ -1,4 +1,5 @@
 ﻿using Anthropic;
+using Anthropic.Helpers;
 using Anthropic.Models.Messages;
 using Anthropic.Services.Messages;
 
@@ -23,12 +24,12 @@ IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.Create
 // some streaming endpoints have build-in aggregators that create logically aggregated objects that represent the full stream as its counterpart single object.
 var message = responseUpdates.Aggregate();
 
-
 // you can also add an aggregator as part of your linq chain to get realtime streaming and aggregation
 
 var aggregator = new MessageContentAggregator();
 await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(aggregator))
 {
+    // do something with the stream events
     if (rawEvent.TryPickContentBlockDelta(out var delta))
     {
         if (delta.Delta.TryPickThinking(out var thinkingDelta))
@@ -41,5 +42,6 @@ await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(ag
         }
     }
 }
+
 // and then get the full aggregated message
 var fullMessage = responseUpdates.Aggregate();

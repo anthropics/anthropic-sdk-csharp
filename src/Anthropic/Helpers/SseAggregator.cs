@@ -88,7 +88,9 @@ public abstract class SseAggregator<TMessage, TResult>
             return default;
         }
 
-        return _message ??= GetResult(new ReadOnlyDictionary<FilterResult, IList<TMessage>>(_messages));
+        return _message ??= GetResult(
+            new ReadOnlyDictionary<FilterResult, IList<TMessage>>(_messages)
+        );
     }
 
     /// <summary>
