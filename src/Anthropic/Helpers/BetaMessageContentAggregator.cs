@@ -11,13 +11,6 @@ namespace Anthropic.Helpers;
 public sealed class BetaMessageContentAggregator
     : SseAggregator<BetaRawMessageStreamEvent, BetaMessage>
 {
-    /// <summary>
-    /// Creates a new instance of the <see cref="BetaMessageContentAggregator"/>.
-    /// </summary>
-    /// <param name="messages">The async enumerable representing a stream of messages.</param>
-    public BetaMessageContentAggregator(IAsyncEnumerable<BetaRawMessageStreamEvent> messages)
-        : base(messages) { }
-
     protected override BetaMessage GetResult(
         IReadOnlyDictionary<FilterResult, IList<BetaRawMessageStreamEvent>> messages
     )

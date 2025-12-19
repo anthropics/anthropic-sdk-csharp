@@ -11,13 +11,6 @@ namespace Anthropic.Helpers;
 /// </summary>
 public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEvent, Message>
 {
-    /// <summary>
-    /// Creates a new instance of the <see cref="MessageContentAggregator"/>.
-    /// </summary>
-    /// <param name="messages">The async enumerable representing a stream of messages.</param>
-    public MessageContentAggregator(IAsyncEnumerable<RawMessageStreamEvent> messages)
-        : base(messages) { }
-
     protected override Message GetResult(
         IReadOnlyDictionary<FilterResult, IList<RawMessageStreamEvent>> messages
     )

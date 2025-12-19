@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Helpers;
@@ -13,68 +12,83 @@ namespace Anthropic.Helpers;
 /// <typeparam name="TResult">The element type that defines an aggregated <typeparamref name="TMessage"/></typeparam>
 public abstract class SseAggregator<TMessage, TResult>
 {
-    private readonly IAsyncEnumerable<TMessage> _messages;
+    private Dictionary<FilterResult, IList<TMessage>>? _messages;
+    private bool _streamEnded;
+    private TResult? _message;
 
     /// <summary>
-    /// Initialize a new instance of the <see cref="SseAggregator{TMessage, TResult}"/>.
+    /// Collects and filters the provided <see cref="IAsyncEnumerable{TMessage}"/> for aggregation with the <see cref="AggregateAsync"/> method.
     /// </summary>
-    /// <param name="messages">The service attached enumerable for reading messages.</param>
-    public SseAggregator(IAsyncEnumerable<TMessage> messages)
+    /// <param name="messageStream">An <see cref="IAsyncEnumerable{TMessage}"/> containing the messages to aggregate.</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException">Will be thrown if the aggregator is in an invalid state.</exception>
+    /// <exception cref="AnthropicInvalidDataException">Will be thrown if the aggregator encounters an invalid state of the source message stream.</exception>
+    public virtual async IAsyncEnumerable<TMessage> CollectAsync(
+        IAsyncEnumerable<TMessage> messageStream
+    )
     {
-        _messages = messages;
-    }
+        if (_messages is not null)
+        {
+            throw new InvalidOperationException(
+                "Cannot collect multiple streams into same aggregator."
+            );
+        }
 
-    private Task<TResult?>? _collectionTask;
+        _messages = [];
+
+        foreach (FilterResult item in Enum.GetValues(typeof(FilterResult)))
+        {
+            _messages[item] = [];
+        }
+
+        var startMessageReceived = false;
+        FilterResult filterResult = FilterResult.Ignore;
+        await foreach (var message in messageStream)
+        {
+            if (!startMessageReceived && Filter(message) != FilterResult.StartMessage)
+            {
+                _messages[FilterResult.StartMessage].Add(message);
+                continue;
+            }
+
+            startMessageReceived = true;
+            filterResult = Filter(message);
+            _messages[filterResult].Add(message);
+            if (filterResult == FilterResult.EndMessage)
+            {
+                break;
+            }
+
+            yield return message;
+        }
+
+        if (filterResult != FilterResult.EndMessage)
+        {
+            throw new AnthropicInvalidDataException(
+                $"Expected last message to be the End message but found: {filterResult}"
+            );
+        }
+
+        _streamEnded = true;
+    }
 
     /// <summary>
     /// Aggregates all items based on the Anthropic streaming protocol present in the <see cref="IAsyncEnumerable{TMessage}"/> provided on initialization.
     /// </summary>
-    /// <returns>A task that completes when all messages have been aggregated.</returns>
-    public virtual async Task<TResult?> AggregateAsync()
+    /// <returns>The result of the aggregation.</returns>
+    public virtual TResult? AggregateAsync()
     {
-        return await (
-            _collectionTask ??= Task.Run(async () =>
-            {
-                var messages = new Dictionary<FilterResult, IList<TMessage>>();
-                foreach (FilterResult item in Enum.GetValues(typeof(FilterResult)))
-                {
-                    messages[item] = [];
-                }
+        if (_messages is { Count: 0 } or null)
+        {
+            return default;
+        }
 
-                var startMessageReceived = false;
-                FilterResult filterResult = FilterResult.Ignore;
-                await foreach (var item in _messages.ConfigureAwait(false))
-                {
-                    if (!startMessageReceived && Filter(item) != FilterResult.StartMessage)
-                    {
-                        messages[FilterResult.StartMessage].Add(item);
-                        continue;
-                    }
+        if (_streamEnded is false)
+        {
+            return default;
+        }
 
-                    startMessageReceived = true;
-                    filterResult = Filter(item);
-                    messages[filterResult].Add(item);
-                    if (filterResult == FilterResult.EndMessage)
-                    {
-                        break;
-                    }
-                }
-
-                if (messages is { Count: 0 })
-                {
-                    return default;
-                }
-
-                if (filterResult != FilterResult.EndMessage)
-                {
-                    throw new AnthropicInvalidDataException(
-                        $"Expected last message to be the End message but found: {filterResult}"
-                    );
-                }
-
-                return GetResult(new ReadOnlyDictionary<FilterResult, IList<TMessage>>(messages));
-            })
-        );
+        return _message ??= GetResult(new ReadOnlyDictionary<FilterResult, IList<TMessage>>(_messages));
     }
 
     /// <summary>
