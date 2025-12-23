@@ -88,7 +88,11 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this
+        // Note: We use try-finally instead of 'using' to ensure the response is not disposed
+        // before the IAsyncEnumerable is fully consumed. With 'using', the response would be
+        // disposed when the method returns the IAsyncEnumerable, not when iteration completes.
+        // See: https://github.com/anthropics/anthropic-sdk-csharp/issues/80
+        var response = await this
             ._client.WithOptions(options =>
                 options with
                 {
@@ -97,18 +101,25 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
             )
             .Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        await foreach (
-            var betaMessage in Sse.Enumerate<BetaRawMessageStreamEvent>(
-                response.Message,
-                cancellationToken
-            )
-        )
+        try
         {
-            if (this._client.ResponseValidation)
+            await foreach (
+                var betaMessage in Sse.Enumerate<BetaRawMessageStreamEvent>(
+                    response.Message,
+                    cancellationToken
+                )
+            )
             {
-                betaMessage.Validate();
+                if (this._client.ResponseValidation)
+                {
+                    betaMessage.Validate();
+                }
+                yield return betaMessage;
             }
-            yield return betaMessage;
+        }
+        finally
+        {
+            response.Dispose();
         }
     }
 
