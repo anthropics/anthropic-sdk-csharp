@@ -1003,7 +1003,11 @@ public static class AnthropicBetaClientExtensions
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new(properties) { Required = required },
+                                        InputSchema = new InputSchema()
+                                        {
+                                            Properties = properties,
+                                            Required = required,
+                                        },
                                         DeferLoading = GetValue<bool?>(
                                             af,
                                             nameof(BetaTool.DeferLoading)
