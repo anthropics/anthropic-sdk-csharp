@@ -192,8 +192,8 @@ public static class AnthropicBetaClientExtensions
             {
                 return _metadata ??= new(
                     "anthropic",
-                    _betaService.Messages is MessageService { _client.BaseUrl: Uri baseUrl }
-                        ? baseUrl
+                    _betaService.Messages is MessageService { _client.BaseUrl: string baseUrl }
+                        ? new Uri(baseUrl)
                         : null,
                     _defaultModelId
                 );

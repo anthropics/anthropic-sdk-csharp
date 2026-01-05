@@ -28,7 +28,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
         {
             yield return
             [
-                new AnthropicClient() { BaseUrl = new Uri(DataServiceUrl), APIKey = ApiKey },
+                new AnthropicClient() { BaseUrl = DataServiceUrl, APIKey = ApiKey },
                 .. testData
                     .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
                     .Select(f => f.TestData)
@@ -41,7 +41,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
             [
                 new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(ApiKey, Resource!))
                 {
-                    BaseUrl = new Uri(DataServiceUrl),
+                    BaseUrl = DataServiceUrl,
                 },
                 .. testData
                     .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))

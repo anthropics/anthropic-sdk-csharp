@@ -111,7 +111,11 @@ public static class AnthropicClientExtensions
 
             if (serviceType == typeof(ChatClientMetadata))
             {
-                return _metadata ??= new("anthropic", _anthropicClient.BaseUrl, _defaultModelId);
+                return _metadata ??= new(
+                    "anthropic",
+                    new Uri(_anthropicClient.BaseUrl),
+                    _defaultModelId
+                );
             }
 
             if (serviceType.IsInstanceOfType(_anthropicClient))
