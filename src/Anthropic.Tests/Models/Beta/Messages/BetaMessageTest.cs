@@ -119,7 +119,7 @@ public class BetaMessageTest : TestBase
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
-        string expectedStopSequence = null;
+        string? expectedStopSequence = null;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
         Messages::BetaUsage expectedUsage = new()
         {
@@ -331,7 +331,7 @@ public class BetaMessageTest : TestBase
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
-        string expectedStopSequence = null;
+        string? expectedStopSequence = null;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
         Messages::BetaUsage expectedUsage = new()
         {

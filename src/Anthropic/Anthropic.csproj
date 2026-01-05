@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- Metadata -->
     <AssemblyTitle>Anthropic C#</AssemblyTitle>
@@ -29,8 +29,8 @@
     <IncludeSymbols>true</IncludeSymbols>
     <DebugType>embedded</DebugType>
 
-    <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
-    <LangVersion>12</LangVersion>
+    <TargetFrameworks>net10.0;net9.0;net8.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release</Configurations>
     <BuildPackage>true</BuildPackage>
     <Deterministic>true</Deterministic>
@@ -50,6 +50,6 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Collections.Immutable" Version="8.0.0"/>
+    <PackageReference Include="System.Collections.Immutable" Version="10.0.0"/>
   </ItemGroup>
 </Project>

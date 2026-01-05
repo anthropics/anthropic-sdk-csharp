@@ -590,6 +590,7 @@ public class InputSchemaTest : TestBase
         List<string> expectedRequired = ["location"];
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.Properties);
         Assert.Equal(expectedProperties.Count, deserialized.Properties.Count);
         foreach (var item in expectedProperties)
         {
