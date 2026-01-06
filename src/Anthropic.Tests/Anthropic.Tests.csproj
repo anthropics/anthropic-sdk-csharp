@@ -7,15 +7,9 @@
     <!-- Run tests on net8.0, which will use the SDK's net8.0 DLL, and on net472, which will use the
     SDK's netstandard2.0 DLL. -->
     <TargetFrameworks>net8.0;net472</TargetFrameworks>
-    <LangVersion>12</LangVersion>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>disable</ImplicitUsings>
 
     <!-- Disable skipped tests warnings. -->
     <NoWarn>$(NoWarn),xUnit1004</NoWarn>
-
-    <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
-    <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4" />

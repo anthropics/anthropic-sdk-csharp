@@ -1,0 +1,34 @@
+<Project>
+  <PropertyGroup>
+    <Authors>Anthropic</Authors>
+    <Company>Anthropic</Company>
+    <PackageTags>sdk;api;http;library</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright 2025 Anthropic</Copyright>
+    <PackageProjectUrl>https://docs.anthropic.com/claude/reference/</PackageProjectUrl>
+    <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
+    <!-- Documentation-->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Disable missing XML documentation warnings. -->
+    <NoWarn>$(NoWarn),1570,1573,1574,1591</NoWarn>
+
+    <!-- Source link -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <DebugType>embedded</DebugType>
+
+    <TargetFrameworks>net8.0;net9.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>12</LangVersion>
+    <Configurations>Debug;Release</Configurations>
+    <BuildPackage>true</BuildPackage>
+    <Deterministic>true</Deterministic>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
+    <NoWarn>$(NoWarn),0618</NoWarn>
+  </PropertyGroup>
+</Project>

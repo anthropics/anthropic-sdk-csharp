@@ -163,6 +163,8 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamErrorCodeTest : Test
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
