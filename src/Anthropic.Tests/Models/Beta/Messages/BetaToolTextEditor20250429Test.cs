@@ -114,8 +114,8 @@ public class BetaToolTextEditor20250429Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250429>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250429>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(

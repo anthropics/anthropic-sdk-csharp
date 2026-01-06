@@ -35,8 +35,8 @@ public class PlainTextSourceTest : TestBase
     {
         var model = new PlainTextSource { Data = "data" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<PlainTextSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<PlainTextSource>(element);
         Assert.NotNull(deserialized);
 
         string expectedData = "data";

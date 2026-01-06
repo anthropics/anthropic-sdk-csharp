@@ -35,8 +35,8 @@ public class BetaPlainTextSourceTest : TestBase
     {
         var model = new BetaPlainTextSource { Data = "data" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaPlainTextSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaPlainTextSource>(element);
         Assert.NotNull(deserialized);
 
         string expectedData = "data";

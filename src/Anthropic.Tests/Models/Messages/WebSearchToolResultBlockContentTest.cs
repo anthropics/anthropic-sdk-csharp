@@ -37,8 +37,8 @@ public class WebSearchToolResultBlockContentTest : TestBase
         WebSearchToolResultBlockContent value = new(
             new WebSearchToolResultError(WebSearchToolResultErrorErrorCode.InvalidToolInput)
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -57,8 +57,8 @@ public class WebSearchToolResultBlockContentTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }

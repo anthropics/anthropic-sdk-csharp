@@ -68,9 +68,9 @@ public class BetaTextEditorCodeExecutionViewResultBlockTest : TestBase
             TotalLines = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlock>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 

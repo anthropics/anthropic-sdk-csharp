@@ -9,20 +9,23 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaRedactedThinkingBlockParam, BetaRedactedThinkingBlockParamFromRaw>)
+    typeof(JsonModelConverter<
+        BetaRedactedThinkingBlockParam,
+        BetaRedactedThinkingBlockParamFromRaw
+    >)
 )]
-public sealed record class BetaRedactedThinkingBlockParam : ModelBase
+public sealed record class BetaRedactedThinkingBlockParam : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -81,7 +84,7 @@ public sealed record class BetaRedactedThinkingBlockParam : ModelBase
     }
 }
 
-class BetaRedactedThinkingBlockParamFromRaw : IFromRaw<BetaRedactedThinkingBlockParam>
+class BetaRedactedThinkingBlockParamFromRaw : IFromRawJson<BetaRedactedThinkingBlockParam>
 {
     /// <inheritdoc/>
     public BetaRedactedThinkingBlockParam FromRawUnchecked(

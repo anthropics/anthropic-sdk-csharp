@@ -183,8 +183,8 @@ public class MessageTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Message>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Message>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "msg_013Zva2CMHLNnXjNJJKqJ2EF";

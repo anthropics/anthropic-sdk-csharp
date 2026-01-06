@@ -35,8 +35,8 @@ public class AuthenticationErrorTest : TestBase
     {
         var model = new AuthenticationError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<AuthenticationError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<AuthenticationError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

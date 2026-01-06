@@ -74,8 +74,8 @@ public class CitationsDeltaTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationsDelta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationsDelta>(element);
         Assert.NotNull(deserialized);
 
         Citation expectedCitation = new CitationCharLocation()
@@ -212,8 +212,8 @@ public class CitationTest : TestBase
                 StartCharIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -232,8 +232,8 @@ public class CitationTest : TestBase
                 StartPageNumber = 1,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -252,8 +252,8 @@ public class CitationTest : TestBase
                 StartBlockIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -270,8 +270,8 @@ public class CitationTest : TestBase
                 URL = "url",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -290,8 +290,8 @@ public class CitationTest : TestBase
                 Title = "title",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }

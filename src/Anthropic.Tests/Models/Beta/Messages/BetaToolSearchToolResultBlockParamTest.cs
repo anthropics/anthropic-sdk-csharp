@@ -63,8 +63,8 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         BetaToolSearchToolResultBlockParamContent expectedContent =
@@ -199,9 +199,9 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);
@@ -221,9 +221,9 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
                 ]
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);

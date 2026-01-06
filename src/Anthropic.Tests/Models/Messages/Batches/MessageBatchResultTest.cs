@@ -133,8 +133,8 @@ public class MessageBatchResultTest : TestBase
                 }
             )
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -151,8 +151,8 @@ public class MessageBatchResultTest : TestBase
                 }
             )
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -161,8 +161,8 @@ public class MessageBatchResultTest : TestBase
     public void CanceledSerializationRoundtripWorks()
     {
         MessageBatchResult value = new(new MessageBatchCanceledResult());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -171,8 +171,8 @@ public class MessageBatchResultTest : TestBase
     public void ExpiredSerializationRoundtripWorks()
     {
         MessageBatchResult value = new(new MessageBatchExpiredResult());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
 
         Assert.Equal(value, deserialized);
     }

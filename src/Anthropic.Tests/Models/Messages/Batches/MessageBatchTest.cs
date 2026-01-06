@@ -119,8 +119,8 @@ public class MessageBatchTest : TestBase
                 "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatch>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageBatch>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF";

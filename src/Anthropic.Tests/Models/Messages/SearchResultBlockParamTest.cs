@@ -139,8 +139,8 @@ public class SearchResultBlockParamTest : TestBase
             Citations = new() { Enabled = true },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<SearchResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<SearchResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         List<TextBlockParam> expectedContent =

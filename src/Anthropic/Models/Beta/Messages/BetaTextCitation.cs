@@ -11,11 +11,11 @@ public record class BetaTextCitation
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public string CitedText
@@ -130,39 +130,39 @@ public record class BetaTextCitation
         }
     }
 
-    public BetaTextCitation(BetaCitationCharLocation value, JsonElement? json = null)
+    public BetaTextCitation(BetaCitationCharLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaTextCitation(BetaCitationPageLocation value, JsonElement? json = null)
+    public BetaTextCitation(BetaCitationPageLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaTextCitation(BetaCitationContentBlockLocation value, JsonElement? json = null)
+    public BetaTextCitation(BetaCitationContentBlockLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaTextCitation(BetaCitationsWebSearchResultLocation value, JsonElement? json = null)
+    public BetaTextCitation(BetaCitationsWebSearchResultLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaTextCitation(BetaCitationSearchResultLocation value, JsonElement? json = null)
+    public BetaTextCitation(BetaCitationSearchResultLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaTextCitation(JsonElement json)
+    public BetaTextCitation(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -435,11 +435,11 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -453,13 +453,13 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -468,20 +468,20 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "page_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -490,20 +490,20 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -512,7 +512,7 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_result_location":
             {
@@ -520,13 +520,13 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaCitationsWebSearchResultLocation>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -535,20 +535,20 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "search_result_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationSearchResultLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -557,11 +557,11 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaTextCitation(json);
+                return new BetaTextCitation(element);
             }
         }
     }

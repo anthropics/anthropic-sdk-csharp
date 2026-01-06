@@ -107,8 +107,8 @@ public class BetaWebFetchTool20250910Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");

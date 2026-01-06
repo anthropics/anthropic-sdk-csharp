@@ -68,9 +68,9 @@ public class BetaTextEditorCodeExecutionToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlock>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 
@@ -173,9 +173,9 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
                 ErrorMessage = "error_message",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -193,9 +193,9 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
                 TotalLines = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -206,9 +206,9 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
         BetaTextEditorCodeExecutionToolResultBlockContent value = new(
             new BetaTextEditorCodeExecutionCreateResultBlock(true)
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -226,9 +226,9 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
                 OldStart = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }

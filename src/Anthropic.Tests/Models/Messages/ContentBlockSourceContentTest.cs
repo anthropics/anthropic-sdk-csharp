@@ -67,8 +67,8 @@ public class ContentBlockSourceContentTest : TestBase
                 ],
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -87,8 +87,8 @@ public class ContentBlockSourceContentTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(element);
 
         Assert.Equal(value, deserialized);
     }

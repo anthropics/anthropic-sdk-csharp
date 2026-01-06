@@ -65,9 +65,9 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParam>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 
@@ -201,9 +201,9 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
-            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(json);
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -220,9 +220,9 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
                 Stdout = "stdout",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
-            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(json);
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }

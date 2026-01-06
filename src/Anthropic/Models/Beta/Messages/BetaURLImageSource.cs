@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaURLImageSource, BetaURLImageSourceFromRaw>))]
-public sealed record class BetaURLImageSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaURLImageSource, BetaURLImageSourceFromRaw>))]
+public sealed record class BetaURLImageSource : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
+        init { JsonModel.Set(this._rawData, "url", value); }
     }
 
     /// <inheritdoc/>
@@ -72,7 +72,7 @@ public sealed record class BetaURLImageSource : ModelBase
     }
 }
 
-class BetaURLImageSourceFromRaw : IFromRaw<BetaURLImageSource>
+class BetaURLImageSourceFromRaw : IFromRawJson<BetaURLImageSource>
 {
     /// <inheritdoc/>
     public BetaURLImageSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -70,8 +70,8 @@ public class BetaClearToolUses20250919EditTest : TestBase
             Trigger = new BetaInputTokensTrigger(1),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
@@ -264,8 +264,8 @@ public class ClearToolInputsTest : TestBase
     public void BoolSerializationRoundtripWorks()
     {
         ClearToolInputs value = new(true);
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -274,8 +274,8 @@ public class ClearToolInputsTest : TestBase
     public void StringsSerializationRoundtripWorks()
     {
         ClearToolInputs value = new(["string"]);
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -301,8 +301,8 @@ public class TriggerTest : TestBase
     public void BetaInputTokensSerializationRoundtripWorks()
     {
         Trigger value = new(new BetaInputTokensTrigger(1));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Trigger>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Trigger>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -311,8 +311,8 @@ public class TriggerTest : TestBase
     public void BetaToolUsesSerializationRoundtripWorks()
     {
         Trigger value = new(new BetaToolUsesTrigger(1));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Trigger>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Trigger>(element);
 
         Assert.Equal(value, deserialized);
     }

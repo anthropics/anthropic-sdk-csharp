@@ -83,8 +83,8 @@ public class BetaMemoryTool20250818CommandTest : TestBase
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818ViewCommand() { Path = "/memories", ViewRange = [1, 10] }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -99,8 +99,8 @@ public class BetaMemoryTool20250818CommandTest : TestBase
                 Path = "/memories/notes.txt",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -116,8 +116,8 @@ public class BetaMemoryTool20250818CommandTest : TestBase
                 Path = "/memories/preferences.txt",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -133,8 +133,8 @@ public class BetaMemoryTool20250818CommandTest : TestBase
                 Path = "/memories/todo.txt",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -145,8 +145,8 @@ public class BetaMemoryTool20250818CommandTest : TestBase
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818DeleteCommand("/memories/old_file.txt")
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -161,8 +161,8 @@ public class BetaMemoryTool20250818CommandTest : TestBase
                 OldPath = "/memories/draft.txt",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }

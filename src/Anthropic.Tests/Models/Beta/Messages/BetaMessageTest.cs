@@ -280,8 +280,8 @@ public class BetaMessageTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaMessage>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaMessage>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "msg_013Zva2CMHLNnXjNJJKqJ2EF";

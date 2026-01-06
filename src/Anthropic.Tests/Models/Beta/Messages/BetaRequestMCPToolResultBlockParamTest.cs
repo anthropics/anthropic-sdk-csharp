@@ -57,8 +57,8 @@ public class BetaRequestMCPToolResultBlockParamTest : TestBase
             IsError = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedToolUseID = "tool_use_id";
@@ -248,9 +248,9 @@ public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);
@@ -279,9 +279,9 @@ public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);

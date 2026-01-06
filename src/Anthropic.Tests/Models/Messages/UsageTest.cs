@@ -76,8 +76,8 @@ public class UsageTest : TestBase
             ServiceTier = UsageServiceTier.Standard,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Usage>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Usage>(element);
         Assert.NotNull(deserialized);
 
         CacheCreation expectedCacheCreation = new()

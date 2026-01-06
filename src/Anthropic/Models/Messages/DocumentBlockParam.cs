@@ -9,19 +9,19 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<DocumentBlockParam, DocumentBlockParamFromRaw>))]
-public sealed record class DocumentBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<DocumentBlockParam, DocumentBlockParamFromRaw>))]
+public sealed record class DocumentBlockParam : JsonModel
 {
     public required Source Source
     {
-        get { return ModelBase.GetNotNullClass<Source>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<Source>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -31,27 +31,27 @@ public sealed record class DocumentBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     public CitationsConfigParam? Citations
     {
-        get { return ModelBase.GetNullableClass<CitationsConfigParam>(this.RawData, "citations"); }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        get { return JsonModel.GetNullableClass<CitationsConfigParam>(this.RawData, "citations"); }
+        init { JsonModel.Set(this._rawData, "citations", value); }
     }
 
     public string? Context
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "context"); }
-        init { ModelBase.Set(this._rawData, "context", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "context"); }
+        init { JsonModel.Set(this._rawData, "context", value); }
     }
 
     public string? Title
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
+        init { JsonModel.Set(this._rawData, "title", value); }
     }
 
     /// <inheritdoc/>
@@ -112,7 +112,7 @@ public sealed record class DocumentBlockParam : ModelBase
     }
 }
 
-class DocumentBlockParamFromRaw : IFromRaw<DocumentBlockParam>
+class DocumentBlockParamFromRaw : IFromRawJson<DocumentBlockParam>
 {
     /// <inheritdoc/>
     public DocumentBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -124,11 +124,11 @@ public record class Source
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public string? Data
@@ -170,33 +170,33 @@ public record class Source
         }
     }
 
-    public Source(Base64PDFSource value, JsonElement? json = null)
+    public Source(Base64PDFSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(PlainTextSource value, JsonElement? json = null)
+    public Source(PlainTextSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(ContentBlockSource value, JsonElement? json = null)
+    public Source(ContentBlockSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(URLPDFSource value, JsonElement? json = null)
+    public Source(URLPDFSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(JsonElement json)
+    public Source(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -424,11 +424,11 @@ sealed class SourceConverter : JsonConverter<Source>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -441,11 +441,14 @@ sealed class SourceConverter : JsonConverter<Source>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Base64PDFSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<Base64PDFSource>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -454,17 +457,20 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "text":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<PlainTextSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<PlainTextSource>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -473,20 +479,20 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ContentBlockSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -495,17 +501,17 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "url":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<URLPDFSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<URLPDFSource>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -514,11 +520,11 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Source(json);
+                return new Source(element);
             }
         }
     }

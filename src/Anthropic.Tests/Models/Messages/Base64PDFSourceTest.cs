@@ -37,8 +37,8 @@ public class Base64PDFSourceTest : TestBase
     {
         var model = new Base64PDFSource { Data = "U3RhaW5sZXNzIHJvY2tz" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Base64PDFSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Base64PDFSource>(element);
         Assert.NotNull(deserialized);
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";

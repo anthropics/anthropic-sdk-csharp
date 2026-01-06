@@ -54,9 +54,9 @@ public class BetaTextEditorCodeExecutionToolResultErrorTest : TestBase
             ErrorMessage = "error_message",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultError>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 

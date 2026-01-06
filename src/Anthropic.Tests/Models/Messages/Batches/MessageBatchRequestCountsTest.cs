@@ -60,8 +60,8 @@ public class MessageBatchRequestCountsTest : TestBase
             Succeeded = 50,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchRequestCounts>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchRequestCounts>(element);
         Assert.NotNull(deserialized);
 
         long expectedCanceled = 10;

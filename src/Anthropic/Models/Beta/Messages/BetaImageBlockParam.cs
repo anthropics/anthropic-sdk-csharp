@@ -9,19 +9,19 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaImageBlockParam, BetaImageBlockParamFromRaw>))]
-public sealed record class BetaImageBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaImageBlockParam, BetaImageBlockParamFromRaw>))]
+public sealed record class BetaImageBlockParam : JsonModel
 {
     public required BetaImageBlockParamSource Source
     {
-        get { return ModelBase.GetNotNullClass<BetaImageBlockParamSource>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<BetaImageBlockParamSource>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -31,12 +31,12 @@ public sealed record class BetaImageBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -91,7 +91,7 @@ public sealed record class BetaImageBlockParam : ModelBase
     }
 }
 
-class BetaImageBlockParamFromRaw : IFromRaw<BetaImageBlockParam>
+class BetaImageBlockParamFromRaw : IFromRawJson<BetaImageBlockParam>
 {
     /// <inheritdoc/>
     public BetaImageBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -103,11 +103,11 @@ public record class BetaImageBlockParamSource
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -122,27 +122,27 @@ public record class BetaImageBlockParamSource
         }
     }
 
-    public BetaImageBlockParamSource(BetaBase64ImageSource value, JsonElement? json = null)
+    public BetaImageBlockParamSource(BetaBase64ImageSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaImageBlockParamSource(BetaURLImageSource value, JsonElement? json = null)
+    public BetaImageBlockParamSource(BetaURLImageSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaImageBlockParamSource(BetaFileImageSource value, JsonElement? json = null)
+    public BetaImageBlockParamSource(BetaFileImageSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaImageBlockParamSource(JsonElement json)
+    public BetaImageBlockParamSource(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -345,11 +345,11 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -363,13 +363,13 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -378,20 +378,20 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "url":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaURLImageSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -400,20 +400,20 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "file":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaFileImageSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -422,11 +422,11 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaImageBlockParamSource(json);
+                return new BetaImageBlockParamSource(element);
             }
         }
     }

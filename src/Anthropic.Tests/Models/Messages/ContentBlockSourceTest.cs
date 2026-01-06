@@ -33,8 +33,8 @@ public class ContentBlockSourceTest : TestBase
     {
         var model = new ContentBlockSource { Content = "string" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSource>(element);
         Assert.NotNull(deserialized);
 
         Content expectedContent = "string";
@@ -94,8 +94,8 @@ public class ContentTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         Content value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Content>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -125,8 +125,8 @@ public class ContentTest : TestBase
                 ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Content>(element);
 
         Assert.Equal(value, deserialized);
     }

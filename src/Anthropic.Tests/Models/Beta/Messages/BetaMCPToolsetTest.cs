@@ -92,8 +92,8 @@ public class BetaMCPToolsetTest : TestBase
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(element);
         Assert.NotNull(deserialized);
 
         string expectedMCPServerName = "x";

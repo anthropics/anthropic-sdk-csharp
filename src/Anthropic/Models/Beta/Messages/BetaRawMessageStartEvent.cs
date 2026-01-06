@@ -8,19 +8,21 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawMessageStartEvent, BetaRawMessageStartEventFromRaw>))]
-public sealed record class BetaRawMessageStartEvent : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaRawMessageStartEvent, BetaRawMessageStartEventFromRaw>)
+)]
+public sealed record class BetaRawMessageStartEvent : JsonModel
 {
     public required BetaMessage Message
     {
-        get { return ModelBase.GetNotNullClass<BetaMessage>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get { return JsonModel.GetNotNullClass<BetaMessage>(this.RawData, "message"); }
+        init { JsonModel.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +79,7 @@ public sealed record class BetaRawMessageStartEvent : ModelBase
     }
 }
 
-class BetaRawMessageStartEventFromRaw : IFromRaw<BetaRawMessageStartEvent>
+class BetaRawMessageStartEventFromRaw : IFromRawJson<BetaRawMessageStartEvent>
 {
     /// <inheritdoc/>
     public BetaRawMessageStartEvent FromRawUnchecked(

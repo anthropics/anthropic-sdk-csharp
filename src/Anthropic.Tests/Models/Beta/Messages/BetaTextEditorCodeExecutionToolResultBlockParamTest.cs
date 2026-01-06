@@ -76,9 +76,9 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         BetaTextEditorCodeExecutionToolResultBlockParamContent expectedContent =
@@ -261,10 +261,10 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 ErrorMessage = "error_message",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                json
+                element
             );
 
         Assert.Equal(value, deserialized);
@@ -283,10 +283,10 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 TotalLines = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                json
+                element
             );
 
         Assert.Equal(value, deserialized);
@@ -298,10 +298,10 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
         BetaTextEditorCodeExecutionToolResultBlockParamContent value = new(
             new BetaTextEditorCodeExecutionCreateResultBlockParam(true)
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                json
+                element
             );
 
         Assert.Equal(value, deserialized);
@@ -320,10 +320,10 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 OldStart = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                json
+                element
             );
 
         Assert.Equal(value, deserialized);

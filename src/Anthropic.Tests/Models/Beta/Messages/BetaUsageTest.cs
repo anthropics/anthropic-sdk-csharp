@@ -80,8 +80,8 @@ public class BetaUsageTest : TestBase
             ServiceTier = BetaUsageServiceTier.Standard,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaUsage>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaUsage>(element);
         Assert.NotNull(deserialized);
 
         BetaCacheCreation expectedCacheCreation = new()

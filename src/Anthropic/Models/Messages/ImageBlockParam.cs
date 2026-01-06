@@ -9,19 +9,19 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ImageBlockParam, ImageBlockParamFromRaw>))]
-public sealed record class ImageBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ImageBlockParam, ImageBlockParamFromRaw>))]
+public sealed record class ImageBlockParam : JsonModel
 {
     public required ImageBlockParamSource Source
     {
-        get { return ModelBase.GetNotNullClass<ImageBlockParamSource>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<ImageBlockParamSource>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -31,9 +31,9 @@ public sealed record class ImageBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -86,7 +86,7 @@ public sealed record class ImageBlockParam : ModelBase
     }
 }
 
-class ImageBlockParamFromRaw : IFromRaw<ImageBlockParam>
+class ImageBlockParamFromRaw : IFromRawJson<ImageBlockParam>
 {
     /// <inheritdoc/>
     public ImageBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -98,11 +98,11 @@ public record class ImageBlockParamSource
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -110,21 +110,21 @@ public record class ImageBlockParamSource
         get { return Match(base64Image: (x) => x.Type, urlImage: (x) => x.Type); }
     }
 
-    public ImageBlockParamSource(Base64ImageSource value, JsonElement? json = null)
+    public ImageBlockParamSource(Base64ImageSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ImageBlockParamSource(URLImageSource value, JsonElement? json = null)
+    public ImageBlockParamSource(URLImageSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ImageBlockParamSource(JsonElement json)
+    public ImageBlockParamSource(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -289,11 +289,11 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -306,11 +306,14 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Base64ImageSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<Base64ImageSource>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -319,17 +322,17 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "url":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<URLImageSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<URLImageSource>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -338,11 +341,11 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new ImageBlockParamSource(json);
+                return new ImageBlockParamSource(element);
             }
         }
     }

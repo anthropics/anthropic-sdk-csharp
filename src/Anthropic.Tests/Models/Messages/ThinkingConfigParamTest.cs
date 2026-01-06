@@ -23,8 +23,8 @@ public class ThinkingConfigParamTest : TestBase
     public void EnabledSerializationRoundtripWorks()
     {
         ThinkingConfigParam value = new(new ThinkingConfigEnabled(1024));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -33,8 +33,8 @@ public class ThinkingConfigParamTest : TestBase
     public void DisabledSerializationRoundtripWorks()
     {
         ThinkingConfigParam value = new(new ThinkingConfigDisabled());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(element);
 
         Assert.Equal(value, deserialized);
     }

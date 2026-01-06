@@ -254,8 +254,8 @@ public class BetaRawMessageStreamEventTest : TestBase
                 }
             )
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -304,8 +304,8 @@ public class BetaRawMessageStreamEventTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -314,8 +314,8 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void StopSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new(new Messages::BetaRawMessageStopEvent());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -345,8 +345,8 @@ public class BetaRawMessageStreamEventTest : TestBase
                 Index = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -361,8 +361,8 @@ public class BetaRawMessageStreamEventTest : TestBase
                 Index = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -373,8 +373,8 @@ public class BetaRawMessageStreamEventTest : TestBase
         Messages::BetaRawMessageStreamEvent value = new(
             new Messages::BetaRawContentBlockStopEvent(0)
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }

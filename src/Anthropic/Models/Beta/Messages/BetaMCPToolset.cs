@@ -14,22 +14,22 @@ namespace Anthropic.Models.Beta.Messages;
 /// <para>Allows configuring enabled status and defer_loading for all tools from
 /// an MCP server, with optional per-tool overrides.</para>
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaMCPToolset, BetaMCPToolsetFromRaw>))]
-public sealed record class BetaMCPToolset : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaMCPToolset, BetaMCPToolsetFromRaw>))]
+public sealed record class BetaMCPToolset : JsonModel
 {
     /// <summary>
     /// Name of the MCP server to configure tools for
     /// </summary>
     public required string MCPServerName
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "mcp_server_name"); }
-        init { ModelBase.Set(this._rawData, "mcp_server_name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "mcp_server_name"); }
+        init { JsonModel.Set(this._rawData, "mcp_server_name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -39,12 +39,12 @@ public sealed record class BetaMCPToolset : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -54,12 +54,12 @@ public sealed record class BetaMCPToolset : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<Dictionary<string, BetaMCPToolConfig>>(
+            return JsonModel.GetNullableClass<Dictionary<string, BetaMCPToolConfig>>(
                 this.RawData,
                 "configs"
             );
         }
-        init { ModelBase.Set(this._rawData, "configs", value); }
+        init { JsonModel.Set(this._rawData, "configs", value); }
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ public sealed record class BetaMCPToolset : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaMCPToolDefaultConfig>(
+            return JsonModel.GetNullableClass<BetaMCPToolDefaultConfig>(
                 this.RawData,
                 "default_config"
             );
@@ -81,7 +81,7 @@ public sealed record class BetaMCPToolset : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "default_config", value);
+            JsonModel.Set(this._rawData, "default_config", value);
         }
     }
 
@@ -146,7 +146,7 @@ public sealed record class BetaMCPToolset : ModelBase
     }
 }
 
-class BetaMCPToolsetFromRaw : IFromRaw<BetaMCPToolset>
+class BetaMCPToolsetFromRaw : IFromRawJson<BetaMCPToolset>
 {
     /// <inheritdoc/>
     public BetaMCPToolset FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

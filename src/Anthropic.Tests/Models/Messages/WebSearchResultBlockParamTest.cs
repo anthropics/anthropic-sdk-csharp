@@ -57,8 +57,8 @@ public class WebSearchResultBlockParamTest : TestBase
             PageAge = "page_age",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<WebSearchResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedEncryptedContent = "encrypted_content";

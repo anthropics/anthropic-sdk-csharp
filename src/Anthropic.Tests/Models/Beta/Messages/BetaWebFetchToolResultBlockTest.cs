@@ -57,8 +57,8 @@ public class BetaWebFetchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaWebFetchToolResultBlockContent expectedContent = new BetaWebFetchToolResultErrorBlock(
@@ -125,8 +125,8 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
         BetaWebFetchToolResultBlockContent value = new(
             new BetaWebFetchToolResultErrorBlock(BetaWebFetchToolResultErrorCode.InvalidToolInput)
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -147,8 +147,8 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
                 URL = "url",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }

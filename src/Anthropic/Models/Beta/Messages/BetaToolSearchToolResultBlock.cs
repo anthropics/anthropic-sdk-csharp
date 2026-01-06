@@ -10,32 +10,32 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaToolSearchToolResultBlock, BetaToolSearchToolResultBlockFromRaw>)
+    typeof(JsonModelConverter<BetaToolSearchToolResultBlock, BetaToolSearchToolResultBlockFromRaw>)
 )]
-public sealed record class BetaToolSearchToolResultBlock : ModelBase
+public sealed record class BetaToolSearchToolResultBlock : JsonModel
 {
     public required BetaToolSearchToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaToolSearchToolResultBlockContent>(
+            return JsonModel.GetNotNullClass<BetaToolSearchToolResultBlockContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -88,7 +88,7 @@ public sealed record class BetaToolSearchToolResultBlock : ModelBase
     }
 }
 
-class BetaToolSearchToolResultBlockFromRaw : IFromRaw<BetaToolSearchToolResultBlock>
+class BetaToolSearchToolResultBlockFromRaw : IFromRawJson<BetaToolSearchToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaToolSearchToolResultBlock FromRawUnchecked(
@@ -101,11 +101,11 @@ public record class BetaToolSearchToolResultBlockContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -121,25 +121,25 @@ public record class BetaToolSearchToolResultBlockContent
 
     public BetaToolSearchToolResultBlockContent(
         BetaToolSearchToolResultError value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaToolSearchToolResultBlockContent(
         BetaToolSearchToolSearchResultBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaToolSearchToolResultBlockContent(JsonElement json)
+    public BetaToolSearchToolResultBlockContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -316,17 +316,17 @@ sealed class BetaToolSearchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultError>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -337,13 +337,13 @@ sealed class BetaToolSearchToolResultBlockContentConverter
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlock>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -351,7 +351,7 @@ sealed class BetaToolSearchToolResultBlockContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

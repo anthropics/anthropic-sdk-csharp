@@ -39,9 +39,9 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);
@@ -59,9 +59,9 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
                 Stdout = "stdout",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);

@@ -35,8 +35,8 @@ public class BetaMessageParamTest : TestBase
     {
         var model = new BetaMessageParam { Content = "string", Role = Role.User };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParam>(element);
         Assert.NotNull(deserialized);
 
         BetaMessageParamContent expectedContent = "string";
@@ -96,8 +96,8 @@ public class BetaMessageParamContentTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         BetaMessageParamContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -127,8 +127,8 @@ public class BetaMessageParamContentTest : TestBase
                 ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }

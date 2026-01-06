@@ -110,8 +110,8 @@ public class BetaToolBash20241022Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");

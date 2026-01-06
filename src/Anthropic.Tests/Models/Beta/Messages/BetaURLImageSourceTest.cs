@@ -33,8 +33,8 @@ public class BetaURLImageSourceTest : TestBase
     {
         var model = new BetaURLImageSource { URL = "url" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaURLImageSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaURLImageSource>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"url\"");

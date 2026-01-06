@@ -57,8 +57,8 @@ public class WebSearchResultBlockTest : TestBase
             URL = "url",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<WebSearchResultBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedEncryptedContent = "encrypted_content";

@@ -126,8 +126,8 @@ public class BetaWebSearchTool20250305Test : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
@@ -502,8 +502,8 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<UserLocation>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");

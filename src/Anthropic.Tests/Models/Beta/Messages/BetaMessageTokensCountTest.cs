@@ -33,8 +33,8 @@ public class BetaMessageTokensCountTest : TestBase
     {
         var model = new BetaMessageTokensCount { ContextManagement = new(0), InputTokens = 2095 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageTokensCount>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageTokensCount>(element);
         Assert.NotNull(deserialized);
 
         BetaCountTokensContextManagementResponse expectedContextManagement = new(0);

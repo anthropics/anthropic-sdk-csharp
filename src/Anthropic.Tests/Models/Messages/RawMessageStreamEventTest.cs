@@ -173,8 +173,8 @@ public class RawMessageStreamEventTest : TestBase
                 }
             )
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -196,8 +196,8 @@ public class RawMessageStreamEventTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -206,8 +206,8 @@ public class RawMessageStreamEventTest : TestBase
     public void StopSerializationRoundtripWorks()
     {
         RawMessageStreamEvent value = new(new RawMessageStopEvent());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -237,8 +237,8 @@ public class RawMessageStreamEventTest : TestBase
                 Index = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -249,8 +249,8 @@ public class RawMessageStreamEventTest : TestBase
         RawMessageStreamEvent value = new(
             new RawContentBlockDeltaEvent() { Delta = new TextDelta("text"), Index = 0 }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -259,8 +259,8 @@ public class RawMessageStreamEventTest : TestBase
     public void ContentBlockStopSerializationRoundtripWorks()
     {
         RawMessageStreamEvent value = new(new RawContentBlockStopEvent(0));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStreamEvent>(element);
 
         Assert.Equal(value, deserialized);
     }

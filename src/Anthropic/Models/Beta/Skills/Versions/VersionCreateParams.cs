@@ -3,7 +3,6 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Services.Beta.Skills;
@@ -15,8 +14,8 @@ namespace Anthropic.Models.Beta.Skills.Versions;
 /// </summary>
 public sealed record class VersionCreateParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
-    public IReadOnlyDictionary<string, JsonElement> RawBodyData
+    readonly FreezableDictionary<string, MultipartJsonElement> _rawBodyData = [];
+    public IReadOnlyDictionary<string, MultipartJsonElement> RawBodyData
     {
         get { return this._rawBodyData.Freeze(); }
     }
@@ -29,10 +28,16 @@ public sealed record class VersionCreateParams : ParamsBase
     /// <para>All files must be in the same top-level directory and must include
     /// a SKILL.md file at the root of that directory.</para>
     /// </summary>
-    public IReadOnlyList<string>? Files
+    public IReadOnlyList<BinaryContent>? Files
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawBodyData, "files"); }
-        init { ModelBase.Set(this._rawBodyData, "files", value); }
+        get
+        {
+            return MultipartJsonModel.GetNullableClass<List<BinaryContent>>(
+                this.RawBodyData,
+                "files"
+            );
+        }
+        init { MultipartJsonModel.Set(this._rawBodyData, "files", value); }
     }
 
     /// <summary>
@@ -42,7 +47,7 @@ public sealed record class VersionCreateParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
+            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
                 this.RawHeaderData,
                 "anthropic-beta"
             );
@@ -54,7 +59,7 @@ public sealed record class VersionCreateParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawHeaderData, "anthropic-beta", value);
+            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
         }
     }
 
@@ -69,7 +74,7 @@ public sealed record class VersionCreateParams : ParamsBase
     public VersionCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
-        IReadOnlyDictionary<string, JsonElement> rawBodyData
+        IReadOnlyDictionary<string, MultipartJsonElement> rawBodyData
     )
     {
         this._rawHeaderData = [.. rawHeaderData];
@@ -82,7 +87,7 @@ public sealed record class VersionCreateParams : ParamsBase
     VersionCreateParams(
         FrozenDictionary<string, JsonElement> rawHeaderData,
         FrozenDictionary<string, JsonElement> rawQueryData,
-        FrozenDictionary<string, JsonElement> rawBodyData
+        FrozenDictionary<string, MultipartJsonElement> rawBodyData
     )
     {
         this._rawHeaderData = [.. rawHeaderData];
@@ -91,11 +96,11 @@ public sealed record class VersionCreateParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static VersionCreateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
-        IReadOnlyDictionary<string, JsonElement> rawBodyData
+        IReadOnlyDictionary<string, MultipartJsonElement> rawBodyData
     )
     {
         return new(
@@ -116,9 +121,9 @@ public sealed record class VersionCreateParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return MultipartJsonSerializer.Serialize(RawBodyData);
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)

@@ -113,8 +113,8 @@ public class MessageCountTokensToolTest : TestBase
                 Type = Type.Custom,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -125,8 +125,8 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new(
             new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -137,8 +137,8 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new(
             new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -149,8 +149,8 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new(
             new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -165,8 +165,8 @@ public class MessageCountTokensToolTest : TestBase
                 MaxCharacters = 1,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -190,8 +190,8 @@ public class MessageCountTokensToolTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }

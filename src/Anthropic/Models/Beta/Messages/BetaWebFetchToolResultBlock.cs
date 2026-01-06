@@ -10,32 +10,32 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaWebFetchToolResultBlock, BetaWebFetchToolResultBlockFromRaw>)
+    typeof(JsonModelConverter<BetaWebFetchToolResultBlock, BetaWebFetchToolResultBlockFromRaw>)
 )]
-public sealed record class BetaWebFetchToolResultBlock : ModelBase
+public sealed record class BetaWebFetchToolResultBlock : JsonModel
 {
     public required BetaWebFetchToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaWebFetchToolResultBlockContent>(
+            return JsonModel.GetNotNullClass<BetaWebFetchToolResultBlockContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -86,7 +86,7 @@ public sealed record class BetaWebFetchToolResultBlock : ModelBase
     }
 }
 
-class BetaWebFetchToolResultBlockFromRaw : IFromRaw<BetaWebFetchToolResultBlock>
+class BetaWebFetchToolResultBlockFromRaw : IFromRawJson<BetaWebFetchToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaWebFetchToolResultBlock FromRawUnchecked(
@@ -99,11 +99,11 @@ public record class BetaWebFetchToolResultBlockContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -119,22 +119,22 @@ public record class BetaWebFetchToolResultBlockContent
 
     public BetaWebFetchToolResultBlockContent(
         BetaWebFetchToolResultErrorBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value, JsonElement? json = null)
+    public BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaWebFetchToolResultBlockContent(JsonElement json)
+    public BetaWebFetchToolResultBlockContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -308,17 +308,17 @@ sealed class BetaWebFetchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -328,11 +328,11 @@ sealed class BetaWebFetchToolResultBlockContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -340,7 +340,7 @@ sealed class BetaWebFetchToolResultBlockContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

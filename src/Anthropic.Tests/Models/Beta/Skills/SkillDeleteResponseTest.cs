@@ -45,8 +45,8 @@ public class SkillDeleteResponseTest : TestBase
             Type = "type",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<SkillDeleteResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<SkillDeleteResponse>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "skill_01JAbcdefghijklmnopqrstuvw";

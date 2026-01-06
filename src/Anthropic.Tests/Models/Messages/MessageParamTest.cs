@@ -35,8 +35,8 @@ public class MessageParamTest : TestBase
     {
         var model = new MessageParam { Content = "string", Role = Role.User };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageParam>(element);
         Assert.NotNull(deserialized);
 
         MessageParamContent expectedContent = "string";
@@ -96,8 +96,8 @@ public class MessageParamContentTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         MessageParamContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -127,8 +127,8 @@ public class MessageParamContentTest : TestBase
                 ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }

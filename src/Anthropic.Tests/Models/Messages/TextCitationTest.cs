@@ -102,8 +102,8 @@ public class TextCitationTest : TestBase
                 StartCharIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -122,8 +122,8 @@ public class TextCitationTest : TestBase
                 StartPageNumber = 1,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -142,8 +142,8 @@ public class TextCitationTest : TestBase
                 StartBlockIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -160,8 +160,8 @@ public class TextCitationTest : TestBase
                 URL = "url",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -180,8 +180,8 @@ public class TextCitationTest : TestBase
                 Title = "title",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }

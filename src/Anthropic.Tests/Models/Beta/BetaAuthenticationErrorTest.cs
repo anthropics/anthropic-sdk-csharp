@@ -35,8 +35,8 @@ public class BetaAuthenticationErrorTest : TestBase
     {
         var model = new BetaAuthenticationError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaAuthenticationError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaAuthenticationError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

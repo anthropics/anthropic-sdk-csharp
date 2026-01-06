@@ -49,8 +49,8 @@ public class BetaRawContentBlockDeltaEventTest : TestBase
             Index = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDeltaEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDeltaEvent>(element);
         Assert.NotNull(deserialized);
 
         BetaRawContentBlockDelta expectedDelta = new BetaTextDelta("text");

@@ -94,8 +94,8 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         BetaWebSearchToolResultBlockParamContent expectedContent = new(

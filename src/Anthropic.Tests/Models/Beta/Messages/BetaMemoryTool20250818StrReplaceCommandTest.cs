@@ -54,9 +54,9 @@ public class BetaMemoryTool20250818StrReplaceCommandTest : TestBase
             Path = "/memories/preferences.txt",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818StrReplaceCommand>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 

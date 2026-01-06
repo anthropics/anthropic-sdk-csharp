@@ -158,8 +158,8 @@ public class BetaToolTest : TestBase
             Type = BetaToolType.Custom,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaTool>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaTool>(element);
         Assert.NotNull(deserialized);
 
         InputSchema expectedInputSchema = new()
@@ -577,8 +577,8 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<InputSchema>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<InputSchema>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"object\"");

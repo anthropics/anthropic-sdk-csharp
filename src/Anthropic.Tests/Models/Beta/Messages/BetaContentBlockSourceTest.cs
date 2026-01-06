@@ -33,8 +33,8 @@ public class BetaContentBlockSourceTest : TestBase
     {
         var model = new BetaContentBlockSource { Content = "string" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(element);
         Assert.NotNull(deserialized);
 
         BetaContentBlockSourceContent expectedContent = "string";
@@ -94,8 +94,8 @@ public class BetaContentBlockSourceContentTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         BetaContentBlockSourceContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -125,8 +125,8 @@ public class BetaContentBlockSourceContentTest : TestBase
                 ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -9,25 +9,27 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolResultError, WebSearchToolResultErrorFromRaw>))]
-public sealed record class WebSearchToolResultError : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<WebSearchToolResultError, WebSearchToolResultErrorFromRaw>)
+)]
+public sealed record class WebSearchToolResultError : JsonModel
 {
     public required ApiEnum<string, WebSearchToolResultErrorErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, WebSearchToolResultErrorErrorCode>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, WebSearchToolResultErrorErrorCode>>(
                 this.RawData,
                 "error_code"
             );
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { JsonModel.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -84,7 +86,7 @@ public sealed record class WebSearchToolResultError : ModelBase
     }
 }
 
-class WebSearchToolResultErrorFromRaw : IFromRaw<WebSearchToolResultError>
+class WebSearchToolResultErrorFromRaw : IFromRawJson<WebSearchToolResultError>
 {
     /// <inheritdoc/>
     public WebSearchToolResultError FromRawUnchecked(

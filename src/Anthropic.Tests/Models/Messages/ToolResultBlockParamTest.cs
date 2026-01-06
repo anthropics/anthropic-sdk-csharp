@@ -57,8 +57,8 @@ public class ToolResultBlockParamTest : TestBase
             IsError = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedToolUseID = "tool_use_id";
@@ -250,8 +250,8 @@ public class ToolResultBlockParamContentTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         ToolResultBlockParamContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -281,8 +281,8 @@ public class ToolResultBlockParamContentTest : TestBase
                 ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -402,8 +402,8 @@ public class BlockTest : TestBase
                 ],
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Block>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -422,8 +422,8 @@ public class BlockTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Block>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -459,8 +459,8 @@ public class BlockTest : TestBase
                 Citations = new() { Enabled = true },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Block>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -478,8 +478,8 @@ public class BlockTest : TestBase
                 Title = "x",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Block>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(element);
 
         Assert.Equal(value, deserialized);
     }

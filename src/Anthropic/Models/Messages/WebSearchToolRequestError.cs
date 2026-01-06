@@ -9,25 +9,27 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolRequestError, WebSearchToolRequestErrorFromRaw>))]
-public sealed record class WebSearchToolRequestError : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<WebSearchToolRequestError, WebSearchToolRequestErrorFromRaw>)
+)]
+public sealed record class WebSearchToolRequestError : JsonModel
 {
     public required ApiEnum<string, ErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, ErrorCode>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, ErrorCode>>(
                 this.RawData,
                 "error_code"
             );
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { JsonModel.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -84,7 +86,7 @@ public sealed record class WebSearchToolRequestError : ModelBase
     }
 }
 
-class WebSearchToolRequestErrorFromRaw : IFromRaw<WebSearchToolRequestError>
+class WebSearchToolRequestErrorFromRaw : IFromRawJson<WebSearchToolRequestError>
 {
     /// <inheritdoc/>
     public WebSearchToolRequestError FromRawUnchecked(

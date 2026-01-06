@@ -111,8 +111,8 @@ public class ToolUnionTest : TestBase
                 Type = Type.Custom,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -121,8 +121,8 @@ public class ToolUnionTest : TestBase
     public void Bash20250124SerializationRoundtripWorks()
     {
         ToolUnion value = new(new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -133,8 +133,8 @@ public class ToolUnionTest : TestBase
         ToolUnion value = new(
             new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -145,8 +145,8 @@ public class ToolUnionTest : TestBase
         ToolUnion value = new(
             new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -161,8 +161,8 @@ public class ToolUnionTest : TestBase
                 MaxCharacters = 1,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -186,8 +186,8 @@ public class ToolUnionTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -33,8 +33,8 @@ public class BetaServerToolUsageTest : TestBase
     {
         var model = new BetaServerToolUsage { WebFetchRequests = 2, WebSearchRequests = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUsage>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUsage>(element);
         Assert.NotNull(deserialized);
 
         long expectedWebFetchRequests = 2;

@@ -69,8 +69,8 @@ public class BetaCodeExecutionTool20250522Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");

@@ -139,8 +139,8 @@ public class BetaSearchResultBlockParamTest : TestBase
             Citations = new() { Enabled = true },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaSearchResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaSearchResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         List<BetaTextBlockParam> expectedContent =

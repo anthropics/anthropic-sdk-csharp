@@ -65,8 +65,8 @@ public class BetaToolSearchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaToolSearchToolResultBlockContent expectedContent = new BetaToolSearchToolResultError()
@@ -135,8 +135,10 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
                 ErrorMessage = "error_message",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(
+            element
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -147,8 +149,10 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
         BetaToolSearchToolResultBlockContent value = new(
             new BetaToolSearchToolSearchResultBlock([new("tool_name")])
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(
+            element
+        );
 
         Assert.Equal(value, deserialized);
     }

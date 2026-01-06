@@ -8,13 +8,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaAllThinkingTurns, BetaAllThinkingTurnsFromRaw>))]
-public sealed record class BetaAllThinkingTurns : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaAllThinkingTurns, BetaAllThinkingTurnsFromRaw>))]
+public sealed record class BetaAllThinkingTurns : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -58,7 +58,7 @@ public sealed record class BetaAllThinkingTurns : ModelBase
     }
 }
 
-class BetaAllThinkingTurnsFromRaw : IFromRaw<BetaAllThinkingTurns>
+class BetaAllThinkingTurnsFromRaw : IFromRawJson<BetaAllThinkingTurns>
 {
     /// <inheritdoc/>
     public BetaAllThinkingTurns FromRawUnchecked(

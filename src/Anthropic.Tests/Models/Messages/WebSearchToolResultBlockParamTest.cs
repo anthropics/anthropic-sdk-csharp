@@ -94,8 +94,8 @@ public class WebSearchToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         WebSearchToolResultBlockParamContent expectedContent = new(

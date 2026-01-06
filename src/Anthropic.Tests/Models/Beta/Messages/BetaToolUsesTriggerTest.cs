@@ -33,8 +33,8 @@ public class BetaToolUsesTriggerTest : TestBase
     {
         var model = new BetaToolUsesTrigger { Value = 1 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUsesTrigger>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUsesTrigger>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_uses\"");

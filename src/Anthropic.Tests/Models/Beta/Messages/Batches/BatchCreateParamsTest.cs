@@ -481,8 +481,8 @@ public class RequestTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Request>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Request>(element);
         Assert.NotNull(deserialized);
 
         string expectedCustomID = "my-custom-id-1";
@@ -1229,8 +1229,8 @@ public class ParamsTest : TestBase
             TopP = 0.7,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Params>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Params>(element);
         Assert.NotNull(deserialized);
 
         long expectedMaxTokens = 1024;
@@ -2173,8 +2173,8 @@ public class ContainerTest : TestBase
                 ],
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Container>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Container>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -2183,8 +2183,8 @@ public class ContainerTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         Container value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Container>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Container>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -2285,8 +2285,8 @@ public class ParamsSystemTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         ParamsSystem value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -2314,8 +2314,8 @@ public class ParamsSystemTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }

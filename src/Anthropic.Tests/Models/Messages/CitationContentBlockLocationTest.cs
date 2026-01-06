@@ -69,8 +69,8 @@ public class CitationContentBlockLocationTest : TestBase
             StartBlockIndex = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationContentBlockLocation>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationContentBlockLocation>(element);
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";

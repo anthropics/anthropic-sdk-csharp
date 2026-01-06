@@ -21,7 +21,7 @@ public sealed record class SkillListParams : ParamsBase
     /// </summary>
     public long? Limit
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawQueryData, "limit"); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawQueryData, "limit"); }
         init
         {
             if (value == null)
@@ -29,7 +29,7 @@ public sealed record class SkillListParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawQueryData, "limit", value);
+            JsonModel.Set(this._rawQueryData, "limit", value);
         }
     }
 
@@ -41,8 +41,8 @@ public sealed record class SkillListParams : ParamsBase
     /// </summary>
     public string? Page
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawQueryData, "page"); }
-        init { ModelBase.Set(this._rawQueryData, "page", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawQueryData, "page"); }
+        init { JsonModel.Set(this._rawQueryData, "page", value); }
     }
 
     /// <summary>
@@ -54,8 +54,8 @@ public sealed record class SkillListParams : ParamsBase
     /// </summary>
     public string? Source
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawQueryData, "source"); }
-        init { ModelBase.Set(this._rawQueryData, "source", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawQueryData, "source"); }
+        init { JsonModel.Set(this._rawQueryData, "source", value); }
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public sealed record class SkillListParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
+            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
                 this.RawHeaderData,
                 "anthropic-beta"
             );
@@ -77,7 +77,7 @@ public sealed record class SkillListParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawHeaderData, "anthropic-beta", value);
+            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
         }
     }
 
@@ -107,7 +107,7 @@ public sealed record class SkillListParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static SkillListParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData

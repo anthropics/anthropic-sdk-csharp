@@ -208,8 +208,8 @@ public class ContentBlockParamTest : TestBase
                 ],
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -228,8 +228,8 @@ public class ContentBlockParamTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -247,8 +247,8 @@ public class ContentBlockParamTest : TestBase
                 Title = "x",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -284,8 +284,8 @@ public class ContentBlockParamTest : TestBase
                 Citations = new() { Enabled = true },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -296,8 +296,8 @@ public class ContentBlockParamTest : TestBase
         ContentBlockParam value = new(
             new ThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -306,8 +306,8 @@ public class ContentBlockParamTest : TestBase
     public void RedactedThinkingSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(new RedactedThinkingBlockParam("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -327,8 +327,8 @@ public class ContentBlockParamTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -345,8 +345,8 @@ public class ContentBlockParamTest : TestBase
                 IsError = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -365,8 +365,8 @@ public class ContentBlockParamTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -392,8 +392,8 @@ public class ContentBlockParamTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }

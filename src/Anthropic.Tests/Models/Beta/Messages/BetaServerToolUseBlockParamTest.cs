@@ -84,8 +84,8 @@ public class BetaServerToolUseBlockParamTest : TestBase
             Caller = new BetaDirectCaller(),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "srvtoolu_SQfNkl1n_JR_";
@@ -368,8 +368,8 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     public void BetaDirectSerializationRoundtripWorks()
     {
         BetaServerToolUseBlockParamCaller value = new(new BetaDirectCaller());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -380,8 +380,8 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
         BetaServerToolUseBlockParamCaller value = new(
             new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_")
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -8,8 +8,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTextBlock, BetaTextBlockFromRaw>))]
-public sealed record class BetaTextBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaTextBlock, BetaTextBlockFromRaw>))]
+public sealed record class BetaTextBlock : JsonModel
 {
     /// <summary>
     /// Citations supporting the text block.
@@ -22,21 +22,21 @@ public sealed record class BetaTextBlock : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<BetaTextCitation>>(this.RawData, "citations");
+            return JsonModel.GetNullableClass<List<BetaTextCitation>>(this.RawData, "citations");
         }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        init { JsonModel.Set(this._rawData, "citations", value); }
     }
 
     public required string Text
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
-        init { ModelBase.Set(this._rawData, "text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
+        init { JsonModel.Set(this._rawData, "text", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -83,7 +83,7 @@ public sealed record class BetaTextBlock : ModelBase
     }
 }
 
-class BetaTextBlockFromRaw : IFromRaw<BetaTextBlock>
+class BetaTextBlockFromRaw : IFromRawJson<BetaTextBlock>
 {
     /// <inheritdoc/>
     public BetaTextBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

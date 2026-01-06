@@ -51,8 +51,10 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlock>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         Content expectedContent = new BetaBashCodeExecutionToolResultError(
@@ -109,8 +111,8 @@ public class ContentTest : TestBase
     public void BetaBashCodeExecutionToolResultErrorSerializationRoundtripWorks()
     {
         Content value = new(new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Content>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -127,8 +129,8 @@ public class ContentTest : TestBase
                 Stdout = "stdout",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Content>(element);
 
         Assert.Equal(value, deserialized);
     }

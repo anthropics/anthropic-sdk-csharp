@@ -63,8 +63,8 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         BetaWebFetchToolResultBlockParamContent expectedContent =
@@ -203,9 +203,9 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);
@@ -229,9 +229,9 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
                 RetrievedAt = "retrieved_at",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);

@@ -125,8 +125,8 @@ public class BetaToolComputerUse20250124Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20250124>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20250124>(element);
         Assert.NotNull(deserialized);
 
         long expectedDisplayHeightPx = 1;

@@ -47,8 +47,8 @@ public class WebSearchToolResultErrorTest : TestBase
             ErrorCode = WebSearchToolResultErrorErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultError>(element);
         Assert.NotNull(deserialized);
 
         ApiEnum<string, WebSearchToolResultErrorErrorCode> expectedErrorCode =

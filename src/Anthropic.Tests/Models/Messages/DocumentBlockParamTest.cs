@@ -62,8 +62,8 @@ public class DocumentBlockParamTest : TestBase
             Title = "x",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(element);
         Assert.NotNull(deserialized);
 
         Source expectedSource = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz");
@@ -193,8 +193,8 @@ public class SourceTest : TestBase
     public void Base64PDFSerializationRoundtripWorks()
     {
         Source value = new(new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -203,8 +203,8 @@ public class SourceTest : TestBase
     public void PlainTextSerializationRoundtripWorks()
     {
         Source value = new(new PlainTextSource("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -213,8 +213,8 @@ public class SourceTest : TestBase
     public void ContentBlockSerializationRoundtripWorks()
     {
         Source value = new(new ContentBlockSource(new Content("string")));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -223,8 +223,8 @@ public class SourceTest : TestBase
     public void URLPDFSerializationRoundtripWorks()
     {
         Source value = new(new URLPDFSource("url"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }

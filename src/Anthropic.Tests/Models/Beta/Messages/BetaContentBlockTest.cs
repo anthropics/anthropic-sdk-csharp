@@ -235,8 +235,8 @@ public class BetaContentBlockTest : TestBase
                 Text = "text",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -247,8 +247,8 @@ public class BetaContentBlockTest : TestBase
         BetaContentBlock value = new(
             new BetaThinkingBlock() { Signature = "signature", Thinking = "thinking" }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -257,8 +257,8 @@ public class BetaContentBlockTest : TestBase
     public void RedactedThinkingSerializationRoundtripWorks()
     {
         BetaContentBlock value = new(new BetaRedactedThinkingBlock("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -278,8 +278,8 @@ public class BetaContentBlockTest : TestBase
                 Caller = new BetaDirectCaller(),
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -299,8 +299,8 @@ public class BetaContentBlockTest : TestBase
                 Name = Name.WebSearch,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -317,8 +317,8 @@ public class BetaContentBlockTest : TestBase
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -335,8 +335,8 @@ public class BetaContentBlockTest : TestBase
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -353,8 +353,8 @@ public class BetaContentBlockTest : TestBase
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -369,8 +369,8 @@ public class BetaContentBlockTest : TestBase
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -390,8 +390,8 @@ public class BetaContentBlockTest : TestBase
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -410,8 +410,8 @@ public class BetaContentBlockTest : TestBase
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -431,8 +431,8 @@ public class BetaContentBlockTest : TestBase
                 ServerName = "server_name",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -448,8 +448,8 @@ public class BetaContentBlockTest : TestBase
                 ToolUseID = "tool_use_id",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -458,8 +458,8 @@ public class BetaContentBlockTest : TestBase
     public void ContainerUploadSerializationRoundtripWorks()
     {
         BetaContentBlock value = new(new BetaContainerUploadBlock("file_id"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }

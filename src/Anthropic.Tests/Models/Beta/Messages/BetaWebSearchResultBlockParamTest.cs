@@ -57,8 +57,8 @@ public class BetaWebSearchResultBlockParamTest : TestBase
             PageAge = "page_age",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedEncryptedContent = "encrypted_content";

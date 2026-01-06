@@ -52,8 +52,8 @@ public class BetaMCPToolResultBlockTest : TestBase
             ToolUseID = "tool_use_id",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaMCPToolResultBlockContent expectedContent = "string";
@@ -120,8 +120,8 @@ public class BetaMCPToolResultBlockContentTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         BetaMCPToolResultBlockContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -149,8 +149,8 @@ public class BetaMCPToolResultBlockContentTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }

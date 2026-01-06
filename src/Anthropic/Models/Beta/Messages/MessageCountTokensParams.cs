@@ -84,9 +84,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNotNullClass<List<BetaMessageParam>>(this.RawBodyData, "messages");
+            return JsonModel.GetNotNullClass<List<BetaMessageParam>>(this.RawBodyData, "messages");
         }
-        init { ModelBase.Set(this._rawBodyData, "messages", value); }
+        init { JsonModel.Set(this._rawBodyData, "messages", value); }
     }
 
     /// <summary>
@@ -97,12 +97,12 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, Messages::Model>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, Messages::Model>>(
                 this.RawBodyData,
                 "model"
             );
         }
-        init { ModelBase.Set(this._rawBodyData, "model", value); }
+        init { JsonModel.Set(this._rawBodyData, "model", value); }
     }
 
     /// <summary>
@@ -115,12 +115,12 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaContextManagementConfig>(
+            return JsonModel.GetNullableClass<BetaContextManagementConfig>(
                 this.RawBodyData,
                 "context_management"
             );
         }
-        init { ModelBase.Set(this._rawBodyData, "context_management", value); }
+        init { JsonModel.Set(this._rawBodyData, "context_management", value); }
     }
 
     /// <summary>
@@ -130,7 +130,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<BetaRequestMCPServerURLDefinition>>(
+            return JsonModel.GetNullableClass<List<BetaRequestMCPServerURLDefinition>>(
                 this.RawBodyData,
                 "mcp_servers"
             );
@@ -142,7 +142,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "mcp_servers", value);
+            JsonModel.Set(this._rawBodyData, "mcp_servers", value);
         }
     }
 
@@ -154,7 +154,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaOutputConfig>(this.RawBodyData, "output_config");
+            return JsonModel.GetNullableClass<BetaOutputConfig>(this.RawBodyData, "output_config");
         }
         init
         {
@@ -163,7 +163,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "output_config", value);
+            JsonModel.Set(this._rawBodyData, "output_config", value);
         }
     }
 
@@ -174,12 +174,12 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaJSONOutputFormat>(
+            return JsonModel.GetNullableClass<BetaJSONOutputFormat>(
                 this.RawBodyData,
                 "output_format"
             );
         }
-        init { ModelBase.Set(this._rawBodyData, "output_format", value); }
+        init { JsonModel.Set(this._rawBodyData, "output_format", value); }
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<MessageCountTokensParamsSystem>(
+            return JsonModel.GetNullableClass<MessageCountTokensParamsSystem>(
                 this.RawBodyData,
                 "system"
             );
@@ -204,7 +204,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "system", value);
+            JsonModel.Set(this._rawBodyData, "system", value);
         }
     }
 
@@ -222,7 +222,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaThinkingConfigParam>(
+            return JsonModel.GetNullableClass<BetaThinkingConfigParam>(
                 this.RawBodyData,
                 "thinking"
             );
@@ -234,7 +234,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "thinking", value);
+            JsonModel.Set(this._rawBodyData, "thinking", value);
         }
     }
 
@@ -244,7 +244,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaToolChoice? ToolChoice
     {
-        get { return ModelBase.GetNullableClass<BetaToolChoice>(this.RawBodyData, "tool_choice"); }
+        get { return JsonModel.GetNullableClass<BetaToolChoice>(this.RawBodyData, "tool_choice"); }
         init
         {
             if (value == null)
@@ -252,7 +252,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "tool_choice", value);
+            JsonModel.Set(this._rawBodyData, "tool_choice", value);
         }
     }
 
@@ -305,7 +305,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public IReadOnlyList<Tool>? Tools
     {
-        get { return ModelBase.GetNullableClass<List<Tool>>(this.RawBodyData, "tools"); }
+        get { return JsonModel.GetNullableClass<List<Tool>>(this.RawBodyData, "tools"); }
         init
         {
             if (value == null)
@@ -313,7 +313,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "tools", value);
+            JsonModel.Set(this._rawBodyData, "tools", value);
         }
     }
 
@@ -324,7 +324,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
+            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
                 this.RawHeaderData,
                 "anthropic-beta"
             );
@@ -336,7 +336,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawHeaderData, "anthropic-beta", value);
+            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
         }
     }
 
@@ -373,7 +373,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static MessageCountTokensParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -397,9 +397,13 @@ public sealed record class MessageCountTokensParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData),
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
@@ -423,31 +427,31 @@ public record class MessageCountTokensParamsSystem
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public MessageCountTokensParamsSystem(string value, JsonElement? json = null)
+    public MessageCountTokensParamsSystem(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public MessageCountTokensParamsSystem(
         IReadOnlyList<BetaTextBlockParam> value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageCountTokensParamsSystem(JsonElement json)
+    public MessageCountTokensParamsSystem(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -615,13 +619,13 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -631,10 +635,13 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(json, options);
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -642,7 +649,7 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(
@@ -666,11 +673,11 @@ public record class Tool
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public BetaCacheControlEphemeral? CacheControl
@@ -862,117 +869,117 @@ public record class Tool
         }
     }
 
-    public Tool(BetaTool value, JsonElement? json = null)
+    public Tool(BetaTool value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolBash20241022 value, JsonElement? json = null)
+    public Tool(BetaToolBash20241022 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolBash20250124 value, JsonElement? json = null)
+    public Tool(BetaToolBash20250124 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaCodeExecutionTool20250522 value, JsonElement? json = null)
+    public Tool(BetaCodeExecutionTool20250522 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaCodeExecutionTool20250825 value, JsonElement? json = null)
+    public Tool(BetaCodeExecutionTool20250825 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolComputerUse20241022 value, JsonElement? json = null)
+    public Tool(BetaToolComputerUse20241022 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaMemoryTool20250818 value, JsonElement? json = null)
+    public Tool(BetaMemoryTool20250818 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolComputerUse20250124 value, JsonElement? json = null)
+    public Tool(BetaToolComputerUse20250124 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolTextEditor20241022 value, JsonElement? json = null)
+    public Tool(BetaToolTextEditor20241022 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolComputerUse20251124 value, JsonElement? json = null)
+    public Tool(BetaToolComputerUse20251124 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolTextEditor20250124 value, JsonElement? json = null)
+    public Tool(BetaToolTextEditor20250124 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolTextEditor20250429 value, JsonElement? json = null)
+    public Tool(BetaToolTextEditor20250429 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolTextEditor20250728 value, JsonElement? json = null)
+    public Tool(BetaToolTextEditor20250728 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaWebSearchTool20250305 value, JsonElement? json = null)
+    public Tool(BetaWebSearchTool20250305 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaWebFetchTool20250910 value, JsonElement? json = null)
+    public Tool(BetaWebFetchTool20250910 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolSearchToolBm25_20251119 value, JsonElement? json = null)
+    public Tool(BetaToolSearchToolBm25_20251119 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaToolSearchToolRegex20251119 value, JsonElement? json = null)
+    public Tool(BetaToolSearchToolRegex20251119 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(BetaMCPToolset value, JsonElement? json = null)
+    public Tool(BetaMCPToolset value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Tool(JsonElement json)
+    public Tool(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -1672,14 +1679,14 @@ sealed class ToolConverter : JsonConverter<Tool>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaTool>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaTool>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1689,11 +1696,11 @@ sealed class ToolConverter : JsonConverter<Tool>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaToolBash20241022>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1703,11 +1710,11 @@ sealed class ToolConverter : JsonConverter<Tool>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1718,13 +1725,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1735,13 +1742,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1752,13 +1759,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20241022>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1768,11 +1775,11 @@ sealed class ToolConverter : JsonConverter<Tool>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1783,13 +1790,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20250124>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1800,13 +1807,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20241022>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1817,13 +1824,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1834,13 +1841,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250124>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1851,13 +1858,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250429>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1868,13 +1875,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1884,11 +1891,14 @@ sealed class ToolConverter : JsonConverter<Tool>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1898,11 +1908,14 @@ sealed class ToolConverter : JsonConverter<Tool>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchTool20250910>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1913,13 +1926,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolBm25_20251119>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1930,13 +1943,13 @@ sealed class ToolConverter : JsonConverter<Tool>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1946,11 +1959,11 @@ sealed class ToolConverter : JsonConverter<Tool>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1958,7 +1971,7 @@ sealed class ToolConverter : JsonConverter<Tool>
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(Utf8JsonWriter writer, Tool value, JsonSerializerOptions options)

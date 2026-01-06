@@ -181,8 +181,8 @@ public class BetaMessageBatchResultTest : TestBase
                 }
             )
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -199,8 +199,8 @@ public class BetaMessageBatchResultTest : TestBase
                 }
             )
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -209,8 +209,8 @@ public class BetaMessageBatchResultTest : TestBase
     public void CanceledSerializationRoundtripWorks()
     {
         BetaMessageBatchResult value = new(new BetaMessageBatchCanceledResult());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -219,8 +219,8 @@ public class BetaMessageBatchResultTest : TestBase
     public void ExpiredSerializationRoundtripWorks()
     {
         BetaMessageBatchResult value = new(new BetaMessageBatchExpiredResult());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(element);
 
         Assert.Equal(value, deserialized);
     }

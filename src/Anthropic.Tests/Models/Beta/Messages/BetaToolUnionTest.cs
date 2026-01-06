@@ -430,8 +430,8 @@ public class BetaToolUnionTest : TestBase
                 Type = BetaToolType.Custom,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -455,8 +455,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -480,8 +480,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -498,8 +498,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -516,8 +516,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -544,8 +544,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -569,8 +569,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -597,8 +597,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -622,8 +622,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -651,8 +651,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -676,8 +676,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -701,8 +701,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -727,8 +727,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -755,8 +755,8 @@ public class BetaToolUnionTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -778,8 +778,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -797,8 +797,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -816,8 +816,8 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -840,8 +840,8 @@ public class BetaToolUnionTest : TestBase
                 DefaultConfig = new() { DeferLoading = true, Enabled = true },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }

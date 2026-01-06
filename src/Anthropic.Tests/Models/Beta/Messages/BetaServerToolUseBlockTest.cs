@@ -78,8 +78,8 @@ public class BetaServerToolUseBlockTest : TestBase
             Name = Name.WebSearch,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "srvtoolu_SQfNkl1n_JR_";
@@ -142,8 +142,8 @@ public class CallerTest : TestBase
     public void BetaDirectSerializationRoundtripWorks()
     {
         Caller value = new(new BetaDirectCaller());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Caller>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -152,8 +152,8 @@ public class CallerTest : TestBase
     public void BetaServerToolSerializationRoundtripWorks()
     {
         Caller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Caller>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element);
 
         Assert.Equal(value, deserialized);
     }

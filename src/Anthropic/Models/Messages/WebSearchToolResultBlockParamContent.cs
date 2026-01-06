@@ -13,34 +13,34 @@ public record class WebSearchToolResultBlockParamContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public WebSearchToolResultBlockParamContent(
         IReadOnlyList<WebSearchResultBlockParam> value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
     public WebSearchToolResultBlockParamContent(
         WebSearchToolRequestError value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public WebSearchToolResultBlockParamContent(JsonElement json)
+    public WebSearchToolResultBlockParamContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -210,14 +210,17 @@ sealed class WebSearchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(json, options);
+            var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -228,12 +231,12 @@ sealed class WebSearchToolResultBlockParamContentConverter
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<WebSearchResultBlockParam>>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -241,7 +244,7 @@ sealed class WebSearchToolResultBlockParamContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

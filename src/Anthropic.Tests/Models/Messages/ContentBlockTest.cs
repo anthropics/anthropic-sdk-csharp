@@ -115,8 +115,8 @@ public class ContentBlockTest : TestBase
                 Text = "text",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -127,8 +127,8 @@ public class ContentBlockTest : TestBase
         ContentBlock value = new(
             new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -137,8 +137,8 @@ public class ContentBlockTest : TestBase
     public void RedactedThinkingSerializationRoundtripWorks()
     {
         ContentBlock value = new(new RedactedThinkingBlock("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -157,8 +157,8 @@ public class ContentBlockTest : TestBase
                 Name = "x",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -176,8 +176,8 @@ public class ContentBlockTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -194,8 +194,8 @@ public class ContentBlockTest : TestBase
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(element);
 
         Assert.Equal(value, deserialized);
     }

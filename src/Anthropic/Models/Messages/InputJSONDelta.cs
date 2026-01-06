@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<InputJSONDelta, InputJSONDeltaFromRaw>))]
-public sealed record class InputJSONDelta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<InputJSONDelta, InputJSONDeltaFromRaw>))]
+public sealed record class InputJSONDelta : JsonModel
 {
     public required string PartialJSON
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "partial_json"); }
-        init { ModelBase.Set(this._rawData, "partial_json", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "partial_json"); }
+        init { JsonModel.Set(this._rawData, "partial_json", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -75,7 +75,7 @@ public sealed record class InputJSONDelta : ModelBase
     }
 }
 
-class InputJSONDeltaFromRaw : IFromRaw<InputJSONDelta>
+class InputJSONDeltaFromRaw : IFromRawJson<InputJSONDelta>
 {
     /// <inheritdoc/>
     public InputJSONDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

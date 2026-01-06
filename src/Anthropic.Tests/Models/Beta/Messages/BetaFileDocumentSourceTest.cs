@@ -33,8 +33,8 @@ public class BetaFileDocumentSourceTest : TestBase
     {
         var model = new BetaFileDocumentSource { FileID = "file_id" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaFileDocumentSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaFileDocumentSource>(element);
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";

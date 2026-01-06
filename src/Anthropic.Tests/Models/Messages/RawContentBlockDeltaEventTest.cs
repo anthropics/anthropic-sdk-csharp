@@ -37,8 +37,8 @@ public class RawContentBlockDeltaEventTest : TestBase
     {
         var model = new RawContentBlockDeltaEvent { Delta = new TextDelta("text"), Index = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(element);
         Assert.NotNull(deserialized);
 
         RawContentBlockDelta expectedDelta = new TextDelta("text");

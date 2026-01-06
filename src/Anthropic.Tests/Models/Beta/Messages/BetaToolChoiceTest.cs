@@ -39,8 +39,8 @@ public class BetaToolChoiceTest : TestBase
     public void AutoSerializationRoundtripWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceAuto() { DisableParallelToolUse = true });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -49,8 +49,8 @@ public class BetaToolChoiceTest : TestBase
     public void AnySerializationRoundtripWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceAny() { DisableParallelToolUse = true });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -61,8 +61,8 @@ public class BetaToolChoiceTest : TestBase
         BetaToolChoice value = new(
             new BetaToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -71,8 +71,8 @@ public class BetaToolChoiceTest : TestBase
     public void NoneSerializationRoundtripWorks()
     {
         BetaToolChoice value = new(new BetaToolChoiceNone());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(element);
 
         Assert.Equal(value, deserialized);
     }

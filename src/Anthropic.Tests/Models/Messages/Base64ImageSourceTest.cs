@@ -49,8 +49,8 @@ public class Base64ImageSourceTest : TestBase
             MediaType = MediaType.ImageJPEG,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Base64ImageSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Base64ImageSource>(element);
         Assert.NotNull(deserialized);
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";

@@ -105,8 +105,8 @@ public class FileListPageResponseTest : TestBase
             LastID = "last_id",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<FileListPageResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<FileListPageResponse>(element);
         Assert.NotNull(deserialized);
 
         List<FileMetadata> expectedData =

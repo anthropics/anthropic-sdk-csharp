@@ -8,25 +8,25 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaErrorResponse, BetaErrorResponseFromRaw>))]
-public sealed record class BetaErrorResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaErrorResponse, BetaErrorResponseFromRaw>))]
+public sealed record class BetaErrorResponse : JsonModel
 {
     public required BetaError Error
     {
-        get { return ModelBase.GetNotNullClass<BetaError>(this.RawData, "error"); }
-        init { ModelBase.Set(this._rawData, "error", value); }
+        get { return JsonModel.GetNotNullClass<BetaError>(this.RawData, "error"); }
+        init { JsonModel.Set(this._rawData, "error", value); }
     }
 
     public required string? RequestID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "request_id"); }
-        init { ModelBase.Set(this._rawData, "request_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "request_id"); }
+        init { JsonModel.Set(this._rawData, "request_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -74,7 +74,7 @@ public sealed record class BetaErrorResponse : ModelBase
     }
 }
 
-class BetaErrorResponseFromRaw : IFromRaw<BetaErrorResponse>
+class BetaErrorResponseFromRaw : IFromRawJson<BetaErrorResponse>
 {
     /// <inheritdoc/>
     public BetaErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

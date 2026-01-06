@@ -53,8 +53,8 @@ public class ContainerTest : TestBase
                 ],
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Container>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Container>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -63,8 +63,8 @@ public class ContainerTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         Container value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Container>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Container>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -165,8 +165,8 @@ public class MessageCreateParamsSystemTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         MessageCreateParamsSystem value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -194,8 +194,8 @@ public class MessageCreateParamsSystemTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }

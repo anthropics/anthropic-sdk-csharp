@@ -86,8 +86,8 @@ public class BetaContextManagementConfigTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContextManagementConfig>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaContextManagementConfig>(element);
         Assert.NotNull(deserialized);
 
         List<Edit> expectedEdits =
@@ -212,8 +212,8 @@ public class EditTest : TestBase
                 Trigger = new BetaInputTokensTrigger(1),
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Edit>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Edit>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -222,8 +222,8 @@ public class EditTest : TestBase
     public void BetaClearThinking20251015SerializationRoundtripWorks()
     {
         Edit value = new(new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Edit>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Edit>(element);
 
         Assert.Equal(value, deserialized);
     }

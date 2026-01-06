@@ -56,9 +56,9 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamTest : TestBase
             ErrorMessage = "error_message",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultErrorParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultErrorParam>(element);
         Assert.NotNull(deserialized);
 
         ApiEnum<

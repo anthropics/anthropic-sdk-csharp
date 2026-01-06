@@ -52,8 +52,8 @@ public class BetaDocumentBlockTest : TestBase
             Title = "title",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaDocumentBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaDocumentBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaCitationConfig expectedCitations = new(true);
@@ -101,8 +101,8 @@ public class SourceTest : TestBase
     public void BetaBase64PDFSerializationRoundtripWorks()
     {
         Source value = new(new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -111,8 +111,8 @@ public class SourceTest : TestBase
     public void BetaPlainTextSerializationRoundtripWorks()
     {
         Source value = new(new BetaPlainTextSource("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }

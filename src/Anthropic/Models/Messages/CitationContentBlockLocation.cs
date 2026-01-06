@@ -9,50 +9,50 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<CitationContentBlockLocation, CitationContentBlockLocationFromRaw>)
+    typeof(JsonModelConverter<CitationContentBlockLocation, CitationContentBlockLocationFromRaw>)
 )]
-public sealed record class CitationContentBlockLocation : ModelBase
+public sealed record class CitationContentBlockLocation : JsonModel
 {
     public required string CitedText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { ModelBase.Set(this._rawData, "cited_text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "cited_text"); }
+        init { JsonModel.Set(this._rawData, "cited_text", value); }
     }
 
     public required long DocumentIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "document_index"); }
-        init { ModelBase.Set(this._rawData, "document_index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "document_index"); }
+        init { JsonModel.Set(this._rawData, "document_index", value); }
     }
 
     public required string? DocumentTitle
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "document_title"); }
-        init { ModelBase.Set(this._rawData, "document_title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "document_title"); }
+        init { JsonModel.Set(this._rawData, "document_title", value); }
     }
 
     public required long EndBlockIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "end_block_index"); }
-        init { ModelBase.Set(this._rawData, "end_block_index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "end_block_index"); }
+        init { JsonModel.Set(this._rawData, "end_block_index", value); }
     }
 
     public required string? FileID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "file_id"); }
+        init { JsonModel.Set(this._rawData, "file_id", value); }
     }
 
     public required long StartBlockIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "start_block_index"); }
-        init { ModelBase.Set(this._rawData, "start_block_index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "start_block_index"); }
+        init { JsonModel.Set(this._rawData, "start_block_index", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -107,7 +107,7 @@ public sealed record class CitationContentBlockLocation : ModelBase
     }
 }
 
-class CitationContentBlockLocationFromRaw : IFromRaw<CitationContentBlockLocation>
+class CitationContentBlockLocationFromRaw : IFromRawJson<CitationContentBlockLocation>
 {
     /// <inheritdoc/>
     public CitationContentBlockLocation FromRawUnchecked(

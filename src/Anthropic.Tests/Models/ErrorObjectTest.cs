@@ -72,8 +72,8 @@ public class ErrorObjectTest : TestBase
     public void InvalidRequestErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new InvalidRequestError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -82,8 +82,8 @@ public class ErrorObjectTest : TestBase
     public void AuthenticationErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new AuthenticationError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -92,8 +92,8 @@ public class ErrorObjectTest : TestBase
     public void BillingErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new BillingError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -102,8 +102,8 @@ public class ErrorObjectTest : TestBase
     public void PermissionErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new PermissionError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -112,8 +112,8 @@ public class ErrorObjectTest : TestBase
     public void NotFoundErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new NotFoundError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -122,8 +122,8 @@ public class ErrorObjectTest : TestBase
     public void RateLimitErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new RateLimitError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -132,8 +132,8 @@ public class ErrorObjectTest : TestBase
     public void GatewayTimeoutErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new GatewayTimeoutError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -142,8 +142,8 @@ public class ErrorObjectTest : TestBase
     public void APISerializationRoundtripWorks()
     {
         ErrorObject value = new(new APIErrorObject("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -152,8 +152,8 @@ public class ErrorObjectTest : TestBase
     public void OverloadedErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new(new OverloadedError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 
         Assert.Equal(value, deserialized);
     }

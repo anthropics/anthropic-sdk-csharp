@@ -58,8 +58,8 @@ public class RawContentBlockDeltaTest : TestBase
     public void TextSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(new TextDelta("text"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -68,8 +68,8 @@ public class RawContentBlockDeltaTest : TestBase
     public void InputJSONSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(new InputJSONDelta("partial_json"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -92,8 +92,8 @@ public class RawContentBlockDeltaTest : TestBase
                 )
             )
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -102,8 +102,8 @@ public class RawContentBlockDeltaTest : TestBase
     public void ThinkingSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(new ThinkingDelta("thinking"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -112,8 +112,8 @@ public class RawContentBlockDeltaTest : TestBase
     public void SignatureSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(new SignatureDelta("signature"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }

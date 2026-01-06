@@ -194,8 +194,8 @@ public class RawMessageStartEventTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(element);
         Assert.NotNull(deserialized);
 
         Message expectedMessage = new()

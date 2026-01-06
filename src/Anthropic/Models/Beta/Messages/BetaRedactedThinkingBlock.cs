@@ -8,19 +8,21 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRedactedThinkingBlock, BetaRedactedThinkingBlockFromRaw>))]
-public sealed record class BetaRedactedThinkingBlock : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaRedactedThinkingBlock, BetaRedactedThinkingBlockFromRaw>)
+)]
+public sealed record class BetaRedactedThinkingBlock : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +79,7 @@ public sealed record class BetaRedactedThinkingBlock : ModelBase
     }
 }
 
-class BetaRedactedThinkingBlockFromRaw : IFromRaw<BetaRedactedThinkingBlock>
+class BetaRedactedThinkingBlockFromRaw : IFromRawJson<BetaRedactedThinkingBlock>
 {
     /// <inheritdoc/>
     public BetaRedactedThinkingBlock FromRawUnchecked(

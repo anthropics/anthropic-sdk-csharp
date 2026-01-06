@@ -39,8 +39,8 @@ public class ToolChoiceTest : TestBase
     public void AutoSerializationRoundtripWorks()
     {
         ToolChoice value = new(new ToolChoiceAuto() { DisableParallelToolUse = true });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolChoice>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolChoice>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -49,8 +49,8 @@ public class ToolChoiceTest : TestBase
     public void AnySerializationRoundtripWorks()
     {
         ToolChoice value = new(new ToolChoiceAny() { DisableParallelToolUse = true });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolChoice>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolChoice>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -61,8 +61,8 @@ public class ToolChoiceTest : TestBase
         ToolChoice value = new(
             new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolChoice>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolChoice>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -71,8 +71,8 @@ public class ToolChoiceTest : TestBase
     public void NoneSerializationRoundtripWorks()
     {
         ToolChoice value = new(new ToolChoiceNone());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolChoice>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolChoice>(element);
 
         Assert.Equal(value, deserialized);
     }

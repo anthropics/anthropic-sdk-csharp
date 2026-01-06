@@ -95,8 +95,8 @@ public class ToolTest : TestBase
             Type = Type.Custom,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
         Assert.NotNull(deserialized);
 
         InputSchema expectedInputSchema = new()
@@ -407,8 +407,8 @@ public class InputSchemaTest : TestBase
             Required = ["location"],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<InputSchema>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<InputSchema>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"object\"");

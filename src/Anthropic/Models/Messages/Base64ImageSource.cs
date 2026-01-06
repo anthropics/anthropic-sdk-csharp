@@ -9,31 +9,31 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Base64ImageSource, Base64ImageSourceFromRaw>))]
-public sealed record class Base64ImageSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Base64ImageSource, Base64ImageSourceFromRaw>))]
+public sealed record class Base64ImageSource : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     public required ApiEnum<string, MediaType> MediaType
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, MediaType>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, MediaType>>(
                 this.RawData,
                 "media_type"
             );
         }
-        init { ModelBase.Set(this._rawData, "media_type", value); }
+        init { JsonModel.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -84,7 +84,7 @@ public sealed record class Base64ImageSource : ModelBase
     }
 }
 
-class Base64ImageSourceFromRaw : IFromRaw<Base64ImageSource>
+class Base64ImageSourceFromRaw : IFromRawJson<Base64ImageSource>
 {
     /// <inheritdoc/>
     public Base64ImageSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

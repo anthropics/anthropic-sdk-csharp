@@ -33,8 +33,8 @@ public class BetaOutputConfigTest : TestBase
     {
         var model = new BetaOutputConfig { Effort = Effort.Low };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaOutputConfig>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaOutputConfig>(element);
         Assert.NotNull(deserialized);
 
         ApiEnum<string, Effort> expectedEffort = Effort.Low;

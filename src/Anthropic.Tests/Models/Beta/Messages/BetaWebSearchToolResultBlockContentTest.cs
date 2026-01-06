@@ -37,8 +37,8 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
         BetaWebSearchToolResultBlockContent value = new(
             new BetaWebSearchToolResultError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -57,8 +57,8 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }

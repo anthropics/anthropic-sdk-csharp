@@ -52,8 +52,8 @@ public class BetaSkillParamsTest : TestBase
             Version = "x",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaSkillParams>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaSkillParams>(element);
         Assert.NotNull(deserialized);
 
         string expectedSkillID = "x";

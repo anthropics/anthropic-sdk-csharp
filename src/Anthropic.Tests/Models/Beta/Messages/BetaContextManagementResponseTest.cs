@@ -73,8 +73,8 @@ public class BetaContextManagementResponseTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContextManagementResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaContextManagementResponse>(element);
         Assert.NotNull(deserialized);
 
         List<AppliedEdit> expectedAppliedEdits =
@@ -150,8 +150,8 @@ public class AppliedEditTest : TestBase
                 ClearedToolUses = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -166,8 +166,8 @@ public class AppliedEditTest : TestBase
                 ClearedThinkingTurns = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(element);
 
         Assert.Equal(value, deserialized);
     }
