@@ -57,7 +57,10 @@ public class BatchServiceTest
                             ),
                             Temperature = 1,
                             Thinking = new Messages::ThinkingConfigEnabled(1024),
-                            ToolChoice = new Messages::ToolChoiceAuto() { DisableParallelToolUse = true },
+                            ToolChoice = new Messages::ToolChoiceAuto()
+                            {
+                                DisableParallelToolUse = true,
+                            },
                             Tools =
                             [
                                 new Messages::Tool()
