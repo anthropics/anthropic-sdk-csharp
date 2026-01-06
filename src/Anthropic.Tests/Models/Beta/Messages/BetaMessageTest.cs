@@ -119,7 +119,6 @@ public class BetaMessageTest : TestBase
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
-        string? expectedStopSequence = null;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
         Messages::BetaUsage expectedUsage = new()
         {
@@ -143,7 +142,7 @@ public class BetaMessageTest : TestBase
         Assert.Equal(expectedModel, model.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, model.Role));
         Assert.Equal(expectedStopReason, model.StopReason);
-        Assert.Equal(expectedStopSequence, model.StopSequence);
+        Assert.Null(model.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUsage, model.Usage);
     }
@@ -331,7 +330,6 @@ public class BetaMessageTest : TestBase
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
-        string expectedStopSequence = null;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
         Messages::BetaUsage expectedUsage = new()
         {
@@ -355,7 +353,7 @@ public class BetaMessageTest : TestBase
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, deserialized.Role));
         Assert.Equal(expectedStopReason, deserialized.StopReason);
-        Assert.Equal(expectedStopSequence, deserialized.StopSequence);
+        Assert.Null(deserialized.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUsage, deserialized.Usage);
     }

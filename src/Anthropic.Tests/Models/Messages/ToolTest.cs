@@ -360,6 +360,7 @@ public class InputSchemaTest : TestBase
         List<string> expectedRequired = ["location"];
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.NotNull(model.Properties);
         Assert.Equal(expectedProperties.Count, model.Properties.Count);
         foreach (var item in expectedProperties)
         {
@@ -420,6 +421,7 @@ public class InputSchemaTest : TestBase
         List<string> expectedRequired = ["location"];
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.NotNull(deserialized.Properties);
         Assert.Equal(expectedProperties.Count, deserialized.Properties.Count);
         foreach (var item in expectedProperties)
         {
@@ -508,6 +510,8 @@ public class TypeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
