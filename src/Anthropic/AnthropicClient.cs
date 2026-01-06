@@ -312,7 +312,11 @@ public class AnthropicClient : IAnthropicClient
         return e is IOException || e is AnthropicIOException;
     }
 
-    public void Dispose() => this.HttpClient.Dispose();
+    public void Dispose()
+    {
+        this.HttpClient.Dispose();
+        GC.SuppressFinalize(this);
+    }
 
     public AnthropicClient()
     {
