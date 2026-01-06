@@ -9,7 +9,7 @@ public class SkillServiceTest
     [AnthropicTestClients]
     public async Task Create_Works(IAnthropicClient client)
     {
-        var skill = await client.Beta.Skills.Create();
+        var skill = await client.Beta.Skills.Create(new(), TestContext.Current.CancellationToken);
         skill.Validate();
     }
 
@@ -17,7 +17,11 @@ public class SkillServiceTest
     [AnthropicTestClients]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var skill = await client.Beta.Skills.Retrieve("skill_id");
+        var skill = await client.Beta.Skills.Retrieve(
+            "skill_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         skill.Validate();
     }
 
@@ -25,7 +29,7 @@ public class SkillServiceTest
     [AnthropicTestClients]
     public async Task List_Works(IAnthropicClient client)
     {
-        var page = await client.Beta.Skills.List();
+        var page = await client.Beta.Skills.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 
@@ -33,7 +37,11 @@ public class SkillServiceTest
     [AnthropicTestClients]
     public async Task Delete_Works(IAnthropicClient client)
     {
-        var skill = await client.Beta.Skills.Delete("skill_id");
+        var skill = await client.Beta.Skills.Delete(
+            "skill_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         skill.Validate();
     }
 }

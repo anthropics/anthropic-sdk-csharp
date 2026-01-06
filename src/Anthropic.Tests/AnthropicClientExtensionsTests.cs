@@ -99,7 +99,11 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
-        ChatResponse response = await chatClient.GetResponseAsync("Test");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Test",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         Assert.NotNull(response);
         Assert.NotNull(response.RawRepresentation);
 
@@ -154,7 +158,11 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
-        ChatResponse response = await chatClient.GetResponseAsync("Test various content types");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Test various content types",
+            new(),
+            TestContext.Current.CancellationToken
+        );
 
         var textContent = response.Messages[0].Contents[0] as TextContent;
         Assert.NotNull(textContent);
@@ -222,7 +230,11 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
 
         ChatOptions options = new() { Tools = [toolUnion.AsAITool()] };
 
-        ChatResponse response = await chatClient.GetResponseAsync("Search the web", options);
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Search the web",
+            options,
+            TestContext.Current.CancellationToken
+        );
         Assert.NotNull(response);
     }
 
@@ -316,7 +328,11 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
             },
         };
 
-        ChatResponse response = await chatClient.GetResponseAsync("New message", options);
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "New message",
+            options,
+            TestContext.Current.CancellationToken
+        );
         Assert.NotNull(response);
     }
 
@@ -384,7 +400,8 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
                 new ChatMessage(ChatRole.System, "New system message"),
                 new ChatMessage(ChatRole.User, "Test"),
             ],
-            options
+            options,
+            TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
     }
@@ -458,7 +475,8 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
 
         ChatResponse response = await chatClient.GetResponseAsync(
             [new ChatMessage(ChatRole.System, "Third"), new ChatMessage(ChatRole.User, "Test")],
-            options
+            options,
+            TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
     }

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Anthropic.Foundry;
 using Xunit.Sdk;
+using Xunit.v3;
 
 namespace Anthropic.Tests;
 
@@ -21,34 +23,52 @@ public class AnthropicTestClientsAttribute : DataAttribute
 
     public TestSupportTypes TestSupportTypes { get; }
 
-    public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+    // Constructing a client is somewhat expensive so we'd prefer it only happens once.
+    public override bool SupportsDiscoveryEnumeration() => false;
+
+    public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(
+        MethodInfo testMethod,
+        DisposalTracker disposalTracker
+    )
     {
         var testData = testMethod.GetCustomAttributes<AnthropicTestDataAttribute>().ToArray();
+        var rows = new List<ITheoryDataRow>();
+
         if (TestSupportTypes.HasFlag(TestSupportTypes.Anthropic))
         {
-            yield return
-            [
-                new AnthropicClient() { BaseUrl = DataServiceUrl, APIKey = ApiKey },
-                .. testData
-                    .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
-                    .Select(f => f.TestData)
-                    .ToArray(),
-            ];
+            rows.Add(
+                new TheoryDataRow(
+                    [
+                        new AnthropicClient() { BaseUrl = DataServiceUrl, APIKey = ApiKey },
+                        .. testData
+                            .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
+                            .Select(f => f.TestData)
+                            .ToArray(),
+                    ]
+                )
+            );
         }
         if (TestSupportTypes.HasFlag(TestSupportTypes.Foundry))
         {
-            yield return
-            [
-                new AnthropicFoundryClient(new AnthropicFoundryApiKeyCredentials(ApiKey, Resource!))
-                {
-                    BaseUrl = DataServiceUrl,
-                },
-                .. testData
-                    .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))
-                    .Select(f => f.TestData)
-                    .ToArray(),
-            ];
+            rows.Add(
+                new TheoryDataRow(
+                    [
+                        new AnthropicFoundryClient(
+                            new AnthropicFoundryApiKeyCredentials(ApiKey, Resource!)
+                        )
+                        {
+                            BaseUrl = DataServiceUrl,
+                        },
+                        .. testData
+                            .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))
+                            .Select(f => f.TestData)
+                            .ToArray(),
+                    ]
+                )
+            );
         }
+
+        return new ValueTask<IReadOnlyCollection<ITheoryDataRow>>(rows);
     }
 }
 
