@@ -23,7 +23,7 @@ public class BetaToolUnionTest : TestBase
                 },
                 Name = "name",
                 AllowedCallers = [BetaToolAllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 InputExamples =
@@ -47,7 +47,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolBash20241022()
             {
                 AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -69,7 +69,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolBash20250124()
             {
                 AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -91,7 +91,7 @@ public class BetaToolUnionTest : TestBase
             new BetaCodeExecutionTool20250522()
             {
                 AllowedCallers = [AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -106,7 +106,7 @@ public class BetaToolUnionTest : TestBase
             new BetaCodeExecutionTool20250825()
             {
                 AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -123,7 +123,7 @@ public class BetaToolUnionTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 InputExamples =
@@ -146,7 +146,7 @@ public class BetaToolUnionTest : TestBase
             new BetaMemoryTool20250818()
             {
                 AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -170,7 +170,7 @@ public class BetaToolUnionTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 InputExamples =
@@ -193,7 +193,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolTextEditor20241022()
             {
                 AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -217,7 +217,7 @@ public class BetaToolUnionTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 EnableZoom = true,
@@ -241,7 +241,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolTextEditor20250124()
             {
                 AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -263,7 +263,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolTextEditor20250429()
             {
                 AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -285,7 +285,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolTextEditor20250728()
             {
                 AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -310,7 +310,7 @@ public class BetaToolUnionTest : TestBase
                 AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 MaxUses = 1,
                 Strict = true,
@@ -335,7 +335,7 @@ public class BetaToolUnionTest : TestBase
                 AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 DeferLoading = true,
                 MaxContentTokens = 1,
@@ -354,7 +354,7 @@ public class BetaToolUnionTest : TestBase
             {
                 Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
                 AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -370,7 +370,7 @@ public class BetaToolUnionTest : TestBase
             {
                 Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
                 AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -379,14 +379,14 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void MCPToolsetValidationWorks()
+    public void McpToolsetValidationWorks()
     {
         BetaToolUnion value = new(
-            new BetaMCPToolset()
+            new BetaMcpToolset()
             {
-                MCPServerName = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Configs = new Dictionary<string, BetaMCPToolConfig>()
+                McpServerName = "x",
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                Configs = new Dictionary<string, BetaMcpToolConfig>()
                 {
                     {
                         "foo",
@@ -416,7 +416,7 @@ public class BetaToolUnionTest : TestBase
                 },
                 Name = "name",
                 AllowedCallers = [BetaToolAllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 InputExamples =
@@ -443,7 +443,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolBash20241022()
             {
                 AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -468,7 +468,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolBash20250124()
             {
                 AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -493,7 +493,7 @@ public class BetaToolUnionTest : TestBase
             new BetaCodeExecutionTool20250522()
             {
                 AllowedCallers = [AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -511,7 +511,7 @@ public class BetaToolUnionTest : TestBase
             new BetaCodeExecutionTool20250825()
             {
                 AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -531,7 +531,7 @@ public class BetaToolUnionTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 InputExamples =
@@ -557,7 +557,7 @@ public class BetaToolUnionTest : TestBase
             new BetaMemoryTool20250818()
             {
                 AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -584,7 +584,7 @@ public class BetaToolUnionTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 InputExamples =
@@ -610,7 +610,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolTextEditor20241022()
             {
                 AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -637,7 +637,7 @@ public class BetaToolUnionTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 EnableZoom = true,
@@ -664,7 +664,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolTextEditor20250124()
             {
                 AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -689,7 +689,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolTextEditor20250429()
             {
                 AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -714,7 +714,7 @@ public class BetaToolUnionTest : TestBase
             new BetaToolTextEditor20250728()
             {
                 AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -742,7 +742,7 @@ public class BetaToolUnionTest : TestBase
                 AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 MaxUses = 1,
                 Strict = true,
@@ -770,7 +770,7 @@ public class BetaToolUnionTest : TestBase
                 AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 DeferLoading = true,
                 MaxContentTokens = 1,
@@ -792,7 +792,7 @@ public class BetaToolUnionTest : TestBase
             {
                 Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
                 AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -811,7 +811,7 @@ public class BetaToolUnionTest : TestBase
             {
                 Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
                 AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -823,14 +823,14 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void MCPToolsetSerializationRoundtripWorks()
+    public void McpToolsetSerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
-            new BetaMCPToolset()
+            new BetaMcpToolset()
             {
-                MCPServerName = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Configs = new Dictionary<string, BetaMCPToolConfig>()
+                McpServerName = "x",
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                Configs = new Dictionary<string, BetaMcpToolConfig>()
                 {
                     {
                         "foo",

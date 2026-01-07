@@ -103,7 +103,7 @@ public sealed class BatchService : IBatchService
     }
 
     /// <inheritdoc/>
-    public async Task<BatchListPageResponse> List(
+    public async Task<BatchListPage> List(
         BatchListParams? parameters = null,
         CancellationToken cancellationToken = default
     )
@@ -125,7 +125,7 @@ public sealed class BatchService : IBatchService
         {
             page.Validate();
         }
-        return page;
+        return new BatchListPage(this, parameters, page);
     }
 
     /// <inheritdoc/>
@@ -242,7 +242,7 @@ public sealed class BatchService : IBatchService
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
         await foreach (
-            var betaMessageBatchIndividualResponse in Sse.Enumerate<BetaMessageBatchIndividualResponse>(
+            var betaMessageBatchIndividualResponse in Jsonl.Enumerate<BetaMessageBatchIndividualResponse>(
                 response.Message,
                 cancellationToken
             )

@@ -14,7 +14,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaBashCodeExecutionToolResultBlockParamContent expectedContent =
@@ -25,7 +25,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"bash_code_execution_tool_result\""
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -42,7 +42,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -62,7 +62,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -79,7 +79,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"bash_code_execution_tool_result\""
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -96,7 +96,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();

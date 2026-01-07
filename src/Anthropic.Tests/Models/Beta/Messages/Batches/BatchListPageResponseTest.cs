@@ -31,7 +31,7 @@ public class BatchListPageResponseTest : TestBase
                         Processing = 100,
                         Succeeded = 50,
                     },
-                    ResultsURL =
+                    ResultsUrl =
                         "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
                 },
             ],
@@ -59,7 +59,7 @@ public class BatchListPageResponseTest : TestBase
                     Processing = 100,
                     Succeeded = 50,
                 },
-                ResultsURL =
+                ResultsUrl =
                     "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
             },
         ];
@@ -101,7 +101,7 @@ public class BatchListPageResponseTest : TestBase
                         Processing = 100,
                         Succeeded = 50,
                     },
-                    ResultsURL =
+                    ResultsUrl =
                         "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
                 },
             ],
@@ -140,7 +140,7 @@ public class BatchListPageResponseTest : TestBase
                         Processing = 100,
                         Succeeded = 50,
                     },
-                    ResultsURL =
+                    ResultsUrl =
                         "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
                 },
             ],
@@ -172,7 +172,7 @@ public class BatchListPageResponseTest : TestBase
                     Processing = 100,
                     Succeeded = 50,
                 },
-                ResultsURL =
+                ResultsUrl =
                     "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
             },
         ];
@@ -214,7 +214,7 @@ public class BatchListPageResponseTest : TestBase
                         Processing = 100,
                         Succeeded = 50,
                     },
-                    ResultsURL =
+                    ResultsUrl =
                         "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
                 },
             ],

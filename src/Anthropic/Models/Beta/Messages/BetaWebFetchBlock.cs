@@ -35,7 +35,7 @@ public sealed record class BetaWebFetchBlock : JsonModel
     /// <summary>
     /// Fetched content URL
     /// </summary>
-    public required string URL
+    public required string Url
     {
         get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
         init { JsonModel.Set(this._rawData, "url", value); }
@@ -55,7 +55,7 @@ public sealed record class BetaWebFetchBlock : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        _ = this.URL;
+        _ = this.Url;
     }
 
     public BetaWebFetchBlock()

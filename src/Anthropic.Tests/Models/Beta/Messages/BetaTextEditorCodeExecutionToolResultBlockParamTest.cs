@@ -17,7 +17,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaTextEditorCodeExecutionToolResultBlockParamContent expectedContent =
@@ -31,7 +31,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_code_execution_tool_result\""
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -51,7 +51,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -73,7 +73,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -92,7 +92,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_code_execution_tool_result\""
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -112,7 +112,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorMessage = "error_message",
             },
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();

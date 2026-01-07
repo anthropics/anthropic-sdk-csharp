@@ -110,7 +110,7 @@ public sealed class VersionService : IVersionService
     }
 
     /// <inheritdoc/>
-    public async Task<VersionListPageResponse> List(
+    public async Task<VersionListPage> List(
         VersionListParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -135,11 +135,11 @@ public sealed class VersionService : IVersionService
         {
             page.Validate();
         }
-        return page;
+        return new VersionListPage(this, parameters, page);
     }
 
     /// <inheritdoc/>
-    public async Task<VersionListPageResponse> List(
+    public async Task<VersionListPage> List(
         string skillID,
         VersionListParams? parameters = null,
         CancellationToken cancellationToken = default

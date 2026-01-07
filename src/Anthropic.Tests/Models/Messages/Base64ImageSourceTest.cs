@@ -13,11 +13,11 @@ public class Base64ImageSourceTest : TestBase
         var model = new Base64ImageSource
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
-        ApiEnum<string, MediaType> expectedMediaType = MediaType.ImageJPEG;
+        ApiEnum<string, MediaType> expectedMediaType = MediaType.ImageJpeg;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
 
         Assert.Equal(expectedData, model.Data);
@@ -31,7 +31,7 @@ public class Base64ImageSourceTest : TestBase
         var model = new Base64ImageSource
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -46,7 +46,7 @@ public class Base64ImageSourceTest : TestBase
         var model = new Base64ImageSource
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -54,7 +54,7 @@ public class Base64ImageSourceTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
-        ApiEnum<string, MediaType> expectedMediaType = MediaType.ImageJPEG;
+        ApiEnum<string, MediaType> expectedMediaType = MediaType.ImageJpeg;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
 
         Assert.Equal(expectedData, deserialized.Data);
@@ -68,7 +68,7 @@ public class Base64ImageSourceTest : TestBase
         var model = new Base64ImageSource
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
 
         model.Validate();
@@ -78,9 +78,9 @@ public class Base64ImageSourceTest : TestBase
 public class MediaTypeTest : TestBase
 {
     [Theory]
-    [InlineData(MediaType.ImageJPEG)]
-    [InlineData(MediaType.ImagePNG)]
-    [InlineData(MediaType.ImageGIF)]
+    [InlineData(MediaType.ImageJpeg)]
+    [InlineData(MediaType.ImagePng)]
+    [InlineData(MediaType.ImageGif)]
     [InlineData(MediaType.ImageWebP)]
     public void Validation_Works(MediaType rawValue)
     {
@@ -102,9 +102,9 @@ public class MediaTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(MediaType.ImageJPEG)]
-    [InlineData(MediaType.ImagePNG)]
-    [InlineData(MediaType.ImageGIF)]
+    [InlineData(MediaType.ImageJpeg)]
+    [InlineData(MediaType.ImagePng)]
+    [InlineData(MediaType.ImageGif)]
     [InlineData(MediaType.ImageWebP)]
     public void SerializationRoundtrip_Works(MediaType rawValue)
     {

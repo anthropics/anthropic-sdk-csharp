@@ -57,7 +57,7 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -115,7 +115,7 @@ public class BetaMessageTest : TestBase
                 },
             ]
         );
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_5_20251101;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
@@ -195,7 +195,7 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -264,7 +264,7 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -326,7 +326,7 @@ public class BetaMessageTest : TestBase
                 },
             ]
         );
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_5_20251101;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
@@ -406,7 +406,7 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()

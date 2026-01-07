@@ -13,9 +13,9 @@ public class BetaRawContentBlockDeltaTest : TestBase
     }
 
     [Fact]
-    public void InputJSONValidationWorks()
+    public void InputJsonValidationWorks()
     {
-        BetaRawContentBlockDelta value = new(new BetaInputJSONDelta("partial_json"));
+        BetaRawContentBlockDelta value = new(new BetaInputJsonDelta("partial_json"));
         value.Validate();
     }
 
@@ -65,9 +65,9 @@ public class BetaRawContentBlockDeltaTest : TestBase
     }
 
     [Fact]
-    public void InputJSONSerializationRoundtripWorks()
+    public void InputJsonSerializationRoundtripWorks()
     {
-        BetaRawContentBlockDelta value = new(new BetaInputJSONDelta("partial_json"));
+        BetaRawContentBlockDelta value = new(new BetaInputJsonDelta("partial_json"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(element);
 

@@ -14,7 +14,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaWebFetchToolResultBlockParamContent expectedContent =
@@ -25,7 +25,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"web_fetch_tool_result\""
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -42,7 +42,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -60,7 +60,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -75,7 +75,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"web_fetch_tool_result\""
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -92,7 +92,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -182,13 +182,13 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
             {
                 Content = new()
                 {
-                    Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations = new() { Enabled = true },
                     Context = "x",
                     Title = "x",
                 },
-                URL = "url",
+                Url = "url",
                 RetrievedAt = "retrieved_at",
             }
         );
@@ -219,13 +219,13 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
             {
                 Content = new()
                 {
-                    Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations = new() { Enabled = true },
                     Context = "x",
                     Title = "x",
                 },
-                URL = "url",
+                Url = "url",
                 RetrievedAt = "retrieved_at",
             }
         );

@@ -27,9 +27,9 @@ public sealed record class BetaCacheControlEphemeral : JsonModel
     ///
     /// <para>Defaults to `5m`.</para>
     /// </summary>
-    public ApiEnum<string, TTL>? TTL
+    public ApiEnum<string, Ttl>? Ttl
     {
-        get { return JsonModel.GetNullableClass<ApiEnum<string, TTL>>(this.RawData, "ttl"); }
+        get { return JsonModel.GetNullableClass<ApiEnum<string, Ttl>>(this.RawData, "ttl"); }
         init
         {
             if (value == null)
@@ -53,7 +53,7 @@ public sealed record class BetaCacheControlEphemeral : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        this.TTL?.Validate();
+        this.Ttl?.Validate();
     }
 
     public BetaCacheControlEphemeral()
@@ -103,16 +103,16 @@ class BetaCacheControlEphemeralFromRaw : IFromRawJson<BetaCacheControlEphemeral>
 ///
 /// <para>Defaults to `5m`.</para>
 /// </summary>
-[JsonConverter(typeof(TTLConverter))]
-public enum TTL
+[JsonConverter(typeof(TtlConverter))]
+public enum Ttl
 {
-    TTL5m,
-    TTL1h,
+    Ttl5m,
+    Ttl1h,
 }
 
-sealed class TTLConverter : JsonConverter<TTL>
+sealed class TtlConverter : JsonConverter<Ttl>
 {
-    public override TTL Read(
+    public override Ttl Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -120,20 +120,20 @@ sealed class TTLConverter : JsonConverter<TTL>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "5m" => TTL.TTL5m,
-            "1h" => TTL.TTL1h,
-            _ => (TTL)(-1),
+            "5m" => Ttl.Ttl5m,
+            "1h" => Ttl.Ttl1h,
+            _ => (Ttl)(-1),
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, TTL value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, Ttl value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(
             writer,
             value switch
             {
-                TTL.TTL5m => "5m",
-                TTL.TTL1h => "1h",
+                Ttl.Ttl5m => "5m",
+                Ttl.Ttl1h => "1h",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

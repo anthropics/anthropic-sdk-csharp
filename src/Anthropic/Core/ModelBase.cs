@@ -25,7 +25,7 @@ public abstract record class ModelBase
         Converters =
         {
             new ApiEnumConverter<string, MediaType>(),
-            new ApiEnumConverter<string, TTL>(),
+            new ApiEnumConverter<string, Ttl>(),
             new ApiEnumConverter<string, Role>(),
             new ApiEnumConverter<string, Model>(),
             new ApiEnumConverter<string, StopReason>(),
@@ -43,7 +43,7 @@ public abstract record class ModelBase
                 string,
                 Messages::BetaBashCodeExecutionToolResultErrorParamErrorCode
             >(),
-            new ApiEnumConverter<string, Messages::TTL>(),
+            new ApiEnumConverter<string, Messages::Ttl>(),
             new ApiEnumConverter<string, Messages::AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20250825AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionToolResultErrorCode>(),

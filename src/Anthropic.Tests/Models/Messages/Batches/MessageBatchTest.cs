@@ -28,7 +28,7 @@ public class MessageBatchTest : TestBase
                 Processing = 100,
                 Succeeded = 50,
             },
-            ResultsURL =
+            ResultsUrl =
                 "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
         };
 
@@ -49,7 +49,7 @@ public class MessageBatchTest : TestBase
             Processing = 100,
             Succeeded = 50,
         };
-        string expectedResultsURL =
+        string expectedResultsUrl =
             "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
 
@@ -61,7 +61,7 @@ public class MessageBatchTest : TestBase
         Assert.Equal(expectedExpiresAt, model.ExpiresAt);
         Assert.Equal(expectedProcessingStatus, model.ProcessingStatus);
         Assert.Equal(expectedRequestCounts, model.RequestCounts);
-        Assert.Equal(expectedResultsURL, model.ResultsURL);
+        Assert.Equal(expectedResultsUrl, model.ResultsUrl);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
@@ -85,7 +85,7 @@ public class MessageBatchTest : TestBase
                 Processing = 100,
                 Succeeded = 50,
             },
-            ResultsURL =
+            ResultsUrl =
                 "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
         };
 
@@ -115,7 +115,7 @@ public class MessageBatchTest : TestBase
                 Processing = 100,
                 Succeeded = 50,
             },
-            ResultsURL =
+            ResultsUrl =
                 "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
         };
 
@@ -140,7 +140,7 @@ public class MessageBatchTest : TestBase
             Processing = 100,
             Succeeded = 50,
         };
-        string expectedResultsURL =
+        string expectedResultsUrl =
             "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
 
@@ -152,7 +152,7 @@ public class MessageBatchTest : TestBase
         Assert.Equal(expectedExpiresAt, deserialized.ExpiresAt);
         Assert.Equal(expectedProcessingStatus, deserialized.ProcessingStatus);
         Assert.Equal(expectedRequestCounts, deserialized.RequestCounts);
-        Assert.Equal(expectedResultsURL, deserialized.ResultsURL);
+        Assert.Equal(expectedResultsUrl, deserialized.ResultsUrl);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
@@ -176,7 +176,7 @@ public class MessageBatchTest : TestBase
                 Processing = 100,
                 Succeeded = 50,
             },
-            ResultsURL =
+            ResultsUrl =
                 "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
         };
 

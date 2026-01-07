@@ -176,10 +176,10 @@ public class BetaContentBlockTest : TestBase
     }
 
     [Fact]
-    public void MCPToolUseValidationWorks()
+    public void McpToolUseValidationWorks()
     {
         BetaContentBlock value = new(
-            new BetaMCPToolUseBlock()
+            new BetaMcpToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -194,10 +194,10 @@ public class BetaContentBlockTest : TestBase
     }
 
     [Fact]
-    public void MCPToolResultValidationWorks()
+    public void McpToolResultValidationWorks()
     {
         BetaContentBlock value = new(
-            new BetaMCPToolResultBlock()
+            new BetaMcpToolResultBlock()
             {
                 Content = "string",
                 IsError = true,
@@ -417,10 +417,10 @@ public class BetaContentBlockTest : TestBase
     }
 
     [Fact]
-    public void MCPToolUseSerializationRoundtripWorks()
+    public void McpToolUseSerializationRoundtripWorks()
     {
         BetaContentBlock value = new(
-            new BetaMCPToolUseBlock()
+            new BetaMcpToolUseBlock()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -438,10 +438,10 @@ public class BetaContentBlockTest : TestBase
     }
 
     [Fact]
-    public void MCPToolResultSerializationRoundtripWorks()
+    public void McpToolResultSerializationRoundtripWorks()
     {
         BetaContentBlock value = new(
-            new BetaMCPToolResultBlock()
+            new BetaMcpToolResultBlock()
             {
                 Content = "string",
                 IsError = true,

@@ -16,7 +16,7 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 new()
                 {
                     ToolName = "tool_name",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                 },
             ],
         };
@@ -26,7 +26,7 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
             new()
             {
                 ToolName = "tool_name",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             },
         ];
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
@@ -51,7 +51,7 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 new()
                 {
                     ToolName = "tool_name",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                 },
             ],
         };
@@ -74,7 +74,7 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 new()
                 {
                     ToolName = "tool_name",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                 },
             ],
         };
@@ -90,7 +90,7 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
             new()
             {
                 ToolName = "tool_name",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             },
         ];
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
@@ -115,7 +115,7 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 new()
                 {
                     ToolName = "tool_name",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                 },
             ],
         };

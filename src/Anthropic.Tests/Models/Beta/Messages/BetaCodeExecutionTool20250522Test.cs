@@ -14,7 +14,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var model = new BetaCodeExecutionTool20250522
         {
             AllowedCallers = [AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -24,7 +24,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
             "\"code_execution_20250522\""
         );
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -47,7 +47,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var model = new BetaCodeExecutionTool20250522
         {
             AllowedCallers = [AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -64,7 +64,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var model = new BetaCodeExecutionTool20250522
         {
             AllowedCallers = [AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -78,7 +78,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
             "\"code_execution_20250522\""
         );
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -101,7 +101,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var model = new BetaCodeExecutionTool20250522
         {
             AllowedCallers = [AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -112,7 +112,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaCodeExecutionTool20250522 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaCodeExecutionTool20250522 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         Assert.Null(model.AllowedCallers);
         Assert.False(model.RawData.ContainsKey("allowed_callers"));
@@ -125,7 +125,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaCodeExecutionTool20250522 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaCodeExecutionTool20250522 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }
@@ -135,7 +135,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250522
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -156,7 +156,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250522
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,

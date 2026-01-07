@@ -16,7 +16,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -32,7 +32,7 @@ public class SearchResultBlockParamTest : TestBase
             ],
             Source = "source",
             Title = "title",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
         };
 
@@ -41,7 +41,7 @@ public class SearchResultBlockParamTest : TestBase
             new()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new CitationCharLocationParam()
@@ -58,7 +58,7 @@ public class SearchResultBlockParamTest : TestBase
         string expectedSource = "source";
         string expectedTitle = "title";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
 
         Assert.Equal(expectedContent.Count, model.Content.Count);
@@ -83,7 +83,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -99,7 +99,7 @@ public class SearchResultBlockParamTest : TestBase
             ],
             Source = "source",
             Title = "title",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
         };
 
@@ -119,7 +119,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -135,7 +135,7 @@ public class SearchResultBlockParamTest : TestBase
             ],
             Source = "source",
             Title = "title",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
         };
 
@@ -148,7 +148,7 @@ public class SearchResultBlockParamTest : TestBase
             new()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new CitationCharLocationParam()
@@ -165,7 +165,7 @@ public class SearchResultBlockParamTest : TestBase
         string expectedSource = "source";
         string expectedTitle = "title";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
 
         Assert.Equal(expectedContent.Count, deserialized.Content.Count);
@@ -190,7 +190,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -206,7 +206,7 @@ public class SearchResultBlockParamTest : TestBase
             ],
             Source = "source",
             Title = "title",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
         };
 
@@ -223,7 +223,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -239,7 +239,7 @@ public class SearchResultBlockParamTest : TestBase
             ],
             Source = "source",
             Title = "title",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         Assert.Null(model.Citations);
@@ -256,7 +256,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -272,7 +272,7 @@ public class SearchResultBlockParamTest : TestBase
             ],
             Source = "source",
             Title = "title",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -288,7 +288,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -304,7 +304,7 @@ public class SearchResultBlockParamTest : TestBase
             ],
             Source = "source",
             Title = "title",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Citations = null,
@@ -324,7 +324,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -340,7 +340,7 @@ public class SearchResultBlockParamTest : TestBase
             ],
             Source = "source",
             Title = "title",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Citations = null,
@@ -359,7 +359,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -392,7 +392,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -424,7 +424,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()
@@ -459,7 +459,7 @@ public class SearchResultBlockParamTest : TestBase
                 new()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new CitationCharLocationParam()

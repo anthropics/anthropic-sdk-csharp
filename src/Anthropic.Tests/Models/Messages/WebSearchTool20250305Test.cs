@@ -13,7 +13,7 @@ public class WebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -30,7 +30,7 @@ public class WebSearchTool20250305Test : TestBase
         );
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxUses = 1;
         UserLocation expectedUserLocation = new()
         {
@@ -66,7 +66,7 @@ public class WebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -90,7 +90,7 @@ public class WebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -111,7 +111,7 @@ public class WebSearchTool20250305Test : TestBase
         );
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxUses = 1;
         UserLocation expectedUserLocation = new()
         {
@@ -147,7 +147,7 @@ public class WebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {

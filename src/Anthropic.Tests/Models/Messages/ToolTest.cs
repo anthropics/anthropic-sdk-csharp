@@ -23,7 +23,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
@@ -38,7 +38,7 @@ public class ToolTest : TestBase
             Required = ["location"],
         };
         string expectedName = "name";
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedDescription = "Get the current weather in a given location";
         ApiEnum<string, Type> expectedType = Type.Custom;
 
@@ -64,7 +64,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
@@ -90,7 +90,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
@@ -109,7 +109,7 @@ public class ToolTest : TestBase
             Required = ["location"],
         };
         string expectedName = "name";
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedDescription = "Get the current weather in a given location";
         ApiEnum<string, Type> expectedType = Type.Custom;
 
@@ -135,7 +135,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
@@ -158,7 +158,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = Type.Custom,
         };
 
@@ -181,7 +181,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = Type.Custom,
         };
 
@@ -203,7 +203,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = Type.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -229,7 +229,7 @@ public class ToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = Type.Custom,
 
             // Null should be interpreted as omitted for these properties

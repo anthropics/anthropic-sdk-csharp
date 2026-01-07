@@ -24,7 +24,7 @@ public class BatchServiceTest : TestBase
                         {
                             MaxTokens = 1024,
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                            Model = Messages::Model.ClaudeOpus4_5_20251101,
+                            Model = Messages::Model.ClaudeSonnet4_5_20250929,
                             Container = new BetaContainerParams()
                             {
                                 ID = "id",
@@ -52,12 +52,12 @@ public class BatchServiceTest : TestBase
                                     },
                                 ],
                             },
-                            MCPServers =
+                            McpServers =
                             [
                                 new()
                                 {
                                     Name = "name",
-                                    URL = "url",
+                                    Url = "url",
                                     AuthorizationToken = "authorization_token",
                                     ToolConfiguration = new()
                                     {
@@ -83,7 +83,7 @@ public class BatchServiceTest : TestBase
                                     new BetaTextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new() { TTL = TTL.TTL5m },
+                                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                                         Citations =
                                         [
                                             new BetaCitationCharLocationParam()
@@ -119,7 +119,7 @@ public class BatchServiceTest : TestBase
                                     },
                                     Name = "name",
                                     AllowedCallers = [BetaToolAllowedCaller.Direct],
-                                    CacheControl = new() { TTL = TTL.TTL5m },
+                                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                                     DeferLoading = true,
                                     Description = "Get the current weather in a given location",
                                     InputExamples =

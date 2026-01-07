@@ -1,11 +1,828 @@
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages.Batches;
 using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages.Batches;
+
+public class BatchCreateParamsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Container = new Messages::BetaContainerParams()
+                        {
+                            ID = "id",
+                            Skills =
+                            [
+                                new()
+                                {
+                                    SkillID = "x",
+                                    Type = Messages::BetaSkillParamsType.Anthropic,
+                                    Version = "x",
+                                },
+                            ],
+                        },
+                        ContextManagement = new()
+                        {
+                            Edits =
+                            [
+                                new Messages::BetaClearToolUses20250919Edit()
+                                {
+                                    ClearAtLeast = new(0),
+                                    ClearToolInputs = true,
+                                    ExcludeTools = ["string"],
+                                    Keep = new(0),
+                                    Trigger = new Messages::BetaInputTokensTrigger(1),
+                                },
+                            ],
+                        },
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "name",
+                                Url = "url",
+                                AuthorizationToken = "authorization_token",
+                                ToolConfiguration = new()
+                                {
+                                    AllowedTools = ["string"],
+                                    Enabled = true,
+                                },
+                            },
+                        ],
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputFormat = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::BetaTextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::BetaCitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::BetaToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::BetaTool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::BetaToolType.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+            Betas = ["string"],
+        };
+
+        List<Request> expectedRequests =
+        [
+            new()
+            {
+                CustomID = "my-custom-id-1",
+                Params = new()
+                {
+                    MaxTokens = 1024,
+                    Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                    Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                    Container = new Messages::BetaContainerParams()
+                    {
+                        ID = "id",
+                        Skills =
+                        [
+                            new()
+                            {
+                                SkillID = "x",
+                                Type = Messages::BetaSkillParamsType.Anthropic,
+                                Version = "x",
+                            },
+                        ],
+                    },
+                    ContextManagement = new()
+                    {
+                        Edits =
+                        [
+                            new Messages::BetaClearToolUses20250919Edit()
+                            {
+                                ClearAtLeast = new(0),
+                                ClearToolInputs = true,
+                                ExcludeTools = ["string"],
+                                Keep = new(0),
+                                Trigger = new Messages::BetaInputTokensTrigger(1),
+                            },
+                        ],
+                    },
+                    McpServers =
+                    [
+                        new()
+                        {
+                            Name = "name",
+                            Url = "url",
+                            AuthorizationToken = "authorization_token",
+                            ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                        },
+                    ],
+                    Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                    OutputConfig = new() { Effort = Messages::Effort.Low },
+                    OutputFormat = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                    ServiceTier = ServiceTier.Auto,
+                    StopSequences = ["string"],
+                    Stream = true,
+                    System = new(
+                        [
+                            new Messages::BetaTextBlockParam()
+                            {
+                                Text = "Today's date is 2024-06-01.",
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                Citations =
+                                [
+                                    new Messages::BetaCitationCharLocationParam()
+                                    {
+                                        CitedText = "cited_text",
+                                        DocumentIndex = 0,
+                                        DocumentTitle = "x",
+                                        EndCharIndex = 0,
+                                        StartCharIndex = 0,
+                                    },
+                                ],
+                            },
+                        ]
+                    ),
+                    Temperature = 1,
+                    Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                    ToolChoice = new Messages::BetaToolChoiceAuto()
+                    {
+                        DisableParallelToolUse = true,
+                    },
+                    Tools =
+                    [
+                        new Messages::BetaTool()
+                        {
+                            InputSchema = new()
+                            {
+                                Properties = new Dictionary<string, JsonElement>()
+                                {
+                                    { "location", JsonSerializer.SerializeToElement("bar") },
+                                    { "unit", JsonSerializer.SerializeToElement("bar") },
+                                },
+                                Required = ["location"],
+                            },
+                            Name = "name",
+                            AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                            DeferLoading = true,
+                            Description = "Get the current weather in a given location",
+                            InputExamples =
+                            [
+                                new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            ],
+                            Strict = true,
+                            Type = Messages::BetaToolType.Custom,
+                        },
+                    ],
+                    TopK = 5,
+                    TopP = 0.7,
+                },
+            },
+        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+
+        Assert.Equal(expectedRequests.Count, parameters.Requests.Count);
+        for (int i = 0; i < expectedRequests.Count; i++)
+        {
+            Assert.Equal(expectedRequests[i], parameters.Requests[i]);
+        }
+        Assert.NotNull(parameters.Betas);
+        Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
+        for (int i = 0; i < expectedBetas.Count; i++)
+        {
+            Assert.Equal(expectedBetas[i], parameters.Betas[i]);
+        }
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Container = new Messages::BetaContainerParams()
+                        {
+                            ID = "id",
+                            Skills =
+                            [
+                                new()
+                                {
+                                    SkillID = "x",
+                                    Type = Messages::BetaSkillParamsType.Anthropic,
+                                    Version = "x",
+                                },
+                            ],
+                        },
+                        ContextManagement = new()
+                        {
+                            Edits =
+                            [
+                                new Messages::BetaClearToolUses20250919Edit()
+                                {
+                                    ClearAtLeast = new(0),
+                                    ClearToolInputs = true,
+                                    ExcludeTools = ["string"],
+                                    Keep = new(0),
+                                    Trigger = new Messages::BetaInputTokensTrigger(1),
+                                },
+                            ],
+                        },
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "name",
+                                Url = "url",
+                                AuthorizationToken = "authorization_token",
+                                ToolConfiguration = new()
+                                {
+                                    AllowedTools = ["string"],
+                                    Enabled = true,
+                                },
+                            },
+                        ],
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputFormat = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::BetaTextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::BetaCitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::BetaToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::BetaTool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::BetaToolType.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new BatchCreateParams
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Container = new Messages::BetaContainerParams()
+                        {
+                            ID = "id",
+                            Skills =
+                            [
+                                new()
+                                {
+                                    SkillID = "x",
+                                    Type = Messages::BetaSkillParamsType.Anthropic,
+                                    Version = "x",
+                                },
+                            ],
+                        },
+                        ContextManagement = new()
+                        {
+                            Edits =
+                            [
+                                new Messages::BetaClearToolUses20250919Edit()
+                                {
+                                    ClearAtLeast = new(0),
+                                    ClearToolInputs = true,
+                                    ExcludeTools = ["string"],
+                                    Keep = new(0),
+                                    Trigger = new Messages::BetaInputTokensTrigger(1),
+                                },
+                            ],
+                        },
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "name",
+                                Url = "url",
+                                AuthorizationToken = "authorization_token",
+                                ToolConfiguration = new()
+                                {
+                                    AllowedTools = ["string"],
+                                    Enabled = true,
+                                },
+                            },
+                        ],
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputFormat = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::BetaTextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::BetaCitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::BetaToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::BetaTool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::BetaToolType.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+
+            // Null should be interpreted as omitted for these properties
+            Betas = null,
+        };
+
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
+    public void Url_Works()
+    {
+        BatchCreateParams parameters = new()
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Container = new Messages::BetaContainerParams()
+                        {
+                            ID = "id",
+                            Skills =
+                            [
+                                new()
+                                {
+                                    SkillID = "x",
+                                    Type = Messages::BetaSkillParamsType.Anthropic,
+                                    Version = "x",
+                                },
+                            ],
+                        },
+                        ContextManagement = new()
+                        {
+                            Edits =
+                            [
+                                new Messages::BetaClearToolUses20250919Edit()
+                                {
+                                    ClearAtLeast = new(0),
+                                    ClearToolInputs = true,
+                                    ExcludeTools = ["string"],
+                                    Keep = new(0),
+                                    Trigger = new Messages::BetaInputTokensTrigger(1),
+                                },
+                            ],
+                        },
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "name",
+                                Url = "url",
+                                AuthorizationToken = "authorization_token",
+                                ToolConfiguration = new()
+                                {
+                                    AllowedTools = ["string"],
+                                    Enabled = true,
+                                },
+                            },
+                        ],
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputFormat = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::BetaTextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::BetaCitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::BetaToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::BetaTool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::BetaToolType.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+        };
+
+        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/batches"), url);
+    }
+
+    [Fact]
+    public void AddHeadersToRequest_Works()
+    {
+        HttpRequestMessage requestMessage = new();
+        BatchCreateParams parameters = new()
+        {
+            Requests =
+            [
+                new()
+                {
+                    CustomID = "my-custom-id-1",
+                    Params = new()
+                    {
+                        MaxTokens = 1024,
+                        Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Container = new Messages::BetaContainerParams()
+                        {
+                            ID = "id",
+                            Skills =
+                            [
+                                new()
+                                {
+                                    SkillID = "x",
+                                    Type = Messages::BetaSkillParamsType.Anthropic,
+                                    Version = "x",
+                                },
+                            ],
+                        },
+                        ContextManagement = new()
+                        {
+                            Edits =
+                            [
+                                new Messages::BetaClearToolUses20250919Edit()
+                                {
+                                    ClearAtLeast = new(0),
+                                    ClearToolInputs = true,
+                                    ExcludeTools = ["string"],
+                                    Keep = new(0),
+                                    Trigger = new Messages::BetaInputTokensTrigger(1),
+                                },
+                            ],
+                        },
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "name",
+                                Url = "url",
+                                AuthorizationToken = "authorization_token",
+                                ToolConfiguration = new()
+                                {
+                                    AllowedTools = ["string"],
+                                    Enabled = true,
+                                },
+                            },
+                        ],
+                        Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
+                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputFormat = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                        ServiceTier = ServiceTier.Auto,
+                        StopSequences = ["string"],
+                        Stream = true,
+                        System = new(
+                            [
+                                new Messages::BetaTextBlockParam()
+                                {
+                                    Text = "Today's date is 2024-06-01.",
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                    Citations =
+                                    [
+                                        new Messages::BetaCitationCharLocationParam()
+                                        {
+                                            CitedText = "cited_text",
+                                            DocumentIndex = 0,
+                                            DocumentTitle = "x",
+                                            EndCharIndex = 0,
+                                            StartCharIndex = 0,
+                                        },
+                                    ],
+                                },
+                            ]
+                        ),
+                        Temperature = 1,
+                        Thinking = new Messages::BetaThinkingConfigEnabled(1024),
+                        ToolChoice = new Messages::BetaToolChoiceAuto()
+                        {
+                            DisableParallelToolUse = true,
+                        },
+                        Tools =
+                        [
+                            new Messages::BetaTool()
+                            {
+                                InputSchema = new()
+                                {
+                                    Properties = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "location", JsonSerializer.SerializeToElement("bar") },
+                                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                    Required = ["location"],
+                                },
+                                Name = "name",
+                                AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
+                                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
+                                DeferLoading = true,
+                                Description = "Get the current weather in a given location",
+                                InputExamples =
+                                [
+                                    new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                ],
+                                Strict = true,
+                                Type = Messages::BetaToolType.Custom,
+                            },
+                        ],
+                        TopK = 5,
+                        TopP = 0.7,
+                    },
+                },
+            ],
+            Betas = ["string"],
+        };
+
+        parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(
+            ["message-batches-2024-09-24", "string"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
+    }
+}
 
 public class RequestTest : TestBase
 {
@@ -19,7 +836,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+                Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -47,12 +864,12 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
-                MCPServers =
+                McpServers =
                 [
                     new()
                     {
                         Name = "name",
-                        URL = "url",
+                        Url = "url",
                         AuthorizationToken = "authorization_token",
                         ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                     },
@@ -74,7 +891,7 @@ public class RequestTest : TestBase
                         new Messages::BetaTextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Citations =
                             [
                                 new Messages::BetaCitationCharLocationParam()
@@ -107,7 +924,7 @@ public class RequestTest : TestBase
                         },
                         Name = "name",
                         AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
                         InputExamples =
@@ -131,7 +948,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -159,12 +976,12 @@ public class RequestTest : TestBase
                     },
                 ],
             },
-            MCPServers =
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -186,7 +1003,7 @@ public class RequestTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -219,7 +1036,7 @@ public class RequestTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -251,7 +1068,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+                Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -279,12 +1096,12 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
-                MCPServers =
+                McpServers =
                 [
                     new()
                     {
                         Name = "name",
-                        URL = "url",
+                        Url = "url",
                         AuthorizationToken = "authorization_token",
                         ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                     },
@@ -306,7 +1123,7 @@ public class RequestTest : TestBase
                         new Messages::BetaTextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Citations =
                             [
                                 new Messages::BetaCitationCharLocationParam()
@@ -339,7 +1156,7 @@ public class RequestTest : TestBase
                         },
                         Name = "name",
                         AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
                         InputExamples =
@@ -374,7 +1191,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+                Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -402,12 +1219,12 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
-                MCPServers =
+                McpServers =
                 [
                     new()
                     {
                         Name = "name",
-                        URL = "url",
+                        Url = "url",
                         AuthorizationToken = "authorization_token",
                         ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                     },
@@ -429,7 +1246,7 @@ public class RequestTest : TestBase
                         new Messages::BetaTextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Citations =
                             [
                                 new Messages::BetaCitationCharLocationParam()
@@ -462,7 +1279,7 @@ public class RequestTest : TestBase
                         },
                         Name = "name",
                         AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
                         InputExamples =
@@ -490,7 +1307,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -518,12 +1335,12 @@ public class RequestTest : TestBase
                     },
                 ],
             },
-            MCPServers =
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -545,7 +1362,7 @@ public class RequestTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -578,7 +1395,7 @@ public class RequestTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -610,7 +1427,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+                Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -638,12 +1455,12 @@ public class RequestTest : TestBase
                         },
                     ],
                 },
-                MCPServers =
+                McpServers =
                 [
                     new()
                     {
                         Name = "name",
-                        URL = "url",
+                        Url = "url",
                         AuthorizationToken = "authorization_token",
                         ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                     },
@@ -665,7 +1482,7 @@ public class RequestTest : TestBase
                         new Messages::BetaTextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
-                            CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                            CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                             Citations =
                             [
                                 new Messages::BetaCitationCharLocationParam()
@@ -698,7 +1515,7 @@ public class RequestTest : TestBase
                         },
                         Name = "name",
                         AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         DeferLoading = true,
                         Description = "Get the current weather in a given location",
                         InputExamples =
@@ -730,7 +1547,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -758,12 +1575,12 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
-            MCPServers =
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -785,7 +1602,7 @@ public class ParamsTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -818,7 +1635,7 @@ public class ParamsTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -845,7 +1662,7 @@ public class ParamsTest : TestBase
             .Models
             .Messages
             .Model
-            .ClaudeOpus4_5_20251101;
+            .ClaudeSonnet4_5_20250929;
         Container expectedContainer = new Messages::BetaContainerParams()
         {
             ID = "id",
@@ -873,12 +1690,12 @@ public class ParamsTest : TestBase
                 },
             ],
         };
-        List<Messages::BetaRequestMCPServerURLDefinition> expectedMCPServers =
+        List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
             {
                 Name = "name",
-                URL = "url",
+                Url = "url",
                 AuthorizationToken = "authorization_token",
                 ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
             },
@@ -888,7 +1705,7 @@ public class ParamsTest : TestBase
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
         Messages::BetaOutputConfig expectedOutputConfig = new() { Effort = Messages::Effort.Low };
-        Messages::BetaJSONOutputFormat expectedOutputFormat = new()
+        Messages::BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
             {
@@ -903,7 +1720,7 @@ public class ParamsTest : TestBase
                 new Messages::BetaTextBlockParam()
                 {
                     Text = "Today's date is 2024-06-01.",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Citations =
                     [
                         new Messages::BetaCitationCharLocationParam()
@@ -940,7 +1757,7 @@ public class ParamsTest : TestBase
                 },
                 Name = "name",
                 AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 InputExamples =
@@ -966,11 +1783,11 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, model.Model);
         Assert.Equal(expectedContainer, model.Container);
         Assert.Equal(expectedContextManagement, model.ContextManagement);
-        Assert.NotNull(model.MCPServers);
-        Assert.Equal(expectedMCPServers.Count, model.MCPServers.Count);
-        for (int i = 0; i < expectedMCPServers.Count; i++)
+        Assert.NotNull(model.McpServers);
+        Assert.Equal(expectedMcpServers.Count, model.McpServers.Count);
+        for (int i = 0; i < expectedMcpServers.Count; i++)
         {
-            Assert.Equal(expectedMCPServers[i], model.MCPServers[i]);
+            Assert.Equal(expectedMcpServers[i], model.McpServers[i]);
         }
         Assert.Equal(expectedMetadata, model.Metadata);
         Assert.Equal(expectedOutputConfig, model.OutputConfig);
@@ -1004,7 +1821,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1032,12 +1849,12 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
-            MCPServers =
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -1059,7 +1876,7 @@ public class ParamsTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -1092,7 +1909,7 @@ public class ParamsTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -1123,7 +1940,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1151,12 +1968,12 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
-            MCPServers =
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -1178,7 +1995,7 @@ public class ParamsTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -1211,7 +2028,7 @@ public class ParamsTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -1242,7 +2059,7 @@ public class ParamsTest : TestBase
             .Models
             .Messages
             .Model
-            .ClaudeOpus4_5_20251101;
+            .ClaudeSonnet4_5_20250929;
         Container expectedContainer = new Messages::BetaContainerParams()
         {
             ID = "id",
@@ -1270,12 +2087,12 @@ public class ParamsTest : TestBase
                 },
             ],
         };
-        List<Messages::BetaRequestMCPServerURLDefinition> expectedMCPServers =
+        List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
             {
                 Name = "name",
-                URL = "url",
+                Url = "url",
                 AuthorizationToken = "authorization_token",
                 ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
             },
@@ -1285,7 +2102,7 @@ public class ParamsTest : TestBase
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
         Messages::BetaOutputConfig expectedOutputConfig = new() { Effort = Messages::Effort.Low };
-        Messages::BetaJSONOutputFormat expectedOutputFormat = new()
+        Messages::BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
             {
@@ -1300,7 +2117,7 @@ public class ParamsTest : TestBase
                 new Messages::BetaTextBlockParam()
                 {
                     Text = "Today's date is 2024-06-01.",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Citations =
                     [
                         new Messages::BetaCitationCharLocationParam()
@@ -1337,7 +2154,7 @@ public class ParamsTest : TestBase
                 },
                 Name = "name",
                 AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 InputExamples =
@@ -1363,11 +2180,11 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.Equal(expectedContainer, deserialized.Container);
         Assert.Equal(expectedContextManagement, deserialized.ContextManagement);
-        Assert.NotNull(deserialized.MCPServers);
-        Assert.Equal(expectedMCPServers.Count, deserialized.MCPServers.Count);
-        for (int i = 0; i < expectedMCPServers.Count; i++)
+        Assert.NotNull(deserialized.McpServers);
+        Assert.Equal(expectedMcpServers.Count, deserialized.McpServers.Count);
+        for (int i = 0; i < expectedMcpServers.Count; i++)
         {
-            Assert.Equal(expectedMCPServers[i], deserialized.MCPServers[i]);
+            Assert.Equal(expectedMcpServers[i], deserialized.McpServers[i]);
         }
         Assert.Equal(expectedMetadata, deserialized.Metadata);
         Assert.Equal(expectedOutputConfig, deserialized.OutputConfig);
@@ -1401,7 +2218,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1429,12 +2246,12 @@ public class ParamsTest : TestBase
                     },
                 ],
             },
-            MCPServers =
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -1456,7 +2273,7 @@ public class ParamsTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -1489,7 +2306,7 @@ public class ParamsTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -1517,7 +2334,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1554,7 +2371,7 @@ public class ParamsTest : TestBase
             },
         };
 
-        Assert.Null(model.MCPServers);
+        Assert.Null(model.McpServers);
         Assert.False(model.RawData.ContainsKey("mcp_servers"));
         Assert.Null(model.Metadata);
         Assert.False(model.RawData.ContainsKey("metadata"));
@@ -1589,7 +2406,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1636,7 +2453,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1673,7 +2490,7 @@ public class ParamsTest : TestBase
             },
 
             // Null should be interpreted as omitted for these properties
-            MCPServers = null,
+            McpServers = null,
             Metadata = null,
             OutputConfig = null,
             ServiceTier = null,
@@ -1688,7 +2505,7 @@ public class ParamsTest : TestBase
             TopP = null,
         };
 
-        Assert.Null(model.MCPServers);
+        Assert.Null(model.McpServers);
         Assert.False(model.RawData.ContainsKey("mcp_servers"));
         Assert.Null(model.Metadata);
         Assert.False(model.RawData.ContainsKey("metadata"));
@@ -1723,7 +2540,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1760,7 +2577,7 @@ public class ParamsTest : TestBase
             },
 
             // Null should be interpreted as omitted for these properties
-            MCPServers = null,
+            McpServers = null,
             Metadata = null,
             OutputConfig = null,
             ServiceTier = null,
@@ -1785,13 +2602,13 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
-            MCPServers =
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -1806,7 +2623,7 @@ public class ParamsTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -1839,7 +2656,7 @@ public class ParamsTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -1872,13 +2689,13 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
-            MCPServers =
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -1893,7 +2710,7 @@ public class ParamsTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -1926,7 +2743,7 @@ public class ParamsTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -1954,13 +2771,13 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
-            MCPServers =
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -1975,7 +2792,7 @@ public class ParamsTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -2008,7 +2825,7 @@ public class ParamsTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -2045,13 +2862,13 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeOpus4_5_20251101,
-            MCPServers =
+            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            McpServers =
             [
                 new()
                 {
                     Name = "name",
-                    URL = "url",
+                    Url = "url",
                     AuthorizationToken = "authorization_token",
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
@@ -2066,7 +2883,7 @@ public class ParamsTest : TestBase
                     new Messages::BetaTextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
-                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Citations =
                         [
                             new Messages::BetaCitationCharLocationParam()
@@ -2099,7 +2916,7 @@ public class ParamsTest : TestBase
                     },
                     Name = "name",
                     AllowedCallers = [Messages::BetaToolAllowedCaller.Direct],
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     DeferLoading = true,
                     Description = "Get the current weather in a given location",
                     InputExamples =
@@ -2265,7 +3082,7 @@ public class ParamsSystemTest : TestBase
                 new Messages::BetaTextBlockParam()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Citations =
                     [
                         new Messages::BetaCitationCharLocationParam()
@@ -2301,7 +3118,7 @@ public class ParamsSystemTest : TestBase
                 new Messages::BetaTextBlockParam()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Citations =
                     [
                         new Messages::BetaCitationCharLocationParam()

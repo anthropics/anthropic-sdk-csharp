@@ -23,7 +23,7 @@ public class BatchServiceTest : TestBase
                         {
                             MaxTokens = 1024,
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                            Model = Model.ClaudeOpus4_5_20251101,
+                            Model = Model.ClaudeSonnet4_5_20250929,
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
                             ServiceTier = Batches::ServiceTier.Auto,
                             StopSequences = ["string"],
@@ -33,7 +33,7 @@ public class BatchServiceTest : TestBase
                                     new TextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new() { TTL = TTL.TTL5m },
+                                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                                         Citations =
                                         [
                                             new CitationCharLocationParam()
@@ -68,7 +68,7 @@ public class BatchServiceTest : TestBase
                                         Required = ["location"],
                                     },
                                     Name = "name",
-                                    CacheControl = new() { TTL = TTL.TTL5m },
+                                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                                     Description = "Get the current weather in a given location",
                                     Type = Type.Custom,
                                 },

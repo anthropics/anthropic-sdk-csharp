@@ -13,7 +13,7 @@ public class ContentBlockParamTest : TestBase
             new TextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new CitationCharLocationParam()
@@ -39,9 +39,9 @@ public class ContentBlockParamTest : TestBase
                 Source = new Base64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -53,8 +53,8 @@ public class ContentBlockParamTest : TestBase
         ContentBlockParam value = new(
             new DocumentBlockParam()
             {
-                Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
@@ -74,7 +74,7 @@ public class ContentBlockParamTest : TestBase
                     new()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new CitationCharLocationParam()
@@ -90,7 +90,7 @@ public class ContentBlockParamTest : TestBase
                 ],
                 Source = "source",
                 Title = "title",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
             }
         );
@@ -125,7 +125,7 @@ public class ContentBlockParamTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Name = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -138,7 +138,7 @@ public class ContentBlockParamTest : TestBase
             new ToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Content = "string",
                 IsError = true,
             }
@@ -157,7 +157,7 @@ public class ContentBlockParamTest : TestBase
                 {
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -175,13 +175,13 @@ public class ContentBlockParamTest : TestBase
                         {
                             EncryptedContent = "encrypted_content",
                             Title = "title",
-                            URL = "url",
+                            Url = "url",
                             PageAge = "page_age",
                         },
                     ]
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -194,7 +194,7 @@ public class ContentBlockParamTest : TestBase
             new TextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new CitationCharLocationParam()
@@ -223,9 +223,9 @@ public class ContentBlockParamTest : TestBase
                 Source = new Base64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -240,8 +240,8 @@ public class ContentBlockParamTest : TestBase
         ContentBlockParam value = new(
             new DocumentBlockParam()
             {
-                Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
@@ -264,7 +264,7 @@ public class ContentBlockParamTest : TestBase
                     new()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new CitationCharLocationParam()
@@ -280,7 +280,7 @@ public class ContentBlockParamTest : TestBase
                 ],
                 Source = "source",
                 Title = "title",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
             }
         );
@@ -324,7 +324,7 @@ public class ContentBlockParamTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Name = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -340,7 +340,7 @@ public class ContentBlockParamTest : TestBase
             new ToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Content = "string",
                 IsError = true,
             }
@@ -362,7 +362,7 @@ public class ContentBlockParamTest : TestBase
                 {
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -383,13 +383,13 @@ public class ContentBlockParamTest : TestBase
                         {
                             EncryptedContent = "encrypted_content",
                             Title = "title",
-                            URL = "url",
+                            Url = "url",
                             PageAge = "page_age",
                         },
                     ]
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);

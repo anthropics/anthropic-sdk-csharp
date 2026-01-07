@@ -32,7 +32,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -67,7 +67,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_5_20251101;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
@@ -121,7 +121,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -167,7 +167,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -206,7 +206,7 @@ public class MessageTest : TestBase
                 Text = "Hi! My name is Claude.",
             },
         ];
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_5_20251101;
+        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
         JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
@@ -260,7 +260,7 @@ public class MessageTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()

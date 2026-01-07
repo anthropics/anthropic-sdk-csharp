@@ -13,7 +13,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "x",
-            URL = "x",
+            Url = "x",
         };
 
         string expectedCitedText = "cited_text";
@@ -22,13 +22,13 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"web_search_result_location\""
         );
-        string expectedURL = "x";
+        string expectedUrl = "x";
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedEncryptedIndex, model.EncryptedIndex);
         Assert.Equal(expectedTitle, model.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedURL, model.URL);
+        Assert.Equal(expectedUrl, model.Url);
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "x",
-            URL = "x",
+            Url = "x",
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -58,7 +58,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "x",
-            URL = "x",
+            Url = "x",
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -73,13 +73,13 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"web_search_result_location\""
         );
-        string expectedURL = "x";
+        string expectedUrl = "x";
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedEncryptedIndex, deserialized.EncryptedIndex);
         Assert.Equal(expectedTitle, deserialized.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedURL, deserialized.URL);
+        Assert.Equal(expectedUrl, deserialized.Url);
     }
 
     [Fact]
@@ -90,7 +90,7 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
             CitedText = "cited_text",
             EncryptedIndex = "encrypted_index",
             Title = "x",
-            URL = "x",
+            Url = "x",
         };
 
         model.Validate();

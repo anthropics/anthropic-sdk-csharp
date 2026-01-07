@@ -42,7 +42,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (x) => x.Type,
                 toolSearchToolResult: (x) => x.Type,
                 mcpToolUse: (x) => x.Type,
-                requestMCPToolResult: (x) => x.Type,
+                requestMcpToolResult: (x) => x.Type,
                 containerUpload: (x) => x.Type
             );
         }
@@ -69,7 +69,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (x) => x.CacheControl,
                 toolSearchToolResult: (x) => x.CacheControl,
                 mcpToolUse: (x) => x.CacheControl,
-                requestMCPToolResult: (x) => x.CacheControl,
+                requestMcpToolResult: (x) => x.CacheControl,
                 containerUpload: (x) => x.CacheControl
             );
         }
@@ -96,7 +96,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (_) => null,
                 toolSearchToolResult: (_) => null,
                 mcpToolUse: (_) => null,
-                requestMCPToolResult: (_) => null,
+                requestMcpToolResult: (_) => null,
                 containerUpload: (_) => null
             );
         }
@@ -123,7 +123,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (_) => null,
                 toolSearchToolResult: (_) => null,
                 mcpToolUse: (x) => x.ID,
-                requestMCPToolResult: (_) => null,
+                requestMcpToolResult: (_) => null,
                 containerUpload: (_) => null
             );
         }
@@ -150,7 +150,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
                 toolSearchToolResult: (x) => x.ToolUseID,
                 mcpToolUse: (_) => null,
-                requestMCPToolResult: (x) => x.ToolUseID,
+                requestMcpToolResult: (x) => x.ToolUseID,
                 containerUpload: (_) => null
             );
         }
@@ -177,7 +177,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (_) => null,
                 toolSearchToolResult: (_) => null,
                 mcpToolUse: (_) => null,
-                requestMCPToolResult: (x) => x.IsError,
+                requestMcpToolResult: (x) => x.IsError,
                 containerUpload: (_) => null
             );
         }
@@ -291,14 +291,14 @@ public record class BetaContentBlockParam
         this._element = element;
     }
 
-    public BetaContentBlockParam(BetaMCPToolUseBlockParam value, JsonElement? element = null)
+    public BetaContentBlockParam(BetaMcpToolUseBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
     public BetaContentBlockParam(
-        BetaRequestMCPToolResultBlockParam value,
+        BetaRequestMcpToolResultBlockParam value,
         JsonElement? element = null
     )
     {
@@ -648,45 +648,45 @@ public record class BetaContentBlockParam
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaMCPToolUseBlockParam"/>.
+    /// type <see cref="BetaMcpToolUseBlockParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickMCPToolUse(out var value)) {
-    ///     // `value` is of type `BetaMCPToolUseBlockParam`
+    /// if (instance.TryPickMcpToolUse(out var value)) {
+    ///     // `value` is of type `BetaMcpToolUseBlockParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlockParam? value)
+    public bool TryPickMcpToolUse([NotNullWhen(true)] out BetaMcpToolUseBlockParam? value)
     {
-        value = this.Value as BetaMCPToolUseBlockParam;
+        value = this.Value as BetaMcpToolUseBlockParam;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaRequestMCPToolResultBlockParam"/>.
+    /// type <see cref="BetaRequestMcpToolResultBlockParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickRequestMCPToolResult(out var value)) {
-    ///     // `value` is of type `BetaRequestMCPToolResultBlockParam`
+    /// if (instance.TryPickRequestMcpToolResult(out var value)) {
+    ///     // `value` is of type `BetaRequestMcpToolResultBlockParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickRequestMCPToolResult(
-        [NotNullWhen(true)] out BetaRequestMCPToolResultBlockParam? value
+    public bool TryPickRequestMcpToolResult(
+        [NotNullWhen(true)] out BetaRequestMcpToolResultBlockParam? value
     )
     {
-        value = this.Value as BetaRequestMCPToolResultBlockParam;
+        value = this.Value as BetaRequestMcpToolResultBlockParam;
         return value != null;
     }
 
@@ -740,8 +740,8 @@ public record class BetaContentBlockParam
     ///     (BetaBashCodeExecutionToolResultBlockParam value) => {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) => {...},
     ///     (BetaToolSearchToolResultBlockParam value) => {...},
-    ///     (BetaMCPToolUseBlockParam value) => {...},
-    ///     (BetaRequestMCPToolResultBlockParam value) => {...},
+    ///     (BetaMcpToolUseBlockParam value) => {...},
+    ///     (BetaRequestMcpToolResultBlockParam value) => {...},
     ///     (BetaContainerUploadBlockParam value) => {...}
     /// );
     /// </code>
@@ -763,8 +763,8 @@ public record class BetaContentBlockParam
         System::Action<BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
         System::Action<BetaToolSearchToolResultBlockParam> toolSearchToolResult,
-        System::Action<BetaMCPToolUseBlockParam> mcpToolUse,
-        System::Action<BetaRequestMCPToolResultBlockParam> requestMCPToolResult,
+        System::Action<BetaMcpToolUseBlockParam> mcpToolUse,
+        System::Action<BetaRequestMcpToolResultBlockParam> requestMcpToolResult,
         System::Action<BetaContainerUploadBlockParam> containerUpload
     )
     {
@@ -815,11 +815,11 @@ public record class BetaContentBlockParam
             case BetaToolSearchToolResultBlockParam value:
                 toolSearchToolResult(value);
                 break;
-            case BetaMCPToolUseBlockParam value:
+            case BetaMcpToolUseBlockParam value:
                 mcpToolUse(value);
                 break;
-            case BetaRequestMCPToolResultBlockParam value:
-                requestMCPToolResult(value);
+            case BetaRequestMcpToolResultBlockParam value:
+                requestMcpToolResult(value);
                 break;
             case BetaContainerUploadBlockParam value:
                 containerUpload(value);
@@ -861,8 +861,8 @@ public record class BetaContentBlockParam
     ///     (BetaBashCodeExecutionToolResultBlockParam value) => {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) => {...},
     ///     (BetaToolSearchToolResultBlockParam value) => {...},
-    ///     (BetaMCPToolUseBlockParam value) => {...},
-    ///     (BetaRequestMCPToolResultBlockParam value) => {...},
+    ///     (BetaMcpToolUseBlockParam value) => {...},
+    ///     (BetaRequestMcpToolResultBlockParam value) => {...},
     ///     (BetaContainerUploadBlockParam value) => {...}
     /// );
     /// </code>
@@ -887,8 +887,8 @@ public record class BetaContentBlockParam
             T
         > textEditorCodeExecutionToolResult,
         System::Func<BetaToolSearchToolResultBlockParam, T> toolSearchToolResult,
-        System::Func<BetaMCPToolUseBlockParam, T> mcpToolUse,
-        System::Func<BetaRequestMCPToolResultBlockParam, T> requestMCPToolResult,
+        System::Func<BetaMcpToolUseBlockParam, T> mcpToolUse,
+        System::Func<BetaRequestMcpToolResultBlockParam, T> requestMcpToolResult,
         System::Func<BetaContainerUploadBlockParam, T> containerUpload
     )
     {
@@ -910,8 +910,8 @@ public record class BetaContentBlockParam
             BetaTextEditorCodeExecutionToolResultBlockParam value =>
                 textEditorCodeExecutionToolResult(value),
             BetaToolSearchToolResultBlockParam value => toolSearchToolResult(value),
-            BetaMCPToolUseBlockParam value => mcpToolUse(value),
-            BetaRequestMCPToolResultBlockParam value => requestMCPToolResult(value),
+            BetaMcpToolUseBlockParam value => mcpToolUse(value),
+            BetaRequestMcpToolResultBlockParam value => requestMcpToolResult(value),
             BetaContainerUploadBlockParam value => containerUpload(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockParam"
@@ -967,11 +967,11 @@ public record class BetaContentBlockParam
         BetaToolSearchToolResultBlockParam value
     ) => new(value);
 
-    public static implicit operator BetaContentBlockParam(BetaMCPToolUseBlockParam value) =>
+    public static implicit operator BetaContentBlockParam(BetaMcpToolUseBlockParam value) =>
         new(value);
 
     public static implicit operator BetaContentBlockParam(
-        BetaRequestMCPToolResultBlockParam value
+        BetaRequestMcpToolResultBlockParam value
     ) => new(value);
 
     public static implicit operator BetaContentBlockParam(BetaContainerUploadBlockParam value) =>
@@ -1012,7 +1012,7 @@ public record class BetaContentBlockParam
             (textEditorCodeExecutionToolResult) => textEditorCodeExecutionToolResult.Validate(),
             (toolSearchToolResult) => toolSearchToolResult.Validate(),
             (mcpToolUse) => mcpToolUse.Validate(),
-            (requestMCPToolResult) => requestMCPToolResult.Validate(),
+            (requestMcpToolResult) => requestMcpToolResult.Validate(),
             (containerUpload) => containerUpload.Validate()
         );
     }
@@ -1388,7 +1388,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlockParam>(
+                    var deserialized = JsonSerializer.Deserialize<BetaMcpToolUseBlockParam>(
                         element,
                         options
                     );
@@ -1411,7 +1411,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParam>(
+                        JsonSerializer.Deserialize<BetaRequestMcpToolResultBlockParam>(
                             element,
                             options
                         );

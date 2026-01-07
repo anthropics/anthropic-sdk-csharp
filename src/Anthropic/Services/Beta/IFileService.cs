@@ -23,7 +23,7 @@ public interface IFileService
     /// <summary>
     /// List Files
     /// </summary>
-    Task<FileListPageResponse> List(
+    Task<FileListPage> List(
         FileListParams? parameters = null,
         CancellationToken cancellationToken = default
     );
@@ -45,6 +45,8 @@ public interface IFileService
 
     /// <summary>
     /// Download File
+    ///
+    /// <para>It's the caller's responsibility to dispose the returned response.</para>
     /// </summary>
     Task<HttpResponse> Download(
         FileDownloadParams parameters,

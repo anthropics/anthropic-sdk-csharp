@@ -24,7 +24,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             AllowedCallers = [BetaToolAllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -52,7 +52,7 @@ public class BetaToolTest : TestBase
         [
             BetaToolAllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -108,7 +108,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             AllowedCallers = [BetaToolAllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -144,7 +144,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             AllowedCallers = [BetaToolAllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -176,7 +176,7 @@ public class BetaToolTest : TestBase
         [
             BetaToolAllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         string expectedDescription = "Get the current weather in a given location";
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -232,7 +232,7 @@ public class BetaToolTest : TestBase
             },
             Name = "name",
             AllowedCallers = [BetaToolAllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Description = "Get the current weather in a given location",
             InputExamples =
@@ -264,7 +264,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = BetaToolType.Custom,
         };
 
@@ -295,7 +295,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = BetaToolType.Custom,
         };
 
@@ -317,7 +317,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = BetaToolType.Custom,
 
             // Null should be interpreted as omitted for these properties
@@ -355,7 +355,7 @@ public class BetaToolTest : TestBase
                 Required = ["location"],
             },
             Name = "name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Type = BetaToolType.Custom,
 
             // Null should be interpreted as omitted for these properties

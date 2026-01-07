@@ -1,8 +1,521 @@
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text.Json;
+using Anthropic.Core;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages;
+using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
+
+public class MessageCountTokensParamsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var parameters = new MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            OutputConfig = new() { Effort = Effort.Low },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+            System = new(
+                [
+                    new BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new BetaThinkingConfigEnabled(1024),
+            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                },
+            ],
+            Betas = ["string"],
+        };
+
+        List<BetaMessageParam> expectedMessages = [new() { Content = "string", Role = Role.User }];
+        ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus4_5_20251101;
+        BetaContextManagementConfig expectedContextManagement = new()
+        {
+            Edits =
+            [
+                new BetaClearToolUses20250919Edit()
+                {
+                    ClearAtLeast = new(0),
+                    ClearToolInputs = true,
+                    ExcludeTools = ["string"],
+                    Keep = new(0),
+                    Trigger = new BetaInputTokensTrigger(1),
+                },
+            ],
+        };
+        List<BetaRequestMcpServerUrlDefinition> expectedMcpServers =
+        [
+            new()
+            {
+                Name = "name",
+                Url = "url",
+                AuthorizationToken = "authorization_token",
+                ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+            },
+        ];
+        BetaOutputConfig expectedOutputConfig = new() { Effort = Effort.Low };
+        BetaJsonOutputFormat expectedOutputFormat = new()
+        {
+            Schema = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+        MessageCountTokensParamsSystem expectedSystem = new(
+            [
+                new BetaTextBlockParam()
+                {
+                    Text = "Today's date is 2024-06-01.",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ]
+        );
+        BetaThinkingConfigParam expectedThinking = new BetaThinkingConfigEnabled(1024);
+        BetaToolChoice expectedToolChoice = new BetaToolChoiceAuto()
+        {
+            DisableParallelToolUse = true,
+        };
+        List<Tool> expectedTools =
+        [
+            new BetaTool()
+            {
+                InputSchema = new()
+                {
+                    Properties = new Dictionary<string, JsonElement>()
+                    {
+                        { "location", JsonSerializer.SerializeToElement("bar") },
+                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Required = ["location"],
+                },
+                Name = "name",
+                AllowedCallers = [BetaToolAllowedCaller.Direct],
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                DeferLoading = true,
+                Description = "Get the current weather in a given location",
+                InputExamples =
+                [
+                    new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                ],
+                Strict = true,
+                Type = BetaToolType.Custom,
+            },
+        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = ["string"];
+
+        Assert.Equal(expectedMessages.Count, parameters.Messages.Count);
+        for (int i = 0; i < expectedMessages.Count; i++)
+        {
+            Assert.Equal(expectedMessages[i], parameters.Messages[i]);
+        }
+        Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedContextManagement, parameters.ContextManagement);
+        Assert.NotNull(parameters.McpServers);
+        Assert.Equal(expectedMcpServers.Count, parameters.McpServers.Count);
+        for (int i = 0; i < expectedMcpServers.Count; i++)
+        {
+            Assert.Equal(expectedMcpServers[i], parameters.McpServers[i]);
+        }
+        Assert.Equal(expectedOutputConfig, parameters.OutputConfig);
+        Assert.Equal(expectedOutputFormat, parameters.OutputFormat);
+        Assert.Equal(expectedSystem, parameters.System);
+        Assert.Equal(expectedThinking, parameters.Thinking);
+        Assert.Equal(expectedToolChoice, parameters.ToolChoice);
+        Assert.NotNull(parameters.Tools);
+        Assert.Equal(expectedTools.Count, parameters.Tools.Count);
+        for (int i = 0; i < expectedTools.Count; i++)
+        {
+            Assert.Equal(expectedTools[i], parameters.Tools[i]);
+        }
+        Assert.NotNull(parameters.Betas);
+        Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
+        for (int i = 0; i < expectedBetas.Count; i++)
+        {
+            Assert.Equal(expectedBetas[i], parameters.Betas[i]);
+        }
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
+
+        Assert.Null(parameters.McpServers);
+        Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
+        Assert.Null(parameters.System);
+        Assert.False(parameters.RawBodyData.ContainsKey("system"));
+        Assert.Null(parameters.Thinking);
+        Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
+        Assert.Null(parameters.ToolChoice);
+        Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+
+            // Null should be interpreted as omitted for these properties
+            McpServers = null,
+            OutputConfig = null,
+            System = null,
+            Thinking = null,
+            ToolChoice = null,
+            Tools = null,
+            Betas = null,
+        };
+
+        Assert.Null(parameters.McpServers);
+        Assert.False(parameters.RawBodyData.ContainsKey("mcp_servers"));
+        Assert.Null(parameters.OutputConfig);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_config"));
+        Assert.Null(parameters.System);
+        Assert.False(parameters.RawBodyData.ContainsKey("system"));
+        Assert.Null(parameters.Thinking);
+        Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
+        Assert.Null(parameters.ToolChoice);
+        Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
+        Assert.Null(parameters.Tools);
+        Assert.False(parameters.RawBodyData.ContainsKey("tools"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
+    }
+
+    [Fact]
+    public void OptionalNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            OutputConfig = new() { Effort = Effort.Low },
+            System = new(
+                [
+                    new BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new BetaThinkingConfigEnabled(1024),
+            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                },
+            ],
+            Betas = ["string"],
+        };
+
+        Assert.Null(parameters.ContextManagement);
+        Assert.False(parameters.RawBodyData.ContainsKey("context_management"));
+        Assert.Null(parameters.OutputFormat);
+        Assert.False(parameters.RawBodyData.ContainsKey("output_format"));
+    }
+
+    [Fact]
+    public void OptionalNullableParamsSetToNullAreSetToNull_Works()
+    {
+        var parameters = new MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            OutputConfig = new() { Effort = Effort.Low },
+            System = new(
+                [
+                    new BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new BetaThinkingConfigEnabled(1024),
+            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                },
+            ],
+            Betas = ["string"],
+
+            ContextManagement = null,
+            OutputFormat = null,
+        };
+
+        Assert.Null(parameters.ContextManagement);
+        Assert.True(parameters.RawBodyData.ContainsKey("context_management"));
+        Assert.Null(parameters.OutputFormat);
+        Assert.True(parameters.RawBodyData.ContainsKey("output_format"));
+    }
+
+    [Fact]
+    public void Url_Works()
+    {
+        MessageCountTokensParams parameters = new()
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+        };
+
+        var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(new Uri("https://api.anthropic.com/v1/messages/count_tokens"), url);
+    }
+
+    [Fact]
+    public void AddHeadersToRequest_Works()
+    {
+        HttpRequestMessage requestMessage = new();
+        MessageCountTokensParams parameters = new()
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            Betas = ["string"],
+        };
+
+        parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
+    }
+}
 
 public class MessageCountTokensParamsSystemTest : TestBase
 {
@@ -21,7 +534,7 @@ public class MessageCountTokensParamsSystemTest : TestBase
                 new BetaTextBlockParam()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new BetaCitationCharLocationParam()
@@ -57,7 +570,7 @@ public class MessageCountTokensParamsSystemTest : TestBase
                 new BetaTextBlockParam()
                 {
                     Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                     Citations =
                     [
                         new BetaCitationCharLocationParam()
@@ -98,7 +611,7 @@ public class ToolTest : TestBase
                 },
                 Name = "name",
                 AllowedCallers = [BetaToolAllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 InputExamples =
@@ -122,7 +635,7 @@ public class ToolTest : TestBase
             new BetaToolBash20241022()
             {
                 AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -144,7 +657,7 @@ public class ToolTest : TestBase
             new BetaToolBash20250124()
             {
                 AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -166,7 +679,7 @@ public class ToolTest : TestBase
             new BetaCodeExecutionTool20250522()
             {
                 AllowedCallers = [AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -181,7 +694,7 @@ public class ToolTest : TestBase
             new BetaCodeExecutionTool20250825()
             {
                 AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -198,7 +711,7 @@ public class ToolTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 InputExamples =
@@ -221,7 +734,7 @@ public class ToolTest : TestBase
             new BetaMemoryTool20250818()
             {
                 AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -245,7 +758,7 @@ public class ToolTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 InputExamples =
@@ -268,7 +781,7 @@ public class ToolTest : TestBase
             new BetaToolTextEditor20241022()
             {
                 AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -292,7 +805,7 @@ public class ToolTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 EnableZoom = true,
@@ -316,7 +829,7 @@ public class ToolTest : TestBase
             new BetaToolTextEditor20250124()
             {
                 AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -338,7 +851,7 @@ public class ToolTest : TestBase
             new BetaToolTextEditor20250429()
             {
                 AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -360,7 +873,7 @@ public class ToolTest : TestBase
             new BetaToolTextEditor20250728()
             {
                 AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -385,7 +898,7 @@ public class ToolTest : TestBase
                 AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 MaxUses = 1,
                 Strict = true,
@@ -410,7 +923,7 @@ public class ToolTest : TestBase
                 AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 DeferLoading = true,
                 MaxContentTokens = 1,
@@ -429,7 +942,7 @@ public class ToolTest : TestBase
             {
                 Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
                 AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -445,7 +958,7 @@ public class ToolTest : TestBase
             {
                 Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
                 AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -454,14 +967,14 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void BetaMCPToolsetValidationWorks()
+    public void BetaMcpToolsetValidationWorks()
     {
         Tool value = new(
-            new BetaMCPToolset()
+            new BetaMcpToolset()
             {
-                MCPServerName = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Configs = new Dictionary<string, BetaMCPToolConfig>()
+                McpServerName = "x",
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                Configs = new Dictionary<string, BetaMcpToolConfig>()
                 {
                     {
                         "foo",
@@ -491,7 +1004,7 @@ public class ToolTest : TestBase
                 },
                 Name = "name",
                 AllowedCallers = [BetaToolAllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Description = "Get the current weather in a given location",
                 InputExamples =
@@ -518,7 +1031,7 @@ public class ToolTest : TestBase
             new BetaToolBash20241022()
             {
                 AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -543,7 +1056,7 @@ public class ToolTest : TestBase
             new BetaToolBash20250124()
             {
                 AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -568,7 +1081,7 @@ public class ToolTest : TestBase
             new BetaCodeExecutionTool20250522()
             {
                 AllowedCallers = [AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -586,7 +1099,7 @@ public class ToolTest : TestBase
             new BetaCodeExecutionTool20250825()
             {
                 AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -606,7 +1119,7 @@ public class ToolTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 InputExamples =
@@ -632,7 +1145,7 @@ public class ToolTest : TestBase
             new BetaMemoryTool20250818()
             {
                 AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -659,7 +1172,7 @@ public class ToolTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 InputExamples =
@@ -685,7 +1198,7 @@ public class ToolTest : TestBase
             new BetaToolTextEditor20241022()
             {
                 AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -712,7 +1225,7 @@ public class ToolTest : TestBase
                 DisplayHeightPx = 1,
                 DisplayWidthPx = 1,
                 AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 DisplayNumber = 0,
                 EnableZoom = true,
@@ -739,7 +1252,7 @@ public class ToolTest : TestBase
             new BetaToolTextEditor20250124()
             {
                 AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -764,7 +1277,7 @@ public class ToolTest : TestBase
             new BetaToolTextEditor20250429()
             {
                 AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -789,7 +1302,7 @@ public class ToolTest : TestBase
             new BetaToolTextEditor20250728()
             {
                 AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 InputExamples =
                 [
@@ -817,7 +1330,7 @@ public class ToolTest : TestBase
                 AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 MaxUses = 1,
                 Strict = true,
@@ -845,7 +1358,7 @@ public class ToolTest : TestBase
                 AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 DeferLoading = true,
                 MaxContentTokens = 1,
@@ -867,7 +1380,7 @@ public class ToolTest : TestBase
             {
                 Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
                 AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -886,7 +1399,7 @@ public class ToolTest : TestBase
             {
                 Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
                 AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 DeferLoading = true,
                 Strict = true,
             }
@@ -898,14 +1411,14 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void BetaMCPToolsetSerializationRoundtripWorks()
+    public void BetaMcpToolsetSerializationRoundtripWorks()
     {
         Tool value = new(
-            new BetaMCPToolset()
+            new BetaMcpToolset()
             {
-                MCPServerName = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Configs = new Dictionary<string, BetaMCPToolConfig>()
+                McpServerName = "x",
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                Configs = new Dictionary<string, BetaMcpToolConfig>()
                 {
                     {
                         "foo",

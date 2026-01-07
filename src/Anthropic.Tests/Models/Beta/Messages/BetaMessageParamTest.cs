@@ -73,7 +73,7 @@ public class BetaMessageParamContentTest : TestBase
                     new BetaTextBlockParam()
                     {
                         Text = "What is a quaternion?",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new BetaCitationCharLocationParam()
@@ -111,7 +111,7 @@ public class BetaMessageParamContentTest : TestBase
                     new BetaTextBlockParam()
                     {
                         Text = "What is a quaternion?",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new BetaCitationCharLocationParam()

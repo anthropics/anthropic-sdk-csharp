@@ -15,7 +15,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
             AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -28,7 +28,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         List<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
         > expectedAllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -52,7 +52,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
             AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -70,7 +70,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
             AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -87,7 +87,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         List<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
         > expectedAllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -111,7 +111,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
             AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -125,7 +125,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var model = new BetaToolSearchToolRegex20251119
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         Assert.Null(model.AllowedCallers);
@@ -142,7 +142,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var model = new BetaToolSearchToolRegex20251119
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -154,7 +154,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var model = new BetaToolSearchToolRegex20251119
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -176,7 +176,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var model = new BetaToolSearchToolRegex20251119
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,

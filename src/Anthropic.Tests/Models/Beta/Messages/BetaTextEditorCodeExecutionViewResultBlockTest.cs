@@ -112,7 +112,7 @@ public class FileTypeTest : TestBase
     [Theory]
     [InlineData(FileType.Text)]
     [InlineData(FileType.Image)]
-    [InlineData(FileType.PDF)]
+    [InlineData(FileType.Pdf)]
     public void Validation_Works(FileType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -135,7 +135,7 @@ public class FileTypeTest : TestBase
     [Theory]
     [InlineData(FileType.Text)]
     [InlineData(FileType.Image)]
-    [InlineData(FileType.PDF)]
+    [InlineData(FileType.Pdf)]
     public void SerializationRoundtrip_Works(FileType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
