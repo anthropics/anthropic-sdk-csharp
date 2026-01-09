@@ -33,8 +33,8 @@ public class ThinkingConfigEnabledTest : TestBase
     {
         var model = new ThinkingConfigEnabled { BudgetTokens = 1024 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigEnabled>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigEnabled>(element);
         Assert.NotNull(deserialized);
 
         long expectedBudgetTokens = 1024;

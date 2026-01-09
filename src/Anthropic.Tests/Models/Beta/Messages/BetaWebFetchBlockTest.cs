@@ -72,8 +72,8 @@ public class BetaWebFetchBlockTest : TestBase
             URL = "url",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaDocumentBlock expectedContent = new()

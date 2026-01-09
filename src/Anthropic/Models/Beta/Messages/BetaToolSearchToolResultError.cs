@@ -10,31 +10,31 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaToolSearchToolResultError, BetaToolSearchToolResultErrorFromRaw>)
+    typeof(JsonModelConverter<BetaToolSearchToolResultError, BetaToolSearchToolResultErrorFromRaw>)
 )]
-public sealed record class BetaToolSearchToolResultError : ModelBase
+public sealed record class BetaToolSearchToolResultError : JsonModel
 {
     public required ApiEnum<string, BetaToolSearchToolResultErrorErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<
+            return JsonModel.GetNotNullClass<
                 ApiEnum<string, BetaToolSearchToolResultErrorErrorCode>
             >(this.RawData, "error_code");
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { JsonModel.Set(this._rawData, "error_code", value); }
     }
 
     public required string? ErrorMessage
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "error_message"); }
-        init { ModelBase.Set(this._rawData, "error_message", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "error_message"); }
+        init { JsonModel.Set(this._rawData, "error_message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -87,7 +87,7 @@ public sealed record class BetaToolSearchToolResultError : ModelBase
     }
 }
 
-class BetaToolSearchToolResultErrorFromRaw : IFromRaw<BetaToolSearchToolResultError>
+class BetaToolSearchToolResultErrorFromRaw : IFromRawJson<BetaToolSearchToolResultError>
 {
     /// <inheritdoc/>
     public BetaToolSearchToolResultError FromRawUnchecked(

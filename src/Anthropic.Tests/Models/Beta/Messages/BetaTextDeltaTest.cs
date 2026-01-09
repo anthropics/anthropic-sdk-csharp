@@ -33,8 +33,8 @@ public class BetaTextDeltaTest : TestBase
     {
         var model = new BetaTextDelta { Text = "text" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaTextDelta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaTextDelta>(element);
         Assert.NotNull(deserialized);
 
         string expectedText = "text";

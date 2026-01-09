@@ -71,8 +71,8 @@ public class ToolUseBlockTest : TestBase
             Name = "x",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "id";

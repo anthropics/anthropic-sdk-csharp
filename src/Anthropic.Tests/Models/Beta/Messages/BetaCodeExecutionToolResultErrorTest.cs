@@ -46,8 +46,8 @@ public class BetaCodeExecutionToolResultErrorTest : TestBase
             ErrorCode = BetaCodeExecutionToolResultErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultError>(element);
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaCodeExecutionToolResultErrorCode> expectedErrorCode =

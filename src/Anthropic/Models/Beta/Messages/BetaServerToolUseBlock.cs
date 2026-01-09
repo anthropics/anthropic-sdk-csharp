@@ -9,13 +9,13 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaServerToolUseBlock, BetaServerToolUseBlockFromRaw>))]
-public sealed record class BetaServerToolUseBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaServerToolUseBlock, BetaServerToolUseBlockFromRaw>))]
+public sealed record class BetaServerToolUseBlock : JsonModel
 {
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -23,32 +23,32 @@ public sealed record class BetaServerToolUseBlock : ModelBase
     /// </summary>
     public required Caller Caller
     {
-        get { return ModelBase.GetNotNullClass<Caller>(this.RawData, "caller"); }
-        init { ModelBase.Set(this._rawData, "caller", value); }
+        get { return JsonModel.GetNotNullClass<Caller>(this.RawData, "caller"); }
+        init { JsonModel.Set(this._rawData, "caller", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            return ModelBase.GetNotNullClass<Dictionary<string, JsonElement>>(
+            return JsonModel.GetNotNullClass<Dictionary<string, JsonElement>>(
                 this.RawData,
                 "input"
             );
         }
-        init { ModelBase.Set(this._rawData, "input", value); }
+        init { JsonModel.Set(this._rawData, "input", value); }
     }
 
     public required ApiEnum<string, Name> Name
     {
-        get { return ModelBase.GetNotNullClass<ApiEnum<string, Name>>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullClass<ApiEnum<string, Name>>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -101,7 +101,7 @@ public sealed record class BetaServerToolUseBlock : ModelBase
     }
 }
 
-class BetaServerToolUseBlockFromRaw : IFromRaw<BetaServerToolUseBlock>
+class BetaServerToolUseBlockFromRaw : IFromRawJson<BetaServerToolUseBlock>
 {
     /// <inheritdoc/>
     public BetaServerToolUseBlock FromRawUnchecked(
@@ -117,11 +117,11 @@ public record class Caller
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -129,21 +129,21 @@ public record class Caller
         get { return Match(betaDirect: (x) => x.Type, betaServerTool: (x) => x.Type); }
     }
 
-    public Caller(BetaDirectCaller value, JsonElement? json = null)
+    public Caller(BetaDirectCaller value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Caller(BetaServerToolCaller value, JsonElement? json = null)
+    public Caller(BetaServerToolCaller value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Caller(JsonElement json)
+    public Caller(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -307,11 +307,11 @@ sealed class CallerConverter : JsonConverter<Caller>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -324,11 +324,14 @@ sealed class CallerConverter : JsonConverter<Caller>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -337,20 +340,20 @@ sealed class CallerConverter : JsonConverter<Caller>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "code_execution_20250825":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaServerToolCaller>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -359,11 +362,11 @@ sealed class CallerConverter : JsonConverter<Caller>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Caller(json);
+                return new Caller(element);
             }
         }
     }

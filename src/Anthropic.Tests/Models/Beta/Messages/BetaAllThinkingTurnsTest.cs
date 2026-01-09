@@ -31,8 +31,8 @@ public class BetaAllThinkingTurnsTest : TestBase
     {
         var model = new BetaAllThinkingTurns { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"all\"");

@@ -9,35 +9,35 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaCodeExecutionToolResultBlockParam,
         BetaCodeExecutionToolResultBlockParamFromRaw
     >)
 )]
-public sealed record class BetaCodeExecutionToolResultBlockParam : ModelBase
+public sealed record class BetaCodeExecutionToolResultBlockParam : JsonModel
 {
     public required BetaCodeExecutionToolResultBlockParamContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaCodeExecutionToolResultBlockParamContent>(
+            return JsonModel.GetNotNullClass<BetaCodeExecutionToolResultBlockParamContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -47,12 +47,12 @@ public sealed record class BetaCodeExecutionToolResultBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -106,7 +106,8 @@ public sealed record class BetaCodeExecutionToolResultBlockParam : ModelBase
     }
 }
 
-class BetaCodeExecutionToolResultBlockParamFromRaw : IFromRaw<BetaCodeExecutionToolResultBlockParam>
+class BetaCodeExecutionToolResultBlockParamFromRaw
+    : IFromRawJson<BetaCodeExecutionToolResultBlockParam>
 {
     /// <inheritdoc/>
     public BetaCodeExecutionToolResultBlockParam FromRawUnchecked(

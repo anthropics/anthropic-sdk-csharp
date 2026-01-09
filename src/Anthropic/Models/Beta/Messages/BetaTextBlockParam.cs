@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTextBlockParam, BetaTextBlockParamFromRaw>))]
-public sealed record class BetaTextBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaTextBlockParam, BetaTextBlockParamFromRaw>))]
+public sealed record class BetaTextBlockParam : JsonModel
 {
     public required string Text
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
-        init { ModelBase.Set(this._rawData, "text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
+        init { JsonModel.Set(this._rawData, "text", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -30,24 +30,24 @@ public sealed record class BetaTextBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     public IReadOnlyList<BetaTextCitationParam>? Citations
     {
         get
         {
-            return ModelBase.GetNullableClass<List<BetaTextCitationParam>>(
+            return JsonModel.GetNullableClass<List<BetaTextCitationParam>>(
                 this.RawData,
                 "citations"
             );
         }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        init { JsonModel.Set(this._rawData, "citations", value); }
     }
 
     /// <inheritdoc/>
@@ -104,7 +104,7 @@ public sealed record class BetaTextBlockParam : ModelBase
     }
 }
 
-class BetaTextBlockParamFromRaw : IFromRaw<BetaTextBlockParam>
+class BetaTextBlockParamFromRaw : IFromRawJson<BetaTextBlockParam>
 {
     /// <inheritdoc/>
     public BetaTextBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

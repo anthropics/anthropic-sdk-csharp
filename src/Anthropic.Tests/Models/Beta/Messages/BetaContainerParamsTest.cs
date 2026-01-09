@@ -83,8 +83,8 @@ public class BetaContainerParamsTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContainerParams>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaContainerParams>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "id";

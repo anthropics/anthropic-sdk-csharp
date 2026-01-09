@@ -64,8 +64,8 @@ public class BetaCodeExecutionResultBlockTest : TestBase
             Stdout = "stdout",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionResultBlock>(element);
         Assert.NotNull(deserialized);
 
         List<BetaCodeExecutionOutputBlock> expectedContent = [new("file_id")];

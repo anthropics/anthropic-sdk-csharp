@@ -13,20 +13,20 @@ namespace Anthropic.Models.Beta.Messages;
 /// uploaded via this block will be available in the container's input directory.
 /// </summary>
 [JsonConverter(
-    typeof(ModelConverter<BetaContainerUploadBlockParam, BetaContainerUploadBlockParamFromRaw>)
+    typeof(JsonModelConverter<BetaContainerUploadBlockParam, BetaContainerUploadBlockParamFromRaw>)
 )]
-public sealed record class BetaContainerUploadBlockParam : ModelBase
+public sealed record class BetaContainerUploadBlockParam : JsonModel
 {
     public required string FileID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "file_id"); }
+        init { JsonModel.Set(this._rawData, "file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -36,12 +36,12 @@ public sealed record class BetaContainerUploadBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -101,7 +101,7 @@ public sealed record class BetaContainerUploadBlockParam : ModelBase
     }
 }
 
-class BetaContainerUploadBlockParamFromRaw : IFromRaw<BetaContainerUploadBlockParam>
+class BetaContainerUploadBlockParamFromRaw : IFromRawJson<BetaContainerUploadBlockParam>
 {
     /// <inheritdoc/>
     public BetaContainerUploadBlockParam FromRawUnchecked(

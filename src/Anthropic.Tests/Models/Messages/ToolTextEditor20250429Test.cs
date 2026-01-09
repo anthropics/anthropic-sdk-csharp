@@ -39,8 +39,8 @@ public class ToolTextEditor20250429Test : TestBase
     {
         var model = new ToolTextEditor20250429 { CacheControl = new() { TTL = TTL.TTL5m } };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(

@@ -8,20 +8,20 @@ using Anthropic.Core;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaCountTokensContextManagementResponse,
         BetaCountTokensContextManagementResponseFromRaw
     >)
 )]
-public sealed record class BetaCountTokensContextManagementResponse : ModelBase
+public sealed record class BetaCountTokensContextManagementResponse : JsonModel
 {
     /// <summary>
     /// The original token count before context management was applied
     /// </summary>
     public required long OriginalInputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "original_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "original_input_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "original_input_tokens"); }
+        init { JsonModel.Set(this._rawData, "original_input_tokens", value); }
     }
 
     /// <inheritdoc/>
@@ -69,7 +69,7 @@ public sealed record class BetaCountTokensContextManagementResponse : ModelBase
 }
 
 class BetaCountTokensContextManagementResponseFromRaw
-    : IFromRaw<BetaCountTokensContextManagementResponse>
+    : IFromRawJson<BetaCountTokensContextManagementResponse>
 {
     /// <inheritdoc/>
     public BetaCountTokensContextManagementResponse FromRawUnchecked(

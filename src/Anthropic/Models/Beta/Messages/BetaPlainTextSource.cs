@@ -8,25 +8,25 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaPlainTextSource, BetaPlainTextSourceFromRaw>))]
-public sealed record class BetaPlainTextSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaPlainTextSource, BetaPlainTextSourceFromRaw>))]
+public sealed record class BetaPlainTextSource : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     public JsonElement MediaType
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
-        init { ModelBase.Set(this._rawData, "media_type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
+        init { JsonModel.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -89,7 +89,7 @@ public sealed record class BetaPlainTextSource : ModelBase
     }
 }
 
-class BetaPlainTextSourceFromRaw : IFromRaw<BetaPlainTextSource>
+class BetaPlainTextSourceFromRaw : IFromRawJson<BetaPlainTextSource>
 {
     /// <inheritdoc/>
     public BetaPlainTextSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

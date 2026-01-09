@@ -52,8 +52,8 @@ public class BetaToolSearchToolResultErrorTest : TestBase
             ErrorMessage = "error_message",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultError>(element);
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaToolSearchToolResultErrorErrorCode> expectedErrorCode =
@@ -104,6 +104,8 @@ public class BetaToolSearchToolResultErrorErrorCodeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

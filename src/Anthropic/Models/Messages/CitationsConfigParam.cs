@@ -7,12 +7,12 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsConfigParam, CitationsConfigParamFromRaw>))]
-public sealed record class CitationsConfigParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<CitationsConfigParam, CitationsConfigParamFromRaw>))]
+public sealed record class CitationsConfigParam : JsonModel
 {
     public bool? Enabled
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "enabled"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "enabled"); }
         init
         {
             if (value == null)
@@ -20,7 +20,7 @@ public sealed record class CitationsConfigParam : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "enabled", value);
+            JsonModel.Set(this._rawData, "enabled", value);
         }
     }
 
@@ -57,7 +57,7 @@ public sealed record class CitationsConfigParam : ModelBase
     }
 }
 
-class CitationsConfigParamFromRaw : IFromRaw<CitationsConfigParam>
+class CitationsConfigParamFromRaw : IFromRawJson<CitationsConfigParam>
 {
     /// <inheritdoc/>
     public CitationsConfigParam FromRawUnchecked(

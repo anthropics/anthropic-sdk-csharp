@@ -47,8 +47,8 @@ public class BetaErrorResponseTest : TestBase
             RequestID = "request_id",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaErrorResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaErrorResponse>(element);
         Assert.NotNull(deserialized);
 
         BetaError expectedError = new BetaInvalidRequestError("message");

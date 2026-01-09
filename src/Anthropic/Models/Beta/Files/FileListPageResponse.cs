@@ -7,16 +7,16 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<FileListPageResponse, FileListPageResponseFromRaw>))]
-public sealed record class FileListPageResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<FileListPageResponse, FileListPageResponseFromRaw>))]
+public sealed record class FileListPageResponse : JsonModel
 {
     /// <summary>
     /// List of file metadata objects.
     /// </summary>
     public required IReadOnlyList<FileMetadata> Data
     {
-        get { return ModelBase.GetNotNullClass<List<FileMetadata>>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<List<FileMetadata>>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     /// <summary>
@@ -24,8 +24,8 @@ public sealed record class FileListPageResponse : ModelBase
     /// </summary>
     public string? FirstID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "first_id"); }
-        init { ModelBase.Set(this._rawData, "first_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "first_id"); }
+        init { JsonModel.Set(this._rawData, "first_id", value); }
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ public sealed record class FileListPageResponse : ModelBase
     /// </summary>
     public bool? HasMore
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "has_more"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "has_more"); }
         init
         {
             if (value == null)
@@ -41,7 +41,7 @@ public sealed record class FileListPageResponse : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "has_more", value);
+            JsonModel.Set(this._rawData, "has_more", value);
         }
     }
 
@@ -50,8 +50,8 @@ public sealed record class FileListPageResponse : ModelBase
     /// </summary>
     public string? LastID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "last_id"); }
-        init { ModelBase.Set(this._rawData, "last_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "last_id"); }
+        init { JsonModel.Set(this._rawData, "last_id", value); }
     }
 
     /// <inheritdoc/>
@@ -100,7 +100,7 @@ public sealed record class FileListPageResponse : ModelBase
     }
 }
 
-class FileListPageResponseFromRaw : IFromRaw<FileListPageResponse>
+class FileListPageResponseFromRaw : IFromRawJson<FileListPageResponse>
 {
     /// <inheritdoc/>
     public FileListPageResponse FromRawUnchecked(

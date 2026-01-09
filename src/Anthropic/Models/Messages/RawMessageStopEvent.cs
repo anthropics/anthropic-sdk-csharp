@@ -8,13 +8,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageStopEvent, RawMessageStopEventFromRaw>))]
-public sealed record class RawMessageStopEvent : ModelBase
+[JsonConverter(typeof(JsonModelConverter<RawMessageStopEvent, RawMessageStopEventFromRaw>))]
+public sealed record class RawMessageStopEvent : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -63,7 +63,7 @@ public sealed record class RawMessageStopEvent : ModelBase
     }
 }
 
-class RawMessageStopEventFromRaw : IFromRaw<RawMessageStopEvent>
+class RawMessageStopEventFromRaw : IFromRawJson<RawMessageStopEvent>
 {
     /// <inheritdoc/>
     public RawMessageStopEvent FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

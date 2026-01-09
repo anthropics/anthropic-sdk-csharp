@@ -33,8 +33,8 @@ public class ThinkingDeltaTest : TestBase
     {
         var model = new ThinkingDelta { Thinking = "thinking" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(element);
         Assert.NotNull(deserialized);
 
         string expectedThinking = "thinking";

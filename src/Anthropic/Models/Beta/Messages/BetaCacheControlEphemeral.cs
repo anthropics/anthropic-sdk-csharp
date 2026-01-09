@@ -9,13 +9,15 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCacheControlEphemeral, BetaCacheControlEphemeralFromRaw>))]
-public sealed record class BetaCacheControlEphemeral : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaCacheControlEphemeral, BetaCacheControlEphemeralFromRaw>)
+)]
+public sealed record class BetaCacheControlEphemeral : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -27,7 +29,7 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
     /// </summary>
     public ApiEnum<string, TTL>? TTL
     {
-        get { return ModelBase.GetNullableClass<ApiEnum<string, TTL>>(this.RawData, "ttl"); }
+        get { return JsonModel.GetNullableClass<ApiEnum<string, TTL>>(this.RawData, "ttl"); }
         init
         {
             if (value == null)
@@ -35,7 +37,7 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "ttl", value);
+            JsonModel.Set(this._rawData, "ttl", value);
         }
     }
 
@@ -86,7 +88,7 @@ public sealed record class BetaCacheControlEphemeral : ModelBase
     }
 }
 
-class BetaCacheControlEphemeralFromRaw : IFromRaw<BetaCacheControlEphemeral>
+class BetaCacheControlEphemeralFromRaw : IFromRawJson<BetaCacheControlEphemeral>
 {
     /// <inheritdoc/>
     public BetaCacheControlEphemeral FromRawUnchecked(

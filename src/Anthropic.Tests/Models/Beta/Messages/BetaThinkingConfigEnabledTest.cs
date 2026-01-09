@@ -33,8 +33,8 @@ public class BetaThinkingConfigEnabledTest : TestBase
     {
         var model = new BetaThinkingConfigEnabled { BudgetTokens = 1024 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigEnabled>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigEnabled>(element);
         Assert.NotNull(deserialized);
 
         long expectedBudgetTokens = 1024;

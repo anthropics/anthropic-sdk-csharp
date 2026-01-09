@@ -10,16 +10,16 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaContextManagementConfig, BetaContextManagementConfigFromRaw>)
+    typeof(JsonModelConverter<BetaContextManagementConfig, BetaContextManagementConfigFromRaw>)
 )]
-public sealed record class BetaContextManagementConfig : ModelBase
+public sealed record class BetaContextManagementConfig : JsonModel
 {
     /// <summary>
     /// List of context management edits to apply
     /// </summary>
     public IReadOnlyList<Edit>? Edits
     {
-        get { return ModelBase.GetNullableClass<List<Edit>>(this.RawData, "edits"); }
+        get { return JsonModel.GetNullableClass<List<Edit>>(this.RawData, "edits"); }
         init
         {
             if (value == null)
@@ -27,7 +27,7 @@ public sealed record class BetaContextManagementConfig : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "edits", value);
+            JsonModel.Set(this._rawData, "edits", value);
         }
     }
 
@@ -67,7 +67,7 @@ public sealed record class BetaContextManagementConfig : ModelBase
     }
 }
 
-class BetaContextManagementConfigFromRaw : IFromRaw<BetaContextManagementConfig>
+class BetaContextManagementConfigFromRaw : IFromRawJson<BetaContextManagementConfig>
 {
     /// <inheritdoc/>
     public BetaContextManagementConfig FromRawUnchecked(
@@ -80,11 +80,11 @@ public record class Edit
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -98,21 +98,21 @@ public record class Edit
         }
     }
 
-    public Edit(BetaClearToolUses20250919Edit value, JsonElement? json = null)
+    public Edit(BetaClearToolUses20250919Edit value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Edit(BetaClearThinking20251015Edit value, JsonElement? json = null)
+    public Edit(BetaClearThinking20251015Edit value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Edit(JsonElement json)
+    public Edit(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -278,11 +278,11 @@ sealed class EditConverter : JsonConverter<Edit>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -296,13 +296,13 @@ sealed class EditConverter : JsonConverter<Edit>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -311,20 +311,20 @@ sealed class EditConverter : JsonConverter<Edit>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "clear_thinking_20251015":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015Edit>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -333,11 +333,11 @@ sealed class EditConverter : JsonConverter<Edit>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Edit(json);
+                return new Edit(element);
             }
         }
     }

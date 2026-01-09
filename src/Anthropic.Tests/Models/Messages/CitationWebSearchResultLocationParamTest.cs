@@ -59,8 +59,10 @@ public class CitationWebSearchResultLocationParamTest : TestBase
             URL = "x",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationWebSearchResultLocationParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationWebSearchResultLocationParam>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";

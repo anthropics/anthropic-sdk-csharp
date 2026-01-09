@@ -273,8 +273,8 @@ public static class AnthropicBetaClientExtensions
             {
                 return _metadata ??= new(
                     "anthropic",
-                    _betaService.Messages is MessageService { _client.BaseUrl: Uri baseUrl }
-                        ? baseUrl
+                    _betaService.Messages is MessageService { _client.BaseUrl: string baseUrl }
+                        ? new Uri(baseUrl)
                         : null,
                     _defaultModelId
                 );
@@ -1268,6 +1268,8 @@ public static class AnthropicBetaClientExtensions
                     inputTokens
                 ),
 
+                CachedInputTokenCount = cacheReadInputTokens,
+
                 OutputTokenCount = outputTokens,
             };
 
@@ -1280,12 +1282,6 @@ public static class AnthropicBetaClientExtensions
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(BetaUsage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
-            }
-
-            if (cacheReadInputTokens is > 0)
-            {
-                (usageDetails.AdditionalCounts ??= [])[nameof(BetaUsage.CacheReadInputTokens)] =
-                    cacheReadInputTokens.Value;
             }
 
             if (serverToolUsage?.WebFetchRequests is > 0)

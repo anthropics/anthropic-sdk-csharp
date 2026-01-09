@@ -81,8 +81,8 @@ public class BetaMCPToolUseBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "id";

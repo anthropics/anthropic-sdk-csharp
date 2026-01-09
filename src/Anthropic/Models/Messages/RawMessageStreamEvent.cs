@@ -11,11 +11,11 @@ public record class RawMessageStreamEvent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -48,45 +48,45 @@ public record class RawMessageStreamEvent
         }
     }
 
-    public RawMessageStreamEvent(RawMessageStartEvent value, JsonElement? json = null)
+    public RawMessageStreamEvent(RawMessageStartEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawMessageStreamEvent(RawMessageDeltaEvent value, JsonElement? json = null)
+    public RawMessageStreamEvent(RawMessageDeltaEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawMessageStreamEvent(RawMessageStopEvent value, JsonElement? json = null)
+    public RawMessageStreamEvent(RawMessageStopEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawMessageStreamEvent(RawContentBlockStartEvent value, JsonElement? json = null)
+    public RawMessageStreamEvent(RawContentBlockStartEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawMessageStreamEvent(RawContentBlockDeltaEvent value, JsonElement? json = null)
+    public RawMessageStreamEvent(RawContentBlockDeltaEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawMessageStreamEvent(RawContentBlockStopEvent value, JsonElement? json = null)
+    public RawMessageStreamEvent(RawContentBlockStopEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawMessageStreamEvent(JsonElement json)
+    public RawMessageStreamEvent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -385,11 +385,11 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -403,13 +403,13 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -418,20 +418,20 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "message_delta":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -440,20 +440,20 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "message_stop":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -462,20 +462,20 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_start":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -484,20 +484,20 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_delta":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawContentBlockDeltaEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -506,20 +506,20 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_stop":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RawContentBlockStopEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -528,11 +528,11 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new RawMessageStreamEvent(json);
+                return new RawMessageStreamEvent(element);
             }
         }
     }

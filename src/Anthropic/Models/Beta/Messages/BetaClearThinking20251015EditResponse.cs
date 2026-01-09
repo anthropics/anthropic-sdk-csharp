@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaClearThinking20251015EditResponse,
         BetaClearThinking20251015EditResponseFromRaw
     >)
 )]
-public sealed record class BetaClearThinking20251015EditResponse : ModelBase
+public sealed record class BetaClearThinking20251015EditResponse : JsonModel
 {
     /// <summary>
     /// Number of input tokens cleared by this edit.
     /// </summary>
     public required long ClearedInputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "cleared_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "cleared_input_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "cleared_input_tokens"); }
+        init { JsonModel.Set(this._rawData, "cleared_input_tokens", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaClearThinking20251015EditResponse : ModelBase
     /// </summary>
     public required long ClearedThinkingTurns
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "cleared_thinking_turns"); }
-        init { ModelBase.Set(this._rawData, "cleared_thinking_turns", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "cleared_thinking_turns"); }
+        init { JsonModel.Set(this._rawData, "cleared_thinking_turns", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BetaClearThinking20251015EditResponse : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -93,7 +93,8 @@ public sealed record class BetaClearThinking20251015EditResponse : ModelBase
     }
 }
 
-class BetaClearThinking20251015EditResponseFromRaw : IFromRaw<BetaClearThinking20251015EditResponse>
+class BetaClearThinking20251015EditResponseFromRaw
+    : IFromRawJson<BetaClearThinking20251015EditResponse>
 {
     /// <inheritdoc/>
     public BetaClearThinking20251015EditResponse FromRawUnchecked(

@@ -9,14 +9,14 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages.Batches;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaMessageBatchExpiredResult, BetaMessageBatchExpiredResultFromRaw>)
+    typeof(JsonModelConverter<BetaMessageBatchExpiredResult, BetaMessageBatchExpiredResultFromRaw>)
 )]
-public sealed record class BetaMessageBatchExpiredResult : ModelBase
+public sealed record class BetaMessageBatchExpiredResult : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -67,7 +67,7 @@ public sealed record class BetaMessageBatchExpiredResult : ModelBase
     }
 }
 
-class BetaMessageBatchExpiredResultFromRaw : IFromRaw<BetaMessageBatchExpiredResult>
+class BetaMessageBatchExpiredResultFromRaw : IFromRawJson<BetaMessageBatchExpiredResult>
 {
     /// <inheritdoc/>
     public BetaMessageBatchExpiredResult FromRawUnchecked(

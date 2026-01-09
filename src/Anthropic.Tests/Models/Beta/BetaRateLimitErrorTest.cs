@@ -33,8 +33,8 @@ public class BetaRateLimitErrorTest : TestBase
     {
         var model = new BetaRateLimitError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRateLimitError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaRateLimitError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

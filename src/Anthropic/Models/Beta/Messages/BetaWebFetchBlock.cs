@@ -8,13 +8,13 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebFetchBlock, BetaWebFetchBlockFromRaw>))]
-public sealed record class BetaWebFetchBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaWebFetchBlock, BetaWebFetchBlockFromRaw>))]
+public sealed record class BetaWebFetchBlock : JsonModel
 {
     public required BetaDocumentBlock Content
     {
-        get { return ModelBase.GetNotNullClass<BetaDocumentBlock>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<BetaDocumentBlock>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     /// <summary>
@@ -22,14 +22,14 @@ public sealed record class BetaWebFetchBlock : ModelBase
     /// </summary>
     public required string? RetrievedAt
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "retrieved_at"); }
-        init { ModelBase.Set(this._rawData, "retrieved_at", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "retrieved_at"); }
+        init { JsonModel.Set(this._rawData, "retrieved_at", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -37,8 +37,8 @@ public sealed record class BetaWebFetchBlock : ModelBase
     /// </summary>
     public required string URL
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
+        init { JsonModel.Set(this._rawData, "url", value); }
     }
 
     /// <inheritdoc/>
@@ -90,7 +90,7 @@ public sealed record class BetaWebFetchBlock : ModelBase
     }
 }
 
-class BetaWebFetchBlockFromRaw : IFromRaw<BetaWebFetchBlock>
+class BetaWebFetchBlockFromRaw : IFromRawJson<BetaWebFetchBlock>
 {
     /// <inheritdoc/>
     public BetaWebFetchBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -52,8 +52,8 @@ public class BetaMCPToolResultBlockTest : TestBase
             ToolUseID = "tool_use_id",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaMCPToolResultBlockContent expectedContent = "string";
@@ -84,18 +84,18 @@ public class BetaMCPToolResultBlockTest : TestBase
 public class BetaMCPToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         BetaMCPToolResultBlockContent value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void beta_mcp_tool_result_blockValidation_Works()
+    public void BetaMCPToolResultBlockValidationWorks()
     {
         BetaMCPToolResultBlockContent value = new(
             [
-                new()
+                new BetaTextBlock()
                 {
                     Citations =
                     [
@@ -117,21 +117,21 @@ public class BetaMCPToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         BetaMCPToolResultBlockContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_mcp_tool_result_blockSerializationRoundtrip_Works()
+    public void BetaMCPToolResultBlockSerializationRoundtripWorks()
     {
         BetaMCPToolResultBlockContent value = new(
             [
-                new()
+                new BetaTextBlock()
                 {
                     Citations =
                     [
@@ -149,8 +149,8 @@ public class BetaMCPToolResultBlockContentTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -33,8 +33,8 @@ public class BetaInputTokensTriggerTest : TestBase
     {
         var model = new BetaInputTokensTrigger { Value = 1 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");

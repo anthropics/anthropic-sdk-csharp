@@ -62,8 +62,8 @@ public class CitationCharLocationParamTest : TestBase
             StartCharIndex = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationCharLocationParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationCharLocationParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";

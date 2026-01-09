@@ -80,8 +80,8 @@ public class BetaWebFetchBlockParamTest : TestBase
             RetrievedAt = "retrieved_at",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(element);
         Assert.NotNull(deserialized);
 
         BetaRequestDocumentBlock expectedContent = new()

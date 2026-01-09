@@ -59,8 +59,8 @@ public class BetaMessageBatchErroredResultTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(element);
         Assert.NotNull(deserialized);
 
         BetaErrorResponse expectedError = new()

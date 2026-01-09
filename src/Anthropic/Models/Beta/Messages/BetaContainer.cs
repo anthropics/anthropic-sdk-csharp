@@ -11,16 +11,16 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Information about the container used in the request (for the code execution tool)
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainer, BetaContainerFromRaw>))]
-public sealed record class BetaContainer : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaContainer, BetaContainerFromRaw>))]
+public sealed record class BetaContainer : JsonModel
 {
     /// <summary>
     /// Identifier for the container used in this request
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -28,8 +28,8 @@ public sealed record class BetaContainer : ModelBase
     /// </summary>
     public required DateTimeOffset ExpiresAt
     {
-        get { return ModelBase.GetNotNullStruct<DateTimeOffset>(this.RawData, "expires_at"); }
-        init { ModelBase.Set(this._rawData, "expires_at", value); }
+        get { return JsonModel.GetNotNullStruct<DateTimeOffset>(this.RawData, "expires_at"); }
+        init { JsonModel.Set(this._rawData, "expires_at", value); }
     }
 
     /// <summary>
@@ -37,8 +37,8 @@ public sealed record class BetaContainer : ModelBase
     /// </summary>
     public required IReadOnlyList<BetaSkill>? Skills
     {
-        get { return ModelBase.GetNullableClass<List<BetaSkill>>(this.RawData, "skills"); }
-        init { ModelBase.Set(this._rawData, "skills", value); }
+        get { return JsonModel.GetNullableClass<List<BetaSkill>>(this.RawData, "skills"); }
+        init { JsonModel.Set(this._rawData, "skills", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +77,7 @@ public sealed record class BetaContainer : ModelBase
     }
 }
 
-class BetaContainerFromRaw : IFromRaw<BetaContainer>
+class BetaContainerFromRaw : IFromRawJson<BetaContainer>
 {
     /// <inheritdoc/>
     public BetaContainer FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

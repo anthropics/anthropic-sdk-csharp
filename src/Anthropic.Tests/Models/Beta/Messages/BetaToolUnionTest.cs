@@ -7,7 +7,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaToolUnionTest : TestBase
 {
     [Fact]
-    public void beta_toolValidation_Works()
+    public void BetaToolValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaTool()
@@ -41,7 +41,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void bash_20241022Validation_Works()
+    public void Bash20241022ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolBash20241022()
@@ -63,7 +63,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void bash_20250124Validation_Works()
+    public void Bash20250124ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolBash20250124()
@@ -85,7 +85,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void code_execution_tool_20250522Validation_Works()
+    public void CodeExecutionTool20250522ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaCodeExecutionTool20250522()
@@ -100,7 +100,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void code_execution_tool_20250825Validation_Works()
+    public void CodeExecutionTool20250825ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaCodeExecutionTool20250825()
@@ -115,7 +115,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void computer_use_20241022Validation_Works()
+    public void ComputerUse20241022ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolComputerUse20241022()
@@ -140,7 +140,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void memory_tool_20250818Validation_Works()
+    public void MemoryTool20250818ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaMemoryTool20250818()
@@ -162,7 +162,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void computer_use_20250124Validation_Works()
+    public void ComputerUse20250124ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolComputerUse20250124()
@@ -187,7 +187,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void text_editor_20241022Validation_Works()
+    public void TextEditor20241022ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolTextEditor20241022()
@@ -209,7 +209,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void computer_use_20251124Validation_Works()
+    public void ComputerUse20251124ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolComputerUse20251124()
@@ -235,7 +235,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void text_editor_20250124Validation_Works()
+    public void TextEditor20250124ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolTextEditor20250124()
@@ -257,7 +257,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void text_editor_20250429Validation_Works()
+    public void TextEditor20250429ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolTextEditor20250429()
@@ -279,7 +279,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void text_editor_20250728Validation_Works()
+    public void TextEditor20250728ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolTextEditor20250728()
@@ -302,7 +302,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_20250305Validation_Works()
+    public void WebSearchTool20250305ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaWebSearchTool20250305()
@@ -327,7 +327,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void web_fetch_tool_20250910Validation_Works()
+    public void WebFetchTool20250910ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaWebFetchTool20250910()
@@ -347,7 +347,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void search_tool_bm25_20251119Validation_Works()
+    public void SearchToolBm25_20251119ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolSearchToolBm25_20251119()
@@ -363,7 +363,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void search_tool_regex_20251119Validation_Works()
+    public void SearchToolRegex20251119ValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaToolSearchToolRegex20251119()
@@ -379,7 +379,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void mcp_toolsetValidation_Works()
+    public void MCPToolsetValidationWorks()
     {
         BetaToolUnion value = new(
             new BetaMCPToolset()
@@ -400,7 +400,7 @@ public class BetaToolUnionTest : TestBase
     }
 
     [Fact]
-    public void beta_toolSerializationRoundtrip_Works()
+    public void BetaToolSerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaTool()
@@ -430,14 +430,14 @@ public class BetaToolUnionTest : TestBase
                 Type = BetaToolType.Custom,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void bash_20241022SerializationRoundtrip_Works()
+    public void Bash20241022SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolBash20241022()
@@ -455,14 +455,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void bash_20250124SerializationRoundtrip_Works()
+    public void Bash20250124SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolBash20250124()
@@ -480,14 +480,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void code_execution_tool_20250522SerializationRoundtrip_Works()
+    public void CodeExecutionTool20250522SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaCodeExecutionTool20250522()
@@ -498,14 +498,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void code_execution_tool_20250825SerializationRoundtrip_Works()
+    public void CodeExecutionTool20250825SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaCodeExecutionTool20250825()
@@ -516,14 +516,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void computer_use_20241022SerializationRoundtrip_Works()
+    public void ComputerUse20241022SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolComputerUse20241022()
@@ -544,14 +544,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void memory_tool_20250818SerializationRoundtrip_Works()
+    public void MemoryTool20250818SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaMemoryTool20250818()
@@ -569,14 +569,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void computer_use_20250124SerializationRoundtrip_Works()
+    public void ComputerUse20250124SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolComputerUse20250124()
@@ -597,14 +597,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void text_editor_20241022SerializationRoundtrip_Works()
+    public void TextEditor20241022SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolTextEditor20241022()
@@ -622,14 +622,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void computer_use_20251124SerializationRoundtrip_Works()
+    public void ComputerUse20251124SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolComputerUse20251124()
@@ -651,14 +651,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void text_editor_20250124SerializationRoundtrip_Works()
+    public void TextEditor20250124SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolTextEditor20250124()
@@ -676,14 +676,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void text_editor_20250429SerializationRoundtrip_Works()
+    public void TextEditor20250429SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolTextEditor20250429()
@@ -701,14 +701,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void text_editor_20250728SerializationRoundtrip_Works()
+    public void TextEditor20250728SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolTextEditor20250728()
@@ -727,14 +727,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void web_search_tool_20250305SerializationRoundtrip_Works()
+    public void WebSearchTool20250305SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaWebSearchTool20250305()
@@ -755,14 +755,14 @@ public class BetaToolUnionTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void web_fetch_tool_20250910SerializationRoundtrip_Works()
+    public void WebFetchTool20250910SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaWebFetchTool20250910()
@@ -778,14 +778,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void search_tool_bm25_20251119SerializationRoundtrip_Works()
+    public void SearchToolBm25_20251119SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolSearchToolBm25_20251119()
@@ -797,14 +797,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void search_tool_regex_20251119SerializationRoundtrip_Works()
+    public void SearchToolRegex20251119SerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaToolSearchToolRegex20251119()
@@ -816,14 +816,14 @@ public class BetaToolUnionTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void mcp_toolsetSerializationRoundtrip_Works()
+    public void MCPToolsetSerializationRoundtripWorks()
     {
         BetaToolUnion value = new(
             new BetaMCPToolset()
@@ -840,8 +840,8 @@ public class BetaToolUnionTest : TestBase
                 DefaultConfig = new() { DeferLoading = true, Enabled = true },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(element);
 
         Assert.Equal(value, deserialized);
     }

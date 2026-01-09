@@ -33,8 +33,8 @@ public class BetaInputTokensClearAtLeastTest : TestBase
     {
         var model = new BetaInputTokensClearAtLeast { Value = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaInputTokensClearAtLeast>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaInputTokensClearAtLeast>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"input_tokens\"");

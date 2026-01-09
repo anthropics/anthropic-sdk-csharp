@@ -9,32 +9,32 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<WebSearchToolResultBlockParam, WebSearchToolResultBlockParamFromRaw>)
+    typeof(JsonModelConverter<WebSearchToolResultBlockParam, WebSearchToolResultBlockParamFromRaw>)
 )]
-public sealed record class WebSearchToolResultBlockParam : ModelBase
+public sealed record class WebSearchToolResultBlockParam : JsonModel
 {
     public required WebSearchToolResultBlockParamContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<WebSearchToolResultBlockParamContent>(
+            return JsonModel.GetNotNullClass<WebSearchToolResultBlockParamContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -44,9 +44,9 @@ public sealed record class WebSearchToolResultBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -100,7 +100,7 @@ public sealed record class WebSearchToolResultBlockParam : ModelBase
     }
 }
 
-class WebSearchToolResultBlockParamFromRaw : IFromRaw<WebSearchToolResultBlockParam>
+class WebSearchToolResultBlockParamFromRaw : IFromRawJson<WebSearchToolResultBlockParam>
 {
     /// <inheritdoc/>
     public WebSearchToolResultBlockParam FromRawUnchecked(

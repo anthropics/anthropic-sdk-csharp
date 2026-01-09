@@ -33,8 +33,8 @@ public class GatewayTimeoutErrorTest : TestBase
     {
         var model = new GatewayTimeoutError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<GatewayTimeoutError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<GatewayTimeoutError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

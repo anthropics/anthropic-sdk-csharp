@@ -195,8 +195,8 @@ public class MessageBatchSucceededResultTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(element);
         Assert.NotNull(deserialized);
 
         Message expectedMessage = new()

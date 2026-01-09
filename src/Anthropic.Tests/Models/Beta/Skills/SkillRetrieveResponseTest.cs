@@ -70,8 +70,8 @@ public class SkillRetrieveResponseTest : TestBase
             UpdatedAt = "2024-10-30T23:58:27.427722Z",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<SkillRetrieveResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<SkillRetrieveResponse>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "skill_01JAbcdefghijklmnopqrstuvw";

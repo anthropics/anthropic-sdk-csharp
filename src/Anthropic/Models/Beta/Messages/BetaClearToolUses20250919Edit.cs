@@ -11,14 +11,14 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaClearToolUses20250919Edit, BetaClearToolUses20250919EditFromRaw>)
+    typeof(JsonModelConverter<BetaClearToolUses20250919Edit, BetaClearToolUses20250919EditFromRaw>)
 )]
-public sealed record class BetaClearToolUses20250919Edit : ModelBase
+public sealed record class BetaClearToolUses20250919Edit : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -29,12 +29,12 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaInputTokensClearAtLeast>(
+            return JsonModel.GetNullableClass<BetaInputTokensClearAtLeast>(
                 this.RawData,
                 "clear_at_least"
             );
         }
-        init { ModelBase.Set(this._rawData, "clear_at_least", value); }
+        init { JsonModel.Set(this._rawData, "clear_at_least", value); }
     }
 
     /// <summary>
@@ -44,9 +44,9 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ClearToolInputs>(this.RawData, "clear_tool_inputs");
+            return JsonModel.GetNullableClass<ClearToolInputs>(this.RawData, "clear_tool_inputs");
         }
-        init { ModelBase.Set(this._rawData, "clear_tool_inputs", value); }
+        init { JsonModel.Set(this._rawData, "clear_tool_inputs", value); }
     }
 
     /// <summary>
@@ -54,8 +54,8 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
     /// </summary>
     public IReadOnlyList<string>? ExcludeTools
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "exclude_tools"); }
-        init { ModelBase.Set(this._rawData, "exclude_tools", value); }
+        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "exclude_tools"); }
+        init { JsonModel.Set(this._rawData, "exclude_tools", value); }
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
     /// </summary>
     public BetaToolUsesKeep? Keep
     {
-        get { return ModelBase.GetNullableClass<BetaToolUsesKeep>(this.RawData, "keep"); }
+        get { return JsonModel.GetNullableClass<BetaToolUsesKeep>(this.RawData, "keep"); }
         init
         {
             if (value == null)
@@ -71,7 +71,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "keep", value);
+            JsonModel.Set(this._rawData, "keep", value);
         }
     }
 
@@ -80,7 +80,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
     /// </summary>
     public Trigger? Trigger
     {
-        get { return ModelBase.GetNullableClass<Trigger>(this.RawData, "trigger"); }
+        get { return JsonModel.GetNullableClass<Trigger>(this.RawData, "trigger"); }
         init
         {
             if (value == null)
@@ -88,7 +88,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "trigger", value);
+            JsonModel.Set(this._rawData, "trigger", value);
         }
     }
 
@@ -145,7 +145,7 @@ public sealed record class BetaClearToolUses20250919Edit : ModelBase
     }
 }
 
-class BetaClearToolUses20250919EditFromRaw : IFromRaw<BetaClearToolUses20250919Edit>
+class BetaClearToolUses20250919EditFromRaw : IFromRawJson<BetaClearToolUses20250919Edit>
 {
     /// <inheritdoc/>
     public BetaClearToolUses20250919Edit FromRawUnchecked(
@@ -161,28 +161,28 @@ public record class ClearToolInputs
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public ClearToolInputs(bool value, JsonElement? json = null)
+    public ClearToolInputs(bool value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ClearToolInputs(IReadOnlyList<string> value, JsonElement? json = null)
+    public ClearToolInputs(IReadOnlyList<string> value, JsonElement? element = null)
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public ClearToolInputs(JsonElement json)
+    public ClearToolInputs(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -341,10 +341,10 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            return new(JsonSerializer.Deserialize<bool>(json, options));
+            return new(JsonSerializer.Deserialize<bool>(element, options));
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
@@ -353,10 +353,10 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<string>>(json, options);
+            var deserialized = JsonSerializer.Deserialize<List<string>>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -364,7 +364,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(
@@ -385,11 +385,11 @@ public record class Trigger
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -402,21 +402,21 @@ public record class Trigger
         get { return Match(betaInputTokens: (x) => x.Value, betaToolUses: (x) => x.Value); }
     }
 
-    public Trigger(BetaInputTokensTrigger value, JsonElement? json = null)
+    public Trigger(BetaInputTokensTrigger value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Trigger(BetaToolUsesTrigger value, JsonElement? json = null)
+    public Trigger(BetaToolUsesTrigger value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Trigger(JsonElement json)
+    public Trigger(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -582,11 +582,11 @@ sealed class TriggerConverter : JsonConverter<Trigger>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -600,13 +600,13 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaInputTokensTrigger>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -615,20 +615,20 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_uses":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolUsesTrigger>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -637,11 +637,11 @@ sealed class TriggerConverter : JsonConverter<Trigger>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Trigger(json);
+                return new Trigger(element);
             }
         }
     }

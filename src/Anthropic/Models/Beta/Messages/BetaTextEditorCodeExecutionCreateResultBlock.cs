@@ -9,23 +9,23 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaTextEditorCodeExecutionCreateResultBlock,
         BetaTextEditorCodeExecutionCreateResultBlockFromRaw
     >)
 )]
-public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelBase
+public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : JsonModel
 {
     public required bool IsFileUpdate
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "is_file_update"); }
-        init { ModelBase.Set(this._rawData, "is_file_update", value); }
+        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "is_file_update"); }
+        init { JsonModel.Set(this._rawData, "is_file_update", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -93,7 +93,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelB
 }
 
 class BetaTextEditorCodeExecutionCreateResultBlockFromRaw
-    : IFromRaw<BetaTextEditorCodeExecutionCreateResultBlock>
+    : IFromRawJson<BetaTextEditorCodeExecutionCreateResultBlock>
 {
     /// <inheritdoc/>
     public BetaTextEditorCodeExecutionCreateResultBlock FromRawUnchecked(

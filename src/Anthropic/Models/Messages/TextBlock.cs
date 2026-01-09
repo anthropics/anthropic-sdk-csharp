@@ -8,8 +8,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<TextBlock, TextBlockFromRaw>))]
-public sealed record class TextBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<TextBlock, TextBlockFromRaw>))]
+public sealed record class TextBlock : JsonModel
 {
     /// <summary>
     /// Citations supporting the text block.
@@ -20,20 +20,20 @@ public sealed record class TextBlock : ModelBase
     /// </summary>
     public required IReadOnlyList<TextCitation>? Citations
     {
-        get { return ModelBase.GetNullableClass<List<TextCitation>>(this.RawData, "citations"); }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        get { return JsonModel.GetNullableClass<List<TextCitation>>(this.RawData, "citations"); }
+        init { JsonModel.Set(this._rawData, "citations", value); }
     }
 
     public required string Text
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
-        init { ModelBase.Set(this._rawData, "text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
+        init { JsonModel.Set(this._rawData, "text", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -80,7 +80,7 @@ public sealed record class TextBlock : ModelBase
     }
 }
 
-class TextBlockFromRaw : IFromRaw<TextBlock>
+class TextBlockFromRaw : IFromRawJson<TextBlock>
 {
     /// <inheritdoc/>
     public TextBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

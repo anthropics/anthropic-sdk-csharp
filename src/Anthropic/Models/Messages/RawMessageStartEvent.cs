@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageStartEvent, RawMessageStartEventFromRaw>))]
-public sealed record class RawMessageStartEvent : ModelBase
+[JsonConverter(typeof(JsonModelConverter<RawMessageStartEvent, RawMessageStartEventFromRaw>))]
+public sealed record class RawMessageStartEvent : JsonModel
 {
     public required Message Message
     {
-        get { return ModelBase.GetNotNullClass<Message>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get { return JsonModel.GetNotNullClass<Message>(this.RawData, "message"); }
+        init { JsonModel.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +77,7 @@ public sealed record class RawMessageStartEvent : ModelBase
     }
 }
 
-class RawMessageStartEventFromRaw : IFromRaw<RawMessageStartEvent>
+class RawMessageStartEventFromRaw : IFromRawJson<RawMessageStartEvent>
 {
     /// <inheritdoc/>
     public RawMessageStartEvent FromRawUnchecked(

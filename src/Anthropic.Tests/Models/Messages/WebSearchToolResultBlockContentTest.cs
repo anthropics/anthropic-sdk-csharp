@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Messages;
 public class WebSearchToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void errorValidation_Works()
+    public void ErrorValidationWorks()
     {
         WebSearchToolResultBlockContent value = new(
             new WebSearchToolResultError(WebSearchToolResultErrorErrorCode.InvalidToolInput)
@@ -15,11 +15,11 @@ public class WebSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void WebSearchResultBlocksValidation_Works()
+    public void WebSearchResultBlocksValidationWorks()
     {
         WebSearchToolResultBlockContent value = new(
             [
-                new()
+                new WebSearchResultBlock()
                 {
                     EncryptedContent = "encrypted_content",
                     PageAge = "page_age",
@@ -32,23 +32,23 @@ public class WebSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void errorSerializationRoundtrip_Works()
+    public void ErrorSerializationRoundtripWorks()
     {
         WebSearchToolResultBlockContent value = new(
             new WebSearchToolResultError(WebSearchToolResultErrorErrorCode.InvalidToolInput)
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void WebSearchResultBlocksSerializationRoundtrip_Works()
+    public void WebSearchResultBlocksSerializationRoundtripWorks()
     {
         WebSearchToolResultBlockContent value = new(
             [
-                new()
+                new WebSearchResultBlock()
                 {
                     EncryptedContent = "encrypted_content",
                     PageAge = "page_age",
@@ -57,8 +57,8 @@ public class WebSearchToolResultBlockContentTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }

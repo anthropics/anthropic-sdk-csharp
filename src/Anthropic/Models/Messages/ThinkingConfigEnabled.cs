@@ -8,8 +8,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingConfigEnabled, ThinkingConfigEnabledFromRaw>))]
-public sealed record class ThinkingConfigEnabled : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ThinkingConfigEnabled, ThinkingConfigEnabledFromRaw>))]
+public sealed record class ThinkingConfigEnabled : JsonModel
 {
     /// <summary>
     /// Determines how many tokens Claude can use for its internal reasoning process.
@@ -23,14 +23,14 @@ public sealed record class ThinkingConfigEnabled : ModelBase
     /// </summary>
     public required long BudgetTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "budget_tokens"); }
-        init { ModelBase.Set(this._rawData, "budget_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "budget_tokens"); }
+        init { JsonModel.Set(this._rawData, "budget_tokens", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -87,7 +87,7 @@ public sealed record class ThinkingConfigEnabled : ModelBase
     }
 }
 
-class ThinkingConfigEnabledFromRaw : IFromRaw<ThinkingConfigEnabled>
+class ThinkingConfigEnabledFromRaw : IFromRawJson<ThinkingConfigEnabled>
 {
     /// <inheritdoc/>
     public ThinkingConfigEnabled FromRawUnchecked(

@@ -9,53 +9,53 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaCitationSearchResultLocationParam,
         BetaCitationSearchResultLocationParamFromRaw
     >)
 )]
-public sealed record class BetaCitationSearchResultLocationParam : ModelBase
+public sealed record class BetaCitationSearchResultLocationParam : JsonModel
 {
     public required string CitedText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { ModelBase.Set(this._rawData, "cited_text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "cited_text"); }
+        init { JsonModel.Set(this._rawData, "cited_text", value); }
     }
 
     public required long EndBlockIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "end_block_index"); }
-        init { ModelBase.Set(this._rawData, "end_block_index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "end_block_index"); }
+        init { JsonModel.Set(this._rawData, "end_block_index", value); }
     }
 
     public required long SearchResultIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "search_result_index"); }
-        init { ModelBase.Set(this._rawData, "search_result_index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "search_result_index"); }
+        init { JsonModel.Set(this._rawData, "search_result_index", value); }
     }
 
     public required string Source
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     public required long StartBlockIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "start_block_index"); }
-        init { ModelBase.Set(this._rawData, "start_block_index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "start_block_index"); }
+        init { JsonModel.Set(this._rawData, "start_block_index", value); }
     }
 
     public required string? Title
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
+        init { JsonModel.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -112,7 +112,8 @@ public sealed record class BetaCitationSearchResultLocationParam : ModelBase
     }
 }
 
-class BetaCitationSearchResultLocationParamFromRaw : IFromRaw<BetaCitationSearchResultLocationParam>
+class BetaCitationSearchResultLocationParamFromRaw
+    : IFromRawJson<BetaCitationSearchResultLocationParam>
 {
     /// <inheritdoc/>
     public BetaCitationSearchResultLocationParam FromRawUnchecked(

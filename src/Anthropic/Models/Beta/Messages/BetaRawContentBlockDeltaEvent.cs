@@ -9,26 +9,26 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaRawContentBlockDeltaEvent, BetaRawContentBlockDeltaEventFromRaw>)
+    typeof(JsonModelConverter<BetaRawContentBlockDeltaEvent, BetaRawContentBlockDeltaEventFromRaw>)
 )]
-public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
+public sealed record class BetaRawContentBlockDeltaEvent : JsonModel
 {
     public required BetaRawContentBlockDelta Delta
     {
-        get { return ModelBase.GetNotNullClass<BetaRawContentBlockDelta>(this.RawData, "delta"); }
-        init { ModelBase.Set(this._rawData, "delta", value); }
+        get { return JsonModel.GetNotNullClass<BetaRawContentBlockDelta>(this.RawData, "delta"); }
+        init { JsonModel.Set(this._rawData, "delta", value); }
     }
 
     public required long Index
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { ModelBase.Set(this._rawData, "index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "index"); }
+        init { JsonModel.Set(this._rawData, "index", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -81,7 +81,7 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
     }
 }
 
-class BetaRawContentBlockDeltaEventFromRaw : IFromRaw<BetaRawContentBlockDeltaEvent>
+class BetaRawContentBlockDeltaEventFromRaw : IFromRawJson<BetaRawContentBlockDeltaEvent>
 {
     /// <inheritdoc/>
     public BetaRawContentBlockDeltaEvent FromRawUnchecked(

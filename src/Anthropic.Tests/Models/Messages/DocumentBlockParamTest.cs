@@ -62,8 +62,8 @@ public class DocumentBlockParamTest : TestBase
             Title = "x",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(element);
         Assert.NotNull(deserialized);
 
         Source expectedSource = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz");
@@ -162,69 +162,69 @@ public class DocumentBlockParamTest : TestBase
 public class SourceTest : TestBase
 {
     [Fact]
-    public void base64_pdfValidation_Works()
+    public void Base64PDFValidationWorks()
     {
         Source value = new(new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
         value.Validate();
     }
 
     [Fact]
-    public void plain_textValidation_Works()
+    public void PlainTextValidationWorks()
     {
         Source value = new(new PlainTextSource("data"));
         value.Validate();
     }
 
     [Fact]
-    public void content_blockValidation_Works()
+    public void ContentBlockValidationWorks()
     {
         Source value = new(new ContentBlockSource(new Content("string")));
         value.Validate();
     }
 
     [Fact]
-    public void url_pdfValidation_Works()
+    public void URLPDFValidationWorks()
     {
         Source value = new(new URLPDFSource("url"));
         value.Validate();
     }
 
     [Fact]
-    public void base64_pdfSerializationRoundtrip_Works()
+    public void Base64PDFSerializationRoundtripWorks()
     {
         Source value = new(new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void plain_textSerializationRoundtrip_Works()
+    public void PlainTextSerializationRoundtripWorks()
     {
         Source value = new(new PlainTextSource("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void content_blockSerializationRoundtrip_Works()
+    public void ContentBlockSerializationRoundtripWorks()
     {
         Source value = new(new ContentBlockSource(new Content("string")));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void url_pdfSerializationRoundtrip_Works()
+    public void URLPDFSerializationRoundtripWorks()
     {
         Source value = new(new URLPDFSource("url"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }

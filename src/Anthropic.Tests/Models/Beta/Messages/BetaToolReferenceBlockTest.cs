@@ -33,8 +33,8 @@ public class BetaToolReferenceBlockTest : TestBase
     {
         var model = new BetaToolReferenceBlock { ToolName = "tool_name" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedToolName = "tool_name";

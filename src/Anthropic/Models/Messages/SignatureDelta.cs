@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<SignatureDelta, SignatureDeltaFromRaw>))]
-public sealed record class SignatureDelta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<SignatureDelta, SignatureDeltaFromRaw>))]
+public sealed record class SignatureDelta : JsonModel
 {
     public required string Signature
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "signature"); }
-        init { ModelBase.Set(this._rawData, "signature", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "signature"); }
+        init { JsonModel.Set(this._rawData, "signature", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -75,7 +75,7 @@ public sealed record class SignatureDelta : ModelBase
     }
 }
 
-class SignatureDeltaFromRaw : IFromRaw<SignatureDelta>
+class SignatureDeltaFromRaw : IFromRawJson<SignatureDelta>
 {
     /// <inheritdoc/>
     public SignatureDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

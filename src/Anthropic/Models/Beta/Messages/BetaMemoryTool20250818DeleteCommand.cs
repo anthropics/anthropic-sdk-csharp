@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818DeleteCommand,
         BetaMemoryTool20250818DeleteCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
+public sealed record class BetaMemoryTool20250818DeleteCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
+        init { JsonModel.Set(this._rawData, "command", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
-        init { ModelBase.Set(this._rawData, "path", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "path"); }
+        init { JsonModel.Set(this._rawData, "path", value); }
     }
 
     /// <inheritdoc/>
@@ -90,7 +90,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818DeleteCommandFromRaw : IFromRaw<BetaMemoryTool20250818DeleteCommand>
+class BetaMemoryTool20250818DeleteCommandFromRaw : IFromRawJson<BetaMemoryTool20250818DeleteCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818DeleteCommand FromRawUnchecked(

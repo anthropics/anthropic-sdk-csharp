@@ -304,8 +304,8 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
             ),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchIndividualResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchIndividualResponse>(element);
         Assert.NotNull(deserialized);
 
         string expectedCustomID = "my-custom-id-1";

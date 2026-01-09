@@ -9,8 +9,8 @@ using Anthropic.Models.Messages;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessage, BetaMessageFromRaw>))]
-public sealed record class BetaMessage : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaMessage, BetaMessageFromRaw>))]
+public sealed record class BetaMessage : JsonModel
 {
     /// <summary>
     /// Unique object identifier.
@@ -19,8 +19,8 @@ public sealed record class BetaMessage : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -28,8 +28,8 @@ public sealed record class BetaMessage : ModelBase
     /// </summary>
     public required BetaContainer? Container
     {
-        get { return ModelBase.GetNullableClass<BetaContainer>(this.RawData, "container"); }
-        init { ModelBase.Set(this._rawData, "container", value); }
+        get { return JsonModel.GetNullableClass<BetaContainer>(this.RawData, "container"); }
+        init { JsonModel.Set(this._rawData, "container", value); }
     }
 
     /// <summary>
@@ -56,8 +56,8 @@ public sealed record class BetaMessage : ModelBase
     /// </summary>
     public required IReadOnlyList<BetaContentBlock> Content
     {
-        get { return ModelBase.GetNotNullClass<List<BetaContentBlock>>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<List<BetaContentBlock>>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     /// <summary>
@@ -69,12 +69,12 @@ public sealed record class BetaMessage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaContextManagementResponse>(
+            return JsonModel.GetNullableClass<BetaContextManagementResponse>(
                 this.RawData,
                 "context_management"
             );
         }
-        init { ModelBase.Set(this._rawData, "context_management", value); }
+        init { JsonModel.Set(this._rawData, "context_management", value); }
     }
 
     /// <summary>
@@ -83,8 +83,8 @@ public sealed record class BetaMessage : ModelBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return ModelBase.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
-        init { ModelBase.Set(this._rawData, "model", value); }
+        get { return JsonModel.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
+        init { JsonModel.Set(this._rawData, "model", value); }
     }
 
     /// <summary>
@@ -94,8 +94,8 @@ public sealed record class BetaMessage : ModelBase
     /// </summary>
     public JsonElement Role
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "role"); }
-        init { ModelBase.Set(this._rawData, "role", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "role"); }
+        init { JsonModel.Set(this._rawData, "role", value); }
     }
 
     /// <summary>
@@ -116,12 +116,12 @@ public sealed record class BetaMessage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, BetaStopReason>>(
+            return JsonModel.GetNullableClass<ApiEnum<string, BetaStopReason>>(
                 this.RawData,
                 "stop_reason"
             );
         }
-        init { ModelBase.Set(this._rawData, "stop_reason", value); }
+        init { JsonModel.Set(this._rawData, "stop_reason", value); }
     }
 
     /// <summary>
@@ -132,8 +132,8 @@ public sealed record class BetaMessage : ModelBase
     /// </summary>
     public required string? StopSequence
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "stop_sequence"); }
-        init { ModelBase.Set(this._rawData, "stop_sequence", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "stop_sequence"); }
+        init { JsonModel.Set(this._rawData, "stop_sequence", value); }
     }
 
     /// <summary>
@@ -143,8 +143,8 @@ public sealed record class BetaMessage : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -166,8 +166,8 @@ public sealed record class BetaMessage : ModelBase
     /// </summary>
     public required BetaUsage Usage
     {
-        get { return ModelBase.GetNotNullClass<BetaUsage>(this.RawData, "usage"); }
-        init { ModelBase.Set(this._rawData, "usage", value); }
+        get { return JsonModel.GetNotNullClass<BetaUsage>(this.RawData, "usage"); }
+        init { JsonModel.Set(this._rawData, "usage", value); }
     }
 
     /// <inheritdoc/>
@@ -236,7 +236,7 @@ public sealed record class BetaMessage : ModelBase
     }
 }
 
-class BetaMessageFromRaw : IFromRaw<BetaMessage>
+class BetaMessageFromRaw : IFromRawJson<BetaMessage>
 {
     /// <inheritdoc/>
     public BetaMessage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

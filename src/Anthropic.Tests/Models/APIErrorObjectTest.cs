@@ -33,8 +33,8 @@ public class APIErrorObjectTest : TestBase
     {
         var model = new APIErrorObject { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<APIErrorObject>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<APIErrorObject>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

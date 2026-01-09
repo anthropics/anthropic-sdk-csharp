@@ -68,8 +68,8 @@ public class FileMetadataTest : TestBase
             Downloadable = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<FileMetadata>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<FileMetadata>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "id";

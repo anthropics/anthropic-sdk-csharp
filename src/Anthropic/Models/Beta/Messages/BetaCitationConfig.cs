@@ -7,13 +7,13 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationConfig, BetaCitationConfigFromRaw>))]
-public sealed record class BetaCitationConfig : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaCitationConfig, BetaCitationConfigFromRaw>))]
+public sealed record class BetaCitationConfig : JsonModel
 {
     public required bool Enabled
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "enabled"); }
-        init { ModelBase.Set(this._rawData, "enabled", value); }
+        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "enabled"); }
+        init { JsonModel.Set(this._rawData, "enabled", value); }
     }
 
     /// <inheritdoc/>
@@ -56,7 +56,7 @@ public sealed record class BetaCitationConfig : ModelBase
     }
 }
 
-class BetaCitationConfigFromRaw : IFromRaw<BetaCitationConfig>
+class BetaCitationConfigFromRaw : IFromRawJson<BetaCitationConfig>
 {
     /// <inheritdoc/>
     public BetaCitationConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

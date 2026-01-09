@@ -11,22 +11,22 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// The model will use the specified tool with `tool_choice.name`.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolChoiceTool, BetaToolChoiceToolFromRaw>))]
-public sealed record class BetaToolChoiceTool : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaToolChoiceTool, BetaToolChoiceToolFromRaw>))]
+public sealed record class BetaToolChoiceTool : JsonModel
 {
     /// <summary>
     /// The name of the tool to use.
     /// </summary>
     public required string Name
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public sealed record class BetaToolChoiceTool : ModelBase
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
         init
         {
             if (value == null)
@@ -45,7 +45,7 @@ public sealed record class BetaToolChoiceTool : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "disable_parallel_tool_use", value);
+            JsonModel.Set(this._rawData, "disable_parallel_tool_use", value);
         }
     }
 
@@ -99,7 +99,7 @@ public sealed record class BetaToolChoiceTool : ModelBase
     }
 }
 
-class BetaToolChoiceToolFromRaw : IFromRaw<BetaToolChoiceTool>
+class BetaToolChoiceToolFromRaw : IFromRawJson<BetaToolChoiceTool>
 {
     /// <inheritdoc/>
     public BetaToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

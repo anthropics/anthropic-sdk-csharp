@@ -33,8 +33,8 @@ public class RedactedThinkingBlockParamTest : TestBase
     {
         var model = new RedactedThinkingBlockParam { Data = "data" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedData = "data";

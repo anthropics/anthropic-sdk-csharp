@@ -35,8 +35,8 @@ public class RawContentBlockStopEventTest : TestBase
     {
         var model = new RawContentBlockStopEvent { Index = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStopEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStopEvent>(element);
         Assert.NotNull(deserialized);
 
         long expectedIndex = 0;

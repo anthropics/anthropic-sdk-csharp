@@ -11,11 +11,11 @@ public record class BetaRawContentBlockDelta
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -32,39 +32,39 @@ public record class BetaRawContentBlockDelta
         }
     }
 
-    public BetaRawContentBlockDelta(BetaTextDelta value, JsonElement? json = null)
+    public BetaRawContentBlockDelta(BetaTextDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawContentBlockDelta(BetaInputJSONDelta value, JsonElement? json = null)
+    public BetaRawContentBlockDelta(BetaInputJSONDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawContentBlockDelta(BetaCitationsDelta value, JsonElement? json = null)
+    public BetaRawContentBlockDelta(BetaCitationsDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawContentBlockDelta(BetaThinkingDelta value, JsonElement? json = null)
+    public BetaRawContentBlockDelta(BetaThinkingDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawContentBlockDelta(BetaSignatureDelta value, JsonElement? json = null)
+    public BetaRawContentBlockDelta(BetaSignatureDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawContentBlockDelta(JsonElement json)
+    public BetaRawContentBlockDelta(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -331,11 +331,11 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -348,11 +348,11 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaTextDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaTextDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -361,20 +361,20 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "input_json_delta":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaInputJSONDelta>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -383,20 +383,20 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "citations_delta":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationsDelta>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -405,17 +405,20 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "thinking_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -424,20 +427,20 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "signature_delta":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaSignatureDelta>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -446,11 +449,11 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaRawContentBlockDelta(json);
+                return new BetaRawContentBlockDelta(element);
             }
         }
     }

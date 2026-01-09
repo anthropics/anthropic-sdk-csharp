@@ -9,31 +9,31 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBase64ImageSource, BetaBase64ImageSourceFromRaw>))]
-public sealed record class BetaBase64ImageSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaBase64ImageSource, BetaBase64ImageSourceFromRaw>))]
+public sealed record class BetaBase64ImageSource : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     public required ApiEnum<string, MediaType> MediaType
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, MediaType>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, MediaType>>(
                 this.RawData,
                 "media_type"
             );
         }
-        init { ModelBase.Set(this._rawData, "media_type", value); }
+        init { JsonModel.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -84,7 +84,7 @@ public sealed record class BetaBase64ImageSource : ModelBase
     }
 }
 
-class BetaBase64ImageSourceFromRaw : IFromRaw<BetaBase64ImageSource>
+class BetaBase64ImageSourceFromRaw : IFromRawJson<BetaBase64ImageSource>
 {
     /// <inheritdoc/>
     public BetaBase64ImageSource FromRawUnchecked(

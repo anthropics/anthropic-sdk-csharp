@@ -289,8 +289,8 @@ public class BetaMessageBatchSucceededResultTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchSucceededResult>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchSucceededResult>(element);
         Assert.NotNull(deserialized);
 
         Messages::BetaMessage expectedMessage = new()

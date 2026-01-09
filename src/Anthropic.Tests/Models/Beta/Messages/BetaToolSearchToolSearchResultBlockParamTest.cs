@@ -79,9 +79,9 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlockParam>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 

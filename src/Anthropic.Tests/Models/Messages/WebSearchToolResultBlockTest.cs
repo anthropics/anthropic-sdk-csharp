@@ -57,8 +57,8 @@ public class WebSearchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(element);
         Assert.NotNull(deserialized);
 
         WebSearchToolResultBlockContent expectedContent = new WebSearchToolResultError(

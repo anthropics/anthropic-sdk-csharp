@@ -35,8 +35,8 @@ public class BetaThinkingBlockParamTest : TestBase
     {
         var model = new BetaThinkingBlockParam { Signature = "signature", Thinking = "thinking" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedSignature = "signature";

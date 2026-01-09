@@ -51,8 +51,10 @@ public class BetaRequestMCPServerToolConfigurationTest : TestBase
             Enabled = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPServerToolConfiguration>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPServerToolConfiguration>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         List<string> expectedAllowedTools = ["string"];

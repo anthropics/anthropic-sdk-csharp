@@ -9,35 +9,35 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaCodeExecutionToolResultBlock,
         BetaCodeExecutionToolResultBlockFromRaw
     >)
 )]
-public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
+public sealed record class BetaCodeExecutionToolResultBlock : JsonModel
 {
     public required BetaCodeExecutionToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaCodeExecutionToolResultBlockContent>(
+            return JsonModel.GetNotNullClass<BetaCodeExecutionToolResultBlockContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -90,7 +90,7 @@ public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
     }
 }
 
-class BetaCodeExecutionToolResultBlockFromRaw : IFromRaw<BetaCodeExecutionToolResultBlock>
+class BetaCodeExecutionToolResultBlockFromRaw : IFromRawJson<BetaCodeExecutionToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaCodeExecutionToolResultBlock FromRawUnchecked(

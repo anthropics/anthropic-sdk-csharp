@@ -12,12 +12,12 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// response as a whole.
 /// </summary>
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMessageBatchIndividualResponse,
         BetaMessageBatchIndividualResponseFromRaw
     >)
 )]
-public sealed record class BetaMessageBatchIndividualResponse : ModelBase
+public sealed record class BetaMessageBatchIndividualResponse : JsonModel
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful
@@ -27,8 +27,8 @@ public sealed record class BetaMessageBatchIndividualResponse : ModelBase
     /// </summary>
     public required string CustomID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "custom_id"); }
-        init { ModelBase.Set(this._rawData, "custom_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "custom_id"); }
+        init { JsonModel.Set(this._rawData, "custom_id", value); }
     }
 
     /// <summary>
@@ -40,8 +40,8 @@ public sealed record class BetaMessageBatchIndividualResponse : ModelBase
     /// </summary>
     public required BetaMessageBatchResult Result
     {
-        get { return ModelBase.GetNotNullClass<BetaMessageBatchResult>(this.RawData, "result"); }
-        init { ModelBase.Set(this._rawData, "result", value); }
+        get { return JsonModel.GetNotNullClass<BetaMessageBatchResult>(this.RawData, "result"); }
+        init { JsonModel.Set(this._rawData, "result", value); }
     }
 
     /// <inheritdoc/>
@@ -80,7 +80,7 @@ public sealed record class BetaMessageBatchIndividualResponse : ModelBase
     }
 }
 
-class BetaMessageBatchIndividualResponseFromRaw : IFromRaw<BetaMessageBatchIndividualResponse>
+class BetaMessageBatchIndividualResponseFromRaw : IFromRawJson<BetaMessageBatchIndividualResponse>
 {
     /// <inheritdoc/>
     public BetaMessageBatchIndividualResponse FromRawUnchecked(

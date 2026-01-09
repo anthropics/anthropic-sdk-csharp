@@ -11,19 +11,21 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Response model for a file uploaded to the container.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainerUploadBlock, BetaContainerUploadBlockFromRaw>))]
-public sealed record class BetaContainerUploadBlock : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaContainerUploadBlock, BetaContainerUploadBlockFromRaw>)
+)]
+public sealed record class BetaContainerUploadBlock : JsonModel
 {
     public required string FileID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "file_id"); }
+        init { JsonModel.Set(this._rawData, "file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -80,7 +82,7 @@ public sealed record class BetaContainerUploadBlock : ModelBase
     }
 }
 
-class BetaContainerUploadBlockFromRaw : IFromRaw<BetaContainerUploadBlock>
+class BetaContainerUploadBlockFromRaw : IFromRawJson<BetaContainerUploadBlock>
 {
     /// <inheritdoc/>
     public BetaContainerUploadBlock FromRawUnchecked(
