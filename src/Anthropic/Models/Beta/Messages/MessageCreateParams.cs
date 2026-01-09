@@ -762,6 +762,9 @@ public record class Container
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ContainerConverter : JsonConverter<Container?>
@@ -1056,6 +1059,9 @@ public record class MessageCreateParamsSystem
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreateParamsSystem>

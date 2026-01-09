@@ -308,6 +308,9 @@ public record class ToolResultBlockParamContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBlockParamContent>
@@ -651,6 +654,9 @@ public record class Block
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BlockConverter : JsonConverter<Block>

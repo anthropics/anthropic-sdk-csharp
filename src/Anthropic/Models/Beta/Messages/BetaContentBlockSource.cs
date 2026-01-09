@@ -286,6 +286,9 @@ public record class BetaContentBlockSourceContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentBlockSourceContent>
