@@ -47,8 +47,8 @@ public class MessageBatchErroredResultTest : TestBase
             Error = new() { Error = new InvalidRequestError("message"), RequestID = "request_id" },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(element);
         Assert.NotNull(deserialized);
 
         ErrorResponse expectedError = new()

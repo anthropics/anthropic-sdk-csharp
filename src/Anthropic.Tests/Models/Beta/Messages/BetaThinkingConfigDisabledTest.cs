@@ -31,8 +31,8 @@ public class BetaThinkingConfigDisabledTest : TestBase
     {
         var model = new BetaThinkingConfigDisabled { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");

@@ -71,9 +71,9 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
             OldStart = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(element);
         Assert.NotNull(deserialized);
 
         List<string> expectedLines = ["string"];

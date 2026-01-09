@@ -7,16 +7,16 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ServerToolUsage, ServerToolUsageFromRaw>))]
-public sealed record class ServerToolUsage : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ServerToolUsage, ServerToolUsageFromRaw>))]
+public sealed record class ServerToolUsage : JsonModel
 {
     /// <summary>
     /// The number of web search tool requests.
     /// </summary>
     public required long WebSearchRequests
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
-        init { ModelBase.Set(this._rawData, "web_search_requests", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
+        init { JsonModel.Set(this._rawData, "web_search_requests", value); }
     }
 
     /// <inheritdoc/>
@@ -57,7 +57,7 @@ public sealed record class ServerToolUsage : ModelBase
     }
 }
 
-class ServerToolUsageFromRaw : IFromRaw<ServerToolUsage>
+class ServerToolUsageFromRaw : IFromRawJson<ServerToolUsage>
 {
     /// <inheritdoc/>
     public ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

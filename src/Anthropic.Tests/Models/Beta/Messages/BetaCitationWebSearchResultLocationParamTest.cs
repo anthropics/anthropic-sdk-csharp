@@ -61,9 +61,9 @@ public class BetaCitationWebSearchResultLocationParamTest : TestBase
             URL = "x",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaCitationWebSearchResultLocationParam>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 

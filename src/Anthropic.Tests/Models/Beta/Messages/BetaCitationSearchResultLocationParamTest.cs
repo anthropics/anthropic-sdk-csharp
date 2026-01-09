@@ -69,8 +69,10 @@ public class BetaCitationSearchResultLocationParamTest : TestBase
             Title = "title",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCitationSearchResultLocationParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationSearchResultLocationParam>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";

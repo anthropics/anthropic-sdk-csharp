@@ -18,8 +18,7 @@ public class AnthropicFoundryClient : AnthropicClient
     {
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
-        var url = $"https://{azureCredentials.ResourceName}.services.ai.azure.com/anthropic";
-        BaseUrl = new Uri(url, UriKind.Absolute);
+        BaseUrl = $"https://{azureCredentials.ResourceName}.services.ai.azure.com/anthropic";
     }
 
     private AnthropicFoundryClient(

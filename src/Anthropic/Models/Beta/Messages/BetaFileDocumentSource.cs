@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaFileDocumentSource, BetaFileDocumentSourceFromRaw>))]
-public sealed record class BetaFileDocumentSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaFileDocumentSource, BetaFileDocumentSourceFromRaw>))]
+public sealed record class BetaFileDocumentSource : JsonModel
 {
     public required string FileID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "file_id"); }
+        init { JsonModel.Set(this._rawData, "file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -72,7 +72,7 @@ public sealed record class BetaFileDocumentSource : ModelBase
     }
 }
 
-class BetaFileDocumentSourceFromRaw : IFromRaw<BetaFileDocumentSource>
+class BetaFileDocumentSourceFromRaw : IFromRawJson<BetaFileDocumentSource>
 {
     /// <inheritdoc/>
     public BetaFileDocumentSource FromRawUnchecked(

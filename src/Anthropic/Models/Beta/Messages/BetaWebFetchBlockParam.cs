@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebFetchBlockParam, BetaWebFetchBlockParamFromRaw>))]
-public sealed record class BetaWebFetchBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaWebFetchBlockParam, BetaWebFetchBlockParamFromRaw>))]
+public sealed record class BetaWebFetchBlockParam : JsonModel
 {
     public required BetaRequestDocumentBlock Content
     {
-        get { return ModelBase.GetNotNullClass<BetaRequestDocumentBlock>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<BetaRequestDocumentBlock>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -28,8 +28,8 @@ public sealed record class BetaWebFetchBlockParam : ModelBase
     /// </summary>
     public required string URL
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
+        init { JsonModel.Set(this._rawData, "url", value); }
     }
 
     /// <summary>
@@ -37,8 +37,8 @@ public sealed record class BetaWebFetchBlockParam : ModelBase
     /// </summary>
     public string? RetrievedAt
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "retrieved_at"); }
-        init { ModelBase.Set(this._rawData, "retrieved_at", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "retrieved_at"); }
+        init { JsonModel.Set(this._rawData, "retrieved_at", value); }
     }
 
     /// <inheritdoc/>
@@ -90,7 +90,7 @@ public sealed record class BetaWebFetchBlockParam : ModelBase
     }
 }
 
-class BetaWebFetchBlockParamFromRaw : IFromRaw<BetaWebFetchBlockParam>
+class BetaWebFetchBlockParamFromRaw : IFromRawJson<BetaWebFetchBlockParam>
 {
     /// <inheritdoc/>
     public BetaWebFetchBlockParam FromRawUnchecked(

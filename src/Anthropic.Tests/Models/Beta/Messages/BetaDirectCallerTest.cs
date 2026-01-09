@@ -31,8 +31,8 @@ public class BetaDirectCallerTest : TestBase
     {
         var model = new BetaDirectCaller { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"direct\"");

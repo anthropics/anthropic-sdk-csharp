@@ -9,13 +9,13 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CacheControlEphemeral, CacheControlEphemeralFromRaw>))]
-public sealed record class CacheControlEphemeral : ModelBase
+[JsonConverter(typeof(JsonModelConverter<CacheControlEphemeral, CacheControlEphemeralFromRaw>))]
+public sealed record class CacheControlEphemeral : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public sealed record class CacheControlEphemeral : ModelBase
     /// </summary>
     public ApiEnum<string, TTL>? TTL
     {
-        get { return ModelBase.GetNullableClass<ApiEnum<string, TTL>>(this.RawData, "ttl"); }
+        get { return JsonModel.GetNullableClass<ApiEnum<string, TTL>>(this.RawData, "ttl"); }
         init
         {
             if (value == null)
@@ -35,7 +35,7 @@ public sealed record class CacheControlEphemeral : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "ttl", value);
+            JsonModel.Set(this._rawData, "ttl", value);
         }
     }
 
@@ -86,7 +86,7 @@ public sealed record class CacheControlEphemeral : ModelBase
     }
 }
 
-class CacheControlEphemeralFromRaw : IFromRaw<CacheControlEphemeral>
+class CacheControlEphemeralFromRaw : IFromRawJson<CacheControlEphemeral>
 {
     /// <inheritdoc/>
     public CacheControlEphemeral FromRawUnchecked(

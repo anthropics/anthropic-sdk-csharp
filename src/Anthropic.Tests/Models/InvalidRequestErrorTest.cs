@@ -35,8 +35,8 @@ public class InvalidRequestErrorTest : TestBase
     {
         var model = new InvalidRequestError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<InvalidRequestError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<InvalidRequestError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

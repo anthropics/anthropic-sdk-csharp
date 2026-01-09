@@ -98,8 +98,8 @@ public class TextBlockParamTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<TextBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedText = "x";

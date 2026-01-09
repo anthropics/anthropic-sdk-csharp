@@ -10,16 +10,16 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Container parameters with skills to be loaded.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainerParams, BetaContainerParamsFromRaw>))]
-public sealed record class BetaContainerParams : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaContainerParams, BetaContainerParamsFromRaw>))]
+public sealed record class BetaContainerParams : JsonModel
 {
     /// <summary>
     /// Container id
     /// </summary>
     public string? ID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -27,8 +27,8 @@ public sealed record class BetaContainerParams : ModelBase
     /// </summary>
     public IReadOnlyList<BetaSkillParams>? Skills
     {
-        get { return ModelBase.GetNullableClass<List<BetaSkillParams>>(this.RawData, "skills"); }
-        init { ModelBase.Set(this._rawData, "skills", value); }
+        get { return JsonModel.GetNullableClass<List<BetaSkillParams>>(this.RawData, "skills"); }
+        init { JsonModel.Set(this._rawData, "skills", value); }
     }
 
     /// <inheritdoc/>
@@ -68,7 +68,7 @@ public sealed record class BetaContainerParams : ModelBase
     }
 }
 
-class BetaContainerParamsFromRaw : IFromRaw<BetaContainerParams>
+class BetaContainerParamsFromRaw : IFromRawJson<BetaContainerParams>
 {
     /// <inheritdoc/>
     public BetaContainerParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

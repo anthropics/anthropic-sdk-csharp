@@ -51,8 +51,10 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlock>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         Content expectedContent = new BetaBashCodeExecutionToolResultError(
@@ -84,14 +86,14 @@ public class BetaBashCodeExecutionToolResultBlockTest : TestBase
 public class ContentTest : TestBase
 {
     [Fact]
-    public void beta_bash_code_execution_tool_result_errorValidation_Works()
+    public void BetaBashCodeExecutionToolResultErrorValidationWorks()
     {
         Content value = new(new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput));
         value.Validate();
     }
 
     [Fact]
-    public void beta_bash_code_execution_result_blockValidation_Works()
+    public void BetaBashCodeExecutionResultBlockValidationWorks()
     {
         Content value = new(
             new BetaBashCodeExecutionResultBlock()
@@ -106,17 +108,17 @@ public class ContentTest : TestBase
     }
 
     [Fact]
-    public void beta_bash_code_execution_tool_result_errorSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionToolResultErrorSerializationRoundtripWorks()
     {
         Content value = new(new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Content>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_bash_code_execution_result_blockSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionResultBlockSerializationRoundtripWorks()
     {
         Content value = new(
             new BetaBashCodeExecutionResultBlock()
@@ -127,8 +129,8 @@ public class ContentTest : TestBase
                 Stdout = "stdout",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Content>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -10,37 +10,37 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMCPToolResultBlock, BetaMCPToolResultBlockFromRaw>))]
-public sealed record class BetaMCPToolResultBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaMCPToolResultBlock, BetaMCPToolResultBlockFromRaw>))]
+public sealed record class BetaMCPToolResultBlock : JsonModel
 {
     public required BetaMCPToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaMCPToolResultBlockContent>(
+            return JsonModel.GetNotNullClass<BetaMCPToolResultBlockContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required bool IsError
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "is_error"); }
-        init { ModelBase.Set(this._rawData, "is_error", value); }
+        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "is_error"); }
+        init { JsonModel.Set(this._rawData, "is_error", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -92,7 +92,7 @@ public sealed record class BetaMCPToolResultBlock : ModelBase
     }
 }
 
-class BetaMCPToolResultBlockFromRaw : IFromRaw<BetaMCPToolResultBlock>
+class BetaMCPToolResultBlockFromRaw : IFromRawJson<BetaMCPToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaMCPToolResultBlock FromRawUnchecked(
@@ -105,31 +105,31 @@ public record class BetaMCPToolResultBlockContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public BetaMCPToolResultBlockContent(string value, JsonElement? json = null)
+    public BetaMCPToolResultBlockContent(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaMCPToolResultBlockContent(
         IReadOnlyList<BetaTextBlock> value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaMCPToolResultBlockContent(JsonElement json)
+    public BetaMCPToolResultBlockContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -296,13 +296,13 @@ sealed class BetaMCPToolResultBlockContentConverter : JsonConverter<BetaMCPToolR
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -312,10 +312,10 @@ sealed class BetaMCPToolResultBlockContentConverter : JsonConverter<BetaMCPToolR
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlock>>(json, options);
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlock>>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -323,7 +323,7 @@ sealed class BetaMCPToolResultBlockContentConverter : JsonConverter<BetaMCPToolR
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

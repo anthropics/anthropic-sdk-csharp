@@ -47,8 +47,8 @@ public class BetaMemoryTool20250818RenameCommandTest : TestBase
             OldPath = "/memories/draft.txt",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818RenameCommand>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818RenameCommand>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"rename\"");

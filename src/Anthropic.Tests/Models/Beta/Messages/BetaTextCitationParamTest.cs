@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaTextCitationParamTest : TestBase
 {
     [Fact]
-    public void citation_char_locationValidation_Works()
+    public void CitationCharLocationValidationWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationCharLocationParam()
@@ -22,7 +22,7 @@ public class BetaTextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_page_locationValidation_Works()
+    public void CitationPageLocationValidationWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationPageLocationParam()
@@ -38,7 +38,7 @@ public class BetaTextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_content_block_locationValidation_Works()
+    public void CitationContentBlockLocationValidationWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationContentBlockLocationParam()
@@ -54,7 +54,7 @@ public class BetaTextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_web_search_result_locationValidation_Works()
+    public void CitationWebSearchResultLocationValidationWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationWebSearchResultLocationParam()
@@ -69,7 +69,7 @@ public class BetaTextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_search_result_locationValidation_Works()
+    public void CitationSearchResultLocationValidationWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationSearchResultLocationParam()
@@ -86,7 +86,7 @@ public class BetaTextCitationParamTest : TestBase
     }
 
     [Fact]
-    public void citation_char_locationSerializationRoundtrip_Works()
+    public void CitationCharLocationSerializationRoundtripWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationCharLocationParam()
@@ -98,14 +98,14 @@ public class BetaTextCitationParamTest : TestBase
                 StartCharIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_page_locationSerializationRoundtrip_Works()
+    public void CitationPageLocationSerializationRoundtripWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationPageLocationParam()
@@ -117,14 +117,14 @@ public class BetaTextCitationParamTest : TestBase
                 StartPageNumber = 1,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_content_block_locationSerializationRoundtrip_Works()
+    public void CitationContentBlockLocationSerializationRoundtripWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationContentBlockLocationParam()
@@ -136,14 +136,14 @@ public class BetaTextCitationParamTest : TestBase
                 StartBlockIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_web_search_result_locationSerializationRoundtrip_Works()
+    public void CitationWebSearchResultLocationSerializationRoundtripWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationWebSearchResultLocationParam()
@@ -154,14 +154,14 @@ public class BetaTextCitationParamTest : TestBase
                 URL = "x",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_search_result_locationSerializationRoundtrip_Works()
+    public void CitationSearchResultLocationSerializationRoundtripWorks()
     {
         BetaTextCitationParam value = new(
             new BetaCitationSearchResultLocationParam()
@@ -174,8 +174,8 @@ public class BetaTextCitationParamTest : TestBase
                 Title = "title",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaTextCitationParam>(element);
 
         Assert.Equal(value, deserialized);
     }

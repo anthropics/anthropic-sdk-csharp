@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages.Batches;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaMessageBatchErroredResult, BetaMessageBatchErroredResultFromRaw>)
+    typeof(JsonModelConverter<BetaMessageBatchErroredResult, BetaMessageBatchErroredResultFromRaw>)
 )]
-public sealed record class BetaMessageBatchErroredResult : ModelBase
+public sealed record class BetaMessageBatchErroredResult : JsonModel
 {
     public required BetaErrorResponse Error
     {
-        get { return ModelBase.GetNotNullClass<BetaErrorResponse>(this.RawData, "error"); }
-        init { ModelBase.Set(this._rawData, "error", value); }
+        get { return JsonModel.GetNotNullClass<BetaErrorResponse>(this.RawData, "error"); }
+        init { JsonModel.Set(this._rawData, "error", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -81,7 +81,7 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
     }
 }
 
-class BetaMessageBatchErroredResultFromRaw : IFromRaw<BetaMessageBatchErroredResult>
+class BetaMessageBatchErroredResultFromRaw : IFromRawJson<BetaMessageBatchErroredResult>
 {
     /// <inheritdoc/>
     public BetaMessageBatchErroredResult FromRawUnchecked(

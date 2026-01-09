@@ -7,18 +7,18 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class MessageCountTokensParamsSystemTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         MessageCountTokensParamsSystem value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void BetaTextBlockParamsValidation_Works()
+    public void BetaTextBlockParamsValidationWorks()
     {
         MessageCountTokensParamsSystem value = new(
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -40,21 +40,21 @@ public class MessageCountTokensParamsSystemTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         MessageCountTokensParamsSystem value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void BetaTextBlockParamsSerializationRoundtrip_Works()
+    public void BetaTextBlockParamsSerializationRoundtripWorks()
     {
         MessageCountTokensParamsSystem value = new(
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -72,8 +72,8 @@ public class MessageCountTokensParamsSystemTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -82,7 +82,7 @@ public class MessageCountTokensParamsSystemTest : TestBase
 public class ToolTest : TestBase
 {
     [Fact]
-    public void betaValidation_Works()
+    public void BetaValidationWorks()
     {
         Tool value = new(
             new BetaTool()
@@ -116,7 +116,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_bash_20241022Validation_Works()
+    public void BetaToolBash20241022ValidationWorks()
     {
         Tool value = new(
             new BetaToolBash20241022()
@@ -138,7 +138,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_bash_20250124Validation_Works()
+    public void BetaToolBash20250124ValidationWorks()
     {
         Tool value = new(
             new BetaToolBash20250124()
@@ -160,7 +160,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_code_execution_tool_20250522Validation_Works()
+    public void BetaCodeExecutionTool20250522ValidationWorks()
     {
         Tool value = new(
             new BetaCodeExecutionTool20250522()
@@ -175,7 +175,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_code_execution_tool_20250825Validation_Works()
+    public void BetaCodeExecutionTool20250825ValidationWorks()
     {
         Tool value = new(
             new BetaCodeExecutionTool20250825()
@@ -190,7 +190,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_computer_use_20241022Validation_Works()
+    public void BetaToolComputerUse20241022ValidationWorks()
     {
         Tool value = new(
             new BetaToolComputerUse20241022()
@@ -215,7 +215,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_memory_tool_20250818Validation_Works()
+    public void BetaMemoryTool20250818ValidationWorks()
     {
         Tool value = new(
             new BetaMemoryTool20250818()
@@ -237,7 +237,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_computer_use_20250124Validation_Works()
+    public void BetaToolComputerUse20250124ValidationWorks()
     {
         Tool value = new(
             new BetaToolComputerUse20250124()
@@ -262,7 +262,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_text_editor_20241022Validation_Works()
+    public void BetaToolTextEditor20241022ValidationWorks()
     {
         Tool value = new(
             new BetaToolTextEditor20241022()
@@ -284,7 +284,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_computer_use_20251124Validation_Works()
+    public void BetaToolComputerUse20251124ValidationWorks()
     {
         Tool value = new(
             new BetaToolComputerUse20251124()
@@ -310,7 +310,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_text_editor_20250124Validation_Works()
+    public void BetaToolTextEditor20250124ValidationWorks()
     {
         Tool value = new(
             new BetaToolTextEditor20250124()
@@ -332,7 +332,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_text_editor_20250429Validation_Works()
+    public void BetaToolTextEditor20250429ValidationWorks()
     {
         Tool value = new(
             new BetaToolTextEditor20250429()
@@ -354,7 +354,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_text_editor_20250728Validation_Works()
+    public void BetaToolTextEditor20250728ValidationWorks()
     {
         Tool value = new(
             new BetaToolTextEditor20250728()
@@ -377,7 +377,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_web_search_tool_20250305Validation_Works()
+    public void BetaWebSearchTool20250305ValidationWorks()
     {
         Tool value = new(
             new BetaWebSearchTool20250305()
@@ -402,7 +402,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_web_fetch_tool_20250910Validation_Works()
+    public void BetaWebFetchTool20250910ValidationWorks()
     {
         Tool value = new(
             new BetaWebFetchTool20250910()
@@ -422,7 +422,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_search_tool_bm25_20251119Validation_Works()
+    public void BetaToolSearchToolBm25_20251119ValidationWorks()
     {
         Tool value = new(
             new BetaToolSearchToolBm25_20251119()
@@ -438,7 +438,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_tool_search_tool_regex_20251119Validation_Works()
+    public void BetaToolSearchToolRegex20251119ValidationWorks()
     {
         Tool value = new(
             new BetaToolSearchToolRegex20251119()
@@ -454,7 +454,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void beta_mcp_toolsetValidation_Works()
+    public void BetaMCPToolsetValidationWorks()
     {
         Tool value = new(
             new BetaMCPToolset()
@@ -475,7 +475,7 @@ public class ToolTest : TestBase
     }
 
     [Fact]
-    public void betaSerializationRoundtrip_Works()
+    public void BetaSerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaTool()
@@ -505,14 +505,14 @@ public class ToolTest : TestBase
                 Type = BetaToolType.Custom,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_bash_20241022SerializationRoundtrip_Works()
+    public void BetaToolBash20241022SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolBash20241022()
@@ -530,14 +530,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_bash_20250124SerializationRoundtrip_Works()
+    public void BetaToolBash20250124SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolBash20250124()
@@ -555,14 +555,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_code_execution_tool_20250522SerializationRoundtrip_Works()
+    public void BetaCodeExecutionTool20250522SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaCodeExecutionTool20250522()
@@ -573,14 +573,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_code_execution_tool_20250825SerializationRoundtrip_Works()
+    public void BetaCodeExecutionTool20250825SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaCodeExecutionTool20250825()
@@ -591,14 +591,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_computer_use_20241022SerializationRoundtrip_Works()
+    public void BetaToolComputerUse20241022SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolComputerUse20241022()
@@ -619,14 +619,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_memory_tool_20250818SerializationRoundtrip_Works()
+    public void BetaMemoryTool20250818SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaMemoryTool20250818()
@@ -644,14 +644,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_computer_use_20250124SerializationRoundtrip_Works()
+    public void BetaToolComputerUse20250124SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolComputerUse20250124()
@@ -672,14 +672,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_text_editor_20241022SerializationRoundtrip_Works()
+    public void BetaToolTextEditor20241022SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolTextEditor20241022()
@@ -697,14 +697,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_computer_use_20251124SerializationRoundtrip_Works()
+    public void BetaToolComputerUse20251124SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolComputerUse20251124()
@@ -726,14 +726,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_text_editor_20250124SerializationRoundtrip_Works()
+    public void BetaToolTextEditor20250124SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolTextEditor20250124()
@@ -751,14 +751,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_text_editor_20250429SerializationRoundtrip_Works()
+    public void BetaToolTextEditor20250429SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolTextEditor20250429()
@@ -776,14 +776,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_text_editor_20250728SerializationRoundtrip_Works()
+    public void BetaToolTextEditor20250728SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolTextEditor20250728()
@@ -802,14 +802,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_web_search_tool_20250305SerializationRoundtrip_Works()
+    public void BetaWebSearchTool20250305SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaWebSearchTool20250305()
@@ -830,14 +830,14 @@ public class ToolTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_web_fetch_tool_20250910SerializationRoundtrip_Works()
+    public void BetaWebFetchTool20250910SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaWebFetchTool20250910()
@@ -853,14 +853,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_search_tool_bm25_20251119SerializationRoundtrip_Works()
+    public void BetaToolSearchToolBm25_20251119SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolSearchToolBm25_20251119()
@@ -872,14 +872,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_search_tool_regex_20251119SerializationRoundtrip_Works()
+    public void BetaToolSearchToolRegex20251119SerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaToolSearchToolRegex20251119()
@@ -891,14 +891,14 @@ public class ToolTest : TestBase
                 Strict = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_mcp_toolsetSerializationRoundtrip_Works()
+    public void BetaMCPToolsetSerializationRoundtripWorks()
     {
         Tool value = new(
             new BetaMCPToolset()
@@ -915,8 +915,8 @@ public class ToolTest : TestBase
                 DefaultConfig = new() { DeferLoading = true, Enabled = true },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Tool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Tool>(element);
 
         Assert.Equal(value, deserialized);
     }

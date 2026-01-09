@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaInputTokensClearAtLeast, BetaInputTokensClearAtLeastFromRaw>)
+    typeof(JsonModelConverter<BetaInputTokensClearAtLeast, BetaInputTokensClearAtLeastFromRaw>)
 )]
-public sealed record class BetaInputTokensClearAtLeast : ModelBase
+public sealed record class BetaInputTokensClearAtLeast : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public required long Value
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "value"); }
-        init { ModelBase.Set(this._rawData, "value", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "value"); }
+        init { JsonModel.Set(this._rawData, "value", value); }
     }
 
     /// <inheritdoc/>
@@ -79,7 +79,7 @@ public sealed record class BetaInputTokensClearAtLeast : ModelBase
     }
 }
 
-class BetaInputTokensClearAtLeastFromRaw : IFromRaw<BetaInputTokensClearAtLeast>
+class BetaInputTokensClearAtLeastFromRaw : IFromRawJson<BetaInputTokensClearAtLeast>
 {
     /// <inheritdoc/>
     public BetaInputTokensClearAtLeast FromRawUnchecked(

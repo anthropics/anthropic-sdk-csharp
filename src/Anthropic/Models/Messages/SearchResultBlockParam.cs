@@ -8,31 +8,31 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<SearchResultBlockParam, SearchResultBlockParamFromRaw>))]
-public sealed record class SearchResultBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<SearchResultBlockParam, SearchResultBlockParamFromRaw>))]
+public sealed record class SearchResultBlockParam : JsonModel
 {
     public required IReadOnlyList<TextBlockParam> Content
     {
-        get { return ModelBase.GetNotNullClass<List<TextBlockParam>>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<List<TextBlockParam>>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string Source
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     public required string Title
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "title"); }
+        init { JsonModel.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -42,14 +42,14 @@ public sealed record class SearchResultBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     public CitationsConfigParam? Citations
     {
-        get { return ModelBase.GetNullableClass<CitationsConfigParam>(this.RawData, "citations"); }
+        get { return JsonModel.GetNullableClass<CitationsConfigParam>(this.RawData, "citations"); }
         init
         {
             if (value == null)
@@ -57,7 +57,7 @@ public sealed record class SearchResultBlockParam : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "citations", value);
+            JsonModel.Set(this._rawData, "citations", value);
         }
     }
 
@@ -115,7 +115,7 @@ public sealed record class SearchResultBlockParam : ModelBase
     }
 }
 
-class SearchResultBlockParamFromRaw : IFromRaw<SearchResultBlockParam>
+class SearchResultBlockParamFromRaw : IFromRawJson<SearchResultBlockParam>
 {
     /// <inheritdoc/>
     public SearchResultBlockParam FromRawUnchecked(

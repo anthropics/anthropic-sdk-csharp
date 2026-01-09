@@ -64,8 +64,8 @@ public class BetaMessageDeltaUsageTest : TestBase
             ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageDeltaUsage>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageDeltaUsage>(element);
         Assert.NotNull(deserialized);
 
         long expectedCacheCreationInputTokens = 2051;

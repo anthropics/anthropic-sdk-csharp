@@ -61,8 +61,8 @@ public class BetaJSONOutputFormatTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaJSONOutputFormat>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaJSONOutputFormat>(element);
         Assert.NotNull(deserialized);
 
         Dictionary<string, JsonElement> expectedSchema = new()

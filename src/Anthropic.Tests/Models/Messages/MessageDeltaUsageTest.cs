@@ -60,8 +60,8 @@ public class MessageDeltaUsageTest : TestBase
             ServerToolUse = new(0),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageDeltaUsage>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageDeltaUsage>(element);
         Assert.NotNull(deserialized);
 
         long expectedCacheCreationInputTokens = 2051;

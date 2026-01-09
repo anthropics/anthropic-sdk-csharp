@@ -63,8 +63,5 @@ public sealed class HttpResponse : IDisposable
         ).ConfigureAwait(false);
     }
 
-    public void Dispose()
-    {
-        this.Message.Dispose();
-    }
+    public void Dispose() => this.Message.Dispose();
 }

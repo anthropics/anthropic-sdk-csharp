@@ -210,8 +210,8 @@ public class MessageBatchIndividualResponseTest : TestBase
             ),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchIndividualResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchIndividualResponse>(element);
         Assert.NotNull(deserialized);
 
         string expectedCustomID = "my-custom-id-1";

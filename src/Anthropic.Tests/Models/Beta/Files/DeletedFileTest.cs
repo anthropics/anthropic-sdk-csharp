@@ -35,8 +35,8 @@ public class DeletedFileTest : TestBase
     {
         var model = new DeletedFile { ID = "id", Type = Type.FileDeleted };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<DeletedFile>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<DeletedFile>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
@@ -119,6 +119,8 @@ public class TypeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

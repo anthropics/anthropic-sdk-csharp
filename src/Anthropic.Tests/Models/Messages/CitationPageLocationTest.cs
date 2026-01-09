@@ -67,8 +67,8 @@ public class CitationPageLocationTest : TestBase
             StartPageNumber = 1,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(element);
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";

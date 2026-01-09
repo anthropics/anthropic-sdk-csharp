@@ -46,8 +46,8 @@ public class BetaWebSearchToolResultErrorTest : TestBase
             ErrorCode = BetaWebSearchToolResultErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultError>(element);
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaWebSearchToolResultErrorCode> expectedErrorCode =

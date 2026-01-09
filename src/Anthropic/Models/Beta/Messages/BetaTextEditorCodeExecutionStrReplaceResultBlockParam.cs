@@ -9,47 +9,47 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaTextEditorCodeExecutionStrReplaceResultBlockParam,
         BetaTextEditorCodeExecutionStrReplaceResultBlockParamFromRaw
     >)
 )]
-public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam : ModelBase
+public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public IReadOnlyList<string>? Lines
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "lines"); }
-        init { ModelBase.Set(this._rawData, "lines", value); }
+        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "lines"); }
+        init { JsonModel.Set(this._rawData, "lines", value); }
     }
 
     public long? NewLines
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "new_lines"); }
-        init { ModelBase.Set(this._rawData, "new_lines", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "new_lines"); }
+        init { JsonModel.Set(this._rawData, "new_lines", value); }
     }
 
     public long? NewStart
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "new_start"); }
-        init { ModelBase.Set(this._rawData, "new_start", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "new_start"); }
+        init { JsonModel.Set(this._rawData, "new_start", value); }
     }
 
     public long? OldLines
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "old_lines"); }
-        init { ModelBase.Set(this._rawData, "old_lines", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "old_lines"); }
+        init { JsonModel.Set(this._rawData, "old_lines", value); }
     }
 
     public long? OldStart
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "old_start"); }
-        init { ModelBase.Set(this._rawData, "old_start", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "old_start"); }
+        init { JsonModel.Set(this._rawData, "old_start", value); }
     }
 
     /// <inheritdoc/>
@@ -116,7 +116,7 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 }
 
 class BetaTextEditorCodeExecutionStrReplaceResultBlockParamFromRaw
-    : IFromRaw<BetaTextEditorCodeExecutionStrReplaceResultBlockParam>
+    : IFromRawJson<BetaTextEditorCodeExecutionStrReplaceResultBlockParam>
 {
     /// <inheritdoc/>
     public BetaTextEditorCodeExecutionStrReplaceResultBlockParam FromRawUnchecked(

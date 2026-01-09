@@ -35,8 +35,8 @@ public class BetaServerToolCallerTest : TestBase
     {
         var model = new BetaServerToolCaller { ToolID = "srvtoolu_SQfNkl1n_JR_" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolCaller>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolCaller>(element);
         Assert.NotNull(deserialized);
 
         string expectedToolID = "srvtoolu_SQfNkl1n_JR_";

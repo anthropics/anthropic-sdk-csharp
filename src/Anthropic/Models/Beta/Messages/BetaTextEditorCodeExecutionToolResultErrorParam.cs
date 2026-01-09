@@ -10,12 +10,12 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaTextEditorCodeExecutionToolResultErrorParam,
         BetaTextEditorCodeExecutionToolResultErrorParamFromRaw
     >)
 )]
-public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : ModelBase
+public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : JsonModel
 {
     public required ApiEnum<
         string,
@@ -24,23 +24,23 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
     {
         get
         {
-            return ModelBase.GetNotNullClass<
+            return JsonModel.GetNotNullClass<
                 ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
             >(this.RawData, "error_code");
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { JsonModel.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public string? ErrorMessage
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "error_message"); }
-        init { ModelBase.Set(this._rawData, "error_message", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "error_message"); }
+        init { JsonModel.Set(this._rawData, "error_message", value); }
     }
 
     /// <inheritdoc/>
@@ -111,7 +111,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
 }
 
 class BetaTextEditorCodeExecutionToolResultErrorParamFromRaw
-    : IFromRaw<BetaTextEditorCodeExecutionToolResultErrorParam>
+    : IFromRawJson<BetaTextEditorCodeExecutionToolResultErrorParam>
 {
     /// <inheritdoc/>
     public BetaTextEditorCodeExecutionToolResultErrorParam FromRawUnchecked(

@@ -63,8 +63,8 @@ public class ImageBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(element);
         Assert.NotNull(deserialized);
 
         ImageBlockParamSource expectedSource = new Base64ImageSource()
@@ -166,7 +166,7 @@ public class ImageBlockParamTest : TestBase
 public class ImageBlockParamSourceTest : TestBase
 {
     [Fact]
-    public void base64_imageValidation_Works()
+    public void Base64ImageValidationWorks()
     {
         ImageBlockParamSource value = new(
             new Base64ImageSource()
@@ -179,14 +179,14 @@ public class ImageBlockParamSourceTest : TestBase
     }
 
     [Fact]
-    public void url_imageValidation_Works()
+    public void URLImageValidationWorks()
     {
         ImageBlockParamSource value = new(new URLImageSource("url"));
         value.Validate();
     }
 
     [Fact]
-    public void base64_imageSerializationRoundtrip_Works()
+    public void Base64ImageSerializationRoundtripWorks()
     {
         ImageBlockParamSource value = new(
             new Base64ImageSource()
@@ -195,18 +195,18 @@ public class ImageBlockParamSourceTest : TestBase
                 MediaType = MediaType.ImageJPEG,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void url_imageSerializationRoundtrip_Works()
+    public void URLImageSerializationRoundtripWorks()
     {
         ImageBlockParamSource value = new(new URLImageSource("url"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(element);
 
         Assert.Equal(value, deserialized);
     }

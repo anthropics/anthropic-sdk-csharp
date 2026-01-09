@@ -31,8 +31,8 @@ public class ThinkingConfigDisabledTest : TestBase
     {
         var model = new ThinkingConfigDisabled { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");

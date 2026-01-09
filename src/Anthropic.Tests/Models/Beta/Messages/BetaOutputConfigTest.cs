@@ -33,8 +33,8 @@ public class BetaOutputConfigTest : TestBase
     {
         var model = new BetaOutputConfig { Effort = Effort.Low };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaOutputConfig>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaOutputConfig>(element);
         Assert.NotNull(deserialized);
 
         ApiEnum<string, Effort> expectedEffort = Effort.Low;
@@ -105,6 +105,8 @@ public class EffortTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

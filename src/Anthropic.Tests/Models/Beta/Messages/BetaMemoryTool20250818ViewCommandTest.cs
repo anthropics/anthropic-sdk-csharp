@@ -53,8 +53,8 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
             ViewRange = [1, 10],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818ViewCommand>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818ViewCommand>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"view\"");

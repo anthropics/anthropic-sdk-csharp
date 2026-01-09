@@ -37,8 +37,8 @@ public sealed record class BatchCreateParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<Request> Requests
     {
-        get { return ModelBase.GetNotNullClass<List<Request>>(this.RawBodyData, "requests"); }
-        init { ModelBase.Set(this._rawBodyData, "requests", value); }
+        get { return JsonModel.GetNotNullClass<List<Request>>(this.RawBodyData, "requests"); }
+        init { JsonModel.Set(this._rawBodyData, "requests", value); }
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ public sealed record class BatchCreateParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
+            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
                 this.RawHeaderData,
                 "anthropic-beta"
             );
@@ -60,7 +60,7 @@ public sealed record class BatchCreateParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawHeaderData, "anthropic-beta", value);
+            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
         }
     }
 
@@ -97,7 +97,7 @@ public sealed record class BatchCreateParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static BatchCreateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -121,9 +121,13 @@ public sealed record class BatchCreateParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData),
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
@@ -137,8 +141,8 @@ public sealed record class BatchCreateParams : ParamsBase
     }
 }
 
-[JsonConverter(typeof(ModelConverter<Request, RequestFromRaw>))]
-public sealed record class Request : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Request, RequestFromRaw>))]
+public sealed record class Request : JsonModel
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful
@@ -148,8 +152,8 @@ public sealed record class Request : ModelBase
     /// </summary>
     public required string CustomID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "custom_id"); }
-        init { ModelBase.Set(this._rawData, "custom_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "custom_id"); }
+        init { JsonModel.Set(this._rawData, "custom_id", value); }
     }
 
     /// <summary>
@@ -160,8 +164,8 @@ public sealed record class Request : ModelBase
     /// </summary>
     public required Params Params
     {
-        get { return ModelBase.GetNotNullClass<Params>(this.RawData, "params"); }
-        init { ModelBase.Set(this._rawData, "params", value); }
+        get { return JsonModel.GetNotNullClass<Params>(this.RawData, "params"); }
+        init { JsonModel.Set(this._rawData, "params", value); }
     }
 
     /// <inheritdoc/>
@@ -196,7 +200,7 @@ public sealed record class Request : ModelBase
     }
 }
 
-class RequestFromRaw : IFromRaw<Request>
+class RequestFromRaw : IFromRawJson<Request>
 {
     /// <inheritdoc/>
     public Request FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -209,8 +213,8 @@ class RequestFromRaw : IFromRaw<Request>
 /// <para>See the [Messages API reference](https://docs.claude.com/en/api/messages)
 /// for full documentation on available parameters.</para>
 /// </summary>
-[JsonConverter(typeof(ModelConverter<Params, ParamsFromRaw>))]
-public sealed record class Params : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Params, ParamsFromRaw>))]
+public sealed record class Params : JsonModel
 {
     /// <summary>
     /// The maximum number of tokens to generate before stopping.
@@ -223,8 +227,8 @@ public sealed record class Params : ModelBase
     /// </summary>
     public required long MaxTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "max_tokens"); }
-        init { ModelBase.Set(this._rawData, "max_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "max_tokens"); }
+        init { JsonModel.Set(this._rawData, "max_tokens", value); }
     }
 
     /// <summary>
@@ -280,8 +284,8 @@ public sealed record class Params : ModelBase
     /// </summary>
     public required IReadOnlyList<BetaMessageParam> Messages
     {
-        get { return ModelBase.GetNotNullClass<List<BetaMessageParam>>(this.RawData, "messages"); }
-        init { ModelBase.Set(this._rawData, "messages", value); }
+        get { return JsonModel.GetNotNullClass<List<BetaMessageParam>>(this.RawData, "messages"); }
+        init { JsonModel.Set(this._rawData, "messages", value); }
     }
 
     /// <summary>
@@ -290,8 +294,8 @@ public sealed record class Params : ModelBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return ModelBase.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
-        init { ModelBase.Set(this._rawData, "model", value); }
+        get { return JsonModel.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
+        init { JsonModel.Set(this._rawData, "model", value); }
     }
 
     /// <summary>
@@ -301,12 +305,12 @@ public sealed record class Params : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<global::Anthropic.Models.Beta.Messages.Batches.Container>(
+            return JsonModel.GetNullableClass<global::Anthropic.Models.Beta.Messages.Batches.Container>(
                 this.RawData,
                 "container"
             );
         }
-        init { ModelBase.Set(this._rawData, "container", value); }
+        init { JsonModel.Set(this._rawData, "container", value); }
     }
 
     /// <summary>
@@ -319,12 +323,12 @@ public sealed record class Params : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaContextManagementConfig>(
+            return JsonModel.GetNullableClass<BetaContextManagementConfig>(
                 this.RawData,
                 "context_management"
             );
         }
-        init { ModelBase.Set(this._rawData, "context_management", value); }
+        init { JsonModel.Set(this._rawData, "context_management", value); }
     }
 
     /// <summary>
@@ -334,7 +338,7 @@ public sealed record class Params : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<BetaRequestMCPServerURLDefinition>>(
+            return JsonModel.GetNullableClass<List<BetaRequestMCPServerURLDefinition>>(
                 this.RawData,
                 "mcp_servers"
             );
@@ -346,7 +350,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "mcp_servers", value);
+            JsonModel.Set(this._rawData, "mcp_servers", value);
         }
     }
 
@@ -355,7 +359,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public BetaMetadata? Metadata
     {
-        get { return ModelBase.GetNullableClass<BetaMetadata>(this.RawData, "metadata"); }
+        get { return JsonModel.GetNullableClass<BetaMetadata>(this.RawData, "metadata"); }
         init
         {
             if (value == null)
@@ -363,7 +367,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "metadata", value);
+            JsonModel.Set(this._rawData, "metadata", value);
         }
     }
 
@@ -373,7 +377,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {
-        get { return ModelBase.GetNullableClass<BetaOutputConfig>(this.RawData, "output_config"); }
+        get { return JsonModel.GetNullableClass<BetaOutputConfig>(this.RawData, "output_config"); }
         init
         {
             if (value == null)
@@ -381,7 +385,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "output_config", value);
+            JsonModel.Set(this._rawData, "output_config", value);
         }
     }
 
@@ -392,9 +396,9 @@ public sealed record class Params : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaJSONOutputFormat>(this.RawData, "output_format");
+            return JsonModel.GetNullableClass<BetaJSONOutputFormat>(this.RawData, "output_format");
         }
-        init { ModelBase.Set(this._rawData, "output_format", value); }
+        init { JsonModel.Set(this._rawData, "output_format", value); }
     }
 
     /// <summary>
@@ -408,7 +412,7 @@ public sealed record class Params : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<
+            return JsonModel.GetNullableClass<
                 ApiEnum<string, global::Anthropic.Models.Beta.Messages.Batches.ServiceTier>
             >(this.RawData, "service_tier");
         }
@@ -419,7 +423,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "service_tier", value);
+            JsonModel.Set(this._rawData, "service_tier", value);
         }
     }
 
@@ -437,7 +441,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public IReadOnlyList<string>? StopSequences
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "stop_sequences"); }
+        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "stop_sequences"); }
         init
         {
             if (value == null)
@@ -445,7 +449,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "stop_sequences", value);
+            JsonModel.Set(this._rawData, "stop_sequences", value);
         }
     }
 
@@ -457,7 +461,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public bool? Stream
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "stream"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "stream"); }
         init
         {
             if (value == null)
@@ -465,7 +469,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "stream", value);
+            JsonModel.Set(this._rawData, "stream", value);
         }
     }
 
@@ -477,7 +481,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public ParamsSystem? System
     {
-        get { return ModelBase.GetNullableClass<ParamsSystem>(this.RawData, "system"); }
+        get { return JsonModel.GetNullableClass<ParamsSystem>(this.RawData, "system"); }
         init
         {
             if (value == null)
@@ -485,7 +489,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "system", value);
+            JsonModel.Set(this._rawData, "system", value);
         }
     }
 
@@ -501,7 +505,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public double? Temperature
     {
-        get { return ModelBase.GetNullableStruct<double>(this.RawData, "temperature"); }
+        get { return JsonModel.GetNullableStruct<double>(this.RawData, "temperature"); }
         init
         {
             if (value == null)
@@ -509,7 +513,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "temperature", value);
+            JsonModel.Set(this._rawData, "temperature", value);
         }
     }
 
@@ -527,7 +531,7 @@ public sealed record class Params : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaThinkingConfigParam>(this.RawData, "thinking");
+            return JsonModel.GetNullableClass<BetaThinkingConfigParam>(this.RawData, "thinking");
         }
         init
         {
@@ -536,7 +540,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "thinking", value);
+            JsonModel.Set(this._rawData, "thinking", value);
         }
     }
 
@@ -546,7 +550,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public BetaToolChoice? ToolChoice
     {
-        get { return ModelBase.GetNullableClass<BetaToolChoice>(this.RawData, "tool_choice"); }
+        get { return JsonModel.GetNullableClass<BetaToolChoice>(this.RawData, "tool_choice"); }
         init
         {
             if (value == null)
@@ -554,7 +558,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "tool_choice", value);
+            JsonModel.Set(this._rawData, "tool_choice", value);
         }
     }
 
@@ -607,7 +611,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public IReadOnlyList<BetaToolUnion>? Tools
     {
-        get { return ModelBase.GetNullableClass<List<BetaToolUnion>>(this.RawData, "tools"); }
+        get { return JsonModel.GetNullableClass<List<BetaToolUnion>>(this.RawData, "tools"); }
         init
         {
             if (value == null)
@@ -615,7 +619,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "tools", value);
+            JsonModel.Set(this._rawData, "tools", value);
         }
     }
 
@@ -629,7 +633,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public long? TopK
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "top_k"); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "top_k"); }
         init
         {
             if (value == null)
@@ -637,7 +641,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "top_k", value);
+            JsonModel.Set(this._rawData, "top_k", value);
         }
     }
 
@@ -653,7 +657,7 @@ public sealed record class Params : ModelBase
     /// </summary>
     public double? TopP
     {
-        get { return ModelBase.GetNullableStruct<double>(this.RawData, "top_p"); }
+        get { return JsonModel.GetNullableStruct<double>(this.RawData, "top_p"); }
         init
         {
             if (value == null)
@@ -661,7 +665,7 @@ public sealed record class Params : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "top_p", value);
+            JsonModel.Set(this._rawData, "top_p", value);
         }
     }
 
@@ -723,7 +727,7 @@ public sealed record class Params : ModelBase
     }
 }
 
-class ParamsFromRaw : IFromRaw<Params>
+class ParamsFromRaw : IFromRawJson<Params>
 {
     /// <inheritdoc/>
     public Params FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -738,28 +742,28 @@ public record class Container
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public Container(BetaContainerParams value, JsonElement? json = null)
+    public Container(BetaContainerParams value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Container(string value, JsonElement? json = null)
+    public Container(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Container(JsonElement json)
+    public Container(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -927,14 +931,14 @@ sealed class ContainerConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaContainerParams>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaContainerParams>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -944,10 +948,10 @@ sealed class ContainerConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -955,7 +959,7 @@ sealed class ContainerConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(
@@ -1038,28 +1042,28 @@ public record class ParamsSystem
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public ParamsSystem(string value, JsonElement? json = null)
+    public ParamsSystem(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ParamsSystem(IReadOnlyList<BetaTextBlockParam> value, JsonElement? json = null)
+    public ParamsSystem(IReadOnlyList<BetaTextBlockParam> value, JsonElement? element = null)
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public ParamsSystem(JsonElement json)
+    public ParamsSystem(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -1226,13 +1230,13 @@ sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1242,10 +1246,13 @@ sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(json, options);
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -1253,7 +1260,7 @@ sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

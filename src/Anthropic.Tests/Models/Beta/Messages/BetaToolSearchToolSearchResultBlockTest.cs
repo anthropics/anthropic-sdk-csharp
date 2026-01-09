@@ -40,8 +40,8 @@ public class BetaToolSearchToolSearchResultBlockTest : TestBase
     {
         var model = new BetaToolSearchToolSearchResultBlock { ToolReferences = [new("tool_name")] };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlock>(element);
         Assert.NotNull(deserialized);
 
         List<BetaToolReferenceBlock> expectedToolReferences = [new("tool_name")];

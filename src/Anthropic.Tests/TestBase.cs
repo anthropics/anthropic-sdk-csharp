@@ -16,7 +16,7 @@ public abstract class TestBase
     {
         client = new AnthropicClient()
         {
-            BaseUrl = new Uri(AnthropicTestClientsAttribute.DataServiceUrl),
+            BaseUrl = AnthropicTestClientsAttribute.DataServiceUrl,
             APIKey = AnthropicTestClientsAttribute.ApiKey,
         };
     }

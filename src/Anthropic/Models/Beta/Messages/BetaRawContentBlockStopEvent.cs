@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaRawContentBlockStopEvent, BetaRawContentBlockStopEventFromRaw>)
+    typeof(JsonModelConverter<BetaRawContentBlockStopEvent, BetaRawContentBlockStopEventFromRaw>)
 )]
-public sealed record class BetaRawContentBlockStopEvent : ModelBase
+public sealed record class BetaRawContentBlockStopEvent : JsonModel
 {
     public required long Index
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { ModelBase.Set(this._rawData, "index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "index"); }
+        init { JsonModel.Set(this._rawData, "index", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -79,7 +79,7 @@ public sealed record class BetaRawContentBlockStopEvent : ModelBase
     }
 }
 
-class BetaRawContentBlockStopEventFromRaw : IFromRaw<BetaRawContentBlockStopEvent>
+class BetaRawContentBlockStopEventFromRaw : IFromRawJson<BetaRawContentBlockStopEvent>
 {
     /// <inheritdoc/>
     public BetaRawContentBlockStopEvent FromRawUnchecked(

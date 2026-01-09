@@ -18,11 +18,11 @@ public record class MessageBatchResult
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -38,33 +38,33 @@ public record class MessageBatchResult
         }
     }
 
-    public MessageBatchResult(MessageBatchSucceededResult value, JsonElement? json = null)
+    public MessageBatchResult(MessageBatchSucceededResult value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageBatchResult(MessageBatchErroredResult value, JsonElement? json = null)
+    public MessageBatchResult(MessageBatchErroredResult value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageBatchResult(MessageBatchCanceledResult value, JsonElement? json = null)
+    public MessageBatchResult(MessageBatchCanceledResult value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageBatchResult(MessageBatchExpiredResult value, JsonElement? json = null)
+    public MessageBatchResult(MessageBatchExpiredResult value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageBatchResult(JsonElement json)
+    public MessageBatchResult(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -300,11 +300,11 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -318,13 +318,13 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -333,20 +333,20 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "errored":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -355,20 +355,20 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "canceled":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -377,20 +377,20 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "expired":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -399,11 +399,11 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new MessageBatchResult(json);
+                return new MessageBatchResult(element);
             }
         }
     }

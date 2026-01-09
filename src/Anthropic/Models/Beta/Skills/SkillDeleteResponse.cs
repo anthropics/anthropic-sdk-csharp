@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Skills;
 
-[JsonConverter(typeof(ModelConverter<SkillDeleteResponse, SkillDeleteResponseFromRaw>))]
-public sealed record class SkillDeleteResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<SkillDeleteResponse, SkillDeleteResponseFromRaw>))]
+public sealed record class SkillDeleteResponse : JsonModel
 {
     /// <summary>
     /// Unique identifier for the skill.
@@ -17,8 +17,8 @@ public sealed record class SkillDeleteResponse : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -28,8 +28,8 @@ public sealed record class SkillDeleteResponse : ModelBase
     /// </summary>
     public required string Type
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -66,7 +66,7 @@ public sealed record class SkillDeleteResponse : ModelBase
     }
 }
 
-class SkillDeleteResponseFromRaw : IFromRaw<SkillDeleteResponse>
+class SkillDeleteResponseFromRaw : IFromRawJson<SkillDeleteResponse>
 {
     /// <inheritdoc/>
     public SkillDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

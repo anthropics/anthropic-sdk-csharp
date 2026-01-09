@@ -33,8 +33,8 @@ public class URLImageSourceTest : TestBase
     {
         var model = new URLImageSource { URL = "url" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<URLImageSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<URLImageSource>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"url\"");

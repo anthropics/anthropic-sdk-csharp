@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaClearToolUses20250919EditResponse,
         BetaClearToolUses20250919EditResponseFromRaw
     >)
 )]
-public sealed record class BetaClearToolUses20250919EditResponse : ModelBase
+public sealed record class BetaClearToolUses20250919EditResponse : JsonModel
 {
     /// <summary>
     /// Number of input tokens cleared by this edit.
     /// </summary>
     public required long ClearedInputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "cleared_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "cleared_input_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "cleared_input_tokens"); }
+        init { JsonModel.Set(this._rawData, "cleared_input_tokens", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaClearToolUses20250919EditResponse : ModelBase
     /// </summary>
     public required long ClearedToolUses
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "cleared_tool_uses"); }
-        init { ModelBase.Set(this._rawData, "cleared_tool_uses", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "cleared_tool_uses"); }
+        init { JsonModel.Set(this._rawData, "cleared_tool_uses", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BetaClearToolUses20250919EditResponse : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -93,7 +93,8 @@ public sealed record class BetaClearToolUses20250919EditResponse : ModelBase
     }
 }
 
-class BetaClearToolUses20250919EditResponseFromRaw : IFromRaw<BetaClearToolUses20250919EditResponse>
+class BetaClearToolUses20250919EditResponseFromRaw
+    : IFromRawJson<BetaClearToolUses20250919EditResponse>
 {
     /// <inheritdoc/>
     public BetaClearToolUses20250919EditResponse FromRawUnchecked(

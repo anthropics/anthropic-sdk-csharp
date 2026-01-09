@@ -9,32 +9,32 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaWebSearchToolResultBlock, BetaWebSearchToolResultBlockFromRaw>)
+    typeof(JsonModelConverter<BetaWebSearchToolResultBlock, BetaWebSearchToolResultBlockFromRaw>)
 )]
-public sealed record class BetaWebSearchToolResultBlock : ModelBase
+public sealed record class BetaWebSearchToolResultBlock : JsonModel
 {
     public required BetaWebSearchToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaWebSearchToolResultBlockContent>(
+            return JsonModel.GetNotNullClass<BetaWebSearchToolResultBlockContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -85,7 +85,7 @@ public sealed record class BetaWebSearchToolResultBlock : ModelBase
     }
 }
 
-class BetaWebSearchToolResultBlockFromRaw : IFromRaw<BetaWebSearchToolResultBlock>
+class BetaWebSearchToolResultBlockFromRaw : IFromRawJson<BetaWebSearchToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaWebSearchToolResultBlock FromRawUnchecked(

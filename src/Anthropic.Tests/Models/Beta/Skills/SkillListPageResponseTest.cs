@@ -103,8 +103,8 @@ public class SkillListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<SkillListPageResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<SkillListPageResponse>(element);
         Assert.NotNull(deserialized);
 
         List<Data> expectedData =
@@ -225,8 +225,8 @@ public class DataTest : TestBase
             UpdatedAt = "2024-10-30T23:58:27.427722Z",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Data>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Data>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "skill_01JAbcdefghijklmnopqrstuvw";

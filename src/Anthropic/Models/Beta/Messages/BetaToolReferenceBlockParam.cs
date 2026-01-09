@@ -12,20 +12,20 @@ namespace Anthropic.Models.Beta.Messages;
 /// Tool reference block that can be included in tool_result content.
 /// </summary>
 [JsonConverter(
-    typeof(ModelConverter<BetaToolReferenceBlockParam, BetaToolReferenceBlockParamFromRaw>)
+    typeof(JsonModelConverter<BetaToolReferenceBlockParam, BetaToolReferenceBlockParamFromRaw>)
 )]
-public sealed record class BetaToolReferenceBlockParam : ModelBase
+public sealed record class BetaToolReferenceBlockParam : JsonModel
 {
     public required string ToolName
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_name"); }
-        init { ModelBase.Set(this._rawData, "tool_name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_name"); }
+        init { JsonModel.Set(this._rawData, "tool_name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -35,12 +35,12 @@ public sealed record class BetaToolReferenceBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -98,7 +98,7 @@ public sealed record class BetaToolReferenceBlockParam : ModelBase
     }
 }
 
-class BetaToolReferenceBlockParamFromRaw : IFromRaw<BetaToolReferenceBlockParam>
+class BetaToolReferenceBlockParamFromRaw : IFromRawJson<BetaToolReferenceBlockParam>
 {
     /// <inheritdoc/>
     public BetaToolReferenceBlockParam FromRawUnchecked(

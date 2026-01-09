@@ -8,31 +8,33 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolResultBlock, WebSearchToolResultBlockFromRaw>))]
-public sealed record class WebSearchToolResultBlock : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<WebSearchToolResultBlock, WebSearchToolResultBlockFromRaw>)
+)]
+public sealed record class WebSearchToolResultBlock : JsonModel
 {
     public required WebSearchToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<WebSearchToolResultBlockContent>(
+            return JsonModel.GetNotNullClass<WebSearchToolResultBlockContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -83,7 +85,7 @@ public sealed record class WebSearchToolResultBlock : ModelBase
     }
 }
 
-class WebSearchToolResultBlockFromRaw : IFromRaw<WebSearchToolResultBlock>
+class WebSearchToolResultBlockFromRaw : IFromRawJson<WebSearchToolResultBlock>
 {
     /// <inheritdoc/>
     public WebSearchToolResultBlock FromRawUnchecked(

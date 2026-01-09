@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaCodeExecutionToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void errorValidation_Works()
+    public void ErrorValidationWorks()
     {
         BetaCodeExecutionToolResultBlockContent value = new(
             new BetaCodeExecutionToolResultError(
@@ -17,7 +17,7 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void result_blockValidation_Works()
+    public void ResultBlockValidationWorks()
     {
         BetaCodeExecutionToolResultBlockContent value = new(
             new BetaCodeExecutionResultBlock()
@@ -32,23 +32,23 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void errorSerializationRoundtrip_Works()
+    public void ErrorSerializationRoundtripWorks()
     {
         BetaCodeExecutionToolResultBlockContent value = new(
             new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void result_blockSerializationRoundtrip_Works()
+    public void ResultBlockSerializationRoundtripWorks()
     {
         BetaCodeExecutionToolResultBlockContent value = new(
             new BetaCodeExecutionResultBlock()
@@ -59,9 +59,9 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
                 Stdout = "stdout",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);

@@ -33,8 +33,8 @@ public class BetaOverloadedErrorTest : TestBase
     {
         var model = new BetaOverloadedError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaOverloadedError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaOverloadedError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

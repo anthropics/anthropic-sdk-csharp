@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaCodeExecutionOutputBlock, BetaCodeExecutionOutputBlockFromRaw>)
+    typeof(JsonModelConverter<BetaCodeExecutionOutputBlock, BetaCodeExecutionOutputBlockFromRaw>)
 )]
-public sealed record class BetaCodeExecutionOutputBlock : ModelBase
+public sealed record class BetaCodeExecutionOutputBlock : JsonModel
 {
     public required string FileID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "file_id"); }
+        init { JsonModel.Set(this._rawData, "file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -79,7 +79,7 @@ public sealed record class BetaCodeExecutionOutputBlock : ModelBase
     }
 }
 
-class BetaCodeExecutionOutputBlockFromRaw : IFromRaw<BetaCodeExecutionOutputBlock>
+class BetaCodeExecutionOutputBlockFromRaw : IFromRawJson<BetaCodeExecutionOutputBlock>
 {
     /// <inheritdoc/>
     public BetaCodeExecutionOutputBlock FromRawUnchecked(

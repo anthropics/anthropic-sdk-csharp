@@ -6,21 +6,21 @@ namespace Anthropic.Tests.Models.Messages;
 public class RawContentBlockDeltaTest : TestBase
 {
     [Fact]
-    public void textValidation_Works()
+    public void TextValidationWorks()
     {
         RawContentBlockDelta value = new(new TextDelta("text"));
         value.Validate();
     }
 
     [Fact]
-    public void input_jsonValidation_Works()
+    public void InputJSONValidationWorks()
     {
         RawContentBlockDelta value = new(new InputJSONDelta("partial_json"));
         value.Validate();
     }
 
     [Fact]
-    public void citationsValidation_Works()
+    public void CitationsValidationWorks()
     {
         RawContentBlockDelta value = new(
             new CitationsDelta(
@@ -41,41 +41,41 @@ public class RawContentBlockDeltaTest : TestBase
     }
 
     [Fact]
-    public void thinkingValidation_Works()
+    public void ThinkingValidationWorks()
     {
         RawContentBlockDelta value = new(new ThinkingDelta("thinking"));
         value.Validate();
     }
 
     [Fact]
-    public void signatureValidation_Works()
+    public void SignatureValidationWorks()
     {
         RawContentBlockDelta value = new(new SignatureDelta("signature"));
         value.Validate();
     }
 
     [Fact]
-    public void textSerializationRoundtrip_Works()
+    public void TextSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(new TextDelta("text"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void input_jsonSerializationRoundtrip_Works()
+    public void InputJSONSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(new InputJSONDelta("partial_json"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citationsSerializationRoundtrip_Works()
+    public void CitationsSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(
             new CitationsDelta(
@@ -92,28 +92,28 @@ public class RawContentBlockDeltaTest : TestBase
                 )
             )
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void thinkingSerializationRoundtrip_Works()
+    public void ThinkingSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(new ThinkingDelta("thinking"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void signatureSerializationRoundtrip_Works()
+    public void SignatureSerializationRoundtripWorks()
     {
         RawContentBlockDelta value = new(new SignatureDelta("signature"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -80,8 +80,8 @@ public class RawMessageDeltaEventTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(element);
         Assert.NotNull(deserialized);
 
         Delta expectedDelta = new()
@@ -154,8 +154,8 @@ public class DeltaTest : TestBase
     {
         var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Delta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Delta>(element);
         Assert.NotNull(deserialized);
 
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;

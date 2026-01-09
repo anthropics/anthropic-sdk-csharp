@@ -98,8 +98,8 @@ public class BetaTextBlockParamTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedText = "x";

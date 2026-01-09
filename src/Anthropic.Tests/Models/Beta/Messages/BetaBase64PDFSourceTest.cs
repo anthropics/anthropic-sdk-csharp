@@ -37,8 +37,8 @@ public class BetaBase64PDFSourceTest : TestBase
     {
         var model = new BetaBase64PDFSource { Data = "U3RhaW5sZXNzIHJvY2tz" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBase64PDFSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBase64PDFSource>(element);
         Assert.NotNull(deserialized);
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";

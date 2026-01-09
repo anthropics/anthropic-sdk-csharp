@@ -67,8 +67,8 @@ public class BetaCitationPageLocationTest : TestBase
             StartPageNumber = 1,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocation>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocation>(element);
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";

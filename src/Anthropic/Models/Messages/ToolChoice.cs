@@ -15,11 +15,11 @@ public record class ToolChoice
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -48,33 +48,33 @@ public record class ToolChoice
         }
     }
 
-    public ToolChoice(ToolChoiceAuto value, JsonElement? json = null)
+    public ToolChoice(ToolChoiceAuto value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolChoice(ToolChoiceAny value, JsonElement? json = null)
+    public ToolChoice(ToolChoiceAny value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolChoice(ToolChoiceTool value, JsonElement? json = null)
+    public ToolChoice(ToolChoiceTool value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolChoice(ToolChoiceNone value, JsonElement? json = null)
+    public ToolChoice(ToolChoiceNone value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolChoice(JsonElement json)
+    public ToolChoice(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -304,11 +304,11 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -321,11 +321,11 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ToolChoiceAuto>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ToolChoiceAuto>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -334,17 +334,17 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "any":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -353,17 +353,17 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -372,17 +372,17 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "none":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -391,11 +391,11 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new ToolChoice(json);
+                return new ToolChoice(element);
             }
         }
     }

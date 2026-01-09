@@ -45,8 +45,8 @@ public class BetaCacheCreationTest : TestBase
             Ephemeral5mInputTokens = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCacheCreation>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCacheCreation>(element);
         Assert.NotNull(deserialized);
 
         long expectedEphemeral1hInputTokens = 0;

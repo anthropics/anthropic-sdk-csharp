@@ -93,8 +93,8 @@ public class ModelListPageResponseTest : TestBase
             LastID = "last_id",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ModelListPageResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ModelListPageResponse>(element);
         Assert.NotNull(deserialized);
 
         List<ModelInfo> expectedData =

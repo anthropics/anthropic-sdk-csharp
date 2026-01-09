@@ -61,8 +61,8 @@ public class BetaRequestMCPServerURLDefinitionTest : TestBase
             ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPServerURLDefinition>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPServerURLDefinition>(element);
         Assert.NotNull(deserialized);
 
         string expectedName = "name";

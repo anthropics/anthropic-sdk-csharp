@@ -76,8 +76,8 @@ public class ToolUseBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "id";

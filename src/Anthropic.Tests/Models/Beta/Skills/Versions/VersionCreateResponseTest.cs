@@ -75,8 +75,8 @@ public class VersionCreateResponseTest : TestBase
             Version = "1759178010641129",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<VersionCreateResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<VersionCreateResponse>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "skillver_01JAbcdefghijklmnopqrstuvw";

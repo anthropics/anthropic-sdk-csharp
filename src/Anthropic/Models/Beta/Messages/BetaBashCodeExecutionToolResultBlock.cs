@@ -10,29 +10,29 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaBashCodeExecutionToolResultBlock,
         BetaBashCodeExecutionToolResultBlockFromRaw
     >)
 )]
-public sealed record class BetaBashCodeExecutionToolResultBlock : ModelBase
+public sealed record class BetaBashCodeExecutionToolResultBlock : JsonModel
 {
     public required Content Content
     {
-        get { return ModelBase.GetNotNullClass<Content>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<Content>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -85,7 +85,8 @@ public sealed record class BetaBashCodeExecutionToolResultBlock : ModelBase
     }
 }
 
-class BetaBashCodeExecutionToolResultBlockFromRaw : IFromRaw<BetaBashCodeExecutionToolResultBlock>
+class BetaBashCodeExecutionToolResultBlockFromRaw
+    : IFromRawJson<BetaBashCodeExecutionToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaBashCodeExecutionToolResultBlock FromRawUnchecked(
@@ -98,11 +99,11 @@ public record class Content
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -116,21 +117,21 @@ public record class Content
         }
     }
 
-    public Content(BetaBashCodeExecutionToolResultError value, JsonElement? json = null)
+    public Content(BetaBashCodeExecutionToolResultError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Content(BetaBashCodeExecutionResultBlock value, JsonElement? json = null)
+    public Content(BetaBashCodeExecutionResultBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Content(JsonElement json)
+    public Content(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -304,17 +305,17 @@ sealed class ContentConverter : JsonConverter<Content>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultError>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -325,13 +326,13 @@ sealed class ContentConverter : JsonConverter<Content>
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlock>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -339,7 +340,7 @@ sealed class ContentConverter : JsonConverter<Content>
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)

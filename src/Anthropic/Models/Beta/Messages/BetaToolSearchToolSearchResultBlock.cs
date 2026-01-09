@@ -9,29 +9,29 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaToolSearchToolSearchResultBlock,
         BetaToolSearchToolSearchResultBlockFromRaw
     >)
 )]
-public sealed record class BetaToolSearchToolSearchResultBlock : ModelBase
+public sealed record class BetaToolSearchToolSearchResultBlock : JsonModel
 {
     public required IReadOnlyList<BetaToolReferenceBlock> ToolReferences
     {
         get
         {
-            return ModelBase.GetNotNullClass<List<BetaToolReferenceBlock>>(
+            return JsonModel.GetNotNullClass<List<BetaToolReferenceBlock>>(
                 this.RawData,
                 "tool_references"
             );
         }
-        init { ModelBase.Set(this._rawData, "tool_references", value); }
+        init { JsonModel.Set(this._rawData, "tool_references", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -93,7 +93,7 @@ public sealed record class BetaToolSearchToolSearchResultBlock : ModelBase
     }
 }
 
-class BetaToolSearchToolSearchResultBlockFromRaw : IFromRaw<BetaToolSearchToolSearchResultBlock>
+class BetaToolSearchToolSearchResultBlockFromRaw : IFromRawJson<BetaToolSearchToolSearchResultBlock>
 {
     /// <inheritdoc/>
     public BetaToolSearchToolSearchResultBlock FromRawUnchecked(

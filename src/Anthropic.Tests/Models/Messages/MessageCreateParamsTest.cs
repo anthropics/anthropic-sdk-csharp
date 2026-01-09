@@ -24,6 +24,8 @@ public class ServiceTierTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
@@ -64,18 +66,18 @@ public class ServiceTierTest : TestBase
 public class MessageCreateParamsSystemTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         MessageCreateParamsSystem value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void TextBlockParamsValidation_Works()
+    public void TextBlockParamsValidationWorks()
     {
         MessageCreateParamsSystem value = new(
             [
-                new()
+                new TextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -97,21 +99,21 @@ public class MessageCreateParamsSystemTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         MessageCreateParamsSystem value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void TextBlockParamsSerializationRoundtrip_Works()
+    public void TextBlockParamsSerializationRoundtripWorks()
     {
         MessageCreateParamsSystem value = new(
             [
-                new()
+                new TextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -129,8 +131,8 @@ public class MessageCreateParamsSystemTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCreateParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }

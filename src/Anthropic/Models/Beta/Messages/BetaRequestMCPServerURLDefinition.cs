@@ -9,47 +9,47 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaRequestMCPServerURLDefinition,
         BetaRequestMCPServerURLDefinitionFromRaw
     >)
 )]
-public sealed record class BetaRequestMCPServerURLDefinition : ModelBase
+public sealed record class BetaRequestMCPServerURLDefinition : JsonModel
 {
     public required string Name
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
+        init { JsonModel.Set(this._rawData, "url", value); }
     }
 
     public string? AuthorizationToken
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "authorization_token"); }
-        init { ModelBase.Set(this._rawData, "authorization_token", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "authorization_token"); }
+        init { JsonModel.Set(this._rawData, "authorization_token", value); }
     }
 
     public BetaRequestMCPServerToolConfiguration? ToolConfiguration
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaRequestMCPServerToolConfiguration>(
+            return JsonModel.GetNullableClass<BetaRequestMCPServerToolConfiguration>(
                 this.RawData,
                 "tool_configuration"
             );
         }
-        init { ModelBase.Set(this._rawData, "tool_configuration", value); }
+        init { JsonModel.Set(this._rawData, "tool_configuration", value); }
     }
 
     /// <inheritdoc/>
@@ -99,7 +99,7 @@ public sealed record class BetaRequestMCPServerURLDefinition : ModelBase
     }
 }
 
-class BetaRequestMCPServerURLDefinitionFromRaw : IFromRaw<BetaRequestMCPServerURLDefinition>
+class BetaRequestMCPServerURLDefinitionFromRaw : IFromRawJson<BetaRequestMCPServerURLDefinition>
 {
     /// <inheritdoc/>
     public BetaRequestMCPServerURLDefinition FromRawUnchecked(

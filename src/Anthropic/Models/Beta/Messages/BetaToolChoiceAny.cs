@@ -11,13 +11,13 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// The model will use any available tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolChoiceAny, BetaToolChoiceAnyFromRaw>))]
-public sealed record class BetaToolChoiceAny : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaToolChoiceAny, BetaToolChoiceAnyFromRaw>))]
+public sealed record class BetaToolChoiceAny : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ public sealed record class BetaToolChoiceAny : ModelBase
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
         init
         {
             if (value == null)
@@ -36,7 +36,7 @@ public sealed record class BetaToolChoiceAny : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "disable_parallel_tool_use", value);
+            JsonModel.Set(this._rawData, "disable_parallel_tool_use", value);
         }
     }
 
@@ -82,7 +82,7 @@ public sealed record class BetaToolChoiceAny : ModelBase
     }
 }
 
-class BetaToolChoiceAnyFromRaw : IFromRaw<BetaToolChoiceAny>
+class BetaToolChoiceAnyFromRaw : IFromRawJson<BetaToolChoiceAny>
 {
     /// <inheritdoc/>
     public BetaToolChoiceAny FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

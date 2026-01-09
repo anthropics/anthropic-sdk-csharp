@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaGatewayTimeoutError, BetaGatewayTimeoutErrorFromRaw>))]
-public sealed record class BetaGatewayTimeoutError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaGatewayTimeoutError, BetaGatewayTimeoutErrorFromRaw>))]
+public sealed record class BetaGatewayTimeoutError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "message"); }
+        init { JsonModel.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +77,7 @@ public sealed record class BetaGatewayTimeoutError : ModelBase
     }
 }
 
-class BetaGatewayTimeoutErrorFromRaw : IFromRaw<BetaGatewayTimeoutError>
+class BetaGatewayTimeoutErrorFromRaw : IFromRawJson<BetaGatewayTimeoutError>
 {
     /// <inheritdoc/>
     public BetaGatewayTimeoutError FromRawUnchecked(

@@ -9,19 +9,19 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsDelta, CitationsDeltaFromRaw>))]
-public sealed record class CitationsDelta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<CitationsDelta, CitationsDeltaFromRaw>))]
+public sealed record class CitationsDelta : JsonModel
 {
     public required Citation Citation
     {
-        get { return ModelBase.GetNotNullClass<Citation>(this.RawData, "citation"); }
-        init { ModelBase.Set(this._rawData, "citation", value); }
+        get { return JsonModel.GetNotNullClass<Citation>(this.RawData, "citation"); }
+        init { JsonModel.Set(this._rawData, "citation", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -76,7 +76,7 @@ public sealed record class CitationsDelta : ModelBase
     }
 }
 
-class CitationsDeltaFromRaw : IFromRaw<CitationsDelta>
+class CitationsDeltaFromRaw : IFromRawJson<CitationsDelta>
 {
     /// <inheritdoc/>
     public CitationsDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -88,11 +88,11 @@ public record class Citation
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public string CitedText
@@ -207,39 +207,39 @@ public record class Citation
         }
     }
 
-    public Citation(CitationCharLocation value, JsonElement? json = null)
+    public Citation(CitationCharLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(CitationPageLocation value, JsonElement? json = null)
+    public Citation(CitationPageLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(CitationContentBlockLocation value, JsonElement? json = null)
+    public Citation(CitationContentBlockLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(CitationsWebSearchResultLocation value, JsonElement? json = null)
+    public Citation(CitationsWebSearchResultLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(CitationsSearchResultLocation value, JsonElement? json = null)
+    public Citation(CitationsSearchResultLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(JsonElement json)
+    public Citation(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -507,11 +507,11 @@ sealed class CitationConverter : JsonConverter<Citation>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -525,13 +525,13 @@ sealed class CitationConverter : JsonConverter<Citation>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationCharLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -540,20 +540,20 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "page_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -562,20 +562,20 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationContentBlockLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -584,20 +584,20 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_result_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -606,20 +606,20 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "search_result_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationsSearchResultLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -628,11 +628,11 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Citation(json);
+                return new Citation(element);
             }
         }
     }

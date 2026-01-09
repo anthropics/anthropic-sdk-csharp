@@ -31,8 +31,8 @@ public class ServerToolUsageTest : TestBase
     {
         var model = new ServerToolUsage { WebSearchRequests = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ServerToolUsage>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ServerToolUsage>(element);
         Assert.NotNull(deserialized);
 
         long expectedWebSearchRequests = 0;

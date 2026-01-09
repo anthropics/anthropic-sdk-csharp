@@ -6,35 +6,35 @@ namespace Anthropic.Tests.Models.Messages;
 public class ThinkingConfigParamTest : TestBase
 {
     [Fact]
-    public void enabledValidation_Works()
+    public void EnabledValidationWorks()
     {
         ThinkingConfigParam value = new(new ThinkingConfigEnabled(1024));
         value.Validate();
     }
 
     [Fact]
-    public void disabledValidation_Works()
+    public void DisabledValidationWorks()
     {
         ThinkingConfigParam value = new(new ThinkingConfigDisabled());
         value.Validate();
     }
 
     [Fact]
-    public void enabledSerializationRoundtrip_Works()
+    public void EnabledSerializationRoundtripWorks()
     {
         ThinkingConfigParam value = new(new ThinkingConfigEnabled(1024));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void disabledSerializationRoundtrip_Works()
+    public void DisabledSerializationRoundtripWorks()
     {
         ThinkingConfigParam value = new(new ThinkingConfigDisabled());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -68,9 +68,9 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
             TotalLines = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";
@@ -195,6 +195,8 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

@@ -8,25 +8,25 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMCPToolUseBlock, BetaMCPToolUseBlockFromRaw>))]
-public sealed record class BetaMCPToolUseBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaMCPToolUseBlock, BetaMCPToolUseBlockFromRaw>))]
+public sealed record class BetaMCPToolUseBlock : JsonModel
 {
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            return ModelBase.GetNotNullClass<Dictionary<string, JsonElement>>(
+            return JsonModel.GetNotNullClass<Dictionary<string, JsonElement>>(
                 this.RawData,
                 "input"
             );
         }
-        init { ModelBase.Set(this._rawData, "input", value); }
+        init { JsonModel.Set(this._rawData, "input", value); }
     }
 
     /// <summary>
@@ -34,8 +34,8 @@ public sealed record class BetaMCPToolUseBlock : ModelBase
     /// </summary>
     public required string Name
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     /// <summary>
@@ -43,14 +43,14 @@ public sealed record class BetaMCPToolUseBlock : ModelBase
     /// </summary>
     public required string ServerName
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "server_name"); }
-        init { ModelBase.Set(this._rawData, "server_name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "server_name"); }
+        init { JsonModel.Set(this._rawData, "server_name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -103,7 +103,7 @@ public sealed record class BetaMCPToolUseBlock : ModelBase
     }
 }
 
-class BetaMCPToolUseBlockFromRaw : IFromRaw<BetaMCPToolUseBlock>
+class BetaMCPToolUseBlockFromRaw : IFromRawJson<BetaMCPToolUseBlock>
 {
     /// <inheritdoc/>
     public BetaMCPToolUseBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

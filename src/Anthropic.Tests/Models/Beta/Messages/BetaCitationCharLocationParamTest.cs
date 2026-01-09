@@ -62,8 +62,8 @@ public class BetaCitationCharLocationParamTest : TestBase
             StartCharIndex = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocationParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocationParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";

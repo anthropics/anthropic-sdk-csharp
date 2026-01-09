@@ -11,11 +11,11 @@ public record class ErrorObject
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public string Message
@@ -54,63 +54,63 @@ public record class ErrorObject
         }
     }
 
-    public ErrorObject(InvalidRequestError value, JsonElement? json = null)
+    public ErrorObject(InvalidRequestError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(AuthenticationError value, JsonElement? json = null)
+    public ErrorObject(AuthenticationError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(BillingError value, JsonElement? json = null)
+    public ErrorObject(BillingError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(PermissionError value, JsonElement? json = null)
+    public ErrorObject(PermissionError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(NotFoundError value, JsonElement? json = null)
+    public ErrorObject(NotFoundError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(RateLimitError value, JsonElement? json = null)
+    public ErrorObject(RateLimitError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(GatewayTimeoutError value, JsonElement? json = null)
+    public ErrorObject(GatewayTimeoutError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(APIErrorObject value, JsonElement? json = null)
+    public ErrorObject(APIErrorObject value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(OverloadedError value, JsonElement? json = null)
+    public ErrorObject(OverloadedError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ErrorObject(JsonElement json)
+    public ErrorObject(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -502,11 +502,11 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -520,13 +520,13 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<InvalidRequestError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -534,20 +534,20 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "authentication_error":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<AuthenticationError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -555,17 +555,17 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "billing_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BillingError>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BillingError>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -573,17 +573,20 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "permission_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<PermissionError>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<PermissionError>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -591,17 +594,17 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "not_found_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<NotFoundError>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<NotFoundError>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -609,17 +612,17 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "rate_limit_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<RateLimitError>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<RateLimitError>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -627,20 +630,20 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "timeout_error":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<GatewayTimeoutError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -648,17 +651,17 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "api_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<APIErrorObject>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<APIErrorObject>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -666,17 +669,20 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "overloaded_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<OverloadedError>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<OverloadedError>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -684,11 +690,11 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new ErrorObject(json);
+                return new ErrorObject(element);
             }
         }
     }

@@ -9,32 +9,32 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaSearchResultBlockParam, BetaSearchResultBlockParamFromRaw>)
+    typeof(JsonModelConverter<BetaSearchResultBlockParam, BetaSearchResultBlockParamFromRaw>)
 )]
-public sealed record class BetaSearchResultBlockParam : ModelBase
+public sealed record class BetaSearchResultBlockParam : JsonModel
 {
     public required IReadOnlyList<BetaTextBlockParam> Content
     {
-        get { return ModelBase.GetNotNullClass<List<BetaTextBlockParam>>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<List<BetaTextBlockParam>>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string Source
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     public required string Title
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "title"); }
+        init { JsonModel.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -44,19 +44,19 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     public BetaCitationsConfigParam? Citations
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
+            return JsonModel.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
         }
         init
         {
@@ -65,7 +65,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "citations", value);
+            JsonModel.Set(this._rawData, "citations", value);
         }
     }
 
@@ -123,7 +123,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
     }
 }
 
-class BetaSearchResultBlockParamFromRaw : IFromRaw<BetaSearchResultBlockParam>
+class BetaSearchResultBlockParamFromRaw : IFromRawJson<BetaSearchResultBlockParam>
 {
     /// <inheritdoc/>
     public BetaSearchResultBlockParam FromRawUnchecked(

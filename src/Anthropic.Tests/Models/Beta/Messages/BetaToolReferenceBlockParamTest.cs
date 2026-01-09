@@ -47,8 +47,8 @@ public class BetaToolReferenceBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolReferenceBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedToolName = "tool_name";

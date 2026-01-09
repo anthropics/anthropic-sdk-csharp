@@ -8,8 +8,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaThinkingConfigEnabled, BetaThinkingConfigEnabledFromRaw>))]
-public sealed record class BetaThinkingConfigEnabled : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaThinkingConfigEnabled, BetaThinkingConfigEnabledFromRaw>)
+)]
+public sealed record class BetaThinkingConfigEnabled : JsonModel
 {
     /// <summary>
     /// Determines how many tokens Claude can use for its internal reasoning process.
@@ -23,14 +25,14 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
     /// </summary>
     public required long BudgetTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "budget_tokens"); }
-        init { ModelBase.Set(this._rawData, "budget_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "budget_tokens"); }
+        init { JsonModel.Set(this._rawData, "budget_tokens", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -87,7 +89,7 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
     }
 }
 
-class BetaThinkingConfigEnabledFromRaw : IFromRaw<BetaThinkingConfigEnabled>
+class BetaThinkingConfigEnabledFromRaw : IFromRawJson<BetaThinkingConfigEnabled>
 {
     /// <inheritdoc/>
     public BetaThinkingConfigEnabled FromRawUnchecked(

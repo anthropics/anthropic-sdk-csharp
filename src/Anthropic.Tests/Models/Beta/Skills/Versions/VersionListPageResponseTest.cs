@@ -107,8 +107,8 @@ public class VersionListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<VersionListPageResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<VersionListPageResponse>(element);
         Assert.NotNull(deserialized);
 
         List<Data> expectedData =
@@ -236,8 +236,8 @@ public class DataTest : TestBase
             Version = "1759178010641129",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Data>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Data>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "skillver_01JAbcdefghijklmnopqrstuvw";

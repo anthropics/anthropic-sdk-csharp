@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<FileMetadata, FileMetadataFromRaw>))]
-public sealed record class FileMetadata : ModelBase
+[JsonConverter(typeof(JsonModelConverter<FileMetadata, FileMetadataFromRaw>))]
+public sealed record class FileMetadata : JsonModel
 {
     /// <summary>
     /// Unique object identifier.
@@ -19,8 +19,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -28,8 +28,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get { return ModelBase.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get { return JsonModel.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
+        init { JsonModel.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -37,8 +37,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string Filename
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "filename"); }
-        init { ModelBase.Set(this._rawData, "filename", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "filename"); }
+        init { JsonModel.Set(this._rawData, "filename", value); }
     }
 
     /// <summary>
@@ -46,8 +46,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string MimeType
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "mime_type"); }
-        init { ModelBase.Set(this._rawData, "mime_type", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "mime_type"); }
+        init { JsonModel.Set(this._rawData, "mime_type", value); }
     }
 
     /// <summary>
@@ -55,8 +55,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required long SizeBytes
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "size_bytes"); }
-        init { ModelBase.Set(this._rawData, "size_bytes", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "size_bytes"); }
+        init { JsonModel.Set(this._rawData, "size_bytes", value); }
     }
 
     /// <summary>
@@ -66,8 +66,8 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public bool? Downloadable
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "downloadable"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "downloadable"); }
         init
         {
             if (value == null)
@@ -83,7 +83,7 @@ public sealed record class FileMetadata : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "downloadable", value);
+            JsonModel.Set(this._rawData, "downloadable", value);
         }
     }
 
@@ -132,7 +132,7 @@ public sealed record class FileMetadata : ModelBase
     }
 }
 
-class FileMetadataFromRaw : IFromRaw<FileMetadata>
+class FileMetadataFromRaw : IFromRawJson<FileMetadata>
 {
     /// <inheritdoc/>
     public FileMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

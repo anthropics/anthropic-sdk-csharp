@@ -33,8 +33,8 @@ public class BetaSignatureDeltaTest : TestBase
     {
         var model = new BetaSignatureDelta { Signature = "signature" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaSignatureDelta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaSignatureDelta>(element);
         Assert.NotNull(deserialized);
 
         string expectedSignature = "signature";

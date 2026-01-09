@@ -10,50 +10,50 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaTextEditorCodeExecutionViewResultBlock,
         BetaTextEditorCodeExecutionViewResultBlockFromRaw
     >)
 )]
-public sealed record class BetaTextEditorCodeExecutionViewResultBlock : ModelBase
+public sealed record class BetaTextEditorCodeExecutionViewResultBlock : JsonModel
 {
     public required string Content
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required ApiEnum<string, FileType> FileType
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, FileType>>(this.RawData, "file_type");
+            return JsonModel.GetNotNullClass<ApiEnum<string, FileType>>(this.RawData, "file_type");
         }
-        init { ModelBase.Set(this._rawData, "file_type", value); }
+        init { JsonModel.Set(this._rawData, "file_type", value); }
     }
 
     public required long? NumLines
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "num_lines"); }
-        init { ModelBase.Set(this._rawData, "num_lines", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "num_lines"); }
+        init { JsonModel.Set(this._rawData, "num_lines", value); }
     }
 
     public required long? StartLine
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "start_line"); }
-        init { ModelBase.Set(this._rawData, "start_line", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "start_line"); }
+        init { JsonModel.Set(this._rawData, "start_line", value); }
     }
 
     public required long? TotalLines
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "total_lines"); }
-        init { ModelBase.Set(this._rawData, "total_lines", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "total_lines"); }
+        init { JsonModel.Set(this._rawData, "total_lines", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -118,7 +118,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock : ModelBas
 }
 
 class BetaTextEditorCodeExecutionViewResultBlockFromRaw
-    : IFromRaw<BetaTextEditorCodeExecutionViewResultBlock>
+    : IFromRawJson<BetaTextEditorCodeExecutionViewResultBlock>
 {
     /// <inheritdoc/>
     public BetaTextEditorCodeExecutionViewResultBlock FromRawUnchecked(

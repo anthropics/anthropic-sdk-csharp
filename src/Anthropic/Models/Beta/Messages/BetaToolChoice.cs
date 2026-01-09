@@ -15,11 +15,11 @@ public record class BetaToolChoice
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -48,33 +48,33 @@ public record class BetaToolChoice
         }
     }
 
-    public BetaToolChoice(BetaToolChoiceAuto value, JsonElement? json = null)
+    public BetaToolChoice(BetaToolChoiceAuto value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaToolChoice(BetaToolChoiceAny value, JsonElement? json = null)
+    public BetaToolChoice(BetaToolChoiceAny value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaToolChoice(BetaToolChoiceTool value, JsonElement? json = null)
+    public BetaToolChoice(BetaToolChoiceTool value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaToolChoice(BetaToolChoiceNone value, JsonElement? json = null)
+    public BetaToolChoice(BetaToolChoiceNone value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaToolChoice(JsonElement json)
+    public BetaToolChoice(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -306,11 +306,11 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -324,13 +324,13 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAuto>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -339,17 +339,20 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "any":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAny>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAny>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -358,20 +361,20 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolChoiceTool>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -380,20 +383,20 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "none":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolChoiceNone>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -402,11 +405,11 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaToolChoice(json);
+                return new BetaToolChoice(element);
             }
         }
     }

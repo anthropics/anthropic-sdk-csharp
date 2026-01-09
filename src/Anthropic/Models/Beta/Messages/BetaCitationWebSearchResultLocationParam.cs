@@ -9,41 +9,41 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaCitationWebSearchResultLocationParam,
         BetaCitationWebSearchResultLocationParamFromRaw
     >)
 )]
-public sealed record class BetaCitationWebSearchResultLocationParam : ModelBase
+public sealed record class BetaCitationWebSearchResultLocationParam : JsonModel
 {
     public required string CitedText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { ModelBase.Set(this._rawData, "cited_text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "cited_text"); }
+        init { JsonModel.Set(this._rawData, "cited_text", value); }
     }
 
     public required string EncryptedIndex
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "encrypted_index"); }
-        init { ModelBase.Set(this._rawData, "encrypted_index", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "encrypted_index"); }
+        init { JsonModel.Set(this._rawData, "encrypted_index", value); }
     }
 
     public required string? Title
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
+        init { JsonModel.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
+        init { JsonModel.Set(this._rawData, "url", value); }
     }
 
     /// <inheritdoc/>
@@ -101,7 +101,7 @@ public sealed record class BetaCitationWebSearchResultLocationParam : ModelBase
 }
 
 class BetaCitationWebSearchResultLocationParamFromRaw
-    : IFromRaw<BetaCitationWebSearchResultLocationParam>
+    : IFromRawJson<BetaCitationWebSearchResultLocationParam>
 {
     /// <inheritdoc/>
     public BetaCitationWebSearchResultLocationParam FromRawUnchecked(

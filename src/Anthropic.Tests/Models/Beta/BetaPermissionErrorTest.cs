@@ -33,8 +33,8 @@ public class BetaPermissionErrorTest : TestBase
     {
         var model = new BetaPermissionError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaPermissionError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaPermissionError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

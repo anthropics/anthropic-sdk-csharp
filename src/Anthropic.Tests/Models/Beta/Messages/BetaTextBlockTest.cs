@@ -97,8 +97,8 @@ public class BetaTextBlockTest : TestBase
             Text = "text",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaTextBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaTextBlock>(element);
         Assert.NotNull(deserialized);
 
         List<BetaTextCitation> expectedCitations =

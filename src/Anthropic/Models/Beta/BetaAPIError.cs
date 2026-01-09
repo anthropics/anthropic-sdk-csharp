@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaAPIError, BetaAPIErrorFromRaw>))]
-public sealed record class BetaAPIError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaAPIError, BetaAPIErrorFromRaw>))]
+public sealed record class BetaAPIError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "message"); }
+        init { JsonModel.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -75,7 +75,7 @@ public sealed record class BetaAPIError : ModelBase
     }
 }
 
-class BetaAPIErrorFromRaw : IFromRaw<BetaAPIError>
+class BetaAPIErrorFromRaw : IFromRawJson<BetaAPIError>
 {
     /// <inheritdoc/>
     public BetaAPIError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

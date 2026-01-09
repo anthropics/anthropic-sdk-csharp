@@ -9,23 +9,23 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaBashCodeExecutionOutputBlockParam,
         BetaBashCodeExecutionOutputBlockParamFromRaw
     >)
 )]
-public sealed record class BetaBashCodeExecutionOutputBlockParam : ModelBase
+public sealed record class BetaBashCodeExecutionOutputBlockParam : JsonModel
 {
     public required string FileID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "file_id"); }
+        init { JsonModel.Set(this._rawData, "file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -84,7 +84,8 @@ public sealed record class BetaBashCodeExecutionOutputBlockParam : ModelBase
     }
 }
 
-class BetaBashCodeExecutionOutputBlockParamFromRaw : IFromRaw<BetaBashCodeExecutionOutputBlockParam>
+class BetaBashCodeExecutionOutputBlockParamFromRaw
+    : IFromRawJson<BetaBashCodeExecutionOutputBlockParam>
 {
     /// <inheritdoc/>
     public BetaBashCodeExecutionOutputBlockParam FromRawUnchecked(

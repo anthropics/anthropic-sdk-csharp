@@ -26,7 +26,7 @@ public class RequestTest : TestBase
                 Stream = true,
                 System = new(
                     [
-                        new()
+                        new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
                             CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -83,7 +83,7 @@ public class RequestTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -148,7 +148,7 @@ public class RequestTest : TestBase
                 Stream = true,
                 System = new(
                     [
-                        new()
+                        new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
                             CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -216,7 +216,7 @@ public class RequestTest : TestBase
                 Stream = true,
                 System = new(
                     [
-                        new()
+                        new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
                             CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -261,8 +261,8 @@ public class RequestTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Request>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Request>(element);
         Assert.NotNull(deserialized);
 
         string expectedCustomID = "my-custom-id-1";
@@ -277,7 +277,7 @@ public class RequestTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -342,7 +342,7 @@ public class RequestTest : TestBase
                 Stream = true,
                 System = new(
                     [
-                        new()
+                        new Messages::TextBlockParam()
                         {
                             Text = "Today's date is 2024-06-01.",
                             CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -407,7 +407,7 @@ public class ParamsTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -466,7 +466,7 @@ public class ParamsTest : TestBase
         bool expectedStream = true;
         ParamsSystem expectedSystem = new(
             [
-                new()
+                new Messages::TextBlockParam()
                 {
                     Text = "Today's date is 2024-06-01.",
                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -556,7 +556,7 @@ public class ParamsTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -620,7 +620,7 @@ public class ParamsTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -664,8 +664,8 @@ public class ParamsTest : TestBase
             TopP = 0.7,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Params>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Params>(element);
         Assert.NotNull(deserialized);
 
         long expectedMaxTokens = 1024;
@@ -683,7 +683,7 @@ public class ParamsTest : TestBase
         bool expectedStream = true;
         ParamsSystem expectedSystem = new(
             [
-                new()
+                new Messages::TextBlockParam()
                 {
                     Text = "Today's date is 2024-06-01.",
                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -773,7 +773,7 @@ public class ParamsTest : TestBase
             Stream = true,
             System = new(
                 [
-                    new()
+                    new Messages::TextBlockParam()
                     {
                         Text = "Today's date is 2024-06-01.",
                         CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -960,6 +960,8 @@ public class ServiceTierTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
@@ -1000,18 +1002,18 @@ public class ServiceTierTest : TestBase
 public class ParamsSystemTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         ParamsSystem value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void TextBlockParamsValidation_Works()
+    public void TextBlockParamsValidationWorks()
     {
         ParamsSystem value = new(
             [
-                new()
+                new Messages::TextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -1033,21 +1035,21 @@ public class ParamsSystemTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         ParamsSystem value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void TextBlockParamsSerializationRoundtrip_Works()
+    public void TextBlockParamsSerializationRoundtripWorks()
     {
         ParamsSystem value = new(
             [
-                new()
+                new Messages::TextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = Messages::TTL.TTL5m },
@@ -1065,8 +1067,8 @@ public class ParamsSystemTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ParamsSystem>(element);
 
         Assert.Equal(value, deserialized);
     }
