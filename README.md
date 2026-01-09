@@ -155,6 +155,46 @@ await foreach (var message in client.Messages.CreateStreaming(parameters))
 }
 ```
 
+### Aggregators
+
+Both the Messages and BetaMessages streaming endpoints have build-in aggregators that can produce the same object as its non-streaming counterparts.  
+This can be useful when progress should be reported during the generation but then also handle the full result as a single object.
+
+It is possible to either only get the full result object via the `.Aggregate()` extension on the `IAsyncEnumerable` returned by the `CreateStreaming` method or insert an external aggregator into a linq tree:
+
+```csharp
+
+IAsyncEnumerable<RawMessageStreamEvent> responseUpdates = client.Messages.CreateStreaming(
+    parameters
+);
+
+// this produces a single object based on the streaming output.
+var message = await responseUpdates.Aggregate().ConfigureAwait(false);
+
+// you can also add an aggregator as part of your linq chain to get realtime streaming and aggregation
+
+var aggregator = new MessageContentAggregator();
+await foreach (RawMessageStreamEvent rawEvent in responseUpdates.CollectAsync(aggregator))
+{
+    // do something with the stream events
+    if (rawEvent.TryPickContentBlockDelta(out var delta))
+    {
+        if (delta.Delta.TryPickThinking(out var thinkingDelta))
+        {
+            Console.Write(thinkingDelta.Thinking);
+        }
+        else if (delta.Delta.TryPickText(out var textDelta))
+        {
+            Console.Write(textDelta.Text);
+        }
+    }
+}
+
+// and then get the full aggregated message as the aggregator will cache the messages internally you can call this method multiple times
+var fullMessage = await responseUpdates.Aggregate().ConfigureAwait(false);
+
+```
+
 ## `IChatClient`
 
 The SDK provides an implementation of the `IChatClient` interface from the `Microsoft.Extensions.AI.Abstractions` library.

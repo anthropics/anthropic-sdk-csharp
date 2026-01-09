@@ -1,12 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Models.Beta.Messages;
-using Anthropic.Tests;
+using Anthropic.Models.Messages;
+using Anthropic.Services;
+using Moq;
 using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Beta;
 
 public class MessageServiceTest
 {
+    private static Message GenerateStartMessage =>
+        new()
+        {
+            ID = "Test",
+            Content = [],
+            Model = Model.Claude3OpusLatest,
+            StopReason = StopReason.ToolUse,
+            StopSequence = "",
+            Usage = new()
+            {
+                CacheCreation = null,
+                CacheCreationInputTokens = null,
+                CacheReadInputTokens = null,
+                InputTokens = 25,
+                OutputTokens = 25,
+                ServerToolUse = null,
+                ServiceTier = UsageServiceTier.Standard,
+            },
+        };
+
+    private static Anthropic.Models.Messages.MessageCreateParams StreamingParam =>
+        new()
+        {
+            MaxTokens = 1024,
+            Messages = [new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User }],
+            Model = Model.Claude3_7SonnetLatest,
+        };
+
     [Theory(Skip = "prism validates based on the non-beta endpoint")]
     [AnthropicTestClients]
     public async Task Create_Works(IAnthropicClient client)
@@ -15,7 +49,14 @@ public class MessageServiceTest
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages =
+                [
+                    new()
+                    {
+                        Content = "Hello, world",
+                        Role = Anthropic.Models.Beta.Messages.Role.User,
+                    },
+                ],
                 Model = Messages::Model.ClaudeOpus4_5_20251101,
             },
             TestContext.Current.CancellationToken
@@ -31,7 +72,14 @@ public class MessageServiceTest
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages =
+                [
+                    new()
+                    {
+                        Content = "Hello, world",
+                        Role = Anthropic.Models.Beta.Messages.Role.User,
+                    },
+                ],
                 Model = Messages::Model.ClaudeOpus4_5_20251101,
             },
             TestContext.Current.CancellationToken
@@ -50,11 +98,244 @@ public class MessageServiceTest
         var betaMessageTokensCount = await client.Beta.Messages.CountTokens(
             new()
             {
-                Messages = [new() { Content = "string", Role = Role.User }],
+                Messages =
+                [
+                    new() { Content = "string", Role = Anthropic.Models.Beta.Messages.Role.User },
+                ],
                 Model = Messages::Model.ClaudeOpus4_5_20251101,
             },
             TestContext.Current.CancellationToken
         );
         betaMessageTokensCount.Validate();
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_WorksNoContent_RawMessageStartEvent()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        Assert.Empty(stream.Content);
+        stream.Validate();
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_HandlesNoEndMessageInterrupt()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        // assert
+
+        await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate()
+        );
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_WorksNoContent_RawContentBlockStartEvent()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(new TextBlock() { Citations = [], Text = "Test Output" }),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.NotEmpty(stream.Content);
+        Assert.Single(stream.Content);
+        Assert.IsType<TextBlock>(stream.Content[0].Value);
+        Assert.Equal("Test Output", ((TextBlock)stream.Content[0].Value!).Text);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_WorksStopEndEvent()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new TextBlock() { Citations = [], Text = "this is a " },
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(
+                new RawContentBlockDeltaEvent() { Index = 0, Delta = new(new TextDelta("Test")) }
+            );
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.NotEmpty(stream.Content);
+        Assert.Single(stream.Content);
+        Assert.IsType<TextBlock>(stream.Content[0].Value);
+        Assert.Equal("this is a Test", ((TextBlock)stream.Content[0].Value!).Text);
+    }
+
+    [Fact]
+    public async Task CreateStreamingAggregation_Works()
+    {
+        // arrange
+
+        var messagesServiceMock = new Mock<IMessageService>();
+        static async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(new TextBlock() { Citations = [], Text = "This is a " }),
+                }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent() { Index = 0, Delta = new(new TextDelta("Test")) }
+            );
+            yield return new(
+                new RawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(
+                        new CitationsDelta(
+                            new Anthropic.Models.Messages.Citation(
+                                new CitationsWebSearchResultLocation()
+                                {
+                                    CitedText = "Somewhere",
+                                    EncryptedIndex = "0",
+                                    Title = "Over",
+                                    URL = "the://rainbow",
+                                }
+                            )
+                        )
+                    ),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 0 });
+            yield return new(
+                new RawContentBlockStartEvent()
+                {
+                    Index = 1,
+                    ContentBlock = new(
+                        new ThinkingBlock() { Signature = "", Thinking = "Other Test" }
+                    ),
+                }
+            );
+            yield return new(new RawContentBlockStopEvent() { Index = 1 });
+            yield return new(new RawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+        messagesServiceMock
+            .Setup(e =>
+                e.CreateStreaming(
+                    It.IsAny<Anthropic.Models.Messages.MessageCreateParams>(),
+                    It.IsAny<CancellationToken>()
+                )
+            )
+            .Returns(GetTestValues);
+
+        // act
+
+        var stream = await messagesServiceMock.Object.CreateStreaming(StreamingParam).Aggregate();
+
+        // assert
+
+        Assert.NotNull(stream);
+        stream.Validate();
+        Assert.NotEmpty(stream.Content);
+        Assert.Equal(2, stream.Content.Count);
+        Assert.IsType<TextBlock>(stream.Content[0].Value);
+        Assert.IsType<ThinkingBlock>(stream.Content[1].Value);
+        Assert.Equal("This is a Test", ((TextBlock)stream.Content[0].Value!).Text);
+        Assert.NotNull(((TextBlock)stream.Content[0].Value!).Citations);
+        Assert.NotEmpty(((TextBlock)stream.Content[0].Value!).Citations!);
+        Assert.Equal("Other Test", ((ThinkingBlock)stream.Content[1].Value!).Thinking);
     }
 }
