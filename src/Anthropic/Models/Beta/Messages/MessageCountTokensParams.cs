@@ -528,7 +528,7 @@ public record class MessageCountTokensParamsSystem : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<BetaTextBlockParam> value:
+            case IReadOnlyList<BetaTextBlockParam> value:
                 betaTextBlockParams(value);
                 break;
             default:

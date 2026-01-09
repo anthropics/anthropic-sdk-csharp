@@ -118,7 +118,7 @@ public record class BetaWebSearchToolResultBlockContent : ModelBase
             case BetaWebSearchToolResultError value:
                 error(value);
                 break;
-            case List<BetaWebSearchResultBlock> value:
+            case IReadOnlyList<BetaWebSearchResultBlock> value:
                 betaWebSearchResultBlocks(value);
                 break;
             default:

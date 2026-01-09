@@ -252,7 +252,7 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<BetaTextBlockParam> value:
+            case IReadOnlyList<BetaTextBlockParam> value:
                 betaMcpToolResultBlockParamContent(value);
                 break;
             default:

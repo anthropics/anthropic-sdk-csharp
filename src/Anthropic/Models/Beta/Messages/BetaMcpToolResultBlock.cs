@@ -206,7 +206,7 @@ public record class BetaMcpToolResultBlockContent : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<BetaTextBlock> value:
+            case IReadOnlyList<BetaTextBlock> value:
                 betaMcpToolResultBlockContent(value);
                 break;
             default:

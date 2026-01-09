@@ -617,7 +617,7 @@ public record class MessageCreateParamsSystem : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<TextBlockParam> value:
+            case IReadOnlyList<TextBlockParam> value:
                 textBlockParams(value);
                 break;
             default:

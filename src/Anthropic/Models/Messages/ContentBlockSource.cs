@@ -189,7 +189,7 @@ public record class Content : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<ContentBlockSourceContent> value:
+            case IReadOnlyList<ContentBlockSourceContent> value:
                 contentBlockSourceContent(value);
                 break;
             default:
