@@ -18,7 +18,7 @@ namespace Anthropic.Models.Beta.Messages;
 /// for details.</para>
 /// </summary>
 [JsonConverter(typeof(BetaThinkingConfigParamConverter))]
-public record class BetaThinkingConfigParam
+public record class BetaThinkingConfigParam : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -185,7 +185,7 @@ public record class BetaThinkingConfigParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

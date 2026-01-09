@@ -84,7 +84,7 @@ class CitationsDeltaFromRaw : IFromRawJson<CitationsDelta>
 }
 
 [JsonConverter(typeof(CitationConverter))]
-public record class Citation
+public record class Citation : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -473,7 +473,7 @@ public record class Citation
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

@@ -738,7 +738,7 @@ class ParamsFromRaw : IFromRawJson<Params>
 /// Container identifier for reuse across requests.
 /// </summary>
 [JsonConverter(typeof(global::Anthropic.Models.Beta.Messages.Batches.ContainerConverter))]
-public record class Container
+public record class Container : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -902,7 +902,7 @@ public record class Container
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -1041,7 +1041,7 @@ sealed class ServiceTierConverter
 /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
 [JsonConverter(typeof(ParamsSystemConverter))]
-public record class ParamsSystem
+public record class ParamsSystem : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -1204,7 +1204,7 @@ public record class ParamsSystem
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

@@ -65,7 +65,7 @@ class MessageParamFromRaw : IFromRawJson<MessageParam>
 }
 
 [JsonConverter(typeof(MessageParamContentConverter))]
-public record class MessageParamContent
+public record class MessageParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -228,7 +228,7 @@ public record class MessageParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

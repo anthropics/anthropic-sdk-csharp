@@ -116,7 +116,7 @@ class BetaToolSearchToolResultBlockParamFromRaw : IFromRawJson<BetaToolSearchToo
 }
 
 [JsonConverter(typeof(BetaToolSearchToolResultBlockParamContentConverter))]
-public record class BetaToolSearchToolResultBlockParamContent
+public record class BetaToolSearchToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -305,7 +305,7 @@ public record class BetaToolSearchToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

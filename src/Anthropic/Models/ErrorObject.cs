@@ -8,7 +8,7 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models;
 
 [JsonConverter(typeof(ErrorObjectConverter))]
-public record class ErrorObject
+public record class ErrorObject : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -463,7 +463,7 @@ public record class ErrorObject
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

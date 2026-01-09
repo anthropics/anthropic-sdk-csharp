@@ -140,7 +140,7 @@ class BetaToolUseBlockParamFromRaw : IFromRawJson<BetaToolUseBlockParam>
 /// Tool invocation directly from the model.
 /// </summary>
 [JsonConverter(typeof(BetaToolUseBlockParamCallerConverter))]
-public record class BetaToolUseBlockParamCaller
+public record class BetaToolUseBlockParamCaller : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -307,7 +307,7 @@ public record class BetaToolUseBlockParamCaller
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

@@ -423,7 +423,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
 /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
 [JsonConverter(typeof(MessageCountTokensParamsSystemConverter))]
-public record class MessageCountTokensParamsSystem
+public record class MessageCountTokensParamsSystem : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -590,7 +590,7 @@ public record class MessageCountTokensParamsSystem
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -672,7 +672,7 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
 /// an MCP server, with optional per-tool overrides.</para>
 /// </summary>
 [JsonConverter(typeof(ToolConverter))]
-public record class Tool
+public record class Tool : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -1635,7 +1635,7 @@ public record class Tool
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

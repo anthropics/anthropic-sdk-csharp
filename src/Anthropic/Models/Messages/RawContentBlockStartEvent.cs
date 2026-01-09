@@ -95,7 +95,7 @@ class RawContentBlockStartEventFromRaw : IFromRawJson<RawContentBlockStartEvent>
 }
 
 [JsonConverter(typeof(RawContentBlockStartEventContentBlockConverter))]
-public record class RawContentBlockStartEventContentBlock
+public record class RawContentBlockStartEventContentBlock : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -451,7 +451,7 @@ public record class RawContentBlockStartEventContentBlock
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

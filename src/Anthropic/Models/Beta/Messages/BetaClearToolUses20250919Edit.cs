@@ -157,7 +157,7 @@ class BetaClearToolUses20250919EditFromRaw : IFromRawJson<BetaClearToolUses20250
 /// Whether to clear all tool inputs (bool) or specific tool inputs to clear (list)
 /// </summary>
 [JsonConverter(typeof(ClearToolInputsConverter))]
-public record class ClearToolInputs
+public record class ClearToolInputs : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -312,7 +312,7 @@ public record class ClearToolInputs
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -384,7 +384,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
 /// Condition that triggers the context management strategy
 /// </summary>
 [JsonConverter(typeof(TriggerConverter))]
-public record class Trigger
+public record class Trigger : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -554,7 +554,7 @@ public record class Trigger
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

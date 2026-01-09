@@ -11,7 +11,7 @@ namespace Anthropic.Models.Beta.Messages;
 /// Regular text content.
 /// </summary>
 [JsonConverter(typeof(BetaContentBlockParamConverter))]
-public record class BetaContentBlockParam
+public record class BetaContentBlockParam : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -988,7 +988,7 @@ public record class BetaContentBlockParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

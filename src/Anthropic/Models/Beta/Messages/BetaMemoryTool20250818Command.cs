@@ -8,7 +8,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaMemoryTool20250818CommandConverter))]
-public record class BetaMemoryTool20250818Command
+public record class BetaMemoryTool20250818Command : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -388,7 +388,7 @@ public record class BetaMemoryTool20250818Command
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

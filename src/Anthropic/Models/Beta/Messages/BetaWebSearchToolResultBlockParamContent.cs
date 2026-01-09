@@ -10,7 +10,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaWebSearchToolResultBlockParamContentConverter))]
-public record class BetaWebSearchToolResultBlockParamContent
+public record class BetaWebSearchToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -182,7 +182,7 @@ public record class BetaWebSearchToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

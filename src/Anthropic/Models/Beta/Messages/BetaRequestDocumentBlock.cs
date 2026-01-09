@@ -135,7 +135,7 @@ class BetaRequestDocumentBlockFromRaw : IFromRawJson<BetaRequestDocumentBlock>
 }
 
 [JsonConverter(typeof(BetaRequestDocumentBlockSourceConverter))]
-public record class BetaRequestDocumentBlockSource
+public record class BetaRequestDocumentBlockSource : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -453,7 +453,7 @@ public record class BetaRequestDocumentBlockSource
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

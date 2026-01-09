@@ -8,7 +8,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaTextCitationParamConverter))]
-public record class BetaTextCitationParam
+public record class BetaTextCitationParam : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -406,7 +406,7 @@ public record class BetaTextCitationParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

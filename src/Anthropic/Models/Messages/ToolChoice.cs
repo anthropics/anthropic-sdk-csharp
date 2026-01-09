@@ -12,7 +12,7 @@ namespace Anthropic.Models.Messages;
 /// any available tool, decide by itself, or not use tools at all.
 /// </summary>
 [JsonConverter(typeof(ToolChoiceConverter))]
-public record class ToolChoice
+public record class ToolChoice : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -272,7 +272,7 @@ public record class ToolChoice
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

@@ -97,7 +97,7 @@ class BetaRawContentBlockStartEventFromRaw : IFromRawJson<BetaRawContentBlockSta
 /// Response model for a file uploaded to the container.
 /// </summary>
 [JsonConverter(typeof(ContentBlockConverter))]
-public record class ContentBlock
+public record class ContentBlock : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -795,7 +795,7 @@ public record class ContentBlock
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

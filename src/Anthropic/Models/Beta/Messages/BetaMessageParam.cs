@@ -67,7 +67,7 @@ class BetaMessageParamFromRaw : IFromRawJson<BetaMessageParam>
 }
 
 [JsonConverter(typeof(BetaMessageParamContentConverter))]
-public record class BetaMessageParamContent
+public record class BetaMessageParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -233,7 +233,7 @@ public record class BetaMessageParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

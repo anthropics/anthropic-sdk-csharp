@@ -14,7 +14,7 @@ namespace Anthropic.Models.Beta.Messages;
 /// an MCP server, with optional per-tool overrides.</para>
 /// </summary>
 [JsonConverter(typeof(BetaToolUnionConverter))]
-public record class BetaToolUnion
+public record class BetaToolUnion : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -975,7 +975,7 @@ public record class BetaToolUnion
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

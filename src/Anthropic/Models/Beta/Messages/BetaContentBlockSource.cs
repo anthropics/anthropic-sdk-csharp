@@ -94,7 +94,7 @@ class BetaContentBlockSourceFromRaw : IFromRawJson<BetaContentBlockSource>
 }
 
 [JsonConverter(typeof(BetaContentBlockSourceContentConverter))]
-public record class BetaContentBlockSourceContent
+public record class BetaContentBlockSourceContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -267,7 +267,7 @@ public record class BetaContentBlockSourceContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

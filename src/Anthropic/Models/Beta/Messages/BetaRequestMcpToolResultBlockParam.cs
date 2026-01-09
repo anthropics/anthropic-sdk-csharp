@@ -147,7 +147,7 @@ class BetaRequestMcpToolResultBlockParamFromRaw : IFromRawJson<BetaRequestMcpToo
 }
 
 [JsonConverter(typeof(BetaRequestMcpToolResultBlockParamContentConverter))]
-public record class BetaRequestMcpToolResultBlockParamContent
+public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -315,7 +315,7 @@ public record class BetaRequestMcpToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

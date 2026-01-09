@@ -94,7 +94,7 @@ class ImageBlockParamFromRaw : IFromRawJson<ImageBlockParam>
 }
 
 [JsonConverter(typeof(ImageBlockParamSourceConverter))]
-public record class ImageBlockParamSource
+public record class ImageBlockParamSource : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -259,7 +259,7 @@ public record class ImageBlockParamSource
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

@@ -212,7 +212,7 @@ sealed class BetaServerToolUseBlockParamNameConverter
 /// Tool invocation directly from the model.
 /// </summary>
 [JsonConverter(typeof(BetaServerToolUseBlockParamCallerConverter))]
-public record class BetaServerToolUseBlockParamCaller
+public record class BetaServerToolUseBlockParamCaller : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -382,7 +382,7 @@ public record class BetaServerToolUseBlockParamCaller
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

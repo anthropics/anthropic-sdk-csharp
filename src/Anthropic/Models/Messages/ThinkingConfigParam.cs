@@ -18,7 +18,7 @@ namespace Anthropic.Models.Messages;
 /// for details.</para>
 /// </summary>
 [JsonConverter(typeof(ThinkingConfigParamConverter))]
-public record class ThinkingConfigParam
+public record class ThinkingConfigParam : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -183,7 +183,7 @@ public record class ThinkingConfigParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

@@ -134,7 +134,7 @@ class ToolResultBlockParamFromRaw : IFromRawJson<ToolResultBlockParam>
 }
 
 [JsonConverter(typeof(ToolResultBlockParamContentConverter))]
-public record class ToolResultBlockParamContent
+public record class ToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -289,7 +289,7 @@ public record class ToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -362,7 +362,7 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
 }
 
 [JsonConverter(typeof(BlockConverter))]
-public record class Block
+public record class Block : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -631,7 +631,7 @@ public record class Block
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

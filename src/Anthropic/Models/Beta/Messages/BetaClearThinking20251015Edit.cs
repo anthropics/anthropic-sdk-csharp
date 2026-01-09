@@ -100,7 +100,7 @@ class BetaClearThinking20251015EditFromRaw : IFromRawJson<BetaClearThinking20251
 /// will have their thinking blocks removed.
 /// </summary>
 [JsonConverter(typeof(KeepConverter))]
-public record class Keep
+public record class Keep : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -305,7 +305,7 @@ public record class Keep
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

@@ -15,7 +15,7 @@ namespace Anthropic.Models.Beta.Messages.Batches;
 /// cancellation or expiration.</para>
 /// </summary>
 [JsonConverter(typeof(BetaMessageBatchResultConverter))]
-public record class BetaMessageBatchResult
+public record class BetaMessageBatchResult : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -269,7 +269,7 @@ public record class BetaMessageBatchResult
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

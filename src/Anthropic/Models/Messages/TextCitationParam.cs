@@ -8,7 +8,7 @@ using System = System;
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(typeof(TextCitationParamConverter))]
-public record class TextCitationParam
+public record class TextCitationParam : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -395,7 +395,7 @@ public record class TextCitationParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

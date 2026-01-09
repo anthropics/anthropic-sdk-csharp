@@ -8,7 +8,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaRawContentBlockDeltaConverter))]
-public record class BetaRawContentBlockDelta
+public record class BetaRawContentBlockDelta : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -296,7 +296,7 @@ public record class BetaRawContentBlockDelta
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

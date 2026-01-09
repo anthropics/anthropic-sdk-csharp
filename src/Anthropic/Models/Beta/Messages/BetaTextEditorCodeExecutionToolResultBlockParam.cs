@@ -125,7 +125,7 @@ class BetaTextEditorCodeExecutionToolResultBlockParamFromRaw
 }
 
 [JsonConverter(typeof(BetaTextEditorCodeExecutionToolResultBlockParamContentConverter))]
-public record class BetaTextEditorCodeExecutionToolResultBlockParamContent
+public record class BetaTextEditorCodeExecutionToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -416,7 +416,7 @@ public record class BetaTextEditorCodeExecutionToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

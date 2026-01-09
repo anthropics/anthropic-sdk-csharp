@@ -8,7 +8,7 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta;
 
 [JsonConverter(typeof(BetaErrorConverter))]
-public record class BetaError
+public record class BetaError : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -463,7 +463,7 @@ public record class BetaError
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

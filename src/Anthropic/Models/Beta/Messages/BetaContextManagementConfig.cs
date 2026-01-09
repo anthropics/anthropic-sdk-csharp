@@ -76,7 +76,7 @@ class BetaContextManagementConfigFromRaw : IFromRawJson<BetaContextManagementCon
 }
 
 [JsonConverter(typeof(EditConverter))]
-public record class Edit
+public record class Edit : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -247,7 +247,7 @@ public record class Edit
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

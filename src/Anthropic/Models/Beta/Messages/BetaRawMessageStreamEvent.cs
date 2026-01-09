@@ -8,7 +8,7 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaRawMessageStreamEventConverter))]
-public record class BetaRawMessageStreamEvent
+public record class BetaRawMessageStreamEvent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -367,7 +367,7 @@ public record class BetaRawMessageStreamEvent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

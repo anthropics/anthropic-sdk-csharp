@@ -514,7 +514,7 @@ sealed class ServiceTierConverter : JsonConverter<ServiceTier>
 /// such as specifying a particular goal or role. See our [guide to system prompts](https://docs.claude.com/en/docs/system-prompts).</para>
 /// </summary>
 [JsonConverter(typeof(MessageCreateParamsSystemConverter))]
-public record class MessageCreateParamsSystem
+public record class MessageCreateParamsSystem : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -678,7 +678,7 @@ public record class MessageCreateParamsSystem
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

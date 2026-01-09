@@ -8,7 +8,7 @@ using System = System;
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(typeof(ToolUnionConverter))]
-public record class ToolUnion
+public record class ToolUnion : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -331,7 +331,7 @@ public record class ToolUnion
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

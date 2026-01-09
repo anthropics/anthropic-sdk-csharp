@@ -142,7 +142,7 @@ class BetaToolResultBlockParamFromRaw : IFromRawJson<BetaToolResultBlockParam>
 }
 
 [JsonConverter(typeof(BetaToolResultBlockParamContentConverter))]
-public record class BetaToolResultBlockParamContent
+public record class BetaToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -297,7 +297,7 @@ public record class BetaToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -374,7 +374,7 @@ sealed class BetaToolResultBlockParamContentConverter
 /// Tool reference block that can be included in tool_result content.
 /// </summary>
 [JsonConverter(typeof(BlockConverter))]
-public record class Block
+public record class Block : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -687,7 +687,7 @@ public record class Block
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

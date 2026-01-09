@@ -95,7 +95,7 @@ class BetaWebFetchToolResultBlockFromRaw : IFromRawJson<BetaWebFetchToolResultBl
 }
 
 [JsonConverter(typeof(BetaWebFetchToolResultBlockContentConverter))]
-public record class BetaWebFetchToolResultBlockContent
+public record class BetaWebFetchToolResultBlockContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -274,7 +274,7 @@ public record class BetaWebFetchToolResultBlockContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

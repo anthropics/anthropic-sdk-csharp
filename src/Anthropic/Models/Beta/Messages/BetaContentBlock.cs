@@ -11,7 +11,7 @@ namespace Anthropic.Models.Beta.Messages;
 /// Response model for a file uploaded to the container.
 /// </summary>
 [JsonConverter(typeof(BetaContentBlockConverter))]
-public record class BetaContentBlock
+public record class BetaContentBlock : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -711,7 +711,7 @@ public record class BetaContentBlock
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

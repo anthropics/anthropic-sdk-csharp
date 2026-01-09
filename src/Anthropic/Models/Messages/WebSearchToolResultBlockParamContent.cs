@@ -10,7 +10,7 @@ using System = System;
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(typeof(WebSearchToolResultBlockParamContentConverter))]
-public record class WebSearchToolResultBlockParamContent
+public record class WebSearchToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -180,7 +180,7 @@ public record class WebSearchToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {

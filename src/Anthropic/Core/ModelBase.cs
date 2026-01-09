@@ -11,7 +11,7 @@ namespace Anthropic.Core;
 /// <summary>
 /// The base class for all API objects with properties.
 ///
-/// <para>API objects such as enums and unions do not inherit from this class.</para>
+/// <para>API objects such as enums do not inherit from this class.</para>
 /// </summary>
 public abstract record class ModelBase
 {
