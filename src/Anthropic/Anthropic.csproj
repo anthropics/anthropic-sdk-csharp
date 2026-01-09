@@ -11,7 +11,6 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Anthropic.Tests" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-    <InternalsVisibleTo Include="Anthropic.Tests" />
     <PackageReference Include="System.Text.Json" Version="9.0.9" />
     <PackageReference Include="System.Net.ServerSentEvents" Version="10.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
