@@ -1122,10 +1122,12 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     "name": "enhanced_tool",
                     "description": "A tool with additional properties",
                     "input_schema": {
-                        "query": {
-                            "type": "string"
-                        },
                         "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string"
+                            }
+                        },
                         "required": ["query"]
                     },
                     "defer_loading": true,
@@ -1215,10 +1217,12 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     "name": "strict_tool",
                     "description": "A tool with only strict property",
                     "input_schema": {
-                        "value": {
-                            "type": "integer"
-                        },
                         "type": "object",
+                        "properties": {
+                            "value": {
+                                "type": "integer"
+                            }
+                        },
                         "required": ["value"]
                     },
                     "strict": true
