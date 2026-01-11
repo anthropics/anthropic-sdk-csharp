@@ -1,5 +1,13 @@
 # Changelog
 
+## 12.1.1 (2026-01-11)
+
+Full Changelog: [Anthropic-v12.1.0...Anthropic-v12.1.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.1.0...Anthropic-v12.1.1)
+
+### Bug Fixes
+
+* use Properties initializer for InputSchema in IChatClient extensions ([#83](https://github.com/anthropics/anthropic-sdk-csharp/issues/83)) ([b4d9faf](https://github.com/anthropics/anthropic-sdk-csharp/commit/b4d9faf036c145727a722ba586bbb38d692b8464))
+
 ## 12.1.0 (2026-01-06)
 
 Full Changelog: [Anthropic-v12.0.1...Anthropic-v12.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.0.1...Anthropic-v12.1.0)
