@@ -9,7 +9,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.Skills;
 
 public sealed class SkillListPage(
-    ISkillService service,
+    ISkillServiceWithRawResponse service,
     SkillListParams parameters,
     SkillListPageResponse response
 ) : IPage<SkillListResponse>
@@ -45,9 +45,10 @@ public sealed class SkillListPage(
     {
         var nextCursor =
             response.NextPage ?? throw new InvalidOperationException("Cannot request next page");
-        return await service
+        using var nextResponse = await service
             .List(parameters with { Page = nextCursor }, cancellationToken)
             .ConfigureAwait(false);
+        return await nextResponse.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>

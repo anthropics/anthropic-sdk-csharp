@@ -9,7 +9,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.Models;
 
 public sealed class ModelListPage(
-    IModelService service,
+    IModelServiceWithRawResponse service,
     ModelListParams parameters,
     ModelListPageResponse response
 ) : IPage<BetaModelInfo>
@@ -45,9 +45,10 @@ public sealed class ModelListPage(
     {
         var nextCursor =
             response.LastID ?? throw new InvalidOperationException("Cannot request next page");
-        return await service
+        using var nextResponse = await service
             .List(parameters with { AfterID = nextCursor }, cancellationToken)
             .ConfigureAwait(false);
+        return await nextResponse.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>

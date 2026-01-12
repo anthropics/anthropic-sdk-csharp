@@ -15,6 +15,12 @@ namespace Anthropic.Services.Beta.Messages;
 public interface IBatchService
 {
     /// <summary>
+    /// Returns a view of this service that provides access to raw HTTP responses
+    /// for each method.
+    /// </summary>
+    IBatchServiceWithRawResponse WithRawResponse { get; }
+
+    /// <summary>
     /// Returns a view of this service with the given option modifications applied.
     ///
     /// <para>The original service is not modified.</para>
@@ -125,6 +131,102 @@ public interface IBatchService
 
     /// <inheritdoc cref="ResultsStreaming(BatchResultsParams, CancellationToken)"/>
     IAsyncEnumerable<BetaMessageBatchIndividualResponse> ResultsStreaming(
+        string messageBatchID,
+        BatchResultsParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+}
+
+/// <summary>
+/// A view of <see cref="IBatchService"/> that provides access to raw
+/// HTTP responses for each method.
+/// </summary>
+public interface IBatchServiceWithRawResponse
+{
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
+    IBatchServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/messages/batches?beta=true`, but is otherwise the
+    /// same as <see cref="IBatchService.Create(BatchCreateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaMessageBatch>> Create(
+        BatchCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `get /v1/messages/batches/{message_batch_id}?beta=true`, but is otherwise the
+    /// same as <see cref="IBatchService.Retrieve(BatchRetrieveParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaMessageBatch>> Retrieve(
+        BatchRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Retrieve(BatchRetrieveParams, CancellationToken)"/>
+    Task<HttpResponse<BetaMessageBatch>> Retrieve(
+        string messageBatchID,
+        BatchRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `get /v1/messages/batches?beta=true`, but is otherwise the
+    /// same as <see cref="IBatchService.List(BatchListParams?, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BatchListPage>> List(
+        BatchListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `delete /v1/messages/batches/{message_batch_id}?beta=true`, but is otherwise the
+    /// same as <see cref="IBatchService.Delete(BatchDeleteParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaDeletedMessageBatch>> Delete(
+        BatchDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Delete(BatchDeleteParams, CancellationToken)"/>
+    Task<HttpResponse<BetaDeletedMessageBatch>> Delete(
+        string messageBatchID,
+        BatchDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/messages/batches/{message_batch_id}/cancel?beta=true`, but is otherwise the
+    /// same as <see cref="IBatchService.Cancel(BatchCancelParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaMessageBatch>> Cancel(
+        BatchCancelParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Cancel(BatchCancelParams, CancellationToken)"/>
+    Task<HttpResponse<BetaMessageBatch>> Cancel(
+        string messageBatchID,
+        BatchCancelParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `get /v1/messages/batches/{message_batch_id}/results?beta=true`, but is otherwise the
+    /// same as <see cref="IBatchService.ResultsStreaming(BatchResultsParams, CancellationToken)"/>.
+    /// </summary>
+    Task<StreamingHttpResponse<BetaMessageBatchIndividualResponse>> ResultsStreaming(
+        BatchResultsParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="ResultsStreaming(BatchResultsParams, CancellationToken)"/>
+    Task<StreamingHttpResponse<BetaMessageBatchIndividualResponse>> ResultsStreaming(
         string messageBatchID,
         BatchResultsParams? parameters = null,
         CancellationToken cancellationToken = default

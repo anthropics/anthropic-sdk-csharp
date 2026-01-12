@@ -16,6 +16,12 @@ namespace Anthropic.Services.Beta;
 public interface IMessageService
 {
     /// <summary>
+    /// Returns a view of this service that provides access to raw HTTP responses
+    /// for each method.
+    /// </summary>
+    global::Anthropic.Services.Beta.IMessageServiceWithRawResponse WithRawResponse { get; }
+
+    /// <summary>
     /// Returns a view of this service with the given option modifications applied.
     ///
     /// <para>The original service is not modified.</para>
@@ -63,6 +69,51 @@ public interface IMessageService
     /// <para>Learn more about token counting in our [user guide](https://docs.claude.com/en/docs/build-with-claude/token-counting)</para>
     /// </summary>
     Task<BetaMessageTokensCount> CountTokens(
+        MessageCountTokensParams parameters,
+        CancellationToken cancellationToken = default
+    );
+}
+
+/// <summary>
+/// A view of <see cref="global::Anthropic.Services.Beta.IMessageService"/> that provides access to raw
+/// HTTP responses for each method.
+/// </summary>
+public interface IMessageServiceWithRawResponse
+{
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
+    global::Anthropic.Services.Beta.IMessageServiceWithRawResponse WithOptions(
+        Func<ClientOptions, ClientOptions> modifier
+    );
+
+    IBatchServiceWithRawResponse Batches { get; }
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/messages?beta=true`, but is otherwise the
+    /// same as <see cref="global::Anthropic.Services.Beta.IMessageService.Create(MessageCreateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaMessage>> Create(
+        MessageCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/messages?beta=true`, but is otherwise the
+    /// same as <see cref="global::Anthropic.Services.Beta.IMessageService.CreateStreaming(MessageCreateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<StreamingHttpResponse<BetaRawMessageStreamEvent>> CreateStreaming(
+        MessageCreateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for `post /v1/messages/count_tokens?beta=true`, but is otherwise the
+    /// same as <see cref="global::Anthropic.Services.Beta.IMessageService.CountTokens(MessageCountTokensParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaMessageTokensCount>> CountTokens(
         MessageCountTokensParams parameters,
         CancellationToken cancellationToken = default
     );

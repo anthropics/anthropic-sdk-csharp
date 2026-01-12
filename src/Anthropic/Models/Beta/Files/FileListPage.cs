@@ -9,7 +9,7 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.Files;
 
 public sealed class FileListPage(
-    IFileService service,
+    IFileServiceWithRawResponse service,
     FileListParams parameters,
     FileListPageResponse response
 ) : IPage<FileMetadata>
@@ -44,9 +44,10 @@ public sealed class FileListPage(
     {
         var nextCursor =
             response.LastID ?? throw new InvalidOperationException("Cannot request next page");
-        return await service
+        using var nextResponse = await service
             .List(parameters with { AfterID = nextCursor }, cancellationToken)
             .ConfigureAwait(false);
+        return await nextResponse.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>

@@ -17,17 +17,27 @@ public sealed class SkillService : ISkillService
         request.Headers.Add("anthropic-beta", "skills-2025-10-02");
     }
 
+    readonly Lazy<ISkillServiceWithRawResponse> _withRawResponse;
+
+    /// <inheritdoc/>
+    public ISkillServiceWithRawResponse WithRawResponse
+    {
+        get { return _withRawResponse.Value; }
+    }
+
+    readonly IAnthropicClient _client;
+
     /// <inheritdoc/>
     public ISkillService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new SkillService(this._client.WithOptions(modifier));
     }
 
-    readonly IAnthropicClient _client;
-
     public SkillService(IAnthropicClient client)
     {
         _client = client;
+
+        _withRawResponse = new(() => new SkillServiceWithRawResponse(client.WithRawResponse));
         _versions = new(() => new VersionService(client));
     }
 
@@ -43,6 +53,103 @@ public sealed class SkillService : ISkillService
         CancellationToken cancellationToken = default
     )
     {
+        using var response = await this
+            .WithRawResponse.Create(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public async Task<SkillRetrieveResponse> Retrieve(
+        SkillRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Retrieve(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<SkillRetrieveResponse> Retrieve(
+        string skillID,
+        SkillRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Retrieve(parameters with { SkillID = skillID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<SkillListPage> List(
+        SkillListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.List(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public async Task<SkillDeleteResponse> Delete(
+        SkillDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Delete(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<SkillDeleteResponse> Delete(
+        string skillID,
+        SkillDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Delete(parameters with { SkillID = skillID }, cancellationToken);
+    }
+}
+
+/// <inheritdoc/>
+public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
+{
+    readonly IAnthropicClientWithRawResponse _client;
+
+    /// <inheritdoc/>
+    public ISkillServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new SkillServiceWithRawResponse(this._client.WithOptions(modifier));
+    }
+
+    public SkillServiceWithRawResponse(IAnthropicClientWithRawResponse client)
+    {
+        _client = client;
+
+        _versions = new(() => new VersionServiceWithRawResponse(client));
+    }
+
+    readonly Lazy<IVersionServiceWithRawResponse> _versions;
+    public IVersionServiceWithRawResponse Versions
+    {
+        get { return _versions.Value; }
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<SkillCreateResponse>> Create(
+        SkillCreateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
         parameters ??= new();
 
         HttpRequest<SkillCreateParams> request = new()
@@ -50,21 +157,25 @@ public sealed class SkillService : ISkillService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
-        var skill = await response
-            .Deserialize<SkillCreateResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            skill.Validate();
-        }
-        return skill;
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var skill = await response
+                    .Deserialize<SkillCreateResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    skill.Validate();
+                }
+                return skill;
+            }
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<SkillRetrieveResponse> Retrieve(
+    public async Task<HttpResponse<SkillRetrieveResponse>> Retrieve(
         SkillRetrieveParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -79,21 +190,25 @@ public sealed class SkillService : ISkillService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
-        var skill = await response
-            .Deserialize<SkillRetrieveResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            skill.Validate();
-        }
-        return skill;
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var skill = await response
+                    .Deserialize<SkillRetrieveResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    skill.Validate();
+                }
+                return skill;
+            }
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<SkillRetrieveResponse> Retrieve(
+    public Task<HttpResponse<SkillRetrieveResponse>> Retrieve(
         string skillID,
         SkillRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -101,11 +216,11 @@ public sealed class SkillService : ISkillService
     {
         parameters ??= new();
 
-        return await this.Retrieve(parameters with { SkillID = skillID }, cancellationToken);
+        return this.Retrieve(parameters with { SkillID = skillID }, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task<SkillListPage> List(
+    public async Task<HttpResponse<SkillListPage>> List(
         SkillListParams? parameters = null,
         CancellationToken cancellationToken = default
     )
@@ -117,21 +232,25 @@ public sealed class SkillService : ISkillService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
-        var page = await response
-            .Deserialize<SkillListPageResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            page.Validate();
-        }
-        return new SkillListPage(this, parameters, page);
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var page = await response
+                    .Deserialize<SkillListPageResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    page.Validate();
+                }
+                return new SkillListPage(this, parameters, page);
+            }
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<SkillDeleteResponse> Delete(
+    public async Task<HttpResponse<SkillDeleteResponse>> Delete(
         SkillDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -146,21 +265,25 @@ public sealed class SkillService : ISkillService
             Method = HttpMethod.Delete,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
-        var skill = await response
-            .Deserialize<SkillDeleteResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            skill.Validate();
-        }
-        return skill;
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var skill = await response
+                    .Deserialize<SkillDeleteResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    skill.Validate();
+                }
+                return skill;
+            }
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<SkillDeleteResponse> Delete(
+    public Task<HttpResponse<SkillDeleteResponse>> Delete(
         string skillID,
         SkillDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -168,6 +291,6 @@ public sealed class SkillService : ISkillService
     {
         parameters ??= new();
 
-        return await this.Delete(parameters with { SkillID = skillID }, cancellationToken);
+        return this.Delete(parameters with { SkillID = skillID }, cancellationToken);
     }
 }

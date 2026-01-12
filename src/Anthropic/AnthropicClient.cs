@@ -14,6 +14,111 @@ namespace Anthropic;
 /// <inheritdoc/>
 public class AnthropicClient : IAnthropicClient
 {
+    readonly ClientOptions _options;
+
+    /// <inheritdoc/>
+    public HttpClient HttpClient
+    {
+        get { return this._options.HttpClient; }
+        init { this._options.HttpClient = value; }
+    }
+
+    /// <inheritdoc/>
+    public string BaseUrl
+    {
+        get { return this._options.BaseUrl; }
+        init { this._options.BaseUrl = value; }
+    }
+
+    /// <inheritdoc/>
+    public bool ResponseValidation
+    {
+        get { return this._options.ResponseValidation; }
+        init { this._options.ResponseValidation = value; }
+    }
+
+    /// <inheritdoc/>
+    public int? MaxRetries
+    {
+        get { return this._options.MaxRetries; }
+        init { this._options.MaxRetries = value; }
+    }
+
+    /// <inheritdoc/>
+    public TimeSpan? Timeout
+    {
+        get { return this._options.Timeout; }
+        init { this._options.Timeout = value; }
+    }
+
+    /// <inheritdoc/>
+    public string? ApiKey
+    {
+        get { return this._options.ApiKey; }
+        init { this._options.ApiKey = value; }
+    }
+
+    /// <inheritdoc/>
+    public string? AuthToken
+    {
+        get { return this._options.AuthToken; }
+        init { this._options.AuthToken = value; }
+    }
+
+    readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
+
+    /// <inheritdoc/>
+    public IAnthropicClientWithRawResponse WithRawResponse
+    {
+        get { return _withRawResponse.Value; }
+    }
+
+    /// <inheritdoc/>
+    public IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AnthropicClient(modifier(this._options));
+    }
+
+    readonly Lazy<IMessageService> _messages;
+    public IMessageService Messages
+    {
+        get { return _messages.Value; }
+    }
+
+    readonly Lazy<IModelService> _models;
+    public IModelService Models
+    {
+        get { return _models.Value; }
+    }
+
+    readonly Lazy<IBetaService> _beta;
+    public IBetaService Beta
+    {
+        get { return _beta.Value; }
+    }
+
+    public void Dispose() => this.HttpClient.Dispose();
+
+    public AnthropicClient()
+    {
+        _options = new();
+
+        _withRawResponse = new(() => new AnthropicClientWithRawResponse(this._options));
+        _messages = new(() => new MessageService(this));
+        _models = new(() => new ModelService(this));
+        _beta = new(() => new BetaService(this));
+    }
+
+    public AnthropicClient(ClientOptions options)
+        : this()
+    {
+        _options = options;
+    }
+}
+
+/// <inheritdoc/>
+public sealed class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
+{
 #if NET
     static readonly Random Random = Random.Shared;
 #else
@@ -77,25 +182,25 @@ public class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
-    public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    public IAnthropicClientWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicClient(modifier(this._options));
+        return new AnthropicClientWithRawResponse(modifier(this._options));
     }
 
-    readonly Lazy<IMessageService> _messages;
-    public virtual IMessageService Messages
+    readonly Lazy<IMessageServiceWithRawResponse> _messages;
+    public IMessageServiceWithRawResponse Messages
     {
         get { return _messages.Value; }
     }
 
-    readonly Lazy<IModelService> _models;
-    public virtual IModelService Models
+    readonly Lazy<IModelServiceWithRawResponse> _models;
+    public IModelServiceWithRawResponse Models
     {
         get { return _models.Value; }
     }
 
-    readonly Lazy<IBetaService> _beta;
-    public virtual IBetaService Beta
+    readonly Lazy<IBetaServiceWithRawResponse> _beta;
+    public IBetaServiceWithRawResponse Beta
     {
         get { return _beta.Value; }
     }
@@ -318,16 +423,16 @@ public class AnthropicClient : IAnthropicClient
         GC.SuppressFinalize(this);
     }
 
-    public AnthropicClient()
+    public AnthropicClientWithRawResponse()
     {
         _options = new();
 
-        _messages = new(() => new MessageService(this));
-        _models = new(() => new ModelService(this));
-        _beta = new(() => new BetaService(this));
+        _messages = new(() => new MessageServiceWithRawResponse(this));
+        _models = new(() => new ModelServiceWithRawResponse(this));
+        _beta = new(() => new BetaServiceWithRawResponse(this));
     }
 
-    public AnthropicClient(ClientOptions options)
+    public AnthropicClientWithRawResponse(ClientOptions options)
         : this()
     {
         _options = options;

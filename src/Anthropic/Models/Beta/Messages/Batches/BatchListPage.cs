@@ -9,7 +9,7 @@ using Anthropic.Services.Beta.Messages;
 namespace Anthropic.Models.Beta.Messages.Batches;
 
 public sealed class BatchListPage(
-    IBatchService service,
+    IBatchServiceWithRawResponse service,
     BatchListParams parameters,
     BatchListPageResponse response
 ) : IPage<BetaMessageBatch>
@@ -45,9 +45,10 @@ public sealed class BatchListPage(
     {
         var nextCursor =
             response.LastID ?? throw new InvalidOperationException("Cannot request next page");
-        return await service
+        using var nextResponse = await service
             .List(parameters with { AfterID = nextCursor }, cancellationToken)
             .ConfigureAwait(false);
+        return await nextResponse.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>

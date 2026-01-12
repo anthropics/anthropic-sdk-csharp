@@ -9,7 +9,7 @@ using Anthropic.Services.Beta.Skills;
 namespace Anthropic.Models.Beta.Skills.Versions;
 
 public sealed class VersionListPage(
-    IVersionService service,
+    IVersionServiceWithRawResponse service,
     VersionListParams parameters,
     VersionListPageResponse response
 ) : IPage<VersionListResponse>
@@ -45,9 +45,10 @@ public sealed class VersionListPage(
     {
         var nextCursor =
             response.NextPage ?? throw new InvalidOperationException("Cannot request next page");
-        return await service
+        using var nextResponse = await service
             .List(parameters with { Page = nextCursor }, cancellationToken)
             .ConfigureAwait(false);
+        return await nextResponse.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
