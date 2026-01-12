@@ -33,8 +33,8 @@ public class BetaToolChoiceAnyTest : TestBase
     {
         var model = new BetaToolChoiceAny { DisableParallelToolUse = true };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAny>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoiceAny>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"any\"");

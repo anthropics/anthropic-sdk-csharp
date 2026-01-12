@@ -47,8 +47,8 @@ public class BetaContainerUploadBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";

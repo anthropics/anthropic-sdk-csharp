@@ -10,12 +10,12 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Configuration for a specific tool in an MCP toolset.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaMCPToolConfig, BetaMCPToolConfigFromRaw>))]
-public sealed record class BetaMCPToolConfig : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaMCPToolConfig, BetaMCPToolConfigFromRaw>))]
+public sealed record class BetaMCPToolConfig : JsonModel
 {
     public bool? DeferLoading
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
         init
         {
             if (value == null)
@@ -23,13 +23,13 @@ public sealed record class BetaMCPToolConfig : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "defer_loading", value);
+            JsonModel.Set(this._rawData, "defer_loading", value);
         }
     }
 
     public bool? Enabled
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "enabled"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "enabled"); }
         init
         {
             if (value == null)
@@ -37,7 +37,7 @@ public sealed record class BetaMCPToolConfig : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "enabled", value);
+            JsonModel.Set(this._rawData, "enabled", value);
         }
     }
 
@@ -75,7 +75,7 @@ public sealed record class BetaMCPToolConfig : ModelBase
     }
 }
 
-class BetaMCPToolConfigFromRaw : IFromRaw<BetaMCPToolConfig>
+class BetaMCPToolConfigFromRaw : IFromRawJson<BetaMCPToolConfig>
 {
     /// <inheritdoc/>
     public BetaMCPToolConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

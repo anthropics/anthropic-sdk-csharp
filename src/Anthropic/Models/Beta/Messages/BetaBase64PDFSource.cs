@@ -8,25 +8,25 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaBase64PDFSource, BetaBase64PDFSourceFromRaw>))]
-public sealed record class BetaBase64PDFSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaBase64PDFSource, BetaBase64PDFSourceFromRaw>))]
+public sealed record class BetaBase64PDFSource : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     public JsonElement MediaType
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
-        init { ModelBase.Set(this._rawData, "media_type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
+        init { JsonModel.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -94,7 +94,7 @@ public sealed record class BetaBase64PDFSource : ModelBase
     }
 }
 
-class BetaBase64PDFSourceFromRaw : IFromRaw<BetaBase64PDFSource>
+class BetaBase64PDFSourceFromRaw : IFromRawJson<BetaBase64PDFSource>
 {
     /// <inheritdoc/>
     public BetaBase64PDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

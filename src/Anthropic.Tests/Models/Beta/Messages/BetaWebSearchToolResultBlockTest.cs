@@ -57,8 +57,8 @@ public class BetaWebSearchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaWebSearchToolResultBlockContent expectedContent = new BetaWebSearchToolResultError(

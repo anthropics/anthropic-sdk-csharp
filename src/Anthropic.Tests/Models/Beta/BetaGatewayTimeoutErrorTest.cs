@@ -33,8 +33,8 @@ public class BetaGatewayTimeoutErrorTest : TestBase
     {
         var model = new BetaGatewayTimeoutError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaGatewayTimeoutError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaGatewayTimeoutError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

@@ -33,8 +33,8 @@ public class ToolChoiceAnyTest : TestBase
     {
         var model = new ToolChoiceAny { DisableParallelToolUse = true };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolChoiceAny>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"any\"");

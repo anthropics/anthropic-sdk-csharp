@@ -33,8 +33,8 @@ public class RateLimitErrorTest : TestBase
     {
         var model = new RateLimitError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RateLimitError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RateLimitError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818ViewCommand,
         BetaMemoryTool20250818ViewCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
+public sealed record class BetaMemoryTool20250818ViewCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
+        init { JsonModel.Set(this._rawData, "command", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
-        init { ModelBase.Set(this._rawData, "path", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "path"); }
+        init { JsonModel.Set(this._rawData, "path", value); }
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
     /// </summary>
     public IReadOnlyList<long>? ViewRange
     {
-        get { return ModelBase.GetNullableClass<List<long>>(this.RawData, "view_range"); }
+        get { return JsonModel.GetNullableClass<List<long>>(this.RawData, "view_range"); }
         init
         {
             if (value == null)
@@ -47,7 +47,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "view_range", value);
+            JsonModel.Set(this._rawData, "view_range", value);
         }
     }
 
@@ -108,7 +108,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818ViewCommandFromRaw : IFromRaw<BetaMemoryTool20250818ViewCommand>
+class BetaMemoryTool20250818ViewCommandFromRaw : IFromRawJson<BetaMemoryTool20250818ViewCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818ViewCommand FromRawUnchecked(

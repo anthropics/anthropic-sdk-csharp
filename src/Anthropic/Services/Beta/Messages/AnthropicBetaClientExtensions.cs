@@ -192,8 +192,8 @@ public static class AnthropicBetaClientExtensions
             {
                 return _metadata ??= new(
                     "anthropic",
-                    _betaService.Messages is MessageService { _client.BaseUrl: Uri baseUrl }
-                        ? baseUrl
+                    _betaService.Messages is MessageService { _client.BaseUrl: string baseUrl }
+                        ? new Uri(baseUrl)
                         : null,
                     _defaultModelId
                 );
@@ -1003,7 +1003,11 @@ public static class AnthropicBetaClientExtensions
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new(properties) { Required = required },
+                                        InputSchema = new InputSchema()
+                                        {
+                                            Properties = properties,
+                                            Required = required,
+                                        },
                                         DeferLoading = GetValue<bool?>(
                                             af,
                                             nameof(BetaTool.DeferLoading)
@@ -1184,6 +1188,8 @@ public static class AnthropicBetaClientExtensions
                     inputTokens
                 ),
 
+                CachedInputTokenCount = cacheReadInputTokens,
+
                 OutputTokenCount = outputTokens,
             };
 
@@ -1196,12 +1202,6 @@ public static class AnthropicBetaClientExtensions
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(BetaUsage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
-            }
-
-            if (cacheReadInputTokens is > 0)
-            {
-                (usageDetails.AdditionalCounts ??= [])[nameof(BetaUsage.CacheReadInputTokens)] =
-                    cacheReadInputTokens.Value;
             }
 
             if (serverToolUsage?.WebFetchRequests is > 0)

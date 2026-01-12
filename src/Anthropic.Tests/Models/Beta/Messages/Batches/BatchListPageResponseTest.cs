@@ -149,8 +149,8 @@ public class BatchListPageResponseTest : TestBase
             LastID = "last_id",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BatchListPageResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BatchListPageResponse>(element);
         Assert.NotNull(deserialized);
 
         List<BetaMessageBatch> expectedData =

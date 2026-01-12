@@ -73,8 +73,8 @@ public class ServerToolUseBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ServerToolUseBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ServerToolUseBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "srvtoolu_SQfNkl1n_JR_";

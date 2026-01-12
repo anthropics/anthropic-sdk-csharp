@@ -288,8 +288,8 @@ public class BetaRawMessageStartEventTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStartEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStartEvent>(element);
         Assert.NotNull(deserialized);
 
         Messages::BetaMessage expectedMessage = new()

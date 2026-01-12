@@ -14,11 +14,11 @@ public record class BetaContentBlockParam
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -183,126 +183,138 @@ public record class BetaContentBlockParam
         }
     }
 
-    public BetaContentBlockParam(BetaTextBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaTextBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaImageBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaImageBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaRequestDocumentBlock value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaRequestDocumentBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaSearchResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaSearchResultBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaThinkingBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaThinkingBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaRedactedThinkingBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaRedactedThinkingBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaToolUseBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaToolUseBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaToolResultBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaServerToolUseBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaServerToolUseBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaWebSearchToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(
+        BetaWebSearchToolResultBlockParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaWebFetchToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(
+        BetaWebFetchToolResultBlockParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaContentBlockParam(
         BetaCodeExecutionToolResultBlockParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaContentBlockParam(
         BetaBashCodeExecutionToolResultBlockParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaContentBlockParam(
         BetaTextEditorCodeExecutionToolResultBlockParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaToolSearchToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(
+        BetaToolSearchToolResultBlockParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaMCPToolUseBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaMCPToolUseBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaRequestMCPToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(
+        BetaRequestMCPToolResultBlockParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaContainerUploadBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaContainerUploadBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(JsonElement json)
+    public BetaContentBlockParam(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -1024,11 +1036,11 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -1042,13 +1054,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1057,20 +1069,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "image":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaImageBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1079,20 +1091,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "document":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1101,20 +1113,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "search_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaSearchResultBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1123,20 +1135,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "thinking":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1145,20 +1157,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "redacted_thinking":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRedactedThinkingBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1167,20 +1179,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_use":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1189,20 +1201,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolResultBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1211,20 +1223,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "server_tool_use":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1233,7 +1245,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_tool_result":
             {
@@ -1241,13 +1253,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1256,20 +1268,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_fetch_tool_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1278,7 +1290,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "code_execution_tool_result":
             {
@@ -1286,13 +1298,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1301,7 +1313,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "bash_code_execution_tool_result":
             {
@@ -1309,13 +1321,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1324,7 +1336,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "text_editor_code_execution_tool_result":
             {
@@ -1332,13 +1344,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1347,7 +1359,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_search_tool_result":
             {
@@ -1355,13 +1367,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1370,20 +1382,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "mcp_tool_use":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1392,7 +1404,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "mcp_tool_result":
             {
@@ -1400,13 +1412,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1415,20 +1427,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "container_upload":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1437,11 +1449,11 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaContentBlockParam(json);
+                return new BetaContentBlockParam(element);
             }
         }
     }

@@ -8,8 +8,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawMessageDeltaEvent, BetaRawMessageDeltaEventFromRaw>))]
-public sealed record class BetaRawMessageDeltaEvent : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaRawMessageDeltaEvent, BetaRawMessageDeltaEventFromRaw>)
+)]
+public sealed record class BetaRawMessageDeltaEvent : JsonModel
 {
     /// <summary>
     /// Information about context management strategies applied during the request
@@ -18,24 +20,24 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaContextManagementResponse>(
+            return JsonModel.GetNullableClass<BetaContextManagementResponse>(
                 this.RawData,
                 "context_management"
             );
         }
-        init { ModelBase.Set(this._rawData, "context_management", value); }
+        init { JsonModel.Set(this._rawData, "context_management", value); }
     }
 
     public required Delta Delta
     {
-        get { return ModelBase.GetNotNullClass<Delta>(this.RawData, "delta"); }
-        init { ModelBase.Set(this._rawData, "delta", value); }
+        get { return JsonModel.GetNotNullClass<Delta>(this.RawData, "delta"); }
+        init { JsonModel.Set(this._rawData, "delta", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -57,8 +59,8 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase
     /// </summary>
     public required BetaMessageDeltaUsage Usage
     {
-        get { return ModelBase.GetNotNullClass<BetaMessageDeltaUsage>(this.RawData, "usage"); }
-        init { ModelBase.Set(this._rawData, "usage", value); }
+        get { return JsonModel.GetNotNullClass<BetaMessageDeltaUsage>(this.RawData, "usage"); }
+        init { JsonModel.Set(this._rawData, "usage", value); }
     }
 
     /// <inheritdoc/>
@@ -110,7 +112,7 @@ public sealed record class BetaRawMessageDeltaEvent : ModelBase
     }
 }
 
-class BetaRawMessageDeltaEventFromRaw : IFromRaw<BetaRawMessageDeltaEvent>
+class BetaRawMessageDeltaEventFromRaw : IFromRawJson<BetaRawMessageDeltaEvent>
 {
     /// <inheritdoc/>
     public BetaRawMessageDeltaEvent FromRawUnchecked(
@@ -118,34 +120,34 @@ class BetaRawMessageDeltaEventFromRaw : IFromRaw<BetaRawMessageDeltaEvent>
     ) => BetaRawMessageDeltaEvent.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(ModelConverter<Delta, DeltaFromRaw>))]
-public sealed record class Delta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Delta, DeltaFromRaw>))]
+public sealed record class Delta : JsonModel
 {
     /// <summary>
     /// Information about the container used in the request (for the code execution tool)
     /// </summary>
     public required BetaContainer? Container
     {
-        get { return ModelBase.GetNullableClass<BetaContainer>(this.RawData, "container"); }
-        init { ModelBase.Set(this._rawData, "container", value); }
+        get { return JsonModel.GetNullableClass<BetaContainer>(this.RawData, "container"); }
+        init { JsonModel.Set(this._rawData, "container", value); }
     }
 
     public required ApiEnum<string, BetaStopReason>? StopReason
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, BetaStopReason>>(
+            return JsonModel.GetNullableClass<ApiEnum<string, BetaStopReason>>(
                 this.RawData,
                 "stop_reason"
             );
         }
-        init { ModelBase.Set(this._rawData, "stop_reason", value); }
+        init { JsonModel.Set(this._rawData, "stop_reason", value); }
     }
 
     public required string? StopSequence
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "stop_sequence"); }
-        init { ModelBase.Set(this._rawData, "stop_sequence", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "stop_sequence"); }
+        init { JsonModel.Set(this._rawData, "stop_sequence", value); }
     }
 
     /// <inheritdoc/>
@@ -181,7 +183,7 @@ public sealed record class Delta : ModelBase
     }
 }
 
-class DeltaFromRaw : IFromRaw<Delta>
+class DeltaFromRaw : IFromRawJson<Delta>
 {
     /// <inheritdoc/>
     public Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

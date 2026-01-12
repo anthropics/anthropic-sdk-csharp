@@ -9,26 +9,26 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaWebSearchToolResultError, BetaWebSearchToolResultErrorFromRaw>)
+    typeof(JsonModelConverter<BetaWebSearchToolResultError, BetaWebSearchToolResultErrorFromRaw>)
 )]
-public sealed record class BetaWebSearchToolResultError : ModelBase
+public sealed record class BetaWebSearchToolResultError : JsonModel
 {
     public required ApiEnum<string, BetaWebSearchToolResultErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
                 this.RawData,
                 "error_code"
             );
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { JsonModel.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -85,7 +85,7 @@ public sealed record class BetaWebSearchToolResultError : ModelBase
     }
 }
 
-class BetaWebSearchToolResultErrorFromRaw : IFromRaw<BetaWebSearchToolResultError>
+class BetaWebSearchToolResultErrorFromRaw : IFromRawJson<BetaWebSearchToolResultError>
 {
     /// <inheritdoc/>
     public BetaWebSearchToolResultError FromRawUnchecked(

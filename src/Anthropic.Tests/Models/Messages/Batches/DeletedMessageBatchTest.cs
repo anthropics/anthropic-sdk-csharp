@@ -35,8 +35,8 @@ public class DeletedMessageBatchTest : TestBase
     {
         var model = new DeletedMessageBatch { ID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<DeletedMessageBatch>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<DeletedMessageBatch>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF";

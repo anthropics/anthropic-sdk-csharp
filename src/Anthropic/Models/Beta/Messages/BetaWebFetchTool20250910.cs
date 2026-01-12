@@ -9,8 +9,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebFetchTool20250910, BetaWebFetchTool20250910FromRaw>))]
-public sealed record class BetaWebFetchTool20250910 : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaWebFetchTool20250910, BetaWebFetchTool20250910FromRaw>)
+)]
+public sealed record class BetaWebFetchTool20250910 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -19,21 +21,21 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return ModelBase.GetNullableClass<
+            return JsonModel.GetNullableClass<
                 List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>>
             >(this.RawData, "allowed_callers");
         }
@@ -44,7 +46,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "allowed_callers", value);
+            JsonModel.Set(this._rawData, "allowed_callers", value);
         }
     }
 
@@ -53,8 +55,8 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public IReadOnlyList<string>? AllowedDomains
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "allowed_domains"); }
-        init { ModelBase.Set(this._rawData, "allowed_domains", value); }
+        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "allowed_domains"); }
+        init { JsonModel.Set(this._rawData, "allowed_domains", value); }
     }
 
     /// <summary>
@@ -62,8 +64,8 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public IReadOnlyList<string>? BlockedDomains
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "blocked_domains"); }
-        init { ModelBase.Set(this._rawData, "blocked_domains", value); }
+        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "blocked_domains"); }
+        init { JsonModel.Set(this._rawData, "blocked_domains", value); }
     }
 
     /// <summary>
@@ -73,12 +75,12 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -88,9 +90,9 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
+            return JsonModel.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
         }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        init { JsonModel.Set(this._rawData, "citations", value); }
     }
 
     /// <summary>
@@ -99,7 +101,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public bool? DeferLoading
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
         init
         {
             if (value == null)
@@ -107,7 +109,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "defer_loading", value);
+            JsonModel.Set(this._rawData, "defer_loading", value);
         }
     }
 
@@ -117,8 +119,8 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public long? MaxContentTokens
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "max_content_tokens"); }
-        init { ModelBase.Set(this._rawData, "max_content_tokens", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "max_content_tokens"); }
+        init { JsonModel.Set(this._rawData, "max_content_tokens", value); }
     }
 
     /// <summary>
@@ -126,13 +128,13 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     /// </summary>
     public long? MaxUses
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "max_uses"); }
-        init { ModelBase.Set(this._rawData, "max_uses", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "max_uses"); }
+        init { JsonModel.Set(this._rawData, "max_uses", value); }
     }
 
     public bool? Strict
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
         init
         {
             if (value == null)
@@ -140,7 +142,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "strict", value);
+            JsonModel.Set(this._rawData, "strict", value);
         }
     }
 
@@ -213,7 +215,7 @@ public sealed record class BetaWebFetchTool20250910 : ModelBase
     }
 }
 
-class BetaWebFetchTool20250910FromRaw : IFromRaw<BetaWebFetchTool20250910>
+class BetaWebFetchTool20250910FromRaw : IFromRawJson<BetaWebFetchTool20250910>
 {
     /// <inheritdoc/>
     public BetaWebFetchTool20250910 FromRawUnchecked(

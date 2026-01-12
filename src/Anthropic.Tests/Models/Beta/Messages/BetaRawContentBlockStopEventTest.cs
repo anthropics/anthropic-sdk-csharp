@@ -35,8 +35,8 @@ public class BetaRawContentBlockStopEventTest : TestBase
     {
         var model = new BetaRawContentBlockStopEvent { Index = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStopEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStopEvent>(element);
         Assert.NotNull(deserialized);
 
         long expectedIndex = 0;

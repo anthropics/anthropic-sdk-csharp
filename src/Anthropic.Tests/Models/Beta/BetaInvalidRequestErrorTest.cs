@@ -35,8 +35,8 @@ public class BetaInvalidRequestErrorTest : TestBase
     {
         var model = new BetaInvalidRequestError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaInvalidRequestError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaInvalidRequestError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

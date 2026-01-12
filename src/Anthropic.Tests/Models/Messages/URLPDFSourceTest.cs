@@ -33,8 +33,8 @@ public class URLPDFSourceTest : TestBase
     {
         var model = new URLPDFSource { URL = "url" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<URLPDFSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<URLPDFSource>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"url\"");

@@ -49,8 +49,8 @@ public class BetaBase64ImageSourceTest : TestBase
             MediaType = MediaType.ImageJPEG,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(element);
         Assert.NotNull(deserialized);
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
@@ -96,6 +96,8 @@ public class MediaTypeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

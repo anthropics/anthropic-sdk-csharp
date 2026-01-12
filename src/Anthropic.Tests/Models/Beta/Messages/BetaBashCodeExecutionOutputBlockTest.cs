@@ -35,8 +35,8 @@ public class BetaBashCodeExecutionOutputBlockTest : TestBase
     {
         var model = new BetaBashCodeExecutionOutputBlock { FileID = "file_id" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionOutputBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionOutputBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedFileID = "file_id";

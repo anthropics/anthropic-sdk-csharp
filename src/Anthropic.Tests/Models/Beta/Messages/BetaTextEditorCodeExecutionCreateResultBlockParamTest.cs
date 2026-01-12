@@ -36,9 +36,9 @@ public class BetaTextEditorCodeExecutionCreateResultBlockParamTest : TestBase
     {
         var model = new BetaTextEditorCodeExecutionCreateResultBlockParam { IsFileUpdate = true };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         bool expectedIsFileUpdate = true;

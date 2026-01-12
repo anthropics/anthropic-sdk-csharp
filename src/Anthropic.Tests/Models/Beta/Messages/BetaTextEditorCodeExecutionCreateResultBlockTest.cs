@@ -37,9 +37,9 @@ public class BetaTextEditorCodeExecutionCreateResultBlockTest : TestBase
     {
         var model = new BetaTextEditorCodeExecutionCreateResultBlock { IsFileUpdate = true };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlock>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 

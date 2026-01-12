@@ -53,8 +53,8 @@ public class ToolTextEditor20250728Test : TestBase
             MaxCharacters = 1,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(

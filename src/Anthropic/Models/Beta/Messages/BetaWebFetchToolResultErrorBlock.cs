@@ -9,29 +9,29 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaWebFetchToolResultErrorBlock,
         BetaWebFetchToolResultErrorBlockFromRaw
     >)
 )]
-public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
+public sealed record class BetaWebFetchToolResultErrorBlock : JsonModel
 {
     public required ApiEnum<string, BetaWebFetchToolResultErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
                 this.RawData,
                 "error_code"
             );
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { JsonModel.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -92,7 +92,7 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
     }
 }
 
-class BetaWebFetchToolResultErrorBlockFromRaw : IFromRaw<BetaWebFetchToolResultErrorBlock>
+class BetaWebFetchToolResultErrorBlockFromRaw : IFromRawJson<BetaWebFetchToolResultErrorBlock>
 {
     /// <inheritdoc/>
     public BetaWebFetchToolResultErrorBlock FromRawUnchecked(

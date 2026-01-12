@@ -71,9 +71,11 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockParamTest : TestBas
             OldStart = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlockParam>(
+                element
+            );
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(

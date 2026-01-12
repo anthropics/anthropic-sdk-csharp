@@ -5,9 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace Anthropic.Core;
 
-sealed class ModelConverter<TModel, TFromRaw> : JsonConverter<TModel>
-    where TModel : ModelBase
-    where TFromRaw : IFromRaw<TModel>, new()
+sealed class MultipartJsonModelConverter<TModel, TFromRaw> : JsonConverter<TModel>
+    where TModel : MultipartJsonModel
+    where TFromRaw : IFromRawMultipartJson<TModel>, new()
 {
     public override TModel? Read(
         ref Utf8JsonReader reader,
@@ -15,7 +15,7 @@ sealed class ModelConverter<TModel, TFromRaw> : JsonConverter<TModel>
         JsonSerializerOptions options
     )
     {
-        var rawData = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+        var rawData = JsonSerializer.Deserialize<Dictionary<string, MultipartJsonElement>>(
             ref reader,
             options
         );

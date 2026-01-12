@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818RenameCommand,
         BetaMemoryTool20250818RenameCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
+public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
+        init { JsonModel.Set(this._rawData, "command", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     /// </summary>
     public required string NewPath
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "new_path"); }
-        init { ModelBase.Set(this._rawData, "new_path", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "new_path"); }
+        init { JsonModel.Set(this._rawData, "new_path", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     /// </summary>
     public required string OldPath
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "old_path"); }
-        init { ModelBase.Set(this._rawData, "old_path", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "old_path"); }
+        init { JsonModel.Set(this._rawData, "old_path", value); }
     }
 
     /// <inheritdoc/>
@@ -93,7 +93,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818RenameCommandFromRaw : IFromRaw<BetaMemoryTool20250818RenameCommand>
+class BetaMemoryTool20250818RenameCommandFromRaw : IFromRawJson<BetaMemoryTool20250818RenameCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818RenameCommand FromRawUnchecked(

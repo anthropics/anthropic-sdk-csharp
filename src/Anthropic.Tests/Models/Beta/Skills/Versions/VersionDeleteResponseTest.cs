@@ -33,8 +33,8 @@ public class VersionDeleteResponseTest : TestBase
     {
         var model = new VersionDeleteResponse { ID = "1759178010641129", Type = "type" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<VersionDeleteResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<VersionDeleteResponse>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "1759178010641129";

@@ -5,15 +5,15 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Tests.Core;
 
-public class ModelBaseTest
+public class JsonModelTest
 {
     [Fact]
     public void GetNotNullClass_WhenPresent_Works()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set(dictionary, "key", "value");
+        JsonModel.Set(dictionary, "key", "value");
 
-        var value = ModelBase.GetNotNullClass<string>(dictionary, "key");
+        var value = JsonModel.GetNotNullClass<string>(dictionary, "key");
 
         Assert.Equal("value", value);
     }
@@ -24,7 +24,7 @@ public class ModelBaseTest
         var dictionary = new Dictionary<string, JsonElement>();
 
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
-            ModelBase.GetNotNullClass<string>(dictionary, "key")
+            JsonModel.GetNotNullClass<string>(dictionary, "key")
         );
 
         Assert.Equal("'key' cannot be absent", exception.Message);
@@ -34,10 +34,10 @@ public class ModelBaseTest
     public void GetNotNullClass_WhenNull_Throws()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set<string?>(dictionary, "key", null);
+        JsonModel.Set<string?>(dictionary, "key", null);
 
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
-            ModelBase.GetNotNullClass<string>(dictionary, "key")
+            JsonModel.GetNotNullClass<string>(dictionary, "key")
         );
 
         Assert.Equal("'key' cannot be null", exception.Message);
@@ -47,10 +47,10 @@ public class ModelBaseTest
     public void GetNotNullClass_WhenMismatchedType_Throws()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set(dictionary, "key", 42);
+        JsonModel.Set(dictionary, "key", 42);
 
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
-            ModelBase.GetNotNullClass<string>(dictionary, "key")
+            JsonModel.GetNotNullClass<string>(dictionary, "key")
         );
 
         Assert.Equal("'key' must be of type System.String", exception.Message);
@@ -60,9 +60,9 @@ public class ModelBaseTest
     public void GetNotNullStruct_WhenPresent_Works()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set(dictionary, "key", 42);
+        JsonModel.Set(dictionary, "key", 42);
 
-        var value = ModelBase.GetNotNullStruct<int>(dictionary, "key");
+        var value = JsonModel.GetNotNullStruct<int>(dictionary, "key");
 
         Assert.Equal(42, value);
     }
@@ -73,7 +73,7 @@ public class ModelBaseTest
         var dictionary = new Dictionary<string, JsonElement>();
 
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
-            ModelBase.GetNotNullStruct<int>(dictionary, "key")
+            JsonModel.GetNotNullStruct<int>(dictionary, "key")
         );
 
         Assert.Equal("'key' cannot be absent", exception.Message);
@@ -83,10 +83,10 @@ public class ModelBaseTest
     public void GetNotNullStruct_WhenNull_Throws()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set<int?>(dictionary, "key", null);
+        JsonModel.Set<int?>(dictionary, "key", null);
 
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
-            ModelBase.GetNotNullStruct<int>(dictionary, "key")
+            JsonModel.GetNotNullStruct<int>(dictionary, "key")
         );
 
         Assert.Equal("'key' cannot be null", exception.Message);
@@ -96,10 +96,10 @@ public class ModelBaseTest
     public void GetNotNullStruct_WhenMismatchedType_Throws()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set(dictionary, "key", "value");
+        JsonModel.Set(dictionary, "key", "value");
 
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
-            ModelBase.GetNotNullStruct<int>(dictionary, "key")
+            JsonModel.GetNotNullStruct<int>(dictionary, "key")
         );
 
         Assert.Equal("'key' must be of type System.Int32", exception.Message);
@@ -109,9 +109,9 @@ public class ModelBaseTest
     public void GetNullableClass_WhenPresent_Works()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set(dictionary, "key", "value");
+        JsonModel.Set(dictionary, "key", "value");
 
-        var value = ModelBase.GetNullableClass<string>(dictionary, "key");
+        var value = JsonModel.GetNullableClass<string>(dictionary, "key");
 
         Assert.Equal("value", value);
     }
@@ -121,7 +121,7 @@ public class ModelBaseTest
     {
         var dictionary = new Dictionary<string, JsonElement>();
 
-        var value = ModelBase.GetNullableClass<string>(dictionary, "key");
+        var value = JsonModel.GetNullableClass<string>(dictionary, "key");
 
         Assert.Null(value);
     }
@@ -130,9 +130,9 @@ public class ModelBaseTest
     public void GetNullableClass_WhenNull_ReturnsNull()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set<string?>(dictionary, "key", null);
+        JsonModel.Set<string?>(dictionary, "key", null);
 
-        var value = ModelBase.GetNullableClass<string>(dictionary, "key");
+        var value = JsonModel.GetNullableClass<string>(dictionary, "key");
 
         Assert.Null(value);
     }
@@ -141,10 +141,10 @@ public class ModelBaseTest
     public void GetNullableClass_WhenMismatchedType_Throws()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set(dictionary, "key", 42);
+        JsonModel.Set(dictionary, "key", 42);
 
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
-            ModelBase.GetNullableClass<string>(dictionary, "key")
+            JsonModel.GetNullableClass<string>(dictionary, "key")
         );
 
         Assert.Equal("'key' must be of type System.String", exception.Message);
@@ -154,9 +154,9 @@ public class ModelBaseTest
     public void GetNullableStruct_WhenPresent_Works()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set(dictionary, "key", 42);
+        JsonModel.Set(dictionary, "key", 42);
 
-        var value = ModelBase.GetNullableStruct<int>(dictionary, "key");
+        var value = JsonModel.GetNullableStruct<int>(dictionary, "key");
 
         Assert.Equal(42, value);
     }
@@ -166,7 +166,7 @@ public class ModelBaseTest
     {
         var dictionary = new Dictionary<string, JsonElement>();
 
-        var value = ModelBase.GetNullableStruct<int>(dictionary, "key");
+        var value = JsonModel.GetNullableStruct<int>(dictionary, "key");
 
         Assert.Null(value);
     }
@@ -175,9 +175,9 @@ public class ModelBaseTest
     public void GetNullableStruct_WhenNull_ReturnsNull()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set<int?>(dictionary, "key", null);
+        JsonModel.Set<int?>(dictionary, "key", null);
 
-        var value = ModelBase.GetNullableStruct<int>(dictionary, "key");
+        var value = JsonModel.GetNullableStruct<int>(dictionary, "key");
 
         Assert.Null(value);
     }
@@ -186,10 +186,10 @@ public class ModelBaseTest
     public void GetNullableStruct_WhenMismatchedType_Throws()
     {
         var dictionary = new Dictionary<string, JsonElement>();
-        ModelBase.Set(dictionary, "key", "value");
+        JsonModel.Set(dictionary, "key", "value");
 
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
-            ModelBase.GetNullableStruct<int>(dictionary, "key")
+            JsonModel.GetNullableStruct<int>(dictionary, "key")
         );
 
         Assert.Equal("'key' must be of type System.Int32", exception.Message);

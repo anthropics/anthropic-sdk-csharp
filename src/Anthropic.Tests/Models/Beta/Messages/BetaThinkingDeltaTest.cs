@@ -33,8 +33,8 @@ public class BetaThinkingDeltaTest : TestBase
     {
         var model = new BetaThinkingDelta { Thinking = "thinking" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingDelta>(element);
         Assert.NotNull(deserialized);
 
         string expectedThinking = "thinking";

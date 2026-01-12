@@ -8,8 +8,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaJSONOutputFormat, BetaJSONOutputFormatFromRaw>))]
-public sealed record class BetaJSONOutputFormat : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaJSONOutputFormat, BetaJSONOutputFormatFromRaw>))]
+public sealed record class BetaJSONOutputFormat : JsonModel
 {
     /// <summary>
     /// The JSON schema of the format
@@ -18,18 +18,18 @@ public sealed record class BetaJSONOutputFormat : ModelBase
     {
         get
         {
-            return ModelBase.GetNotNullClass<Dictionary<string, JsonElement>>(
+            return JsonModel.GetNotNullClass<Dictionary<string, JsonElement>>(
                 this.RawData,
                 "schema"
             );
         }
-        init { ModelBase.Set(this._rawData, "schema", value); }
+        init { JsonModel.Set(this._rawData, "schema", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -79,7 +79,7 @@ public sealed record class BetaJSONOutputFormat : ModelBase
     }
 }
 
-class BetaJSONOutputFormatFromRaw : IFromRaw<BetaJSONOutputFormat>
+class BetaJSONOutputFormatFromRaw : IFromRawJson<BetaJSONOutputFormat>
 {
     /// <inheritdoc/>
     public BetaJSONOutputFormat FromRawUnchecked(

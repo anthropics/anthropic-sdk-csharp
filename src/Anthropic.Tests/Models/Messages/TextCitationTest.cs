@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Messages;
 public class TextCitationTest : TestBase
 {
     [Fact]
-    public void citation_char_locationValidation_Works()
+    public void CitationCharLocationValidationWorks()
     {
         TextCitation value = new(
             new CitationCharLocation()
@@ -23,7 +23,7 @@ public class TextCitationTest : TestBase
     }
 
     [Fact]
-    public void citation_page_locationValidation_Works()
+    public void CitationPageLocationValidationWorks()
     {
         TextCitation value = new(
             new CitationPageLocation()
@@ -40,7 +40,7 @@ public class TextCitationTest : TestBase
     }
 
     [Fact]
-    public void citation_content_block_locationValidation_Works()
+    public void CitationContentBlockLocationValidationWorks()
     {
         TextCitation value = new(
             new CitationContentBlockLocation()
@@ -57,7 +57,7 @@ public class TextCitationTest : TestBase
     }
 
     [Fact]
-    public void citations_web_search_result_locationValidation_Works()
+    public void CitationsWebSearchResultLocationValidationWorks()
     {
         TextCitation value = new(
             new CitationsWebSearchResultLocation()
@@ -72,7 +72,7 @@ public class TextCitationTest : TestBase
     }
 
     [Fact]
-    public void citations_search_result_locationValidation_Works()
+    public void CitationsSearchResultLocationValidationWorks()
     {
         TextCitation value = new(
             new CitationsSearchResultLocation()
@@ -89,7 +89,7 @@ public class TextCitationTest : TestBase
     }
 
     [Fact]
-    public void citation_char_locationSerializationRoundtrip_Works()
+    public void CitationCharLocationSerializationRoundtripWorks()
     {
         TextCitation value = new(
             new CitationCharLocation()
@@ -102,14 +102,14 @@ public class TextCitationTest : TestBase
                 StartCharIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_page_locationSerializationRoundtrip_Works()
+    public void CitationPageLocationSerializationRoundtripWorks()
     {
         TextCitation value = new(
             new CitationPageLocation()
@@ -122,14 +122,14 @@ public class TextCitationTest : TestBase
                 StartPageNumber = 1,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_content_block_locationSerializationRoundtrip_Works()
+    public void CitationContentBlockLocationSerializationRoundtripWorks()
     {
         TextCitation value = new(
             new CitationContentBlockLocation()
@@ -142,14 +142,14 @@ public class TextCitationTest : TestBase
                 StartBlockIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citations_web_search_result_locationSerializationRoundtrip_Works()
+    public void CitationsWebSearchResultLocationSerializationRoundtripWorks()
     {
         TextCitation value = new(
             new CitationsWebSearchResultLocation()
@@ -160,14 +160,14 @@ public class TextCitationTest : TestBase
                 URL = "url",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citations_search_result_locationSerializationRoundtrip_Works()
+    public void CitationsSearchResultLocationSerializationRoundtripWorks()
     {
         TextCitation value = new(
             new CitationsSearchResultLocation()
@@ -180,8 +180,8 @@ public class TextCitationTest : TestBase
                 Title = "title",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<TextCitation>(element);
 
         Assert.Equal(value, deserialized);
     }

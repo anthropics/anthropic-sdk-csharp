@@ -52,8 +52,8 @@ public class BetaSkillParamsTest : TestBase
             Version = "x",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaSkillParams>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaSkillParams>(element);
         Assert.NotNull(deserialized);
 
         string expectedSkillID = "x";
@@ -146,6 +146,8 @@ public class BetaSkillParamsTypeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

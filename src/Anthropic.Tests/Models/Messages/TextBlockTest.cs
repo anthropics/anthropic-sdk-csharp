@@ -97,8 +97,8 @@ public class TextBlockTest : TestBase
             Text = "text",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<TextBlock>(element);
         Assert.NotNull(deserialized);
 
         List<TextCitation> expectedCitations =

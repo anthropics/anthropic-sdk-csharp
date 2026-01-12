@@ -21,11 +21,11 @@ public record class ThinkingConfigParam
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -33,21 +33,21 @@ public record class ThinkingConfigParam
         get { return Match(enabled: (x) => x.Type, disabled: (x) => x.Type); }
     }
 
-    public ThinkingConfigParam(ThinkingConfigEnabled value, JsonElement? json = null)
+    public ThinkingConfigParam(ThinkingConfigEnabled value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ThinkingConfigParam(ThinkingConfigDisabled value, JsonElement? json = null)
+    public ThinkingConfigParam(ThinkingConfigDisabled value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ThinkingConfigParam(JsonElement json)
+    public ThinkingConfigParam(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -212,11 +212,11 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -230,13 +230,13 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingConfigEnabled>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -245,20 +245,20 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "disabled":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -267,11 +267,11 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new ThinkingConfigParam(json);
+                return new ThinkingConfigParam(element);
             }
         }
     }

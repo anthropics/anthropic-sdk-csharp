@@ -111,7 +111,11 @@ public static class AnthropicClientExtensions
 
             if (serviceType == typeof(ChatClientMetadata))
             {
-                return _metadata ??= new("anthropic", _anthropicClient.BaseUrl, _defaultModelId);
+                return _metadata ??= new(
+                    "anthropic",
+                    new Uri(_anthropicClient.BaseUrl),
+                    _defaultModelId
+                );
             }
 
             if (serviceType.IsInstanceOfType(_anthropicClient))
@@ -841,7 +845,11 @@ public static class AnthropicClientExtensions
                                     {
                                         Name = af.Name,
                                         Description = af.Description,
-                                        InputSchema = new(properties) { Required = required },
+                                        InputSchema = new InputSchema()
+                                        {
+                                            Properties = properties,
+                                            Required = required,
+                                        },
                                     }
                                 );
                                 break;
@@ -936,6 +944,8 @@ public static class AnthropicClientExtensions
                     inputTokens
                 ),
 
+                CachedInputTokenCount = cacheReadInputTokens,
+
                 OutputTokenCount = outputTokens,
             };
 
@@ -948,12 +958,6 @@ public static class AnthropicClientExtensions
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
-            }
-
-            if (cacheReadInputTokens is > 0)
-            {
-                (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheReadInputTokens)] =
-                    cacheReadInputTokens.Value;
             }
 
             if (serverToolUsage?.WebSearchRequests is > 0)

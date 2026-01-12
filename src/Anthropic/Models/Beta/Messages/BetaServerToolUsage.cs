@@ -7,16 +7,16 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaServerToolUsage, BetaServerToolUsageFromRaw>))]
-public sealed record class BetaServerToolUsage : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaServerToolUsage, BetaServerToolUsageFromRaw>))]
+public sealed record class BetaServerToolUsage : JsonModel
 {
     /// <summary>
     /// The number of web fetch tool requests.
     /// </summary>
     public required long WebFetchRequests
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "web_fetch_requests"); }
-        init { ModelBase.Set(this._rawData, "web_fetch_requests", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "web_fetch_requests"); }
+        init { JsonModel.Set(this._rawData, "web_fetch_requests", value); }
     }
 
     /// <summary>
@@ -24,8 +24,8 @@ public sealed record class BetaServerToolUsage : ModelBase
     /// </summary>
     public required long WebSearchRequests
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
-        init { ModelBase.Set(this._rawData, "web_search_requests", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
+        init { JsonModel.Set(this._rawData, "web_search_requests", value); }
     }
 
     /// <inheritdoc/>
@@ -62,7 +62,7 @@ public sealed record class BetaServerToolUsage : ModelBase
     }
 }
 
-class BetaServerToolUsageFromRaw : IFromRaw<BetaServerToolUsage>
+class BetaServerToolUsageFromRaw : IFromRawJson<BetaServerToolUsage>
 {
     /// <inheritdoc/>
     public BetaServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

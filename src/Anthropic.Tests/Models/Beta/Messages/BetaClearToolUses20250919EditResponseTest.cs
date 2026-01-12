@@ -49,8 +49,10 @@ public class BetaClearToolUses20250919EditResponseTest : TestBase
             ClearedToolUses = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919EditResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919EditResponse>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         long expectedClearedInputTokens = 0;

@@ -119,8 +119,8 @@ public class BetaMessageBatchTest : TestBase
                 "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatch>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatch>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF";
@@ -204,6 +204,8 @@ public class ProcessingStatusTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

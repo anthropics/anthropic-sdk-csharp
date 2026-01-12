@@ -31,8 +31,8 @@ public class MessageBatchCanceledResultTest : TestBase
     {
         var model = new MessageBatchCanceledResult { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");

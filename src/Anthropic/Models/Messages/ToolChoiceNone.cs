@@ -11,13 +11,13 @@ namespace Anthropic.Models.Messages;
 /// <summary>
 /// The model will not be allowed to use tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<ToolChoiceNone, ToolChoiceNoneFromRaw>))]
-public sealed record class ToolChoiceNone : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ToolChoiceNone, ToolChoiceNoneFromRaw>))]
+public sealed record class ToolChoiceNone : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -59,7 +59,7 @@ public sealed record class ToolChoiceNone : ModelBase
     }
 }
 
-class ToolChoiceNoneFromRaw : IFromRaw<ToolChoiceNone>
+class ToolChoiceNoneFromRaw : IFromRawJson<ToolChoiceNone>
 {
     /// <inheritdoc/>
     public ToolChoiceNone FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

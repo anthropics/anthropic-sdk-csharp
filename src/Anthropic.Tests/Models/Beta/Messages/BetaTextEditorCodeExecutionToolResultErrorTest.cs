@@ -54,9 +54,9 @@ public class BetaTextEditorCodeExecutionToolResultErrorTest : TestBase
             ErrorMessage = "error_message",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultError>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 
@@ -109,6 +109,8 @@ public class BetaTextEditorCodeExecutionToolResultErrorErrorCodeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

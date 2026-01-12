@@ -9,7 +9,11 @@ public class ModelServiceTest
     [AnthropicTestClients(TestSupportTypes.Anthropic)]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var betaModelInfo = await client.Beta.Models.Retrieve("model_id");
+        var betaModelInfo = await client.Beta.Models.Retrieve(
+            "model_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         betaModelInfo.Validate();
     }
 
@@ -17,7 +21,7 @@ public class ModelServiceTest
     [AnthropicTestClients]
     public async Task List_Works(IAnthropicClient client)
     {
-        var page = await client.Beta.Models.List();
+        var page = await client.Beta.Models.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 }

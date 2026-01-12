@@ -7,7 +7,7 @@ namespace Anthropic.Tests.Models.Messages;
 public class ContentBlockParamTest : TestBase
 {
     [Fact]
-    public void textValidation_Works()
+    public void TextValidationWorks()
     {
         ContentBlockParam value = new(
             new TextBlockParam()
@@ -31,7 +31,7 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void imageValidation_Works()
+    public void ImageValidationWorks()
     {
         ContentBlockParam value = new(
             new ImageBlockParam()
@@ -48,7 +48,7 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void documentValidation_Works()
+    public void DocumentValidationWorks()
     {
         ContentBlockParam value = new(
             new DocumentBlockParam()
@@ -64,7 +64,7 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void search_resultValidation_Works()
+    public void SearchResultValidationWorks()
     {
         ContentBlockParam value = new(
             new SearchResultBlockParam()
@@ -98,7 +98,7 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void thinkingValidation_Works()
+    public void ThinkingValidationWorks()
     {
         ContentBlockParam value = new(
             new ThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
@@ -107,14 +107,14 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void redacted_thinkingValidation_Works()
+    public void RedactedThinkingValidationWorks()
     {
         ContentBlockParam value = new(new RedactedThinkingBlockParam("data"));
         value.Validate();
     }
 
     [Fact]
-    public void tool_useValidation_Works()
+    public void ToolUseValidationWorks()
     {
         ContentBlockParam value = new(
             new ToolUseBlockParam()
@@ -132,7 +132,7 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void tool_resultValidation_Works()
+    public void ToolResultValidationWorks()
     {
         ContentBlockParam value = new(
             new ToolResultBlockParam()
@@ -147,7 +147,7 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void server_tool_useValidation_Works()
+    public void ServerToolUseValidationWorks()
     {
         ContentBlockParam value = new(
             new ServerToolUseBlockParam()
@@ -164,14 +164,14 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_resultValidation_Works()
+    public void WebSearchToolResultValidationWorks()
     {
         ContentBlockParam value = new(
             new WebSearchToolResultBlockParam()
             {
                 Content = new(
                     [
-                        new()
+                        new WebSearchResultBlockParam()
                         {
                             EncryptedContent = "encrypted_content",
                             Title = "title",
@@ -188,7 +188,7 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void textSerializationRoundtrip_Works()
+    public void TextSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new TextBlockParam()
@@ -208,14 +208,14 @@ public class ContentBlockParamTest : TestBase
                 ],
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void imageSerializationRoundtrip_Works()
+    public void ImageSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new ImageBlockParam()
@@ -228,14 +228,14 @@ public class ContentBlockParamTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void documentSerializationRoundtrip_Works()
+    public void DocumentSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new DocumentBlockParam()
@@ -247,14 +247,14 @@ public class ContentBlockParamTest : TestBase
                 Title = "x",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void search_resultSerializationRoundtrip_Works()
+    public void SearchResultSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new SearchResultBlockParam()
@@ -284,36 +284,36 @@ public class ContentBlockParamTest : TestBase
                 Citations = new() { Enabled = true },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void thinkingSerializationRoundtrip_Works()
+    public void ThinkingSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new ThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void redacted_thinkingSerializationRoundtrip_Works()
+    public void RedactedThinkingSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(new RedactedThinkingBlockParam("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_useSerializationRoundtrip_Works()
+    public void ToolUseSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new ToolUseBlockParam()
@@ -327,14 +327,14 @@ public class ContentBlockParamTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_resultSerializationRoundtrip_Works()
+    public void ToolResultSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new ToolResultBlockParam()
@@ -345,14 +345,14 @@ public class ContentBlockParamTest : TestBase
                 IsError = true,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void server_tool_useSerializationRoundtrip_Works()
+    public void ServerToolUseSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new ServerToolUseBlockParam()
@@ -365,21 +365,21 @@ public class ContentBlockParamTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void web_search_tool_resultSerializationRoundtrip_Works()
+    public void WebSearchToolResultSerializationRoundtripWorks()
     {
         ContentBlockParam value = new(
             new WebSearchToolResultBlockParam()
             {
                 Content = new(
                     [
-                        new()
+                        new WebSearchResultBlockParam()
                         {
                             EncryptedContent = "encrypted_content",
                             Title = "title",
@@ -392,8 +392,8 @@ public class ContentBlockParamTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -42,6 +42,7 @@ public class BetaMCPToolsetTest : TestBase
         Assert.Equal(expectedMCPServerName, model.MCPServerName);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedCacheControl, model.CacheControl);
+        Assert.NotNull(model.Configs);
         Assert.Equal(expectedConfigs.Count, model.Configs.Count);
         foreach (var item in expectedConfigs)
         {
@@ -92,8 +93,8 @@ public class BetaMCPToolsetTest : TestBase
             DefaultConfig = new() { DeferLoading = true, Enabled = true },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(element);
         Assert.NotNull(deserialized);
 
         string expectedMCPServerName = "x";
@@ -115,6 +116,7 @@ public class BetaMCPToolsetTest : TestBase
         Assert.Equal(expectedMCPServerName, deserialized.MCPServerName);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
+        Assert.NotNull(deserialized.Configs);
         Assert.Equal(expectedConfigs.Count, deserialized.Configs.Count);
         foreach (var item in expectedConfigs)
         {

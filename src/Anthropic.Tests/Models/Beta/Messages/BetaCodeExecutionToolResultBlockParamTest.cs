@@ -63,8 +63,10 @@ public class BetaCodeExecutionToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParam>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         BetaCodeExecutionToolResultBlockParamContent expectedContent =

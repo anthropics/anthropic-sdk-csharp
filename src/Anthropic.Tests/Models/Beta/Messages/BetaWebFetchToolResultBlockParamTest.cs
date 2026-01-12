@@ -63,8 +63,8 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         BetaWebFetchToolResultBlockParamContent expectedContent =
@@ -164,7 +164,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
 public class BetaWebFetchToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void beta_web_fetch_tool_result_error_block_paramValidation_Works()
+    public void BetaWebFetchToolResultErrorBlockParamValidationWorks()
     {
         BetaWebFetchToolResultBlockParamContent value = new(
             new BetaWebFetchToolResultErrorBlockParam(
@@ -175,7 +175,7 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void beta_web_fetch_block_paramValidation_Works()
+    public void BetaWebFetchBlockParamValidationWorks()
     {
         BetaWebFetchToolResultBlockParamContent value = new(
             new BetaWebFetchBlockParam()
@@ -196,23 +196,23 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void beta_web_fetch_tool_result_error_block_paramSerializationRoundtrip_Works()
+    public void BetaWebFetchToolResultErrorBlockParamSerializationRoundtripWorks()
     {
         BetaWebFetchToolResultBlockParamContent value = new(
             new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_web_fetch_block_paramSerializationRoundtrip_Works()
+    public void BetaWebFetchBlockParamSerializationRoundtripWorks()
     {
         BetaWebFetchToolResultBlockParamContent value = new(
             new BetaWebFetchBlockParam()
@@ -229,9 +229,9 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
                 RetrievedAt = "retrieved_at",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);

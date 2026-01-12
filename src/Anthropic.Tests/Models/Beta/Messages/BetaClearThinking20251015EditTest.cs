@@ -36,8 +36,8 @@ public class BetaClearThinking20251015EditTest : TestBase
     {
         var model = new BetaClearThinking20251015Edit { Keep = new BetaThinkingTurns(1) };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015Edit>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015Edit>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
@@ -103,52 +103,52 @@ public class BetaClearThinking20251015EditTest : TestBase
 public class KeepTest : TestBase
 {
     [Fact]
-    public void beta_thinking_turnsValidation_Works()
+    public void BetaThinkingTurnsValidationWorks()
     {
         Keep value = new(new BetaThinkingTurns(1));
         value.Validate();
     }
 
     [Fact]
-    public void beta_all_thinking_turnsValidation_Works()
+    public void BetaAllThinkingTurnsValidationWorks()
     {
         Keep value = new(new BetaAllThinkingTurns());
         value.Validate();
     }
 
     [Fact]
-    public void allValidation_Works()
+    public void AllValidationWorks()
     {
         Keep value = new(new UnionMember2());
         value.Validate();
     }
 
     [Fact]
-    public void beta_thinking_turnsSerializationRoundtrip_Works()
+    public void BetaThinkingTurnsSerializationRoundtripWorks()
     {
         Keep value = new(new BetaThinkingTurns(1));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Keep>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Keep>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_all_thinking_turnsSerializationRoundtrip_Works()
+    public void BetaAllThinkingTurnsSerializationRoundtripWorks()
     {
         Keep value = new(new BetaAllThinkingTurns());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Keep>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Keep>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void allSerializationRoundtrip_Works()
+    public void AllSerializationRoundtripWorks()
     {
         Keep value = new(new UnionMember2());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Keep>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Keep>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -169,6 +169,8 @@ public class UnionMember2Test : TestBase
         var constant = JsonSerializer.Deserialize<UnionMember2>(
             JsonSerializer.Deserialize<JsonElement>("\"all\"")
         );
+
+        Assert.NotNull(constant);
         constant.Validate();
     }
 
@@ -178,6 +180,8 @@ public class UnionMember2Test : TestBase
         var constant = JsonSerializer.Deserialize<UnionMember2>(
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\"")
         );
+
+        Assert.NotNull(constant);
         Assert.Throws<AnthropicInvalidDataException>(() => constant.Validate());
     }
 
@@ -185,8 +189,8 @@ public class UnionMember2Test : TestBase
     public void DefaultRoundtrip_Works()
     {
         var constant = new UnionMember2();
-        var json = JsonSerializer.Serialize(constant);
-        var deserialized = JsonSerializer.Deserialize<UnionMember2>(json);
+        string element = JsonSerializer.Serialize(constant);
+        var deserialized = JsonSerializer.Deserialize<UnionMember2>(element);
 
         Assert.Equal(constant, deserialized);
     }
@@ -197,8 +201,8 @@ public class UnionMember2Test : TestBase
         var constant = JsonSerializer.Deserialize<UnionMember2>(
             JsonSerializer.Deserialize<JsonElement>("\"all\"")
         );
-        var json = JsonSerializer.Serialize(constant);
-        var deserialized = JsonSerializer.Deserialize<UnionMember2>(json);
+        string element = JsonSerializer.Serialize(constant);
+        var deserialized = JsonSerializer.Deserialize<UnionMember2>(element);
 
         Assert.Equal(constant, deserialized);
     }
@@ -209,8 +213,8 @@ public class UnionMember2Test : TestBase
         var constant = JsonSerializer.Deserialize<UnionMember2>(
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\"")
         );
-        var json = JsonSerializer.Serialize(constant);
-        var deserialized = JsonSerializer.Deserialize<UnionMember2>(json);
+        string element = JsonSerializer.Serialize(constant);
+        var deserialized = JsonSerializer.Deserialize<UnionMember2>(element);
 
         Assert.Equal(constant, deserialized);
     }

@@ -8,25 +8,25 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Base64PDFSource, Base64PDFSourceFromRaw>))]
-public sealed record class Base64PDFSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Base64PDFSource, Base64PDFSourceFromRaw>))]
+public sealed record class Base64PDFSource : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     public JsonElement MediaType
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
-        init { ModelBase.Set(this._rawData, "media_type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
+        init { JsonModel.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -92,7 +92,7 @@ public sealed record class Base64PDFSource : ModelBase
     }
 }
 
-class Base64PDFSourceFromRaw : IFromRaw<Base64PDFSource>
+class Base64PDFSourceFromRaw : IFromRawJson<Base64PDFSource>
 {
     /// <inheritdoc/>
     public Base64PDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -8,23 +8,23 @@ using Anthropic.Core;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaRequestMCPServerToolConfiguration,
         BetaRequestMCPServerToolConfigurationFromRaw
     >)
 )]
-public sealed record class BetaRequestMCPServerToolConfiguration : ModelBase
+public sealed record class BetaRequestMCPServerToolConfiguration : JsonModel
 {
     public IReadOnlyList<string>? AllowedTools
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "allowed_tools"); }
-        init { ModelBase.Set(this._rawData, "allowed_tools", value); }
+        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "allowed_tools"); }
+        init { JsonModel.Set(this._rawData, "allowed_tools", value); }
     }
 
     public bool? Enabled
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "enabled"); }
-        init { ModelBase.Set(this._rawData, "enabled", value); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "enabled"); }
+        init { JsonModel.Set(this._rawData, "enabled", value); }
     }
 
     /// <inheritdoc/>
@@ -63,7 +63,8 @@ public sealed record class BetaRequestMCPServerToolConfiguration : ModelBase
     }
 }
 
-class BetaRequestMCPServerToolConfigurationFromRaw : IFromRaw<BetaRequestMCPServerToolConfiguration>
+class BetaRequestMCPServerToolConfigurationFromRaw
+    : IFromRawJson<BetaRequestMCPServerToolConfiguration>
 {
     /// <inheritdoc/>
     public BetaRequestMCPServerToolConfiguration FromRawUnchecked(

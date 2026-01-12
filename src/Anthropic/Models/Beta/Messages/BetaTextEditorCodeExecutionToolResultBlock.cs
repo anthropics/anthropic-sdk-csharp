@@ -10,35 +10,35 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaTextEditorCodeExecutionToolResultBlock,
         BetaTextEditorCodeExecutionToolResultBlockFromRaw
     >)
 )]
-public sealed record class BetaTextEditorCodeExecutionToolResultBlock : ModelBase
+public sealed record class BetaTextEditorCodeExecutionToolResultBlock : JsonModel
 {
     public required BetaTextEditorCodeExecutionToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaTextEditorCodeExecutionToolResultBlockContent>(
+            return JsonModel.GetNotNullClass<BetaTextEditorCodeExecutionToolResultBlockContent>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -100,7 +100,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : ModelBas
 }
 
 class BetaTextEditorCodeExecutionToolResultBlockFromRaw
-    : IFromRaw<BetaTextEditorCodeExecutionToolResultBlock>
+    : IFromRawJson<BetaTextEditorCodeExecutionToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaTextEditorCodeExecutionToolResultBlock FromRawUnchecked(
@@ -113,11 +113,11 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -135,43 +135,43 @@ public record class BetaTextEditorCodeExecutionToolResultBlockContent
 
     public BetaTextEditorCodeExecutionToolResultBlockContent(
         BetaTextEditorCodeExecutionToolResultError value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaTextEditorCodeExecutionToolResultBlockContent(
         BetaTextEditorCodeExecutionViewResultBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaTextEditorCodeExecutionToolResultBlockContent(
         BetaTextEditorCodeExecutionCreateResultBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaTextEditorCodeExecutionToolResultBlockContent(
         BetaTextEditorCodeExecutionStrReplaceResultBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaTextEditorCodeExecutionToolResultBlockContent(JsonElement json)
+    public BetaTextEditorCodeExecutionToolResultBlockContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -440,18 +440,18 @@ sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultError>(
-                    json,
+                    element,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -463,13 +463,13 @@ sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlock>(
-                    json,
+                    element,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -481,13 +481,13 @@ sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlock>(
-                    json,
+                    element,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -499,13 +499,13 @@ sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter
         {
             var deserialized =
                 JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(
-                    json,
+                    element,
                     options
                 );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -513,7 +513,7 @@ sealed class BetaTextEditorCodeExecutionToolResultBlockContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

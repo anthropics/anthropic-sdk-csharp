@@ -8,8 +8,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Message, MessageFromRaw>))]
-public sealed record class Message : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Message, MessageFromRaw>))]
+public sealed record class Message : JsonModel
 {
     /// <summary>
     /// Unique object identifier.
@@ -18,8 +18,8 @@ public sealed record class Message : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -46,8 +46,8 @@ public sealed record class Message : ModelBase
     /// </summary>
     public required IReadOnlyList<ContentBlock> Content
     {
-        get { return ModelBase.GetNotNullClass<List<ContentBlock>>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<List<ContentBlock>>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     /// <summary>
@@ -56,8 +56,8 @@ public sealed record class Message : ModelBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return ModelBase.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
-        init { ModelBase.Set(this._rawData, "model", value); }
+        get { return JsonModel.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
+        init { JsonModel.Set(this._rawData, "model", value); }
     }
 
     /// <summary>
@@ -67,8 +67,8 @@ public sealed record class Message : ModelBase
     /// </summary>
     public JsonElement Role
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "role"); }
-        init { ModelBase.Set(this._rawData, "role", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "role"); }
+        init { JsonModel.Set(this._rawData, "role", value); }
     }
 
     /// <summary>
@@ -89,12 +89,12 @@ public sealed record class Message : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, StopReason>>(
+            return JsonModel.GetNullableClass<ApiEnum<string, StopReason>>(
                 this.RawData,
                 "stop_reason"
             );
         }
-        init { ModelBase.Set(this._rawData, "stop_reason", value); }
+        init { JsonModel.Set(this._rawData, "stop_reason", value); }
     }
 
     /// <summary>
@@ -105,8 +105,8 @@ public sealed record class Message : ModelBase
     /// </summary>
     public required string? StopSequence
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "stop_sequence"); }
-        init { ModelBase.Set(this._rawData, "stop_sequence", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "stop_sequence"); }
+        init { JsonModel.Set(this._rawData, "stop_sequence", value); }
     }
 
     /// <summary>
@@ -116,8 +116,8 @@ public sealed record class Message : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -139,8 +139,8 @@ public sealed record class Message : ModelBase
     /// </summary>
     public required Usage Usage
     {
-        get { return ModelBase.GetNotNullClass<Usage>(this.RawData, "usage"); }
-        init { ModelBase.Set(this._rawData, "usage", value); }
+        get { return JsonModel.GetNotNullClass<Usage>(this.RawData, "usage"); }
+        init { JsonModel.Set(this._rawData, "usage", value); }
     }
 
     /// <inheritdoc/>
@@ -207,7 +207,7 @@ public sealed record class Message : ModelBase
     }
 }
 
-class MessageFromRaw : IFromRaw<Message>
+class MessageFromRaw : IFromRawJson<Message>
 {
     /// <inheritdoc/>
     public Message FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

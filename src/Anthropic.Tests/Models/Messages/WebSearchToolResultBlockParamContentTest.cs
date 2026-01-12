@@ -6,11 +6,11 @@ namespace Anthropic.Tests.Models.Messages;
 public class WebSearchToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void itemValidation_Works()
+    public void ItemValidationWorks()
     {
         WebSearchToolResultBlockParamContent value = new(
             [
-                new()
+                new WebSearchResultBlockParam()
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
@@ -23,7 +23,7 @@ public class WebSearchToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void request_errorValidation_Works()
+    public void RequestErrorValidationWorks()
     {
         WebSearchToolResultBlockParamContent value = new(
             new WebSearchToolRequestError(ErrorCode.InvalidToolInput)
@@ -32,11 +32,11 @@ public class WebSearchToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void itemSerializationRoundtrip_Works()
+    public void ItemSerializationRoundtripWorks()
     {
         WebSearchToolResultBlockParamContent value = new(
             [
-                new()
+                new WebSearchResultBlockParam()
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
@@ -45,20 +45,24 @@ public class WebSearchToolResultBlockParamContentTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParamContent>(
+            element
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void request_errorSerializationRoundtrip_Works()
+    public void RequestErrorSerializationRoundtripWorks()
     {
         WebSearchToolResultBlockParamContent value = new(
             new WebSearchToolRequestError(ErrorCode.InvalidToolInput)
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParamContent>(
+            element
+        );
 
         Assert.Equal(value, deserialized);
     }

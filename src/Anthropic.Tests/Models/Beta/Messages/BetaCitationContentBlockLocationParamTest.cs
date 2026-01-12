@@ -64,8 +64,10 @@ public class BetaCitationContentBlockLocationParamTest : TestBase
             StartBlockIndex = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocationParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationContentBlockLocationParam>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";

@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
-[JsonConverter(typeof(ModelConverter<VersionListPageResponse, VersionListPageResponseFromRaw>))]
-public sealed record class VersionListPageResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<VersionListPageResponse, VersionListPageResponseFromRaw>))]
+public sealed record class VersionListPageResponse : JsonModel
 {
     /// <summary>
     /// List of skill versions.
@@ -17,11 +17,11 @@ public sealed record class VersionListPageResponse : ModelBase
     {
         get
         {
-            return ModelBase.GetNotNullClass<
+            return JsonModel.GetNotNullClass<
                 List<global::Anthropic.Models.Beta.Skills.Versions.Data>
             >(this.RawData, "data");
         }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     /// <summary>
@@ -29,8 +29,8 @@ public sealed record class VersionListPageResponse : ModelBase
     /// </summary>
     public required bool HasMore
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "has_more"); }
-        init { ModelBase.Set(this._rawData, "has_more", value); }
+        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "has_more"); }
+        init { JsonModel.Set(this._rawData, "has_more", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class VersionListPageResponse : ModelBase
     /// </summary>
     public required string? NextPage
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "next_page"); }
-        init { ModelBase.Set(this._rawData, "next_page", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "next_page"); }
+        init { JsonModel.Set(this._rawData, "next_page", value); }
     }
 
     /// <inheritdoc/>
@@ -81,7 +81,7 @@ public sealed record class VersionListPageResponse : ModelBase
     }
 }
 
-class VersionListPageResponseFromRaw : IFromRaw<VersionListPageResponse>
+class VersionListPageResponseFromRaw : IFromRawJson<VersionListPageResponse>
 {
     /// <inheritdoc/>
     public VersionListPageResponse FromRawUnchecked(
@@ -90,12 +90,12 @@ class VersionListPageResponseFromRaw : IFromRaw<VersionListPageResponse>
 }
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         global::Anthropic.Models.Beta.Skills.Versions.Data,
         global::Anthropic.Models.Beta.Skills.Versions.DataFromRaw
     >)
 )]
-public sealed record class Data : ModelBase
+public sealed record class Data : JsonModel
 {
     /// <summary>
     /// Unique identifier for the skill version.
@@ -104,8 +104,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -113,8 +113,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string CreatedAt
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "created_at"); }
+        init { JsonModel.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -124,8 +124,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string Description
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "description"); }
-        init { ModelBase.Set(this._rawData, "description", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "description"); }
+        init { JsonModel.Set(this._rawData, "description", value); }
     }
 
     /// <summary>
@@ -135,8 +135,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string Directory
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "directory"); }
-        init { ModelBase.Set(this._rawData, "directory", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "directory"); }
+        init { JsonModel.Set(this._rawData, "directory", value); }
     }
 
     /// <summary>
@@ -146,8 +146,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string Name
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     /// <summary>
@@ -155,8 +155,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string SkillID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "skill_id"); }
-        init { ModelBase.Set(this._rawData, "skill_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "skill_id"); }
+        init { JsonModel.Set(this._rawData, "skill_id", value); }
     }
 
     /// <summary>
@@ -166,8 +166,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string Type
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -177,8 +177,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string Version
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "version"); }
-        init { ModelBase.Set(this._rawData, "version", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "version"); }
+        init { JsonModel.Set(this._rawData, "version", value); }
     }
 
     /// <inheritdoc/>
@@ -221,7 +221,7 @@ public sealed record class Data : ModelBase
     }
 }
 
-class DataFromRaw : IFromRaw<global::Anthropic.Models.Beta.Skills.Versions.Data>
+class DataFromRaw : IFromRawJson<global::Anthropic.Models.Beta.Skills.Versions.Data>
 {
     /// <inheritdoc/>
     public global::Anthropic.Models.Beta.Skills.Versions.Data FromRawUnchecked(

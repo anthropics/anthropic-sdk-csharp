@@ -130,8 +130,8 @@ public class BetaToolComputerUse20251124Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolComputerUse20251124>(element);
         Assert.NotNull(deserialized);
 
         long expectedDisplayHeightPx = 1;
@@ -423,6 +423,8 @@ public class BetaToolComputerUse20251124AllowedCallerTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

@@ -8,49 +8,51 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationPageLocation, BetaCitationPageLocationFromRaw>))]
-public sealed record class BetaCitationPageLocation : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaCitationPageLocation, BetaCitationPageLocationFromRaw>)
+)]
+public sealed record class BetaCitationPageLocation : JsonModel
 {
     public required string CitedText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { ModelBase.Set(this._rawData, "cited_text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "cited_text"); }
+        init { JsonModel.Set(this._rawData, "cited_text", value); }
     }
 
     public required long DocumentIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "document_index"); }
-        init { ModelBase.Set(this._rawData, "document_index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "document_index"); }
+        init { JsonModel.Set(this._rawData, "document_index", value); }
     }
 
     public required string? DocumentTitle
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "document_title"); }
-        init { ModelBase.Set(this._rawData, "document_title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "document_title"); }
+        init { JsonModel.Set(this._rawData, "document_title", value); }
     }
 
     public required long EndPageNumber
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "end_page_number"); }
-        init { ModelBase.Set(this._rawData, "end_page_number", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "end_page_number"); }
+        init { JsonModel.Set(this._rawData, "end_page_number", value); }
     }
 
     public required string? FileID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "file_id"); }
+        init { JsonModel.Set(this._rawData, "file_id", value); }
     }
 
     public required long StartPageNumber
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "start_page_number"); }
-        init { ModelBase.Set(this._rawData, "start_page_number", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "start_page_number"); }
+        init { JsonModel.Set(this._rawData, "start_page_number", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -105,7 +107,7 @@ public sealed record class BetaCitationPageLocation : ModelBase
     }
 }
 
-class BetaCitationPageLocationFromRaw : IFromRaw<BetaCitationPageLocation>
+class BetaCitationPageLocationFromRaw : IFromRawJson<BetaCitationPageLocation>
 {
     /// <inheritdoc/>
     public BetaCitationPageLocation FromRawUnchecked(

@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageDeltaUsage, MessageDeltaUsageFromRaw>))]
-public sealed record class MessageDeltaUsage : ModelBase
+[JsonConverter(typeof(JsonModelConverter<MessageDeltaUsage, MessageDeltaUsageFromRaw>))]
+public sealed record class MessageDeltaUsage : JsonModel
 {
     /// <summary>
     /// The cumulative number of input tokens used to create the cache entry.
@@ -17,9 +17,9 @@ public sealed record class MessageDeltaUsage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
+            return JsonModel.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
         }
-        init { ModelBase.Set(this._rawData, "cache_creation_input_tokens", value); }
+        init { JsonModel.Set(this._rawData, "cache_creation_input_tokens", value); }
     }
 
     /// <summary>
@@ -27,8 +27,8 @@ public sealed record class MessageDeltaUsage : ModelBase
     /// </summary>
     public required long? CacheReadInputTokens
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "cache_read_input_tokens", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
+        init { JsonModel.Set(this._rawData, "cache_read_input_tokens", value); }
     }
 
     /// <summary>
@@ -36,8 +36,8 @@ public sealed record class MessageDeltaUsage : ModelBase
     /// </summary>
     public required long? InputTokens
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "input_tokens"); }
-        init { ModelBase.Set(this._rawData, "input_tokens", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "input_tokens"); }
+        init { JsonModel.Set(this._rawData, "input_tokens", value); }
     }
 
     /// <summary>
@@ -45,8 +45,8 @@ public sealed record class MessageDeltaUsage : ModelBase
     /// </summary>
     public required long OutputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
-        init { ModelBase.Set(this._rawData, "output_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
+        init { JsonModel.Set(this._rawData, "output_tokens", value); }
     }
 
     /// <summary>
@@ -54,8 +54,8 @@ public sealed record class MessageDeltaUsage : ModelBase
     /// </summary>
     public required ServerToolUsage? ServerToolUse
     {
-        get { return ModelBase.GetNullableClass<ServerToolUsage>(this.RawData, "server_tool_use"); }
-        init { ModelBase.Set(this._rawData, "server_tool_use", value); }
+        get { return JsonModel.GetNullableClass<ServerToolUsage>(this.RawData, "server_tool_use"); }
+        init { JsonModel.Set(this._rawData, "server_tool_use", value); }
     }
 
     /// <inheritdoc/>
@@ -95,7 +95,7 @@ public sealed record class MessageDeltaUsage : ModelBase
     }
 }
 
-class MessageDeltaUsageFromRaw : IFromRaw<MessageDeltaUsage>
+class MessageDeltaUsageFromRaw : IFromRawJson<MessageDeltaUsage>
 {
     /// <inheritdoc/>
     public MessageDeltaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

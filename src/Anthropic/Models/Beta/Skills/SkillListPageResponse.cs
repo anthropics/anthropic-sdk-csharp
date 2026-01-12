@@ -7,16 +7,16 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Skills;
 
-[JsonConverter(typeof(ModelConverter<SkillListPageResponse, SkillListPageResponseFromRaw>))]
-public sealed record class SkillListPageResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<SkillListPageResponse, SkillListPageResponseFromRaw>))]
+public sealed record class SkillListPageResponse : JsonModel
 {
     /// <summary>
     /// List of skills.
     /// </summary>
     public required IReadOnlyList<Data> Data
     {
-        get { return ModelBase.GetNotNullClass<List<Data>>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<List<Data>>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     /// <summary>
@@ -27,8 +27,8 @@ public sealed record class SkillListPageResponse : ModelBase
     /// </summary>
     public required bool HasMore
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "has_more"); }
-        init { ModelBase.Set(this._rawData, "has_more", value); }
+        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "has_more"); }
+        init { JsonModel.Set(this._rawData, "has_more", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class SkillListPageResponse : ModelBase
     /// </summary>
     public required string? NextPage
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "next_page"); }
-        init { ModelBase.Set(this._rawData, "next_page", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "next_page"); }
+        init { JsonModel.Set(this._rawData, "next_page", value); }
     }
 
     /// <inheritdoc/>
@@ -81,7 +81,7 @@ public sealed record class SkillListPageResponse : ModelBase
     }
 }
 
-class SkillListPageResponseFromRaw : IFromRaw<SkillListPageResponse>
+class SkillListPageResponseFromRaw : IFromRawJson<SkillListPageResponse>
 {
     /// <inheritdoc/>
     public SkillListPageResponse FromRawUnchecked(
@@ -89,8 +89,8 @@ class SkillListPageResponseFromRaw : IFromRaw<SkillListPageResponse>
     ) => SkillListPageResponse.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(ModelConverter<Data, DataFromRaw>))]
-public sealed record class Data : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Data, DataFromRaw>))]
+public sealed record class Data : JsonModel
 {
     /// <summary>
     /// Unique identifier for the skill.
@@ -99,8 +99,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -108,8 +108,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string CreatedAt
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "created_at"); }
+        init { JsonModel.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -120,8 +120,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string? DisplayTitle
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "display_title"); }
-        init { ModelBase.Set(this._rawData, "display_title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "display_title"); }
+        init { JsonModel.Set(this._rawData, "display_title", value); }
     }
 
     /// <summary>
@@ -131,8 +131,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string? LatestVersion
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "latest_version"); }
-        init { ModelBase.Set(this._rawData, "latest_version", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "latest_version"); }
+        init { JsonModel.Set(this._rawData, "latest_version", value); }
     }
 
     /// <summary>
@@ -143,8 +143,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string Source
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     /// <summary>
@@ -154,8 +154,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string Type
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -163,8 +163,8 @@ public sealed record class Data : ModelBase
     /// </summary>
     public required string UpdatedAt
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "updated_at"); }
-        init { ModelBase.Set(this._rawData, "updated_at", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "updated_at"); }
+        init { JsonModel.Set(this._rawData, "updated_at", value); }
     }
 
     /// <inheritdoc/>
@@ -204,7 +204,7 @@ public sealed record class Data : ModelBase
     }
 }
 
-class DataFromRaw : IFromRaw<Data>
+class DataFromRaw : IFromRawJson<Data>
 {
     /// <inheritdoc/>
     public Data FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

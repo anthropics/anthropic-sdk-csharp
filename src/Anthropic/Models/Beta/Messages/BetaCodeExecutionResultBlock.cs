@@ -9,44 +9,44 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaCodeExecutionResultBlock, BetaCodeExecutionResultBlockFromRaw>)
+    typeof(JsonModelConverter<BetaCodeExecutionResultBlock, BetaCodeExecutionResultBlockFromRaw>)
 )]
-public sealed record class BetaCodeExecutionResultBlock : ModelBase
+public sealed record class BetaCodeExecutionResultBlock : JsonModel
 {
     public required IReadOnlyList<BetaCodeExecutionOutputBlock> Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<List<BetaCodeExecutionOutputBlock>>(
+            return JsonModel.GetNotNullClass<List<BetaCodeExecutionOutputBlock>>(
                 this.RawData,
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required long ReturnCode
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "return_code"); }
-        init { ModelBase.Set(this._rawData, "return_code", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "return_code"); }
+        init { JsonModel.Set(this._rawData, "return_code", value); }
     }
 
     public required string Stderr
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "stderr"); }
-        init { ModelBase.Set(this._rawData, "stderr", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "stderr"); }
+        init { JsonModel.Set(this._rawData, "stderr", value); }
     }
 
     public required string Stdout
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "stdout"); }
-        init { ModelBase.Set(this._rawData, "stdout", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "stdout"); }
+        init { JsonModel.Set(this._rawData, "stdout", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -102,7 +102,7 @@ public sealed record class BetaCodeExecutionResultBlock : ModelBase
     }
 }
 
-class BetaCodeExecutionResultBlockFromRaw : IFromRaw<BetaCodeExecutionResultBlock>
+class BetaCodeExecutionResultBlockFromRaw : IFromRawJson<BetaCodeExecutionResultBlock>
 {
     /// <inheritdoc/>
     public BetaCodeExecutionResultBlock FromRawUnchecked(

@@ -8,37 +8,39 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchResultBlockParam, WebSearchResultBlockParamFromRaw>))]
-public sealed record class WebSearchResultBlockParam : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<WebSearchResultBlockParam, WebSearchResultBlockParamFromRaw>)
+)]
+public sealed record class WebSearchResultBlockParam : JsonModel
 {
     public required string EncryptedContent
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "encrypted_content"); }
-        init { ModelBase.Set(this._rawData, "encrypted_content", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "encrypted_content"); }
+        init { JsonModel.Set(this._rawData, "encrypted_content", value); }
     }
 
     public required string Title
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "title"); }
+        init { JsonModel.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
+        init { JsonModel.Set(this._rawData, "url", value); }
     }
 
     public string? PageAge
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "page_age"); }
-        init { ModelBase.Set(this._rawData, "page_age", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "page_age"); }
+        init { JsonModel.Set(this._rawData, "page_age", value); }
     }
 
     /// <inheritdoc/>
@@ -91,7 +93,7 @@ public sealed record class WebSearchResultBlockParam : ModelBase
     }
 }
 
-class WebSearchResultBlockParamFromRaw : IFromRaw<WebSearchResultBlockParam>
+class WebSearchResultBlockParamFromRaw : IFromRawJson<WebSearchResultBlockParam>
 {
     /// <inheritdoc/>
     public WebSearchResultBlockParam FromRawUnchecked(

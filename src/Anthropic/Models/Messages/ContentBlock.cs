@@ -11,11 +11,11 @@ public record class ContentBlock
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -48,45 +48,45 @@ public record class ContentBlock
         }
     }
 
-    public ContentBlock(TextBlock value, JsonElement? json = null)
+    public ContentBlock(TextBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ContentBlock(ThinkingBlock value, JsonElement? json = null)
+    public ContentBlock(ThinkingBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ContentBlock(RedactedThinkingBlock value, JsonElement? json = null)
+    public ContentBlock(RedactedThinkingBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ContentBlock(ToolUseBlock value, JsonElement? json = null)
+    public ContentBlock(ToolUseBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ContentBlock(ServerToolUseBlock value, JsonElement? json = null)
+    public ContentBlock(ServerToolUseBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ContentBlock(WebSearchToolResultBlock value, JsonElement? json = null)
+    public ContentBlock(WebSearchToolResultBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ContentBlock(JsonElement json)
+    public ContentBlock(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -382,11 +382,11 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -399,11 +399,11 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<TextBlock>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<TextBlock>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -412,17 +412,17 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "thinking":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -431,20 +431,20 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "redacted_thinking":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlock>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -453,17 +453,17 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_use":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -472,20 +472,20 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "server_tool_use":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ServerToolUseBlock>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -494,20 +494,20 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_tool_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -516,11 +516,11 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new ContentBlock(json);
+                return new ContentBlock(element);
             }
         }
     }

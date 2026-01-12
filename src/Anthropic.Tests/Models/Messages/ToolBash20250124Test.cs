@@ -35,8 +35,8 @@ public class ToolBash20250124Test : TestBase
     {
         var model = new ToolBash20250124 { CacheControl = new() { TTL = TTL.TTL5m } };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");

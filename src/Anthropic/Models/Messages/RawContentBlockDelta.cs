@@ -11,11 +11,11 @@ public record class RawContentBlockDelta
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -32,39 +32,39 @@ public record class RawContentBlockDelta
         }
     }
 
-    public RawContentBlockDelta(TextDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(TextDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(InputJSONDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(InputJSONDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(CitationsDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(CitationsDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(ThinkingDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(ThinkingDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(SignatureDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(SignatureDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(JsonElement json)
+    public RawContentBlockDelta(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -328,11 +328,11 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -345,11 +345,11 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<TextDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<TextDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -358,17 +358,17 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "input_json_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<InputJSONDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<InputJSONDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -377,17 +377,17 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "citations_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<CitationsDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<CitationsDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -396,17 +396,17 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "thinking_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -415,17 +415,17 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "signature_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<SignatureDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<SignatureDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -434,11 +434,11 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new RawContentBlockDelta(json);
+                return new RawContentBlockDelta(element);
             }
         }
     }

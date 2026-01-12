@@ -11,11 +11,11 @@ public record class ContentBlockSourceContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -34,21 +34,21 @@ public record class ContentBlockSourceContent
         }
     }
 
-    public ContentBlockSourceContent(TextBlockParam value, JsonElement? json = null)
+    public ContentBlockSourceContent(TextBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ContentBlockSourceContent(ImageBlockParam value, JsonElement? json = null)
+    public ContentBlockSourceContent(ImageBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ContentBlockSourceContent(JsonElement json)
+    public ContentBlockSourceContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -216,11 +216,11 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -233,11 +233,11 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<TextBlockParam>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -246,17 +246,20 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "image":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -265,11 +268,11 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new ContentBlockSourceContent(json);
+                return new ContentBlockSourceContent(element);
             }
         }
     }
