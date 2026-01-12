@@ -33,8 +33,8 @@ public class OverloadedErrorTest : TestBase
     {
         var model = new OverloadedError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<OverloadedError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<OverloadedError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

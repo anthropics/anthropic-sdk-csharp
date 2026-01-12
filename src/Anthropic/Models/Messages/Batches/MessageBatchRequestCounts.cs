@@ -7,8 +7,10 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatchRequestCounts, MessageBatchRequestCountsFromRaw>))]
-public sealed record class MessageBatchRequestCounts : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<MessageBatchRequestCounts, MessageBatchRequestCountsFromRaw>)
+)]
+public sealed record class MessageBatchRequestCounts : JsonModel
 {
     /// <summary>
     /// Number of requests in the Message Batch that have been canceled.
@@ -17,8 +19,8 @@ public sealed record class MessageBatchRequestCounts : ModelBase
     /// </summary>
     public required long Canceled
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "canceled"); }
-        init { ModelBase.Set(this._rawData, "canceled", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "canceled"); }
+        init { JsonModel.Set(this._rawData, "canceled", value); }
     }
 
     /// <summary>
@@ -28,8 +30,8 @@ public sealed record class MessageBatchRequestCounts : ModelBase
     /// </summary>
     public required long Errored
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "errored"); }
-        init { ModelBase.Set(this._rawData, "errored", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "errored"); }
+        init { JsonModel.Set(this._rawData, "errored", value); }
     }
 
     /// <summary>
@@ -39,8 +41,8 @@ public sealed record class MessageBatchRequestCounts : ModelBase
     /// </summary>
     public required long Expired
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "expired"); }
-        init { ModelBase.Set(this._rawData, "expired", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "expired"); }
+        init { JsonModel.Set(this._rawData, "expired", value); }
     }
 
     /// <summary>
@@ -48,8 +50,8 @@ public sealed record class MessageBatchRequestCounts : ModelBase
     /// </summary>
     public required long Processing
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "processing"); }
-        init { ModelBase.Set(this._rawData, "processing", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "processing"); }
+        init { JsonModel.Set(this._rawData, "processing", value); }
     }
 
     /// <summary>
@@ -59,8 +61,8 @@ public sealed record class MessageBatchRequestCounts : ModelBase
     /// </summary>
     public required long Succeeded
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "succeeded"); }
-        init { ModelBase.Set(this._rawData, "succeeded", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "succeeded"); }
+        init { JsonModel.Set(this._rawData, "succeeded", value); }
     }
 
     /// <inheritdoc/>
@@ -100,7 +102,7 @@ public sealed record class MessageBatchRequestCounts : ModelBase
     }
 }
 
-class MessageBatchRequestCountsFromRaw : IFromRaw<MessageBatchRequestCounts>
+class MessageBatchRequestCountsFromRaw : IFromRawJson<MessageBatchRequestCounts>
 {
     /// <inheritdoc/>
     public MessageBatchRequestCounts FromRawUnchecked(

@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaToolUsesTrigger, BetaToolUsesTriggerFromRaw>))]
-public sealed record class BetaToolUsesTrigger : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaToolUsesTrigger, BetaToolUsesTriggerFromRaw>))]
+public sealed record class BetaToolUsesTrigger : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public required long Value
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "value"); }
-        init { ModelBase.Set(this._rawData, "value", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "value"); }
+        init { JsonModel.Set(this._rawData, "value", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +77,7 @@ public sealed record class BetaToolUsesTrigger : ModelBase
     }
 }
 
-class BetaToolUsesTriggerFromRaw : IFromRaw<BetaToolUsesTrigger>
+class BetaToolUsesTriggerFromRaw : IFromRawJson<BetaToolUsesTrigger>
 {
     /// <inheritdoc/>
     public BetaToolUsesTrigger FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

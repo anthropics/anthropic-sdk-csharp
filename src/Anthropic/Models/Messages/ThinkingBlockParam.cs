@@ -8,25 +8,25 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingBlockParam, ThinkingBlockParamFromRaw>))]
-public sealed record class ThinkingBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ThinkingBlockParam, ThinkingBlockParamFromRaw>))]
+public sealed record class ThinkingBlockParam : JsonModel
 {
     public required string Signature
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "signature"); }
-        init { ModelBase.Set(this._rawData, "signature", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "signature"); }
+        init { JsonModel.Set(this._rawData, "signature", value); }
     }
 
     public required string Thinking
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "thinking"); }
-        init { ModelBase.Set(this._rawData, "thinking", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "thinking"); }
+        init { JsonModel.Set(this._rawData, "thinking", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +77,7 @@ public sealed record class ThinkingBlockParam : ModelBase
     }
 }
 
-class ThinkingBlockParamFromRaw : IFromRaw<ThinkingBlockParam>
+class ThinkingBlockParamFromRaw : IFromRawJson<ThinkingBlockParam>
 {
     /// <inheritdoc/>
     public ThinkingBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

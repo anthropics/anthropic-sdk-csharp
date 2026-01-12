@@ -10,29 +10,29 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaBashCodeExecutionToolResultError,
         BetaBashCodeExecutionToolResultErrorFromRaw
     >)
 )]
-public sealed record class BetaBashCodeExecutionToolResultError : ModelBase
+public sealed record class BetaBashCodeExecutionToolResultError : JsonModel
 {
     public required ApiEnum<string, ErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, ErrorCode>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, ErrorCode>>(
                 this.RawData,
                 "error_code"
             );
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { JsonModel.Set(this._rawData, "error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -95,7 +95,8 @@ public sealed record class BetaBashCodeExecutionToolResultError : ModelBase
     }
 }
 
-class BetaBashCodeExecutionToolResultErrorFromRaw : IFromRaw<BetaBashCodeExecutionToolResultError>
+class BetaBashCodeExecutionToolResultErrorFromRaw
+    : IFromRawJson<BetaBashCodeExecutionToolResultError>
 {
     /// <inheritdoc/>
     public BetaBashCodeExecutionToolResultError FromRawUnchecked(

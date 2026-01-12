@@ -9,14 +9,14 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaThinkingConfigDisabled, BetaThinkingConfigDisabledFromRaw>)
+    typeof(JsonModelConverter<BetaThinkingConfigDisabled, BetaThinkingConfigDisabledFromRaw>)
 )]
-public sealed record class BetaThinkingConfigDisabled : ModelBase
+public sealed record class BetaThinkingConfigDisabled : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -65,7 +65,7 @@ public sealed record class BetaThinkingConfigDisabled : ModelBase
     }
 }
 
-class BetaThinkingConfigDisabledFromRaw : IFromRaw<BetaThinkingConfigDisabled>
+class BetaThinkingConfigDisabledFromRaw : IFromRawJson<BetaThinkingConfigDisabled>
 {
     /// <inheritdoc/>
     public BetaThinkingConfigDisabled FromRawUnchecked(

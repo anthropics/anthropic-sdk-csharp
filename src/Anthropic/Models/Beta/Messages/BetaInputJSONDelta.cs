@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaInputJSONDelta, BetaInputJSONDeltaFromRaw>))]
-public sealed record class BetaInputJSONDelta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaInputJSONDelta, BetaInputJSONDeltaFromRaw>))]
+public sealed record class BetaInputJSONDelta : JsonModel
 {
     public required string PartialJSON
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "partial_json"); }
-        init { ModelBase.Set(this._rawData, "partial_json", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "partial_json"); }
+        init { JsonModel.Set(this._rawData, "partial_json", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +77,7 @@ public sealed record class BetaInputJSONDelta : ModelBase
     }
 }
 
-class BetaInputJSONDeltaFromRaw : IFromRaw<BetaInputJSONDelta>
+class BetaInputJSONDeltaFromRaw : IFromRawJson<BetaInputJSONDelta>
 {
     /// <inheritdoc/>
     public BetaInputJSONDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

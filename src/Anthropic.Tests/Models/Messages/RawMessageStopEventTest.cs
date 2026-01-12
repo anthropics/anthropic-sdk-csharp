@@ -31,8 +31,8 @@ public class RawMessageStopEventTest : TestBase
     {
         var model = new RawMessageStopEvent { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStopEvent>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");

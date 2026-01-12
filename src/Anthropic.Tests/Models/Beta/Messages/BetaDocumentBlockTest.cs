@@ -52,8 +52,8 @@ public class BetaDocumentBlockTest : TestBase
             Title = "title",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaDocumentBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaDocumentBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaCitationConfig expectedCitations = new(true);
@@ -84,35 +84,35 @@ public class BetaDocumentBlockTest : TestBase
 public class SourceTest : TestBase
 {
     [Fact]
-    public void beta_base64_pdfValidation_Works()
+    public void BetaBase64PDFValidationWorks()
     {
         Source value = new(new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
         value.Validate();
     }
 
     [Fact]
-    public void beta_plain_textValidation_Works()
+    public void BetaPlainTextValidationWorks()
     {
         Source value = new(new BetaPlainTextSource("data"));
         value.Validate();
     }
 
     [Fact]
-    public void beta_base64_pdfSerializationRoundtrip_Works()
+    public void BetaBase64PDFSerializationRoundtripWorks()
     {
         Source value = new(new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_plain_textSerializationRoundtrip_Works()
+    public void BetaPlainTextSerializationRoundtripWorks()
     {
         Source value = new(new BetaPlainTextSource("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Source>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Source>(element);
 
         Assert.Equal(value, deserialized);
     }

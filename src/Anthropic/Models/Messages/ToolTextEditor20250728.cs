@@ -8,8 +8,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ToolTextEditor20250728, ToolTextEditor20250728FromRaw>))]
-public sealed record class ToolTextEditor20250728 : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ToolTextEditor20250728, ToolTextEditor20250728FromRaw>))]
+public sealed record class ToolTextEditor20250728 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -18,14 +18,14 @@ public sealed record class ToolTextEditor20250728 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -35,9 +35,9 @@ public sealed record class ToolTextEditor20250728 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -46,8 +46,8 @@ public sealed record class ToolTextEditor20250728 : ModelBase
     /// </summary>
     public long? MaxCharacters
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "max_characters"); }
-        init { ModelBase.Set(this._rawData, "max_characters", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "max_characters"); }
+        init { JsonModel.Set(this._rawData, "max_characters", value); }
     }
 
     /// <inheritdoc/>
@@ -109,7 +109,7 @@ public sealed record class ToolTextEditor20250728 : ModelBase
     }
 }
 
-class ToolTextEditor20250728FromRaw : IFromRaw<ToolTextEditor20250728>
+class ToolTextEditor20250728FromRaw : IFromRawJson<ToolTextEditor20250728>
 {
     /// <inheritdoc/>
     public ToolTextEditor20250728 FromRawUnchecked(

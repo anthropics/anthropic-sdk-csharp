@@ -33,8 +33,8 @@ public class TextDeltaTest : TestBase
     {
         var model = new TextDelta { Text = "text" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextDelta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<TextDelta>(element);
         Assert.NotNull(deserialized);
 
         string expectedText = "text";

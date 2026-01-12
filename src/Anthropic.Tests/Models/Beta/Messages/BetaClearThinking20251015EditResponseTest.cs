@@ -49,8 +49,10 @@ public class BetaClearThinking20251015EditResponseTest : TestBase
             ClearedThinkingTurns = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015EditResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015EditResponse>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         long expectedClearedInputTokens = 0;

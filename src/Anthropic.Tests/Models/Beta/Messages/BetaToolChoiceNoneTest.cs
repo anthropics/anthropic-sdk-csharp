@@ -31,8 +31,8 @@ public class BetaToolChoiceNoneTest : TestBase
     {
         var model = new BetaToolChoiceNone { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoiceNone>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoiceNone>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"none\"");

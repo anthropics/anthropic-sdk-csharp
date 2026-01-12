@@ -31,8 +31,8 @@ public class MessageBatchExpiredResultTest : TestBase
     {
         var model = new MessageBatchExpiredResult { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"expired\"");

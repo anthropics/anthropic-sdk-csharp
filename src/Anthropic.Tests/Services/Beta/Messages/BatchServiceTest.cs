@@ -139,7 +139,8 @@ public class BatchServiceTest
                         },
                     },
                 ],
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         betaMessageBatch.Validate();
     }
@@ -148,7 +149,11 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve("message_batch_id");
+        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve(
+            "message_batch_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         betaMessageBatch.Validate();
     }
 
@@ -156,7 +161,10 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task List_Works(IAnthropicClient client)
     {
-        var page = await client.Beta.Messages.Batches.List();
+        var page = await client.Beta.Messages.Batches.List(
+            new(),
+            TestContext.Current.CancellationToken
+        );
         page.Validate();
     }
 
@@ -164,7 +172,11 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Delete_Works(IAnthropicClient client)
     {
-        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete("message_batch_id");
+        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete(
+            "message_batch_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         betaDeletedMessageBatch.Validate();
     }
 
@@ -172,7 +184,11 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Cancel_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel("message_batch_id");
+        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel(
+            "message_batch_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         betaMessageBatch.Validate();
     }
 
@@ -180,7 +196,11 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
-        var stream = client.Beta.Messages.Batches.ResultsStreaming("message_batch_id");
+        var stream = client.Beta.Messages.Batches.ResultsStreaming(
+            "message_batch_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
 
         await foreach (var betaMessageBatchIndividualResponse in stream)
         {

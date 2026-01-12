@@ -33,8 +33,8 @@ public class PermissionErrorTest : TestBase
     {
         var model = new PermissionError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<PermissionError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<PermissionError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

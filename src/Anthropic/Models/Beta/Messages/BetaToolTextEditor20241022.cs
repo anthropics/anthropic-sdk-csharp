@@ -10,9 +10,9 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaToolTextEditor20241022, BetaToolTextEditor20241022FromRaw>)
+    typeof(JsonModelConverter<BetaToolTextEditor20241022, BetaToolTextEditor20241022FromRaw>)
 )]
-public sealed record class BetaToolTextEditor20241022 : ModelBase
+public sealed record class BetaToolTextEditor20241022 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -21,21 +21,21 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaToolTextEditor20241022AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return ModelBase.GetNullableClass<
+            return JsonModel.GetNullableClass<
                 List<ApiEnum<string, BetaToolTextEditor20241022AllowedCaller>>
             >(this.RawData, "allowed_callers");
         }
@@ -46,7 +46,7 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "allowed_callers", value);
+            JsonModel.Set(this._rawData, "allowed_callers", value);
         }
     }
 
@@ -57,12 +57,12 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
     /// </summary>
     public bool? DeferLoading
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
         init
         {
             if (value == null)
@@ -79,7 +79,7 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "defer_loading", value);
+            JsonModel.Set(this._rawData, "defer_loading", value);
         }
     }
 
@@ -87,7 +87,7 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<Dictionary<string, JsonElement>>>(
+            return JsonModel.GetNullableClass<List<Dictionary<string, JsonElement>>>(
                 this.RawData,
                 "input_examples"
             );
@@ -99,13 +99,13 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "input_examples", value);
+            JsonModel.Set(this._rawData, "input_examples", value);
         }
     }
 
     public bool? Strict
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
         init
         {
             if (value == null)
@@ -113,7 +113,7 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "strict", value);
+            JsonModel.Set(this._rawData, "strict", value);
         }
     }
 
@@ -182,7 +182,7 @@ public sealed record class BetaToolTextEditor20241022 : ModelBase
     }
 }
 
-class BetaToolTextEditor20241022FromRaw : IFromRaw<BetaToolTextEditor20241022>
+class BetaToolTextEditor20241022FromRaw : IFromRawJson<BetaToolTextEditor20241022>
 {
     /// <inheritdoc/>
     public BetaToolTextEditor20241022 FromRawUnchecked(

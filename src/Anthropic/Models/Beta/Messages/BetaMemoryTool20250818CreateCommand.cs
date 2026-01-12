@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818CreateCommand,
         BetaMemoryTool20250818CreateCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
+public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
+        init { JsonModel.Set(this._rawData, "command", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
     /// </summary>
     public required string FileText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_text"); }
-        init { ModelBase.Set(this._rawData, "file_text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "file_text"); }
+        init { JsonModel.Set(this._rawData, "file_text", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
-        init { ModelBase.Set(this._rawData, "path", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "path"); }
+        init { JsonModel.Set(this._rawData, "path", value); }
     }
 
     /// <inheritdoc/>
@@ -93,7 +93,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818CreateCommandFromRaw : IFromRaw<BetaMemoryTool20250818CreateCommand>
+class BetaMemoryTool20250818CreateCommandFromRaw : IFromRawJson<BetaMemoryTool20250818CreateCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818CreateCommand FromRawUnchecked(

@@ -46,8 +46,10 @@ public class BetaWebFetchToolResultErrorBlockParamTest : TestBase
             ErrorCode = BetaWebFetchToolResultErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlockParam>(
+            element
+        );
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaWebFetchToolResultErrorCode> expectedErrorCode =

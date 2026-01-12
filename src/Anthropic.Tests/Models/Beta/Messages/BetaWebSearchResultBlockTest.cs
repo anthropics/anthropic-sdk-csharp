@@ -57,8 +57,8 @@ public class BetaWebSearchResultBlockTest : TestBase
             URL = "url",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchResultBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedEncryptedContent = "encrypted_content";

@@ -33,8 +33,8 @@ public class NotFoundErrorTest : TestBase
     {
         var model = new NotFoundError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<NotFoundError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<NotFoundError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

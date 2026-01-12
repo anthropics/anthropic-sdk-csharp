@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTool, BetaToolFromRaw>))]
-public sealed record class BetaTool : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaTool, BetaToolFromRaw>))]
+public sealed record class BetaTool : JsonModel
 {
     /// <summary>
     /// [JSON schema](https://json-schema.org/draft/2020-12) for this tool's input.
@@ -20,8 +20,8 @@ public sealed record class BetaTool : ModelBase
     /// </summary>
     public required InputSchema InputSchema
     {
-        get { return ModelBase.GetNotNullClass<InputSchema>(this.RawData, "input_schema"); }
-        init { ModelBase.Set(this._rawData, "input_schema", value); }
+        get { return JsonModel.GetNotNullClass<InputSchema>(this.RawData, "input_schema"); }
+        init { JsonModel.Set(this._rawData, "input_schema", value); }
     }
 
     /// <summary>
@@ -31,15 +31,15 @@ public sealed record class BetaTool : ModelBase
     /// </summary>
     public required string Name
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "name"); }
+        init { JsonModel.Set(this._rawData, "name", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaToolAllowedCaller>>? AllowedCallers
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ApiEnum<string, BetaToolAllowedCaller>>>(
+            return JsonModel.GetNullableClass<List<ApiEnum<string, BetaToolAllowedCaller>>>(
                 this.RawData,
                 "allowed_callers"
             );
@@ -51,7 +51,7 @@ public sealed record class BetaTool : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "allowed_callers", value);
+            JsonModel.Set(this._rawData, "allowed_callers", value);
         }
     }
 
@@ -62,12 +62,12 @@ public sealed record class BetaTool : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public sealed record class BetaTool : ModelBase
     /// </summary>
     public bool? DeferLoading
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
         init
         {
             if (value == null)
@@ -84,7 +84,7 @@ public sealed record class BetaTool : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "defer_loading", value);
+            JsonModel.Set(this._rawData, "defer_loading", value);
         }
     }
 
@@ -98,7 +98,7 @@ public sealed record class BetaTool : ModelBase
     /// </summary>
     public string? Description
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "description"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "description"); }
         init
         {
             if (value == null)
@@ -106,7 +106,7 @@ public sealed record class BetaTool : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "description", value);
+            JsonModel.Set(this._rawData, "description", value);
         }
     }
 
@@ -114,7 +114,7 @@ public sealed record class BetaTool : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<Dictionary<string, JsonElement>>>(
+            return JsonModel.GetNullableClass<List<Dictionary<string, JsonElement>>>(
                 this.RawData,
                 "input_examples"
             );
@@ -126,13 +126,13 @@ public sealed record class BetaTool : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "input_examples", value);
+            JsonModel.Set(this._rawData, "input_examples", value);
         }
     }
 
     public bool? Strict
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
         init
         {
             if (value == null)
@@ -140,7 +140,7 @@ public sealed record class BetaTool : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "strict", value);
+            JsonModel.Set(this._rawData, "strict", value);
         }
     }
 
@@ -148,9 +148,9 @@ public sealed record class BetaTool : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, BetaToolType>>(this.RawData, "type");
+            return JsonModel.GetNullableClass<ApiEnum<string, BetaToolType>>(this.RawData, "type");
         }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -195,7 +195,7 @@ public sealed record class BetaTool : ModelBase
     }
 }
 
-class BetaToolFromRaw : IFromRaw<BetaTool>
+class BetaToolFromRaw : IFromRawJson<BetaTool>
 {
     /// <inheritdoc/>
     public BetaTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -208,31 +208,31 @@ class BetaToolFromRaw : IFromRaw<BetaTool>
 /// <para>This defines the shape of the `input` that your tool accepts and that the
 /// model will produce.</para>
 /// </summary>
-[JsonConverter(typeof(ModelConverter<InputSchema, InputSchemaFromRaw>))]
-public sealed record class InputSchema : ModelBase
+[JsonConverter(typeof(JsonModelConverter<InputSchema, InputSchemaFromRaw>))]
+public sealed record class InputSchema : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public IReadOnlyDictionary<string, JsonElement>? Properties
     {
         get
         {
-            return ModelBase.GetNullableClass<Dictionary<string, JsonElement>>(
+            return JsonModel.GetNullableClass<Dictionary<string, JsonElement>>(
                 this.RawData,
                 "properties"
             );
         }
-        init { ModelBase.Set(this._rawData, "properties", value); }
+        init { JsonModel.Set(this._rawData, "properties", value); }
     }
 
     public IReadOnlyList<string>? Required
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "required"); }
-        init { ModelBase.Set(this._rawData, "required", value); }
+        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "required"); }
+        init { JsonModel.Set(this._rawData, "required", value); }
     }
 
     /// <inheritdoc/>
@@ -281,7 +281,7 @@ public sealed record class InputSchema : ModelBase
     }
 }
 
-class InputSchemaFromRaw : IFromRaw<InputSchema>
+class InputSchemaFromRaw : IFromRawJson<InputSchema>
 {
     /// <inheritdoc/>
     public InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

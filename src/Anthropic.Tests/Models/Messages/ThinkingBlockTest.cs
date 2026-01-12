@@ -35,8 +35,8 @@ public class ThinkingBlockTest : TestBase
     {
         var model = new ThinkingBlock { Signature = "signature", Thinking = "thinking" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedSignature = "signature";

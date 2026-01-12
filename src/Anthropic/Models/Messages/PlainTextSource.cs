@@ -8,25 +8,25 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<PlainTextSource, PlainTextSourceFromRaw>))]
-public sealed record class PlainTextSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<PlainTextSource, PlainTextSourceFromRaw>))]
+public sealed record class PlainTextSource : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     public JsonElement MediaType
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
-        init { ModelBase.Set(this._rawData, "media_type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
+        init { JsonModel.Set(this._rawData, "media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -87,7 +87,7 @@ public sealed record class PlainTextSource : ModelBase
     }
 }
 
-class PlainTextSourceFromRaw : IFromRaw<PlainTextSource>
+class PlainTextSourceFromRaw : IFromRawJson<PlainTextSource>
 {
     /// <inheritdoc/>
     public PlainTextSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

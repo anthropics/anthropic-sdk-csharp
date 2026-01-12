@@ -10,19 +10,19 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageParam, MessageParamFromRaw>))]
-public sealed record class MessageParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<MessageParam, MessageParamFromRaw>))]
+public sealed record class MessageParam : JsonModel
 {
     public required MessageParamContent Content
     {
-        get { return ModelBase.GetNotNullClass<MessageParamContent>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get { return JsonModel.GetNotNullClass<MessageParamContent>(this.RawData, "content"); }
+        init { JsonModel.Set(this._rawData, "content", value); }
     }
 
     public required ApiEnum<string, Role> Role
     {
-        get { return ModelBase.GetNotNullClass<ApiEnum<string, Role>>(this.RawData, "role"); }
-        init { ModelBase.Set(this._rawData, "role", value); }
+        get { return JsonModel.GetNotNullClass<ApiEnum<string, Role>>(this.RawData, "role"); }
+        init { JsonModel.Set(this._rawData, "role", value); }
     }
 
     /// <inheritdoc/>
@@ -57,7 +57,7 @@ public sealed record class MessageParam : ModelBase
     }
 }
 
-class MessageParamFromRaw : IFromRaw<MessageParam>
+class MessageParamFromRaw : IFromRawJson<MessageParam>
 {
     /// <inheritdoc/>
     public MessageParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -69,28 +69,28 @@ public record class MessageParamContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public MessageParamContent(string value, JsonElement? json = null)
+    public MessageParamContent(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageParamContent(IReadOnlyList<ContentBlockParam> value, JsonElement? json = null)
+    public MessageParamContent(IReadOnlyList<ContentBlockParam> value, JsonElement? element = null)
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageParamContent(JsonElement json)
+    public MessageParamContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -257,13 +257,13 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -273,10 +273,13 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<ContentBlockParam>>(json, options);
+            var deserialized = JsonSerializer.Deserialize<List<ContentBlockParam>>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -284,7 +287,7 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

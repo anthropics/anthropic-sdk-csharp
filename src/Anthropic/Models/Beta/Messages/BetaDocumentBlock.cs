@@ -9,22 +9,22 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaDocumentBlock, BetaDocumentBlockFromRaw>))]
-public sealed record class BetaDocumentBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaDocumentBlock, BetaDocumentBlockFromRaw>))]
+public sealed record class BetaDocumentBlock : JsonModel
 {
     /// <summary>
     /// Citation configuration for the document
     /// </summary>
     public required BetaCitationConfig? Citations
     {
-        get { return ModelBase.GetNullableClass<BetaCitationConfig>(this.RawData, "citations"); }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        get { return JsonModel.GetNullableClass<BetaCitationConfig>(this.RawData, "citations"); }
+        init { JsonModel.Set(this._rawData, "citations", value); }
     }
 
     public required Source Source
     {
-        get { return ModelBase.GetNotNullClass<Source>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<Source>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     /// <summary>
@@ -32,14 +32,14 @@ public sealed record class BetaDocumentBlock : ModelBase
     /// </summary>
     public required string? Title
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
+        init { JsonModel.Set(this._rawData, "title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -91,7 +91,7 @@ public sealed record class BetaDocumentBlock : ModelBase
     }
 }
 
-class BetaDocumentBlockFromRaw : IFromRaw<BetaDocumentBlock>
+class BetaDocumentBlockFromRaw : IFromRawJson<BetaDocumentBlock>
 {
     /// <inheritdoc/>
     public BetaDocumentBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -103,11 +103,11 @@ public record class Source
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public string Data
@@ -125,21 +125,21 @@ public record class Source
         get { return Match(betaBase64PDF: (x) => x.Type, betaPlainText: (x) => x.Type); }
     }
 
-    public Source(BetaBase64PDFSource value, JsonElement? json = null)
+    public Source(BetaBase64PDFSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(BetaPlainTextSource value, JsonElement? json = null)
+    public Source(BetaPlainTextSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(JsonElement json)
+    public Source(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -303,11 +303,11 @@ sealed class SourceConverter : JsonConverter<Source>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -321,13 +321,13 @@ sealed class SourceConverter : JsonConverter<Source>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaBase64PDFSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -336,20 +336,20 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "text":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaPlainTextSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -358,11 +358,11 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Source(json);
+                return new Source(element);
             }
         }
     }

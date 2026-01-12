@@ -9,31 +9,33 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawContentBlockStartEvent, RawContentBlockStartEventFromRaw>))]
-public sealed record class RawContentBlockStartEvent : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<RawContentBlockStartEvent, RawContentBlockStartEventFromRaw>)
+)]
+public sealed record class RawContentBlockStartEvent : JsonModel
 {
     public required RawContentBlockStartEventContentBlock ContentBlock
     {
         get
         {
-            return ModelBase.GetNotNullClass<RawContentBlockStartEventContentBlock>(
+            return JsonModel.GetNotNullClass<RawContentBlockStartEventContentBlock>(
                 this.RawData,
                 "content_block"
             );
         }
-        init { ModelBase.Set(this._rawData, "content_block", value); }
+        init { JsonModel.Set(this._rawData, "content_block", value); }
     }
 
     public required long Index
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { ModelBase.Set(this._rawData, "index", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "index"); }
+        init { JsonModel.Set(this._rawData, "index", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -84,7 +86,7 @@ public sealed record class RawContentBlockStartEvent : ModelBase
     }
 }
 
-class RawContentBlockStartEventFromRaw : IFromRaw<RawContentBlockStartEvent>
+class RawContentBlockStartEventFromRaw : IFromRawJson<RawContentBlockStartEvent>
 {
     /// <inheritdoc/>
     public RawContentBlockStartEvent FromRawUnchecked(
@@ -97,11 +99,11 @@ public record class RawContentBlockStartEventContentBlock
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -134,51 +136,54 @@ public record class RawContentBlockStartEventContentBlock
         }
     }
 
-    public RawContentBlockStartEventContentBlock(TextBlock value, JsonElement? json = null)
+    public RawContentBlockStartEventContentBlock(TextBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockStartEventContentBlock(ThinkingBlock value, JsonElement? json = null)
+    public RawContentBlockStartEventContentBlock(ThinkingBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public RawContentBlockStartEventContentBlock(
         RedactedThinkingBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockStartEventContentBlock(ToolUseBlock value, JsonElement? json = null)
+    public RawContentBlockStartEventContentBlock(ToolUseBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockStartEventContentBlock(ServerToolUseBlock value, JsonElement? json = null)
+    public RawContentBlockStartEventContentBlock(
+        ServerToolUseBlock value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public RawContentBlockStartEventContentBlock(
         WebSearchToolResultBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockStartEventContentBlock(JsonElement json)
+    public RawContentBlockStartEventContentBlock(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -484,11 +489,11 @@ sealed class RawContentBlockStartEventContentBlockConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -501,11 +506,11 @@ sealed class RawContentBlockStartEventContentBlockConverter
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<TextBlock>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<TextBlock>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -514,17 +519,17 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "thinking":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ThinkingBlock>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -533,20 +538,20 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "redacted_thinking":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<RedactedThinkingBlock>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -555,17 +560,17 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_use":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ToolUseBlock>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -574,20 +579,20 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "server_tool_use":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ServerToolUseBlock>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -596,20 +601,20 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_tool_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlock>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -618,11 +623,11 @@ sealed class RawContentBlockStartEventContentBlockConverter
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new RawContentBlockStartEventContentBlock(json);
+                return new RawContentBlockStartEventContentBlock(element);
             }
         }
     }

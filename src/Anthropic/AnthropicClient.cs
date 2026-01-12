@@ -14,12 +14,16 @@ namespace Anthropic;
 /// <inheritdoc/>
 public class AnthropicClient : IAnthropicClient
 {
+#if NET
+    static readonly Random Random = Random.Shared;
+#else
     static readonly ThreadLocal<Random> _threadLocalRandom = new(() => new Random());
 
     static Random Random
     {
         get { return _threadLocalRandom.Value!; }
     }
+#endif
 
     protected readonly ClientOptions _options;
 
@@ -31,7 +35,7 @@ public class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
-    public Uri BaseUrl
+    public string BaseUrl
     {
         get { return this._options.BaseUrl; }
         init { this._options.BaseUrl = value; }
@@ -306,6 +310,12 @@ public class AnthropicClient : IAnthropicClient
     static bool ShouldRetry(Exception e)
     {
         return e is IOException || e is AnthropicIOException;
+    }
+
+    public void Dispose()
+    {
+        this.HttpClient.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     public AnthropicClient()

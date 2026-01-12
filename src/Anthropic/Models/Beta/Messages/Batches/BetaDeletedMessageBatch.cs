@@ -8,16 +8,16 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaDeletedMessageBatch, BetaDeletedMessageBatchFromRaw>))]
-public sealed record class BetaDeletedMessageBatch : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaDeletedMessageBatch, BetaDeletedMessageBatchFromRaw>))]
+public sealed record class BetaDeletedMessageBatch : JsonModel
 {
     /// <summary>
     /// ID of the Message Batch.
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -27,8 +27,8 @@ public sealed record class BetaDeletedMessageBatch : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -85,7 +85,7 @@ public sealed record class BetaDeletedMessageBatch : ModelBase
     }
 }
 
-class BetaDeletedMessageBatchFromRaw : IFromRaw<BetaDeletedMessageBatch>
+class BetaDeletedMessageBatchFromRaw : IFromRawJson<BetaDeletedMessageBatch>
 {
     /// <inheritdoc/>
     public BetaDeletedMessageBatch FromRawUnchecked(

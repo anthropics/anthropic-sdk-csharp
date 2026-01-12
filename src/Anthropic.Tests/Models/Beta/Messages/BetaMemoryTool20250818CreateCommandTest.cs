@@ -48,8 +48,8 @@ public class BetaMemoryTool20250818CreateCommandTest : TestBase
             Path = "/memories/notes.txt",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818CreateCommand>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818CreateCommand>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"create\"");

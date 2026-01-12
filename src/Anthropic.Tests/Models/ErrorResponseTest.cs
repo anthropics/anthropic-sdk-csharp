@@ -47,8 +47,8 @@ public class ErrorResponseTest : TestBase
             RequestID = "request_id",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ErrorResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ErrorResponse>(element);
         Assert.NotNull(deserialized);
 
         ErrorObject expectedError = new InvalidRequestError("message");

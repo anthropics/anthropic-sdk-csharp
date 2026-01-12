@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void error_paramValidation_Works()
+    public void ErrorParamValidationWorks()
     {
         BetaCodeExecutionToolResultBlockParamContent value = new(
             new BetaCodeExecutionToolResultErrorParam(
@@ -17,7 +17,7 @@ public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void result_block_paramValidation_Works()
+    public void ResultBlockParamValidationWorks()
     {
         BetaCodeExecutionToolResultBlockParamContent value = new(
             new BetaCodeExecutionResultBlockParam()
@@ -32,23 +32,23 @@ public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void error_paramSerializationRoundtrip_Works()
+    public void ErrorParamSerializationRoundtripWorks()
     {
         BetaCodeExecutionToolResultBlockParamContent value = new(
             new BetaCodeExecutionToolResultErrorParam(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void result_block_paramSerializationRoundtrip_Works()
+    public void ResultBlockParamSerializationRoundtripWorks()
     {
         BetaCodeExecutionToolResultBlockParamContent value = new(
             new BetaCodeExecutionResultBlockParam()
@@ -59,9 +59,9 @@ public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
                 Stdout = "stdout",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);

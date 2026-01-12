@@ -57,8 +57,8 @@ public class ToolResultBlockParamTest : TestBase
             IsError = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedToolUseID = "tool_use_id";
@@ -212,73 +212,77 @@ public class ToolResultBlockParamTest : TestBase
 public class ToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         ToolResultBlockParamContent value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void BlocksValidation_Works()
+    public void BlocksValidationWorks()
     {
         ToolResultBlockParamContent value = new(
             [
-                new TextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new CitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new Block(
+                    new TextBlockParam()
+                    {
+                        Text = "x",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         value.Validate();
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         ToolResultBlockParamContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void BlocksSerializationRoundtrip_Works()
+    public void BlocksSerializationRoundtripWorks()
     {
         ToolResultBlockParamContent value = new(
             [
-                new TextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new CitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new Block(
+                    new TextBlockParam()
+                    {
+                        Text = "x",
+                        CacheControl = new() { TTL = TTL.TTL5m },
+                        Citations =
+                        [
+                            new CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -287,7 +291,7 @@ public class ToolResultBlockParamContentTest : TestBase
 public class BlockTest : TestBase
 {
     [Fact]
-    public void text_block_paramValidation_Works()
+    public void TextBlockParamValidationWorks()
     {
         Block value = new(
             new TextBlockParam()
@@ -311,7 +315,7 @@ public class BlockTest : TestBase
     }
 
     [Fact]
-    public void image_block_paramValidation_Works()
+    public void ImageBlockParamValidationWorks()
     {
         Block value = new(
             new ImageBlockParam()
@@ -328,7 +332,7 @@ public class BlockTest : TestBase
     }
 
     [Fact]
-    public void search_result_block_paramValidation_Works()
+    public void SearchResultBlockParamValidationWorks()
     {
         Block value = new(
             new SearchResultBlockParam()
@@ -362,7 +366,7 @@ public class BlockTest : TestBase
     }
 
     [Fact]
-    public void document_block_paramValidation_Works()
+    public void DocumentBlockParamValidationWorks()
     {
         Block value = new(
             new DocumentBlockParam()
@@ -378,7 +382,7 @@ public class BlockTest : TestBase
     }
 
     [Fact]
-    public void text_block_paramSerializationRoundtrip_Works()
+    public void TextBlockParamSerializationRoundtripWorks()
     {
         Block value = new(
             new TextBlockParam()
@@ -398,14 +402,14 @@ public class BlockTest : TestBase
                 ],
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Block>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void image_block_paramSerializationRoundtrip_Works()
+    public void ImageBlockParamSerializationRoundtripWorks()
     {
         Block value = new(
             new ImageBlockParam()
@@ -418,14 +422,14 @@ public class BlockTest : TestBase
                 CacheControl = new() { TTL = TTL.TTL5m },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Block>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void search_result_block_paramSerializationRoundtrip_Works()
+    public void SearchResultBlockParamSerializationRoundtripWorks()
     {
         Block value = new(
             new SearchResultBlockParam()
@@ -455,14 +459,14 @@ public class BlockTest : TestBase
                 Citations = new() { Enabled = true },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Block>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void document_block_paramSerializationRoundtrip_Works()
+    public void DocumentBlockParamSerializationRoundtripWorks()
     {
         Block value = new(
             new DocumentBlockParam()
@@ -474,8 +478,8 @@ public class BlockTest : TestBase
                 Title = "x",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Block>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Block>(element);
 
         Assert.Equal(value, deserialized);
     }

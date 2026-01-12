@@ -58,8 +58,8 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaCodeExecutionToolResultBlockContent expectedContent =

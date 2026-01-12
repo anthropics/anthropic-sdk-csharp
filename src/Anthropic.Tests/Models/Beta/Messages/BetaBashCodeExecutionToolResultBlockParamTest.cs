@@ -65,9 +65,9 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
             CacheControl = new() { TTL = TTL.TTL5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParam>(
-            json
+            element
         );
         Assert.NotNull(deserialized);
 
@@ -168,7 +168,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
 public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void beta_bash_code_execution_tool_result_error_paramValidation_Works()
+    public void BetaBashCodeExecutionToolResultErrorParamValidationWorks()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
             new BetaBashCodeExecutionToolResultErrorParam(
@@ -179,7 +179,7 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void beta_bash_code_execution_result_block_paramValidation_Works()
+    public void BetaBashCodeExecutionResultBlockParamValidationWorks()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
             new BetaBashCodeExecutionResultBlockParam()
@@ -194,22 +194,22 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void beta_bash_code_execution_tool_result_error_paramSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionToolResultErrorParamSerializationRoundtripWorks()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
             new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             )
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
-            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(json);
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_bash_code_execution_result_block_paramSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionResultBlockParamSerializationRoundtripWorks()
     {
         BetaBashCodeExecutionToolResultBlockParamContent value = new(
             new BetaBashCodeExecutionResultBlockParam()
@@ -220,9 +220,9 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
                 Stdout = "stdout",
             }
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized =
-            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(json);
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(element);
 
         Assert.Equal(value, deserialized);
     }

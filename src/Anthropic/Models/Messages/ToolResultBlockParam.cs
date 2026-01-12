@@ -10,19 +10,19 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ToolResultBlockParam, ToolResultBlockParamFromRaw>))]
-public sealed record class ToolResultBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ToolResultBlockParam, ToolResultBlockParamFromRaw>))]
+public sealed record class ToolResultBlockParam : JsonModel
 {
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -32,16 +32,16 @@ public sealed record class ToolResultBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     public ToolResultBlockParamContent? Content
     {
         get
         {
-            return ModelBase.GetNullableClass<ToolResultBlockParamContent>(this.RawData, "content");
+            return JsonModel.GetNullableClass<ToolResultBlockParamContent>(this.RawData, "content");
         }
         init
         {
@@ -50,13 +50,13 @@ public sealed record class ToolResultBlockParam : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "content", value);
+            JsonModel.Set(this._rawData, "content", value);
         }
     }
 
     public bool? IsError
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "is_error"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "is_error"); }
         init
         {
             if (value == null)
@@ -64,7 +64,7 @@ public sealed record class ToolResultBlockParam : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "is_error", value);
+            JsonModel.Set(this._rawData, "is_error", value);
         }
     }
 
@@ -125,7 +125,7 @@ public sealed record class ToolResultBlockParam : ModelBase
     }
 }
 
-class ToolResultBlockParamFromRaw : IFromRaw<ToolResultBlockParam>
+class ToolResultBlockParamFromRaw : IFromRawJson<ToolResultBlockParam>
 {
     /// <inheritdoc/>
     public ToolResultBlockParam FromRawUnchecked(
@@ -138,28 +138,28 @@ public record class ToolResultBlockParamContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public ToolResultBlockParamContent(string value, JsonElement? json = null)
+    public ToolResultBlockParamContent(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolResultBlockParamContent(IReadOnlyList<Block> value, JsonElement? json = null)
+    public ToolResultBlockParamContent(IReadOnlyList<Block> value, JsonElement? element = null)
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolResultBlockParamContent(JsonElement json)
+    public ToolResultBlockParamContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -318,13 +318,13 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -334,10 +334,10 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<Block>>(json, options);
+            var deserialized = JsonSerializer.Deserialize<List<Block>>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -345,7 +345,7 @@ sealed class ToolResultBlockParamContentConverter : JsonConverter<ToolResultBloc
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(
@@ -363,11 +363,11 @@ public record class Block
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Type
@@ -409,33 +409,33 @@ public record class Block
         }
     }
 
-    public Block(TextBlockParam value, JsonElement? json = null)
+    public Block(TextBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Block(ImageBlockParam value, JsonElement? json = null)
+    public Block(ImageBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Block(SearchResultBlockParam value, JsonElement? json = null)
+    public Block(SearchResultBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Block(DocumentBlockParam value, JsonElement? json = null)
+    public Block(DocumentBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Block(JsonElement json)
+    public Block(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -661,11 +661,11 @@ sealed class BlockConverter : JsonConverter<Block>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -678,11 +678,11 @@ sealed class BlockConverter : JsonConverter<Block>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<TextBlockParam>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -691,17 +691,20 @@ sealed class BlockConverter : JsonConverter<Block>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "image":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ImageBlockParam>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -710,20 +713,20 @@ sealed class BlockConverter : JsonConverter<Block>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "search_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<SearchResultBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -732,20 +735,20 @@ sealed class BlockConverter : JsonConverter<Block>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "document":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -754,11 +757,11 @@ sealed class BlockConverter : JsonConverter<Block>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Block(json);
+                return new Block(element);
             }
         }
     }

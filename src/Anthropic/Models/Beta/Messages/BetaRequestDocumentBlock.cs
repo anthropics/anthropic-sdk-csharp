@@ -9,25 +9,27 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRequestDocumentBlock, BetaRequestDocumentBlockFromRaw>))]
-public sealed record class BetaRequestDocumentBlock : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaRequestDocumentBlock, BetaRequestDocumentBlockFromRaw>)
+)]
+public sealed record class BetaRequestDocumentBlock : JsonModel
 {
     public required BetaRequestDocumentBlockSource Source
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaRequestDocumentBlockSource>(
+            return JsonModel.GetNotNullClass<BetaRequestDocumentBlockSource>(
                 this.RawData,
                 "source"
             );
         }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -37,33 +39,33 @@ public sealed record class BetaRequestDocumentBlock : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     public BetaCitationsConfigParam? Citations
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
+            return JsonModel.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
         }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        init { JsonModel.Set(this._rawData, "citations", value); }
     }
 
     public string? Context
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "context"); }
-        init { ModelBase.Set(this._rawData, "context", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "context"); }
+        init { JsonModel.Set(this._rawData, "context", value); }
     }
 
     public string? Title
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
+        init { JsonModel.Set(this._rawData, "title", value); }
     }
 
     /// <inheritdoc/>
@@ -124,7 +126,7 @@ public sealed record class BetaRequestDocumentBlock : ModelBase
     }
 }
 
-class BetaRequestDocumentBlockFromRaw : IFromRaw<BetaRequestDocumentBlock>
+class BetaRequestDocumentBlockFromRaw : IFromRawJson<BetaRequestDocumentBlock>
 {
     /// <inheritdoc/>
     public BetaRequestDocumentBlock FromRawUnchecked(
@@ -137,11 +139,11 @@ public record class BetaRequestDocumentBlockSource
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public string? Data
@@ -186,39 +188,39 @@ public record class BetaRequestDocumentBlockSource
         }
     }
 
-    public BetaRequestDocumentBlockSource(BetaBase64PDFSource value, JsonElement? json = null)
+    public BetaRequestDocumentBlockSource(BetaBase64PDFSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRequestDocumentBlockSource(BetaPlainTextSource value, JsonElement? json = null)
+    public BetaRequestDocumentBlockSource(BetaPlainTextSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRequestDocumentBlockSource(BetaContentBlockSource value, JsonElement? json = null)
+    public BetaRequestDocumentBlockSource(BetaContentBlockSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRequestDocumentBlockSource(BetaURLPDFSource value, JsonElement? json = null)
+    public BetaRequestDocumentBlockSource(BetaURLPDFSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRequestDocumentBlockSource(BetaFileDocumentSource value, JsonElement? json = null)
+    public BetaRequestDocumentBlockSource(BetaFileDocumentSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRequestDocumentBlockSource(JsonElement json)
+    public BetaRequestDocumentBlockSource(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -487,11 +489,11 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -505,13 +507,13 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaBase64PDFSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -520,20 +522,20 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "text":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaPlainTextSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -542,20 +544,20 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -564,17 +566,20 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "url":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaURLPDFSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaURLPDFSource>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -583,20 +588,20 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "file":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaFileDocumentSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -605,11 +610,11 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaRequestDocumentBlockSource(json);
+                return new BetaRequestDocumentBlockSource(element);
             }
         }
     }

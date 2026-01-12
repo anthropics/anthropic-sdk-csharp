@@ -31,8 +31,8 @@ public class BetaRawMessageStopEventTest : TestBase
     {
         var model = new BetaRawMessageStopEvent { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRawMessageStopEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaRawMessageStopEvent>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");

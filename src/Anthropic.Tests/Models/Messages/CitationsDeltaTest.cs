@@ -74,8 +74,8 @@ public class CitationsDeltaTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationsDelta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationsDelta>(element);
         Assert.NotNull(deserialized);
 
         Citation expectedCitation = new CitationCharLocation()
@@ -116,7 +116,7 @@ public class CitationsDeltaTest : TestBase
 public class CitationTest : TestBase
 {
     [Fact]
-    public void char_locationValidation_Works()
+    public void CharLocationValidationWorks()
     {
         Citation value = new(
             new CitationCharLocation()
@@ -133,7 +133,7 @@ public class CitationTest : TestBase
     }
 
     [Fact]
-    public void page_locationValidation_Works()
+    public void PageLocationValidationWorks()
     {
         Citation value = new(
             new CitationPageLocation()
@@ -150,7 +150,7 @@ public class CitationTest : TestBase
     }
 
     [Fact]
-    public void content_block_locationValidation_Works()
+    public void ContentBlockLocationValidationWorks()
     {
         Citation value = new(
             new CitationContentBlockLocation()
@@ -167,7 +167,7 @@ public class CitationTest : TestBase
     }
 
     [Fact]
-    public void citations_web_search_result_locationValidation_Works()
+    public void CitationsWebSearchResultLocationValidationWorks()
     {
         Citation value = new(
             new CitationsWebSearchResultLocation()
@@ -182,7 +182,7 @@ public class CitationTest : TestBase
     }
 
     [Fact]
-    public void citations_search_result_locationValidation_Works()
+    public void CitationsSearchResultLocationValidationWorks()
     {
         Citation value = new(
             new CitationsSearchResultLocation()
@@ -199,7 +199,7 @@ public class CitationTest : TestBase
     }
 
     [Fact]
-    public void char_locationSerializationRoundtrip_Works()
+    public void CharLocationSerializationRoundtripWorks()
     {
         Citation value = new(
             new CitationCharLocation()
@@ -212,14 +212,14 @@ public class CitationTest : TestBase
                 StartCharIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void page_locationSerializationRoundtrip_Works()
+    public void PageLocationSerializationRoundtripWorks()
     {
         Citation value = new(
             new CitationPageLocation()
@@ -232,14 +232,14 @@ public class CitationTest : TestBase
                 StartPageNumber = 1,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void content_block_locationSerializationRoundtrip_Works()
+    public void ContentBlockLocationSerializationRoundtripWorks()
     {
         Citation value = new(
             new CitationContentBlockLocation()
@@ -252,14 +252,14 @@ public class CitationTest : TestBase
                 StartBlockIndex = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citations_web_search_result_locationSerializationRoundtrip_Works()
+    public void CitationsWebSearchResultLocationSerializationRoundtripWorks()
     {
         Citation value = new(
             new CitationsWebSearchResultLocation()
@@ -270,14 +270,14 @@ public class CitationTest : TestBase
                 URL = "url",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citations_search_result_locationSerializationRoundtrip_Works()
+    public void CitationsSearchResultLocationSerializationRoundtripWorks()
     {
         Citation value = new(
             new CitationsSearchResultLocation()
@@ -290,8 +290,8 @@ public class CitationTest : TestBase
                 Title = "title",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Citation>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
         Assert.Equal(value, deserialized);
     }

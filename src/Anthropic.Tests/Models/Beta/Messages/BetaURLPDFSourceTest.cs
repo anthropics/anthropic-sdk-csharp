@@ -33,8 +33,8 @@ public class BetaURLPDFSourceTest : TestBase
     {
         var model = new BetaURLPDFSource { URL = "url" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaURLPDFSource>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaURLPDFSource>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"url\"");

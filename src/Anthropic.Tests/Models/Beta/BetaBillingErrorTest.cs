@@ -33,8 +33,8 @@ public class BetaBillingErrorTest : TestBase
     {
         var model = new BetaBillingError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBillingError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaBillingError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

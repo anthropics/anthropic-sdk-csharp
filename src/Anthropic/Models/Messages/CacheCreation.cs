@@ -7,16 +7,16 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CacheCreation, CacheCreationFromRaw>))]
-public sealed record class CacheCreation : ModelBase
+[JsonConverter(typeof(JsonModelConverter<CacheCreation, CacheCreationFromRaw>))]
+public sealed record class CacheCreation : JsonModel
 {
     /// <summary>
     /// The number of input tokens used to create the 1 hour cache entry.
     /// </summary>
     public required long Ephemeral1hInputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "ephemeral_1h_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "ephemeral_1h_input_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "ephemeral_1h_input_tokens"); }
+        init { JsonModel.Set(this._rawData, "ephemeral_1h_input_tokens", value); }
     }
 
     /// <summary>
@@ -24,8 +24,8 @@ public sealed record class CacheCreation : ModelBase
     /// </summary>
     public required long Ephemeral5mInputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "ephemeral_5m_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "ephemeral_5m_input_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "ephemeral_5m_input_tokens"); }
+        init { JsonModel.Set(this._rawData, "ephemeral_5m_input_tokens", value); }
     }
 
     /// <inheritdoc/>
@@ -60,7 +60,7 @@ public sealed record class CacheCreation : ModelBase
     }
 }
 
-class CacheCreationFromRaw : IFromRaw<CacheCreation>
+class CacheCreationFromRaw : IFromRawJson<CacheCreation>
 {
     /// <inheritdoc/>
     public CacheCreation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

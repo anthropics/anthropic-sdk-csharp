@@ -53,8 +53,8 @@ public class ModelInfoTest : TestBase
             DisplayName = "Claude Sonnet 4",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ModelInfo>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ModelInfo>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "claude-sonnet-4-20250514";

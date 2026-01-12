@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaUsage, BetaUsageFromRaw>))]
-public sealed record class BetaUsage : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaUsage, BetaUsageFromRaw>))]
+public sealed record class BetaUsage : JsonModel
 {
     /// <summary>
     /// Breakdown of cached tokens by TTL
@@ -19,9 +19,9 @@ public sealed record class BetaUsage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheCreation>(this.RawData, "cache_creation");
+            return JsonModel.GetNullableClass<BetaCacheCreation>(this.RawData, "cache_creation");
         }
-        init { ModelBase.Set(this._rawData, "cache_creation", value); }
+        init { JsonModel.Set(this._rawData, "cache_creation", value); }
     }
 
     /// <summary>
@@ -31,9 +31,9 @@ public sealed record class BetaUsage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
+            return JsonModel.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
         }
-        init { ModelBase.Set(this._rawData, "cache_creation_input_tokens", value); }
+        init { JsonModel.Set(this._rawData, "cache_creation_input_tokens", value); }
     }
 
     /// <summary>
@@ -41,8 +41,8 @@ public sealed record class BetaUsage : ModelBase
     /// </summary>
     public required long? CacheReadInputTokens
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "cache_read_input_tokens", value); }
+        get { return JsonModel.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
+        init { JsonModel.Set(this._rawData, "cache_read_input_tokens", value); }
     }
 
     /// <summary>
@@ -50,8 +50,8 @@ public sealed record class BetaUsage : ModelBase
     /// </summary>
     public required long InputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
-        init { ModelBase.Set(this._rawData, "input_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
+        init { JsonModel.Set(this._rawData, "input_tokens", value); }
     }
 
     /// <summary>
@@ -59,8 +59,8 @@ public sealed record class BetaUsage : ModelBase
     /// </summary>
     public required long OutputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
-        init { ModelBase.Set(this._rawData, "output_tokens", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
+        init { JsonModel.Set(this._rawData, "output_tokens", value); }
     }
 
     /// <summary>
@@ -70,9 +70,9 @@ public sealed record class BetaUsage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaServerToolUsage>(this.RawData, "server_tool_use");
+            return JsonModel.GetNullableClass<BetaServerToolUsage>(this.RawData, "server_tool_use");
         }
-        init { ModelBase.Set(this._rawData, "server_tool_use", value); }
+        init { JsonModel.Set(this._rawData, "server_tool_use", value); }
     }
 
     /// <summary>
@@ -82,12 +82,12 @@ public sealed record class BetaUsage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, BetaUsageServiceTier>>(
+            return JsonModel.GetNullableClass<ApiEnum<string, BetaUsageServiceTier>>(
                 this.RawData,
                 "service_tier"
             );
         }
-        init { ModelBase.Set(this._rawData, "service_tier", value); }
+        init { JsonModel.Set(this._rawData, "service_tier", value); }
     }
 
     /// <inheritdoc/>
@@ -127,7 +127,7 @@ public sealed record class BetaUsage : ModelBase
     }
 }
 
-class BetaUsageFromRaw : IFromRaw<BetaUsage>
+class BetaUsageFromRaw : IFromRawJson<BetaUsage>
 {
     /// <inheritdoc/>
     public BetaUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

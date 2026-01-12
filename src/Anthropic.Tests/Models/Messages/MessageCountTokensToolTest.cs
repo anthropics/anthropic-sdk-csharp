@@ -7,7 +7,7 @@ namespace Anthropic.Tests.Models.Messages;
 public class MessageCountTokensToolTest : TestBase
 {
     [Fact]
-    public void toolValidation_Works()
+    public void ToolValidationWorks()
     {
         MessageCountTokensTool value = new(
             new Tool()
@@ -31,7 +31,7 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
-    public void tool_bash_20250124Validation_Works()
+    public void ToolBash20250124ValidationWorks()
     {
         MessageCountTokensTool value = new(
             new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
@@ -40,7 +40,7 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
-    public void tool_text_editor_20250124Validation_Works()
+    public void ToolTextEditor20250124ValidationWorks()
     {
         MessageCountTokensTool value = new(
             new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
@@ -49,7 +49,7 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
-    public void tool_text_editor_20250429Validation_Works()
+    public void ToolTextEditor20250429ValidationWorks()
     {
         MessageCountTokensTool value = new(
             new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
@@ -58,7 +58,7 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
-    public void tool_text_editor_20250728Validation_Works()
+    public void ToolTextEditor20250728ValidationWorks()
     {
         MessageCountTokensTool value = new(
             new ToolTextEditor20250728()
@@ -71,7 +71,7 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
-    public void web_search_tool_20250305Validation_Works()
+    public void WebSearchTool20250305ValidationWorks()
     {
         MessageCountTokensTool value = new(
             new WebSearchTool20250305()
@@ -93,7 +93,7 @@ public class MessageCountTokensToolTest : TestBase
     }
 
     [Fact]
-    public void toolSerializationRoundtrip_Works()
+    public void ToolSerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
             new Tool()
@@ -113,50 +113,50 @@ public class MessageCountTokensToolTest : TestBase
                 Type = Type.Custom,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_bash_20250124SerializationRoundtrip_Works()
+    public void ToolBash20250124SerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
             new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_text_editor_20250124SerializationRoundtrip_Works()
+    public void ToolTextEditor20250124SerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
             new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_text_editor_20250429SerializationRoundtrip_Works()
+    public void ToolTextEditor20250429SerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
             new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_text_editor_20250728SerializationRoundtrip_Works()
+    public void ToolTextEditor20250728SerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
             new ToolTextEditor20250728()
@@ -165,14 +165,14 @@ public class MessageCountTokensToolTest : TestBase
                 MaxCharacters = 1,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void web_search_tool_20250305SerializationRoundtrip_Works()
+    public void WebSearchTool20250305SerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
             new WebSearchTool20250305()
@@ -190,8 +190,8 @@ public class MessageCountTokensToolTest : TestBase
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
 
         Assert.Equal(value, deserialized);
     }

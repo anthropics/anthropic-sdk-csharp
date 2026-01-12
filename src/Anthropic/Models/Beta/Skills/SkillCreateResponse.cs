@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Skills;
 
-[JsonConverter(typeof(ModelConverter<SkillCreateResponse, SkillCreateResponseFromRaw>))]
-public sealed record class SkillCreateResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<SkillCreateResponse, SkillCreateResponseFromRaw>))]
+public sealed record class SkillCreateResponse : JsonModel
 {
     /// <summary>
     /// Unique identifier for the skill.
@@ -17,8 +17,8 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -26,8 +26,8 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string CreatedAt
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "created_at"); }
+        init { JsonModel.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -38,8 +38,8 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string? DisplayTitle
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "display_title"); }
-        init { ModelBase.Set(this._rawData, "display_title", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "display_title"); }
+        init { JsonModel.Set(this._rawData, "display_title", value); }
     }
 
     /// <summary>
@@ -49,8 +49,8 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string? LatestVersion
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "latest_version"); }
-        init { ModelBase.Set(this._rawData, "latest_version", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "latest_version"); }
+        init { JsonModel.Set(this._rawData, "latest_version", value); }
     }
 
     /// <summary>
@@ -61,8 +61,8 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string Source
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "source"); }
+        init { JsonModel.Set(this._rawData, "source", value); }
     }
 
     /// <summary>
@@ -72,8 +72,8 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string Type
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -81,8 +81,8 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string UpdatedAt
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "updated_at"); }
-        init { ModelBase.Set(this._rawData, "updated_at", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "updated_at"); }
+        init { JsonModel.Set(this._rawData, "updated_at", value); }
     }
 
     /// <inheritdoc/>
@@ -124,7 +124,7 @@ public sealed record class SkillCreateResponse : ModelBase
     }
 }
 
-class SkillCreateResponseFromRaw : IFromRaw<SkillCreateResponse>
+class SkillCreateResponseFromRaw : IFromRawJson<SkillCreateResponse>
 {
     /// <inheritdoc/>
     public SkillCreateResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

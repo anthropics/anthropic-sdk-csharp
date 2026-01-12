@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<URLPDFSource, URLPDFSourceFromRaw>))]
-public sealed record class URLPDFSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<URLPDFSource, URLPDFSourceFromRaw>))]
+public sealed record class URLPDFSource : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     public required string URL
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
+        init { JsonModel.Set(this._rawData, "url", value); }
     }
 
     /// <inheritdoc/>
@@ -70,7 +70,7 @@ public sealed record class URLPDFSource : ModelBase
     }
 }
 
-class URLPDFSourceFromRaw : IFromRaw<URLPDFSource>
+class URLPDFSourceFromRaw : IFromRawJson<URLPDFSource>
 {
     /// <inheritdoc/>
     public URLPDFSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -9,29 +9,29 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaToolSearchToolSearchResultBlockParam,
         BetaToolSearchToolSearchResultBlockParamFromRaw
     >)
 )]
-public sealed record class BetaToolSearchToolSearchResultBlockParam : ModelBase
+public sealed record class BetaToolSearchToolSearchResultBlockParam : JsonModel
 {
     public required IReadOnlyList<BetaToolReferenceBlockParam> ToolReferences
     {
         get
         {
-            return ModelBase.GetNotNullClass<List<BetaToolReferenceBlockParam>>(
+            return JsonModel.GetNotNullClass<List<BetaToolReferenceBlockParam>>(
                 this.RawData,
                 "tool_references"
             );
         }
-        init { ModelBase.Set(this._rawData, "tool_references", value); }
+        init { JsonModel.Set(this._rawData, "tool_references", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -98,7 +98,7 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : ModelBase
 }
 
 class BetaToolSearchToolSearchResultBlockParamFromRaw
-    : IFromRaw<BetaToolSearchToolSearchResultBlockParam>
+    : IFromRawJson<BetaToolSearchToolSearchResultBlockParam>
 {
     /// <inheritdoc/>
     public BetaToolSearchToolSearchResultBlockParam FromRawUnchecked(

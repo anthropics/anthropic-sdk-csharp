@@ -33,8 +33,8 @@ public class BetaNotFoundErrorTest : TestBase
     {
         var model = new BetaNotFoundError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaNotFoundError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaNotFoundError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

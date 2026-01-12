@@ -76,8 +76,8 @@ public class BetaMCPToolUseBlockTest : TestBase
             ServerName = "server_name",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "id";

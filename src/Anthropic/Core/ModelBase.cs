@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
-using Anthropic.Models.Beta.Files;
-using Anthropic.Models.Messages.Batches;
-using Batches = Anthropic.Models.Beta.Messages.Batches;
+using Anthropic.Models.Messages;
+using Batches = Anthropic.Models.Messages.Batches;
+using Files = Anthropic.Models.Beta.Files;
 using Messages = Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Core;
@@ -16,40 +15,27 @@ namespace Anthropic.Core;
 /// </summary>
 public abstract record class ModelBase
 {
-    private protected FreezableDictionary<string, JsonElement> _rawData = [];
-
     protected ModelBase(ModelBase modelBase)
     {
-        this._rawData = [.. modelBase._rawData];
-    }
-
-    /// <summary>
-    /// The backing JSON properties of the instance.
-    /// </summary>
-    public IReadOnlyDictionary<string, JsonElement> RawData
-    {
-        get { return this._rawData.Freeze(); }
+        // Nothing to copy. Just so that subclasses can define copy constructors.
     }
 
     internal static readonly JsonSerializerOptions SerializerOptions = new()
     {
         Converters =
         {
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.MediaType>(),
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.TTL>(),
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.Role>(),
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.Model>(),
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.StopReason>(),
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.Type>(),
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.UsageServiceTier>(),
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.ErrorCode>(),
-            new ApiEnumConverter<
-                string,
-                global::Anthropic.Models.Messages.WebSearchToolResultErrorErrorCode
-            >(),
-            new ApiEnumConverter<string, global::Anthropic.Models.Messages.ServiceTier>(),
-            new ApiEnumConverter<string, ProcessingStatus>(),
+            new ApiEnumConverter<string, MediaType>(),
+            new ApiEnumConverter<string, TTL>(),
+            new ApiEnumConverter<string, Role>(),
+            new ApiEnumConverter<string, Model>(),
+            new ApiEnumConverter<string, StopReason>(),
+            new ApiEnumConverter<string, Type>(),
+            new ApiEnumConverter<string, UsageServiceTier>(),
+            new ApiEnumConverter<string, ErrorCode>(),
+            new ApiEnumConverter<string, WebSearchToolResultErrorErrorCode>(),
             new ApiEnumConverter<string, ServiceTier>(),
+            new ApiEnumConverter<string, Batches::ProcessingStatus>(),
+            new ApiEnumConverter<string, Batches::ServiceTier>(),
             new ApiEnumConverter<string, AnthropicBeta>(),
             new ApiEnumConverter<string, Messages::MediaType>(),
             new ApiEnumConverter<string, Messages::ErrorCode>(),
@@ -105,152 +91,24 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::BetaWebSearchTool20250305AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaWebSearchToolResultErrorCode>(),
             new ApiEnumConverter<string, Messages::ServiceTier>(),
-            new ApiEnumConverter<string, Batches::ProcessingStatus>(),
-            new ApiEnumConverter<string, Batches::ServiceTier>(),
-            new ApiEnumConverter<string, Type>(),
+            new ApiEnumConverter<
+                string,
+                global::Anthropic.Models.Beta.Messages.Batches.ProcessingStatus
+            >(),
+            new ApiEnumConverter<
+                string,
+                global::Anthropic.Models.Beta.Messages.Batches.ServiceTier
+            >(),
+            new ApiEnumConverter<string, Files::Type>(),
         },
     };
 
-    static readonly JsonSerializerOptions _toStringSerializerOptions = new(SerializerOptions)
+    private protected static readonly JsonSerializerOptions ToStringSerializerOptions = new(
+        SerializerOptions
+    )
     {
         WriteIndented = true,
     };
-
-    internal static void Set<T>(IDictionary<string, JsonElement> dictionary, string key, T value)
-    {
-        dictionary[key] = JsonSerializer.SerializeToElement(value, SerializerOptions);
-    }
-
-    internal static T GetNotNullClass<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : class
-    {
-        if (!dictionary.TryGetValue(key, out JsonElement element))
-        {
-            throw new AnthropicInvalidDataException($"'{key}' cannot be absent");
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T>(element, SerializerOptions)
-                ?? throw new AnthropicInvalidDataException($"'{key}' cannot be null");
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T GetNotNullStruct<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : struct
-    {
-        if (!dictionary.TryGetValue(key, out JsonElement element))
-        {
-            throw new AnthropicInvalidDataException($"'{key}' cannot be absent");
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions)
-                ?? throw new AnthropicInvalidDataException($"'{key}' cannot be null");
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T? GetNullableClass<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : class
-    {
-        if (!dictionary.TryGetValue(key, out JsonElement element))
-        {
-            return null;
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions);
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T? GetNullableStruct<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : struct
-    {
-        if (!dictionary.TryGetValue(key, out JsonElement element))
-        {
-            return null;
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions);
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    public sealed override string? ToString()
-    {
-        return JsonSerializer.Serialize(this.RawData, _toStringSerializerOptions);
-    }
-
-    public virtual bool Equals(ModelBase? other)
-    {
-        if (other == null || this.RawData.Count != other.RawData.Count)
-        {
-            return false;
-        }
-
-        foreach (var item in this.RawData)
-        {
-            if (!other.RawData.TryGetValue(item.Key, out var otherValue))
-            {
-                return false;
-            }
-
-            if (!JsonElement.DeepEquals(item.Value, otherValue))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public override int GetHashCode()
-    {
-        return 0;
-    }
 
     /// <summary>
     /// Validates that all required fields are set and that each field's value is of the expected type.
@@ -262,27 +120,4 @@ public abstract record class ModelBase
     /// </exception>
     /// </summary>
     public abstract void Validate();
-}
-
-/// <summary>
-/// NOTE: Do not inherit from this type outside the SDK unless you're okay with breaking
-/// changes in non-major versions. We may add new methods in the future that cause
-/// existing derived classes to break.
-///
-/// <para>NOTE: This interface is in the style of a factory instance instead of using
-/// abstract static methods because .NET Standard 2.0 doesn't support abstract static methods.</para>
-/// </summary>
-interface IFromRaw<T>
-{
-    /// <summary>
-    /// Returns an instance constructed from the given raw JSON properties.
-    ///
-    /// <para>Required field and type mismatches are not checked. In these cases accessing
-    /// the relevant properties of the constructed instance may throw.</para>
-    ///
-    /// <para>This method is useful for constructing an instance from already serialized
-    /// data or for sending arbitrary data to the API (e.g. for undocumented or not
-    /// yet supported properties or values).</para>
-    /// </summary>
-    T FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData);
 }

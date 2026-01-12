@@ -78,8 +78,8 @@ public class BetaServerToolUseBlockTest : TestBase
             Name = Name.WebSearch,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(element);
         Assert.NotNull(deserialized);
 
         string expectedID = "srvtoolu_SQfNkl1n_JR_";
@@ -125,35 +125,35 @@ public class BetaServerToolUseBlockTest : TestBase
 public class CallerTest : TestBase
 {
     [Fact]
-    public void beta_directValidation_Works()
+    public void BetaDirectValidationWorks()
     {
         Caller value = new(new BetaDirectCaller());
         value.Validate();
     }
 
     [Fact]
-    public void beta_server_toolValidation_Works()
+    public void BetaServerToolValidationWorks()
     {
         Caller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
         value.Validate();
     }
 
     [Fact]
-    public void beta_directSerializationRoundtrip_Works()
+    public void BetaDirectSerializationRoundtripWorks()
     {
         Caller value = new(new BetaDirectCaller());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Caller>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_server_toolSerializationRoundtrip_Works()
+    public void BetaServerToolSerializationRoundtripWorks()
     {
         Caller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Caller>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -183,6 +183,8 @@ public class NameTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

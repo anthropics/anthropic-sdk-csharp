@@ -57,8 +57,8 @@ public class BetaWebFetchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlock>(element);
         Assert.NotNull(deserialized);
 
         BetaWebFetchToolResultBlockContent expectedContent = new BetaWebFetchToolResultErrorBlock(
@@ -92,7 +92,7 @@ public class BetaWebFetchToolResultBlockTest : TestBase
 public class BetaWebFetchToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void beta_web_fetch_tool_result_error_blockValidation_Works()
+    public void BetaWebFetchToolResultErrorBlockValidationWorks()
     {
         BetaWebFetchToolResultBlockContent value = new(
             new BetaWebFetchToolResultErrorBlock(BetaWebFetchToolResultErrorCode.InvalidToolInput)
@@ -101,7 +101,7 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void beta_web_fetch_blockValidation_Works()
+    public void BetaWebFetchBlockValidationWorks()
     {
         BetaWebFetchToolResultBlockContent value = new(
             new BetaWebFetchBlock()
@@ -120,19 +120,19 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void beta_web_fetch_tool_result_error_blockSerializationRoundtrip_Works()
+    public void BetaWebFetchToolResultErrorBlockSerializationRoundtripWorks()
     {
         BetaWebFetchToolResultBlockContent value = new(
             new BetaWebFetchToolResultErrorBlock(BetaWebFetchToolResultErrorCode.InvalidToolInput)
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_web_fetch_blockSerializationRoundtrip_Works()
+    public void BetaWebFetchBlockSerializationRoundtripWorks()
     {
         BetaWebFetchToolResultBlockContent value = new(
             new BetaWebFetchBlock()
@@ -147,8 +147,8 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
                 URL = "url",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(element);
 
         Assert.Equal(value, deserialized);
     }

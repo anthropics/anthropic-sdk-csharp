@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818InsertCommand,
         BetaMemoryTool20250818InsertCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
+public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
+        init { JsonModel.Set(this._rawData, "command", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     /// </summary>
     public required long InsertLine
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "insert_line"); }
-        init { ModelBase.Set(this._rawData, "insert_line", value); }
+        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "insert_line"); }
+        init { JsonModel.Set(this._rawData, "insert_line", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     /// </summary>
     public required string InsertText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "insert_text"); }
-        init { ModelBase.Set(this._rawData, "insert_text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "insert_text"); }
+        init { JsonModel.Set(this._rawData, "insert_text", value); }
     }
 
     /// <summary>
@@ -48,8 +48,8 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
-        init { ModelBase.Set(this._rawData, "path", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "path"); }
+        init { JsonModel.Set(this._rawData, "path", value); }
     }
 
     /// <inheritdoc/>
@@ -103,7 +103,7 @@ public sealed record class BetaMemoryTool20250818InsertCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818InsertCommandFromRaw : IFromRaw<BetaMemoryTool20250818InsertCommand>
+class BetaMemoryTool20250818InsertCommandFromRaw : IFromRawJson<BetaMemoryTool20250818InsertCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818InsertCommand FromRawUnchecked(

@@ -8,19 +8,19 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<TextBlockParam, TextBlockParamFromRaw>))]
-public sealed record class TextBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<TextBlockParam, TextBlockParamFromRaw>))]
+public sealed record class TextBlockParam : JsonModel
 {
     public required string Text
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
-        init { ModelBase.Set(this._rawData, "text", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
+        init { JsonModel.Set(this._rawData, "text", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -30,18 +30,18 @@ public sealed record class TextBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     public IReadOnlyList<TextCitationParam>? Citations
     {
         get
         {
-            return ModelBase.GetNullableClass<List<TextCitationParam>>(this.RawData, "citations");
+            return JsonModel.GetNullableClass<List<TextCitationParam>>(this.RawData, "citations");
         }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        init { JsonModel.Set(this._rawData, "citations", value); }
     }
 
     /// <inheritdoc/>
@@ -96,7 +96,7 @@ public sealed record class TextBlockParam : ModelBase
     }
 }
 
-class TextBlockParamFromRaw : IFromRaw<TextBlockParam>
+class TextBlockParamFromRaw : IFromRawJson<TextBlockParam>
 {
     /// <inheritdoc/>
     public TextBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

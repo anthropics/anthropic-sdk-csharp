@@ -11,23 +11,23 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaRequestMCPToolResultBlockParam,
         BetaRequestMCPToolResultBlockParamFromRaw
     >)
 )]
-public sealed record class BetaRequestMCPToolResultBlockParam : ModelBase
+public sealed record class BetaRequestMCPToolResultBlockParam : JsonModel
 {
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
+        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -37,19 +37,19 @@ public sealed record class BetaRequestMCPToolResultBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
+            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
                 this.RawData,
                 "cache_control"
             );
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { JsonModel.Set(this._rawData, "cache_control", value); }
     }
 
     public BetaRequestMCPToolResultBlockParamContent? Content
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaRequestMCPToolResultBlockParamContent>(
+            return JsonModel.GetNullableClass<BetaRequestMCPToolResultBlockParamContent>(
                 this.RawData,
                 "content"
             );
@@ -61,13 +61,13 @@ public sealed record class BetaRequestMCPToolResultBlockParam : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "content", value);
+            JsonModel.Set(this._rawData, "content", value);
         }
     }
 
     public bool? IsError
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "is_error"); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "is_error"); }
         init
         {
             if (value == null)
@@ -75,7 +75,7 @@ public sealed record class BetaRequestMCPToolResultBlockParam : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "is_error", value);
+            JsonModel.Set(this._rawData, "is_error", value);
         }
     }
 
@@ -138,7 +138,7 @@ public sealed record class BetaRequestMCPToolResultBlockParam : ModelBase
     }
 }
 
-class BetaRequestMCPToolResultBlockParamFromRaw : IFromRaw<BetaRequestMCPToolResultBlockParam>
+class BetaRequestMCPToolResultBlockParamFromRaw : IFromRawJson<BetaRequestMCPToolResultBlockParam>
 {
     /// <inheritdoc/>
     public BetaRequestMCPToolResultBlockParam FromRawUnchecked(
@@ -151,31 +151,31 @@ public record class BetaRequestMCPToolResultBlockParamContent
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
-    public BetaRequestMCPToolResultBlockParamContent(string value, JsonElement? json = null)
+    public BetaRequestMCPToolResultBlockParamContent(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaRequestMCPToolResultBlockParamContent(
         IReadOnlyList<BetaTextBlockParam> value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRequestMCPToolResultBlockParamContent(JsonElement json)
+    public BetaRequestMCPToolResultBlockParamContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -345,13 +345,13 @@ sealed class BetaRequestMCPToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -361,10 +361,13 @@ sealed class BetaRequestMCPToolResultBlockParamContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(json, options);
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -372,7 +375,7 @@ sealed class BetaRequestMCPToolResultBlockParamContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

@@ -33,8 +33,8 @@ public class BetaMCPToolDefaultConfigTest : TestBase
     {
         var model = new BetaMCPToolDefaultConfig { DeferLoading = true, Enabled = true };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMCPToolDefaultConfig>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaMCPToolDefaultConfig>(element);
         Assert.NotNull(deserialized);
 
         bool expectedDeferLoading = true;

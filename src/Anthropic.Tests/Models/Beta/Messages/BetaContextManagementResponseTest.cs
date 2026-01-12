@@ -73,8 +73,8 @@ public class BetaContextManagementResponseTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContextManagementResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaContextManagementResponse>(element);
         Assert.NotNull(deserialized);
 
         List<AppliedEdit> expectedAppliedEdits =
@@ -115,7 +115,7 @@ public class BetaContextManagementResponseTest : TestBase
 public class AppliedEditTest : TestBase
 {
     [Fact]
-    public void beta_clear_tool_uses_20250919_edit_responseValidation_Works()
+    public void BetaClearToolUses20250919EditResponseValidationWorks()
     {
         AppliedEdit value = new(
             new BetaClearToolUses20250919EditResponse()
@@ -128,7 +128,7 @@ public class AppliedEditTest : TestBase
     }
 
     [Fact]
-    public void beta_clear_thinking_20251015_edit_responseValidation_Works()
+    public void BetaClearThinking20251015EditResponseValidationWorks()
     {
         AppliedEdit value = new(
             new BetaClearThinking20251015EditResponse()
@@ -141,7 +141,7 @@ public class AppliedEditTest : TestBase
     }
 
     [Fact]
-    public void beta_clear_tool_uses_20250919_edit_responseSerializationRoundtrip_Works()
+    public void BetaClearToolUses20250919EditResponseSerializationRoundtripWorks()
     {
         AppliedEdit value = new(
             new BetaClearToolUses20250919EditResponse()
@@ -150,14 +150,14 @@ public class AppliedEditTest : TestBase
                 ClearedToolUses = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_clear_thinking_20251015_edit_responseSerializationRoundtrip_Works()
+    public void BetaClearThinking20251015EditResponseSerializationRoundtripWorks()
     {
         AppliedEdit value = new(
             new BetaClearThinking20251015EditResponse()
@@ -166,8 +166,8 @@ public class AppliedEditTest : TestBase
                 ClearedThinkingTurns = 0,
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<AppliedEdit>(element);
 
         Assert.Equal(value, deserialized);
     }

@@ -25,7 +25,7 @@ public sealed record class VersionRetrieveParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
+            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
                 this.RawHeaderData,
                 "anthropic-beta"
             );
@@ -37,7 +37,7 @@ public sealed record class VersionRetrieveParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawHeaderData, "anthropic-beta", value);
+            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
         }
     }
 
@@ -67,7 +67,7 @@ public sealed record class VersionRetrieveParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static VersionRetrieveParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData

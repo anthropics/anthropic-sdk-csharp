@@ -33,8 +33,8 @@ public class BetaAPIErrorTest : TestBase
     {
         var model = new BetaAPIError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaAPIError>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaAPIError>(element);
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";

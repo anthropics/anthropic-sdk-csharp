@@ -35,8 +35,8 @@ public class CacheControlEphemeralTest : TestBase
     {
         var model = new CacheControlEphemeral { TTL = TTL.TTL5m };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CacheControlEphemeral>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CacheControlEphemeral>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
@@ -116,6 +116,8 @@ public class TTLTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 

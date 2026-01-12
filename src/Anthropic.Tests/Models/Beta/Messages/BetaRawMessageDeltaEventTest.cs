@@ -186,8 +186,8 @@ public class BetaRawMessageDeltaEventTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageDeltaEvent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageDeltaEvent>(element);
         Assert.NotNull(deserialized);
 
         Messages::BetaContextManagementResponse expectedContextManagement = new(
@@ -381,8 +381,8 @@ public class DeltaTest : TestBase
             StopSequence = "stop_sequence",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::Delta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Messages::Delta>(element);
         Assert.NotNull(deserialized);
 
         Messages::BetaContainer expectedContainer = new()

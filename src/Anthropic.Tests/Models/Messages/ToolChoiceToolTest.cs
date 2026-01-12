@@ -35,8 +35,8 @@ public class ToolChoiceToolTest : TestBase
     {
         var model = new ToolChoiceTool { Name = "name", DisableParallelToolUse = true };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(element);
         Assert.NotNull(deserialized);
 
         string expectedName = "name";

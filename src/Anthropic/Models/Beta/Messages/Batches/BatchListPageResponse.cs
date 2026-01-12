@@ -7,13 +7,13 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BatchListPageResponse, BatchListPageResponseFromRaw>))]
-public sealed record class BatchListPageResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BatchListPageResponse, BatchListPageResponseFromRaw>))]
+public sealed record class BatchListPageResponse : JsonModel
 {
     public required IReadOnlyList<BetaMessageBatch> Data
     {
-        get { return ModelBase.GetNotNullClass<List<BetaMessageBatch>>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get { return JsonModel.GetNotNullClass<List<BetaMessageBatch>>(this.RawData, "data"); }
+        init { JsonModel.Set(this._rawData, "data", value); }
     }
 
     /// <summary>
@@ -21,8 +21,8 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required string? FirstID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "first_id"); }
-        init { ModelBase.Set(this._rawData, "first_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "first_id"); }
+        init { JsonModel.Set(this._rawData, "first_id", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required bool HasMore
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "has_more"); }
-        init { ModelBase.Set(this._rawData, "has_more", value); }
+        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "has_more"); }
+        init { JsonModel.Set(this._rawData, "has_more", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required string? LastID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "last_id"); }
-        init { ModelBase.Set(this._rawData, "last_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "last_id"); }
+        init { JsonModel.Set(this._rawData, "last_id", value); }
     }
 
     /// <inheritdoc/>
@@ -82,7 +82,7 @@ public sealed record class BatchListPageResponse : ModelBase
     }
 }
 
-class BatchListPageResponseFromRaw : IFromRaw<BatchListPageResponse>
+class BatchListPageResponseFromRaw : IFromRawJson<BatchListPageResponse>
 {
     /// <inheritdoc/>
     public BatchListPageResponse FromRawUnchecked(

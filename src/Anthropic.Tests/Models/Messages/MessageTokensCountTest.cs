@@ -31,8 +31,8 @@ public class MessageTokensCountTest : TestBase
     {
         var model = new MessageTokensCount { InputTokens = 2095 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageTokensCount>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MessageTokensCount>(element);
         Assert.NotNull(deserialized);
 
         long expectedInputTokens = 2095;

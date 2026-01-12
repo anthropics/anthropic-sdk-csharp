@@ -31,8 +31,8 @@ public class BetaCitationsConfigParamTest : TestBase
     {
         var model = new BetaCitationsConfigParam { Enabled = true };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCitationsConfigParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationsConfigParam>(element);
         Assert.NotNull(deserialized);
 
         bool expectedEnabled = true;

@@ -11,11 +11,11 @@ public record class BetaMemoryTool20250818Command
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
     }
 
     public JsonElement Command
@@ -50,61 +50,61 @@ public record class BetaMemoryTool20250818Command
 
     public BetaMemoryTool20250818Command(
         BetaMemoryTool20250818ViewCommand value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaMemoryTool20250818Command(
         BetaMemoryTool20250818CreateCommand value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaMemoryTool20250818Command(
         BetaMemoryTool20250818StrReplaceCommand value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaMemoryTool20250818Command(
         BetaMemoryTool20250818InsertCommand value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaMemoryTool20250818Command(
         BetaMemoryTool20250818DeleteCommand value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaMemoryTool20250818Command(
         BetaMemoryTool20250818RenameCommand value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaMemoryTool20250818Command(JsonElement json)
+    public BetaMemoryTool20250818Command(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -424,11 +424,11 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? command;
         try
         {
-            command = json.GetProperty("command").GetString();
+            command = element.GetProperty("command").GetString();
         }
         catch
         {
@@ -443,13 +443,13 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaMemoryTool20250818ViewCommand>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -458,7 +458,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "create":
             {
@@ -466,13 +466,13 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaMemoryTool20250818CreateCommand>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -481,7 +481,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "str_replace":
             {
@@ -489,13 +489,13 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaMemoryTool20250818StrReplaceCommand>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -504,7 +504,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "insert":
             {
@@ -512,13 +512,13 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaMemoryTool20250818InsertCommand>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -527,7 +527,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "delete":
             {
@@ -535,13 +535,13 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaMemoryTool20250818DeleteCommand>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -550,7 +550,7 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "rename":
             {
@@ -558,13 +558,13 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaMemoryTool20250818RenameCommand>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -573,11 +573,11 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaMemoryTool20250818Command(json);
+                return new BetaMemoryTool20250818Command(element);
             }
         }
     }

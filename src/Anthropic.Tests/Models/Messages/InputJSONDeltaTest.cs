@@ -33,8 +33,8 @@ public class InputJSONDeltaTest : TestBase
     {
         var model = new InputJSONDelta { PartialJSON = "partial_json" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<InputJSONDelta>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<InputJSONDelta>(element);
         Assert.NotNull(deserialized);
 
         string expectedPartialJSON = "partial_json";

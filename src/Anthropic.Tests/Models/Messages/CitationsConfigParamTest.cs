@@ -31,8 +31,8 @@ public class CitationsConfigParamTest : TestBase
     {
         var model = new CitationsConfigParam { Enabled = true };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CitationsConfigParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CitationsConfigParam>(element);
         Assert.NotNull(deserialized);
 
         bool expectedEnabled = true;

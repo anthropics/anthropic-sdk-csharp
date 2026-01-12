@@ -9,20 +9,20 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Messages.Batches;
 
 [JsonConverter(
-    typeof(ModelConverter<MessageBatchSucceededResult, MessageBatchSucceededResultFromRaw>)
+    typeof(JsonModelConverter<MessageBatchSucceededResult, MessageBatchSucceededResultFromRaw>)
 )]
-public sealed record class MessageBatchSucceededResult : ModelBase
+public sealed record class MessageBatchSucceededResult : JsonModel
 {
     public required Message Message
     {
-        get { return ModelBase.GetNotNullClass<Message>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get { return JsonModel.GetNotNullClass<Message>(this.RawData, "message"); }
+        init { JsonModel.Set(this._rawData, "message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -79,7 +79,7 @@ public sealed record class MessageBatchSucceededResult : ModelBase
     }
 }
 
-class MessageBatchSucceededResultFromRaw : IFromRaw<MessageBatchSucceededResult>
+class MessageBatchSucceededResultFromRaw : IFromRawJson<MessageBatchSucceededResult>
 {
     /// <inheritdoc/>
     public MessageBatchSucceededResult FromRawUnchecked(

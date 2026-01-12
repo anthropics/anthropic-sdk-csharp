@@ -9,16 +9,16 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Models;
 
-[JsonConverter(typeof(ModelConverter<ModelInfo, ModelInfoFromRaw>))]
-public sealed record class ModelInfo : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ModelInfo, ModelInfoFromRaw>))]
+public sealed record class ModelInfo : JsonModel
 {
     /// <summary>
     /// Unique model identifier.
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
+        init { JsonModel.Set(this._rawData, "id", value); }
     }
 
     /// <summary>
@@ -27,8 +27,8 @@ public sealed record class ModelInfo : ModelBase
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get { return ModelBase.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get { return JsonModel.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
+        init { JsonModel.Set(this._rawData, "created_at", value); }
     }
 
     /// <summary>
@@ -36,8 +36,8 @@ public sealed record class ModelInfo : ModelBase
     /// </summary>
     public required string DisplayName
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "display_name"); }
-        init { ModelBase.Set(this._rawData, "display_name", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "display_name"); }
+        init { JsonModel.Set(this._rawData, "display_name", value); }
     }
 
     /// <summary>
@@ -47,8 +47,8 @@ public sealed record class ModelInfo : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <inheritdoc/>
@@ -95,7 +95,7 @@ public sealed record class ModelInfo : ModelBase
     }
 }
 
-class ModelInfoFromRaw : IFromRaw<ModelInfo>
+class ModelInfoFromRaw : IFromRawJson<ModelInfo>
 {
     /// <inheritdoc/>
     public ModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

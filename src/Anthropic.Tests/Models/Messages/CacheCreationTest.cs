@@ -33,8 +33,8 @@ public class CacheCreationTest : TestBase
     {
         var model = new CacheCreation { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<CacheCreation>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<CacheCreation>(element);
         Assert.NotNull(deserialized);
 
         long expectedEphemeral1hInputTokens = 0;

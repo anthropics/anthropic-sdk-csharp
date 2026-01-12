@@ -12,16 +12,16 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Specification for a skill to be loaded in a container (request model).
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaSkillParams, BetaSkillParamsFromRaw>))]
-public sealed record class BetaSkillParams : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaSkillParams, BetaSkillParamsFromRaw>))]
+public sealed record class BetaSkillParams : JsonModel
 {
     /// <summary>
     /// Skill ID
     /// </summary>
     public required string SkillID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "skill_id"); }
-        init { ModelBase.Set(this._rawData, "skill_id", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawData, "skill_id"); }
+        init { JsonModel.Set(this._rawData, "skill_id", value); }
     }
 
     /// <summary>
@@ -31,12 +31,12 @@ public sealed record class BetaSkillParams : ModelBase
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, BetaSkillParamsType>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, BetaSkillParamsType>>(
                 this.RawData,
                 "type"
             );
         }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        init { JsonModel.Set(this._rawData, "type", value); }
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public sealed record class BetaSkillParams : ModelBase
     /// </summary>
     public string? Version
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "version"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "version"); }
         init
         {
             if (value == null)
@@ -52,7 +52,7 @@ public sealed record class BetaSkillParams : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "version", value);
+            JsonModel.Set(this._rawData, "version", value);
         }
     }
 
@@ -89,7 +89,7 @@ public sealed record class BetaSkillParams : ModelBase
     }
 }
 
-class BetaSkillParamsFromRaw : IFromRaw<BetaSkillParams>
+class BetaSkillParamsFromRaw : IFromRawJson<BetaSkillParams>
 {
     /// <inheritdoc/>
     public BetaSkillParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

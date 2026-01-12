@@ -9,16 +9,16 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaOutputConfig, BetaOutputConfigFromRaw>))]
-public sealed record class BetaOutputConfig : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaOutputConfig, BetaOutputConfigFromRaw>))]
+public sealed record class BetaOutputConfig : JsonModel
 {
     /// <summary>
     /// All possible effort levels.
     /// </summary>
     public ApiEnum<string, Effort>? Effort
     {
-        get { return ModelBase.GetNullableClass<ApiEnum<string, Effort>>(this.RawData, "effort"); }
-        init { ModelBase.Set(this._rawData, "effort", value); }
+        get { return JsonModel.GetNullableClass<ApiEnum<string, Effort>>(this.RawData, "effort"); }
+        init { JsonModel.Set(this._rawData, "effort", value); }
     }
 
     /// <inheritdoc/>
@@ -54,7 +54,7 @@ public sealed record class BetaOutputConfig : ModelBase
     }
 }
 
-class BetaOutputConfigFromRaw : IFromRaw<BetaOutputConfig>
+class BetaOutputConfigFromRaw : IFromRawJson<BetaOutputConfig>
 {
     /// <inheritdoc/>
     public BetaOutputConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

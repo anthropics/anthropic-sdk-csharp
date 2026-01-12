@@ -57,8 +57,8 @@ public class BetaRequestMCPToolResultBlockParamTest : TestBase
             IsError = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParam>(element);
         Assert.NotNull(deserialized);
 
         string expectedToolUseID = "tool_use_id";
@@ -212,18 +212,18 @@ public class BetaRequestMCPToolResultBlockParamTest : TestBase
 public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new("string");
         value.Validate();
     }
 
     [Fact]
-    public void beta_mcp_tool_result_block_paramValidation_Works()
+    public void BetaMCPToolResultBlockParamValidationWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new(
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -245,23 +245,23 @@ public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_mcp_tool_result_block_paramSerializationRoundtrip_Works()
+    public void BetaMCPToolResultBlockParamSerializationRoundtripWorks()
     {
         BetaRequestMCPToolResultBlockParamContent value = new(
             [
-                new()
+                new BetaTextBlockParam()
                 {
                     Text = "x",
                     CacheControl = new() { TTL = TTL.TTL5m },
@@ -279,9 +279,9 @@ public class BetaRequestMCPToolResultBlockParamContentTest : TestBase
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParamContent>(
-            json
+            element
         );
 
         Assert.Equal(value, deserialized);

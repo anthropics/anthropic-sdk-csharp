@@ -6,7 +6,7 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaMemoryTool20250818CommandTest : TestBase
 {
     [Fact]
-    public void tool_20250818_viewValidation_Works()
+    public void Tool20250818ViewValidationWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818ViewCommand() { Path = "/memories", ViewRange = [1, 10] }
@@ -15,7 +15,7 @@ public class BetaMemoryTool20250818CommandTest : TestBase
     }
 
     [Fact]
-    public void tool_20250818_createValidation_Works()
+    public void Tool20250818CreateValidationWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818CreateCommand()
@@ -28,7 +28,7 @@ public class BetaMemoryTool20250818CommandTest : TestBase
     }
 
     [Fact]
-    public void tool_20250818_str_replaceValidation_Works()
+    public void Tool20250818StrReplaceValidationWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818StrReplaceCommand()
@@ -42,7 +42,7 @@ public class BetaMemoryTool20250818CommandTest : TestBase
     }
 
     [Fact]
-    public void tool_20250818_insertValidation_Works()
+    public void Tool20250818InsertValidationWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818InsertCommand()
@@ -56,7 +56,7 @@ public class BetaMemoryTool20250818CommandTest : TestBase
     }
 
     [Fact]
-    public void tool_20250818_deleteValidation_Works()
+    public void Tool20250818DeleteValidationWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818DeleteCommand("/memories/old_file.txt")
@@ -65,7 +65,7 @@ public class BetaMemoryTool20250818CommandTest : TestBase
     }
 
     [Fact]
-    public void tool_20250818_renameValidation_Works()
+    public void Tool20250818RenameValidationWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818RenameCommand()
@@ -78,19 +78,19 @@ public class BetaMemoryTool20250818CommandTest : TestBase
     }
 
     [Fact]
-    public void tool_20250818_viewSerializationRoundtrip_Works()
+    public void Tool20250818ViewSerializationRoundtripWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818ViewCommand() { Path = "/memories", ViewRange = [1, 10] }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_20250818_createSerializationRoundtrip_Works()
+    public void Tool20250818CreateSerializationRoundtripWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818CreateCommand()
@@ -99,14 +99,14 @@ public class BetaMemoryTool20250818CommandTest : TestBase
                 Path = "/memories/notes.txt",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_20250818_str_replaceSerializationRoundtrip_Works()
+    public void Tool20250818StrReplaceSerializationRoundtripWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818StrReplaceCommand()
@@ -116,14 +116,14 @@ public class BetaMemoryTool20250818CommandTest : TestBase
                 Path = "/memories/preferences.txt",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_20250818_insertSerializationRoundtrip_Works()
+    public void Tool20250818InsertSerializationRoundtripWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818InsertCommand()
@@ -133,26 +133,26 @@ public class BetaMemoryTool20250818CommandTest : TestBase
                 Path = "/memories/todo.txt",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_20250818_deleteSerializationRoundtrip_Works()
+    public void Tool20250818DeleteSerializationRoundtripWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818DeleteCommand("/memories/old_file.txt")
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void tool_20250818_renameSerializationRoundtrip_Works()
+    public void Tool20250818RenameSerializationRoundtripWorks()
     {
         BetaMemoryTool20250818Command value = new(
             new BetaMemoryTool20250818RenameCommand()
@@ -161,8 +161,8 @@ public class BetaMemoryTool20250818CommandTest : TestBase
                 OldPath = "/memories/draft.txt",
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(json);
+        string element = JsonSerializer.Serialize(value);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
 
         Assert.Equal(value, deserialized);
     }
