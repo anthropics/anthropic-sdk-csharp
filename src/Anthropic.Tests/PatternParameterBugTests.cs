@@ -93,7 +93,7 @@ namespace Anthropic.Tests
 
             try
             {
-                await chatClient.GetResponseAsync(messages, options);
+                await chatClient.GetResponseAsync(messages, options, TestContext.Current.CancellationToken);
             }
             catch (Exception ex)
             {
