@@ -17,7 +17,11 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -26,7 +30,11 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string CreatedAt
     {
-        get { return this._rawData.GetNotNullClass<string>("created_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("created_at");
+        }
         init { this._rawData.Set("created_at", value); }
     }
 
@@ -38,7 +46,11 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string? DisplayTitle
     {
-        get { return this._rawData.GetNullableClass<string>("display_title"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("display_title");
+        }
         init { this._rawData.Set("display_title", value); }
     }
 
@@ -49,7 +61,11 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string? LatestVersion
     {
-        get { return this._rawData.GetNullableClass<string>("latest_version"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("latest_version");
+        }
         init { this._rawData.Set("latest_version", value); }
     }
 
@@ -61,7 +77,11 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string Source
     {
-        get { return this._rawData.GetNotNullClass<string>("source"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("source");
+        }
         init { this._rawData.Set("source", value); }
     }
 
@@ -72,7 +92,11 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string Type
     {
-        get { return this._rawData.GetNotNullClass<string>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -81,7 +105,11 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string UpdatedAt
     {
-        get { return this._rawData.GetNotNullClass<string>("updated_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("updated_at");
+        }
         init { this._rawData.Set("updated_at", value); }
     }
 

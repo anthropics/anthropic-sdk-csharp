@@ -20,7 +20,11 @@ public sealed record class BetaContextManagementConfig : JsonModel
     /// </summary>
     public IReadOnlyList<Edit>? Edits
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<Edit>>("edits"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<Edit>>("edits");
+        }
         init
         {
             if (value == null)

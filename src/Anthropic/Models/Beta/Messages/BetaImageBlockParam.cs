@@ -14,13 +14,21 @@ public sealed record class BetaImageBlockParam : JsonModel
 {
     public required BetaImageBlockParamSource Source
     {
-        get { return this._rawData.GetNotNullClass<BetaImageBlockParamSource>("source"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaImageBlockParamSource>("source");
+        }
         init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -29,7 +37,11 @@ public sealed record class BetaImageBlockParam : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 

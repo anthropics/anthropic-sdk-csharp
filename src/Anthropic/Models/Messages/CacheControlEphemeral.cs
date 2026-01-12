@@ -14,7 +14,11 @@ public sealed record class CacheControlEphemeral : JsonModel
 {
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -27,7 +31,11 @@ public sealed record class CacheControlEphemeral : JsonModel
     /// </summary>
     public ApiEnum<string, Ttl>? Ttl
     {
-        get { return this._rawData.GetNullableClass<ApiEnum<string, Ttl>>("ttl"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, Ttl>>("ttl");
+        }
         init
         {
             if (value == null)

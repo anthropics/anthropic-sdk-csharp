@@ -13,13 +13,21 @@ public sealed record class BetaInputJsonDelta : JsonModel
 {
     public required string PartialJson
     {
-        get { return this._rawData.GetNotNullClass<string>("partial_json"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("partial_json");
+        }
         init { this._rawData.Set("partial_json", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

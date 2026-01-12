@@ -17,6 +17,7 @@ public sealed record class WebSearchToolResultBlockParam : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<WebSearchToolResultBlockParamContent>("content");
         }
         init { this._rawData.Set("content", value); }
@@ -24,13 +25,21 @@ public sealed record class WebSearchToolResultBlockParam : JsonModel
 
     public required string ToolUseID
     {
-        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
         init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -39,7 +48,11 @@ public sealed record class WebSearchToolResultBlockParam : JsonModel
     /// </summary>
     public CacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 

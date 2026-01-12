@@ -20,7 +20,11 @@ public sealed record class BetaSkillParams : JsonModel
     /// </summary>
     public required string SkillID
     {
-        get { return this._rawData.GetNotNullClass<string>("skill_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("skill_id");
+        }
         init { this._rawData.Set("skill_id", value); }
     }
 
@@ -29,7 +33,11 @@ public sealed record class BetaSkillParams : JsonModel
     /// </summary>
     public required ApiEnum<string, BetaSkillParamsType> Type
     {
-        get { return this._rawData.GetNotNullClass<ApiEnum<string, BetaSkillParamsType>>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaSkillParamsType>>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -38,7 +46,11 @@ public sealed record class BetaSkillParams : JsonModel
     /// </summary>
     public string? Version
     {
-        get { return this._rawData.GetNullableClass<string>("version"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("version");
+        }
         init
         {
             if (value == null)

@@ -17,7 +17,11 @@ public sealed record class BetaMcpToolDefaultConfig : JsonModel
 {
     public bool? DeferLoading
     {
-        get { return this._rawData.GetNullableStruct<bool>("defer_loading"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
         init
         {
             if (value == null)
@@ -31,7 +35,11 @@ public sealed record class BetaMcpToolDefaultConfig : JsonModel
 
     public bool? Enabled
     {
-        get { return this._rawData.GetNullableStruct<bool>("enabled"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("enabled");
+        }
         init
         {
             if (value == null)

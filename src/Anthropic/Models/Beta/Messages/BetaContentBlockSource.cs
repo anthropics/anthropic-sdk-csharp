@@ -15,13 +15,21 @@ public sealed record class BetaContentBlockSource : JsonModel
 {
     public required BetaContentBlockSourceContent Content
     {
-        get { return this._rawData.GetNotNullClass<BetaContentBlockSourceContent>("content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaContentBlockSourceContent>("content");
+        }
         init { this._rawData.Set("content", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

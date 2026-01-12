@@ -16,7 +16,11 @@ public sealed record class VersionListPageResponse : JsonModel
     /// </summary>
     public required IReadOnlyList<VersionListResponse> Data
     {
-        get { return this._rawData.GetNotNullStruct<ImmutableArray<VersionListResponse>>("data"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<VersionListResponse>>("data");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<VersionListResponse>>(
@@ -31,7 +35,11 @@ public sealed record class VersionListPageResponse : JsonModel
     /// </summary>
     public required bool HasMore
     {
-        get { return this._rawData.GetNotNullStruct<bool>("has_more"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("has_more");
+        }
         init { this._rawData.Set("has_more", value); }
     }
 
@@ -41,7 +49,11 @@ public sealed record class VersionListPageResponse : JsonModel
     /// </summary>
     public required string? NextPage
     {
-        get { return this._rawData.GetNullableClass<string>("next_page"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("next_page");
+        }
         init { this._rawData.Set("next_page", value); }
     }
 

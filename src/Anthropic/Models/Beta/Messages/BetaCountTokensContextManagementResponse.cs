@@ -20,7 +20,11 @@ public sealed record class BetaCountTokensContextManagementResponse : JsonModel
     /// </summary>
     public required long OriginalInputTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("original_input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("original_input_tokens");
+        }
         init { this._rawData.Set("original_input_tokens", value); }
     }
 

@@ -21,6 +21,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : JsonMode
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<
                 ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorErrorCode>
             >("error_code");
@@ -30,13 +31,21 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : JsonMode
 
     public required string? ErrorMessage
     {
-        get { return this._rawData.GetNullableClass<string>("error_message"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("error_message");
+        }
         init { this._rawData.Set("error_message", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

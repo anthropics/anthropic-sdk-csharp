@@ -21,7 +21,11 @@ public sealed record class TextBlock : JsonModel
     /// </summary>
     public required IReadOnlyList<TextCitation>? Citations
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<TextCitation>>("citations"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<TextCitation>>("citations");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<TextCitation>?>(
@@ -33,13 +37,21 @@ public sealed record class TextBlock : JsonModel
 
     public required string Text
     {
-        get { return this._rawData.GetNotNullClass<string>("text"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("text");
+        }
         init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

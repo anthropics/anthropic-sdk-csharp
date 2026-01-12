@@ -19,13 +19,21 @@ public sealed record class WebSearchTool20250305 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
         init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -35,7 +43,11 @@ public sealed record class WebSearchTool20250305 : JsonModel
     /// </summary>
     public IReadOnlyList<string>? AllowedDomains
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("allowed_domains"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("allowed_domains");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<string>?>(
@@ -50,7 +62,11 @@ public sealed record class WebSearchTool20250305 : JsonModel
     /// </summary>
     public IReadOnlyList<string>? BlockedDomains
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("blocked_domains"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("blocked_domains");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<string>?>(
@@ -65,7 +81,11 @@ public sealed record class WebSearchTool20250305 : JsonModel
     /// </summary>
     public CacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
@@ -74,7 +94,11 @@ public sealed record class WebSearchTool20250305 : JsonModel
     /// </summary>
     public long? MaxUses
     {
-        get { return this._rawData.GetNullableStruct<long>("max_uses"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("max_uses");
+        }
         init { this._rawData.Set("max_uses", value); }
     }
 
@@ -83,7 +107,11 @@ public sealed record class WebSearchTool20250305 : JsonModel
     /// </summary>
     public UserLocation? UserLocation
     {
-        get { return this._rawData.GetNullableClass<UserLocation>("user_location"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<UserLocation>("user_location");
+        }
         init { this._rawData.Set("user_location", value); }
     }
 
@@ -165,7 +193,11 @@ public sealed record class UserLocation : JsonModel
 {
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -174,7 +206,11 @@ public sealed record class UserLocation : JsonModel
     /// </summary>
     public string? City
     {
-        get { return this._rawData.GetNullableClass<string>("city"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("city");
+        }
         init { this._rawData.Set("city", value); }
     }
 
@@ -184,7 +220,11 @@ public sealed record class UserLocation : JsonModel
     /// </summary>
     public string? Country
     {
-        get { return this._rawData.GetNullableClass<string>("country"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("country");
+        }
         init { this._rawData.Set("country", value); }
     }
 
@@ -193,7 +233,11 @@ public sealed record class UserLocation : JsonModel
     /// </summary>
     public string? Region
     {
-        get { return this._rawData.GetNullableClass<string>("region"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("region");
+        }
         init { this._rawData.Set("region", value); }
     }
 
@@ -202,7 +246,11 @@ public sealed record class UserLocation : JsonModel
     /// </summary>
     public string? Timezone
     {
-        get { return this._rawData.GetNullableClass<string>("timezone"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("timezone");
+        }
         init { this._rawData.Set("timezone", value); }
     }
 

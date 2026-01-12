@@ -29,7 +29,11 @@ public sealed record class SkillCreateParams : ParamsBase
     /// </summary>
     public string? DisplayTitle
     {
-        get { return this._rawBodyData.GetNullableClass<string>("display_title"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<string>("display_title");
+        }
         init { this._rawBodyData.Set("display_title", value); }
     }
 
@@ -41,7 +45,11 @@ public sealed record class SkillCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<BinaryContent>? Files
     {
-        get { return this._rawBodyData.GetNullableStruct<ImmutableArray<BinaryContent>>("files"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<BinaryContent>>("files");
+        }
         init
         {
             this._rawBodyData.Set<ImmutableArray<BinaryContent>?>(
@@ -58,6 +66,7 @@ public sealed record class SkillCreateParams : ParamsBase
     {
         get
         {
+            this._rawHeaderData.Freeze();
             return this._rawHeaderData.GetNullableStruct<
                 ImmutableArray<ApiEnum<string, AnthropicBeta>>
             >("anthropic-beta");

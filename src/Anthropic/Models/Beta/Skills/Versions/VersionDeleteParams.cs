@@ -26,6 +26,7 @@ public sealed record class VersionDeleteParams : ParamsBase
     {
         get
         {
+            this._rawHeaderData.Freeze();
             return this._rawHeaderData.GetNullableStruct<
                 ImmutableArray<ApiEnum<string, AnthropicBeta>>
             >("anthropic-beta");

@@ -21,6 +21,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : JsonMode
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<BetaTextEditorCodeExecutionToolResultBlockContent>(
                 "content"
             );
@@ -30,13 +31,21 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : JsonMode
 
     public required string ToolUseID
     {
-        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
         init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

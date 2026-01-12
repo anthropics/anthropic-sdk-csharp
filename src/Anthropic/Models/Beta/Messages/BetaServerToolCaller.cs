@@ -16,13 +16,21 @@ public sealed record class BetaServerToolCaller : JsonModel
 {
     public required string ToolID
     {
-        get { return this._rawData.GetNotNullClass<string>("tool_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_id");
+        }
         init { this._rawData.Set("tool_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

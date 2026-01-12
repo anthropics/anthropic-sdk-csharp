@@ -22,13 +22,21 @@ public sealed record class BetaMcpToolset : JsonModel
     /// </summary>
     public required string McpServerName
     {
-        get { return this._rawData.GetNotNullClass<string>("mcp_server_name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("mcp_server_name");
+        }
         init { this._rawData.Set("mcp_server_name", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -37,7 +45,11 @@ public sealed record class BetaMcpToolset : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
@@ -48,6 +60,7 @@ public sealed record class BetaMcpToolset : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<FrozenDictionary<string, BetaMcpToolConfig>>(
                 "configs"
             );
@@ -66,7 +79,11 @@ public sealed record class BetaMcpToolset : JsonModel
     /// </summary>
     public BetaMcpToolDefaultConfig? DefaultConfig
     {
-        get { return this._rawData.GetNullableClass<BetaMcpToolDefaultConfig>("default_config"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaMcpToolDefaultConfig>("default_config");
+        }
         init
         {
             if (value == null)

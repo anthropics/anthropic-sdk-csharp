@@ -18,6 +18,7 @@ public sealed record class BetaJsonOutputFormat : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("schema");
         }
         init
@@ -31,7 +32,11 @@ public sealed record class BetaJsonOutputFormat : JsonModel
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

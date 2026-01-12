@@ -15,13 +15,21 @@ public sealed record class MessageBatchSucceededResult : JsonModel
 {
     public required Message Message
     {
-        get { return this._rawData.GetNotNullClass<Message>("message"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Message>("message");
+        }
         init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

@@ -16,13 +16,21 @@ public sealed record class BetaRequestDocumentBlock : JsonModel
 {
     public required BetaRequestDocumentBlockSource Source
     {
-        get { return this._rawData.GetNotNullClass<BetaRequestDocumentBlockSource>("source"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaRequestDocumentBlockSource>("source");
+        }
         init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -31,25 +39,41 @@ public sealed record class BetaRequestDocumentBlock : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
     public BetaCitationsConfigParam? Citations
     {
-        get { return this._rawData.GetNullableClass<BetaCitationsConfigParam>("citations"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCitationsConfigParam>("citations");
+        }
         init { this._rawData.Set("citations", value); }
     }
 
     public string? Context
     {
-        get { return this._rawData.GetNullableClass<string>("context"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("context");
+        }
         init { this._rawData.Set("context", value); }
     }
 
     public string? Title
     {
-        get { return this._rawData.GetNullableClass<string>("title"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("title");
+        }
         init { this._rawData.Set("title", value); }
     }
 

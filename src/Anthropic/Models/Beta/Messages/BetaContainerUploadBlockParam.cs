@@ -19,13 +19,21 @@ public sealed record class BetaContainerUploadBlockParam : JsonModel
 {
     public required string FileID
     {
-        get { return this._rawData.GetNotNullClass<string>("file_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("file_id");
+        }
         init { this._rawData.Set("file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -34,7 +42,11 @@ public sealed record class BetaContainerUploadBlockParam : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 

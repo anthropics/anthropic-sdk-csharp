@@ -15,25 +15,41 @@ public sealed record class BetaMcpToolResultBlock : JsonModel
 {
     public required BetaMcpToolResultBlockContent Content
     {
-        get { return this._rawData.GetNotNullClass<BetaMcpToolResultBlockContent>("content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMcpToolResultBlockContent>("content");
+        }
         init { this._rawData.Set("content", value); }
     }
 
     public required bool IsError
     {
-        get { return this._rawData.GetNotNullStruct<bool>("is_error"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("is_error");
+        }
         init { this._rawData.Set("is_error", value); }
     }
 
     public required string ToolUseID
     {
-        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
         init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

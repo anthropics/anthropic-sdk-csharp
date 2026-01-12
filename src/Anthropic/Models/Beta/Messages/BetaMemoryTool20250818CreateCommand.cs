@@ -21,7 +21,11 @@ public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
     /// </summary>
     public JsonElement Command
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("command"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
         init { this._rawData.Set("command", value); }
     }
 
@@ -30,7 +34,11 @@ public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
     /// </summary>
     public required string FileText
     {
-        get { return this._rawData.GetNotNullClass<string>("file_text"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("file_text");
+        }
         init { this._rawData.Set("file_text", value); }
     }
 
@@ -39,7 +47,11 @@ public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
     /// </summary>
     public required string Path
     {
-        get { return this._rawData.GetNotNullClass<string>("path"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("path");
+        }
         init { this._rawData.Set("path", value); }
     }
 

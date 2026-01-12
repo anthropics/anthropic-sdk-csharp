@@ -22,13 +22,21 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
         init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -38,6 +46,7 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableStruct<
                 ImmutableArray<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>>
             >("allowed_callers");
@@ -60,7 +69,11 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
@@ -70,7 +83,11 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     /// </summary>
     public bool? DeferLoading
     {
-        get { return this._rawData.GetNullableStruct<bool>("defer_loading"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
         init
         {
             if (value == null)
@@ -84,7 +101,11 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
 
     public bool? Strict
     {
-        get { return this._rawData.GetNullableStruct<bool>("strict"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
         init
         {
             if (value == null)

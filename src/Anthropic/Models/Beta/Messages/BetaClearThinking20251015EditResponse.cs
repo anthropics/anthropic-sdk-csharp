@@ -21,7 +21,11 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
     /// </summary>
     public required long ClearedInputTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("cleared_input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("cleared_input_tokens");
+        }
         init { this._rawData.Set("cleared_input_tokens", value); }
     }
 
@@ -30,7 +34,11 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
     /// </summary>
     public required long ClearedThinkingTurns
     {
-        get { return this._rawData.GetNotNullStruct<long>("cleared_thinking_turns"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("cleared_thinking_turns");
+        }
         init { this._rawData.Set("cleared_thinking_turns", value); }
     }
 
@@ -39,7 +47,11 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

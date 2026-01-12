@@ -17,13 +17,21 @@ public sealed record class BetaDocumentBlock : JsonModel
     /// </summary>
     public required BetaCitationConfig? Citations
     {
-        get { return this._rawData.GetNullableClass<BetaCitationConfig>("citations"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCitationConfig>("citations");
+        }
         init { this._rawData.Set("citations", value); }
     }
 
     public required Source Source
     {
-        get { return this._rawData.GetNotNullClass<Source>("source"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Source>("source");
+        }
         init { this._rawData.Set("source", value); }
     }
 
@@ -32,13 +40,21 @@ public sealed record class BetaDocumentBlock : JsonModel
     /// </summary>
     public required string? Title
     {
-        get { return this._rawData.GetNullableClass<string>("title"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("title");
+        }
         init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

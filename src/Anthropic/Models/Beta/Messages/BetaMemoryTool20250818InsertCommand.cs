@@ -21,7 +21,11 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// </summary>
     public JsonElement Command
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("command"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
         init { this._rawData.Set("command", value); }
     }
 
@@ -30,7 +34,11 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// </summary>
     public required long InsertLine
     {
-        get { return this._rawData.GetNotNullStruct<long>("insert_line"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("insert_line");
+        }
         init { this._rawData.Set("insert_line", value); }
     }
 
@@ -39,7 +47,11 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// </summary>
     public required string InsertText
     {
-        get { return this._rawData.GetNotNullClass<string>("insert_text"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("insert_text");
+        }
         init { this._rawData.Set("insert_text", value); }
     }
 
@@ -48,7 +60,11 @@ public sealed record class BetaMemoryTool20250818InsertCommand : JsonModel
     /// </summary>
     public required string Path
     {
-        get { return this._rawData.GetNotNullClass<string>("path"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("path");
+        }
         init { this._rawData.Set("path", value); }
     }
 

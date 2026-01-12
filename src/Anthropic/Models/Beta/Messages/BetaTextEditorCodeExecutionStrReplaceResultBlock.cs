@@ -19,7 +19,11 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : Js
 {
     public required IReadOnlyList<string>? Lines
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("lines");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<string>?>(
@@ -31,31 +35,51 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlock : Js
 
     public required long? NewLines
     {
-        get { return this._rawData.GetNullableStruct<long>("new_lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("new_lines");
+        }
         init { this._rawData.Set("new_lines", value); }
     }
 
     public required long? NewStart
     {
-        get { return this._rawData.GetNullableStruct<long>("new_start"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("new_start");
+        }
         init { this._rawData.Set("new_start", value); }
     }
 
     public required long? OldLines
     {
-        get { return this._rawData.GetNullableStruct<long>("old_lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("old_lines");
+        }
         init { this._rawData.Set("old_lines", value); }
     }
 
     public required long? OldStart
     {
-        get { return this._rawData.GetNullableStruct<long>("old_start"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("old_start");
+        }
         init { this._rawData.Set("old_start", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

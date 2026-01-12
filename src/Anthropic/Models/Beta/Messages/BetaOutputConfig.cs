@@ -17,7 +17,11 @@ public sealed record class BetaOutputConfig : JsonModel
     /// </summary>
     public ApiEnum<string, Effort>? Effort
     {
-        get { return this._rawData.GetNullableClass<ApiEnum<string, Effort>>("effort"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, Effort>>("effort");
+        }
         init { this._rawData.Set("effort", value); }
     }
 

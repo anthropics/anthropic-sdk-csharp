@@ -17,7 +17,11 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
 {
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -29,6 +33,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<BetaInputTokensClearAtLeast>("clear_at_least");
         }
         init { this._rawData.Set("clear_at_least", value); }
@@ -39,7 +44,11 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public ClearToolInputs? ClearToolInputs
     {
-        get { return this._rawData.GetNullableClass<ClearToolInputs>("clear_tool_inputs"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ClearToolInputs>("clear_tool_inputs");
+        }
         init { this._rawData.Set("clear_tool_inputs", value); }
     }
 
@@ -48,7 +57,11 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public IReadOnlyList<string>? ExcludeTools
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("exclude_tools"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("exclude_tools");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<string>?>(
@@ -63,7 +76,11 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public BetaToolUsesKeep? Keep
     {
-        get { return this._rawData.GetNullableClass<BetaToolUsesKeep>("keep"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaToolUsesKeep>("keep");
+        }
         init
         {
             if (value == null)
@@ -80,7 +97,11 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public Trigger? Trigger
     {
-        get { return this._rawData.GetNullableClass<Trigger>("trigger"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<Trigger>("trigger");
+        }
         init
         {
             if (value == null)

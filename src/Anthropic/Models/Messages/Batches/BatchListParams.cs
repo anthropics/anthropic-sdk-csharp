@@ -22,7 +22,11 @@ public sealed record class BatchListParams : ParamsBase
     /// </summary>
     public string? AfterID
     {
-        get { return this._rawQueryData.GetNullableClass<string>("after_id"); }
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<string>("after_id");
+        }
         init
         {
             if (value == null)
@@ -40,7 +44,11 @@ public sealed record class BatchListParams : ParamsBase
     /// </summary>
     public string? BeforeID
     {
-        get { return this._rawQueryData.GetNullableClass<string>("before_id"); }
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<string>("before_id");
+        }
         init
         {
             if (value == null)
@@ -59,7 +67,11 @@ public sealed record class BatchListParams : ParamsBase
     /// </summary>
     public long? Limit
     {
-        get { return this._rawQueryData.GetNullableStruct<long>("limit"); }
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<long>("limit");
+        }
         init
         {
             if (value == null)

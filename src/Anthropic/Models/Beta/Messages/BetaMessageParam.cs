@@ -15,13 +15,21 @@ public sealed record class BetaMessageParam : JsonModel
 {
     public required BetaMessageParamContent Content
     {
-        get { return this._rawData.GetNotNullClass<BetaMessageParamContent>("content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessageParamContent>("content");
+        }
         init { this._rawData.Set("content", value); }
     }
 
     public required ApiEnum<string, Role> Role
     {
-        get { return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role");
+        }
         init { this._rawData.Set("role", value); }
     }
 

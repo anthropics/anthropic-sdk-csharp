@@ -18,37 +18,61 @@ public sealed record class CitationContentBlockLocationParam : JsonModel
 {
     public required string CitedText
     {
-        get { return this._rawData.GetNotNullClass<string>("cited_text"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("cited_text");
+        }
         init { this._rawData.Set("cited_text", value); }
     }
 
     public required long DocumentIndex
     {
-        get { return this._rawData.GetNotNullStruct<long>("document_index"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("document_index");
+        }
         init { this._rawData.Set("document_index", value); }
     }
 
     public required string? DocumentTitle
     {
-        get { return this._rawData.GetNullableClass<string>("document_title"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("document_title");
+        }
         init { this._rawData.Set("document_title", value); }
     }
 
     public required long EndBlockIndex
     {
-        get { return this._rawData.GetNotNullStruct<long>("end_block_index"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("end_block_index");
+        }
         init { this._rawData.Set("end_block_index", value); }
     }
 
     public required long StartBlockIndex
     {
-        get { return this._rawData.GetNotNullStruct<long>("start_block_index"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("start_block_index");
+        }
         init { this._rawData.Set("start_block_index", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

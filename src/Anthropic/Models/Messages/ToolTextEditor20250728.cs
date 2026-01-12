@@ -18,13 +18,21 @@ public sealed record class ToolTextEditor20250728 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
         init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -33,7 +41,11 @@ public sealed record class ToolTextEditor20250728 : JsonModel
     /// </summary>
     public CacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
@@ -43,7 +55,11 @@ public sealed record class ToolTextEditor20250728 : JsonModel
     /// </summary>
     public long? MaxCharacters
     {
-        get { return this._rawData.GetNullableStruct<long>("max_characters"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("max_characters");
+        }
         init { this._rawData.Set("max_characters", value); }
     }
 

@@ -24,7 +24,11 @@ public sealed record class VersionListParams : ParamsBase
     /// </summary>
     public long? Limit
     {
-        get { return this._rawQueryData.GetNullableStruct<long>("limit"); }
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<long>("limit");
+        }
         init { this._rawQueryData.Set("limit", value); }
     }
 
@@ -33,7 +37,11 @@ public sealed record class VersionListParams : ParamsBase
     /// </summary>
     public string? Page
     {
-        get { return this._rawQueryData.GetNullableClass<string>("page"); }
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableClass<string>("page");
+        }
         init { this._rawQueryData.Set("page", value); }
     }
 
@@ -44,6 +52,7 @@ public sealed record class VersionListParams : ParamsBase
     {
         get
         {
+            this._rawHeaderData.Freeze();
             return this._rawHeaderData.GetNullableStruct<
                 ImmutableArray<ApiEnum<string, AnthropicBeta>>
             >("anthropic-beta");

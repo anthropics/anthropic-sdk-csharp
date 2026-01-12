@@ -18,31 +18,51 @@ public sealed record class BetaCitationsWebSearchResultLocation : JsonModel
 {
     public required string CitedText
     {
-        get { return this._rawData.GetNotNullClass<string>("cited_text"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("cited_text");
+        }
         init { this._rawData.Set("cited_text", value); }
     }
 
     public required string EncryptedIndex
     {
-        get { return this._rawData.GetNotNullClass<string>("encrypted_index"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("encrypted_index");
+        }
         init { this._rawData.Set("encrypted_index", value); }
     }
 
     public required string? Title
     {
-        get { return this._rawData.GetNullableClass<string>("title"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("title");
+        }
         init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
     public required string Url
     {
-        get { return this._rawData.GetNotNullClass<string>("url"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("url");
+        }
         init { this._rawData.Set("url", value); }
     }
 

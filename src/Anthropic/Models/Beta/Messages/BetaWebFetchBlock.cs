@@ -13,7 +13,11 @@ public sealed record class BetaWebFetchBlock : JsonModel
 {
     public required BetaDocumentBlock Content
     {
-        get { return this._rawData.GetNotNullClass<BetaDocumentBlock>("content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaDocumentBlock>("content");
+        }
         init { this._rawData.Set("content", value); }
     }
 
@@ -22,13 +26,21 @@ public sealed record class BetaWebFetchBlock : JsonModel
     /// </summary>
     public required string? RetrievedAt
     {
-        get { return this._rawData.GetNullableClass<string>("retrieved_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("retrieved_at");
+        }
         init { this._rawData.Set("retrieved_at", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -37,7 +49,11 @@ public sealed record class BetaWebFetchBlock : JsonModel
     /// </summary>
     public required string Url
     {
-        get { return this._rawData.GetNotNullClass<string>("url"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("url");
+        }
         init { this._rawData.Set("url", value); }
     }
 

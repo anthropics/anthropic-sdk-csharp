@@ -13,31 +13,51 @@ public sealed record class WebSearchResultBlock : JsonModel
 {
     public required string EncryptedContent
     {
-        get { return this._rawData.GetNotNullClass<string>("encrypted_content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("encrypted_content");
+        }
         init { this._rawData.Set("encrypted_content", value); }
     }
 
     public required string? PageAge
     {
-        get { return this._rawData.GetNullableClass<string>("page_age"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("page_age");
+        }
         init { this._rawData.Set("page_age", value); }
     }
 
     public required string Title
     {
-        get { return this._rawData.GetNotNullClass<string>("title"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("title");
+        }
         init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
     public required string Url
     {
-        get { return this._rawData.GetNotNullClass<string>("url"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("url");
+        }
         init { this._rawData.Set("url", value); }
     }
 

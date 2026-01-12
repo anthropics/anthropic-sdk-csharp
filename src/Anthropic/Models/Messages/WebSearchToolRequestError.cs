@@ -16,13 +16,21 @@ public sealed record class WebSearchToolRequestError : JsonModel
 {
     public required ApiEnum<string, ErrorCode> ErrorCode
     {
-        get { return this._rawData.GetNotNullClass<ApiEnum<string, ErrorCode>>("error_code"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, ErrorCode>>("error_code");
+        }
         init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

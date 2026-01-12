@@ -12,7 +12,11 @@ public sealed record class BetaCitationConfig : JsonModel
 {
     public required bool Enabled
     {
-        get { return this._rawData.GetNotNullStruct<bool>("enabled"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("enabled");
+        }
         init { this._rawData.Set("enabled", value); }
     }
 

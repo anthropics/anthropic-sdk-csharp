@@ -15,7 +15,11 @@ public sealed record class BetaServerToolUsage : JsonModel
     /// </summary>
     public required long WebFetchRequests
     {
-        get { return this._rawData.GetNotNullStruct<long>("web_fetch_requests"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("web_fetch_requests");
+        }
         init { this._rawData.Set("web_fetch_requests", value); }
     }
 
@@ -24,7 +28,11 @@ public sealed record class BetaServerToolUsage : JsonModel
     /// </summary>
     public required long WebSearchRequests
     {
-        get { return this._rawData.GetNotNullStruct<long>("web_search_requests"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("web_search_requests");
+        }
         init { this._rawData.Set("web_search_requests", value); }
     }
 

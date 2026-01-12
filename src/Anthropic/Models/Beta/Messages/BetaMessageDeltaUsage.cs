@@ -15,7 +15,11 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     /// </summary>
     public required long? CacheCreationInputTokens
     {
-        get { return this._rawData.GetNullableStruct<long>("cache_creation_input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("cache_creation_input_tokens");
+        }
         init { this._rawData.Set("cache_creation_input_tokens", value); }
     }
 
@@ -24,7 +28,11 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     /// </summary>
     public required long? CacheReadInputTokens
     {
-        get { return this._rawData.GetNullableStruct<long>("cache_read_input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("cache_read_input_tokens");
+        }
         init { this._rawData.Set("cache_read_input_tokens", value); }
     }
 
@@ -33,7 +41,11 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     /// </summary>
     public required long? InputTokens
     {
-        get { return this._rawData.GetNullableStruct<long>("input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("input_tokens");
+        }
         init { this._rawData.Set("input_tokens", value); }
     }
 
@@ -42,7 +54,11 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     /// </summary>
     public required long OutputTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("output_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("output_tokens");
+        }
         init { this._rawData.Set("output_tokens", value); }
     }
 
@@ -51,7 +67,11 @@ public sealed record class BetaMessageDeltaUsage : JsonModel
     /// </summary>
     public required BetaServerToolUsage? ServerToolUse
     {
-        get { return this._rawData.GetNullableClass<BetaServerToolUsage>("server_tool_use"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaServerToolUsage>("server_tool_use");
+        }
         init { this._rawData.Set("server_tool_use", value); }
     }
 

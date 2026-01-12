@@ -13,7 +13,11 @@ public sealed record class ModelListPageResponse : JsonModel
 {
     public required IReadOnlyList<BetaModelInfo> Data
     {
-        get { return this._rawData.GetNotNullStruct<ImmutableArray<BetaModelInfo>>("data"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaModelInfo>>("data");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<BetaModelInfo>>(
@@ -28,7 +32,11 @@ public sealed record class ModelListPageResponse : JsonModel
     /// </summary>
     public required string? FirstID
     {
-        get { return this._rawData.GetNullableClass<string>("first_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("first_id");
+        }
         init { this._rawData.Set("first_id", value); }
     }
 
@@ -37,7 +45,11 @@ public sealed record class ModelListPageResponse : JsonModel
     /// </summary>
     public required bool HasMore
     {
-        get { return this._rawData.GetNotNullStruct<bool>("has_more"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("has_more");
+        }
         init { this._rawData.Set("has_more", value); }
     }
 
@@ -46,7 +58,11 @@ public sealed record class ModelListPageResponse : JsonModel
     /// </summary>
     public required string? LastID
     {
-        get { return this._rawData.GetNullableClass<string>("last_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("last_id");
+        }
         init { this._rawData.Set("last_id", value); }
     }
 

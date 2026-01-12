@@ -30,6 +30,7 @@ public sealed record class BatchResultsParams : ParamsBase
     {
         get
         {
+            this._rawHeaderData.Freeze();
             return this._rawHeaderData.GetNullableStruct<
                 ImmutableArray<ApiEnum<string, AnthropicBeta>>
             >("anthropic-beta");

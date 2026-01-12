@@ -19,7 +19,11 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -29,7 +33,11 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public required System::DateTimeOffset? ArchivedAt
     {
-        get { return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+        }
         init { this._rawData.Set("archived_at", value); }
     }
 
@@ -41,6 +49,7 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableStruct<System::DateTimeOffset>("cancel_initiated_at");
         }
         init { this._rawData.Set("cancel_initiated_at", value); }
@@ -52,7 +61,11 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
-        get { return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+        }
         init { this._rawData.Set("created_at", value); }
     }
 
@@ -65,7 +78,11 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public required System::DateTimeOffset? EndedAt
     {
-        get { return this._rawData.GetNullableStruct<System::DateTimeOffset>("ended_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("ended_at");
+        }
         init { this._rawData.Set("ended_at", value); }
     }
 
@@ -75,7 +92,11 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public required System::DateTimeOffset ExpiresAt
     {
-        get { return this._rawData.GetNotNullStruct<System::DateTimeOffset>("expires_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("expires_at");
+        }
         init { this._rawData.Set("expires_at", value); }
     }
 
@@ -86,6 +107,7 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<ApiEnum<string, ProcessingStatus>>(
                 "processing_status"
             );
@@ -104,6 +126,7 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<BetaMessageBatchRequestCounts>("request_counts");
         }
         init { this._rawData.Set("request_counts", value); }
@@ -118,7 +141,11 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public required string? ResultsUrl
     {
-        get { return this._rawData.GetNullableClass<string>("results_url"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("results_url");
+        }
         init { this._rawData.Set("results_url", value); }
     }
 
@@ -129,7 +156,11 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

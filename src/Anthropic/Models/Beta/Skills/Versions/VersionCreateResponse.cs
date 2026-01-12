@@ -17,7 +17,11 @@ public sealed record class VersionCreateResponse : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -26,7 +30,11 @@ public sealed record class VersionCreateResponse : JsonModel
     /// </summary>
     public required string CreatedAt
     {
-        get { return this._rawData.GetNotNullClass<string>("created_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("created_at");
+        }
         init { this._rawData.Set("created_at", value); }
     }
 
@@ -37,7 +45,11 @@ public sealed record class VersionCreateResponse : JsonModel
     /// </summary>
     public required string Description
     {
-        get { return this._rawData.GetNotNullClass<string>("description"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("description");
+        }
         init { this._rawData.Set("description", value); }
     }
 
@@ -48,7 +60,11 @@ public sealed record class VersionCreateResponse : JsonModel
     /// </summary>
     public required string Directory
     {
-        get { return this._rawData.GetNotNullClass<string>("directory"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("directory");
+        }
         init { this._rawData.Set("directory", value); }
     }
 
@@ -59,7 +75,11 @@ public sealed record class VersionCreateResponse : JsonModel
     /// </summary>
     public required string Name
     {
-        get { return this._rawData.GetNotNullClass<string>("name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
         init { this._rawData.Set("name", value); }
     }
 
@@ -68,7 +88,11 @@ public sealed record class VersionCreateResponse : JsonModel
     /// </summary>
     public required string SkillID
     {
-        get { return this._rawData.GetNotNullClass<string>("skill_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("skill_id");
+        }
         init { this._rawData.Set("skill_id", value); }
     }
 
@@ -79,7 +103,11 @@ public sealed record class VersionCreateResponse : JsonModel
     /// </summary>
     public required string Type
     {
-        get { return this._rawData.GetNotNullClass<string>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -90,7 +118,11 @@ public sealed record class VersionCreateResponse : JsonModel
     /// </summary>
     public required string Version
     {
-        get { return this._rawData.GetNotNullClass<string>("version"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("version");
+        }
         init { this._rawData.Set("version", value); }
     }
 

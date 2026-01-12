@@ -20,6 +20,7 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<BetaContextManagementResponse>(
                 "context_management"
             );
@@ -29,13 +30,21 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
 
     public required Delta Delta
     {
-        get { return this._rawData.GetNotNullClass<Delta>("delta"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Delta>("delta");
+        }
         init { this._rawData.Set("delta", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -58,7 +67,11 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
     /// </summary>
     public required BetaMessageDeltaUsage Usage
     {
-        get { return this._rawData.GetNotNullClass<BetaMessageDeltaUsage>("usage"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessageDeltaUsage>("usage");
+        }
         init { this._rawData.Set("usage", value); }
     }
 
@@ -127,7 +140,11 @@ public sealed record class Delta : JsonModel
     /// </summary>
     public required BetaContainer? Container
     {
-        get { return this._rawData.GetNullableClass<BetaContainer>("container"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaContainer>("container");
+        }
         init { this._rawData.Set("container", value); }
     }
 
@@ -135,6 +152,7 @@ public sealed record class Delta : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<ApiEnum<string, BetaStopReason>>("stop_reason");
         }
         init { this._rawData.Set("stop_reason", value); }
@@ -142,7 +160,11 @@ public sealed record class Delta : JsonModel
 
     public required string? StopSequence
     {
-        get { return this._rawData.GetNullableClass<string>("stop_sequence"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_sequence");
+        }
         init { this._rawData.Set("stop_sequence", value); }
     }
 

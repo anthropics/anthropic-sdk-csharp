@@ -20,13 +20,21 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
 {
     public required string ToolUseID
     {
-        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
         init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -35,7 +43,11 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
@@ -43,6 +55,7 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<BetaRequestMcpToolResultBlockParamContent>(
                 "content"
             );
@@ -60,7 +73,11 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
 
     public bool? IsError
     {
-        get { return this._rawData.GetNullableStruct<bool>("is_error"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("is_error");
+        }
         init
         {
             if (value == null)

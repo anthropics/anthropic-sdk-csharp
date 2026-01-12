@@ -17,7 +17,11 @@ public sealed record class ModelInfo : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -27,7 +31,11 @@ public sealed record class ModelInfo : JsonModel
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get { return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
+        }
         init { this._rawData.Set("created_at", value); }
     }
 
@@ -36,7 +44,11 @@ public sealed record class ModelInfo : JsonModel
     /// </summary>
     public required string DisplayName
     {
-        get { return this._rawData.GetNotNullClass<string>("display_name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("display_name");
+        }
         init { this._rawData.Set("display_name", value); }
     }
 
@@ -47,7 +59,11 @@ public sealed record class ModelInfo : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

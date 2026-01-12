@@ -19,7 +19,11 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Jso
 {
     public required string Content
     {
-        get { return this._rawData.GetNotNullClass<string>("content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("content");
+        }
         init { this._rawData.Set("content", value); }
     }
 
@@ -30,6 +34,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Jso
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<
                 ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>
             >("file_type");
@@ -39,25 +44,41 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlockParam : Jso
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
     public long? NumLines
     {
-        get { return this._rawData.GetNullableStruct<long>("num_lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("num_lines");
+        }
         init { this._rawData.Set("num_lines", value); }
     }
 
     public long? StartLine
     {
-        get { return this._rawData.GetNullableStruct<long>("start_line"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("start_line");
+        }
         init { this._rawData.Set("start_line", value); }
     }
 
     public long? TotalLines
     {
-        get { return this._rawData.GetNullableStruct<long>("total_lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("total_lines");
+        }
         init { this._rawData.Set("total_lines", value); }
     }
 

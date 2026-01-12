@@ -15,13 +15,21 @@ public sealed record class RedactedThinkingBlockParam : JsonModel
 {
     public required string Data
     {
-        get { return this._rawData.GetNotNullClass<string>("data"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("data");
+        }
         init { this._rawData.Set("data", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

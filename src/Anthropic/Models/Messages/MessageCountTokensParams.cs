@@ -81,7 +81,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<MessageParam> Messages
     {
-        get { return this._rawBodyData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages");
+        }
         init
         {
             this._rawBodyData.Set<ImmutableArray<MessageParam>>(
@@ -97,7 +101,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
         init { this._rawBodyData.Set("model", value); }
     }
 
@@ -109,7 +117,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public MessageCountTokensParamsSystem? System
     {
-        get { return this._rawBodyData.GetNullableClass<MessageCountTokensParamsSystem>("system"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<MessageCountTokensParamsSystem>("system");
+        }
         init
         {
             if (value == null)
@@ -133,7 +145,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public ThinkingConfigParam? Thinking
     {
-        get { return this._rawBodyData.GetNullableClass<ThinkingConfigParam>("thinking"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<ThinkingConfigParam>("thinking");
+        }
         init
         {
             if (value == null)
@@ -151,7 +167,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public ToolChoice? ToolChoice
     {
-        get { return this._rawBodyData.GetNullableClass<ToolChoice>("tool_choice"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<ToolChoice>("tool_choice");
+        }
         init
         {
             if (value == null)
@@ -214,6 +234,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableStruct<ImmutableArray<MessageCountTokensTool>>(
                 "tools"
             );

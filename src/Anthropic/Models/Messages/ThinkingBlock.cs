@@ -13,19 +13,31 @@ public sealed record class ThinkingBlock : JsonModel
 {
     public required string Signature
     {
-        get { return this._rawData.GetNotNullClass<string>("signature"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("signature");
+        }
         init { this._rawData.Set("signature", value); }
     }
 
     public required string Thinking
     {
-        get { return this._rawData.GetNotNullClass<string>("thinking"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("thinking");
+        }
         init { this._rawData.Set("thinking", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

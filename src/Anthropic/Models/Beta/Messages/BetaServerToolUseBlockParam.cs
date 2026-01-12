@@ -16,7 +16,11 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
 {
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -24,6 +28,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("input");
         }
         init
@@ -39,6 +44,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<ApiEnum<string, BetaServerToolUseBlockParamName>>(
                 "name"
             );
@@ -48,7 +54,11 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -57,7 +67,11 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
@@ -66,7 +80,11 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     /// </summary>
     public BetaServerToolUseBlockParamCaller? Caller
     {
-        get { return this._rawData.GetNullableClass<BetaServerToolUseBlockParamCaller>("caller"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaServerToolUseBlockParamCaller>("caller");
+        }
         init
         {
             if (value == null)

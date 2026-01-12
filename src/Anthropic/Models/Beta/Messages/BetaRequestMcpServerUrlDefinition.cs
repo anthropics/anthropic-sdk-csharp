@@ -18,25 +18,41 @@ public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
 {
     public required string Name
     {
-        get { return this._rawData.GetNotNullClass<string>("name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
         init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
     public required string Url
     {
-        get { return this._rawData.GetNotNullClass<string>("url"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("url");
+        }
         init { this._rawData.Set("url", value); }
     }
 
     public string? AuthorizationToken
     {
-        get { return this._rawData.GetNullableClass<string>("authorization_token"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("authorization_token");
+        }
         init { this._rawData.Set("authorization_token", value); }
     }
 
@@ -44,6 +60,7 @@ public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<BetaRequestMcpServerToolConfiguration>(
                 "tool_configuration"
             );

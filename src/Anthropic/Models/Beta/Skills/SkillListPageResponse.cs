@@ -16,7 +16,11 @@ public sealed record class SkillListPageResponse : JsonModel
     /// </summary>
     public required IReadOnlyList<SkillListResponse> Data
     {
-        get { return this._rawData.GetNotNullStruct<ImmutableArray<SkillListResponse>>("data"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<SkillListResponse>>("data");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<SkillListResponse>>(
@@ -34,7 +38,11 @@ public sealed record class SkillListPageResponse : JsonModel
     /// </summary>
     public required bool HasMore
     {
-        get { return this._rawData.GetNotNullStruct<bool>("has_more"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("has_more");
+        }
         init { this._rawData.Set("has_more", value); }
     }
 
@@ -46,7 +54,11 @@ public sealed record class SkillListPageResponse : JsonModel
     /// </summary>
     public required string? NextPage
     {
-        get { return this._rawData.GetNullableClass<string>("next_page"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("next_page");
+        }
         init { this._rawData.Set("next_page", value); }
     }
 

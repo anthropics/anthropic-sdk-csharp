@@ -21,7 +21,11 @@ public sealed record class BetaClearToolUses20250919EditResponse : JsonModel
     /// </summary>
     public required long ClearedInputTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("cleared_input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("cleared_input_tokens");
+        }
         init { this._rawData.Set("cleared_input_tokens", value); }
     }
 
@@ -30,7 +34,11 @@ public sealed record class BetaClearToolUses20250919EditResponse : JsonModel
     /// </summary>
     public required long ClearedToolUses
     {
-        get { return this._rawData.GetNotNullStruct<long>("cleared_tool_uses"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("cleared_tool_uses");
+        }
         init { this._rawData.Set("cleared_tool_uses", value); }
     }
 
@@ -39,7 +47,11 @@ public sealed record class BetaClearToolUses20250919EditResponse : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

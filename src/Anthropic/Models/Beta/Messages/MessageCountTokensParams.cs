@@ -84,6 +84,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNotNullStruct<ImmutableArray<BetaMessageParam>>("messages");
         }
         init
@@ -101,7 +102,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Messages::Model> Model
     {
-        get { return this._rawBodyData.GetNotNullClass<ApiEnum<string, Messages::Model>>("model"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullClass<ApiEnum<string, Messages::Model>>("model");
+        }
         init { this._rawBodyData.Set("model", value); }
     }
 
@@ -115,6 +120,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableClass<BetaContextManagementConfig>(
                 "context_management"
             );
@@ -129,6 +135,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableStruct<
                 ImmutableArray<BetaRequestMcpServerUrlDefinition>
             >("mcp_servers");
@@ -153,7 +160,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {
-        get { return this._rawBodyData.GetNullableClass<BetaOutputConfig>("output_config"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaOutputConfig>("output_config");
+        }
         init
         {
             if (value == null)
@@ -170,7 +181,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaJsonOutputFormat? OutputFormat
     {
-        get { return this._rawBodyData.GetNullableClass<BetaJsonOutputFormat>("output_format"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaJsonOutputFormat>("output_format");
+        }
         init { this._rawBodyData.Set("output_format", value); }
     }
 
@@ -182,7 +197,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public MessageCountTokensParamsSystem? System
     {
-        get { return this._rawBodyData.GetNullableClass<MessageCountTokensParamsSystem>("system"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<MessageCountTokensParamsSystem>("system");
+        }
         init
         {
             if (value == null)
@@ -206,7 +225,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaThinkingConfigParam? Thinking
     {
-        get { return this._rawBodyData.GetNullableClass<BetaThinkingConfigParam>("thinking"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaThinkingConfigParam>("thinking");
+        }
         init
         {
             if (value == null)
@@ -224,7 +247,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaToolChoice? ToolChoice
     {
-        get { return this._rawBodyData.GetNullableClass<BetaToolChoice>("tool_choice"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaToolChoice>("tool_choice");
+        }
         init
         {
             if (value == null)
@@ -285,7 +312,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public IReadOnlyList<Tool>? Tools
     {
-        get { return this._rawBodyData.GetNullableStruct<ImmutableArray<Tool>>("tools"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<Tool>>("tools");
+        }
         init
         {
             if (value == null)
@@ -307,6 +338,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
+            this._rawHeaderData.Freeze();
             return this._rawHeaderData.GetNullableStruct<
                 ImmutableArray<ApiEnum<string, AnthropicBeta>>
             >("anthropic-beta");

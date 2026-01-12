@@ -17,6 +17,7 @@ public sealed record class BetaWebSearchToolResultError : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
                 "error_code"
             );
@@ -26,7 +27,11 @@ public sealed record class BetaWebSearchToolResultError : JsonModel
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

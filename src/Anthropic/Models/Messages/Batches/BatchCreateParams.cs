@@ -35,7 +35,11 @@ public sealed record class BatchCreateParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<Request> Requests
     {
-        get { return this._rawBodyData.GetNotNullStruct<ImmutableArray<Request>>("requests"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullStruct<ImmutableArray<Request>>("requests");
+        }
         init
         {
             this._rawBodyData.Set<ImmutableArray<Request>>(
@@ -132,7 +136,11 @@ public sealed record class Request : JsonModel
     /// </summary>
     public required string CustomID
     {
-        get { return this._rawData.GetNotNullClass<string>("custom_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("custom_id");
+        }
         init { this._rawData.Set("custom_id", value); }
     }
 
@@ -144,7 +152,11 @@ public sealed record class Request : JsonModel
     /// </summary>
     public required Params Params
     {
-        get { return this._rawData.GetNotNullClass<Params>("params"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Params>("params");
+        }
         init { this._rawData.Set("params", value); }
     }
 
@@ -207,7 +219,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public required long MaxTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("max_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("max_tokens");
+        }
         init { this._rawData.Set("max_tokens", value); }
     }
 
@@ -264,7 +280,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public required IReadOnlyList<MessageParam> Messages
     {
-        get { return this._rawData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<MessageParam>>(
@@ -280,7 +300,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
         init { this._rawData.Set("model", value); }
     }
 
@@ -289,7 +313,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public Metadata? Metadata
     {
-        get { return this._rawData.GetNullableClass<Metadata>("metadata"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<Metadata>("metadata");
+        }
         init
         {
             if (value == null)
@@ -312,6 +340,7 @@ public sealed record class Params : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<
                 ApiEnum<string, global::Anthropic.Models.Messages.Batches.ServiceTier>
             >("service_tier");
@@ -341,7 +370,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public IReadOnlyList<string>? StopSequences
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("stop_sequences"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("stop_sequences");
+        }
         init
         {
             if (value == null)
@@ -364,7 +397,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public bool? Stream
     {
-        get { return this._rawData.GetNullableStruct<bool>("stream"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("stream");
+        }
         init
         {
             if (value == null)
@@ -384,7 +421,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public ParamsSystem? System
     {
-        get { return this._rawData.GetNullableClass<ParamsSystem>("system"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ParamsSystem>("system");
+        }
         init
         {
             if (value == null)
@@ -408,7 +449,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public double? Temperature
     {
-        get { return this._rawData.GetNullableStruct<double>("temperature"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<double>("temperature");
+        }
         init
         {
             if (value == null)
@@ -432,7 +477,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public ThinkingConfigParam? Thinking
     {
-        get { return this._rawData.GetNullableClass<ThinkingConfigParam>("thinking"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ThinkingConfigParam>("thinking");
+        }
         init
         {
             if (value == null)
@@ -450,7 +499,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public ToolChoice? ToolChoice
     {
-        get { return this._rawData.GetNullableClass<ToolChoice>("tool_choice"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ToolChoice>("tool_choice");
+        }
         init
         {
             if (value == null)
@@ -511,7 +564,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public IReadOnlyList<ToolUnion>? Tools
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<ToolUnion>>("tools"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<ToolUnion>>("tools");
+        }
         init
         {
             if (value == null)
@@ -536,7 +593,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public long? TopK
     {
-        get { return this._rawData.GetNullableStruct<long>("top_k"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("top_k");
+        }
         init
         {
             if (value == null)
@@ -560,7 +621,11 @@ public sealed record class Params : JsonModel
     /// </summary>
     public double? TopP
     {
-        get { return this._rawData.GetNullableStruct<double>("top_p"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<double>("top_p");
+        }
         init
         {
             if (value == null)

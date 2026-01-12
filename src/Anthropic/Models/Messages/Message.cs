@@ -19,7 +19,11 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -47,7 +51,11 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required IReadOnlyList<ContentBlock> Content
     {
-        get { return this._rawData.GetNotNullStruct<ImmutableArray<ContentBlock>>("content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<ContentBlock>>("content");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<ContentBlock>>(
@@ -63,7 +71,11 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
         init { this._rawData.Set("model", value); }
     }
 
@@ -74,7 +86,11 @@ public sealed record class Message : JsonModel
     /// </summary>
     public JsonElement Role
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("role"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("role");
+        }
         init { this._rawData.Set("role", value); }
     }
 
@@ -94,7 +110,11 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required ApiEnum<string, StopReason>? StopReason
     {
-        get { return this._rawData.GetNullableClass<ApiEnum<string, StopReason>>("stop_reason"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, StopReason>>("stop_reason");
+        }
         init { this._rawData.Set("stop_reason", value); }
     }
 
@@ -106,7 +126,11 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required string? StopSequence
     {
-        get { return this._rawData.GetNullableClass<string>("stop_sequence"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_sequence");
+        }
         init { this._rawData.Set("stop_sequence", value); }
     }
 
@@ -117,7 +141,11 @@ public sealed record class Message : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -140,7 +168,11 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required Usage Usage
     {
-        get { return this._rawData.GetNotNullClass<Usage>("usage"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Usage>("usage");
+        }
         init { this._rawData.Set("usage", value); }
     }
 

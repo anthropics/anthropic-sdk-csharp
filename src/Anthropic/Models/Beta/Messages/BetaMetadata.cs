@@ -19,7 +19,11 @@ public sealed record class BetaMetadata : JsonModel
     /// </summary>
     public string? UserID
     {
-        get { return this._rawData.GetNullableClass<string>("user_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("user_id");
+        }
         init { this._rawData.Set("user_id", value); }
     }
 

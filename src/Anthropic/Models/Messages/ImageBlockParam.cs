@@ -14,13 +14,21 @@ public sealed record class ImageBlockParam : JsonModel
 {
     public required ImageBlockParamSource Source
     {
-        get { return this._rawData.GetNotNullClass<ImageBlockParamSource>("source"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ImageBlockParamSource>("source");
+        }
         init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -29,7 +37,11 @@ public sealed record class ImageBlockParam : JsonModel
     /// </summary>
     public CacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 

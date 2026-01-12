@@ -19,7 +19,11 @@ public sealed record class BetaMessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Canceled
     {
-        get { return this._rawData.GetNotNullStruct<long>("canceled"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("canceled");
+        }
         init { this._rawData.Set("canceled", value); }
     }
 
@@ -30,7 +34,11 @@ public sealed record class BetaMessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Errored
     {
-        get { return this._rawData.GetNotNullStruct<long>("errored"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("errored");
+        }
         init { this._rawData.Set("errored", value); }
     }
 
@@ -41,7 +49,11 @@ public sealed record class BetaMessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Expired
     {
-        get { return this._rawData.GetNotNullStruct<long>("expired"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("expired");
+        }
         init { this._rawData.Set("expired", value); }
     }
 
@@ -50,7 +62,11 @@ public sealed record class BetaMessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Processing
     {
-        get { return this._rawData.GetNotNullStruct<long>("processing"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("processing");
+        }
         init { this._rawData.Set("processing", value); }
     }
 
@@ -61,7 +77,11 @@ public sealed record class BetaMessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Succeeded
     {
-        get { return this._rawData.GetNotNullStruct<long>("succeeded"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("succeeded");
+        }
         init { this._rawData.Set("succeeded", value); }
     }
 

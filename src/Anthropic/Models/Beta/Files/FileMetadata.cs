@@ -19,7 +19,11 @@ public sealed record class FileMetadata : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -28,7 +32,11 @@ public sealed record class FileMetadata : JsonModel
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get { return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
+        }
         init { this._rawData.Set("created_at", value); }
     }
 
@@ -37,7 +45,11 @@ public sealed record class FileMetadata : JsonModel
     /// </summary>
     public required string Filename
     {
-        get { return this._rawData.GetNotNullClass<string>("filename"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("filename");
+        }
         init { this._rawData.Set("filename", value); }
     }
 
@@ -46,7 +58,11 @@ public sealed record class FileMetadata : JsonModel
     /// </summary>
     public required string MimeType
     {
-        get { return this._rawData.GetNotNullClass<string>("mime_type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("mime_type");
+        }
         init { this._rawData.Set("mime_type", value); }
     }
 
@@ -55,7 +71,11 @@ public sealed record class FileMetadata : JsonModel
     /// </summary>
     public required long SizeBytes
     {
-        get { return this._rawData.GetNotNullStruct<long>("size_bytes"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("size_bytes");
+        }
         init { this._rawData.Set("size_bytes", value); }
     }
 
@@ -66,7 +86,11 @@ public sealed record class FileMetadata : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -75,7 +99,11 @@ public sealed record class FileMetadata : JsonModel
     /// </summary>
     public bool? Downloadable
     {
-        get { return this._rawData.GetNullableStruct<bool>("downloadable"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("downloadable");
+        }
         init
         {
             if (value == null)

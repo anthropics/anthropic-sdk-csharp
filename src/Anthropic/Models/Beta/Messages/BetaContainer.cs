@@ -20,7 +20,11 @@ public sealed record class BetaContainer : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -29,7 +33,11 @@ public sealed record class BetaContainer : JsonModel
     /// </summary>
     public required DateTimeOffset ExpiresAt
     {
-        get { return this._rawData.GetNotNullStruct<DateTimeOffset>("expires_at"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("expires_at");
+        }
         init { this._rawData.Set("expires_at", value); }
     }
 
@@ -38,7 +46,11 @@ public sealed record class BetaContainer : JsonModel
     /// </summary>
     public required IReadOnlyList<BetaSkill>? Skills
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<BetaSkill>>("skills"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaSkill>>("skills");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<BetaSkill>?>(

@@ -27,7 +27,11 @@ public sealed record class BetaMessageBatchIndividualResponse : JsonModel
     /// </summary>
     public required string CustomID
     {
-        get { return this._rawData.GetNotNullClass<string>("custom_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("custom_id");
+        }
         init { this._rawData.Set("custom_id", value); }
     }
 
@@ -40,7 +44,11 @@ public sealed record class BetaMessageBatchIndividualResponse : JsonModel
     /// </summary>
     public required BetaMessageBatchResult Result
     {
-        get { return this._rawData.GetNotNullClass<BetaMessageBatchResult>("result"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessageBatchResult>("result");
+        }
         init { this._rawData.Set("result", value); }
     }
 

@@ -14,13 +14,21 @@ public sealed record class CitationsDelta : JsonModel
 {
     public required Citation Citation
     {
-        get { return this._rawData.GetNotNullClass<Citation>("citation"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Citation>("citation");
+        }
         init { this._rawData.Set("citation", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

@@ -18,6 +18,7 @@ public sealed record class BetaSearchResultBlockParam : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullStruct<ImmutableArray<BetaTextBlockParam>>("content");
         }
         init
@@ -31,19 +32,31 @@ public sealed record class BetaSearchResultBlockParam : JsonModel
 
     public required string Source
     {
-        get { return this._rawData.GetNotNullClass<string>("source"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("source");
+        }
         init { this._rawData.Set("source", value); }
     }
 
     public required string Title
     {
-        get { return this._rawData.GetNotNullClass<string>("title"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("title");
+        }
         init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -52,13 +65,21 @@ public sealed record class BetaSearchResultBlockParam : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
     public BetaCitationsConfigParam? Citations
     {
-        get { return this._rawData.GetNullableClass<BetaCitationsConfigParam>("citations"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCitationsConfigParam>("citations");
+        }
         init
         {
             if (value == null)

@@ -19,13 +19,21 @@ public sealed record class ToolChoiceTool : JsonModel
     /// </summary>
     public required string Name
     {
-        get { return this._rawData.GetNotNullClass<string>("name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
         init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -37,7 +45,11 @@ public sealed record class ToolChoiceTool : JsonModel
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get { return this._rawData.GetNullableStruct<bool>("disable_parallel_tool_use"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("disable_parallel_tool_use");
+        }
         init
         {
             if (value == null)

@@ -39,7 +39,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required long MaxTokens
     {
-        get { return this._rawBodyData.GetNotNullStruct<long>("max_tokens"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullStruct<long>("max_tokens");
+        }
         init { this._rawBodyData.Set("max_tokens", value); }
     }
 
@@ -96,7 +100,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<MessageParam> Messages
     {
-        get { return this._rawBodyData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages");
+        }
         init
         {
             this._rawBodyData.Set<ImmutableArray<MessageParam>>(
@@ -112,7 +120,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
         init { this._rawBodyData.Set("model", value); }
     }
 
@@ -121,7 +133,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public Metadata? Metadata
     {
-        get { return this._rawBodyData.GetNullableClass<Metadata>("metadata"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<Metadata>("metadata");
+        }
         init
         {
             if (value == null)
@@ -144,6 +160,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableClass<ApiEnum<string, ServiceTier>>("service_tier");
         }
         init
@@ -173,6 +190,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableStruct<ImmutableArray<string>>("stop_sequences");
         }
         init
@@ -197,7 +215,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public MessageCreateParamsSystem? System
     {
-        get { return this._rawBodyData.GetNullableClass<MessageCreateParamsSystem>("system"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<MessageCreateParamsSystem>("system");
+        }
         init
         {
             if (value == null)
@@ -221,7 +243,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public double? Temperature
     {
-        get { return this._rawBodyData.GetNullableStruct<double>("temperature"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<double>("temperature");
+        }
         init
         {
             if (value == null)
@@ -245,7 +271,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public ThinkingConfigParam? Thinking
     {
-        get { return this._rawBodyData.GetNullableClass<ThinkingConfigParam>("thinking"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<ThinkingConfigParam>("thinking");
+        }
         init
         {
             if (value == null)
@@ -263,7 +293,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public ToolChoice? ToolChoice
     {
-        get { return this._rawBodyData.GetNullableClass<ToolChoice>("tool_choice"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<ToolChoice>("tool_choice");
+        }
         init
         {
             if (value == null)
@@ -324,7 +358,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<ToolUnion>? Tools
     {
-        get { return this._rawBodyData.GetNullableStruct<ImmutableArray<ToolUnion>>("tools"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<ToolUnion>>("tools");
+        }
         init
         {
             if (value == null)
@@ -349,7 +387,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public long? TopK
     {
-        get { return this._rawBodyData.GetNullableStruct<long>("top_k"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<long>("top_k");
+        }
         init
         {
             if (value == null)
@@ -373,7 +415,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public double? TopP
     {
-        get { return this._rawBodyData.GetNullableStruct<double>("top_p"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<double>("top_p");
+        }
         init
         {
             if (value == null)

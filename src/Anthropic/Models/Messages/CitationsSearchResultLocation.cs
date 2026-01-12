@@ -15,43 +15,71 @@ public sealed record class CitationsSearchResultLocation : JsonModel
 {
     public required string CitedText
     {
-        get { return this._rawData.GetNotNullClass<string>("cited_text"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("cited_text");
+        }
         init { this._rawData.Set("cited_text", value); }
     }
 
     public required long EndBlockIndex
     {
-        get { return this._rawData.GetNotNullStruct<long>("end_block_index"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("end_block_index");
+        }
         init { this._rawData.Set("end_block_index", value); }
     }
 
     public required long SearchResultIndex
     {
-        get { return this._rawData.GetNotNullStruct<long>("search_result_index"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("search_result_index");
+        }
         init { this._rawData.Set("search_result_index", value); }
     }
 
     public required string Source
     {
-        get { return this._rawData.GetNotNullClass<string>("source"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("source");
+        }
         init { this._rawData.Set("source", value); }
     }
 
     public required long StartBlockIndex
     {
-        get { return this._rawData.GetNotNullStruct<long>("start_block_index"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("start_block_index");
+        }
         init { this._rawData.Set("start_block_index", value); }
     }
 
     public required string? Title
     {
-        get { return this._rawData.GetNullableClass<string>("title"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("title");
+        }
         init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

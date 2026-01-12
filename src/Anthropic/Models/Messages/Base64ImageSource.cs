@@ -14,19 +14,31 @@ public sealed record class Base64ImageSource : JsonModel
 {
     public required string Data
     {
-        get { return this._rawData.GetNotNullClass<string>("data"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("data");
+        }
         init { this._rawData.Set("data", value); }
     }
 
     public required ApiEnum<string, MediaType> MediaType
     {
-        get { return this._rawData.GetNotNullClass<ApiEnum<string, MediaType>>("media_type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, MediaType>>("media_type");
+        }
         init { this._rawData.Set("media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

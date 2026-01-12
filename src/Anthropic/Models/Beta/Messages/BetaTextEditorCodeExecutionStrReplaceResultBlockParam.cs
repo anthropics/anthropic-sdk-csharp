@@ -19,13 +19,21 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 {
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<string>? Lines
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("lines");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<string>?>(
@@ -37,25 +45,41 @@ public sealed record class BetaTextEditorCodeExecutionStrReplaceResultBlockParam
 
     public long? NewLines
     {
-        get { return this._rawData.GetNullableStruct<long>("new_lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("new_lines");
+        }
         init { this._rawData.Set("new_lines", value); }
     }
 
     public long? NewStart
     {
-        get { return this._rawData.GetNullableStruct<long>("new_start"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("new_start");
+        }
         init { this._rawData.Set("new_start", value); }
     }
 
     public long? OldLines
     {
-        get { return this._rawData.GetNullableStruct<long>("old_lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("old_lines");
+        }
         init { this._rawData.Set("old_lines", value); }
     }
 
     public long? OldStart
     {
-        get { return this._rawData.GetNullableStruct<long>("old_start"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("old_start");
+        }
         init { this._rawData.Set("old_start", value); }
     }
 

@@ -20,7 +20,11 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -29,7 +33,11 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required BetaContainer? Container
     {
-        get { return this._rawData.GetNullableClass<BetaContainer>("container"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaContainer>("container");
+        }
         init { this._rawData.Set("container", value); }
     }
 
@@ -57,7 +65,11 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required IReadOnlyList<BetaContentBlock> Content
     {
-        get { return this._rawData.GetNotNullStruct<ImmutableArray<BetaContentBlock>>("content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaContentBlock>>("content");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<BetaContentBlock>>(
@@ -76,6 +88,7 @@ public sealed record class BetaMessage : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<BetaContextManagementResponse>(
                 "context_management"
             );
@@ -89,7 +102,11 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
         init { this._rawData.Set("model", value); }
     }
 
@@ -100,7 +117,11 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public JsonElement Role
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("role"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("role");
+        }
         init { this._rawData.Set("role", value); }
     }
 
@@ -122,6 +143,7 @@ public sealed record class BetaMessage : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<ApiEnum<string, BetaStopReason>>("stop_reason");
         }
         init { this._rawData.Set("stop_reason", value); }
@@ -135,7 +157,11 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required string? StopSequence
     {
-        get { return this._rawData.GetNullableClass<string>("stop_sequence"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_sequence");
+        }
         init { this._rawData.Set("stop_sequence", value); }
     }
 
@@ -146,7 +172,11 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -169,7 +199,11 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required BetaUsage Usage
     {
-        get { return this._rawData.GetNotNullClass<BetaUsage>("usage"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaUsage>("usage");
+        }
         init { this._rawData.Set("usage", value); }
     }
 

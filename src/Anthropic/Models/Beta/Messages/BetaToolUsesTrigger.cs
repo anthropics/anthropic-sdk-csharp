@@ -13,13 +13,21 @@ public sealed record class BetaToolUsesTrigger : JsonModel
 {
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
     public required long Value
     {
-        get { return this._rawData.GetNotNullStruct<long>("value"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("value");
+        }
         init { this._rawData.Set("value", value); }
     }
 

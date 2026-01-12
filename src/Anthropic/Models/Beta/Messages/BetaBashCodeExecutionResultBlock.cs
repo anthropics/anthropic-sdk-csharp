@@ -21,6 +21,7 @@ public sealed record class BetaBashCodeExecutionResultBlock : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullStruct<ImmutableArray<BetaBashCodeExecutionOutputBlock>>(
                 "content"
             );
@@ -36,25 +37,41 @@ public sealed record class BetaBashCodeExecutionResultBlock : JsonModel
 
     public required long ReturnCode
     {
-        get { return this._rawData.GetNotNullStruct<long>("return_code"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("return_code");
+        }
         init { this._rawData.Set("return_code", value); }
     }
 
     public required string Stderr
     {
-        get { return this._rawData.GetNotNullClass<string>("stderr"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("stderr");
+        }
         init { this._rawData.Set("stderr", value); }
     }
 
     public required string Stdout
     {
-        get { return this._rawData.GetNotNullClass<string>("stdout"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("stdout");
+        }
         init { this._rawData.Set("stdout", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

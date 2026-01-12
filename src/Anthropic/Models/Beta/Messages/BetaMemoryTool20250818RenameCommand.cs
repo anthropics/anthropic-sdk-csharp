@@ -21,7 +21,11 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public JsonElement Command
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("command"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
         init { this._rawData.Set("command", value); }
     }
 
@@ -30,7 +34,11 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public required string NewPath
     {
-        get { return this._rawData.GetNotNullClass<string>("new_path"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("new_path");
+        }
         init { this._rawData.Set("new_path", value); }
     }
 
@@ -39,7 +47,11 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public required string OldPath
     {
-        get { return this._rawData.GetNotNullClass<string>("old_path"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("old_path");
+        }
         init { this._rawData.Set("old_path", value); }
     }
 

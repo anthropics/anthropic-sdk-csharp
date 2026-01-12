@@ -18,13 +18,21 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlockParam : J
 {
     public required bool IsFileUpdate
     {
-        get { return this._rawData.GetNotNullStruct<bool>("is_file_update"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("is_file_update");
+        }
         init { this._rawData.Set("is_file_update", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

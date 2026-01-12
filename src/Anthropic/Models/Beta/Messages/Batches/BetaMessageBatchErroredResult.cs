@@ -15,13 +15,21 @@ public sealed record class BetaMessageBatchErroredResult : JsonModel
 {
     public required BetaErrorResponse Error
     {
-        get { return this._rawData.GetNotNullClass<BetaErrorResponse>("error"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaErrorResponse>("error");
+        }
         init { this._rawData.Set("error", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

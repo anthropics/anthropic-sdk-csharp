@@ -19,7 +19,11 @@ public sealed record class BetaContainerParams : JsonModel
     /// </summary>
     public string? ID
     {
-        get { return this._rawData.GetNullableClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -28,7 +32,11 @@ public sealed record class BetaContainerParams : JsonModel
     /// </summary>
     public IReadOnlyList<BetaSkillParams>? Skills
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<BetaSkillParams>>("skills"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaSkillParams>>("skills");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<BetaSkillParams>?>(

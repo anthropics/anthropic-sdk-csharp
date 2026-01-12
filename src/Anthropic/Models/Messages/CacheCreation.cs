@@ -15,7 +15,11 @@ public sealed record class CacheCreation : JsonModel
     /// </summary>
     public required long Ephemeral1hInputTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("ephemeral_1h_input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("ephemeral_1h_input_tokens");
+        }
         init { this._rawData.Set("ephemeral_1h_input_tokens", value); }
     }
 
@@ -24,7 +28,11 @@ public sealed record class CacheCreation : JsonModel
     /// </summary>
     public required long Ephemeral5mInputTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("ephemeral_5m_input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("ephemeral_5m_input_tokens");
+        }
         init { this._rawData.Set("ephemeral_5m_input_tokens", value); }
     }
 

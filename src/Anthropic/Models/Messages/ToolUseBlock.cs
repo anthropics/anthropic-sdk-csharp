@@ -13,7 +13,11 @@ public sealed record class ToolUseBlock : JsonModel
 {
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -21,6 +25,7 @@ public sealed record class ToolUseBlock : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("input");
         }
         init
@@ -34,13 +39,21 @@ public sealed record class ToolUseBlock : JsonModel
 
     public required string Name
     {
-        get { return this._rawData.GetNotNullClass<string>("name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
         init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

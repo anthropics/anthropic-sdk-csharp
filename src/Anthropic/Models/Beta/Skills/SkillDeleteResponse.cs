@@ -17,7 +17,11 @@ public sealed record class SkillDeleteResponse : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return this._rawData.GetNotNullClass<string>("id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
         init { this._rawData.Set("id", value); }
     }
 
@@ -28,7 +32,11 @@ public sealed record class SkillDeleteResponse : JsonModel
     /// </summary>
     public required string Type
     {
-        get { return this._rawData.GetNotNullClass<string>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

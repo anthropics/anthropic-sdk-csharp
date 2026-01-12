@@ -19,37 +19,61 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock : JsonMode
 {
     public required string Content
     {
-        get { return this._rawData.GetNotNullClass<string>("content"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("content");
+        }
         init { this._rawData.Set("content", value); }
     }
 
     public required ApiEnum<string, FileType> FileType
     {
-        get { return this._rawData.GetNotNullClass<ApiEnum<string, FileType>>("file_type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, FileType>>("file_type");
+        }
         init { this._rawData.Set("file_type", value); }
     }
 
     public required long? NumLines
     {
-        get { return this._rawData.GetNullableStruct<long>("num_lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("num_lines");
+        }
         init { this._rawData.Set("num_lines", value); }
     }
 
     public required long? StartLine
     {
-        get { return this._rawData.GetNullableStruct<long>("start_line"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("start_line");
+        }
         init { this._rawData.Set("start_line", value); }
     }
 
     public required long? TotalLines
     {
-        get { return this._rawData.GetNullableStruct<long>("total_lines"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("total_lines");
+        }
         init { this._rawData.Set("total_lines", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

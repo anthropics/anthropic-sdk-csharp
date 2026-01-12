@@ -15,19 +15,31 @@ public sealed record class RawContentBlockDeltaEvent : JsonModel
 {
     public required RawContentBlockDelta Delta
     {
-        get { return this._rawData.GetNotNullClass<RawContentBlockDelta>("delta"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<RawContentBlockDelta>("delta");
+        }
         init { this._rawData.Set("delta", value); }
     }
 
     public required long Index
     {
-        get { return this._rawData.GetNotNullStruct<long>("index"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("index");
+        }
         init { this._rawData.Set("index", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

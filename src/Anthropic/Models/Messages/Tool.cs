@@ -21,7 +21,11 @@ public sealed record class Tool : JsonModel
     /// </summary>
     public required InputSchema InputSchema
     {
-        get { return this._rawData.GetNotNullClass<InputSchema>("input_schema"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<InputSchema>("input_schema");
+        }
         init { this._rawData.Set("input_schema", value); }
     }
 
@@ -32,7 +36,11 @@ public sealed record class Tool : JsonModel
     /// </summary>
     public required string Name
     {
-        get { return this._rawData.GetNotNullClass<string>("name"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
         init { this._rawData.Set("name", value); }
     }
 
@@ -41,7 +49,11 @@ public sealed record class Tool : JsonModel
     /// </summary>
     public CacheControlEphemeral? CacheControl
     {
-        get { return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
+        }
         init { this._rawData.Set("cache_control", value); }
     }
 
@@ -55,7 +67,11 @@ public sealed record class Tool : JsonModel
     /// </summary>
     public string? Description
     {
-        get { return this._rawData.GetNullableClass<string>("description"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("description");
+        }
         init
         {
             if (value == null)
@@ -71,6 +87,7 @@ public sealed record class Tool : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<
                 ApiEnum<string, global::Anthropic.Models.Messages.Type>
             >("type");
@@ -131,7 +148,11 @@ public sealed record class InputSchema : JsonModel
 {
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -139,6 +160,7 @@ public sealed record class InputSchema : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<FrozenDictionary<string, JsonElement>>(
                 "properties"
             );
@@ -154,7 +176,11 @@ public sealed record class InputSchema : JsonModel
 
     public IReadOnlyList<string>? Required
     {
-        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("required"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("required");
+        }
         init
         {
             this._rawData.Set<ImmutableArray<string>?>(

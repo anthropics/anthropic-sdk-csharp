@@ -40,7 +40,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required long MaxTokens
     {
-        get { return this._rawBodyData.GetNotNullStruct<long>("max_tokens"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullStruct<long>("max_tokens");
+        }
         init { this._rawBodyData.Set("max_tokens", value); }
     }
 
@@ -99,6 +103,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNotNullStruct<ImmutableArray<BetaMessageParam>>("messages");
         }
         init
@@ -116,7 +121,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Messages::Model> Model
     {
-        get { return this._rawBodyData.GetNotNullClass<ApiEnum<string, Messages::Model>>("model"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullClass<ApiEnum<string, Messages::Model>>("model");
+        }
         init { this._rawBodyData.Set("model", value); }
     }
 
@@ -125,7 +134,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public Container? Container
     {
-        get { return this._rawBodyData.GetNullableClass<Container>("container"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<Container>("container");
+        }
         init { this._rawBodyData.Set("container", value); }
     }
 
@@ -139,6 +152,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableClass<BetaContextManagementConfig>(
                 "context_management"
             );
@@ -153,6 +167,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableStruct<
                 ImmutableArray<BetaRequestMcpServerUrlDefinition>
             >("mcp_servers");
@@ -176,7 +191,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public BetaMetadata? Metadata
     {
-        get { return this._rawBodyData.GetNullableClass<BetaMetadata>("metadata"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaMetadata>("metadata");
+        }
         init
         {
             if (value == null)
@@ -194,7 +213,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {
-        get { return this._rawBodyData.GetNullableClass<BetaOutputConfig>("output_config"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaOutputConfig>("output_config");
+        }
         init
         {
             if (value == null)
@@ -211,7 +234,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public BetaJsonOutputFormat? OutputFormat
     {
-        get { return this._rawBodyData.GetNullableClass<BetaJsonOutputFormat>("output_format"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaJsonOutputFormat>("output_format");
+        }
         init { this._rawBodyData.Set("output_format", value); }
     }
 
@@ -226,6 +253,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableClass<ApiEnum<string, ServiceTier>>("service_tier");
         }
         init
@@ -255,6 +283,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
+            this._rawBodyData.Freeze();
             return this._rawBodyData.GetNullableStruct<ImmutableArray<string>>("stop_sequences");
         }
         init
@@ -279,7 +308,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public MessageCreateParamsSystem? System
     {
-        get { return this._rawBodyData.GetNullableClass<MessageCreateParamsSystem>("system"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<MessageCreateParamsSystem>("system");
+        }
         init
         {
             if (value == null)
@@ -303,7 +336,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public double? Temperature
     {
-        get { return this._rawBodyData.GetNullableStruct<double>("temperature"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<double>("temperature");
+        }
         init
         {
             if (value == null)
@@ -327,7 +364,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public BetaThinkingConfigParam? Thinking
     {
-        get { return this._rawBodyData.GetNullableClass<BetaThinkingConfigParam>("thinking"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaThinkingConfigParam>("thinking");
+        }
         init
         {
             if (value == null)
@@ -345,7 +386,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public BetaToolChoice? ToolChoice
     {
-        get { return this._rawBodyData.GetNullableClass<BetaToolChoice>("tool_choice"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaToolChoice>("tool_choice");
+        }
         init
         {
             if (value == null)
@@ -406,7 +451,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<BetaToolUnion>? Tools
     {
-        get { return this._rawBodyData.GetNullableStruct<ImmutableArray<BetaToolUnion>>("tools"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<BetaToolUnion>>("tools");
+        }
         init
         {
             if (value == null)
@@ -431,7 +480,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public long? TopK
     {
-        get { return this._rawBodyData.GetNullableStruct<long>("top_k"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<long>("top_k");
+        }
         init
         {
             if (value == null)
@@ -455,7 +508,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public double? TopP
     {
-        get { return this._rawBodyData.GetNullableStruct<double>("top_p"); }
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<double>("top_p");
+        }
         init
         {
             if (value == null)
@@ -474,6 +531,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
+            this._rawHeaderData.Freeze();
             return this._rawHeaderData.GetNullableStruct<
                 ImmutableArray<ApiEnum<string, AnthropicBeta>>
             >("anthropic-beta");

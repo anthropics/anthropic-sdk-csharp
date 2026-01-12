@@ -20,7 +20,11 @@ public sealed record class BetaSkill : JsonModel
     /// </summary>
     public required string SkillID
     {
-        get { return this._rawData.GetNotNullClass<string>("skill_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("skill_id");
+        }
         init { this._rawData.Set("skill_id", value); }
     }
 
@@ -31,6 +35,7 @@ public sealed record class BetaSkill : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNotNullClass<
                 ApiEnum<string, global::Anthropic.Models.Beta.Messages.Type>
             >("type");
@@ -43,7 +48,11 @@ public sealed record class BetaSkill : JsonModel
     /// </summary>
     public required string Version
     {
-        get { return this._rawData.GetNotNullClass<string>("version"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("version");
+        }
         init { this._rawData.Set("version", value); }
     }
 

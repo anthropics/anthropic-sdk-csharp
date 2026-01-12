@@ -13,13 +13,21 @@ public sealed record class RawMessageDeltaEvent : JsonModel
 {
     public required Delta Delta
     {
-        get { return this._rawData.GetNotNullClass<Delta>("delta"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Delta>("delta");
+        }
         init { this._rawData.Set("delta", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 
@@ -42,7 +50,11 @@ public sealed record class RawMessageDeltaEvent : JsonModel
     /// </summary>
     public required MessageDeltaUsage Usage
     {
-        get { return this._rawData.GetNotNullClass<MessageDeltaUsage>("usage"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<MessageDeltaUsage>("usage");
+        }
         init { this._rawData.Set("usage", value); }
     }
 
@@ -107,13 +119,21 @@ public sealed record class Delta : JsonModel
 {
     public required ApiEnum<string, StopReason>? StopReason
     {
-        get { return this._rawData.GetNullableClass<ApiEnum<string, StopReason>>("stop_reason"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, StopReason>>("stop_reason");
+        }
         init { this._rawData.Set("stop_reason", value); }
     }
 
     public required string? StopSequence
     {
-        get { return this._rawData.GetNullableClass<string>("stop_sequence"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_sequence");
+        }
         init { this._rawData.Set("stop_sequence", value); }
     }
 

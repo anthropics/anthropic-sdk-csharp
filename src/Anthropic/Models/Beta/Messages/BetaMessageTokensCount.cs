@@ -17,6 +17,7 @@ public sealed record class BetaMessageTokensCount : JsonModel
     {
         get
         {
+            this._rawData.Freeze();
             return this._rawData.GetNullableClass<BetaCountTokensContextManagementResponse>(
                 "context_management"
             );
@@ -30,7 +31,11 @@ public sealed record class BetaMessageTokensCount : JsonModel
     /// </summary>
     public required long InputTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("input_tokens");
+        }
         init { this._rawData.Set("input_tokens", value); }
     }
 

@@ -13,19 +13,31 @@ public sealed record class BetaErrorResponse : JsonModel
 {
     public required BetaError Error
     {
-        get { return this._rawData.GetNotNullClass<BetaError>("error"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaError>("error");
+        }
         init { this._rawData.Set("error", value); }
     }
 
     public required string? RequestID
     {
-        get { return this._rawData.GetNullableClass<string>("request_id"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("request_id");
+        }
         init { this._rawData.Set("request_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
         init { this._rawData.Set("type", value); }
     }
 

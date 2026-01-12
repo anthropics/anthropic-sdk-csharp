@@ -16,7 +16,11 @@ public sealed record class MessageTokensCount : JsonModel
     /// </summary>
     public required long InputTokens
     {
-        get { return this._rawData.GetNotNullStruct<long>("input_tokens"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("input_tokens");
+        }
         init { this._rawData.Set("input_tokens", value); }
     }
 
