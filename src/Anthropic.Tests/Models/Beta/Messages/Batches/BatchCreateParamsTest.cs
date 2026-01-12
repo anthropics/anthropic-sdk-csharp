@@ -7,6 +7,7 @@ using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages.Batches;
 using Messages = Anthropic.Models.Beta.Messages;
+using ModelsMessages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages.Batches;
 
@@ -26,7 +27,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -152,7 +153,7 @@ public class BatchCreateParamsTest : TestBase
                 {
                     MaxTokens = 1024,
                     Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                    Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                    Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                     Container = new Messages::BetaContainerParams()
                     {
                         ID = "id",
@@ -291,7 +292,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -425,7 +426,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -562,7 +563,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -698,7 +699,7 @@ public class BatchCreateParamsTest : TestBase
                     {
                         MaxTokens = 1024,
                         Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                        Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                        Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                         Container = new Messages::BetaContainerParams()
                         {
                             ID = "id",
@@ -836,7 +837,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -948,7 +949,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1068,7 +1069,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1191,7 +1192,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1307,7 +1308,7 @@ public class RequestTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1427,7 +1428,7 @@ public class RequestTest : TestBase
             {
                 MaxTokens = 1024,
                 Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-                Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+                Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
                 Container = new Messages::BetaContainerParams()
                 {
                     ID = "id",
@@ -1547,7 +1548,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1658,11 +1659,8 @@ public class ParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, global::Anthropic.Models.Messages.Model> expectedModel = global::Anthropic
-            .Models
-            .Messages
-            .Model
-            .ClaudeSonnet4_5_20250929;
+        ApiEnum<string, ModelsMessages::Model> expectedModel =
+            ModelsMessages::Model.ClaudeSonnet4_5_20250929;
         Container expectedContainer = new Messages::BetaContainerParams()
         {
             ID = "id",
@@ -1821,7 +1819,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -1940,7 +1938,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2055,11 +2053,8 @@ public class ParamsTest : TestBase
         [
             new() { Content = "Hello, world", Role = Messages::Role.User },
         ];
-        ApiEnum<string, global::Anthropic.Models.Messages.Model> expectedModel = global::Anthropic
-            .Models
-            .Messages
-            .Model
-            .ClaudeSonnet4_5_20250929;
+        ApiEnum<string, ModelsMessages::Model> expectedModel =
+            ModelsMessages::Model.ClaudeSonnet4_5_20250929;
         Container expectedContainer = new Messages::BetaContainerParams()
         {
             ID = "id",
@@ -2218,7 +2213,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2334,7 +2329,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2406,7 +2401,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2453,7 +2448,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2540,7 +2535,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             Container = new Messages::BetaContainerParams()
             {
                 ID = "id",
@@ -2602,7 +2597,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             McpServers =
             [
                 new()
@@ -2689,7 +2684,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             McpServers =
             [
                 new()
@@ -2771,7 +2766,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             McpServers =
             [
                 new()
@@ -2862,7 +2857,7 @@ public class ParamsTest : TestBase
         {
             MaxTokens = 1024,
             Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
-            Model = global::Anthropic.Models.Messages.Model.ClaudeSonnet4_5_20250929,
+            Model = ModelsMessages::Model.ClaudeSonnet4_5_20250929,
             McpServers =
             [
                 new()

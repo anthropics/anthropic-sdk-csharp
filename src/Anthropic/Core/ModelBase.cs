@@ -5,6 +5,7 @@ using Anthropic.Models.Messages;
 using Batches = Anthropic.Models.Messages.Batches;
 using Files = Anthropic.Models.Beta.Files;
 using Messages = Anthropic.Models.Beta.Messages;
+using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
 
 namespace Anthropic.Core;
 
@@ -91,14 +92,8 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::BetaWebSearchTool20250305AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaWebSearchToolResultErrorCode>(),
             new ApiEnumConverter<string, Messages::ServiceTier>(),
-            new ApiEnumConverter<
-                string,
-                global::Anthropic.Models.Beta.Messages.Batches.ProcessingStatus
-            >(),
-            new ApiEnumConverter<
-                string,
-                global::Anthropic.Models.Beta.Messages.Batches.ServiceTier
-            >(),
+            new ApiEnumConverter<string, MessagesBatches::ProcessingStatus>(),
+            new ApiEnumConverter<string, MessagesBatches::ServiceTier>(),
             new ApiEnumConverter<string, Files::Type>(),
         },
     };
