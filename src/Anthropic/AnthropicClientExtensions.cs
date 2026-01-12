@@ -90,13 +90,12 @@ public static class AnthropicClientExtensions
         private const int DefaultMaxTokens = 1024;
         private const string MeaiUserAgentHeaderKey = "User-Agent";
 
-        private static readonly IReadOnlyDictionary<string, JsonElement> s_meaiHeaderData =
-            new Dictionary<string, JsonElement>
-            {
-                [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
-                    CreateMeaiUserAgentValue()
-                ),
-            };
+        private static readonly Dictionary<string, JsonElement> s_meaiHeaderData = new()
+        {
+            [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
+                CreateMeaiUserAgentValue()
+            ),
+        };
 
         private readonly IAnthropicClient _anthropicClient = anthropicClient;
         private readonly string? _defaultModelId = defaultModelId;
@@ -147,16 +146,16 @@ public static class AnthropicClientExtensions
 
             if (serviceType == typeof(ChatClientMetadata))
             {
-                return this._metadata ??= new(
+                return _metadata ??= new(
                     "anthropic",
-                    new Uri(this._anthropicClient.BaseUrl),
-                    this._defaultModelId
+                    new Uri(_anthropicClient.BaseUrl),
+                    _defaultModelId
                 );
             }
 
-            if (serviceType.IsInstanceOfType(this._anthropicClient))
+            if (serviceType.IsInstanceOfType(_anthropicClient))
             {
-                return this._anthropicClient;
+                return _anthropicClient;
             }
 
             if (serviceType.IsInstanceOfType(this))
@@ -189,7 +188,7 @@ public static class AnthropicClientExtensions
                 options
             );
 
-            var createResult = await this._anthropicClient.Messages.Create(
+            var createResult = await _anthropicClient.Messages.Create(
                 createParams,
                 cancellationToken
             );
@@ -240,8 +239,8 @@ public static class AnthropicClientExtensions
             Dictionary<long, StreamingFunctionData>? streamingFunctions = null;
 
             await foreach (
-                var createResult in this
-                    ._anthropicClient.Messages.CreateStreaming(createParams, cancellationToken)
+                var createResult in _anthropicClient
+                    .Messages.CreateStreaming(createParams, cancellationToken)
                     .WithCancellation(cancellationToken)
             )
             {
@@ -776,11 +775,11 @@ public static class AnthropicClientExtensions
             {
                 createParams = new MessageCreateParams()
                 {
-                    MaxTokens = options?.MaxOutputTokens ?? this._defaultMaxTokens,
+                    MaxTokens = options?.MaxOutputTokens ?? _defaultMaxTokens,
                     Messages = messages,
                     Model =
                         options?.ModelId
-                        ?? this._defaultModelId
+                        ?? _defaultModelId
                         ?? throw new InvalidOperationException(
                             "Model ID must be specified either in ChatOptions or as the default for the client."
                         ),
@@ -947,11 +946,7 @@ public static class AnthropicClientExtensions
 
         private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)
         {
-            Dictionary<string, JsonElement> mergedHeaders = [];
-            foreach (var header in s_meaiHeaderData)
-            {
-                mergedHeaders[header.Key] = header.Value;
-            }
+            Dictionary<string, JsonElement> mergedHeaders = new(s_meaiHeaderData);
 
             foreach (var header in createParams.RawHeaderData)
             {
