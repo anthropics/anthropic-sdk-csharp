@@ -73,7 +73,7 @@ public interface IAnthropicClient : IDisposable
     /// </summary>
     TimeSpan? Timeout { get; init; }
 
-    string? APIKey { get; init; }
+    string? ApiKey { get; init; }
 
     string? AuthToken { get; init; }
 

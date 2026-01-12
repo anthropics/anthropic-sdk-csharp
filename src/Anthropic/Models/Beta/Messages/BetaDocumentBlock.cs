@@ -112,20 +112,20 @@ public record class Source
 
     public string Data
     {
-        get { return Match(betaBase64PDF: (x) => x.Data, betaPlainText: (x) => x.Data); }
+        get { return Match(betaBase64Pdf: (x) => x.Data, betaPlainText: (x) => x.Data); }
     }
 
     public JsonElement MediaType
     {
-        get { return Match(betaBase64PDF: (x) => x.MediaType, betaPlainText: (x) => x.MediaType); }
+        get { return Match(betaBase64Pdf: (x) => x.MediaType, betaPlainText: (x) => x.MediaType); }
     }
 
     public JsonElement Type
     {
-        get { return Match(betaBase64PDF: (x) => x.Type, betaPlainText: (x) => x.Type); }
+        get { return Match(betaBase64Pdf: (x) => x.Type, betaPlainText: (x) => x.Type); }
     }
 
-    public Source(BetaBase64PDFSource value, JsonElement? element = null)
+    public Source(BetaBase64PdfSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -144,22 +144,22 @@ public record class Source
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaBase64PDFSource"/>.
+    /// type <see cref="BetaBase64PdfSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaBase64PDF(out var value)) {
-    ///     // `value` is of type `BetaBase64PDFSource`
+    /// if (instance.TryPickBetaBase64Pdf(out var value)) {
+    ///     // `value` is of type `BetaBase64PdfSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaBase64PDF([NotNullWhen(true)] out BetaBase64PDFSource? value)
+    public bool TryPickBetaBase64Pdf([NotNullWhen(true)] out BetaBase64PdfSource? value)
     {
-        value = this.Value as BetaBase64PDFSource;
+        value = this.Value as BetaBase64PdfSource;
         return value != null;
     }
 
@@ -198,21 +198,21 @@ public record class Source
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaBase64PDFSource value) => {...},
+    ///     (BetaBase64PdfSource value) => {...},
     ///     (BetaPlainTextSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaBase64PDFSource> betaBase64PDF,
+        System::Action<BetaBase64PdfSource> betaBase64Pdf,
         System::Action<BetaPlainTextSource> betaPlainText
     )
     {
         switch (this.Value)
         {
-            case BetaBase64PDFSource value:
-                betaBase64PDF(value);
+            case BetaBase64PdfSource value:
+                betaBase64Pdf(value);
                 break;
             case BetaPlainTextSource value:
                 betaPlainText(value);
@@ -237,20 +237,20 @@ public record class Source
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaBase64PDFSource value) => {...},
+    ///     (BetaBase64PdfSource value) => {...},
     ///     (BetaPlainTextSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaBase64PDFSource, T> betaBase64PDF,
+        System::Func<BetaBase64PdfSource, T> betaBase64Pdf,
         System::Func<BetaPlainTextSource, T> betaPlainText
     )
     {
         return this.Value switch
         {
-            BetaBase64PDFSource value => betaBase64PDF(value),
+            BetaBase64PdfSource value => betaBase64Pdf(value),
             BetaPlainTextSource value => betaPlainText(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Source"
@@ -258,7 +258,7 @@ public record class Source
         };
     }
 
-    public static implicit operator Source(BetaBase64PDFSource value) => new(value);
+    public static implicit operator Source(BetaBase64PdfSource value) => new(value);
 
     public static implicit operator Source(BetaPlainTextSource value) => new(value);
 
@@ -279,7 +279,7 @@ public record class Source
             throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
         this.Switch(
-            (betaBase64PDF) => betaBase64PDF.Validate(),
+            (betaBase64Pdf) => betaBase64Pdf.Validate(),
             (betaPlainText) => betaPlainText.Validate()
         );
     }
@@ -320,7 +320,7 @@ sealed class SourceConverter : JsonConverter<Source>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaBase64PDFSource>(
+                    var deserialized = JsonSerializer.Deserialize<BetaBase64PdfSource>(
                         element,
                         options
                     );

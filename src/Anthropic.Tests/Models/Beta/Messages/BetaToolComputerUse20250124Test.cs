@@ -16,7 +16,7 @@ public class BetaToolComputerUse20250124Test : TestBase
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
             AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             DisplayNumber = 0,
             InputExamples =
@@ -37,7 +37,7 @@ public class BetaToolComputerUse20250124Test : TestBase
         [
             BetaToolComputerUse20250124AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         long expectedDisplayNumber = 0;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -85,7 +85,7 @@ public class BetaToolComputerUse20250124Test : TestBase
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
             AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             DisplayNumber = 0,
             InputExamples =
@@ -112,7 +112,7 @@ public class BetaToolComputerUse20250124Test : TestBase
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
             AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             DisplayNumber = 0,
             InputExamples =
@@ -137,7 +137,7 @@ public class BetaToolComputerUse20250124Test : TestBase
         [
             BetaToolComputerUse20250124AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         long expectedDisplayNumber = 0;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
@@ -185,7 +185,7 @@ public class BetaToolComputerUse20250124Test : TestBase
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
             AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             DisplayNumber = 0,
             InputExamples =
@@ -208,7 +208,7 @@ public class BetaToolComputerUse20250124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DisplayNumber = 0,
         };
 
@@ -229,7 +229,7 @@ public class BetaToolComputerUse20250124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DisplayNumber = 0,
         };
 
@@ -243,7 +243,7 @@ public class BetaToolComputerUse20250124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DisplayNumber = 0,
 
             // Null should be interpreted as omitted for these properties
@@ -270,7 +270,7 @@ public class BetaToolComputerUse20250124Test : TestBase
         {
             DisplayHeightPx = 1,
             DisplayWidthPx = 1,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DisplayNumber = 0,
 
             // Null should be interpreted as omitted for these properties

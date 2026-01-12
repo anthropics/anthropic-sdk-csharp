@@ -31,18 +31,18 @@ public class AnthropicFoundryClient : AnthropicClient
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
     }
 
-    [Obsolete("The {nameof(APIKey)} property is not supported in this configuration.", true)]
+    [Obsolete("The {nameof(ApiKey)} property is not supported in this configuration.", true)]
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
-    public override string? APIKey
+    public override string? ApiKey
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
     {
         get =>
             throw new NotSupportedException(
-                $"The {nameof(APIKey)} property is not supported in this configuration."
+                $"The {nameof(ApiKey)} property is not supported in this configuration."
             );
         init =>
             throw new NotSupportedException(
-                $"The {nameof(APIKey)} property is not supported in this configuration."
+                $"The {nameof(ApiKey)} property is not supported in this configuration."
             );
     }
 

@@ -14,7 +14,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaToolSearchToolResultBlockParamContent expectedContent =
@@ -25,7 +25,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"tool_search_tool_result\""
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -42,7 +42,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -60,7 +60,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -75,7 +75,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"tool_search_tool_result\""
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -92,7 +92,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -183,7 +183,7 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
                     new()
                     {
                         ToolName = "tool_name",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                     },
                 ]
             )
@@ -216,7 +216,7 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
                     new()
                     {
                         ToolName = "tool_name",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                     },
                 ]
             )

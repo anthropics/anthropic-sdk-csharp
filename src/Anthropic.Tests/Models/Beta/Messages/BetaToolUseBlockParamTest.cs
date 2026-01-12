@@ -17,7 +17,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -28,7 +28,7 @@ public class BetaToolUseBlockParamTest : TestBase
         };
         string expectedName = "x";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, model.ID);
@@ -56,7 +56,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -77,7 +77,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -92,7 +92,7 @@ public class BetaToolUseBlockParamTest : TestBase
         };
         string expectedName = "x";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -120,7 +120,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -138,7 +138,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         Assert.Null(model.Caller);
@@ -156,7 +156,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -173,7 +173,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -194,7 +194,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Caller = null,

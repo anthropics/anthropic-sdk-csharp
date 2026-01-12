@@ -71,7 +71,7 @@ public class BetaContentBlockSourceContentTest : TestBase
                     new BetaTextBlockParam()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new BetaCitationCharLocationParam()
@@ -109,7 +109,7 @@ public class BetaContentBlockSourceContentTest : TestBase
                     new BetaTextBlockParam()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new BetaCitationCharLocationParam()

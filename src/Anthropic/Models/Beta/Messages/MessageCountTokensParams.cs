@@ -126,11 +126,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
-    public IReadOnlyList<BetaRequestMCPServerURLDefinition>? MCPServers
+    public IReadOnlyList<BetaRequestMcpServerURLDefinition>? McpServers
     {
         get
         {
-            return JsonModel.GetNullableClass<List<BetaRequestMCPServerURLDefinition>>(
+            return JsonModel.GetNullableClass<List<BetaRequestMcpServerURLDefinition>>(
                 this.RawBodyData,
                 "mcp_servers"
             );
@@ -170,11 +170,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     ///  A schema to specify Claude's output format in responses.
     /// </summary>
-    public BetaJSONOutputFormat? OutputFormat
+    public BetaJsonOutputFormat? OutputFormat
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaJSONOutputFormat>(
+            return JsonModel.GetNullableClass<BetaJsonOutputFormat>(
                 this.RawBodyData,
                 "output_format"
             );
@@ -702,7 +702,7 @@ public record class Tool
                 betaWebFetchTool20250910: (x) => x.CacheControl,
                 betaToolSearchToolBm25_20251119: (x) => x.CacheControl,
                 betaToolSearchToolRegex20251119: (x) => x.CacheControl,
-                betaMCPToolset: (x) => x.CacheControl
+                betaMcpToolset: (x) => x.CacheControl
             );
         }
     }
@@ -729,7 +729,7 @@ public record class Tool
                 betaWebFetchTool20250910: (x) => x.DeferLoading,
                 betaToolSearchToolBm25_20251119: (x) => x.DeferLoading,
                 betaToolSearchToolRegex20251119: (x) => x.DeferLoading,
-                betaMCPToolset: (_) => null
+                betaMcpToolset: (_) => null
             );
         }
     }
@@ -756,7 +756,7 @@ public record class Tool
                 betaWebFetchTool20250910: (x) => x.Strict,
                 betaToolSearchToolBm25_20251119: (x) => x.Strict,
                 betaToolSearchToolRegex20251119: (x) => x.Strict,
-                betaMCPToolset: (_) => null
+                betaMcpToolset: (_) => null
             );
         }
     }
@@ -783,7 +783,7 @@ public record class Tool
                 betaWebFetchTool20250910: (_) => null,
                 betaToolSearchToolBm25_20251119: (_) => null,
                 betaToolSearchToolRegex20251119: (_) => null,
-                betaMCPToolset: (_) => null
+                betaMcpToolset: (_) => null
             );
         }
     }
@@ -810,7 +810,7 @@ public record class Tool
                 betaWebFetchTool20250910: (_) => null,
                 betaToolSearchToolBm25_20251119: (_) => null,
                 betaToolSearchToolRegex20251119: (_) => null,
-                betaMCPToolset: (_) => null
+                betaMcpToolset: (_) => null
             );
         }
     }
@@ -837,7 +837,7 @@ public record class Tool
                 betaWebFetchTool20250910: (_) => null,
                 betaToolSearchToolBm25_20251119: (_) => null,
                 betaToolSearchToolRegex20251119: (_) => null,
-                betaMCPToolset: (_) => null
+                betaMcpToolset: (_) => null
             );
         }
     }
@@ -864,7 +864,7 @@ public record class Tool
                 betaWebFetchTool20250910: (x) => x.MaxUses,
                 betaToolSearchToolBm25_20251119: (_) => null,
                 betaToolSearchToolRegex20251119: (_) => null,
-                betaMCPToolset: (_) => null
+                betaMcpToolset: (_) => null
             );
         }
     }
@@ -971,7 +971,7 @@ public record class Tool
         this._element = element;
     }
 
-    public Tool(BetaMCPToolset value, JsonElement? element = null)
+    public Tool(BetaMcpToolset value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -1367,22 +1367,22 @@ public record class Tool
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaMCPToolset"/>.
+    /// type <see cref="BetaMcpToolset"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaMCPToolset(out var value)) {
-    ///     // `value` is of type `BetaMCPToolset`
+    /// if (instance.TryPickBetaMcpToolset(out var value)) {
+    ///     // `value` is of type `BetaMcpToolset`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaMCPToolset([NotNullWhen(true)] out BetaMCPToolset? value)
+    public bool TryPickBetaMcpToolset([NotNullWhen(true)] out BetaMcpToolset? value)
     {
-        value = this.Value as BetaMCPToolset;
+        value = this.Value as BetaMcpToolset;
         return value != null;
     }
 
@@ -1417,7 +1417,7 @@ public record class Tool
     ///     (BetaWebFetchTool20250910 value) => {...},
     ///     (BetaToolSearchToolBm25_20251119 value) => {...},
     ///     (BetaToolSearchToolRegex20251119 value) => {...},
-    ///     (BetaMCPToolset value) => {...}
+    ///     (BetaMcpToolset value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -1440,7 +1440,7 @@ public record class Tool
         System::Action<BetaWebFetchTool20250910> betaWebFetchTool20250910,
         System::Action<BetaToolSearchToolBm25_20251119> betaToolSearchToolBm25_20251119,
         System::Action<BetaToolSearchToolRegex20251119> betaToolSearchToolRegex20251119,
-        System::Action<BetaMCPToolset> betaMCPToolset
+        System::Action<BetaMcpToolset> betaMcpToolset
     )
     {
         switch (this.Value)
@@ -1496,8 +1496,8 @@ public record class Tool
             case BetaToolSearchToolRegex20251119 value:
                 betaToolSearchToolRegex20251119(value);
                 break;
-            case BetaMCPToolset value:
-                betaMCPToolset(value);
+            case BetaMcpToolset value:
+                betaMcpToolset(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Tool");
@@ -1536,7 +1536,7 @@ public record class Tool
     ///     (BetaWebFetchTool20250910 value) => {...},
     ///     (BetaToolSearchToolBm25_20251119 value) => {...},
     ///     (BetaToolSearchToolRegex20251119 value) => {...},
-    ///     (BetaMCPToolset value) => {...}
+    ///     (BetaMcpToolset value) => {...}
     /// );
     /// </code>
     /// </example>
@@ -1559,7 +1559,7 @@ public record class Tool
         System::Func<BetaWebFetchTool20250910, T> betaWebFetchTool20250910,
         System::Func<BetaToolSearchToolBm25_20251119, T> betaToolSearchToolBm25_20251119,
         System::Func<BetaToolSearchToolRegex20251119, T> betaToolSearchToolRegex20251119,
-        System::Func<BetaMCPToolset, T> betaMCPToolset
+        System::Func<BetaMcpToolset, T> betaMcpToolset
     )
     {
         return this.Value switch
@@ -1581,7 +1581,7 @@ public record class Tool
             BetaWebFetchTool20250910 value => betaWebFetchTool20250910(value),
             BetaToolSearchToolBm25_20251119 value => betaToolSearchToolBm25_20251119(value),
             BetaToolSearchToolRegex20251119 value => betaToolSearchToolRegex20251119(value),
-            BetaMCPToolset value => betaMCPToolset(value),
+            BetaMcpToolset value => betaMcpToolset(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Tool"),
         };
     }
@@ -1620,7 +1620,7 @@ public record class Tool
 
     public static implicit operator Tool(BetaToolSearchToolRegex20251119 value) => new(value);
 
-    public static implicit operator Tool(BetaMCPToolset value) => new(value);
+    public static implicit operator Tool(BetaMcpToolset value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -1656,7 +1656,7 @@ public record class Tool
             (betaWebFetchTool20250910) => betaWebFetchTool20250910.Validate(),
             (betaToolSearchToolBm25_20251119) => betaToolSearchToolBm25_20251119.Validate(),
             (betaToolSearchToolRegex20251119) => betaToolSearchToolRegex20251119.Validate(),
-            (betaMCPToolset) => betaMCPToolset.Validate()
+            (betaMcpToolset) => betaMcpToolset.Validate()
         );
     }
 
@@ -1959,7 +1959,7 @@ sealed class ToolConverter : JsonConverter<Tool>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaMCPToolset>(element, options);
+            var deserialized = JsonSerializer.Deserialize<BetaMcpToolset>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();

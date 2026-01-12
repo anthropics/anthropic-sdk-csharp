@@ -34,7 +34,22 @@ static class Sse
                 case "content_block_start":
                 case "content_block_delta":
                 case "content_block_stop":
-                    yield return JsonSerializer.Deserialize<T>(item.Data)
+                    T? message;
+                    try
+                    {
+                        message = JsonSerializer.Deserialize<T>(
+                            item.Data,
+                            ModelBase.SerializerOptions
+                        );
+                    }
+                    catch (JsonException e)
+                    {
+                        throw new AnthropicInvalidDataException(
+                            $"Message must be of type {typeof(T).FullName}",
+                            e
+                        );
+                    }
+                    yield return message
                         ?? throw new AnthropicInvalidDataException("Message cannot be null");
                     break;
                 case "ping":

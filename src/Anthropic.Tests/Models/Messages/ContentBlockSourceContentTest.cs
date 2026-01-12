@@ -12,7 +12,7 @@ public class ContentBlockSourceContentTest : TestBase
             new TextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new CitationCharLocationParam()
@@ -38,9 +38,9 @@ public class ContentBlockSourceContentTest : TestBase
                 Source = new Base64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -53,7 +53,7 @@ public class ContentBlockSourceContentTest : TestBase
             new TextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new CitationCharLocationParam()
@@ -82,9 +82,9 @@ public class ContentBlockSourceContentTest : TestBase
                 Source = new Base64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);

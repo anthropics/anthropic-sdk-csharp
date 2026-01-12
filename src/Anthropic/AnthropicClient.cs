@@ -63,10 +63,10 @@ public class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
-    public virtual string? APIKey
+    public virtual string? ApiKey
     {
-        get { return this._options.APIKey; }
-        init { this._options.APIKey = value; }
+        get { return this._options.ApiKey; }
+        init { this._options.ApiKey = value; }
     }
 
     /// <inheritdoc/>

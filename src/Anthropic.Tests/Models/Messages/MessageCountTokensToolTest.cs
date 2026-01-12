@@ -22,7 +22,7 @@ public class MessageCountTokensToolTest : TestBase
                     Required = ["location"],
                 },
                 Name = "name",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
                 Type = Type.Custom,
             }
@@ -34,7 +34,7 @@ public class MessageCountTokensToolTest : TestBase
     public void ToolBash20250124ValidationWorks()
     {
         MessageCountTokensTool value = new(
-            new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+            new ToolBash20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } }
         );
         value.Validate();
     }
@@ -43,7 +43,7 @@ public class MessageCountTokensToolTest : TestBase
     public void ToolTextEditor20250124ValidationWorks()
     {
         MessageCountTokensTool value = new(
-            new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+            new ToolTextEditor20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } }
         );
         value.Validate();
     }
@@ -52,7 +52,7 @@ public class MessageCountTokensToolTest : TestBase
     public void ToolTextEditor20250429ValidationWorks()
     {
         MessageCountTokensTool value = new(
-            new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
+            new ToolTextEditor20250429() { CacheControl = new() { Ttl = Ttl.Ttl5m } }
         );
         value.Validate();
     }
@@ -63,7 +63,7 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new(
             new ToolTextEditor20250728()
             {
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 MaxCharacters = 1,
             }
         );
@@ -78,7 +78,7 @@ public class MessageCountTokensToolTest : TestBase
             {
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 MaxUses = 1,
                 UserLocation = new()
                 {
@@ -108,7 +108,7 @@ public class MessageCountTokensToolTest : TestBase
                     Required = ["location"],
                 },
                 Name = "name",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Description = "Get the current weather in a given location",
                 Type = Type.Custom,
             }
@@ -123,7 +123,7 @@ public class MessageCountTokensToolTest : TestBase
     public void ToolBash20250124SerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
-            new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+            new ToolBash20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } }
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
@@ -135,7 +135,7 @@ public class MessageCountTokensToolTest : TestBase
     public void ToolTextEditor20250124SerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
-            new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
+            new ToolTextEditor20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } }
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
@@ -147,7 +147,7 @@ public class MessageCountTokensToolTest : TestBase
     public void ToolTextEditor20250429SerializationRoundtripWorks()
     {
         MessageCountTokensTool value = new(
-            new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
+            new ToolTextEditor20250429() { CacheControl = new() { Ttl = Ttl.Ttl5m } }
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageCountTokensTool>(element);
@@ -161,7 +161,7 @@ public class MessageCountTokensToolTest : TestBase
         MessageCountTokensTool value = new(
             new ToolTextEditor20250728()
             {
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 MaxCharacters = 1,
             }
         );
@@ -179,7 +179,7 @@ public class MessageCountTokensToolTest : TestBase
             {
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 MaxUses = 1,
                 UserLocation = new()
                 {

@@ -56,7 +56,7 @@ MessageCreateParams parameters = new()
             Content = "Hello, Claude",
         },
     ],
-    Model = Model.ClaudeOpus4_5_20251101,
+    Model = Model.ClaudeSonnet4_5_20250929,
 };
 
 var message = await client.Messages.Create(parameters);
@@ -80,7 +80,7 @@ Or manually:
 ```csharp
 using Anthropic;
 
-AnthropicClient client = new() { APIKey = "my-anthropic-api-key" };
+AnthropicClient client = new() { ApiKey = "my-anthropic-api-key" };
 ```
 
 Or using a combination of the two approaches.
@@ -89,7 +89,7 @@ See this table for the available options:
 
 | Property    | Environment variable   | Required | Default value                 |
 | ----------- | ---------------------- | -------- | ----------------------------- |
-| `APIKey`    | `ANTHROPIC_API_KEY`    | false    | -                             |
+| `ApiKey`    | `ANTHROPIC_API_KEY`    | false    | -                             |
 | `AuthToken` | `ANTHROPIC_AUTH_TOKEN` | false    | -                             |
 | `BaseUrl`   | `ANTHROPIC_BASE_URL`   | true     | `"https://api.anthropic.com"` |
 
@@ -146,7 +146,7 @@ MessageCreateParams parameters = new()
             Content = "Hello, Claude",
         },
     ],
-    Model = Model.ClaudeOpus4_5_20251101,
+    Model = Model.ClaudeSonnet4_5_20250929,
 };
 
 await foreach (var message in client.Messages.CreateStreaming(parameters))
@@ -236,6 +236,46 @@ Additionally, all 4xx errors inherit from `Anthropic4xxException`.
 - `AnthropicInvalidDataException`: Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
 - `AnthropicException`: Base class for all exceptions.
+
+## Pagination
+
+The SDK defines methods that return a paginated lists of results. It provides convenient ways to access the results either one page at a time or item-by-item across all pages.
+
+### Auto-pagination
+
+To iterate through all results across all pages, use the `Paginate` method, which automatically fetches more pages as needed. The method returns an [`IAsyncEnumerable`](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iasyncenumerable-1):
+
+```csharp
+using System;
+
+var page = await client.Beta.Messages.Batches.List(parameters);
+await foreach (var item in page.Paginate())
+{
+    Console.WriteLine(item);
+}
+```
+
+### Manual pagination
+
+To access individual page items and manually request the next page, use the `Items` property, and `HasNext` and `Next` methods:
+
+```csharp
+using System;
+
+var page = await client.Beta.Messages.Batches.List();
+while (true)
+{
+    foreach (var item in page.Items)
+    {
+        Console.WriteLine(item);
+    }
+    if (!page.HasNext())
+    {
+        break;
+    }
+    page = await page.Next();
+}
+```
 
 ## Network options
 

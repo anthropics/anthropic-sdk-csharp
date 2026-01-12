@@ -65,7 +65,7 @@ public class BetaTextCitationTest : TestBase
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
                 Title = "title",
-                URL = "url",
+                Url = "url",
             }
         );
         value.Validate();
@@ -157,7 +157,7 @@ public class BetaTextCitationTest : TestBase
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
                 Title = "title",
-                URL = "url",
+                Url = "url",
             }
         );
         string element = JsonSerializer.Serialize(value);

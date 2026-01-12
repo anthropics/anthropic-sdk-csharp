@@ -131,7 +131,7 @@ public enum FileType
 {
     Text,
     Image,
-    PDF,
+    Pdf,
 }
 
 sealed class FileTypeConverter : JsonConverter<FileType>
@@ -146,7 +146,7 @@ sealed class FileTypeConverter : JsonConverter<FileType>
         {
             "text" => FileType.Text,
             "image" => FileType.Image,
-            "pdf" => FileType.PDF,
+            "pdf" => FileType.Pdf,
             _ => (FileType)(-1),
         };
     }
@@ -159,7 +159,7 @@ sealed class FileTypeConverter : JsonConverter<FileType>
             {
                 FileType.Text => "text",
                 FileType.Image => "image",
-                FileType.PDF => "pdf",
+                FileType.Pdf => "pdf",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

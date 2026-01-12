@@ -178,7 +178,7 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     [Theory]
     [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text)]
     [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image)]
-    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.PDF)]
+    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Pdf)]
     public void Validation_Works(BetaTextEditorCodeExecutionViewResultBlockParamFileType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -203,7 +203,7 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     [Theory]
     [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text)]
     [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image)]
-    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.PDF)]
+    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Pdf)]
     public void SerializationRoundtrip_Works(
         BetaTextEditorCodeExecutionViewResultBlockParamFileType rawValue
     )

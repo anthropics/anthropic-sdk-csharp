@@ -10,16 +10,16 @@ public class DocumentBlockParamTest : TestBase
     {
         var model = new DocumentBlockParam
         {
-            Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
         };
 
-        Source expectedSource = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz");
+        Source expectedSource = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
         string expectedContext = "x";
         string expectedTitle = "x";
@@ -37,8 +37,8 @@ public class DocumentBlockParamTest : TestBase
     {
         var model = new DocumentBlockParam
         {
-            Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
@@ -55,8 +55,8 @@ public class DocumentBlockParamTest : TestBase
     {
         var model = new DocumentBlockParam
         {
-            Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
@@ -66,9 +66,9 @@ public class DocumentBlockParamTest : TestBase
         var deserialized = JsonSerializer.Deserialize<DocumentBlockParam>(element);
         Assert.NotNull(deserialized);
 
-        Source expectedSource = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz");
+        Source expectedSource = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         CitationsConfigParam expectedCitations = new() { Enabled = true };
         string expectedContext = "x";
         string expectedTitle = "x";
@@ -86,8 +86,8 @@ public class DocumentBlockParamTest : TestBase
     {
         var model = new DocumentBlockParam
         {
-            Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
@@ -99,7 +99,7 @@ public class DocumentBlockParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new DocumentBlockParam { Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz") };
+        var model = new DocumentBlockParam { Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz") };
 
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
@@ -114,7 +114,7 @@ public class DocumentBlockParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new DocumentBlockParam { Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz") };
+        var model = new DocumentBlockParam { Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz") };
 
         model.Validate();
     }
@@ -124,7 +124,7 @@ public class DocumentBlockParamTest : TestBase
     {
         var model = new DocumentBlockParam
         {
-            Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
 
             CacheControl = null,
             Citations = null,
@@ -147,7 +147,7 @@ public class DocumentBlockParamTest : TestBase
     {
         var model = new DocumentBlockParam
         {
-            Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
 
             CacheControl = null,
             Citations = null,
@@ -162,9 +162,9 @@ public class DocumentBlockParamTest : TestBase
 public class SourceTest : TestBase
 {
     [Fact]
-    public void Base64PDFValidationWorks()
+    public void Base64PdfValidationWorks()
     {
-        Source value = new(new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
+        Source value = new(new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
         value.Validate();
     }
 
@@ -183,16 +183,16 @@ public class SourceTest : TestBase
     }
 
     [Fact]
-    public void URLPDFValidationWorks()
+    public void UrlPdfValidationWorks()
     {
-        Source value = new(new URLPDFSource("url"));
+        Source value = new(new UrlPdfSource("url"));
         value.Validate();
     }
 
     [Fact]
-    public void Base64PDFSerializationRoundtripWorks()
+    public void Base64PdfSerializationRoundtripWorks()
     {
-        Source value = new(new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
+        Source value = new(new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(element);
 
@@ -220,9 +220,9 @@ public class SourceTest : TestBase
     }
 
     [Fact]
-    public void URLPDFSerializationRoundtripWorks()
+    public void UrlPdfSerializationRoundtripWorks()
     {
-        Source value = new(new URLPDFSource("url"));
+        Source value = new(new UrlPdfSource("url"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(element);
 

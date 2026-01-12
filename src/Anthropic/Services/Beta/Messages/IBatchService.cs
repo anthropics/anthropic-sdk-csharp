@@ -60,7 +60,7 @@ public interface IBatchService
     ///
     /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
     /// </summary>
-    Task<BatchListPageResponse> List(
+    Task<BatchListPage> List(
         BatchListParams? parameters = null,
         CancellationToken cancellationToken = default
     );

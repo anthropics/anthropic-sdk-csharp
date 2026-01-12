@@ -12,7 +12,7 @@ public class BetaTextBlockParamTest : TestBase
         var model = new BetaTextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new BetaCitationCharLocationParam()
@@ -28,7 +28,7 @@ public class BetaTextBlockParamTest : TestBase
 
         string expectedText = "x";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<BetaTextCitationParam> expectedCitations =
         [
             new BetaCitationCharLocationParam()
@@ -58,7 +58,7 @@ public class BetaTextBlockParamTest : TestBase
         var model = new BetaTextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new BetaCitationCharLocationParam()
@@ -84,7 +84,7 @@ public class BetaTextBlockParamTest : TestBase
         var model = new BetaTextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new BetaCitationCharLocationParam()
@@ -104,7 +104,7 @@ public class BetaTextBlockParamTest : TestBase
 
         string expectedText = "x";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<BetaTextCitationParam> expectedCitations =
         [
             new BetaCitationCharLocationParam()
@@ -134,7 +134,7 @@ public class BetaTextBlockParamTest : TestBase
         var model = new BetaTextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new BetaCitationCharLocationParam()

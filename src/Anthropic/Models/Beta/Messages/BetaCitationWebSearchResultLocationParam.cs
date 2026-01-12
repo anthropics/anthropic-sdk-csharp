@@ -40,7 +40,7 @@ public sealed record class BetaCitationWebSearchResultLocationParam : JsonModel
         init { JsonModel.Set(this._rawData, "type", value); }
     }
 
-    public required string URL
+    public required string Url
     {
         get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
         init { JsonModel.Set(this._rawData, "url", value); }
@@ -61,7 +61,7 @@ public sealed record class BetaCitationWebSearchResultLocationParam : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        _ = this.URL;
+        _ = this.Url;
     }
 
     public BetaCitationWebSearchResultLocationParam()

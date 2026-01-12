@@ -14,7 +14,7 @@ public class WebSearchToolResultBlockParamContentTest : TestBase
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                     PageAge = "page_age",
                 },
             ]
@@ -40,7 +40,7 @@ public class WebSearchToolResultBlockParamContentTest : TestBase
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                     PageAge = "page_age",
                 },
             ]

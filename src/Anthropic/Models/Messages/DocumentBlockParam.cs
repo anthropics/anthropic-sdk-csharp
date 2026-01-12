@@ -136,10 +136,10 @@ public record class Source
         get
         {
             return Match<string?>(
-                base64PDF: (x) => x.Data,
+                base64Pdf: (x) => x.Data,
                 plainText: (x) => x.Data,
                 contentBlock: (_) => null,
-                urlPDF: (_) => null
+                urlPdf: (_) => null
             );
         }
     }
@@ -149,10 +149,10 @@ public record class Source
         get
         {
             return Match<JsonElement?>(
-                base64PDF: (x) => x.MediaType,
+                base64Pdf: (x) => x.MediaType,
                 plainText: (x) => x.MediaType,
                 contentBlock: (_) => null,
-                urlPDF: (_) => null
+                urlPdf: (_) => null
             );
         }
     }
@@ -162,15 +162,15 @@ public record class Source
         get
         {
             return Match(
-                base64PDF: (x) => x.Type,
+                base64Pdf: (x) => x.Type,
                 plainText: (x) => x.Type,
                 contentBlock: (x) => x.Type,
-                urlPDF: (x) => x.Type
+                urlPdf: (x) => x.Type
             );
         }
     }
 
-    public Source(Base64PDFSource value, JsonElement? element = null)
+    public Source(Base64PdfSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -188,7 +188,7 @@ public record class Source
         this._element = element;
     }
 
-    public Source(URLPDFSource value, JsonElement? element = null)
+    public Source(UrlPdfSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -201,22 +201,22 @@ public record class Source
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="Base64PDFSource"/>.
+    /// type <see cref="Base64PdfSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBase64PDF(out var value)) {
-    ///     // `value` is of type `Base64PDFSource`
+    /// if (instance.TryPickBase64Pdf(out var value)) {
+    ///     // `value` is of type `Base64PdfSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBase64PDF([NotNullWhen(true)] out Base64PDFSource? value)
+    public bool TryPickBase64Pdf([NotNullWhen(true)] out Base64PdfSource? value)
     {
-        value = this.Value as Base64PDFSource;
+        value = this.Value as Base64PdfSource;
         return value != null;
     }
 
@@ -264,22 +264,22 @@ public record class Source
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="URLPDFSource"/>.
+    /// type <see cref="UrlPdfSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickURLPDF(out var value)) {
-    ///     // `value` is of type `URLPDFSource`
+    /// if (instance.TryPickUrlPdf(out var value)) {
+    ///     // `value` is of type `UrlPdfSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickURLPDF([NotNullWhen(true)] out URLPDFSource? value)
+    public bool TryPickUrlPdf([NotNullWhen(true)] out UrlPdfSource? value)
     {
-        value = this.Value as URLPDFSource;
+        value = this.Value as UrlPdfSource;
         return value != null;
     }
 
@@ -297,25 +297,25 @@ public record class Source
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (Base64PDFSource value) => {...},
+    ///     (Base64PdfSource value) => {...},
     ///     (PlainTextSource value) => {...},
     ///     (ContentBlockSource value) => {...},
-    ///     (URLPDFSource value) => {...}
+    ///     (UrlPdfSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<Base64PDFSource> base64PDF,
+        System::Action<Base64PdfSource> base64Pdf,
         System::Action<PlainTextSource> plainText,
         System::Action<ContentBlockSource> contentBlock,
-        System::Action<URLPDFSource> urlPDF
+        System::Action<UrlPdfSource> urlPdf
     )
     {
         switch (this.Value)
         {
-            case Base64PDFSource value:
-                base64PDF(value);
+            case Base64PdfSource value:
+                base64Pdf(value);
                 break;
             case PlainTextSource value:
                 plainText(value);
@@ -323,8 +323,8 @@ public record class Source
             case ContentBlockSource value:
                 contentBlock(value);
                 break;
-            case URLPDFSource value:
-                urlPDF(value);
+            case UrlPdfSource value:
+                urlPdf(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Source");
@@ -346,40 +346,40 @@ public record class Source
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (Base64PDFSource value) => {...},
+    ///     (Base64PdfSource value) => {...},
     ///     (PlainTextSource value) => {...},
     ///     (ContentBlockSource value) => {...},
-    ///     (URLPDFSource value) => {...}
+    ///     (UrlPdfSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<Base64PDFSource, T> base64PDF,
+        System::Func<Base64PdfSource, T> base64Pdf,
         System::Func<PlainTextSource, T> plainText,
         System::Func<ContentBlockSource, T> contentBlock,
-        System::Func<URLPDFSource, T> urlPDF
+        System::Func<UrlPdfSource, T> urlPdf
     )
     {
         return this.Value switch
         {
-            Base64PDFSource value => base64PDF(value),
+            Base64PdfSource value => base64Pdf(value),
             PlainTextSource value => plainText(value),
             ContentBlockSource value => contentBlock(value),
-            URLPDFSource value => urlPDF(value),
+            UrlPdfSource value => urlPdf(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Source"
             ),
         };
     }
 
-    public static implicit operator Source(Base64PDFSource value) => new(value);
+    public static implicit operator Source(Base64PdfSource value) => new(value);
 
     public static implicit operator Source(PlainTextSource value) => new(value);
 
     public static implicit operator Source(ContentBlockSource value) => new(value);
 
-    public static implicit operator Source(URLPDFSource value) => new(value);
+    public static implicit operator Source(UrlPdfSource value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -398,10 +398,10 @@ public record class Source
             throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
         this.Switch(
-            (base64PDF) => base64PDF.Validate(),
+            (base64Pdf) => base64Pdf.Validate(),
             (plainText) => plainText.Validate(),
             (contentBlock) => contentBlock.Validate(),
-            (urlPDF) => urlPDF.Validate()
+            (urlPdf) => urlPdf.Validate()
         );
     }
 
@@ -441,7 +441,7 @@ sealed class SourceConverter : JsonConverter<Source>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Base64PDFSource>(
+                    var deserialized = JsonSerializer.Deserialize<Base64PdfSource>(
                         element,
                         options
                     );
@@ -507,7 +507,7 @@ sealed class SourceConverter : JsonConverter<Source>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<URLPDFSource>(element, options);
+                    var deserialized = JsonSerializer.Deserialize<UrlPdfSource>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();

@@ -12,7 +12,7 @@ public class TextBlockParamTest : TestBase
         var model = new TextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new CitationCharLocationParam()
@@ -28,7 +28,7 @@ public class TextBlockParamTest : TestBase
 
         string expectedText = "x";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<TextCitationParam> expectedCitations =
         [
             new CitationCharLocationParam()
@@ -58,7 +58,7 @@ public class TextBlockParamTest : TestBase
         var model = new TextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new CitationCharLocationParam()
@@ -84,7 +84,7 @@ public class TextBlockParamTest : TestBase
         var model = new TextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new CitationCharLocationParam()
@@ -104,7 +104,7 @@ public class TextBlockParamTest : TestBase
 
         string expectedText = "x";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<TextCitationParam> expectedCitations =
         [
             new CitationCharLocationParam()
@@ -134,7 +134,7 @@ public class TextBlockParamTest : TestBase
         var model = new TextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new CitationCharLocationParam()

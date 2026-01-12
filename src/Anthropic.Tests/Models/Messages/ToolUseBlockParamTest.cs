@@ -17,7 +17,7 @@ public class ToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string expectedID = "id";
@@ -27,7 +27,7 @@ public class ToolUseBlockParamTest : TestBase
         };
         string expectedName = "x";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -53,7 +53,7 @@ public class ToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -73,7 +73,7 @@ public class ToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -87,7 +87,7 @@ public class ToolUseBlockParamTest : TestBase
         };
         string expectedName = "x";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);
@@ -113,7 +113,7 @@ public class ToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();

@@ -13,9 +13,9 @@ public class RawContentBlockDeltaTest : TestBase
     }
 
     [Fact]
-    public void InputJSONValidationWorks()
+    public void InputJsonValidationWorks()
     {
-        RawContentBlockDelta value = new(new InputJSONDelta("partial_json"));
+        RawContentBlockDelta value = new(new InputJsonDelta("partial_json"));
         value.Validate();
     }
 
@@ -65,9 +65,9 @@ public class RawContentBlockDeltaTest : TestBase
     }
 
     [Fact]
-    public void InputJSONSerializationRoundtripWorks()
+    public void InputJsonSerializationRoundtripWorks()
     {
-        RawContentBlockDelta value = new(new InputJSONDelta("partial_json"));
+        RawContentBlockDelta value = new(new InputJsonDelta("partial_json"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockDelta>(element);
 

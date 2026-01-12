@@ -150,11 +150,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
-    public IReadOnlyList<BetaRequestMCPServerURLDefinition>? MCPServers
+    public IReadOnlyList<BetaRequestMcpServerURLDefinition>? McpServers
     {
         get
         {
-            return JsonModel.GetNullableClass<List<BetaRequestMCPServerURLDefinition>>(
+            return JsonModel.GetNullableClass<List<BetaRequestMcpServerURLDefinition>>(
                 this.RawBodyData,
                 "mcp_servers"
             );
@@ -211,11 +211,11 @@ public sealed record class MessageCreateParams : ParamsBase
     /// <summary>
     ///  A schema to specify Claude's output format in responses.
     /// </summary>
-    public BetaJSONOutputFormat? OutputFormat
+    public BetaJsonOutputFormat? OutputFormat
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaJSONOutputFormat>(
+            return JsonModel.GetNullableClass<BetaJsonOutputFormat>(
                 this.RawBodyData,
                 "output_format"
             );

@@ -55,9 +55,9 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void APIValidationWorks()
+    public void ApiValidationWorks()
     {
-        BetaError value = new(new BetaAPIError("message"));
+        BetaError value = new(new BetaApiError("message"));
         value.Validate();
     }
 
@@ -139,9 +139,9 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
-    public void APISerializationRoundtripWorks()
+    public void ApiSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaAPIError("message"));
+        BetaError value = new(new BetaApiError("message"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaError>(element);
 

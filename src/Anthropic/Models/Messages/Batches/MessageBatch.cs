@@ -135,7 +135,7 @@ public sealed record class MessageBatch : JsonModel
     /// <para>Results in the file are not guaranteed to be in the same order as requests.
     /// Use the `custom_id` field to match results to requests.</para>
     /// </summary>
-    public required string? ResultsURL
+    public required string? ResultsUrl
     {
         get { return JsonModel.GetNullableClass<string>(this.RawData, "results_url"); }
         init { JsonModel.Set(this._rawData, "results_url", value); }
@@ -163,7 +163,7 @@ public sealed record class MessageBatch : JsonModel
         _ = this.ExpiresAt;
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
-        _ = this.ResultsURL;
+        _ = this.ResultsUrl;
         if (
             !JsonElement.DeepEquals(
                 this.Type,

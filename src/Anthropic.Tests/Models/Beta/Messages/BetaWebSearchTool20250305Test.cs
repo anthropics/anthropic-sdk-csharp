@@ -16,7 +16,7 @@ public class BetaWebSearchTool20250305Test : TestBase
             AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             MaxUses = 1,
             Strict = true,
@@ -39,7 +39,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
@@ -86,7 +86,7 @@ public class BetaWebSearchTool20250305Test : TestBase
             AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             MaxUses = 1,
             Strict = true,
@@ -113,7 +113,7 @@ public class BetaWebSearchTool20250305Test : TestBase
             AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             MaxUses = 1,
             Strict = true,
@@ -140,7 +140,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
@@ -187,7 +187,7 @@ public class BetaWebSearchTool20250305Test : TestBase
             AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             MaxUses = 1,
             Strict = true,
@@ -210,7 +210,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -236,7 +236,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -257,7 +257,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -288,7 +288,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {

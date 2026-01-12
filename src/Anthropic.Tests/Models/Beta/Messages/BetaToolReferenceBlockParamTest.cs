@@ -11,12 +11,12 @@ public class BetaToolReferenceBlockParamTest : TestBase
         var model = new BetaToolReferenceBlockParam
         {
             ToolName = "tool_name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string expectedToolName = "tool_name";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedToolName, model.ToolName);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -29,7 +29,7 @@ public class BetaToolReferenceBlockParamTest : TestBase
         var model = new BetaToolReferenceBlockParam
         {
             ToolName = "tool_name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -44,7 +44,7 @@ public class BetaToolReferenceBlockParamTest : TestBase
         var model = new BetaToolReferenceBlockParam
         {
             ToolName = "tool_name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -53,7 +53,7 @@ public class BetaToolReferenceBlockParamTest : TestBase
 
         string expectedToolName = "tool_name";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedToolName, deserialized.ToolName);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -66,7 +66,7 @@ public class BetaToolReferenceBlockParamTest : TestBase
         var model = new BetaToolReferenceBlockParam
         {
             ToolName = "tool_name",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();

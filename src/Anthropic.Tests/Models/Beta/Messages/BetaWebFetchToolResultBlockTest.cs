@@ -109,11 +109,11 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
                 Content = new()
                 {
                     Citations = new(true),
-                    Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                    Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
                     Title = "title",
                 },
                 RetrievedAt = "retrieved_at",
-                URL = "url",
+                Url = "url",
             }
         );
         value.Validate();
@@ -140,11 +140,11 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
                 Content = new()
                 {
                     Citations = new(true),
-                    Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+                    Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
                     Title = "title",
                 },
                 RetrievedAt = "retrieved_at",
-                URL = "url",
+                Url = "url",
             }
         );
         string element = JsonSerializer.Serialize(value);

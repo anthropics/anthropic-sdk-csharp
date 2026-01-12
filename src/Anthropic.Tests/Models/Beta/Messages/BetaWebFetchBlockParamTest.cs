@@ -12,31 +12,31 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
             RetrievedAt = "retrieved_at",
         };
 
         BetaRequestDocumentBlock expectedContent = new()
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
         };
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
-        string expectedURL = "url";
+        string expectedUrl = "url";
         string expectedRetrievedAt = "retrieved_at";
 
         Assert.Equal(expectedContent, model.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedURL, model.URL);
+        Assert.Equal(expectedUrl, model.Url);
         Assert.Equal(expectedRetrievedAt, model.RetrievedAt);
     }
 
@@ -47,13 +47,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
             RetrievedAt = "retrieved_at",
         };
 
@@ -70,13 +70,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
             RetrievedAt = "retrieved_at",
         };
 
@@ -86,19 +86,19 @@ public class BetaWebFetchBlockParamTest : TestBase
 
         BetaRequestDocumentBlock expectedContent = new()
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
         };
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
-        string expectedURL = "url";
+        string expectedUrl = "url";
         string expectedRetrievedAt = "retrieved_at";
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedURL, deserialized.URL);
+        Assert.Equal(expectedUrl, deserialized.Url);
         Assert.Equal(expectedRetrievedAt, deserialized.RetrievedAt);
     }
 
@@ -109,13 +109,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
             RetrievedAt = "retrieved_at",
         };
 
@@ -129,13 +129,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
         };
 
         Assert.Null(model.RetrievedAt);
@@ -149,13 +149,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
         };
 
         model.Validate();
@@ -168,13 +168,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
 
             RetrievedAt = null,
         };
@@ -190,13 +190,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
 
             RetrievedAt = null,
         };

@@ -34,7 +34,7 @@ public class MessageBatchResultTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = StopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -113,7 +113,7 @@ public class MessageBatchResultTest : TestBase
                             Text = "Hi! My name is Claude.",
                         },
                     ],
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = StopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()

@@ -10,7 +10,7 @@ public class ToolTextEditor20250728Test : TestBase
     {
         var model = new ToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
@@ -20,7 +20,7 @@ public class ToolTextEditor20250728Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_20250728\""
         );
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxCharacters = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
@@ -34,7 +34,7 @@ public class ToolTextEditor20250728Test : TestBase
     {
         var model = new ToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
@@ -49,7 +49,7 @@ public class ToolTextEditor20250728Test : TestBase
     {
         var model = new ToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
@@ -63,7 +63,7 @@ public class ToolTextEditor20250728Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_20250728\""
         );
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxCharacters = 1;
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
@@ -77,7 +77,7 @@ public class ToolTextEditor20250728Test : TestBase
     {
         var model = new ToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 

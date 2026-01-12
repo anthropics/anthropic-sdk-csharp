@@ -14,7 +14,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         var model = new BetaToolTextEditor20250728
         {
             AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -37,7 +37,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         [
             BetaToolTextEditor20250728AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -81,7 +81,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         var model = new BetaToolTextEditor20250728
         {
             AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -106,7 +106,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         var model = new BetaToolTextEditor20250728
         {
             AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -133,7 +133,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         [
             BetaToolTextEditor20250728AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -177,7 +177,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         var model = new BetaToolTextEditor20250728
         {
             AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -198,7 +198,7 @@ public class BetaToolTextEditor20250728Test : TestBase
     {
         var model = new BetaToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
@@ -217,7 +217,7 @@ public class BetaToolTextEditor20250728Test : TestBase
     {
         var model = new BetaToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
@@ -229,7 +229,7 @@ public class BetaToolTextEditor20250728Test : TestBase
     {
         var model = new BetaToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
 
             // Null should be interpreted as omitted for these properties
@@ -254,7 +254,7 @@ public class BetaToolTextEditor20250728Test : TestBase
     {
         var model = new BetaToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
 
             // Null should be interpreted as omitted for these properties

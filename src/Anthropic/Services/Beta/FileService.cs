@@ -30,7 +30,7 @@ public sealed class FileService : IFileService
     }
 
     /// <inheritdoc/>
-    public async Task<FileListPageResponse> List(
+    public async Task<FileListPage> List(
         FileListParams? parameters = null,
         CancellationToken cancellationToken = default
     )
@@ -52,7 +52,7 @@ public sealed class FileService : IFileService
         {
             page.Validate();
         }
-        return page;
+        return new FileListPage(this, parameters, page);
     }
 
     /// <inheritdoc/>
@@ -112,9 +112,7 @@ public sealed class FileService : IFileService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return response;
     }
 

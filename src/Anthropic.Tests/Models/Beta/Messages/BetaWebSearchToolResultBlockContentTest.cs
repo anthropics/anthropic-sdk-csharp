@@ -24,7 +24,7 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
                     EncryptedContent = "encrypted_content",
                     PageAge = "page_age",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                 },
             ]
         );
@@ -53,7 +53,7 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
                     EncryptedContent = "encrypted_content",
                     PageAge = "page_age",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                 },
             ]
         );

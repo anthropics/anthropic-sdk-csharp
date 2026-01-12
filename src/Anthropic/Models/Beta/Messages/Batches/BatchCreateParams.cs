@@ -334,11 +334,11 @@ public sealed record class Params : JsonModel
     /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
-    public IReadOnlyList<BetaRequestMCPServerURLDefinition>? MCPServers
+    public IReadOnlyList<BetaRequestMcpServerURLDefinition>? McpServers
     {
         get
         {
-            return JsonModel.GetNullableClass<List<BetaRequestMCPServerURLDefinition>>(
+            return JsonModel.GetNullableClass<List<BetaRequestMcpServerURLDefinition>>(
                 this.RawData,
                 "mcp_servers"
             );
@@ -392,11 +392,11 @@ public sealed record class Params : JsonModel
     /// <summary>
     ///  A schema to specify Claude's output format in responses.
     /// </summary>
-    public BetaJSONOutputFormat? OutputFormat
+    public BetaJsonOutputFormat? OutputFormat
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaJSONOutputFormat>(this.RawData, "output_format");
+            return JsonModel.GetNullableClass<BetaJsonOutputFormat>(this.RawData, "output_format");
         }
         init { JsonModel.Set(this._rawData, "output_format", value); }
     }
@@ -680,7 +680,7 @@ public sealed record class Params : JsonModel
         this.Model.Validate();
         this.Container?.Validate();
         this.ContextManagement?.Validate();
-        foreach (var item in this.MCPServers ?? [])
+        foreach (var item in this.McpServers ?? [])
         {
             item.Validate();
         }
@@ -704,8 +704,8 @@ public sealed record class Params : JsonModel
 
     public Params() { }
 
-    public Params(Params params1)
-        : base(params1) { }
+    public Params(Params params_)
+        : base(params_) { }
 
     public Params(IReadOnlyDictionary<string, JsonElement> rawData)
     {
