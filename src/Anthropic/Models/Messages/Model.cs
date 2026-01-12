@@ -41,11 +41,17 @@ public enum Model
     /// <summary>
     /// Fastest and most compact model for near-instant responsiveness
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     Claude3_5HaikuLatest,
 
     /// <summary>
     /// Our fastest model
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     Claude3_5Haiku20241022,
 
     /// <summary>
