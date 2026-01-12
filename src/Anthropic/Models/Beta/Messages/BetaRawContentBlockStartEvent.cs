@@ -19,20 +19,20 @@ public sealed record class BetaRawContentBlockStartEvent : JsonModel
     /// </summary>
     public required ContentBlock ContentBlock
     {
-        get { return JsonModel.GetNotNullClass<ContentBlock>(this.RawData, "content_block"); }
-        init { JsonModel.Set(this._rawData, "content_block", value); }
+        get { return this._rawData.GetNotNullClass<ContentBlock>("content_block"); }
+        init { this._rawData.Set("content_block", value); }
     }
 
     public required long Index
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { JsonModel.Set(this._rawData, "index", value); }
+        get { return this._rawData.GetNotNullStruct<long>("index"); }
+        init { this._rawData.Set("index", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -63,7 +63,7 @@ public sealed record class BetaRawContentBlockStartEvent : JsonModel
 
     public BetaRawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
     }
@@ -72,7 +72,7 @@ public sealed record class BetaRawContentBlockStartEvent : JsonModel
     [SetsRequiredMembers]
     BetaRawContentBlockStartEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -21,24 +21,23 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlockParam : Jso
     {
         get
         {
-            return JsonModel.GetNotNullClass<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                this.RawData,
+            return this._rawData.GetNotNullClass<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
                 "content"
             );
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
+        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -46,14 +45,8 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlockParam : Jso
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -91,7 +84,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlockParam : Jso
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_code_execution_tool_result\""
@@ -102,7 +95,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlockParam : Jso
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

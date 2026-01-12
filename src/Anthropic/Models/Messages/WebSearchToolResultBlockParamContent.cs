@@ -234,10 +234,9 @@ sealed class WebSearchToolResultBlockParamContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<WebSearchResultBlockParam>>(
-                element,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<
+                ImmutableArray<WebSearchResultBlockParam>
+            >(element, options);
             if (deserialized != null)
             {
                 return new(deserialized, element);

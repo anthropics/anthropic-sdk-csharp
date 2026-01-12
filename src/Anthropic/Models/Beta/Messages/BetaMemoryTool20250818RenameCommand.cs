@@ -21,8 +21,8 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public JsonElement Command
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { JsonModel.Set(this._rawData, "command", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("command"); }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public required string NewPath
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "new_path"); }
-        init { JsonModel.Set(this._rawData, "new_path", value); }
+        get { return this._rawData.GetNotNullClass<string>("new_path"); }
+        init { this._rawData.Set("new_path", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public required string OldPath
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "old_path"); }
-        init { JsonModel.Set(this._rawData, "old_path", value); }
+        get { return this._rawData.GetNotNullClass<string>("old_path"); }
+        init { this._rawData.Set("old_path", value); }
     }
 
     /// <inheritdoc/>
@@ -71,7 +71,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
 
     public BetaMemoryTool20250818RenameCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
     }
@@ -80,7 +80,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     [SetsRequiredMembers]
     BetaMemoryTool20250818RenameCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

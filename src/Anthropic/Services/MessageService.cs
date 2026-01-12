@@ -149,7 +149,12 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         CancellationToken cancellationToken = default
     )
     {
-        var rawBodyData = Enumerable.ToDictionary(parameters.RawBodyData, e => e.Key, e => e.Value);
+        var rawBodyData = Enumerable.ToDictionary(
+            parameters.RawBodyData,
+            (e) => e.Key,
+            (e) => e.Value
+        );
+        ;
         rawBodyData["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
         parameters = MessageCreateParams.FromRawUnchecked(
             parameters.RawHeaderData,

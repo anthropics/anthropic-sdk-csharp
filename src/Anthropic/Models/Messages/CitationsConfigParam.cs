@@ -12,7 +12,7 @@ public sealed record class CitationsConfigParam : JsonModel
 {
     public bool? Enabled
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "enabled"); }
+        get { return this._rawData.GetNullableStruct<bool>("enabled"); }
         init
         {
             if (value == null)
@@ -20,7 +20,7 @@ public sealed record class CitationsConfigParam : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "enabled", value);
+            this._rawData.Set("enabled", value);
         }
     }
 
@@ -37,14 +37,14 @@ public sealed record class CitationsConfigParam : JsonModel
 
     public CitationsConfigParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     CitationsConfigParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

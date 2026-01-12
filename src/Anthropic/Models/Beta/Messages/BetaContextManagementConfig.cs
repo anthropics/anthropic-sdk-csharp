@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,7 +20,7 @@ public sealed record class BetaContextManagementConfig : JsonModel
     /// </summary>
     public IReadOnlyList<Edit>? Edits
     {
-        get { return JsonModel.GetNullableClass<List<Edit>>(this.RawData, "edits"); }
+        get { return this._rawData.GetNullableStruct<ImmutableArray<Edit>>("edits"); }
         init
         {
             if (value == null)
@@ -27,7 +28,10 @@ public sealed record class BetaContextManagementConfig : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "edits", value);
+            this._rawData.Set<ImmutableArray<Edit>?>(
+                "edits",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -47,14 +51,14 @@ public sealed record class BetaContextManagementConfig : JsonModel
 
     public BetaContextManagementConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContextManagementConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -19,41 +19,38 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock : JsonMode
 {
     public required string Content
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullClass<string>("content"); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required ApiEnum<string, FileType> FileType
     {
-        get
-        {
-            return JsonModel.GetNotNullClass<ApiEnum<string, FileType>>(this.RawData, "file_type");
-        }
-        init { JsonModel.Set(this._rawData, "file_type", value); }
+        get { return this._rawData.GetNotNullClass<ApiEnum<string, FileType>>("file_type"); }
+        init { this._rawData.Set("file_type", value); }
     }
 
     public required long? NumLines
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "num_lines"); }
-        init { JsonModel.Set(this._rawData, "num_lines", value); }
+        get { return this._rawData.GetNullableStruct<long>("num_lines"); }
+        init { this._rawData.Set("num_lines", value); }
     }
 
     public required long? StartLine
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "start_line"); }
-        init { JsonModel.Set(this._rawData, "start_line", value); }
+        get { return this._rawData.GetNullableStruct<long>("start_line"); }
+        init { this._rawData.Set("start_line", value); }
     }
 
     public required long? TotalLines
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "total_lines"); }
-        init { JsonModel.Set(this._rawData, "total_lines", value); }
+        get { return this._rawData.GetNullableStruct<long>("total_lines"); }
+        init { this._rawData.Set("total_lines", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -93,7 +90,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock : JsonMode
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_code_execution_view_result\""
@@ -104,7 +101,7 @@ public sealed record class BetaTextEditorCodeExecutionViewResultBlock : JsonMode
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionViewResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

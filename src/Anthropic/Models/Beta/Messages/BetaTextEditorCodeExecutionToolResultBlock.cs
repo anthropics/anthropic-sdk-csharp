@@ -21,24 +21,23 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : JsonMode
     {
         get
         {
-            return JsonModel.GetNotNullClass<BetaTextEditorCodeExecutionToolResultBlockContent>(
-                this.RawData,
+            return this._rawData.GetNotNullClass<BetaTextEditorCodeExecutionToolResultBlockContent>(
                 "content"
             );
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
+        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -75,7 +74,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : JsonMode
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_code_execution_tool_result\""
@@ -86,7 +85,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultBlock : JsonMode
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,36 +21,41 @@ public sealed record class BetaBashCodeExecutionResultBlock : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<List<BetaBashCodeExecutionOutputBlock>>(
-                this.RawData,
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaBashCodeExecutionOutputBlock>>(
                 "content"
             );
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaBashCodeExecutionOutputBlock>>(
+                "content",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public required long ReturnCode
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "return_code"); }
-        init { JsonModel.Set(this._rawData, "return_code", value); }
+        get { return this._rawData.GetNotNullStruct<long>("return_code"); }
+        init { this._rawData.Set("return_code", value); }
     }
 
     public required string Stderr
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "stderr"); }
-        init { JsonModel.Set(this._rawData, "stderr", value); }
+        get { return this._rawData.GetNotNullClass<string>("stderr"); }
+        init { this._rawData.Set("stderr", value); }
     }
 
     public required string Stdout
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "stdout"); }
-        init { JsonModel.Set(this._rawData, "stdout", value); }
+        get { return this._rawData.GetNotNullClass<string>("stdout"); }
+        init { this._rawData.Set("stdout", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -85,7 +91,7 @@ public sealed record class BetaBashCodeExecutionResultBlock : JsonModel
 
     public BetaBashCodeExecutionResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_result\"");
     }
@@ -94,7 +100,7 @@ public sealed record class BetaBashCodeExecutionResultBlock : JsonModel
     [SetsRequiredMembers]
     BetaBashCodeExecutionResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

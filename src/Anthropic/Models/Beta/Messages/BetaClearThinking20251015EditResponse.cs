@@ -21,8 +21,8 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
     /// </summary>
     public required long ClearedInputTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "cleared_input_tokens"); }
-        init { JsonModel.Set(this._rawData, "cleared_input_tokens", value); }
+        get { return this._rawData.GetNotNullStruct<long>("cleared_input_tokens"); }
+        init { this._rawData.Set("cleared_input_tokens", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
     /// </summary>
     public required long ClearedThinkingTurns
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "cleared_thinking_turns"); }
-        init { JsonModel.Set(this._rawData, "cleared_thinking_turns", value); }
+        get { return this._rawData.GetNotNullStruct<long>("cleared_thinking_turns"); }
+        init { this._rawData.Set("cleared_thinking_turns", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -71,7 +71,7 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
 
     public BetaClearThinking20251015EditResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
     }
@@ -80,7 +80,7 @@ public sealed record class BetaClearThinking20251015EditResponse : JsonModel
     [SetsRequiredMembers]
     BetaClearThinking20251015EditResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

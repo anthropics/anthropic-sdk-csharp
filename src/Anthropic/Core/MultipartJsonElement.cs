@@ -120,9 +120,10 @@ public static class MultipartJsonSerializer
         {
             CurrentBinaryContents.Value = Enumerable.ToDictionary(
                 element.BinaryContents,
-                e => e.Key,
-                e => e.Value
+                (e) => e.Key,
+                (e) => e.Value
             );
+            ;
             return JsonSerializer.Deserialize<T>(element.Json, MultipartSerializerOptions(options));
         }
         finally

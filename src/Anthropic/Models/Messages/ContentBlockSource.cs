@@ -15,14 +15,14 @@ public sealed record class ContentBlockSource : JsonModel
 {
     public required Content Content
     {
-        get { return JsonModel.GetNotNullClass<Content>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullClass<Content>("content"); }
+        init { this._rawData.Set("content", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -50,7 +50,7 @@ public sealed record class ContentBlockSource : JsonModel
 
     public ContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
@@ -59,7 +59,7 @@ public sealed record class ContentBlockSource : JsonModel
     [SetsRequiredMembers]
     ContentBlockSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -296,10 +296,9 @@ sealed class ContentConverter : JsonConverter<Content>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<ContentBlockSourceContent>>(
-                element,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<
+                ImmutableArray<ContentBlockSourceContent>
+            >(element, options);
             if (deserialized != null)
             {
                 return new(deserialized, element);

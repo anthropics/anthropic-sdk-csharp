@@ -17,18 +17,17 @@ public sealed record class BetaWebSearchToolResultError : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
-                this.RawData,
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaWebSearchToolResultErrorCode>>(
                 "error_code"
             );
         }
-        init { JsonModel.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -56,7 +55,7 @@ public sealed record class BetaWebSearchToolResultError : JsonModel
 
     public BetaWebSearchToolResultError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
     }
@@ -65,7 +64,7 @@ public sealed record class BetaWebSearchToolResultError : JsonModel
     [SetsRequiredMembers]
     BetaWebSearchToolResultError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

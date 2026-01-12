@@ -21,23 +21,23 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : JsonMode
     {
         get
         {
-            return JsonModel.GetNotNullClass<
+            return this._rawData.GetNotNullClass<
                 ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorErrorCode>
-            >(this.RawData, "error_code");
+            >("error_code");
         }
-        init { JsonModel.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public required string? ErrorMessage
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "error_message"); }
-        init { JsonModel.Set(this._rawData, "error_message", value); }
+        get { return this._rawData.GetNullableClass<string>("error_message"); }
+        init { this._rawData.Set("error_message", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -74,7 +74,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : JsonMode
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_code_execution_tool_result_error\""
@@ -85,7 +85,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultError : JsonMode
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionToolResultError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

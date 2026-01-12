@@ -19,8 +19,8 @@ public sealed record class MessageBatch : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get { return this._rawData.GetNotNullClass<string>("id"); }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -29,11 +29,8 @@ public sealed record class MessageBatch : JsonModel
     /// </summary>
     public required System::DateTimeOffset? ArchivedAt
     {
-        get
-        {
-            return JsonModel.GetNullableStruct<System::DateTimeOffset>(this.RawData, "archived_at");
-        }
-        init { JsonModel.Set(this._rawData, "archived_at", value); }
+        get { return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at"); }
+        init { this._rawData.Set("archived_at", value); }
     }
 
     /// <summary>
@@ -44,12 +41,9 @@ public sealed record class MessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableStruct<System::DateTimeOffset>(
-                this.RawData,
-                "cancel_initiated_at"
-            );
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("cancel_initiated_at");
         }
-        init { JsonModel.Set(this._rawData, "cancel_initiated_at", value); }
+        init { this._rawData.Set("cancel_initiated_at", value); }
     }
 
     /// <summary>
@@ -58,11 +52,8 @@ public sealed record class MessageBatch : JsonModel
     /// </summary>
     public required System::DateTimeOffset CreatedAt
     {
-        get
-        {
-            return JsonModel.GetNotNullStruct<System::DateTimeOffset>(this.RawData, "created_at");
-        }
-        init { JsonModel.Set(this._rawData, "created_at", value); }
+        get { return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at"); }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -74,11 +65,8 @@ public sealed record class MessageBatch : JsonModel
     /// </summary>
     public required System::DateTimeOffset? EndedAt
     {
-        get
-        {
-            return JsonModel.GetNullableStruct<System::DateTimeOffset>(this.RawData, "ended_at");
-        }
-        init { JsonModel.Set(this._rawData, "ended_at", value); }
+        get { return this._rawData.GetNullableStruct<System::DateTimeOffset>("ended_at"); }
+        init { this._rawData.Set("ended_at", value); }
     }
 
     /// <summary>
@@ -87,11 +75,8 @@ public sealed record class MessageBatch : JsonModel
     /// </summary>
     public required System::DateTimeOffset ExpiresAt
     {
-        get
-        {
-            return JsonModel.GetNotNullStruct<System::DateTimeOffset>(this.RawData, "expires_at");
-        }
-        init { JsonModel.Set(this._rawData, "expires_at", value); }
+        get { return this._rawData.GetNotNullStruct<System::DateTimeOffset>("expires_at"); }
+        init { this._rawData.Set("expires_at", value); }
     }
 
     /// <summary>
@@ -101,12 +86,11 @@ public sealed record class MessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, ProcessingStatus>>(
-                this.RawData,
+            return this._rawData.GetNotNullClass<ApiEnum<string, ProcessingStatus>>(
                 "processing_status"
             );
         }
-        init { JsonModel.Set(this._rawData, "processing_status", value); }
+        init { this._rawData.Set("processing_status", value); }
     }
 
     /// <summary>
@@ -118,14 +102,8 @@ public sealed record class MessageBatch : JsonModel
     /// </summary>
     public required MessageBatchRequestCounts RequestCounts
     {
-        get
-        {
-            return JsonModel.GetNotNullClass<MessageBatchRequestCounts>(
-                this.RawData,
-                "request_counts"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "request_counts", value); }
+        get { return this._rawData.GetNotNullClass<MessageBatchRequestCounts>("request_counts"); }
+        init { this._rawData.Set("request_counts", value); }
     }
 
     /// <summary>
@@ -137,8 +115,8 @@ public sealed record class MessageBatch : JsonModel
     /// </summary>
     public required string? ResultsUrl
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "results_url"); }
-        init { JsonModel.Set(this._rawData, "results_url", value); }
+        get { return this._rawData.GetNullableClass<string>("results_url"); }
+        init { this._rawData.Set("results_url", value); }
     }
 
     /// <summary>
@@ -148,8 +126,8 @@ public sealed record class MessageBatch : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -185,7 +163,7 @@ public sealed record class MessageBatch : JsonModel
 
     public MessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
     }
@@ -194,7 +172,7 @@ public sealed record class MessageBatch : JsonModel
     [SetsRequiredMembers]
     MessageBatch(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -18,38 +18,37 @@ public sealed record class BetaRequestMcpServerUrlDefinition : JsonModel
 {
     public required string Name
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get { return this._rawData.GetNotNullClass<string>("name"); }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     public required string Url
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
-        init { JsonModel.Set(this._rawData, "url", value); }
+        get { return this._rawData.GetNotNullClass<string>("url"); }
+        init { this._rawData.Set("url", value); }
     }
 
     public string? AuthorizationToken
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "authorization_token"); }
-        init { JsonModel.Set(this._rawData, "authorization_token", value); }
+        get { return this._rawData.GetNullableClass<string>("authorization_token"); }
+        init { this._rawData.Set("authorization_token", value); }
     }
 
     public BetaRequestMcpServerToolConfiguration? ToolConfiguration
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaRequestMcpServerToolConfiguration>(
-                this.RawData,
+            return this._rawData.GetNullableClass<BetaRequestMcpServerToolConfiguration>(
                 "tool_configuration"
             );
         }
-        init { JsonModel.Set(this._rawData, "tool_configuration", value); }
+        init { this._rawData.Set("tool_configuration", value); }
     }
 
     /// <inheritdoc/>
@@ -77,7 +76,7 @@ public sealed record class BetaRequestMcpServerUrlDefinition : JsonModel
 
     public BetaRequestMcpServerUrlDefinition(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"url\"");
     }
@@ -86,7 +85,7 @@ public sealed record class BetaRequestMcpServerUrlDefinition : JsonModel
     [SetsRequiredMembers]
     BetaRequestMcpServerUrlDefinition(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -18,8 +19,8 @@ public sealed record class BetaContainerParams : JsonModel
     /// </summary>
     public string? ID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get { return this._rawData.GetNullableClass<string>("id"); }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -27,8 +28,14 @@ public sealed record class BetaContainerParams : JsonModel
     /// </summary>
     public IReadOnlyList<BetaSkillParams>? Skills
     {
-        get { return JsonModel.GetNullableClass<List<BetaSkillParams>>(this.RawData, "skills"); }
-        init { JsonModel.Set(this._rawData, "skills", value); }
+        get { return this._rawData.GetNullableStruct<ImmutableArray<BetaSkillParams>>("skills"); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaSkillParams>?>(
+                "skills",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -48,14 +55,14 @@ public sealed record class BetaContainerParams : JsonModel
 
     public BetaContainerParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContainerParams(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

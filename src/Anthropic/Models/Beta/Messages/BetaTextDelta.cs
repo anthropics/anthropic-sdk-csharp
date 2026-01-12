@@ -13,14 +13,14 @@ public sealed record class BetaTextDelta : JsonModel
 {
     public required string Text
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
-        init { JsonModel.Set(this._rawData, "text", value); }
+        get { return this._rawData.GetNotNullClass<string>("text"); }
+        init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -48,7 +48,7 @@ public sealed record class BetaTextDelta : JsonModel
 
     public BetaTextDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
     }
@@ -57,7 +57,7 @@ public sealed record class BetaTextDelta : JsonModel
     [SetsRequiredMembers]
     BetaTextDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

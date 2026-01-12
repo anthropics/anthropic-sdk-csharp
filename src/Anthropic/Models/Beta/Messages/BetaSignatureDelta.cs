@@ -13,14 +13,14 @@ public sealed record class BetaSignatureDelta : JsonModel
 {
     public required string Signature
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "signature"); }
-        init { JsonModel.Set(this._rawData, "signature", value); }
+        get { return this._rawData.GetNotNullClass<string>("signature"); }
+        init { this._rawData.Set("signature", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -48,7 +48,7 @@ public sealed record class BetaSignatureDelta : JsonModel
 
     public BetaSignatureDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"");
     }
@@ -57,7 +57,7 @@ public sealed record class BetaSignatureDelta : JsonModel
     [SetsRequiredMembers]
     BetaSignatureDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

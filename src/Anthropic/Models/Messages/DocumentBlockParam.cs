@@ -14,14 +14,14 @@ public sealed record class DocumentBlockParam : JsonModel
 {
     public required Source Source
     {
-        get { return JsonModel.GetNotNullClass<Source>(this.RawData, "source"); }
-        init { JsonModel.Set(this._rawData, "source", value); }
+        get { return this._rawData.GetNotNullClass<Source>("source"); }
+        init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -29,29 +29,26 @@ public sealed record class DocumentBlockParam : JsonModel
     /// </summary>
     public CacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public CitationsConfigParam? Citations
     {
-        get { return JsonModel.GetNullableClass<CitationsConfigParam>(this.RawData, "citations"); }
-        init { JsonModel.Set(this._rawData, "citations", value); }
+        get { return this._rawData.GetNullableClass<CitationsConfigParam>("citations"); }
+        init { this._rawData.Set("citations", value); }
     }
 
     public string? Context
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "context"); }
-        init { JsonModel.Set(this._rawData, "context", value); }
+        get { return this._rawData.GetNullableClass<string>("context"); }
+        init { this._rawData.Set("context", value); }
     }
 
     public string? Title
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
-        init { JsonModel.Set(this._rawData, "title", value); }
+        get { return this._rawData.GetNullableClass<string>("title"); }
+        init { this._rawData.Set("title", value); }
     }
 
     /// <inheritdoc/>
@@ -83,7 +80,7 @@ public sealed record class DocumentBlockParam : JsonModel
 
     public DocumentBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
@@ -92,7 +89,7 @@ public sealed record class DocumentBlockParam : JsonModel
     [SetsRequiredMembers]
     DocumentBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

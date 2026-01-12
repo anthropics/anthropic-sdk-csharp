@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -18,8 +19,8 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get { return this._rawData.GetNotNullClass<string>("id"); }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -46,8 +47,14 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required IReadOnlyList<ContentBlock> Content
     {
-        get { return JsonModel.GetNotNullClass<List<ContentBlock>>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullStruct<ImmutableArray<ContentBlock>>("content"); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<ContentBlock>>(
+                "content",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -56,8 +63,8 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
-        init { JsonModel.Set(this._rawData, "model", value); }
+        get { return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model"); }
+        init { this._rawData.Set("model", value); }
     }
 
     /// <summary>
@@ -67,8 +74,8 @@ public sealed record class Message : JsonModel
     /// </summary>
     public JsonElement Role
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "role"); }
-        init { JsonModel.Set(this._rawData, "role", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("role"); }
+        init { this._rawData.Set("role", value); }
     }
 
     /// <summary>
@@ -87,14 +94,8 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required ApiEnum<string, StopReason>? StopReason
     {
-        get
-        {
-            return JsonModel.GetNullableClass<ApiEnum<string, StopReason>>(
-                this.RawData,
-                "stop_reason"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "stop_reason", value); }
+        get { return this._rawData.GetNullableClass<ApiEnum<string, StopReason>>("stop_reason"); }
+        init { this._rawData.Set("stop_reason", value); }
     }
 
     /// <summary>
@@ -105,8 +106,8 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required string? StopSequence
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "stop_sequence"); }
-        init { JsonModel.Set(this._rawData, "stop_sequence", value); }
+        get { return this._rawData.GetNullableClass<string>("stop_sequence"); }
+        init { this._rawData.Set("stop_sequence", value); }
     }
 
     /// <summary>
@@ -116,8 +117,8 @@ public sealed record class Message : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -139,8 +140,8 @@ public sealed record class Message : JsonModel
     /// </summary>
     public required Usage Usage
     {
-        get { return JsonModel.GetNotNullClass<Usage>(this.RawData, "usage"); }
-        init { JsonModel.Set(this._rawData, "usage", value); }
+        get { return this._rawData.GetNotNullClass<Usage>("usage"); }
+        init { this._rawData.Set("usage", value); }
     }
 
     /// <inheritdoc/>
@@ -186,7 +187,7 @@ public sealed record class Message : JsonModel
 
     public Message(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
@@ -196,7 +197,7 @@ public sealed record class Message : JsonModel
     [SetsRequiredMembers]
     Message(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

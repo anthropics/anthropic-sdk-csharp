@@ -17,14 +17,14 @@ public sealed record class BetaDocumentBlock : JsonModel
     /// </summary>
     public required BetaCitationConfig? Citations
     {
-        get { return JsonModel.GetNullableClass<BetaCitationConfig>(this.RawData, "citations"); }
-        init { JsonModel.Set(this._rawData, "citations", value); }
+        get { return this._rawData.GetNullableClass<BetaCitationConfig>("citations"); }
+        init { this._rawData.Set("citations", value); }
     }
 
     public required Source Source
     {
-        get { return JsonModel.GetNotNullClass<Source>(this.RawData, "source"); }
-        init { JsonModel.Set(this._rawData, "source", value); }
+        get { return this._rawData.GetNotNullClass<Source>("source"); }
+        init { this._rawData.Set("source", value); }
     }
 
     /// <summary>
@@ -32,14 +32,14 @@ public sealed record class BetaDocumentBlock : JsonModel
     /// </summary>
     public required string? Title
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
-        init { JsonModel.Set(this._rawData, "title", value); }
+        get { return this._rawData.GetNullableClass<string>("title"); }
+        init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -69,7 +69,7 @@ public sealed record class BetaDocumentBlock : JsonModel
 
     public BetaDocumentBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
     }
@@ -78,7 +78,7 @@ public sealed record class BetaDocumentBlock : JsonModel
     [SetsRequiredMembers]
     BetaDocumentBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

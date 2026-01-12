@@ -15,20 +15,14 @@ public sealed record class BetaContentBlockSource : JsonModel
 {
     public required BetaContentBlockSourceContent Content
     {
-        get
-        {
-            return JsonModel.GetNotNullClass<BetaContentBlockSourceContent>(
-                this.RawData,
-                "content"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullClass<BetaContentBlockSourceContent>("content"); }
+        init { this._rawData.Set("content", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -56,7 +50,7 @@ public sealed record class BetaContentBlockSource : JsonModel
 
     public BetaContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
     }
@@ -65,7 +59,7 @@ public sealed record class BetaContentBlockSource : JsonModel
     [SetsRequiredMembers]
     BetaContentBlockSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -316,7 +310,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
         try
         {
             var deserialized = JsonSerializer.Deserialize<
-                List<MessageBetaContentBlockSourceContent>
+                ImmutableArray<MessageBetaContentBlockSourceContent>
             >(element, options);
             if (deserialized != null)
             {

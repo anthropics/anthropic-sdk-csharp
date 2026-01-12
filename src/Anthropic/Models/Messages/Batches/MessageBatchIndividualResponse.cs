@@ -27,8 +27,8 @@ public sealed record class MessageBatchIndividualResponse : JsonModel
     /// </summary>
     public required string CustomID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "custom_id"); }
-        init { JsonModel.Set(this._rawData, "custom_id", value); }
+        get { return this._rawData.GetNotNullClass<string>("custom_id"); }
+        init { this._rawData.Set("custom_id", value); }
     }
 
     /// <summary>
@@ -40,8 +40,8 @@ public sealed record class MessageBatchIndividualResponse : JsonModel
     /// </summary>
     public required MessageBatchResult Result
     {
-        get { return JsonModel.GetNotNullClass<MessageBatchResult>(this.RawData, "result"); }
-        init { JsonModel.Set(this._rawData, "result", value); }
+        get { return this._rawData.GetNotNullClass<MessageBatchResult>("result"); }
+        init { this._rawData.Set("result", value); }
     }
 
     /// <inheritdoc/>
@@ -60,14 +60,14 @@ public sealed record class MessageBatchIndividualResponse : JsonModel
 
     public MessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageBatchIndividualResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

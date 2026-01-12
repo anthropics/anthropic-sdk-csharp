@@ -18,14 +18,14 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : JsonMo
 {
     public required bool IsFileUpdate
     {
-        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "is_file_update"); }
-        init { JsonModel.Set(this._rawData, "is_file_update", value); }
+        get { return this._rawData.GetNotNullStruct<bool>("is_file_update"); }
+        init { this._rawData.Set("is_file_update", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -61,7 +61,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : JsonMo
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_code_execution_create_result\""
@@ -72,7 +72,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : JsonMo
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionCreateResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

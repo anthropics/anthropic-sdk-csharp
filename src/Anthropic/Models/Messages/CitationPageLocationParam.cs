@@ -15,38 +15,38 @@ public sealed record class CitationPageLocationParam : JsonModel
 {
     public required string CitedText
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { JsonModel.Set(this._rawData, "cited_text", value); }
+        get { return this._rawData.GetNotNullClass<string>("cited_text"); }
+        init { this._rawData.Set("cited_text", value); }
     }
 
     public required long DocumentIndex
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "document_index"); }
-        init { JsonModel.Set(this._rawData, "document_index", value); }
+        get { return this._rawData.GetNotNullStruct<long>("document_index"); }
+        init { this._rawData.Set("document_index", value); }
     }
 
     public required string? DocumentTitle
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "document_title"); }
-        init { JsonModel.Set(this._rawData, "document_title", value); }
+        get { return this._rawData.GetNullableClass<string>("document_title"); }
+        init { this._rawData.Set("document_title", value); }
     }
 
     public required long EndPageNumber
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "end_page_number"); }
-        init { JsonModel.Set(this._rawData, "end_page_number", value); }
+        get { return this._rawData.GetNotNullStruct<long>("end_page_number"); }
+        init { this._rawData.Set("end_page_number", value); }
     }
 
     public required long StartPageNumber
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "start_page_number"); }
-        init { JsonModel.Set(this._rawData, "start_page_number", value); }
+        get { return this._rawData.GetNotNullStruct<long>("start_page_number"); }
+        init { this._rawData.Set("start_page_number", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -78,7 +78,7 @@ public sealed record class CitationPageLocationParam : JsonModel
 
     public CitationPageLocationParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"page_location\"");
     }
@@ -87,7 +87,7 @@ public sealed record class CitationPageLocationParam : JsonModel
     [SetsRequiredMembers]
     CitationPageLocationParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

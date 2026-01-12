@@ -14,8 +14,8 @@ public sealed record class BetaServerToolUseBlock : JsonModel
 {
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get { return this._rawData.GetNotNullClass<string>("id"); }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -23,32 +23,35 @@ public sealed record class BetaServerToolUseBlock : JsonModel
     /// </summary>
     public required Caller Caller
     {
-        get { return JsonModel.GetNotNullClass<Caller>(this.RawData, "caller"); }
-        init { JsonModel.Set(this._rawData, "caller", value); }
+        get { return this._rawData.GetNotNullClass<Caller>("caller"); }
+        init { this._rawData.Set("caller", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            return JsonModel.GetNotNullClass<Dictionary<string, JsonElement>>(
-                this.RawData,
-                "input"
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("input");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>>(
+                "input",
+                FrozenDictionary.ToFrozenDictionary(value)
             );
         }
-        init { JsonModel.Set(this._rawData, "input", value); }
     }
 
     public required ApiEnum<string, Name> Name
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Name>>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get { return this._rawData.GetNotNullClass<ApiEnum<string, Name>>("name"); }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -79,7 +82,7 @@ public sealed record class BetaServerToolUseBlock : JsonModel
 
     public BetaServerToolUseBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
     }
@@ -88,7 +91,7 @@ public sealed record class BetaServerToolUseBlock : JsonModel
     [SetsRequiredMembers]
     BetaServerToolUseBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

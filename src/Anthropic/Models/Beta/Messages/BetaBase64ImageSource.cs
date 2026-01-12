@@ -14,26 +14,20 @@ public sealed record class BetaBase64ImageSource : JsonModel
 {
     public required string Data
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
-        init { JsonModel.Set(this._rawData, "data", value); }
+        get { return this._rawData.GetNotNullClass<string>("data"); }
+        init { this._rawData.Set("data", value); }
     }
 
     public required ApiEnum<string, MediaType> MediaType
     {
-        get
-        {
-            return JsonModel.GetNotNullClass<ApiEnum<string, MediaType>>(
-                this.RawData,
-                "media_type"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "media_type", value); }
+        get { return this._rawData.GetNotNullClass<ApiEnum<string, MediaType>>("media_type"); }
+        init { this._rawData.Set("media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -62,7 +56,7 @@ public sealed record class BetaBase64ImageSource : JsonModel
 
     public BetaBase64ImageSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
     }
@@ -71,7 +65,7 @@ public sealed record class BetaBase64ImageSource : JsonModel
     [SetsRequiredMembers]
     BetaBase64ImageSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

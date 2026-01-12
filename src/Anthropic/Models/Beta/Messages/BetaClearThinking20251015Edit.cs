@@ -16,8 +16,8 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -26,7 +26,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
     /// </summary>
     public Keep? Keep
     {
-        get { return JsonModel.GetNullableClass<Keep>(this.RawData, "keep"); }
+        get { return this._rawData.GetNullableClass<Keep>("keep"); }
         init
         {
             if (value == null)
@@ -34,7 +34,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "keep", value);
+            this._rawData.Set("keep", value);
         }
     }
 
@@ -65,7 +65,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
 
     public BetaClearThinking20251015Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
     }
@@ -74,7 +74,7 @@ public sealed record class BetaClearThinking20251015Edit : JsonModel
     [SetsRequiredMembers]
     BetaClearThinking20251015Edit(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

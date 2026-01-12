@@ -13,20 +13,20 @@ public sealed record class ErrorResponse : JsonModel
 {
     public required ErrorObject Error
     {
-        get { return JsonModel.GetNotNullClass<ErrorObject>(this.RawData, "error"); }
-        init { JsonModel.Set(this._rawData, "error", value); }
+        get { return this._rawData.GetNotNullClass<ErrorObject>("error"); }
+        init { this._rawData.Set("error", value); }
     }
 
     public required string? RequestID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "request_id"); }
-        init { JsonModel.Set(this._rawData, "request_id", value); }
+        get { return this._rawData.GetNullableClass<string>("request_id"); }
+        init { this._rawData.Set("request_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -52,7 +52,7 @@ public sealed record class ErrorResponse : JsonModel
 
     public ErrorResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
     }
@@ -61,7 +61,7 @@ public sealed record class ErrorResponse : JsonModel
     [SetsRequiredMembers]
     ErrorResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

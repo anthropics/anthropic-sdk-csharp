@@ -20,8 +20,8 @@ public sealed record class BetaSkill : JsonModel
     /// </summary>
     public required string SkillID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "skill_id"); }
-        init { JsonModel.Set(this._rawData, "skill_id", value); }
+        get { return this._rawData.GetNotNullClass<string>("skill_id"); }
+        init { this._rawData.Set("skill_id", value); }
     }
 
     /// <summary>
@@ -31,11 +31,11 @@ public sealed record class BetaSkill : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<
+            return this._rawData.GetNotNullClass<
                 ApiEnum<string, global::Anthropic.Models.Beta.Messages.Type>
-            >(this.RawData, "type");
+            >("type");
         }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -43,8 +43,8 @@ public sealed record class BetaSkill : JsonModel
     /// </summary>
     public required string Version
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "version"); }
-        init { JsonModel.Set(this._rawData, "version", value); }
+        get { return this._rawData.GetNotNullClass<string>("version"); }
+        init { this._rawData.Set("version", value); }
     }
 
     /// <inheritdoc/>
@@ -62,14 +62,14 @@ public sealed record class BetaSkill : JsonModel
 
     public BetaSkill(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaSkill(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
