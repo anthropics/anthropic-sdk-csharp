@@ -71,7 +71,7 @@ public class ContentTest : TestBase
                     new TextBlockParam()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new CitationCharLocationParam()
@@ -109,7 +109,7 @@ public class ContentTest : TestBase
                     new TextBlockParam()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new CitationCharLocationParam()

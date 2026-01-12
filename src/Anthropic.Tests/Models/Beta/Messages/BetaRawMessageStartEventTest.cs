@@ -57,7 +57,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -122,7 +122,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -192,7 +192,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -268,7 +268,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -337,7 +337,7 @@ public class BetaRawMessageStartEventTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -407,7 +407,7 @@ public class BetaRawMessageStartEventTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()

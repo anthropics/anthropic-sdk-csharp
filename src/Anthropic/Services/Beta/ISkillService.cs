@@ -49,7 +49,7 @@ public interface ISkillService
     /// <summary>
     /// List Skills
     /// </summary>
-    Task<SkillListPageResponse> List(
+    Task<SkillListPage> List(
         SkillListParams? parameters = null,
         CancellationToken cancellationToken = default
     );

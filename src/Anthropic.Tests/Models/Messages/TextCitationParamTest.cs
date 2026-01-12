@@ -62,7 +62,7 @@ public class TextCitationParamTest : TestBase
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
                 Title = "x",
-                URL = "x",
+                Url = "x",
             }
         );
         value.Validate();
@@ -151,7 +151,7 @@ public class TextCitationParamTest : TestBase
                 CitedText = "cited_text",
                 EncryptedIndex = "encrypted_index",
                 Title = "x",
-                URL = "x",
+                Url = "x",
             }
         );
         string element = JsonSerializer.Serialize(value);

@@ -11,14 +11,14 @@ public class ToolResultBlockParamTest : TestBase
         var model = new ToolResultBlockParam
         {
             ToolUseID = "tool_use_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
         };
 
         string expectedToolUseID = "tool_use_id";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         ToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;
 
@@ -35,7 +35,7 @@ public class ToolResultBlockParamTest : TestBase
         var model = new ToolResultBlockParam
         {
             ToolUseID = "tool_use_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
         };
@@ -52,7 +52,7 @@ public class ToolResultBlockParamTest : TestBase
         var model = new ToolResultBlockParam
         {
             ToolUseID = "tool_use_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
         };
@@ -63,7 +63,7 @@ public class ToolResultBlockParamTest : TestBase
 
         string expectedToolUseID = "tool_use_id";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_result\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         ToolResultBlockParamContent expectedContent = "string";
         bool expectedIsError = true;
 
@@ -80,7 +80,7 @@ public class ToolResultBlockParamTest : TestBase
         var model = new ToolResultBlockParam
         {
             ToolUseID = "tool_use_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Content = "string",
             IsError = true,
         };
@@ -94,7 +94,7 @@ public class ToolResultBlockParamTest : TestBase
         var model = new ToolResultBlockParam
         {
             ToolUseID = "tool_use_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         Assert.Null(model.Content);
@@ -109,7 +109,7 @@ public class ToolResultBlockParamTest : TestBase
         var model = new ToolResultBlockParam
         {
             ToolUseID = "tool_use_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -121,7 +121,7 @@ public class ToolResultBlockParamTest : TestBase
         var model = new ToolResultBlockParam
         {
             ToolUseID = "tool_use_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Content = null,
@@ -140,7 +140,7 @@ public class ToolResultBlockParamTest : TestBase
         var model = new ToolResultBlockParam
         {
             ToolUseID = "tool_use_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Content = null,
@@ -227,7 +227,7 @@ public class ToolResultBlockParamContentTest : TestBase
                     new TextBlockParam()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new CitationCharLocationParam()
@@ -265,7 +265,7 @@ public class ToolResultBlockParamContentTest : TestBase
                     new TextBlockParam()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new CitationCharLocationParam()
@@ -297,7 +297,7 @@ public class BlockTest : TestBase
             new TextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new CitationCharLocationParam()
@@ -323,9 +323,9 @@ public class BlockTest : TestBase
                 Source = new Base64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -342,7 +342,7 @@ public class BlockTest : TestBase
                     new()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new CitationCharLocationParam()
@@ -358,7 +358,7 @@ public class BlockTest : TestBase
                 ],
                 Source = "source",
                 Title = "title",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
             }
         );
@@ -371,8 +371,8 @@ public class BlockTest : TestBase
         Block value = new(
             new DocumentBlockParam()
             {
-                Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
@@ -388,7 +388,7 @@ public class BlockTest : TestBase
             new TextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new CitationCharLocationParam()
@@ -417,9 +417,9 @@ public class BlockTest : TestBase
                 Source = new Base64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -439,7 +439,7 @@ public class BlockTest : TestBase
                     new()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new CitationCharLocationParam()
@@ -455,7 +455,7 @@ public class BlockTest : TestBase
                 ],
                 Source = "source",
                 Title = "title",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
             }
         );
@@ -471,8 +471,8 @@ public class BlockTest : TestBase
         Block value = new(
             new DocumentBlockParam()
             {
-                Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",

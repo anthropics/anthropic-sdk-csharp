@@ -11,12 +11,12 @@ public class BetaContainerUploadBlockParamTest : TestBase
         var model = new BetaContainerUploadBlockParam
         {
             FileID = "file_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string expectedFileID = "file_id";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedFileID, model.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -29,7 +29,7 @@ public class BetaContainerUploadBlockParamTest : TestBase
         var model = new BetaContainerUploadBlockParam
         {
             FileID = "file_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -44,7 +44,7 @@ public class BetaContainerUploadBlockParamTest : TestBase
         var model = new BetaContainerUploadBlockParam
         {
             FileID = "file_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -53,7 +53,7 @@ public class BetaContainerUploadBlockParamTest : TestBase
 
         string expectedFileID = "file_id";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedFileID, deserialized.FileID);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -66,7 +66,7 @@ public class BetaContainerUploadBlockParamTest : TestBase
         var model = new BetaContainerUploadBlockParam
         {
             FileID = "file_id",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();

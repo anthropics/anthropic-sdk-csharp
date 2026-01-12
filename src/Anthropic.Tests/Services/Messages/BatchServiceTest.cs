@@ -40,7 +40,7 @@ public class BatchServiceTest
                                     new Messages::TextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                                        CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                         Citations =
                                         [
                                             new Messages::CitationCharLocationParam()
@@ -78,7 +78,7 @@ public class BatchServiceTest
                                         Required = ["location"],
                                     },
                                     Name = "name",
-                                    CacheControl = new() { TTL = Messages::TTL.TTL5m },
+                                    CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                                     Description = "Get the current weather in a given location",
                                     Type = Messages::Type.Custom,
                                 },

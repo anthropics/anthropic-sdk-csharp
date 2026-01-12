@@ -136,7 +136,7 @@ public enum BetaTextEditorCodeExecutionViewResultBlockParamFileType
 {
     Text,
     Image,
-    PDF,
+    Pdf,
 }
 
 sealed class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeConverter
@@ -152,7 +152,7 @@ sealed class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeConverter
         {
             "text" => BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text,
             "image" => BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image,
-            "pdf" => BetaTextEditorCodeExecutionViewResultBlockParamFileType.PDF,
+            "pdf" => BetaTextEditorCodeExecutionViewResultBlockParamFileType.Pdf,
             _ => (BetaTextEditorCodeExecutionViewResultBlockParamFileType)(-1),
         };
     }
@@ -169,7 +169,7 @@ sealed class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeConverter
             {
                 BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text => "text",
                 BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image => "image",
-                BetaTextEditorCodeExecutionViewResultBlockParamFileType.PDF => "pdf",
+                BetaTextEditorCodeExecutionViewResultBlockParamFileType.Pdf => "pdf",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

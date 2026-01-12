@@ -19,7 +19,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -31,7 +31,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
         ApiEnum<string, BetaServerToolUseBlockParamName> expectedName =
             BetaServerToolUseBlockParamName.WebSearch;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaServerToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, model.ID);
@@ -59,7 +59,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -80,7 +80,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -96,7 +96,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
         ApiEnum<string, BetaServerToolUseBlockParamName> expectedName =
             BetaServerToolUseBlockParamName.WebSearch;
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaServerToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -124,7 +124,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -142,7 +142,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         Assert.Null(model.Caller);
@@ -160,7 +160,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -177,7 +177,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -198,7 +198,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Caller = null,

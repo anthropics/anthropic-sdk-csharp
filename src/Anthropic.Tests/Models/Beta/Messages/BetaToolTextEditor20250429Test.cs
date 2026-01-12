@@ -14,7 +14,7 @@ public class BetaToolTextEditor20250429Test : TestBase
         var model = new BetaToolTextEditor20250429
         {
             AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -36,7 +36,7 @@ public class BetaToolTextEditor20250429Test : TestBase
         [
             BetaToolTextEditor20250429AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -78,7 +78,7 @@ public class BetaToolTextEditor20250429Test : TestBase
         var model = new BetaToolTextEditor20250429
         {
             AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -102,7 +102,7 @@ public class BetaToolTextEditor20250429Test : TestBase
         var model = new BetaToolTextEditor20250429
         {
             AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -128,7 +128,7 @@ public class BetaToolTextEditor20250429Test : TestBase
         [
             BetaToolTextEditor20250429AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -170,7 +170,7 @@ public class BetaToolTextEditor20250429Test : TestBase
         var model = new BetaToolTextEditor20250429
         {
             AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -188,7 +188,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaToolTextEditor20250429 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         Assert.Null(model.AllowedCallers);
         Assert.False(model.RawData.ContainsKey("allowed_callers"));
@@ -203,7 +203,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaToolTextEditor20250429 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }
@@ -213,7 +213,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -237,7 +237,7 @@ public class BetaToolTextEditor20250429Test : TestBase
     {
         var model = new BetaToolTextEditor20250429
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,

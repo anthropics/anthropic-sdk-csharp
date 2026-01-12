@@ -12,7 +12,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
             new BetaTextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new BetaCitationCharLocationParam()
@@ -38,9 +38,9 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
                 Source = new BetaBase64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -53,7 +53,7 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
             new BetaTextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new BetaCitationCharLocationParam()
@@ -84,9 +84,9 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
                 Source = new BetaBase64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);

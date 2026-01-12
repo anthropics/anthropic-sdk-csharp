@@ -13,7 +13,7 @@ public class BetaContentBlockParamTest : TestBase
             new BetaTextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new BetaCitationCharLocationParam()
@@ -39,9 +39,9 @@ public class BetaContentBlockParamTest : TestBase
                 Source = new BetaBase64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -53,8 +53,8 @@ public class BetaContentBlockParamTest : TestBase
         BetaContentBlockParam value = new(
             new BetaRequestDocumentBlock()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
@@ -74,7 +74,7 @@ public class BetaContentBlockParamTest : TestBase
                     new()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new BetaCitationCharLocationParam()
@@ -90,7 +90,7 @@ public class BetaContentBlockParamTest : TestBase
                 ],
                 Source = "source",
                 Title = "title",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
             }
         );
@@ -125,7 +125,7 @@ public class BetaContentBlockParamTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Name = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Caller = new BetaDirectCaller(),
             }
         );
@@ -139,7 +139,7 @@ public class BetaContentBlockParamTest : TestBase
             new BetaToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Content = "string",
                 IsError = true,
             }
@@ -159,7 +159,7 @@ public class BetaContentBlockParamTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Name = BetaServerToolUseBlockParamName.WebSearch,
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Caller = new BetaDirectCaller(),
             }
         );
@@ -178,13 +178,13 @@ public class BetaContentBlockParamTest : TestBase
                         {
                             EncryptedContent = "encrypted_content",
                             Title = "title",
-                            URL = "url",
+                            Url = "url",
                             PageAge = "page_age",
                         },
                     ]
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -200,7 +200,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaWebFetchToolResultErrorCode.InvalidToolInput
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -216,7 +216,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaCodeExecutionToolResultErrorCode.InvalidToolInput
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -232,7 +232,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -251,7 +251,7 @@ public class BetaContentBlockParamTest : TestBase
                     ErrorMessage = "error_message",
                 },
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -267,17 +267,17 @@ public class BetaContentBlockParamTest : TestBase
                     BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
     }
 
     [Fact]
-    public void MCPToolUseValidationWorks()
+    public void McpToolUseValidationWorks()
     {
         BetaContentBlockParam value = new(
-            new BetaMCPToolUseBlockParam()
+            new BetaMcpToolUseBlockParam()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -286,20 +286,20 @@ public class BetaContentBlockParamTest : TestBase
                 },
                 Name = "name",
                 ServerName = "server_name",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
     }
 
     [Fact]
-    public void RequestMCPToolResultValidationWorks()
+    public void RequestMcpToolResultValidationWorks()
     {
         BetaContentBlockParam value = new(
-            new BetaRequestMCPToolResultBlockParam()
+            new BetaRequestMcpToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Content = "string",
                 IsError = true,
             }
@@ -314,7 +314,7 @@ public class BetaContentBlockParamTest : TestBase
             new BetaContainerUploadBlockParam()
             {
                 FileID = "file_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         value.Validate();
@@ -327,7 +327,7 @@ public class BetaContentBlockParamTest : TestBase
             new BetaTextBlockParam()
             {
                 Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations =
                 [
                     new BetaCitationCharLocationParam()
@@ -356,9 +356,9 @@ public class BetaContentBlockParamTest : TestBase
                 Source = new BetaBase64ImageSource()
                 {
                     Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    MediaType = MediaType.ImageJpeg,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -373,8 +373,8 @@ public class BetaContentBlockParamTest : TestBase
         BetaContentBlockParam value = new(
             new BetaRequestDocumentBlock()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
@@ -397,7 +397,7 @@ public class BetaContentBlockParamTest : TestBase
                     new()
                     {
                         Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                         Citations =
                         [
                             new BetaCitationCharLocationParam()
@@ -413,7 +413,7 @@ public class BetaContentBlockParamTest : TestBase
                 ],
                 Source = "source",
                 Title = "title",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
             }
         );
@@ -457,7 +457,7 @@ public class BetaContentBlockParamTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Name = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Caller = new BetaDirectCaller(),
             }
         );
@@ -474,7 +474,7 @@ public class BetaContentBlockParamTest : TestBase
             new BetaToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Content = "string",
                 IsError = true,
             }
@@ -497,7 +497,7 @@ public class BetaContentBlockParamTest : TestBase
                     { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
                 Name = BetaServerToolUseBlockParamName.WebSearch,
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Caller = new BetaDirectCaller(),
             }
         );
@@ -519,13 +519,13 @@ public class BetaContentBlockParamTest : TestBase
                         {
                             EncryptedContent = "encrypted_content",
                             Title = "title",
-                            URL = "url",
+                            Url = "url",
                             PageAge = "page_age",
                         },
                     ]
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -544,7 +544,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaWebFetchToolResultErrorCode.InvalidToolInput
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -563,7 +563,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaCodeExecutionToolResultErrorCode.InvalidToolInput
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -582,7 +582,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -604,7 +604,7 @@ public class BetaContentBlockParamTest : TestBase
                     ErrorMessage = "error_message",
                 },
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -623,7 +623,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
                 ),
                 ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -633,10 +633,10 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void MCPToolUseSerializationRoundtripWorks()
+    public void McpToolUseSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
-            new BetaMCPToolUseBlockParam()
+            new BetaMcpToolUseBlockParam()
             {
                 ID = "id",
                 Input = new Dictionary<string, JsonElement>()
@@ -645,7 +645,7 @@ public class BetaContentBlockParamTest : TestBase
                 },
                 Name = "name",
                 ServerName = "server_name",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);
@@ -655,13 +655,13 @@ public class BetaContentBlockParamTest : TestBase
     }
 
     [Fact]
-    public void RequestMCPToolResultSerializationRoundtripWorks()
+    public void RequestMcpToolResultSerializationRoundtripWorks()
     {
         BetaContentBlockParam value = new(
-            new BetaRequestMCPToolResultBlockParam()
+            new BetaRequestMcpToolResultBlockParam()
             {
                 ToolUseID = "tool_use_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Content = "string",
                 IsError = true,
             }
@@ -679,7 +679,7 @@ public class BetaContentBlockParamTest : TestBase
             new BetaContainerUploadBlockParam()
             {
                 FileID = "file_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             }
         );
         string element = JsonSerializer.Serialize(value);

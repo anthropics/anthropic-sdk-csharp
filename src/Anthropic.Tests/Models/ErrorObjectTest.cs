@@ -55,9 +55,9 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void APIValidationWorks()
+    public void ApiValidationWorks()
     {
-        ErrorObject value = new(new APIErrorObject("message"));
+        ErrorObject value = new(new ApiErrorObject("message"));
         value.Validate();
     }
 
@@ -139,9 +139,9 @@ public class ErrorObjectTest : TestBase
     }
 
     [Fact]
-    public void APISerializationRoundtripWorks()
+    public void ApiSerializationRoundtripWorks()
     {
-        ErrorObject value = new(new APIErrorObject("message"));
+        ErrorObject value = new(new ApiErrorObject("message"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
 

@@ -10,18 +10,18 @@ public class BetaRequestDocumentBlockTest : TestBase
     {
         var model = new BetaRequestDocumentBlock
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
         };
 
-        BetaRequestDocumentBlockSource expectedSource = new BetaBase64PDFSource(
+        BetaRequestDocumentBlockSource expectedSource = new BetaBase64PdfSource(
             "U3RhaW5sZXNzIHJvY2tz"
         );
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         string expectedContext = "x";
         string expectedTitle = "x";
@@ -39,8 +39,8 @@ public class BetaRequestDocumentBlockTest : TestBase
     {
         var model = new BetaRequestDocumentBlock
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
@@ -57,8 +57,8 @@ public class BetaRequestDocumentBlockTest : TestBase
     {
         var model = new BetaRequestDocumentBlock
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
@@ -68,11 +68,11 @@ public class BetaRequestDocumentBlockTest : TestBase
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(element);
         Assert.NotNull(deserialized);
 
-        BetaRequestDocumentBlockSource expectedSource = new BetaBase64PDFSource(
+        BetaRequestDocumentBlockSource expectedSource = new BetaBase64PdfSource(
             "U3RhaW5sZXNzIHJvY2tz"
         );
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"document\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         string expectedContext = "x";
         string expectedTitle = "x";
@@ -90,8 +90,8 @@ public class BetaRequestDocumentBlockTest : TestBase
     {
         var model = new BetaRequestDocumentBlock
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
@@ -105,7 +105,7 @@ public class BetaRequestDocumentBlockTest : TestBase
     {
         var model = new BetaRequestDocumentBlock
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
         };
 
         Assert.Null(model.CacheControl);
@@ -123,7 +123,7 @@ public class BetaRequestDocumentBlockTest : TestBase
     {
         var model = new BetaRequestDocumentBlock
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
         };
 
         model.Validate();
@@ -134,7 +134,7 @@ public class BetaRequestDocumentBlockTest : TestBase
     {
         var model = new BetaRequestDocumentBlock
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
 
             CacheControl = null,
             Citations = null,
@@ -157,7 +157,7 @@ public class BetaRequestDocumentBlockTest : TestBase
     {
         var model = new BetaRequestDocumentBlock
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
 
             CacheControl = null,
             Citations = null,
@@ -172,9 +172,9 @@ public class BetaRequestDocumentBlockTest : TestBase
 public class BetaRequestDocumentBlockSourceTest : TestBase
 {
     [Fact]
-    public void BetaBase64PDFValidationWorks()
+    public void BetaBase64PdfValidationWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
+        BetaRequestDocumentBlockSource value = new(new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
         value.Validate();
     }
 
@@ -195,9 +195,9 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     }
 
     [Fact]
-    public void BetaURLPDFValidationWorks()
+    public void BetaUrlPdfValidationWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaURLPDFSource("url"));
+        BetaRequestDocumentBlockSource value = new(new BetaUrlPdfSource("url"));
         value.Validate();
     }
 
@@ -209,9 +209,9 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     }
 
     [Fact]
-    public void BetaBase64PDFSerializationRoundtripWorks()
+    public void BetaBase64PdfSerializationRoundtripWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"));
+        BetaRequestDocumentBlockSource value = new(new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
 
@@ -241,9 +241,9 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     }
 
     [Fact]
-    public void BetaURLPDFSerializationRoundtripWorks()
+    public void BetaUrlPdfSerializationRoundtripWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaURLPDFSource("url"));
+        BetaRequestDocumentBlockSource value = new(new BetaUrlPdfSource("url"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
 

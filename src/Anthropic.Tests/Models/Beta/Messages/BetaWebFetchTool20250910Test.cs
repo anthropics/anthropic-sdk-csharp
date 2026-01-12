@@ -16,7 +16,7 @@ public class BetaWebFetchTool20250910Test : TestBase
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             DeferLoading = true,
             MaxContentTokens = 1,
@@ -34,7 +34,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         bool expectedDeferLoading = true;
         long expectedMaxContentTokens = 1;
@@ -77,7 +77,7 @@ public class BetaWebFetchTool20250910Test : TestBase
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             DeferLoading = true,
             MaxContentTokens = 1,
@@ -99,7 +99,7 @@ public class BetaWebFetchTool20250910Test : TestBase
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             DeferLoading = true,
             MaxContentTokens = 1,
@@ -121,7 +121,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCitationsConfigParam expectedCitations = new() { Enabled = true };
         bool expectedDeferLoading = true;
         long expectedMaxContentTokens = 1;
@@ -164,7 +164,7 @@ public class BetaWebFetchTool20250910Test : TestBase
             AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             DeferLoading = true,
             MaxContentTokens = 1,
@@ -182,7 +182,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
@@ -203,7 +203,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
@@ -219,7 +219,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,
@@ -245,7 +245,7 @@ public class BetaWebFetchTool20250910Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             MaxContentTokens = 1,
             MaxUses = 1,

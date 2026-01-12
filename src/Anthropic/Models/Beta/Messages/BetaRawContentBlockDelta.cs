@@ -24,7 +24,7 @@ public record class BetaRawContentBlockDelta
         {
             return Match(
                 text: (x) => x.Type,
-                inputJSON: (x) => x.Type,
+                inputJson: (x) => x.Type,
                 citations: (x) => x.Type,
                 thinking: (x) => x.Type,
                 signature: (x) => x.Type
@@ -38,7 +38,7 @@ public record class BetaRawContentBlockDelta
         this._element = element;
     }
 
-    public BetaRawContentBlockDelta(BetaInputJSONDelta value, JsonElement? element = null)
+    public BetaRawContentBlockDelta(BetaInputJsonDelta value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -90,22 +90,22 @@ public record class BetaRawContentBlockDelta
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaInputJSONDelta"/>.
+    /// type <see cref="BetaInputJsonDelta"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickInputJSON(out var value)) {
-    ///     // `value` is of type `BetaInputJSONDelta`
+    /// if (instance.TryPickInputJson(out var value)) {
+    ///     // `value` is of type `BetaInputJsonDelta`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickInputJSON([NotNullWhen(true)] out BetaInputJSONDelta? value)
+    public bool TryPickInputJson([NotNullWhen(true)] out BetaInputJsonDelta? value)
     {
-        value = this.Value as BetaInputJSONDelta;
+        value = this.Value as BetaInputJsonDelta;
         return value != null;
     }
 
@@ -187,7 +187,7 @@ public record class BetaRawContentBlockDelta
     /// <code>
     /// instance.Switch(
     ///     (BetaTextDelta value) => {...},
-    ///     (BetaInputJSONDelta value) => {...},
+    ///     (BetaInputJsonDelta value) => {...},
     ///     (BetaCitationsDelta value) => {...},
     ///     (BetaThinkingDelta value) => {...},
     ///     (BetaSignatureDelta value) => {...}
@@ -197,7 +197,7 @@ public record class BetaRawContentBlockDelta
     /// </summary>
     public void Switch(
         System::Action<BetaTextDelta> text,
-        System::Action<BetaInputJSONDelta> inputJSON,
+        System::Action<BetaInputJsonDelta> inputJson,
         System::Action<BetaCitationsDelta> citations,
         System::Action<BetaThinkingDelta> thinking,
         System::Action<BetaSignatureDelta> signature
@@ -208,8 +208,8 @@ public record class BetaRawContentBlockDelta
             case BetaTextDelta value:
                 text(value);
                 break;
-            case BetaInputJSONDelta value:
-                inputJSON(value);
+            case BetaInputJsonDelta value:
+                inputJson(value);
                 break;
             case BetaCitationsDelta value:
                 citations(value);
@@ -243,7 +243,7 @@ public record class BetaRawContentBlockDelta
     /// <code>
     /// var result = instance.Match(
     ///     (BetaTextDelta value) => {...},
-    ///     (BetaInputJSONDelta value) => {...},
+    ///     (BetaInputJsonDelta value) => {...},
     ///     (BetaCitationsDelta value) => {...},
     ///     (BetaThinkingDelta value) => {...},
     ///     (BetaSignatureDelta value) => {...}
@@ -253,7 +253,7 @@ public record class BetaRawContentBlockDelta
     /// </summary>
     public T Match<T>(
         System::Func<BetaTextDelta, T> text,
-        System::Func<BetaInputJSONDelta, T> inputJSON,
+        System::Func<BetaInputJsonDelta, T> inputJson,
         System::Func<BetaCitationsDelta, T> citations,
         System::Func<BetaThinkingDelta, T> thinking,
         System::Func<BetaSignatureDelta, T> signature
@@ -262,7 +262,7 @@ public record class BetaRawContentBlockDelta
         return this.Value switch
         {
             BetaTextDelta value => text(value),
-            BetaInputJSONDelta value => inputJSON(value),
+            BetaInputJsonDelta value => inputJson(value),
             BetaCitationsDelta value => citations(value),
             BetaThinkingDelta value => thinking(value),
             BetaSignatureDelta value => signature(value),
@@ -274,7 +274,7 @@ public record class BetaRawContentBlockDelta
 
     public static implicit operator BetaRawContentBlockDelta(BetaTextDelta value) => new(value);
 
-    public static implicit operator BetaRawContentBlockDelta(BetaInputJSONDelta value) =>
+    public static implicit operator BetaRawContentBlockDelta(BetaInputJsonDelta value) =>
         new(value);
 
     public static implicit operator BetaRawContentBlockDelta(BetaCitationsDelta value) =>
@@ -305,7 +305,7 @@ public record class BetaRawContentBlockDelta
         }
         this.Switch(
             (text) => text.Validate(),
-            (inputJSON) => inputJSON.Validate(),
+            (inputJson) => inputJson.Validate(),
             (citations) => citations.Validate(),
             (thinking) => thinking.Validate(),
             (signature) => signature.Validate()
@@ -367,7 +367,7 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaInputJSONDelta>(
+                    var deserialized = JsonSerializer.Deserialize<BetaInputJsonDelta>(
                         element,
                         options
                     );

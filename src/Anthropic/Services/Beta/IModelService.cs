@@ -46,7 +46,7 @@ public interface IModelService
     /// <para>The Models API response can be used to determine which models are available
     /// for use in the API. More recently released models are listed first.</para>
     /// </summary>
-    Task<ModelListPageResponse> List(
+    Task<ModelListPage> List(
         ModelListParams? parameters = null,
         CancellationToken cancellationToken = default
     );

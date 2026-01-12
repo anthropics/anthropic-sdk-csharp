@@ -581,8 +581,8 @@ public sealed record class Params : JsonModel
 
     public Params() { }
 
-    public Params(Params params1)
-        : base(params1) { }
+    public Params(Params params_)
+        : base(params_) { }
 
     public Params(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -27,7 +27,7 @@ public abstract class AnthropicClientExtensionsTestsBase
         return new AnthropicClient
         {
             HttpClient = new(handler) { BaseAddress = new Uri("http://localhost") },
-            APIKey = "test-key",
+            ApiKey = "test-key",
         };
     }
 
@@ -78,7 +78,7 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Fact]
     public void AsIChatClient_GetService_ReturnsMetadata()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
+        AnthropicClient client = new() { ApiKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
         var metadata = chatClient.GetService<ChatClientMetadata>();
@@ -91,7 +91,7 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Fact]
     public void AsIChatClient_GetService_ReturnsSelf()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
+        AnthropicClient client = new() { ApiKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
         var self = chatClient.GetService<IChatClient>();

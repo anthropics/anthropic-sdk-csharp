@@ -116,7 +116,7 @@ public record class BetaImageBlockParamSource
         {
             return Match(
                 betaBase64Image: (x) => x.Type,
-                betaURLImage: (x) => x.Type,
+                betaUrlImage: (x) => x.Type,
                 betaFileImage: (x) => x.Type
             );
         }
@@ -128,7 +128,7 @@ public record class BetaImageBlockParamSource
         this._element = element;
     }
 
-    public BetaImageBlockParamSource(BetaURLImageSource value, JsonElement? element = null)
+    public BetaImageBlockParamSource(BetaUrlImageSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -168,22 +168,22 @@ public record class BetaImageBlockParamSource
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaURLImageSource"/>.
+    /// type <see cref="BetaUrlImageSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaURLImage(out var value)) {
-    ///     // `value` is of type `BetaURLImageSource`
+    /// if (instance.TryPickBetaUrlImage(out var value)) {
+    ///     // `value` is of type `BetaUrlImageSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaURLImage([NotNullWhen(true)] out BetaURLImageSource? value)
+    public bool TryPickBetaUrlImage([NotNullWhen(true)] out BetaUrlImageSource? value)
     {
-        value = this.Value as BetaURLImageSource;
+        value = this.Value as BetaUrlImageSource;
         return value != null;
     }
 
@@ -223,7 +223,7 @@ public record class BetaImageBlockParamSource
     /// <code>
     /// instance.Switch(
     ///     (BetaBase64ImageSource value) => {...},
-    ///     (BetaURLImageSource value) => {...},
+    ///     (BetaUrlImageSource value) => {...},
     ///     (BetaFileImageSource value) => {...}
     /// );
     /// </code>
@@ -231,7 +231,7 @@ public record class BetaImageBlockParamSource
     /// </summary>
     public void Switch(
         System::Action<BetaBase64ImageSource> betaBase64Image,
-        System::Action<BetaURLImageSource> betaURLImage,
+        System::Action<BetaUrlImageSource> betaUrlImage,
         System::Action<BetaFileImageSource> betaFileImage
     )
     {
@@ -240,8 +240,8 @@ public record class BetaImageBlockParamSource
             case BetaBase64ImageSource value:
                 betaBase64Image(value);
                 break;
-            case BetaURLImageSource value:
-                betaURLImage(value);
+            case BetaUrlImageSource value:
+                betaUrlImage(value);
                 break;
             case BetaFileImageSource value:
                 betaFileImage(value);
@@ -269,7 +269,7 @@ public record class BetaImageBlockParamSource
     /// <code>
     /// var result = instance.Match(
     ///     (BetaBase64ImageSource value) => {...},
-    ///     (BetaURLImageSource value) => {...},
+    ///     (BetaUrlImageSource value) => {...},
     ///     (BetaFileImageSource value) => {...}
     /// );
     /// </code>
@@ -277,14 +277,14 @@ public record class BetaImageBlockParamSource
     /// </summary>
     public T Match<T>(
         System::Func<BetaBase64ImageSource, T> betaBase64Image,
-        System::Func<BetaURLImageSource, T> betaURLImage,
+        System::Func<BetaUrlImageSource, T> betaUrlImage,
         System::Func<BetaFileImageSource, T> betaFileImage
     )
     {
         return this.Value switch
         {
             BetaBase64ImageSource value => betaBase64Image(value),
-            BetaURLImageSource value => betaURLImage(value),
+            BetaUrlImageSource value => betaUrlImage(value),
             BetaFileImageSource value => betaFileImage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaImageBlockParamSource"
@@ -295,7 +295,7 @@ public record class BetaImageBlockParamSource
     public static implicit operator BetaImageBlockParamSource(BetaBase64ImageSource value) =>
         new(value);
 
-    public static implicit operator BetaImageBlockParamSource(BetaURLImageSource value) =>
+    public static implicit operator BetaImageBlockParamSource(BetaUrlImageSource value) =>
         new(value);
 
     public static implicit operator BetaImageBlockParamSource(BetaFileImageSource value) =>
@@ -321,7 +321,7 @@ public record class BetaImageBlockParamSource
         }
         this.Switch(
             (betaBase64Image) => betaBase64Image.Validate(),
-            (betaURLImage) => betaURLImage.Validate(),
+            (betaUrlImage) => betaUrlImage.Validate(),
             (betaFileImage) => betaFileImage.Validate()
         );
     }
@@ -384,7 +384,7 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaURLImageSource>(
+                    var deserialized = JsonSerializer.Deserialize<BetaUrlImageSource>(
                         element,
                         options
                     );

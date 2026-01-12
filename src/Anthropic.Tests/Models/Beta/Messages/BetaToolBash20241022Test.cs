@@ -14,7 +14,7 @@ public class BetaToolBash20241022Test : TestBase
         var model = new BetaToolBash20241022
         {
             AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -32,7 +32,7 @@ public class BetaToolBash20241022Test : TestBase
         [
             BetaToolBash20241022AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -74,7 +74,7 @@ public class BetaToolBash20241022Test : TestBase
         var model = new BetaToolBash20241022
         {
             AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -98,7 +98,7 @@ public class BetaToolBash20241022Test : TestBase
         var model = new BetaToolBash20241022
         {
             AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -120,7 +120,7 @@ public class BetaToolBash20241022Test : TestBase
         [
             BetaToolBash20241022AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -162,7 +162,7 @@ public class BetaToolBash20241022Test : TestBase
         var model = new BetaToolBash20241022
         {
             AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -180,7 +180,7 @@ public class BetaToolBash20241022Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaToolBash20241022 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaToolBash20241022 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         Assert.Null(model.AllowedCallers);
         Assert.False(model.RawData.ContainsKey("allowed_callers"));
@@ -195,7 +195,7 @@ public class BetaToolBash20241022Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaToolBash20241022 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaToolBash20241022 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }
@@ -205,7 +205,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -229,7 +229,7 @@ public class BetaToolBash20241022Test : TestBase
     {
         var model = new BetaToolBash20241022
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,

@@ -95,9 +95,9 @@ class BetaBase64ImageSourceFromRaw : IFromRawJson<BetaBase64ImageSource>
 [JsonConverter(typeof(MediaTypeConverter))]
 public enum MediaType
 {
-    ImageJPEG,
-    ImagePNG,
-    ImageGIF,
+    ImageJpeg,
+    ImagePng,
+    ImageGif,
     ImageWebP,
 }
 
@@ -111,9 +111,9 @@ sealed class MediaTypeConverter : JsonConverter<MediaType>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "image/jpeg" => MediaType.ImageJPEG,
-            "image/png" => MediaType.ImagePNG,
-            "image/gif" => MediaType.ImageGIF,
+            "image/jpeg" => MediaType.ImageJpeg,
+            "image/png" => MediaType.ImagePng,
+            "image/gif" => MediaType.ImageGif,
             "image/webp" => MediaType.ImageWebP,
             _ => (MediaType)(-1),
         };
@@ -129,9 +129,9 @@ sealed class MediaTypeConverter : JsonConverter<MediaType>
             writer,
             value switch
             {
-                MediaType.ImageJPEG => "image/jpeg",
-                MediaType.ImagePNG => "image/png",
-                MediaType.ImageGIF => "image/gif",
+                MediaType.ImageJpeg => "image/jpeg",
+                MediaType.ImagePng => "image/png",
+                MediaType.ImageGif => "image/gif",
                 MediaType.ImageWebP => "image/webp",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))

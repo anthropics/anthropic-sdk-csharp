@@ -13,20 +13,20 @@ public class BetaWebSearchResultBlockTest : TestBase
             EncryptedContent = "encrypted_content",
             PageAge = "page_age",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         string expectedEncryptedContent = "encrypted_content";
         string expectedPageAge = "page_age";
         string expectedTitle = "title";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
-        string expectedURL = "url";
+        string expectedUrl = "url";
 
         Assert.Equal(expectedEncryptedContent, model.EncryptedContent);
         Assert.Equal(expectedPageAge, model.PageAge);
         Assert.Equal(expectedTitle, model.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedURL, model.URL);
+        Assert.Equal(expectedUrl, model.Url);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class BetaWebSearchResultBlockTest : TestBase
             EncryptedContent = "encrypted_content",
             PageAge = "page_age",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         string json = JsonSerializer.Serialize(model);
@@ -54,7 +54,7 @@ public class BetaWebSearchResultBlockTest : TestBase
             EncryptedContent = "encrypted_content",
             PageAge = "page_age",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         string element = JsonSerializer.Serialize(model);
@@ -65,13 +65,13 @@ public class BetaWebSearchResultBlockTest : TestBase
         string expectedPageAge = "page_age";
         string expectedTitle = "title";
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
-        string expectedURL = "url";
+        string expectedUrl = "url";
 
         Assert.Equal(expectedEncryptedContent, deserialized.EncryptedContent);
         Assert.Equal(expectedPageAge, deserialized.PageAge);
         Assert.Equal(expectedTitle, deserialized.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedURL, deserialized.URL);
+        Assert.Equal(expectedUrl, deserialized.Url);
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public class BetaWebSearchResultBlockTest : TestBase
             EncryptedContent = "encrypted_content",
             PageAge = "page_age",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         model.Validate();

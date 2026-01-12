@@ -8,7 +8,7 @@ public class ToolTextEditor20250429Test : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new ToolTextEditor20250429 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new ToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
             "\"str_replace_based_edit_tool\""
@@ -16,7 +16,7 @@ public class ToolTextEditor20250429Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_20250429\""
         );
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -26,7 +26,7 @@ public class ToolTextEditor20250429Test : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new ToolTextEditor20250429 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new ToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         string json = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(json);
@@ -37,7 +37,7 @@ public class ToolTextEditor20250429Test : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new ToolTextEditor20250429 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new ToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         string element = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(element);
@@ -49,7 +49,7 @@ public class ToolTextEditor20250429Test : TestBase
         JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
             "\"text_editor_20250429\""
         );
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -59,7 +59,7 @@ public class ToolTextEditor20250429Test : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new ToolTextEditor20250429 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new ToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }

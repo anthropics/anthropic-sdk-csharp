@@ -124,8 +124,8 @@ public record class ContentBlock
                 betaBashCodeExecutionToolResult: (x) => x.Type,
                 betaTextEditorCodeExecutionToolResult: (x) => x.Type,
                 betaToolSearchToolResult: (x) => x.Type,
-                betaMCPToolUse: (x) => x.Type,
-                betaMCPToolResult: (x) => x.Type,
+                betaMcpToolUse: (x) => x.Type,
+                betaMcpToolResult: (x) => x.Type,
                 betaContainerUpload: (x) => x.Type
             );
         }
@@ -147,8 +147,8 @@ public record class ContentBlock
                 betaBashCodeExecutionToolResult: (_) => null,
                 betaTextEditorCodeExecutionToolResult: (_) => null,
                 betaToolSearchToolResult: (_) => null,
-                betaMCPToolUse: (x) => x.ID,
-                betaMCPToolResult: (_) => null,
+                betaMcpToolUse: (x) => x.ID,
+                betaMcpToolResult: (_) => null,
                 betaContainerUpload: (_) => null
             );
         }
@@ -170,8 +170,8 @@ public record class ContentBlock
                 betaBashCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaTextEditorCodeExecutionToolResult: (x) => x.ToolUseID,
                 betaToolSearchToolResult: (x) => x.ToolUseID,
-                betaMCPToolUse: (_) => null,
-                betaMCPToolResult: (x) => x.ToolUseID,
+                betaMcpToolUse: (_) => null,
+                betaMcpToolResult: (x) => x.ToolUseID,
                 betaContainerUpload: (_) => null
             );
         }
@@ -246,13 +246,13 @@ public record class ContentBlock
         this._element = element;
     }
 
-    public ContentBlock(BetaMCPToolUseBlock value, JsonElement? element = null)
+    public ContentBlock(BetaMcpToolUseBlock value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public ContentBlock(BetaMCPToolResultBlock value, JsonElement? element = null)
+    public ContentBlock(BetaMcpToolResultBlock value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -516,43 +516,43 @@ public record class ContentBlock
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaMCPToolUseBlock"/>.
+    /// type <see cref="BetaMcpToolUseBlock"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaMCPToolUse(out var value)) {
-    ///     // `value` is of type `BetaMCPToolUseBlock`
+    /// if (instance.TryPickBetaMcpToolUse(out var value)) {
+    ///     // `value` is of type `BetaMcpToolUseBlock`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlock? value)
+    public bool TryPickBetaMcpToolUse([NotNullWhen(true)] out BetaMcpToolUseBlock? value)
     {
-        value = this.Value as BetaMCPToolUseBlock;
+        value = this.Value as BetaMcpToolUseBlock;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaMCPToolResultBlock"/>.
+    /// type <see cref="BetaMcpToolResultBlock"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaMCPToolResult(out var value)) {
-    ///     // `value` is of type `BetaMCPToolResultBlock`
+    /// if (instance.TryPickBetaMcpToolResult(out var value)) {
+    ///     // `value` is of type `BetaMcpToolResultBlock`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaMCPToolResult([NotNullWhen(true)] out BetaMCPToolResultBlock? value)
+    public bool TryPickBetaMcpToolResult([NotNullWhen(true)] out BetaMcpToolResultBlock? value)
     {
-        value = this.Value as BetaMCPToolResultBlock;
+        value = this.Value as BetaMcpToolResultBlock;
         return value != null;
     }
 
@@ -602,8 +602,8 @@ public record class ContentBlock
     ///     (BetaBashCodeExecutionToolResultBlock value) => {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlock value) => {...},
     ///     (BetaToolSearchToolResultBlock value) => {...},
-    ///     (BetaMCPToolUseBlock value) => {...},
-    ///     (BetaMCPToolResultBlock value) => {...},
+    ///     (BetaMcpToolUseBlock value) => {...},
+    ///     (BetaMcpToolResultBlock value) => {...},
     ///     (BetaContainerUploadBlock value) => {...}
     /// );
     /// </code>
@@ -621,8 +621,8 @@ public record class ContentBlock
         System::Action<BetaBashCodeExecutionToolResultBlock> betaBashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlock> betaTextEditorCodeExecutionToolResult,
         System::Action<BetaToolSearchToolResultBlock> betaToolSearchToolResult,
-        System::Action<BetaMCPToolUseBlock> betaMCPToolUse,
-        System::Action<BetaMCPToolResultBlock> betaMCPToolResult,
+        System::Action<BetaMcpToolUseBlock> betaMcpToolUse,
+        System::Action<BetaMcpToolResultBlock> betaMcpToolResult,
         System::Action<BetaContainerUploadBlock> betaContainerUpload
     )
     {
@@ -661,11 +661,11 @@ public record class ContentBlock
             case BetaToolSearchToolResultBlock value:
                 betaToolSearchToolResult(value);
                 break;
-            case BetaMCPToolUseBlock value:
-                betaMCPToolUse(value);
+            case BetaMcpToolUseBlock value:
+                betaMcpToolUse(value);
                 break;
-            case BetaMCPToolResultBlock value:
-                betaMCPToolResult(value);
+            case BetaMcpToolResultBlock value:
+                betaMcpToolResult(value);
                 break;
             case BetaContainerUploadBlock value:
                 betaContainerUpload(value);
@@ -703,8 +703,8 @@ public record class ContentBlock
     ///     (BetaBashCodeExecutionToolResultBlock value) => {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlock value) => {...},
     ///     (BetaToolSearchToolResultBlock value) => {...},
-    ///     (BetaMCPToolUseBlock value) => {...},
-    ///     (BetaMCPToolResultBlock value) => {...},
+    ///     (BetaMcpToolUseBlock value) => {...},
+    ///     (BetaMcpToolResultBlock value) => {...},
     ///     (BetaContainerUploadBlock value) => {...}
     /// );
     /// </code>
@@ -725,8 +725,8 @@ public record class ContentBlock
             T
         > betaTextEditorCodeExecutionToolResult,
         System::Func<BetaToolSearchToolResultBlock, T> betaToolSearchToolResult,
-        System::Func<BetaMCPToolUseBlock, T> betaMCPToolUse,
-        System::Func<BetaMCPToolResultBlock, T> betaMCPToolResult,
+        System::Func<BetaMcpToolUseBlock, T> betaMcpToolUse,
+        System::Func<BetaMcpToolResultBlock, T> betaMcpToolResult,
         System::Func<BetaContainerUploadBlock, T> betaContainerUpload
     )
     {
@@ -744,8 +744,8 @@ public record class ContentBlock
             BetaTextEditorCodeExecutionToolResultBlock value =>
                 betaTextEditorCodeExecutionToolResult(value),
             BetaToolSearchToolResultBlock value => betaToolSearchToolResult(value),
-            BetaMCPToolUseBlock value => betaMCPToolUse(value),
-            BetaMCPToolResultBlock value => betaMCPToolResult(value),
+            BetaMcpToolUseBlock value => betaMcpToolUse(value),
+            BetaMcpToolResultBlock value => betaMcpToolResult(value),
             BetaContainerUploadBlock value => betaContainerUpload(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ContentBlock"
@@ -779,9 +779,9 @@ public record class ContentBlock
 
     public static implicit operator ContentBlock(BetaToolSearchToolResultBlock value) => new(value);
 
-    public static implicit operator ContentBlock(BetaMCPToolUseBlock value) => new(value);
+    public static implicit operator ContentBlock(BetaMcpToolUseBlock value) => new(value);
 
-    public static implicit operator ContentBlock(BetaMCPToolResultBlock value) => new(value);
+    public static implicit operator ContentBlock(BetaMcpToolResultBlock value) => new(value);
 
     public static implicit operator ContentBlock(BetaContainerUploadBlock value) => new(value);
 
@@ -816,8 +816,8 @@ public record class ContentBlock
             (betaTextEditorCodeExecutionToolResult) =>
                 betaTextEditorCodeExecutionToolResult.Validate(),
             (betaToolSearchToolResult) => betaToolSearchToolResult.Validate(),
-            (betaMCPToolUse) => betaMCPToolUse.Validate(),
-            (betaMCPToolResult) => betaMCPToolResult.Validate(),
+            (betaMcpToolUse) => betaMcpToolUse.Validate(),
+            (betaMcpToolResult) => betaMcpToolResult.Validate(),
             (betaContainerUpload) => betaContainerUpload.Validate()
         );
     }
@@ -1099,7 +1099,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlock>(
+                    var deserialized = JsonSerializer.Deserialize<BetaMcpToolUseBlock>(
                         element,
                         options
                     );
@@ -1121,7 +1121,7 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaMCPToolResultBlock>(
+                    var deserialized = JsonSerializer.Deserialize<BetaMcpToolResultBlock>(
                         element,
                         options
                     );

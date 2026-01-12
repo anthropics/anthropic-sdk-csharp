@@ -68,7 +68,7 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
     }
 
     /// <inheritdoc/>
-    public async Task<ModelListPageResponse> List(
+    public async Task<ModelListPage> List(
         ModelListParams? parameters = null,
         CancellationToken cancellationToken = default
     )
@@ -90,6 +90,6 @@ public sealed class ModelService : global::Anthropic.Services.Beta.IModelService
         {
             page.Validate();
         }
-        return page;
+        return new ModelListPage(this, parameters, page);
     }
 }

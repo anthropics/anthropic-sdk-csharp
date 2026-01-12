@@ -53,13 +53,13 @@ public interface IVersionService
     /// <summary>
     /// List Skill Versions
     /// </summary>
-    Task<VersionListPageResponse> List(
+    Task<VersionListPage> List(
         VersionListParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="List(VersionListParams, CancellationToken)"/>
-    Task<VersionListPageResponse> List(
+    Task<VersionListPage> List(
         string skillID,
         VersionListParams? parameters = null,
         CancellationToken cancellationToken = default

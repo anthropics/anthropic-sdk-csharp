@@ -105,7 +105,7 @@ public sealed class SkillService : ISkillService
     }
 
     /// <inheritdoc/>
-    public async Task<SkillListPageResponse> List(
+    public async Task<SkillListPage> List(
         SkillListParams? parameters = null,
         CancellationToken cancellationToken = default
     )
@@ -127,7 +127,7 @@ public sealed class SkillService : ISkillService
         {
             page.Validate();
         }
-        return page;
+        return new SkillListPage(this, parameters, page);
     }
 
     /// <inheritdoc/>
