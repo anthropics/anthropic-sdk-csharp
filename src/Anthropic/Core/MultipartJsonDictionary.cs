@@ -44,7 +44,6 @@ sealed class MultipartJsonDictionary
     public MultipartJsonDictionary(IReadOnlyDictionary<string, MultipartJsonElement> dictionary)
     {
         _rawData = Enumerable.ToDictionary(dictionary, (e) => e.Key, (e) => e.Value);
-        ;
         _deserializedData = [];
     }
 
@@ -57,7 +56,6 @@ sealed class MultipartJsonDictionary
     public MultipartJsonDictionary(MultipartJsonDictionary dictionary)
     {
         _rawData = Enumerable.ToDictionary(dictionary._rawData, (e) => e.Key, (e) => e.Value);
-        ;
         _deserializedData = new(dictionary._deserializedData);
     }
 

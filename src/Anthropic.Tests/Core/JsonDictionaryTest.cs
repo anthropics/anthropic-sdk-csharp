@@ -331,4 +331,76 @@ public class JsonDictionaryTest : TestBase
 
         Assert.Throws<InvalidOperationException>(() => dict.Set("new", "value"));
     }
+
+    [Fact]
+    public void ToString_ContainsJsonValues()
+    {
+        var dict = new JsonDictionary();
+        dict.Set("name", "Alice");
+        dict.Set("age", 30);
+
+        var json = dict.ToString();
+
+        Assert.Contains("\"name\"", json);
+        Assert.Contains("\"Alice\"", json);
+        Assert.Contains("\"age\"", json);
+        Assert.Contains("30", json);
+    }
+
+    [Fact]
+    public void Equals_ReturnsTrueForSameContent()
+    {
+        var dict1 = new JsonDictionary();
+        dict1.Set("name", "Alice");
+        dict1.Set("age", 30);
+
+        var dict2 = new JsonDictionary();
+        dict2.Set("name", "Alice");
+        dict2.Set("age", 30);
+
+        Assert.True(dict1.Equals(dict2));
+    }
+
+    [Fact]
+    public void Equals_ReturnsFalseForDifferentContent()
+    {
+        var dict1 = new JsonDictionary();
+        dict1.Set("name", "Alice");
+
+        var dict2 = new JsonDictionary();
+        dict2.Set("name", "Bob");
+
+        Assert.False(dict1.Equals(dict2));
+    }
+
+    [Fact]
+    public void Equals_ReturnsFalseForDifferentCounts()
+    {
+        var dict1 = new JsonDictionary();
+        dict1.Set("name", "Alice");
+        dict1.Set("age", 30);
+
+        var dict2 = new JsonDictionary();
+        dict2.Set("name", "Alice");
+
+        Assert.False(dict1.Equals(dict2));
+    }
+
+    [Fact]
+    public void Equals_ReturnsFalseForNull()
+    {
+        var dict = new JsonDictionary();
+        dict.Set("name", "Alice");
+
+        Assert.False(dict.Equals(null));
+    }
+
+    [Fact]
+    public void Equals_ReturnsFalseForDifferentType()
+    {
+        var dict = new JsonDictionary();
+        dict.Set("name", "Alice");
+
+        Assert.False(dict.Equals("not a dictionary"));
+    }
 }

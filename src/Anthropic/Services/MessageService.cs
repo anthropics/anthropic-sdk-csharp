@@ -154,7 +154,6 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
             (e) => e.Key,
             (e) => e.Value
         );
-        ;
         rawBodyData["stream"] = JsonSerializer.Deserialize<JsonElement>("true");
         parameters = MessageCreateParams.FromRawUnchecked(
             parameters.RawHeaderData,
