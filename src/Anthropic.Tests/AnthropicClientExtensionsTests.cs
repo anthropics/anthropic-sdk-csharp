@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Anthropic;
 using Anthropic.Models.Messages;
@@ -479,5 +477,262 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
             TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_IncludesMeaiUserAgentHeader()
+    {
+        string? capturedUserAgent = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_meai_header_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers =>
+            {
+                if (headers.TryGetValues("User-Agent", out var values))
+                {
+                    capturedUserAgent = string.Join(" ", values);
+                }
+            },
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Test",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response);
+        Assert.NotNull(capturedUserAgent);
+        Assert.Contains("MEAI", capturedUserAgent);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_IncludesMeaiUserAgentHeader()
+    {
+        string? capturedUserAgent = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test streaming"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_stream_meai_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Response"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":5}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        )
+        {
+            OnRequestHeaders = headers =>
+            {
+                if (headers.TryGetValues("User-Agent", out var values))
+                {
+                    capturedUserAgent = string.Join(" ", values);
+                }
+            },
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "Test streaming",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        Assert.NotEmpty(updates);
+        Assert.NotNull(capturedUserAgent);
+        Assert.Contains("MEAI", capturedUserAgent);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_MeaiUserAgentHeader_HasCorrectFormat()
+    {
+        string? capturedUserAgent = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_meai_format_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers =>
+            {
+                if (headers.TryGetValues("User-Agent", out var values))
+                {
+                    capturedUserAgent = string.Join(" ", values);
+                }
+            },
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Test",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response);
+        Assert.NotNull(capturedUserAgent);
+        // Verify the MEAI user-agent starts with "MEAI" and optionally has a version
+        Assert.Matches(@"MEAI(/[\d\.]+)?", capturedUserAgent);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_MeaiUserAgentHeader_PresentAlongsideDefaultHeaders()
+    {
+        bool hasAnthropicVersion = false;
+        bool hasMeaiUserAgent = false;
+        bool hasDefaultUserAgent = false;
+
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_headers_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        )
+        {
+            OnRequestHeaders = headers =>
+            {
+                hasAnthropicVersion = headers.Contains("anthropic-version");
+                if (headers.TryGetValues("User-Agent", out var values))
+                {
+                    var userAgentValue = string.Join(" ", values);
+                    hasMeaiUserAgent = userAgentValue.Contains("MEAI");
+                    hasDefaultUserAgent = userAgentValue.Contains("AnthropicClient");
+                }
+            },
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Test",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response);
+        Assert.True(hasAnthropicVersion, "anthropic-version header should be present");
+        Assert.True(hasMeaiUserAgent, "MEAI user-agent header should be present");
+        Assert.True(
+            hasDefaultUserAgent,
+            "Default AnthropicClient user-agent header should be present"
+        );
     }
 }
