@@ -123,7 +123,6 @@ public static class MultipartJsonSerializer
                 (e) => e.Key,
                 (e) => e.Value
             );
-            ;
             return JsonSerializer.Deserialize<T>(element.Json, MultipartSerializerOptions(options));
         }
         finally

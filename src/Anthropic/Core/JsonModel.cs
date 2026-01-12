@@ -12,12 +12,6 @@ public abstract record class JsonModel : ModelBase
 {
     private protected JsonDictionary _rawData = new();
 
-    protected JsonModel(JsonModel jsonModel)
-        : base(jsonModel)
-    {
-        this._rawData = new(jsonModel._rawData);
-    }
-
     /// <summary>
     /// The backing JSON properties of the instance.
     /// </summary>
@@ -26,36 +20,25 @@ public abstract record class JsonModel : ModelBase
         get { return this._rawData.Freeze(); }
     }
 
-    public sealed override string ToString() =>
-        JsonSerializer.Serialize(this.RawData, ModelBase.ToStringSerializerOptions);
+    protected JsonModel(JsonModel jsonModel)
+        : base(jsonModel)
+    {
+        this._rawData = new(jsonModel._rawData);
+    }
+
+    public sealed override string ToString() => this._rawData.ToString();
 
     public virtual bool Equals(JsonModel? other)
     {
-        if (other == null || this.RawData.Count != other.RawData.Count)
+        if (other == null)
         {
             return false;
         }
 
-        foreach (var item in this.RawData)
-        {
-            if (!other.RawData.TryGetValue(item.Key, out var otherValue))
-            {
-                return false;
-            }
-
-            if (!JsonElement.DeepEquals(item.Value, otherValue))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return this._rawData.Equals(other._rawData);
     }
 
-    public override int GetHashCode()
-    {
-        return 0;
-    }
+    public override int GetHashCode() => this._rawData.GetHashCode();
 }
 
 /// <summary>

@@ -44,7 +44,6 @@ sealed class JsonDictionary
     public JsonDictionary(IReadOnlyDictionary<string, JsonElement> dictionary)
     {
         _rawData = Enumerable.ToDictionary(dictionary, (e) => e.Key, (e) => e.Value);
-        ;
         _deserializedData = [];
     }
 
@@ -57,7 +56,6 @@ sealed class JsonDictionary
     public JsonDictionary(JsonDictionary dictionary)
     {
         _rawData = Enumerable.ToDictionary(dictionary._rawData, (e) => e.Key, (e) => e.Value);
-        ;
         _deserializedData = new(dictionary._deserializedData);
     }
 
@@ -197,5 +195,36 @@ sealed class JsonDictionary
         }
         _deserializedData[key] = deserialized;
         return deserialized;
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._rawData, ModelBase.ToStringSerializerOptions);
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not JsonDictionary other || _rawData.Count != other._rawData.Count)
+        {
+            return false;
+        }
+
+        foreach (var item in _rawData)
+        {
+            if (!other._rawData.TryGetValue(item.Key, out var otherValue))
+            {
+                return false;
+            }
+
+            if (!JsonElement.DeepEquals(item.Value, otherValue))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }
