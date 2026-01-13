@@ -4,12 +4,12 @@ using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
 
-public class BetaRequestMcpServerURLDefinitionTest : TestBase
+public class BetaRequestMcpServerUrlDefinitionTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaRequestMcpServerURLDefinition
+        var model = new BetaRequestMcpServerUrlDefinition
         {
             Name = "name",
             Url = "url",
@@ -37,7 +37,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaRequestMcpServerURLDefinition
+        var model = new BetaRequestMcpServerUrlDefinition
         {
             Name = "name",
             Url = "url",
@@ -57,7 +57,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaRequestMcpServerURLDefinition
+        var model = new BetaRequestMcpServerUrlDefinition
         {
             Name = "name",
             Url = "url",
@@ -92,7 +92,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaRequestMcpServerURLDefinition
+        var model = new BetaRequestMcpServerUrlDefinition
         {
             Name = "name",
             Url = "url",
@@ -106,7 +106,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaRequestMcpServerURLDefinition { Name = "name", Url = "url" };
+        var model = new BetaRequestMcpServerUrlDefinition { Name = "name", Url = "url" };
 
         Assert.Null(model.AuthorizationToken);
         Assert.False(model.RawData.ContainsKey("authorization_token"));
@@ -117,7 +117,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaRequestMcpServerURLDefinition { Name = "name", Url = "url" };
+        var model = new BetaRequestMcpServerUrlDefinition { Name = "name", Url = "url" };
 
         model.Validate();
     }
@@ -125,7 +125,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new BetaRequestMcpServerURLDefinition
+        var model = new BetaRequestMcpServerUrlDefinition
         {
             Name = "name",
             Url = "url",
@@ -143,7 +143,7 @@ public class BetaRequestMcpServerURLDefinitionTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new BetaRequestMcpServerURLDefinition
+        var model = new BetaRequestMcpServerUrlDefinition
         {
             Name = "name",
             Url = "url",

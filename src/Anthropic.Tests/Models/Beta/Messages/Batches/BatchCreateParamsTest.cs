@@ -1691,7 +1691,7 @@ public class ParamsTest : TestBase
                 },
             ],
         };
-        List<Messages::BetaRequestMcpServerURLDefinition> expectedMcpServers =
+        List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
             {
@@ -2085,7 +2085,7 @@ public class ParamsTest : TestBase
                 },
             ],
         };
-        List<Messages::BetaRequestMcpServerURLDefinition> expectedMcpServers =
+        List<Messages::BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
             {

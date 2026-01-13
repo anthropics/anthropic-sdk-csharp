@@ -373,7 +373,7 @@ public sealed record class Params : JsonModel
     /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
-    public IReadOnlyList<BetaRequestMcpServerURLDefinition>? McpServers
+    public IReadOnlyList<BetaRequestMcpServerUrlDefinition>? McpServers
     {
         get
         {

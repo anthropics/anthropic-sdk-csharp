@@ -72,8 +72,8 @@ public sealed record class BetaMcpToolResultBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("mcp_tool_result");
     }
 
-    public BetaMcpToolResultBlock(BetaMcpToolResultBlock BetaMcpToolResultBlock)
-        : base(BetaMcpToolResultBlock) { }
+    public BetaMcpToolResultBlock(BetaMcpToolResultBlock betaMcpToolResultBlock)
+        : base(betaMcpToolResultBlock) { }
 
     public BetaMcpToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -10,11 +10,11 @@ namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
     typeof(JsonModelConverter<
-        BetaRequestMcpServerURLDefinition,
-        BetaRequestMcpServerURLDefinitionFromRaw
+        BetaRequestMcpServerUrlDefinition,
+        BetaRequestMcpServerUrlDefinitionFromRaw
     >)
 )]
-public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
+public sealed record class BetaRequestMcpServerUrlDefinition : JsonModel
 {
     public required string Name
     {
@@ -81,17 +81,17 @@ public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
         this.ToolConfiguration?.Validate();
     }
 
-    public BetaRequestMcpServerURLDefinition()
+    public BetaRequestMcpServerUrlDefinition()
     {
         this.Type = JsonSerializer.SerializeToElement("url");
     }
 
-    public BetaRequestMcpServerURLDefinition(
-        BetaRequestMcpServerURLDefinition BetaRequestMcpServerURLDefinition
+    public BetaRequestMcpServerUrlDefinition(
+        BetaRequestMcpServerUrlDefinition betaRequestMcpServerUrlDefinition
     )
-        : base(BetaRequestMcpServerURLDefinition) { }
+        : base(betaRequestMcpServerUrlDefinition) { }
 
-    public BetaRequestMcpServerURLDefinition(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaRequestMcpServerUrlDefinition(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
@@ -100,14 +100,14 @@ public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaRequestMcpServerURLDefinition(FrozenDictionary<string, JsonElement> rawData)
+    BetaRequestMcpServerUrlDefinition(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="BetaRequestMcpServerURLDefinitionFromRaw.FromRawUnchecked"/>
-    public static BetaRequestMcpServerURLDefinition FromRawUnchecked(
+    /// <inheritdoc cref="BetaRequestMcpServerUrlDefinitionFromRaw.FromRawUnchecked"/>
+    public static BetaRequestMcpServerUrlDefinition FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -115,10 +115,10 @@ public sealed record class BetaRequestMcpServerURLDefinition : JsonModel
     }
 }
 
-class BetaRequestMcpServerURLDefinitionFromRaw : IFromRawJson<BetaRequestMcpServerURLDefinition>
+class BetaRequestMcpServerUrlDefinitionFromRaw : IFromRawJson<BetaRequestMcpServerUrlDefinition>
 {
     /// <inheritdoc/>
-    public BetaRequestMcpServerURLDefinition FromRawUnchecked(
+    public BetaRequestMcpServerUrlDefinition FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaRequestMcpServerURLDefinition.FromRawUnchecked(rawData);
+    ) => BetaRequestMcpServerUrlDefinition.FromRawUnchecked(rawData);
 }

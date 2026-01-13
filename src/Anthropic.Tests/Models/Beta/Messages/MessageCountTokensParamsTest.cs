@@ -120,7 +120,7 @@ public class MessageCountTokensParamsTest : TestBase
                 },
             ],
         };
-        List<BetaRequestMcpServerURLDefinition> expectedMcpServers =
+        List<BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
             {

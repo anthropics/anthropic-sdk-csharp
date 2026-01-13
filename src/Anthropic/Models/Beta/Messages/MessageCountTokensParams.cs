@@ -131,7 +131,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// <summary>
     /// MCP servers to be utilized in this request
     /// </summary>
-    public IReadOnlyList<BetaRequestMcpServerURLDefinition>? McpServers
+    public IReadOnlyList<BetaRequestMcpServerUrlDefinition>? McpServers
     {
         get
         {

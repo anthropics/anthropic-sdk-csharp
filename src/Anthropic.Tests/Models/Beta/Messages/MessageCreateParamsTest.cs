@@ -158,7 +158,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
         };
-        List<BetaRequestMcpServerURLDefinition> expectedMcpServers =
+        List<BetaRequestMcpServerUrlDefinition> expectedMcpServers =
         [
             new()
             {

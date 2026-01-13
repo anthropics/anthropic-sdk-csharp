@@ -46,8 +46,8 @@ public sealed record class UrlPdfSource : JsonModel
         this.Type = JsonSerializer.SerializeToElement("url");
     }
 
-    public UrlPdfSource(UrlPdfSource UrlPdfSource)
-        : base(UrlPdfSource) { }
+    public UrlPdfSource(UrlPdfSource urlPdfSource)
+        : base(urlPdfSource) { }
 
     public UrlPdfSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
