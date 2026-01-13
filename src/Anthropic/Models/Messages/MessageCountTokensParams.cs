@@ -22,7 +22,7 @@ namespace Anthropic.Models.Messages;
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
         get { return this._rawBodyData.Freeze(); }
@@ -81,8 +81,14 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<MessageParam> Messages
     {
-        get { return JsonModel.GetNotNullClass<List<MessageParam>>(this.RawBodyData, "messages"); }
-        init { JsonModel.Set(this._rawBodyData, "messages", value); }
+        get { return this._rawBodyData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages"); }
+        init
+        {
+            this._rawBodyData.Set<ImmutableArray<MessageParam>>(
+                "messages",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -91,8 +97,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Model>>(this.RawBodyData, "model"); }
-        init { JsonModel.Set(this._rawBodyData, "model", value); }
+        get { return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model"); }
+        init { this._rawBodyData.Set("model", value); }
     }
 
     /// <summary>
@@ -103,13 +109,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public MessageCountTokensParamsSystem? System
     {
-        get
-        {
-            return JsonModel.GetNullableClass<MessageCountTokensParamsSystem>(
-                this.RawBodyData,
-                "system"
-            );
-        }
+        get { return this._rawBodyData.GetNullableClass<MessageCountTokensParamsSystem>("system"); }
         init
         {
             if (value == null)
@@ -117,7 +117,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "system", value);
+            this._rawBodyData.Set("system", value);
         }
     }
 
@@ -133,10 +133,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public ThinkingConfigParam? Thinking
     {
-        get
-        {
-            return JsonModel.GetNullableClass<ThinkingConfigParam>(this.RawBodyData, "thinking");
-        }
+        get { return this._rawBodyData.GetNullableClass<ThinkingConfigParam>("thinking"); }
         init
         {
             if (value == null)
@@ -144,7 +141,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "thinking", value);
+            this._rawBodyData.Set("thinking", value);
         }
     }
 
@@ -154,7 +151,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public ToolChoice? ToolChoice
     {
-        get { return JsonModel.GetNullableClass<ToolChoice>(this.RawBodyData, "tool_choice"); }
+        get { return this._rawBodyData.GetNullableClass<ToolChoice>("tool_choice"); }
         init
         {
             if (value == null)
@@ -162,7 +159,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "tool_choice", value);
+            this._rawBodyData.Set("tool_choice", value);
         }
     }
 
@@ -217,8 +214,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<MessageCountTokensTool>>(
-                this.RawBodyData,
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<MessageCountTokensTool>>(
                 "tools"
             );
         }
@@ -229,7 +225,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "tools", value);
+            this._rawBodyData.Set<ImmutableArray<MessageCountTokensTool>?>(
+                "tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -238,7 +237,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     public MessageCountTokensParams(MessageCountTokensParams messageCountTokensParams)
         : base(messageCountTokensParams)
     {
-        this._rawBodyData = [.. messageCountTokensParams._rawBodyData];
+        this._rawBodyData = new(messageCountTokensParams._rawBodyData);
     }
 
     public MessageCountTokensParams(
@@ -247,9 +246,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
         IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 
 #pragma warning disable CS8618
@@ -260,9 +259,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
         FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 #pragma warning restore CS8618
 
@@ -528,7 +527,10 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(element, options);
+            var deserialized = JsonSerializer.Deserialize<ImmutableArray<TextBlockParam>>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 return new(deserialized, element);

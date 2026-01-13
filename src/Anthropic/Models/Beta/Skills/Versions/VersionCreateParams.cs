@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
@@ -14,7 +15,7 @@ namespace Anthropic.Models.Beta.Skills.Versions;
 /// </summary>
 public sealed record class VersionCreateParams : ParamsBase
 {
-    readonly FreezableDictionary<string, MultipartJsonElement> _rawBodyData = [];
+    readonly MultipartJsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, MultipartJsonElement> RawBodyData
     {
         get { return this._rawBodyData.Freeze(); }
@@ -30,14 +31,14 @@ public sealed record class VersionCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<BinaryContent>? Files
     {
-        get
+        get { return this._rawBodyData.GetNullableStruct<ImmutableArray<BinaryContent>>("files"); }
+        init
         {
-            return MultipartJsonModel.GetNullableClass<List<BinaryContent>>(
-                this.RawBodyData,
-                "files"
+            this._rawBodyData.Set<ImmutableArray<BinaryContent>?>(
+                "files",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
         }
-        init { MultipartJsonModel.Set(this._rawBodyData, "files", value); }
     }
 
     /// <summary>
@@ -47,10 +48,9 @@ public sealed record class VersionCreateParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
-                this.RawHeaderData,
-                "anthropic-beta"
-            );
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
         }
         init
         {
@@ -59,7 +59,10 @@ public sealed record class VersionCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -70,7 +73,7 @@ public sealed record class VersionCreateParams : ParamsBase
     {
         this.SkillID = versionCreateParams.SkillID;
 
-        this._rawBodyData = [.. versionCreateParams._rawBodyData];
+        this._rawBodyData = new(versionCreateParams._rawBodyData);
     }
 
     public VersionCreateParams(
@@ -79,9 +82,9 @@ public sealed record class VersionCreateParams : ParamsBase
         IReadOnlyDictionary<string, MultipartJsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 
 #pragma warning disable CS8618
@@ -92,9 +95,9 @@ public sealed record class VersionCreateParams : ParamsBase
         FrozenDictionary<string, MultipartJsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 #pragma warning restore CS8618
 

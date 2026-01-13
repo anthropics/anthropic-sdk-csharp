@@ -15,14 +15,14 @@ public sealed record class BetaRawContentBlockStopEvent : JsonModel
 {
     public required long Index
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { JsonModel.Set(this._rawData, "index", value); }
+        get { return this._rawData.GetNotNullStruct<long>("index"); }
+        init { this._rawData.Set("index", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -50,7 +50,7 @@ public sealed record class BetaRawContentBlockStopEvent : JsonModel
 
     public BetaRawContentBlockStopEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
     }
@@ -59,7 +59,7 @@ public sealed record class BetaRawContentBlockStopEvent : JsonModel
     [SetsRequiredMembers]
     BetaRawContentBlockStopEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

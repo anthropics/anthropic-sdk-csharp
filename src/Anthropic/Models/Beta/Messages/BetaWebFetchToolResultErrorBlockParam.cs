@@ -20,18 +20,17 @@ public sealed record class BetaWebFetchToolResultErrorBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
-                this.RawData,
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
                 "error_code"
             );
         }
-        init { JsonModel.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -61,7 +60,7 @@ public sealed record class BetaWebFetchToolResultErrorBlockParam : JsonModel
 
     public BetaWebFetchToolResultErrorBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result_error\"");
     }
@@ -70,7 +69,7 @@ public sealed record class BetaWebFetchToolResultErrorBlockParam : JsonModel
     [SetsRequiredMembers]
     BetaWebFetchToolResultErrorBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

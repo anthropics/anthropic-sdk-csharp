@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,26 +14,32 @@ public sealed record class SearchResultBlockParam : JsonModel
 {
     public required IReadOnlyList<TextBlockParam> Content
     {
-        get { return JsonModel.GetNotNullClass<List<TextBlockParam>>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullStruct<ImmutableArray<TextBlockParam>>("content"); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<TextBlockParam>>(
+                "content",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public required string Source
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "source"); }
-        init { JsonModel.Set(this._rawData, "source", value); }
+        get { return this._rawData.GetNotNullClass<string>("source"); }
+        init { this._rawData.Set("source", value); }
     }
 
     public required string Title
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "title"); }
-        init { JsonModel.Set(this._rawData, "title", value); }
+        get { return this._rawData.GetNotNullClass<string>("title"); }
+        init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -40,16 +47,13 @@ public sealed record class SearchResultBlockParam : JsonModel
     /// </summary>
     public CacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public CitationsConfigParam? Citations
     {
-        get { return JsonModel.GetNullableClass<CitationsConfigParam>(this.RawData, "citations"); }
+        get { return this._rawData.GetNullableClass<CitationsConfigParam>("citations"); }
         init
         {
             if (value == null)
@@ -57,7 +61,7 @@ public sealed record class SearchResultBlockParam : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "citations", value);
+            this._rawData.Set("citations", value);
         }
     }
 
@@ -93,7 +97,7 @@ public sealed record class SearchResultBlockParam : JsonModel
 
     public SearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
     }
@@ -102,7 +106,7 @@ public sealed record class SearchResultBlockParam : JsonModel
     [SetsRequiredMembers]
     SearchResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

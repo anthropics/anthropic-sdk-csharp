@@ -18,14 +18,14 @@ public sealed record class BetaRedactedThinkingBlockParam : JsonModel
 {
     public required string Data
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
-        init { JsonModel.Set(this._rawData, "data", value); }
+        get { return this._rawData.GetNotNullClass<string>("data"); }
+        init { this._rawData.Set("data", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -55,7 +55,7 @@ public sealed record class BetaRedactedThinkingBlockParam : JsonModel
 
     public BetaRedactedThinkingBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
     }
@@ -64,7 +64,7 @@ public sealed record class BetaRedactedThinkingBlockParam : JsonModel
     [SetsRequiredMembers]
     BetaRedactedThinkingBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

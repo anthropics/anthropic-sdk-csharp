@@ -19,8 +19,8 @@ public sealed record class MessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Canceled
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "canceled"); }
-        init { JsonModel.Set(this._rawData, "canceled", value); }
+        get { return this._rawData.GetNotNullStruct<long>("canceled"); }
+        init { this._rawData.Set("canceled", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class MessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Errored
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "errored"); }
-        init { JsonModel.Set(this._rawData, "errored", value); }
+        get { return this._rawData.GetNotNullStruct<long>("errored"); }
+        init { this._rawData.Set("errored", value); }
     }
 
     /// <summary>
@@ -41,8 +41,8 @@ public sealed record class MessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Expired
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "expired"); }
-        init { JsonModel.Set(this._rawData, "expired", value); }
+        get { return this._rawData.GetNotNullStruct<long>("expired"); }
+        init { this._rawData.Set("expired", value); }
     }
 
     /// <summary>
@@ -50,8 +50,8 @@ public sealed record class MessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Processing
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "processing"); }
-        init { JsonModel.Set(this._rawData, "processing", value); }
+        get { return this._rawData.GetNotNullStruct<long>("processing"); }
+        init { this._rawData.Set("processing", value); }
     }
 
     /// <summary>
@@ -61,8 +61,8 @@ public sealed record class MessageBatchRequestCounts : JsonModel
     /// </summary>
     public required long Succeeded
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "succeeded"); }
-        init { JsonModel.Set(this._rawData, "succeeded", value); }
+        get { return this._rawData.GetNotNullStruct<long>("succeeded"); }
+        init { this._rawData.Set("succeeded", value); }
     }
 
     /// <inheritdoc/>
@@ -82,14 +82,14 @@ public sealed record class MessageBatchRequestCounts : JsonModel
 
     public MessageBatchRequestCounts(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageBatchRequestCounts(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -13,14 +13,14 @@ public sealed record class BetaInputJsonDelta : JsonModel
 {
     public required string PartialJson
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "partial_json"); }
-        init { JsonModel.Set(this._rawData, "partial_json", value); }
+        get { return this._rawData.GetNotNullClass<string>("partial_json"); }
+        init { this._rawData.Set("partial_json", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -48,7 +48,7 @@ public sealed record class BetaInputJsonDelta : JsonModel
 
     public BetaInputJsonDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"input_json_delta\"");
     }
@@ -57,7 +57,7 @@ public sealed record class BetaInputJsonDelta : JsonModel
     [SetsRequiredMembers]
     BetaInputJsonDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

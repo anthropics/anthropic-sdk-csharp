@@ -16,8 +16,8 @@ public sealed record class ToolChoiceAny : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ public sealed record class ToolChoiceAny : JsonModel
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
+        get { return this._rawData.GetNullableStruct<bool>("disable_parallel_tool_use"); }
         init
         {
             if (value == null)
@@ -36,7 +36,7 @@ public sealed record class ToolChoiceAny : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "disable_parallel_tool_use", value);
+            this._rawData.Set("disable_parallel_tool_use", value);
         }
     }
 
@@ -60,7 +60,7 @@ public sealed record class ToolChoiceAny : JsonModel
 
     public ToolChoiceAny(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"any\"");
     }
@@ -69,7 +69,7 @@ public sealed record class ToolChoiceAny : JsonModel
     [SetsRequiredMembers]
     ToolChoiceAny(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

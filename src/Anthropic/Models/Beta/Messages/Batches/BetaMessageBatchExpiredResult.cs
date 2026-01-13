@@ -15,8 +15,8 @@ public sealed record class BetaMessageBatchExpiredResult : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -45,7 +45,7 @@ public sealed record class BetaMessageBatchExpiredResult : JsonModel
 
     public BetaMessageBatchExpiredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
     }
@@ -54,7 +54,7 @@ public sealed record class BetaMessageBatchExpiredResult : JsonModel
     [SetsRequiredMembers]
     BetaMessageBatchExpiredResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

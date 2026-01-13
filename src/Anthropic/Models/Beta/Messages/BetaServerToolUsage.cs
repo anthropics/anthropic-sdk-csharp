@@ -15,8 +15,8 @@ public sealed record class BetaServerToolUsage : JsonModel
     /// </summary>
     public required long WebFetchRequests
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "web_fetch_requests"); }
-        init { JsonModel.Set(this._rawData, "web_fetch_requests", value); }
+        get { return this._rawData.GetNotNullStruct<long>("web_fetch_requests"); }
+        init { this._rawData.Set("web_fetch_requests", value); }
     }
 
     /// <summary>
@@ -24,8 +24,8 @@ public sealed record class BetaServerToolUsage : JsonModel
     /// </summary>
     public required long WebSearchRequests
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
-        init { JsonModel.Set(this._rawData, "web_search_requests", value); }
+        get { return this._rawData.GetNotNullStruct<long>("web_search_requests"); }
+        init { this._rawData.Set("web_search_requests", value); }
     }
 
     /// <inheritdoc/>
@@ -42,14 +42,14 @@ public sealed record class BetaServerToolUsage : JsonModel
 
     public BetaServerToolUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaServerToolUsage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -15,8 +15,8 @@ public sealed record class BetaThinkingConfigDisabled : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -43,7 +43,7 @@ public sealed record class BetaThinkingConfigDisabled : JsonModel
 
     public BetaThinkingConfigDisabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
     }
@@ -52,7 +52,7 @@ public sealed record class BetaThinkingConfigDisabled : JsonModel
     [SetsRequiredMembers]
     BetaThinkingConfigDisabled(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

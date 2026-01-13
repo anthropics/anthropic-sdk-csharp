@@ -17,8 +17,8 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get { return this._rawData.GetNotNullClass<string>("id"); }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -26,8 +26,8 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string CreatedAt
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "created_at"); }
-        init { JsonModel.Set(this._rawData, "created_at", value); }
+        get { return this._rawData.GetNotNullClass<string>("created_at"); }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -38,8 +38,8 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string? DisplayTitle
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "display_title"); }
-        init { JsonModel.Set(this._rawData, "display_title", value); }
+        get { return this._rawData.GetNullableClass<string>("display_title"); }
+        init { this._rawData.Set("display_title", value); }
     }
 
     /// <summary>
@@ -49,8 +49,8 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string? LatestVersion
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "latest_version"); }
-        init { JsonModel.Set(this._rawData, "latest_version", value); }
+        get { return this._rawData.GetNullableClass<string>("latest_version"); }
+        init { this._rawData.Set("latest_version", value); }
     }
 
     /// <summary>
@@ -61,8 +61,8 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string Source
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "source"); }
-        init { JsonModel.Set(this._rawData, "source", value); }
+        get { return this._rawData.GetNotNullClass<string>("source"); }
+        init { this._rawData.Set("source", value); }
     }
 
     /// <summary>
@@ -72,8 +72,8 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string Type
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullClass<string>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -81,8 +81,8 @@ public sealed record class SkillRetrieveResponse : JsonModel
     /// </summary>
     public required string UpdatedAt
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "updated_at"); }
-        init { JsonModel.Set(this._rawData, "updated_at", value); }
+        get { return this._rawData.GetNotNullClass<string>("updated_at"); }
+        init { this._rawData.Set("updated_at", value); }
     }
 
     /// <inheritdoc/>
@@ -104,14 +104,14 @@ public sealed record class SkillRetrieveResponse : JsonModel
 
     public SkillRetrieveResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     SkillRetrieveResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

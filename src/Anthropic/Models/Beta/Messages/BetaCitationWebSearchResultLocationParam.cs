@@ -18,32 +18,32 @@ public sealed record class BetaCitationWebSearchResultLocationParam : JsonModel
 {
     public required string CitedText
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { JsonModel.Set(this._rawData, "cited_text", value); }
+        get { return this._rawData.GetNotNullClass<string>("cited_text"); }
+        init { this._rawData.Set("cited_text", value); }
     }
 
     public required string EncryptedIndex
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "encrypted_index"); }
-        init { JsonModel.Set(this._rawData, "encrypted_index", value); }
+        get { return this._rawData.GetNotNullClass<string>("encrypted_index"); }
+        init { this._rawData.Set("encrypted_index", value); }
     }
 
     public required string? Title
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
-        init { JsonModel.Set(this._rawData, "title", value); }
+        get { return this._rawData.GetNullableClass<string>("title"); }
+        init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     public required string Url
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
-        init { JsonModel.Set(this._rawData, "url", value); }
+        get { return this._rawData.GetNotNullClass<string>("url"); }
+        init { this._rawData.Set("url", value); }
     }
 
     /// <inheritdoc/>
@@ -78,7 +78,7 @@ public sealed record class BetaCitationWebSearchResultLocationParam : JsonModel
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
     }
@@ -87,7 +87,7 @@ public sealed record class BetaCitationWebSearchResultLocationParam : JsonModel
     [SetsRequiredMembers]
     BetaCitationWebSearchResultLocationParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

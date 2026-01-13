@@ -13,14 +13,14 @@ public sealed record class ThinkingDelta : JsonModel
 {
     public required string Thinking
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "thinking"); }
-        init { JsonModel.Set(this._rawData, "thinking", value); }
+        get { return this._rawData.GetNotNullClass<string>("thinking"); }
+        init { this._rawData.Set("thinking", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -48,7 +48,7 @@ public sealed record class ThinkingDelta : JsonModel
 
     public ThinkingDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_delta\"");
     }
@@ -57,7 +57,7 @@ public sealed record class ThinkingDelta : JsonModel
     [SetsRequiredMembers]
     ThinkingDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

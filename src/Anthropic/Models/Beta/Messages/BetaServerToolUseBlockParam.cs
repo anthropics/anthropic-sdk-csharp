@@ -16,38 +16,40 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
 {
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get { return this._rawData.GetNotNullClass<string>("id"); }
+        init { this._rawData.Set("id", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            return JsonModel.GetNotNullClass<Dictionary<string, JsonElement>>(
-                this.RawData,
-                "input"
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("input");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>>(
+                "input",
+                FrozenDictionary.ToFrozenDictionary(value)
             );
         }
-        init { JsonModel.Set(this._rawData, "input", value); }
     }
 
     public required ApiEnum<string, BetaServerToolUseBlockParamName> Name
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, BetaServerToolUseBlockParamName>>(
-                this.RawData,
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaServerToolUseBlockParamName>>(
                 "name"
             );
         }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -55,14 +57,8 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -70,13 +66,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     /// </summary>
     public BetaServerToolUseBlockParamCaller? Caller
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaServerToolUseBlockParamCaller>(
-                this.RawData,
-                "caller"
-            );
-        }
+        get { return this._rawData.GetNullableClass<BetaServerToolUseBlockParamCaller>("caller"); }
         init
         {
             if (value == null)
@@ -84,7 +74,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "caller", value);
+            this._rawData.Set("caller", value);
         }
     }
 
@@ -117,7 +107,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
 
     public BetaServerToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
     }
@@ -126,7 +116,7 @@ public sealed record class BetaServerToolUseBlockParam : JsonModel
     [SetsRequiredMembers]
     BetaServerToolUseBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

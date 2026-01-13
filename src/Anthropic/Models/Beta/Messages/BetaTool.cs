@@ -1,6 +1,8 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -20,8 +22,8 @@ public sealed record class BetaTool : JsonModel
     /// </summary>
     public required InputSchema InputSchema
     {
-        get { return JsonModel.GetNotNullClass<InputSchema>(this.RawData, "input_schema"); }
-        init { JsonModel.Set(this._rawData, "input_schema", value); }
+        get { return this._rawData.GetNotNullClass<InputSchema>("input_schema"); }
+        init { this._rawData.Set("input_schema", value); }
     }
 
     /// <summary>
@@ -31,18 +33,17 @@ public sealed record class BetaTool : JsonModel
     /// </summary>
     public required string Name
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get { return this._rawData.GetNotNullClass<string>("name"); }
+        init { this._rawData.Set("name", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaToolAllowedCaller>>? AllowedCallers
     {
         get
         {
-            return JsonModel.GetNullableClass<List<ApiEnum<string, BetaToolAllowedCaller>>>(
-                this.RawData,
-                "allowed_callers"
-            );
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaToolAllowedCaller>>
+            >("allowed_callers");
         }
         init
         {
@@ -51,7 +52,10 @@ public sealed record class BetaTool : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<ApiEnum<string, BetaToolAllowedCaller>>?>(
+                "allowed_callers",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -60,14 +64,8 @@ public sealed record class BetaTool : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -76,7 +74,7 @@ public sealed record class BetaTool : JsonModel
     /// </summary>
     public bool? DeferLoading
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get { return this._rawData.GetNullableStruct<bool>("defer_loading"); }
         init
         {
             if (value == null)
@@ -84,7 +82,7 @@ public sealed record class BetaTool : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
@@ -98,7 +96,7 @@ public sealed record class BetaTool : JsonModel
     /// </summary>
     public string? Description
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "description"); }
+        get { return this._rawData.GetNullableClass<string>("description"); }
         init
         {
             if (value == null)
@@ -106,18 +104,17 @@ public sealed record class BetaTool : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "description", value);
+            this._rawData.Set("description", value);
         }
     }
 
-    public IReadOnlyList<Dictionary<string, JsonElement>>? InputExamples
+    public IReadOnlyList<IReadOnlyDictionary<string, JsonElement>>? InputExamples
     {
         get
         {
-            return JsonModel.GetNullableClass<List<Dictionary<string, JsonElement>>>(
-                this.RawData,
-                "input_examples"
-            );
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<FrozenDictionary<string, JsonElement>>
+            >("input_examples");
         }
         init
         {
@@ -126,13 +123,23 @@ public sealed record class BetaTool : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "input_examples", value);
+            this._rawData.Set<ImmutableArray<FrozenDictionary<string, JsonElement>>?>(
+                "input_examples",
+                value == null
+                    ? null
+                    : ImmutableArray.ToImmutableArray(
+                        Enumerable.Select(
+                            value,
+                            (item) => FrozenDictionary.ToFrozenDictionary(item)
+                        )
+                    )
+            );
         }
     }
 
     public bool? Strict
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get { return this._rawData.GetNullableStruct<bool>("strict"); }
         init
         {
             if (value == null)
@@ -140,17 +147,14 @@ public sealed record class BetaTool : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
     public ApiEnum<string, BetaToolType>? Type
     {
-        get
-        {
-            return JsonModel.GetNullableClass<ApiEnum<string, BetaToolType>>(this.RawData, "type");
-        }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNullableClass<ApiEnum<string, BetaToolType>>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -177,14 +181,14 @@ public sealed record class BetaTool : JsonModel
 
     public BetaTool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaTool(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -213,26 +217,37 @@ public sealed record class InputSchema : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyDictionary<string, JsonElement>? Properties
     {
         get
         {
-            return JsonModel.GetNullableClass<Dictionary<string, JsonElement>>(
-                this.RawData,
+            return this._rawData.GetNullableClass<FrozenDictionary<string, JsonElement>>(
                 "properties"
             );
         }
-        init { JsonModel.Set(this._rawData, "properties", value); }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>?>(
+                "properties",
+                value == null ? null : FrozenDictionary.ToFrozenDictionary(value)
+            );
+        }
     }
 
     public IReadOnlyList<string>? Required
     {
-        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "required"); }
-        init { JsonModel.Set(this._rawData, "required", value); }
+        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("required"); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "required",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -261,7 +276,7 @@ public sealed record class InputSchema : JsonModel
 
     public InputSchema(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
     }
@@ -270,7 +285,7 @@ public sealed record class InputSchema : JsonModel
     [SetsRequiredMembers]
     InputSchema(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

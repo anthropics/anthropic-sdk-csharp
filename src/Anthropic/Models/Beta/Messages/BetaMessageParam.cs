@@ -15,14 +15,14 @@ public sealed record class BetaMessageParam : JsonModel
 {
     public required BetaMessageParamContent Content
     {
-        get { return JsonModel.GetNotNullClass<BetaMessageParamContent>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullClass<BetaMessageParamContent>("content"); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required ApiEnum<string, Role> Role
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Role>>(this.RawData, "role"); }
-        init { JsonModel.Set(this._rawData, "role", value); }
+        get { return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role"); }
+        init { this._rawData.Set("role", value); }
     }
 
     /// <inheritdoc/>
@@ -39,14 +39,14 @@ public sealed record class BetaMessageParam : JsonModel
 
     public BetaMessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -281,7 +281,7 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaContentBlockParam>>(
+            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaContentBlockParam>>(
                 element,
                 options
             );

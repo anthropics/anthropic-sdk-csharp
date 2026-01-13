@@ -22,7 +22,7 @@ namespace Anthropic.Models.Messages;
 /// </summary>
 public sealed record class MessageCreateParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
         get { return this._rawBodyData.Freeze(); }
@@ -39,8 +39,8 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required long MaxTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawBodyData, "max_tokens"); }
-        init { JsonModel.Set(this._rawBodyData, "max_tokens", value); }
+        get { return this._rawBodyData.GetNotNullStruct<long>("max_tokens"); }
+        init { this._rawBodyData.Set("max_tokens", value); }
     }
 
     /// <summary>
@@ -96,8 +96,14 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required IReadOnlyList<MessageParam> Messages
     {
-        get { return JsonModel.GetNotNullClass<List<MessageParam>>(this.RawBodyData, "messages"); }
-        init { JsonModel.Set(this._rawBodyData, "messages", value); }
+        get { return this._rawBodyData.GetNotNullStruct<ImmutableArray<MessageParam>>("messages"); }
+        init
+        {
+            this._rawBodyData.Set<ImmutableArray<MessageParam>>(
+                "messages",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -106,8 +112,8 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Model>>(this.RawBodyData, "model"); }
-        init { JsonModel.Set(this._rawBodyData, "model", value); }
+        get { return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model"); }
+        init { this._rawBodyData.Set("model", value); }
     }
 
     /// <summary>
@@ -115,7 +121,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public Metadata? Metadata
     {
-        get { return JsonModel.GetNullableClass<Metadata>(this.RawBodyData, "metadata"); }
+        get { return this._rawBodyData.GetNullableClass<Metadata>("metadata"); }
         init
         {
             if (value == null)
@@ -123,7 +129,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "metadata", value);
+            this._rawBodyData.Set("metadata", value);
         }
     }
 
@@ -138,10 +144,7 @@ public sealed record class MessageCreateParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<ApiEnum<string, ServiceTier>>(
-                this.RawBodyData,
-                "service_tier"
-            );
+            return this._rawBodyData.GetNullableClass<ApiEnum<string, ServiceTier>>("service_tier");
         }
         init
         {
@@ -150,7 +153,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "service_tier", value);
+            this._rawBodyData.Set("service_tier", value);
         }
     }
 
@@ -168,7 +171,10 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<string>? StopSequences
     {
-        get { return JsonModel.GetNullableClass<List<string>>(this.RawBodyData, "stop_sequences"); }
+        get
+        {
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<string>>("stop_sequences");
+        }
         init
         {
             if (value == null)
@@ -176,7 +182,10 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "stop_sequences", value);
+            this._rawBodyData.Set<ImmutableArray<string>?>(
+                "stop_sequences",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -188,13 +197,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public MessageCreateParamsSystem? System
     {
-        get
-        {
-            return JsonModel.GetNullableClass<MessageCreateParamsSystem>(
-                this.RawBodyData,
-                "system"
-            );
-        }
+        get { return this._rawBodyData.GetNullableClass<MessageCreateParamsSystem>("system"); }
         init
         {
             if (value == null)
@@ -202,7 +205,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "system", value);
+            this._rawBodyData.Set("system", value);
         }
     }
 
@@ -218,7 +221,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public double? Temperature
     {
-        get { return JsonModel.GetNullableStruct<double>(this.RawBodyData, "temperature"); }
+        get { return this._rawBodyData.GetNullableStruct<double>("temperature"); }
         init
         {
             if (value == null)
@@ -226,7 +229,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "temperature", value);
+            this._rawBodyData.Set("temperature", value);
         }
     }
 
@@ -242,10 +245,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public ThinkingConfigParam? Thinking
     {
-        get
-        {
-            return JsonModel.GetNullableClass<ThinkingConfigParam>(this.RawBodyData, "thinking");
-        }
+        get { return this._rawBodyData.GetNullableClass<ThinkingConfigParam>("thinking"); }
         init
         {
             if (value == null)
@@ -253,7 +253,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "thinking", value);
+            this._rawBodyData.Set("thinking", value);
         }
     }
 
@@ -263,7 +263,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public ToolChoice? ToolChoice
     {
-        get { return JsonModel.GetNullableClass<ToolChoice>(this.RawBodyData, "tool_choice"); }
+        get { return this._rawBodyData.GetNullableClass<ToolChoice>("tool_choice"); }
         init
         {
             if (value == null)
@@ -271,7 +271,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "tool_choice", value);
+            this._rawBodyData.Set("tool_choice", value);
         }
     }
 
@@ -324,7 +324,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<ToolUnion>? Tools
     {
-        get { return JsonModel.GetNullableClass<List<ToolUnion>>(this.RawBodyData, "tools"); }
+        get { return this._rawBodyData.GetNullableStruct<ImmutableArray<ToolUnion>>("tools"); }
         init
         {
             if (value == null)
@@ -332,7 +332,10 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "tools", value);
+            this._rawBodyData.Set<ImmutableArray<ToolUnion>?>(
+                "tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -346,7 +349,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public long? TopK
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawBodyData, "top_k"); }
+        get { return this._rawBodyData.GetNullableStruct<long>("top_k"); }
         init
         {
             if (value == null)
@@ -354,7 +357,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "top_k", value);
+            this._rawBodyData.Set("top_k", value);
         }
     }
 
@@ -370,7 +373,7 @@ public sealed record class MessageCreateParams : ParamsBase
     /// </summary>
     public double? TopP
     {
-        get { return JsonModel.GetNullableStruct<double>(this.RawBodyData, "top_p"); }
+        get { return this._rawBodyData.GetNullableStruct<double>("top_p"); }
         init
         {
             if (value == null)
@@ -378,7 +381,7 @@ public sealed record class MessageCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "top_p", value);
+            this._rawBodyData.Set("top_p", value);
         }
     }
 
@@ -387,7 +390,7 @@ public sealed record class MessageCreateParams : ParamsBase
     public MessageCreateParams(MessageCreateParams messageCreateParams)
         : base(messageCreateParams)
     {
-        this._rawBodyData = [.. messageCreateParams._rawBodyData];
+        this._rawBodyData = new(messageCreateParams._rawBodyData);
     }
 
     public MessageCreateParams(
@@ -396,9 +399,9 @@ public sealed record class MessageCreateParams : ParamsBase
         IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 
 #pragma warning disable CS8618
@@ -409,9 +412,9 @@ public sealed record class MessageCreateParams : ParamsBase
         FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 #pragma warning restore CS8618
 
@@ -726,7 +729,10 @@ sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreatePar
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(element, options);
+            var deserialized = JsonSerializer.Deserialize<ImmutableArray<TextBlockParam>>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 return new(deserialized, element);

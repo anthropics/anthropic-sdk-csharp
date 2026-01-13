@@ -17,12 +17,11 @@ public sealed record class BetaMessageTokensCount : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCountTokensContextManagementResponse>(
-                this.RawData,
+            return this._rawData.GetNullableClass<BetaCountTokensContextManagementResponse>(
                 "context_management"
             );
         }
-        init { JsonModel.Set(this._rawData, "context_management", value); }
+        init { this._rawData.Set("context_management", value); }
     }
 
     /// <summary>
@@ -31,8 +30,8 @@ public sealed record class BetaMessageTokensCount : JsonModel
     /// </summary>
     public required long InputTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
-        init { JsonModel.Set(this._rawData, "input_tokens", value); }
+        get { return this._rawData.GetNotNullStruct<long>("input_tokens"); }
+        init { this._rawData.Set("input_tokens", value); }
     }
 
     /// <inheritdoc/>
@@ -49,14 +48,14 @@ public sealed record class BetaMessageTokensCount : JsonModel
 
     public BetaMessageTokensCount(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageTokensCount(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
@@ -23,8 +24,8 @@ public sealed record class VersionListParams : ParamsBase
     /// </summary>
     public long? Limit
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawQueryData, "limit"); }
-        init { JsonModel.Set(this._rawQueryData, "limit", value); }
+        get { return this._rawQueryData.GetNullableStruct<long>("limit"); }
+        init { this._rawQueryData.Set("limit", value); }
     }
 
     /// <summary>
@@ -32,8 +33,8 @@ public sealed record class VersionListParams : ParamsBase
     /// </summary>
     public string? Page
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawQueryData, "page"); }
-        init { JsonModel.Set(this._rawQueryData, "page", value); }
+        get { return this._rawQueryData.GetNullableClass<string>("page"); }
+        init { this._rawQueryData.Set("page", value); }
     }
 
     /// <summary>
@@ -43,10 +44,9 @@ public sealed record class VersionListParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
-                this.RawHeaderData,
-                "anthropic-beta"
-            );
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
         }
         init
         {
@@ -55,7 +55,10 @@ public sealed record class VersionListParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -72,8 +75,8 @@ public sealed record class VersionListParams : ParamsBase
         IReadOnlyDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
     }
 
 #pragma warning disable CS8618
@@ -83,8 +86,8 @@ public sealed record class VersionListParams : ParamsBase
         FrozenDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
     }
 #pragma warning restore CS8618
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
@@ -20,7 +21,7 @@ public sealed record class FileListParams : ParamsBase
     /// </summary>
     public string? AfterID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawQueryData, "after_id"); }
+        get { return this._rawQueryData.GetNullableClass<string>("after_id"); }
         init
         {
             if (value == null)
@@ -28,7 +29,7 @@ public sealed record class FileListParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawQueryData, "after_id", value);
+            this._rawQueryData.Set("after_id", value);
         }
     }
 
@@ -38,7 +39,7 @@ public sealed record class FileListParams : ParamsBase
     /// </summary>
     public string? BeforeID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawQueryData, "before_id"); }
+        get { return this._rawQueryData.GetNullableClass<string>("before_id"); }
         init
         {
             if (value == null)
@@ -46,7 +47,7 @@ public sealed record class FileListParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawQueryData, "before_id", value);
+            this._rawQueryData.Set("before_id", value);
         }
     }
 
@@ -57,7 +58,7 @@ public sealed record class FileListParams : ParamsBase
     /// </summary>
     public long? Limit
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawQueryData, "limit"); }
+        get { return this._rawQueryData.GetNullableStruct<long>("limit"); }
         init
         {
             if (value == null)
@@ -65,7 +66,7 @@ public sealed record class FileListParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawQueryData, "limit", value);
+            this._rawQueryData.Set("limit", value);
         }
     }
 
@@ -76,10 +77,9 @@ public sealed record class FileListParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
-                this.RawHeaderData,
-                "anthropic-beta"
-            );
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
         }
         init
         {
@@ -88,7 +88,10 @@ public sealed record class FileListParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -102,8 +105,8 @@ public sealed record class FileListParams : ParamsBase
         IReadOnlyDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
     }
 
 #pragma warning disable CS8618
@@ -113,8 +116,8 @@ public sealed record class FileListParams : ParamsBase
         FrozenDictionary<string, JsonElement> rawQueryData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
     }
 #pragma warning restore CS8618
 

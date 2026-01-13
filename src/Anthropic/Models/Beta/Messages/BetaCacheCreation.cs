@@ -15,8 +15,8 @@ public sealed record class BetaCacheCreation : JsonModel
     /// </summary>
     public required long Ephemeral1hInputTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "ephemeral_1h_input_tokens"); }
-        init { JsonModel.Set(this._rawData, "ephemeral_1h_input_tokens", value); }
+        get { return this._rawData.GetNotNullStruct<long>("ephemeral_1h_input_tokens"); }
+        init { this._rawData.Set("ephemeral_1h_input_tokens", value); }
     }
 
     /// <summary>
@@ -24,8 +24,8 @@ public sealed record class BetaCacheCreation : JsonModel
     /// </summary>
     public required long Ephemeral5mInputTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "ephemeral_5m_input_tokens"); }
-        init { JsonModel.Set(this._rawData, "ephemeral_5m_input_tokens", value); }
+        get { return this._rawData.GetNotNullStruct<long>("ephemeral_5m_input_tokens"); }
+        init { this._rawData.Set("ephemeral_5m_input_tokens", value); }
     }
 
     /// <inheritdoc/>
@@ -42,14 +42,14 @@ public sealed record class BetaCacheCreation : JsonModel
 
     public BetaCacheCreation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCacheCreation(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

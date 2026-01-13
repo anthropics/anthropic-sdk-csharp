@@ -17,8 +17,8 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -29,12 +29,9 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaInputTokensClearAtLeast>(
-                this.RawData,
-                "clear_at_least"
-            );
+            return this._rawData.GetNullableClass<BetaInputTokensClearAtLeast>("clear_at_least");
         }
-        init { JsonModel.Set(this._rawData, "clear_at_least", value); }
+        init { this._rawData.Set("clear_at_least", value); }
     }
 
     /// <summary>
@@ -42,11 +39,8 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public ClearToolInputs? ClearToolInputs
     {
-        get
-        {
-            return JsonModel.GetNullableClass<ClearToolInputs>(this.RawData, "clear_tool_inputs");
-        }
-        init { JsonModel.Set(this._rawData, "clear_tool_inputs", value); }
+        get { return this._rawData.GetNullableClass<ClearToolInputs>("clear_tool_inputs"); }
+        init { this._rawData.Set("clear_tool_inputs", value); }
     }
 
     /// <summary>
@@ -54,8 +48,14 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public IReadOnlyList<string>? ExcludeTools
     {
-        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "exclude_tools"); }
-        init { JsonModel.Set(this._rawData, "exclude_tools", value); }
+        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("exclude_tools"); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "exclude_tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public BetaToolUsesKeep? Keep
     {
-        get { return JsonModel.GetNullableClass<BetaToolUsesKeep>(this.RawData, "keep"); }
+        get { return this._rawData.GetNullableClass<BetaToolUsesKeep>("keep"); }
         init
         {
             if (value == null)
@@ -71,7 +71,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "keep", value);
+            this._rawData.Set("keep", value);
         }
     }
 
@@ -80,7 +80,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     /// </summary>
     public Trigger? Trigger
     {
-        get { return JsonModel.GetNullableClass<Trigger>(this.RawData, "trigger"); }
+        get { return this._rawData.GetNullableClass<Trigger>("trigger"); }
         init
         {
             if (value == null)
@@ -88,7 +88,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "trigger", value);
+            this._rawData.Set("trigger", value);
         }
     }
 
@@ -123,7 +123,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
 
     public BetaClearToolUses20250919Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_tool_uses_20250919\"");
     }
@@ -132,7 +132,7 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
     [SetsRequiredMembers]
     BetaClearToolUses20250919Edit(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -356,7 +356,7 @@ sealed class ClearToolInputsConverter : JsonConverter<ClearToolInputs?>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<string>>(element, options);
+            var deserialized = JsonSerializer.Deserialize<ImmutableArray<string>>(element, options);
             if (deserialized != null)
             {
                 return new(deserialized, element);

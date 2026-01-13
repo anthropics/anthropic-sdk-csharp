@@ -15,8 +15,8 @@ public sealed record class ServerToolUsage : JsonModel
     /// </summary>
     public required long WebSearchRequests
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
-        init { JsonModel.Set(this._rawData, "web_search_requests", value); }
+        get { return this._rawData.GetNotNullStruct<long>("web_search_requests"); }
+        init { this._rawData.Set("web_search_requests", value); }
     }
 
     /// <inheritdoc/>
@@ -32,14 +32,14 @@ public sealed record class ServerToolUsage : JsonModel
 
     public ServerToolUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ServerToolUsage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

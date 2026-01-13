@@ -15,14 +15,14 @@ public sealed record class MessageParam : JsonModel
 {
     public required MessageParamContent Content
     {
-        get { return JsonModel.GetNotNullClass<MessageParamContent>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullClass<MessageParamContent>("content"); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required ApiEnum<string, Role> Role
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Role>>(this.RawData, "role"); }
-        init { JsonModel.Set(this._rawData, "role", value); }
+        get { return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role"); }
+        init { this._rawData.Set("role", value); }
     }
 
     /// <inheritdoc/>
@@ -39,14 +39,14 @@ public sealed record class MessageParam : JsonModel
 
     public MessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -276,7 +276,7 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<ContentBlockParam>>(
+            var deserialized = JsonSerializer.Deserialize<ImmutableArray<ContentBlockParam>>(
                 element,
                 options
             );
