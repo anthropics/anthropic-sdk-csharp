@@ -14,10 +14,13 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="xunit.v3" Version="3.2.1" />
     <PackageReference Include="xunit.analyzers" Version="1.26.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
     <ProjectReference Include="..\Anthropic\Anthropic.csproj" />
+    <ProjectReference Include="..\Anthropic.Foundry\Anthropic.Foundry.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
 </Project>
