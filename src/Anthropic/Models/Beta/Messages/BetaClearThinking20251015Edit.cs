@@ -406,7 +406,7 @@ sealed class KeepConverter : JsonConverter<Keep>
     }
 }
 
-[JsonConverter(typeof(Converter))]
+[JsonConverter(typeof(UnionMember2Converter))]
 public record class UnionMember2
 {
     public JsonElement Element { get; private init; }
@@ -416,7 +416,7 @@ public record class UnionMember2
         Element = JsonSerializer.SerializeToElement("all");
     }
 
-    UnionMember2(JsonElement element)
+    internal UnionMember2(JsonElement element)
     {
         Element = element;
     }
@@ -452,25 +452,25 @@ public record class UnionMember2
 
         return JsonElement.DeepEquals(this.Element, other.Element);
     }
+}
 
-    class Converter : JsonConverter<UnionMember2>
+class UnionMember2Converter : JsonConverter<UnionMember2>
+{
+    public override UnionMember2? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
     {
-        public override UnionMember2? Read(
-            ref Utf8JsonReader reader,
-            System::Type typeToConvert,
-            JsonSerializerOptions options
-        )
-        {
-            return new(JsonSerializer.Deserialize<JsonElement>(ref reader, options));
-        }
+        return new(JsonSerializer.Deserialize<JsonElement>(ref reader, options));
+    }
 
-        public override void Write(
-            Utf8JsonWriter writer,
-            UnionMember2 value,
-            JsonSerializerOptions options
-        )
-        {
-            JsonSerializer.Serialize(writer, value.Element, options);
-        }
+    public override void Write(
+        Utf8JsonWriter writer,
+        UnionMember2 value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(writer, value.Element, options);
     }
 }
