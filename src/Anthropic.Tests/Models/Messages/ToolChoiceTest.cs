@@ -8,37 +8,35 @@ public class ToolChoiceTest : TestBase
     [Fact]
     public void AutoValidationWorks()
     {
-        ToolChoice value = new(new ToolChoiceAuto() { DisableParallelToolUse = true });
+        ToolChoice value = new ToolChoiceAuto() { DisableParallelToolUse = true };
         value.Validate();
     }
 
     [Fact]
     public void AnyValidationWorks()
     {
-        ToolChoice value = new(new ToolChoiceAny() { DisableParallelToolUse = true });
+        ToolChoice value = new ToolChoiceAny() { DisableParallelToolUse = true };
         value.Validate();
     }
 
     [Fact]
     public void ToolValidationWorks()
     {
-        ToolChoice value = new(
-            new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
-        );
+        ToolChoice value = new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true };
         value.Validate();
     }
 
     [Fact]
     public void NoneValidationWorks()
     {
-        ToolChoice value = new(new ToolChoiceNone());
+        ToolChoice value = new ToolChoiceNone();
         value.Validate();
     }
 
     [Fact]
     public void AutoSerializationRoundtripWorks()
     {
-        ToolChoice value = new(new ToolChoiceAuto() { DisableParallelToolUse = true });
+        ToolChoice value = new ToolChoiceAuto() { DisableParallelToolUse = true };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ToolChoice>(element);
 
@@ -48,7 +46,7 @@ public class ToolChoiceTest : TestBase
     [Fact]
     public void AnySerializationRoundtripWorks()
     {
-        ToolChoice value = new(new ToolChoiceAny() { DisableParallelToolUse = true });
+        ToolChoice value = new ToolChoiceAny() { DisableParallelToolUse = true };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ToolChoice>(element);
 
@@ -58,9 +56,7 @@ public class ToolChoiceTest : TestBase
     [Fact]
     public void ToolSerializationRoundtripWorks()
     {
-        ToolChoice value = new(
-            new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
-        );
+        ToolChoice value = new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ToolChoice>(element);
 
@@ -70,7 +66,7 @@ public class ToolChoiceTest : TestBase
     [Fact]
     public void NoneSerializationRoundtripWorks()
     {
-        ToolChoice value = new(new ToolChoiceNone());
+        ToolChoice value = new ToolChoiceNone();
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ToolChoice>(element);
 

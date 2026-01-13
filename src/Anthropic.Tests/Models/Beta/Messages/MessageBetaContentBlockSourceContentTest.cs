@@ -8,65 +8,59 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     [Fact]
     public void TextBlockParamValidationWorks()
     {
-        MessageBetaContentBlockSourceContent value = new(
-            new BetaTextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations =
-                [
-                    new BetaCitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
-        );
+        MessageBetaContentBlockSourceContent value = new BetaTextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new BetaCitationCharLocationParam()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
         value.Validate();
     }
 
     [Fact]
     public void ImageBlockParamValidationWorks()
     {
-        MessageBetaContentBlockSourceContent value = new(
-            new BetaImageBlockParam()
+        MessageBetaContentBlockSourceContent value = new BetaImageBlockParam()
+        {
+            Source = new BetaBase64ImageSource()
             {
-                Source = new BetaBase64ImageSource()
-                {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJpeg,
-                },
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-            }
-        );
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         value.Validate();
     }
 
     [Fact]
     public void TextBlockParamSerializationRoundtripWorks()
     {
-        MessageBetaContentBlockSourceContent value = new(
-            new BetaTextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations =
-                [
-                    new BetaCitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
-        );
+        MessageBetaContentBlockSourceContent value = new BetaTextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new BetaCitationCharLocationParam()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageBetaContentBlockSourceContent>(
             element
@@ -78,17 +72,15 @@ public class MessageBetaContentBlockSourceContentTest : TestBase
     [Fact]
     public void ImageBlockParamSerializationRoundtripWorks()
     {
-        MessageBetaContentBlockSourceContent value = new(
-            new BetaImageBlockParam()
+        MessageBetaContentBlockSourceContent value = new BetaImageBlockParam()
+        {
+            Source = new BetaBase64ImageSource()
             {
-                Source = new BetaBase64ImageSource()
-                {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJpeg,
-                },
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-            }
-        );
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageBetaContentBlockSourceContent>(
             element

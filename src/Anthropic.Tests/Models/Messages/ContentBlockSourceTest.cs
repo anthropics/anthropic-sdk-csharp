@@ -58,7 +58,7 @@ public class ContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        Content value = new("string");
+        Content value = "string";
         value.Validate();
     }
 
@@ -93,7 +93,7 @@ public class ContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        Content value = new("string");
+        Content value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Content>(element);
 

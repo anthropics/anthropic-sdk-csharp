@@ -8,8 +8,8 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
     [Fact]
     public void ErrorValidationWorks()
     {
-        BetaWebSearchToolResultBlockContent value = new(
-            new BetaWebSearchToolResultError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
+        BetaWebSearchToolResultBlockContent value = new BetaWebSearchToolResultError(
+            BetaWebSearchToolResultErrorCode.InvalidToolInput
         );
         value.Validate();
     }
@@ -34,8 +34,8 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
     [Fact]
     public void ErrorSerializationRoundtripWorks()
     {
-        BetaWebSearchToolResultBlockContent value = new(
-            new BetaWebSearchToolResultError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
+        BetaWebSearchToolResultBlockContent value = new BetaWebSearchToolResultError(
+            BetaWebSearchToolResultErrorCode.InvalidToolInput
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(element);

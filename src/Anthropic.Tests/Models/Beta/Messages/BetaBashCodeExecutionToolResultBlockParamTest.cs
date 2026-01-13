@@ -170,37 +170,34 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaBashCodeExecutionToolResultErrorParamValidationWorks()
     {
-        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+        BetaBashCodeExecutionToolResultBlockParamContent value =
             new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
-            )
-        );
+            );
         value.Validate();
     }
 
     [Fact]
     public void BetaBashCodeExecutionResultBlockParamValidationWorks()
     {
-        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+        BetaBashCodeExecutionToolResultBlockParamContent value =
             new BetaBashCodeExecutionResultBlockParam()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,
                 Stderr = "stderr",
                 Stdout = "stdout",
-            }
-        );
+            };
         value.Validate();
     }
 
     [Fact]
     public void BetaBashCodeExecutionToolResultErrorParamSerializationRoundtripWorks()
     {
-        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+        BetaBashCodeExecutionToolResultBlockParamContent value =
             new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
-            )
-        );
+            );
         string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(element);
@@ -211,15 +208,14 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaBashCodeExecutionResultBlockParamSerializationRoundtripWorks()
     {
-        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+        BetaBashCodeExecutionToolResultBlockParamContent value =
             new BetaBashCodeExecutionResultBlockParam()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,
                 Stderr = "stderr",
                 Stdout = "stdout",
-            }
-        );
+            };
         string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(element);

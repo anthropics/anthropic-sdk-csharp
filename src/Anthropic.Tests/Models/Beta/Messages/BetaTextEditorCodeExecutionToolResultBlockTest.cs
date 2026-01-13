@@ -112,20 +112,19 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaTextEditorCodeExecutionToolResultErrorValidationWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockContent value =
             new BetaTextEditorCodeExecutionToolResultError()
             {
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
-            }
-        );
+            };
         value.Validate();
     }
 
     [Fact]
     public void BetaTextEditorCodeExecutionViewResultBlockValidationWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockContent value =
             new BetaTextEditorCodeExecutionViewResultBlock()
             {
                 Content = "content",
@@ -133,24 +132,22 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
                 NumLines = 0,
                 StartLine = 0,
                 TotalLines = 0,
-            }
-        );
+            };
         value.Validate();
     }
 
     [Fact]
     public void BetaTextEditorCodeExecutionCreateResultBlockValidationWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
-            new BetaTextEditorCodeExecutionCreateResultBlock(true)
-        );
+        BetaTextEditorCodeExecutionToolResultBlockContent value =
+            new BetaTextEditorCodeExecutionCreateResultBlock(true);
         value.Validate();
     }
 
     [Fact]
     public void BetaTextEditorCodeExecutionStrReplaceResultBlockValidationWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockContent value =
             new BetaTextEditorCodeExecutionStrReplaceResultBlock()
             {
                 Lines = ["string"],
@@ -158,21 +155,19 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
                 NewStart = 0,
                 OldLines = 0,
                 OldStart = 0,
-            }
-        );
+            };
         value.Validate();
     }
 
     [Fact]
     public void BetaTextEditorCodeExecutionToolResultErrorSerializationRoundtripWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockContent value =
             new BetaTextEditorCodeExecutionToolResultError()
             {
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
-            }
-        );
+            };
         string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(element);
@@ -183,7 +178,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaTextEditorCodeExecutionViewResultBlockSerializationRoundtripWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockContent value =
             new BetaTextEditorCodeExecutionViewResultBlock()
             {
                 Content = "content",
@@ -191,8 +186,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
                 NumLines = 0,
                 StartLine = 0,
                 TotalLines = 0,
-            }
-        );
+            };
         string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(element);
@@ -203,9 +197,8 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaTextEditorCodeExecutionCreateResultBlockSerializationRoundtripWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
-            new BetaTextEditorCodeExecutionCreateResultBlock(true)
-        );
+        BetaTextEditorCodeExecutionToolResultBlockContent value =
+            new BetaTextEditorCodeExecutionCreateResultBlock(true);
         string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(element);
@@ -216,7 +209,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaTextEditorCodeExecutionStrReplaceResultBlockSerializationRoundtripWorks()
     {
-        BetaTextEditorCodeExecutionToolResultBlockContent value = new(
+        BetaTextEditorCodeExecutionToolResultBlockContent value =
             new BetaTextEditorCodeExecutionStrReplaceResultBlock()
             {
                 Lines = ["string"],
@@ -224,8 +217,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockContentTest : TestBase
                 NewStart = 0,
                 OldLines = 0,
                 OldStart = 0,
-            }
-        );
+            };
         string element = JsonSerializer.Serialize(value);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockContent>(element);

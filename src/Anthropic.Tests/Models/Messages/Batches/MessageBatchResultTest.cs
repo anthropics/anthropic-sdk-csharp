@@ -10,49 +10,47 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void SucceededValidationWorks()
     {
-        MessageBatchResult value = new(
-            new MessageBatchSucceededResult(
-                new Message()
-                {
-                    ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
-                    Content =
-                    [
-                        new TextBlock()
-                        {
-                            Citations =
-                            [
-                                new CitationCharLocation()
-                                {
-                                    CitedText = "cited_text",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
-                                    EndCharIndex = 0,
-                                    FileID = "file_id",
-                                    StartCharIndex = 0,
-                                },
-                            ],
-                            Text = "Hi! My name is Claude.",
-                        },
-                    ],
-                    Model = Model.ClaudeSonnet4_5_20250929,
-                    StopReason = StopReason.EndTurn,
-                    StopSequence = null,
-                    Usage = new()
+        MessageBatchResult value = new MessageBatchSucceededResult(
+            new Message()
+            {
+                ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Content =
+                [
+                    new TextBlock()
                     {
-                        CacheCreation = new()
-                        {
-                            Ephemeral1hInputTokens = 0,
-                            Ephemeral5mInputTokens = 0,
-                        },
-                        CacheCreationInputTokens = 2051,
-                        CacheReadInputTokens = 2051,
-                        InputTokens = 2095,
-                        OutputTokens = 503,
-                        ServerToolUse = new(0),
-                        ServiceTier = UsageServiceTier.Standard,
+                        Citations =
+                        [
+                            new CitationCharLocation()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "document_title",
+                                EndCharIndex = 0,
+                                FileID = "file_id",
+                                StartCharIndex = 0,
+                            },
+                        ],
+                        Text = "Hi! My name is Claude.",
                     },
-                }
-            )
+                ],
+                Model = Model.ClaudeSonnet4_5_20250929,
+                StopReason = StopReason.EndTurn,
+                StopSequence = null,
+                Usage = new()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 2051,
+                    CacheReadInputTokens = 2051,
+                    InputTokens = 2095,
+                    OutputTokens = 503,
+                    ServerToolUse = new(0),
+                    ServiceTier = UsageServiceTier.Standard,
+                },
+            }
         );
         value.Validate();
     }
@@ -60,14 +58,12 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void ErroredValidationWorks()
     {
-        MessageBatchResult value = new(
-            new MessageBatchErroredResult(
-                new ErrorResponse()
-                {
-                    Error = new InvalidRequestError("message"),
-                    RequestID = "request_id",
-                }
-            )
+        MessageBatchResult value = new MessageBatchErroredResult(
+            new ErrorResponse()
+            {
+                Error = new InvalidRequestError("message"),
+                RequestID = "request_id",
+            }
         );
         value.Validate();
     }
@@ -75,63 +71,61 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void CanceledValidationWorks()
     {
-        MessageBatchResult value = new(new MessageBatchCanceledResult());
+        MessageBatchResult value = new MessageBatchCanceledResult();
         value.Validate();
     }
 
     [Fact]
     public void ExpiredValidationWorks()
     {
-        MessageBatchResult value = new(new MessageBatchExpiredResult());
+        MessageBatchResult value = new MessageBatchExpiredResult();
         value.Validate();
     }
 
     [Fact]
     public void SucceededSerializationRoundtripWorks()
     {
-        MessageBatchResult value = new(
-            new MessageBatchSucceededResult(
-                new Message()
-                {
-                    ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
-                    Content =
-                    [
-                        new TextBlock()
-                        {
-                            Citations =
-                            [
-                                new CitationCharLocation()
-                                {
-                                    CitedText = "cited_text",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
-                                    EndCharIndex = 0,
-                                    FileID = "file_id",
-                                    StartCharIndex = 0,
-                                },
-                            ],
-                            Text = "Hi! My name is Claude.",
-                        },
-                    ],
-                    Model = Model.ClaudeSonnet4_5_20250929,
-                    StopReason = StopReason.EndTurn,
-                    StopSequence = null,
-                    Usage = new()
+        MessageBatchResult value = new MessageBatchSucceededResult(
+            new Message()
+            {
+                ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Content =
+                [
+                    new TextBlock()
                     {
-                        CacheCreation = new()
-                        {
-                            Ephemeral1hInputTokens = 0,
-                            Ephemeral5mInputTokens = 0,
-                        },
-                        CacheCreationInputTokens = 2051,
-                        CacheReadInputTokens = 2051,
-                        InputTokens = 2095,
-                        OutputTokens = 503,
-                        ServerToolUse = new(0),
-                        ServiceTier = UsageServiceTier.Standard,
+                        Citations =
+                        [
+                            new CitationCharLocation()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "document_title",
+                                EndCharIndex = 0,
+                                FileID = "file_id",
+                                StartCharIndex = 0,
+                            },
+                        ],
+                        Text = "Hi! My name is Claude.",
                     },
-                }
-            )
+                ],
+                Model = Model.ClaudeSonnet4_5_20250929,
+                StopReason = StopReason.EndTurn,
+                StopSequence = null,
+                Usage = new()
+                {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
+                    CacheCreationInputTokens = 2051,
+                    CacheReadInputTokens = 2051,
+                    InputTokens = 2095,
+                    OutputTokens = 503,
+                    ServerToolUse = new(0),
+                    ServiceTier = UsageServiceTier.Standard,
+                },
+            }
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
@@ -142,14 +136,12 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void ErroredSerializationRoundtripWorks()
     {
-        MessageBatchResult value = new(
-            new MessageBatchErroredResult(
-                new ErrorResponse()
-                {
-                    Error = new InvalidRequestError("message"),
-                    RequestID = "request_id",
-                }
-            )
+        MessageBatchResult value = new MessageBatchErroredResult(
+            new ErrorResponse()
+            {
+                Error = new InvalidRequestError("message"),
+                RequestID = "request_id",
+            }
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
@@ -160,7 +152,7 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void CanceledSerializationRoundtripWorks()
     {
-        MessageBatchResult value = new(new MessageBatchCanceledResult());
+        MessageBatchResult value = new MessageBatchCanceledResult();
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
 
@@ -170,7 +162,7 @@ public class MessageBatchResultTest : TestBase
     [Fact]
     public void ExpiredSerializationRoundtripWorks()
     {
-        MessageBatchResult value = new(new MessageBatchExpiredResult());
+        MessageBatchResult value = new MessageBatchExpiredResult();
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
 

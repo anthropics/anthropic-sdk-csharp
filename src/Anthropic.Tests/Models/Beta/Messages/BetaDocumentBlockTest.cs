@@ -86,21 +86,21 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaBase64PdfValidationWorks()
     {
-        Source value = new(new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
+        Source value = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         value.Validate();
     }
 
     [Fact]
     public void BetaPlainTextValidationWorks()
     {
-        Source value = new(new BetaPlainTextSource("data"));
+        Source value = new BetaPlainTextSource("data");
         value.Validate();
     }
 
     [Fact]
     public void BetaBase64PdfSerializationRoundtripWorks()
     {
-        Source value = new(new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
+        Source value = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(element);
 
@@ -110,7 +110,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaPlainTextSerializationRoundtripWorks()
     {
-        Source value = new(new BetaPlainTextSource("data"));
+        Source value = new BetaPlainTextSource("data");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(element);
 

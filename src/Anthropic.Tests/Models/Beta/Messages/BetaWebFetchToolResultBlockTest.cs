@@ -90,8 +90,8 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaWebFetchToolResultErrorBlockValidationWorks()
     {
-        BetaWebFetchToolResultBlockContent value = new(
-            new BetaWebFetchToolResultErrorBlock(BetaWebFetchToolResultErrorCode.InvalidToolInput)
+        BetaWebFetchToolResultBlockContent value = new BetaWebFetchToolResultErrorBlock(
+            BetaWebFetchToolResultErrorCode.InvalidToolInput
         );
         value.Validate();
     }
@@ -99,27 +99,25 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaWebFetchBlockValidationWorks()
     {
-        BetaWebFetchToolResultBlockContent value = new(
-            new BetaWebFetchBlock()
+        BetaWebFetchToolResultBlockContent value = new BetaWebFetchBlock()
+        {
+            Content = new()
             {
-                Content = new()
-                {
-                    Citations = new(true),
-                    Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
-                    Title = "title",
-                },
-                RetrievedAt = "retrieved_at",
-                Url = "url",
-            }
-        );
+                Citations = new(true),
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                Title = "title",
+            },
+            RetrievedAt = "retrieved_at",
+            Url = "url",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaWebFetchToolResultErrorBlockSerializationRoundtripWorks()
     {
-        BetaWebFetchToolResultBlockContent value = new(
-            new BetaWebFetchToolResultErrorBlock(BetaWebFetchToolResultErrorCode.InvalidToolInput)
+        BetaWebFetchToolResultBlockContent value = new BetaWebFetchToolResultErrorBlock(
+            BetaWebFetchToolResultErrorCode.InvalidToolInput
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(element);
@@ -130,19 +128,17 @@ public class BetaWebFetchToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaWebFetchBlockSerializationRoundtripWorks()
     {
-        BetaWebFetchToolResultBlockContent value = new(
-            new BetaWebFetchBlock()
+        BetaWebFetchToolResultBlockContent value = new BetaWebFetchBlock()
+        {
+            Content = new()
             {
-                Content = new()
-                {
-                    Citations = new(true),
-                    Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
-                    Title = "title",
-                },
-                RetrievedAt = "retrieved_at",
-                Url = "url",
-            }
-        );
+                Citations = new(true),
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                Title = "title",
+            },
+            RetrievedAt = "retrieved_at",
+            Url = "url",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockContent>(element);
 

@@ -214,7 +214,7 @@ public class BetaRequestMcpToolResultBlockParamContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        BetaRequestMcpToolResultBlockParamContent value = new("string");
+        BetaRequestMcpToolResultBlockParamContent value = "string";
         value.Validate();
     }
 
@@ -247,7 +247,7 @@ public class BetaRequestMcpToolResultBlockParamContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        BetaRequestMcpToolResultBlockParamContent value = new("string");
+        BetaRequestMcpToolResultBlockParamContent value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestMcpToolResultBlockParamContent>(
             element

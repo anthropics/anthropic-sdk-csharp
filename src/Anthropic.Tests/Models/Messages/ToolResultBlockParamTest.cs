@@ -214,7 +214,7 @@ public class ToolResultBlockParamContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        ToolResultBlockParamContent value = new("string");
+        ToolResultBlockParamContent value = "string";
         value.Validate();
     }
 
@@ -249,7 +249,7 @@ public class ToolResultBlockParamContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        ToolResultBlockParamContent value = new("string");
+        ToolResultBlockParamContent value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ToolResultBlockParamContent>(element);
 
@@ -293,115 +293,105 @@ public class BlockTest : TestBase
     [Fact]
     public void TextBlockParamValidationWorks()
     {
-        Block value = new(
-            new TextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations =
-                [
-                    new CitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
-        );
+        Block value = new TextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new CitationCharLocationParam()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
         value.Validate();
     }
 
     [Fact]
     public void ImageBlockParamValidationWorks()
     {
-        Block value = new(
-            new ImageBlockParam()
+        Block value = new ImageBlockParam()
+        {
+            Source = new Base64ImageSource()
             {
-                Source = new Base64ImageSource()
-                {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJpeg,
-                },
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-            }
-        );
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         value.Validate();
     }
 
     [Fact]
     public void SearchResultBlockParamValidationWorks()
     {
-        Block value = new(
-            new SearchResultBlockParam()
-            {
-                Content =
-                [
-                    new()
-                    {
-                        Text = "x",
-                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                        Citations =
-                        [
-                            new CitationCharLocationParam()
-                            {
-                                CitedText = "cited_text",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    },
-                ],
-                Source = "source",
-                Title = "title",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations = new() { Enabled = true },
-            }
-        );
+        Block value = new SearchResultBlockParam()
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
+                    [
+                        new CitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        };
         value.Validate();
     }
 
     [Fact]
     public void DocumentBlockParamValidationWorks()
     {
-        Block value = new(
-            new DocumentBlockParam()
-            {
-                Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations = new() { Enabled = true },
-                Context = "x",
-                Title = "x",
-            }
-        );
+        Block value = new DocumentBlockParam()
+        {
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
         value.Validate();
     }
 
     [Fact]
     public void TextBlockParamSerializationRoundtripWorks()
     {
-        Block value = new(
-            new TextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations =
-                [
-                    new CitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
-        );
+        Block value = new TextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new CitationCharLocationParam()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 
@@ -411,17 +401,15 @@ public class BlockTest : TestBase
     [Fact]
     public void ImageBlockParamSerializationRoundtripWorks()
     {
-        Block value = new(
-            new ImageBlockParam()
+        Block value = new ImageBlockParam()
+        {
+            Source = new Base64ImageSource()
             {
-                Source = new Base64ImageSource()
-                {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJpeg,
-                },
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-            }
-        );
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 
@@ -431,34 +419,32 @@ public class BlockTest : TestBase
     [Fact]
     public void SearchResultBlockParamSerializationRoundtripWorks()
     {
-        Block value = new(
-            new SearchResultBlockParam()
-            {
-                Content =
-                [
-                    new()
-                    {
-                        Text = "x",
-                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                        Citations =
-                        [
-                            new CitationCharLocationParam()
-                            {
-                                CitedText = "cited_text",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    },
-                ],
-                Source = "source",
-                Title = "title",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations = new() { Enabled = true },
-            }
-        );
+        Block value = new SearchResultBlockParam()
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
+                    [
+                        new CitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 
@@ -468,16 +454,14 @@ public class BlockTest : TestBase
     [Fact]
     public void DocumentBlockParamSerializationRoundtripWorks()
     {
-        Block value = new(
-            new DocumentBlockParam()
-            {
-                Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations = new() { Enabled = true },
-                Context = "x",
-                Title = "x",
-            }
-        );
+        Block value = new DocumentBlockParam()
+        {
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 

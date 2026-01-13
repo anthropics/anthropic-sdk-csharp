@@ -25,8 +25,8 @@ public class WebSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void RequestErrorValidationWorks()
     {
-        WebSearchToolResultBlockParamContent value = new(
-            new WebSearchToolRequestError(ErrorCode.InvalidToolInput)
+        WebSearchToolResultBlockParamContent value = new WebSearchToolRequestError(
+            ErrorCode.InvalidToolInput
         );
         value.Validate();
     }
@@ -56,8 +56,8 @@ public class WebSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void RequestErrorSerializationRoundtripWorks()
     {
-        WebSearchToolResultBlockParamContent value = new(
-            new WebSearchToolRequestError(ErrorCode.InvalidToolInput)
+        WebSearchToolResultBlockParamContent value = new WebSearchToolRequestError(
+            ErrorCode.InvalidToolInput
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParamContent>(

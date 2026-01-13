@@ -162,10 +162,8 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaToolSearchToolResultErrorParamValidationWorks()
     {
-        BetaToolSearchToolResultBlockParamContent value = new(
-            new BetaToolSearchToolResultErrorParam(
-                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
-            )
+        BetaToolSearchToolResultBlockParamContent value = new BetaToolSearchToolResultErrorParam(
+            BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
         );
         value.Validate();
     }
@@ -173,7 +171,7 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaToolSearchToolSearchResultBlockParamValidationWorks()
     {
-        BetaToolSearchToolResultBlockParamContent value = new(
+        BetaToolSearchToolResultBlockParamContent value =
             new BetaToolSearchToolSearchResultBlockParam(
                 [
                     new()
@@ -182,18 +180,15 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
                         CacheControl = new() { Ttl = Ttl.Ttl5m },
                     },
                 ]
-            )
-        );
+            );
         value.Validate();
     }
 
     [Fact]
     public void BetaToolSearchToolResultErrorParamSerializationRoundtripWorks()
     {
-        BetaToolSearchToolResultBlockParamContent value = new(
-            new BetaToolSearchToolResultErrorParam(
-                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
-            )
+        BetaToolSearchToolResultBlockParamContent value = new BetaToolSearchToolResultErrorParam(
+            BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
@@ -206,7 +201,7 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaToolSearchToolSearchResultBlockParamSerializationRoundtripWorks()
     {
-        BetaToolSearchToolResultBlockParamContent value = new(
+        BetaToolSearchToolResultBlockParamContent value =
             new BetaToolSearchToolSearchResultBlockParam(
                 [
                     new()
@@ -215,8 +210,7 @@ public class BetaToolSearchToolResultBlockParamContentTest : TestBase
                         CacheControl = new() { Ttl = Ttl.Ttl5m },
                     },
                 ]
-            )
-        );
+            );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
             element

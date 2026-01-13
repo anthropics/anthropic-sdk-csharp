@@ -60,7 +60,7 @@ public class MessageParamContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        MessageParamContent value = new("string");
+        MessageParamContent value = "string";
         value.Validate();
     }
 
@@ -95,7 +95,7 @@ public class MessageParamContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        MessageParamContent value = new("string");
+        MessageParamContent value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<MessageParamContent>(element);
 

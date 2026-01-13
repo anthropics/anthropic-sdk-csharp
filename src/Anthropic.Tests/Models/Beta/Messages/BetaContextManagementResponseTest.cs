@@ -117,39 +117,33 @@ public class AppliedEditTest : TestBase
     [Fact]
     public void BetaClearToolUses20250919EditResponseValidationWorks()
     {
-        AppliedEdit value = new(
-            new BetaClearToolUses20250919EditResponse()
-            {
-                ClearedInputTokens = 0,
-                ClearedToolUses = 0,
-            }
-        );
+        AppliedEdit value = new BetaClearToolUses20250919EditResponse()
+        {
+            ClearedInputTokens = 0,
+            ClearedToolUses = 0,
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaClearThinking20251015EditResponseValidationWorks()
     {
-        AppliedEdit value = new(
-            new BetaClearThinking20251015EditResponse()
-            {
-                ClearedInputTokens = 0,
-                ClearedThinkingTurns = 0,
-            }
-        );
+        AppliedEdit value = new BetaClearThinking20251015EditResponse()
+        {
+            ClearedInputTokens = 0,
+            ClearedThinkingTurns = 0,
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaClearToolUses20250919EditResponseSerializationRoundtripWorks()
     {
-        AppliedEdit value = new(
-            new BetaClearToolUses20250919EditResponse()
-            {
-                ClearedInputTokens = 0,
-                ClearedToolUses = 0,
-            }
-        );
+        AppliedEdit value = new BetaClearToolUses20250919EditResponse()
+        {
+            ClearedInputTokens = 0,
+            ClearedToolUses = 0,
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<AppliedEdit>(element);
 
@@ -159,13 +153,11 @@ public class AppliedEditTest : TestBase
     [Fact]
     public void BetaClearThinking20251015EditResponseSerializationRoundtripWorks()
     {
-        AppliedEdit value = new(
-            new BetaClearThinking20251015EditResponse()
-            {
-                ClearedInputTokens = 0,
-                ClearedThinkingTurns = 0,
-            }
-        );
+        AppliedEdit value = new BetaClearThinking20251015EditResponse()
+        {
+            ClearedInputTokens = 0,
+            ClearedThinkingTurns = 0,
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<AppliedEdit>(element);
 

@@ -353,23 +353,21 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaDirectValidationWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new(new BetaDirectCaller());
+        BetaServerToolUseBlockParamCaller value = new BetaDirectCaller();
         value.Validate();
     }
 
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new(
-            new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_")
-        );
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
         value.Validate();
     }
 
     [Fact]
     public void BetaDirectSerializationRoundtripWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new(new BetaDirectCaller());
+        BetaServerToolUseBlockParamCaller value = new BetaDirectCaller();
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(element);
 
@@ -379,9 +377,7 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new(
-            new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_")
-        );
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(element);
 

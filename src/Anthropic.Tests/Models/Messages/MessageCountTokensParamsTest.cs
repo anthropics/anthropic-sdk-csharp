@@ -189,7 +189,7 @@ public class MessageCountTokensParamsSystemTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        Messages::MessageCountTokensParamsSystem value = new("string");
+        Messages::MessageCountTokensParamsSystem value = "string";
         value.Validate();
     }
 
@@ -222,7 +222,7 @@ public class MessageCountTokensParamsSystemTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        Messages::MessageCountTokensParamsSystem value = new("string");
+        Messages::MessageCountTokensParamsSystem value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Messages::MessageCountTokensParamsSystem>(
             element

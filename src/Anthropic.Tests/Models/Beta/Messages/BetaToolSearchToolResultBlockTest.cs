@@ -102,21 +102,19 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaToolSearchToolResultErrorValidationWorks()
     {
-        BetaToolSearchToolResultBlockContent value = new(
-            new BetaToolSearchToolResultError()
-            {
-                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
-                ErrorMessage = "error_message",
-            }
-        );
+        BetaToolSearchToolResultBlockContent value = new BetaToolSearchToolResultError()
+        {
+            ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaToolSearchToolSearchResultBlockValidationWorks()
     {
-        BetaToolSearchToolResultBlockContent value = new(
-            new BetaToolSearchToolSearchResultBlock([new("tool_name")])
+        BetaToolSearchToolResultBlockContent value = new BetaToolSearchToolSearchResultBlock(
+            [new("tool_name")]
         );
         value.Validate();
     }
@@ -124,13 +122,11 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaToolSearchToolResultErrorSerializationRoundtripWorks()
     {
-        BetaToolSearchToolResultBlockContent value = new(
-            new BetaToolSearchToolResultError()
-            {
-                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
-                ErrorMessage = "error_message",
-            }
-        );
+        BetaToolSearchToolResultBlockContent value = new BetaToolSearchToolResultError()
+        {
+            ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(
             element
@@ -142,8 +138,8 @@ public class BetaToolSearchToolResultBlockContentTest : TestBase
     [Fact]
     public void BetaToolSearchToolSearchResultBlockSerializationRoundtripWorks()
     {
-        BetaToolSearchToolResultBlockContent value = new(
-            new BetaToolSearchToolSearchResultBlock([new("tool_name")])
+        BetaToolSearchToolResultBlockContent value = new BetaToolSearchToolSearchResultBlock(
+            [new("tool_name")]
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(

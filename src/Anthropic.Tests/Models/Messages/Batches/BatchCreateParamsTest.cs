@@ -1224,7 +1224,7 @@ public class ParamsSystemTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        ParamsSystem value = new("string");
+        ParamsSystem value = "string";
         value.Validate();
     }
 
@@ -1257,7 +1257,7 @@ public class ParamsSystemTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        ParamsSystem value = new("string");
+        ParamsSystem value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ParamsSystem>(element);
 

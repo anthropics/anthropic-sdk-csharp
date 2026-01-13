@@ -245,7 +245,7 @@ public class ClearToolInputsTest : TestBase
     [Fact]
     public void BoolValidationWorks()
     {
-        ClearToolInputs value = new(true);
+        ClearToolInputs value = true;
         value.Validate();
     }
 
@@ -259,7 +259,7 @@ public class ClearToolInputsTest : TestBase
     [Fact]
     public void BoolSerializationRoundtripWorks()
     {
-        ClearToolInputs value = new(true);
+        ClearToolInputs value = true;
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(element);
 
@@ -282,21 +282,21 @@ public class TriggerTest : TestBase
     [Fact]
     public void BetaInputTokensValidationWorks()
     {
-        Trigger value = new(new BetaInputTokensTrigger(1));
+        Trigger value = new BetaInputTokensTrigger(1);
         value.Validate();
     }
 
     [Fact]
     public void BetaToolUsesValidationWorks()
     {
-        Trigger value = new(new BetaToolUsesTrigger(1));
+        Trigger value = new BetaToolUsesTrigger(1);
         value.Validate();
     }
 
     [Fact]
     public void BetaInputTokensSerializationRoundtripWorks()
     {
-        Trigger value = new(new BetaInputTokensTrigger(1));
+        Trigger value = new BetaInputTokensTrigger(1);
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Trigger>(element);
 
@@ -306,7 +306,7 @@ public class TriggerTest : TestBase
     [Fact]
     public void BetaToolUsesSerializationRoundtripWorks()
     {
-        Trigger value = new(new BetaToolUsesTrigger(1));
+        Trigger value = new BetaToolUsesTrigger(1);
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Trigger>(element);
 

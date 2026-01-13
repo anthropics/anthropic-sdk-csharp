@@ -310,7 +310,7 @@ public class MessageCreateParamsSystemTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        Messages::MessageCreateParamsSystem value = new("string");
+        Messages::MessageCreateParamsSystem value = "string";
         value.Validate();
     }
 
@@ -343,7 +343,7 @@ public class MessageCreateParamsSystemTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        Messages::MessageCreateParamsSystem value = new("string");
+        Messages::MessageCreateParamsSystem value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Messages::MessageCreateParamsSystem>(element);
 

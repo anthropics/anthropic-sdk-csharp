@@ -179,39 +179,35 @@ public class EditTest : TestBase
     [Fact]
     public void BetaClearToolUses20250919ValidationWorks()
     {
-        Edit value = new(
-            new BetaClearToolUses20250919Edit()
-            {
-                ClearAtLeast = new(0),
-                ClearToolInputs = true,
-                ExcludeTools = ["string"],
-                Keep = new(0),
-                Trigger = new BetaInputTokensTrigger(1),
-            }
-        );
+        Edit value = new BetaClearToolUses20250919Edit()
+        {
+            ClearAtLeast = new(0),
+            ClearToolInputs = true,
+            ExcludeTools = ["string"],
+            Keep = new(0),
+            Trigger = new BetaInputTokensTrigger(1),
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaClearThinking20251015ValidationWorks()
     {
-        Edit value = new(new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) });
+        Edit value = new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) };
         value.Validate();
     }
 
     [Fact]
     public void BetaClearToolUses20250919SerializationRoundtripWorks()
     {
-        Edit value = new(
-            new BetaClearToolUses20250919Edit()
-            {
-                ClearAtLeast = new(0),
-                ClearToolInputs = true,
-                ExcludeTools = ["string"],
-                Keep = new(0),
-                Trigger = new BetaInputTokensTrigger(1),
-            }
-        );
+        Edit value = new BetaClearToolUses20250919Edit()
+        {
+            ClearAtLeast = new(0),
+            ClearToolInputs = true,
+            ExcludeTools = ["string"],
+            Keep = new(0),
+            Trigger = new BetaInputTokensTrigger(1),
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Edit>(element);
 
@@ -221,7 +217,7 @@ public class EditTest : TestBase
     [Fact]
     public void BetaClearThinking20251015SerializationRoundtripWorks()
     {
-        Edit value = new(new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) });
+        Edit value = new BetaClearThinking20251015Edit() { Keep = new BetaThinkingTurns(1) };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Edit>(element);
 

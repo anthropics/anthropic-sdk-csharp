@@ -86,7 +86,7 @@ public class BetaMcpToolResultBlockContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        BetaMcpToolResultBlockContent value = new("string");
+        BetaMcpToolResultBlockContent value = "string";
         value.Validate();
     }
 
@@ -119,7 +119,7 @@ public class BetaMcpToolResultBlockContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        BetaMcpToolResultBlockContent value = new("string");
+        BetaMcpToolResultBlockContent value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaMcpToolResultBlockContent>(element);
 

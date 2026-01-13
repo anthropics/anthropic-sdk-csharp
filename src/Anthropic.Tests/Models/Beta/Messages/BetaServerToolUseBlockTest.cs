@@ -127,21 +127,21 @@ public class CallerTest : TestBase
     [Fact]
     public void BetaDirectValidationWorks()
     {
-        Caller value = new(new BetaDirectCaller());
+        Caller value = new BetaDirectCaller();
         value.Validate();
     }
 
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        Caller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
+        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
         value.Validate();
     }
 
     [Fact]
     public void BetaDirectSerializationRoundtripWorks()
     {
-        Caller value = new(new BetaDirectCaller());
+        Caller value = new BetaDirectCaller();
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Caller>(element);
 
@@ -151,7 +151,7 @@ public class CallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        Caller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
+        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Caller>(element);
 
