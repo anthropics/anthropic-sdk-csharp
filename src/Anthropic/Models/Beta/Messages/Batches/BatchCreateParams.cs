@@ -1343,7 +1343,7 @@ sealed class ParamsSystemConverter : JsonConverter<ParamsSystem>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaTextBlockParam>>(
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
                 element,
                 options
             );

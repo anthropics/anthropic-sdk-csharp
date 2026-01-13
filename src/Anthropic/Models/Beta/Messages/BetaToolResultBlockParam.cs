@@ -349,7 +349,7 @@ sealed class BetaToolResultBlockParamContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<Block>>(element, options);
+            var deserialized = JsonSerializer.Deserialize<List<Block>>(element, options);
             if (deserialized != null)
             {
                 return new(deserialized, element);

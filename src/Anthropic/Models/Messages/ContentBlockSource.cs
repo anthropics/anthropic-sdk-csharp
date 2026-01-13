@@ -299,9 +299,10 @@ sealed class ContentConverter : JsonConverter<Content>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<
-                ImmutableArray<ContentBlockSourceContent>
-            >(element, options);
+            var deserialized = JsonSerializer.Deserialize<List<ContentBlockSourceContent>>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 return new(deserialized, element);

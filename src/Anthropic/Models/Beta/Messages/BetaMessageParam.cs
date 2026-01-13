@@ -289,7 +289,7 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaContentBlockParam>>(
+            var deserialized = JsonSerializer.Deserialize<List<BetaContentBlockParam>>(
                 element,
                 options
             );

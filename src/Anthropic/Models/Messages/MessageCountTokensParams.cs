@@ -548,10 +548,7 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<TextBlockParam>>(
-                element,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<List<TextBlockParam>>(element, options);
             if (deserialized != null)
             {
                 return new(deserialized, element);

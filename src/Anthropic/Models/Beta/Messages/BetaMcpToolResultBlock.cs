@@ -322,10 +322,7 @@ sealed class BetaMcpToolResultBlockContentConverter : JsonConverter<BetaMcpToolR
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaTextBlock>>(
-                element,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlock>>(element, options);
             if (deserialized != null)
             {
                 return new(deserialized, element);

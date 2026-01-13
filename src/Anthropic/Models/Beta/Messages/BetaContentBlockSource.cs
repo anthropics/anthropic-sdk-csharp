@@ -313,7 +313,7 @@ sealed class BetaContentBlockSourceContentConverter : JsonConverter<BetaContentB
         try
         {
             var deserialized = JsonSerializer.Deserialize<
-                ImmutableArray<MessageBetaContentBlockSourceContent>
+                List<MessageBetaContentBlockSourceContent>
             >(element, options);
             if (deserialized != null)
             {

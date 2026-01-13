@@ -236,7 +236,7 @@ sealed class WebSearchToolResultBlockContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<WebSearchResultBlock>>(
+            var deserialized = JsonSerializer.Deserialize<List<WebSearchResultBlock>>(
                 element,
                 options
             );

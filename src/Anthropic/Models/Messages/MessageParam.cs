@@ -284,7 +284,7 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<ContentBlockParam>>(
+            var deserialized = JsonSerializer.Deserialize<List<ContentBlockParam>>(
                 element,
                 options
             );

@@ -236,7 +236,7 @@ sealed class BetaWebSearchToolResultBlockContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaWebSearchResultBlock>>(
+            var deserialized = JsonSerializer.Deserialize<List<BetaWebSearchResultBlock>>(
                 element,
                 options
             );

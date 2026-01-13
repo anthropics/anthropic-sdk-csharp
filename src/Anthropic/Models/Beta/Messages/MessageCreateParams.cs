@@ -1134,7 +1134,7 @@ sealed class MessageCreateParamsSystemConverter : JsonConverter<MessageCreatePar
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaTextBlockParam>>(
+            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
                 element,
                 options
             );
