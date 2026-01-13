@@ -181,7 +181,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         )
         {
             await foreach (
-                var message in Sse.Enumerate<RawMessageStreamEvent>(response.Message, token)
+                var message in Sse.Enumerate<RawMessageStreamEvent>(response.RawMessage, token)
             )
             {
                 if (this._client.ResponseValidation)

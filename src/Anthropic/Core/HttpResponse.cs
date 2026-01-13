@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -12,9 +13,31 @@ namespace Anthropic.Core;
 
 public class HttpResponse : IDisposable
 {
-    public required HttpResponseMessage Message { get; init; }
+    public required HttpResponseMessage RawMessage { get; init; }
+
+    public IEnumerable<KeyValuePair<string, IEnumerable<string>>> Headers
+    {
+        get { return RawMessage.Headers; }
+    }
+
+    public bool IsSuccessStatusCode
+    {
+        get { return RawMessage.IsSuccessStatusCode; }
+    }
+
+    public HttpStatusCode StatusCode
+    {
+        get { return RawMessage.StatusCode; }
+    }
 
     public Threading::CancellationToken CancellationToken { get; init; } = default;
+
+    public IEnumerable<string> GetHeaderValues(string name) => RawMessage.Headers.GetValues(name);
+
+    public bool TryGetHeaderValues(
+        string name,
+        [NotNullWhen(true)] out IEnumerable<string>? values
+    ) => RawMessage.Headers.TryGetValues(name, out values);
 
     public async Task<T> Deserialize<T>(Threading::CancellationToken cancellationToken = default)
     {
@@ -45,7 +68,7 @@ public class HttpResponse : IDisposable
             this.CancellationToken,
             cancellationToken
         );
-        return await Message.Content.ReadAsStreamAsync(
+        return await RawMessage.Content.ReadAsStreamAsync(
 #if NET
             cts.Token
 #endif
@@ -58,7 +81,7 @@ public class HttpResponse : IDisposable
             this.CancellationToken,
             cancellationToken
         );
-        return await Message.Content.ReadAsStringAsync(
+        return await RawMessage.Content.ReadAsStringAsync(
 #if NET
             cts.Token
 #endif
@@ -67,7 +90,7 @@ public class HttpResponse : IDisposable
 
     public void Dispose()
     {
-        this.Message.Dispose();
+        this.RawMessage.Dispose();
         GC.SuppressFinalize(this);
     }
 }
@@ -88,7 +111,7 @@ public sealed class HttpResponse<T> : global::Anthropic.Core.HttpResponse
     )
         : this(deserialize)
     {
-        this.Message = response.Message;
+        this.RawMessage = response.RawMessage;
         this.CancellationToken = response.CancellationToken;
     }
 
@@ -120,7 +143,7 @@ public sealed class StreamingHttpResponse<T> : global::Anthropic.Core.HttpRespon
     )
         : this(enumerate)
     {
-        this.Message = response.Message;
+        this.RawMessage = response.RawMessage;
         this.CancellationToken = response.CancellationToken;
     }
 

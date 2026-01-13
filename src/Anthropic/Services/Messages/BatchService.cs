@@ -416,7 +416,7 @@ public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
         {
             await foreach (
                 var messageBatchIndividualResponse in Jsonl.Enumerate<MessageBatchIndividualResponse>(
-                    response.Message,
+                    response.RawMessage,
                     token
                 )
             )

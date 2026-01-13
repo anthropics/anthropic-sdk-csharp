@@ -196,7 +196,10 @@ public sealed class MessageServiceWithRawResponse
         )
         {
             await foreach (
-                var betaMessage in Sse.Enumerate<BetaRawMessageStreamEvent>(response.Message, token)
+                var betaMessage in Sse.Enumerate<BetaRawMessageStreamEvent>(
+                    response.RawMessage,
+                    token
+                )
             )
             {
                 if (this._client.ResponseValidation)
