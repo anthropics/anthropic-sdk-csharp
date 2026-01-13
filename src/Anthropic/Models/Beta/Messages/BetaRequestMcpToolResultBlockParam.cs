@@ -244,7 +244,7 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
     /// </summary>
     public void Switch(
         System::Action<string> @string,
-        System::Action<IReadOnlyList<BetaTextBlockParam>> BetaMcpToolResultBlockParamContent
+        System::Action<IReadOnlyList<BetaTextBlockParam>> betaMcpToolResultBlockParamContent
     )
     {
         switch (this.Value)
@@ -252,8 +252,8 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<BetaTextBlockParam> value:
-                BetaMcpToolResultBlockParamContent(value);
+            case IReadOnlyList<BetaTextBlockParam> value:
+                betaMcpToolResultBlockParamContent(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -285,13 +285,13 @@ public record class BetaRequestMcpToolResultBlockParamContent : ModelBase
     /// </summary>
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<IReadOnlyList<BetaTextBlockParam>, T> BetaMcpToolResultBlockParamContent
+        System::Func<IReadOnlyList<BetaTextBlockParam>, T> betaMcpToolResultBlockParamContent
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            IReadOnlyList<BetaTextBlockParam> value => BetaMcpToolResultBlockParamContent(value),
+            IReadOnlyList<BetaTextBlockParam> value => betaMcpToolResultBlockParamContent(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaRequestMcpToolResultBlockParamContent"
             ),

@@ -172,7 +172,7 @@ public record class BetaMessageParamContent : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<BetaContentBlockParam> value:
+            case IReadOnlyList<BetaContentBlockParam> value:
                 betaContentBlockParams(value);
                 break;
             default:

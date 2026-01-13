@@ -198,7 +198,7 @@ public record class BetaMcpToolResultBlockContent : ModelBase
     /// </summary>
     public void Switch(
         System::Action<string> @string,
-        System::Action<IReadOnlyList<BetaTextBlock>> BetaMcpToolResultBlockContent
+        System::Action<IReadOnlyList<BetaTextBlock>> betaMcpToolResultBlockContent
     )
     {
         switch (this.Value)
@@ -206,8 +206,8 @@ public record class BetaMcpToolResultBlockContent : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<BetaTextBlock> value:
-                BetaMcpToolResultBlockContent(value);
+            case IReadOnlyList<BetaTextBlock> value:
+                betaMcpToolResultBlockContent(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
@@ -239,13 +239,13 @@ public record class BetaMcpToolResultBlockContent : ModelBase
     /// </summary>
     public T Match<T>(
         System::Func<string, T> @string,
-        System::Func<IReadOnlyList<BetaTextBlock>, T> BetaMcpToolResultBlockContent
+        System::Func<IReadOnlyList<BetaTextBlock>, T> betaMcpToolResultBlockContent
     )
     {
         return this.Value switch
         {
             string value => @string(value),
-            IReadOnlyList<BetaTextBlock> value => BetaMcpToolResultBlockContent(value),
+            IReadOnlyList<BetaTextBlock> value => betaMcpToolResultBlockContent(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaMcpToolResultBlockContent"
             ),

@@ -201,7 +201,7 @@ public record class BetaContentBlockSourceContent : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<MessageBetaContentBlockSourceContent> value:
+            case IReadOnlyList<MessageBetaContentBlockSourceContent> value:
                 betaContentBlockSourceContent(value);
                 break;
             default:

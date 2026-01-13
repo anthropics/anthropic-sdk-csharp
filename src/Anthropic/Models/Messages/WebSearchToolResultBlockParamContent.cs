@@ -113,7 +113,7 @@ public record class WebSearchToolResultBlockParamContent : ModelBase
     {
         switch (this.Value)
         {
-            case List<WebSearchResultBlockParam> value:
+            case IReadOnlyList<WebSearchResultBlockParam> value:
                 webSearchToolResultBlockItem(value);
                 break;
             case WebSearchToolRequestError value:
