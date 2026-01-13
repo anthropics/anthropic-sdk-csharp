@@ -231,7 +231,7 @@ public record class ToolResultBlockParamContent : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<Block> value:
+            case IReadOnlyList<Block> value:
                 blocks(value);
                 break;
             default:

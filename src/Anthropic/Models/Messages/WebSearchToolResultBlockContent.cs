@@ -118,7 +118,7 @@ public record class WebSearchToolResultBlockContent : ModelBase
             case WebSearchToolResultError value:
                 error(value);
                 break;
-            case List<WebSearchResultBlock> value:
+            case IReadOnlyList<WebSearchResultBlock> value:
                 webSearchResultBlocks(value);
                 break;
             default:

@@ -115,7 +115,7 @@ public record class BetaWebSearchToolResultBlockParamContent : ModelBase
     {
         switch (this.Value)
         {
-            case List<BetaWebSearchResultBlockParam> value:
+            case IReadOnlyList<BetaWebSearchResultBlockParam> value:
                 resultBlock(value);
                 break;
             case BetaWebSearchToolRequestError value:

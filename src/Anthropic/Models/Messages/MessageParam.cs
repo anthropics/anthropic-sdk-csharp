@@ -167,7 +167,7 @@ public record class MessageParamContent : ModelBase
             case string value:
                 @string(value);
                 break;
-            case List<ContentBlockParam> value:
+            case IReadOnlyList<ContentBlockParam> value:
                 contentBlockParams(value);
                 break;
             default:
