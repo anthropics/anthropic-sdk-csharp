@@ -162,10 +162,8 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaWebFetchToolResultErrorBlockParamValidationWorks()
     {
-        BetaWebFetchToolResultBlockParamContent value = new(
-            new BetaWebFetchToolResultErrorBlockParam(
-                BetaWebFetchToolResultErrorCode.InvalidToolInput
-            )
+        BetaWebFetchToolResultBlockParamContent value = new BetaWebFetchToolResultErrorBlockParam(
+            BetaWebFetchToolResultErrorCode.InvalidToolInput
         );
         value.Validate();
     }
@@ -173,31 +171,27 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaWebFetchBlockParamValidationWorks()
     {
-        BetaWebFetchToolResultBlockParamContent value = new(
-            new BetaWebFetchBlockParam()
+        BetaWebFetchToolResultBlockParamContent value = new BetaWebFetchBlockParam()
+        {
+            Content = new()
             {
-                Content = new()
-                {
-                    Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
-                    CacheControl = new() { Ttl = Ttl.Ttl5m },
-                    Citations = new() { Enabled = true },
-                    Context = "x",
-                    Title = "x",
-                },
-                Url = "url",
-                RetrievedAt = "retrieved_at",
-            }
-        );
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                Citations = new() { Enabled = true },
+                Context = "x",
+                Title = "x",
+            },
+            Url = "url",
+            RetrievedAt = "retrieved_at",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaWebFetchToolResultErrorBlockParamSerializationRoundtripWorks()
     {
-        BetaWebFetchToolResultBlockParamContent value = new(
-            new BetaWebFetchToolResultErrorBlockParam(
-                BetaWebFetchToolResultErrorCode.InvalidToolInput
-            )
+        BetaWebFetchToolResultBlockParamContent value = new BetaWebFetchToolResultErrorBlockParam(
+            BetaWebFetchToolResultErrorCode.InvalidToolInput
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
@@ -210,21 +204,19 @@ public class BetaWebFetchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void BetaWebFetchBlockParamSerializationRoundtripWorks()
     {
-        BetaWebFetchToolResultBlockParamContent value = new(
-            new BetaWebFetchBlockParam()
+        BetaWebFetchToolResultBlockParamContent value = new BetaWebFetchBlockParam()
+        {
+            Content = new()
             {
-                Content = new()
-                {
-                    Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
-                    CacheControl = new() { Ttl = Ttl.Ttl5m },
-                    Citations = new() { Enabled = true },
-                    Context = "x",
-                    Title = "x",
-                },
-                Url = "url",
-                RetrievedAt = "retrieved_at",
-            }
-        );
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                Citations = new() { Enabled = true },
+                Context = "x",
+                Title = "x",
+            },
+            Url = "url",
+            RetrievedAt = "retrieved_at",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamContent>(
             element

@@ -164,35 +164,35 @@ public class SourceTest : TestBase
     [Fact]
     public void Base64PdfValidationWorks()
     {
-        Source value = new(new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
+        Source value = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         value.Validate();
     }
 
     [Fact]
     public void PlainTextValidationWorks()
     {
-        Source value = new(new PlainTextSource("data"));
+        Source value = new PlainTextSource("data");
         value.Validate();
     }
 
     [Fact]
     public void ContentBlockValidationWorks()
     {
-        Source value = new(new ContentBlockSource(new Content("string")));
+        Source value = new ContentBlockSource(new Content("string"));
         value.Validate();
     }
 
     [Fact]
     public void UrlPdfValidationWorks()
     {
-        Source value = new(new UrlPdfSource("url"));
+        Source value = new UrlPdfSource("url");
         value.Validate();
     }
 
     [Fact]
     public void Base64PdfSerializationRoundtripWorks()
     {
-        Source value = new(new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
+        Source value = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(element);
 
@@ -202,7 +202,7 @@ public class SourceTest : TestBase
     [Fact]
     public void PlainTextSerializationRoundtripWorks()
     {
-        Source value = new(new PlainTextSource("data"));
+        Source value = new PlainTextSource("data");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(element);
 
@@ -212,7 +212,7 @@ public class SourceTest : TestBase
     [Fact]
     public void ContentBlockSerializationRoundtripWorks()
     {
-        Source value = new(new ContentBlockSource(new Content("string")));
+        Source value = new ContentBlockSource(new Content("string"));
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(element);
 
@@ -222,7 +222,7 @@ public class SourceTest : TestBase
     [Fact]
     public void UrlPdfSerializationRoundtripWorks()
     {
-        Source value = new(new UrlPdfSource("url"));
+        Source value = new UrlPdfSource("url");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Source>(element);
 

@@ -8,21 +8,21 @@ public class BetaThinkingConfigParamTest : TestBase
     [Fact]
     public void EnabledValidationWorks()
     {
-        BetaThinkingConfigParam value = new(new BetaThinkingConfigEnabled(1024));
+        BetaThinkingConfigParam value = new BetaThinkingConfigEnabled(1024);
         value.Validate();
     }
 
     [Fact]
     public void DisabledValidationWorks()
     {
-        BetaThinkingConfigParam value = new(new BetaThinkingConfigDisabled());
+        BetaThinkingConfigParam value = new BetaThinkingConfigDisabled();
         value.Validate();
     }
 
     [Fact]
     public void EnabledSerializationRoundtripWorks()
     {
-        BetaThinkingConfigParam value = new(new BetaThinkingConfigEnabled(1024));
+        BetaThinkingConfigParam value = new BetaThinkingConfigEnabled(1024);
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigParam>(element);
 
@@ -32,7 +32,7 @@ public class BetaThinkingConfigParamTest : TestBase
     [Fact]
     public void DisabledSerializationRoundtripWorks()
     {
-        BetaThinkingConfigParam value = new(new BetaThinkingConfigDisabled());
+        BetaThinkingConfigParam value = new BetaThinkingConfigDisabled();
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigParam>(element);
 

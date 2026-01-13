@@ -174,22 +174,22 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void BetaBase64PdfValidationWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
+        BetaRequestDocumentBlockSource value = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         value.Validate();
     }
 
     [Fact]
     public void BetaPlainTextValidationWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaPlainTextSource("data"));
+        BetaRequestDocumentBlockSource value = new BetaPlainTextSource("data");
         value.Validate();
     }
 
     [Fact]
     public void BetaContentBlockValidationWorks()
     {
-        BetaRequestDocumentBlockSource value = new(
-            new BetaContentBlockSource(new BetaContentBlockSourceContent("string"))
+        BetaRequestDocumentBlockSource value = new BetaContentBlockSource(
+            new BetaContentBlockSourceContent("string")
         );
         value.Validate();
     }
@@ -197,21 +197,21 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void BetaUrlPdfValidationWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaUrlPdfSource("url"));
+        BetaRequestDocumentBlockSource value = new BetaUrlPdfSource("url");
         value.Validate();
     }
 
     [Fact]
     public void BetaFileDocumentValidationWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaFileDocumentSource("file_id"));
+        BetaRequestDocumentBlockSource value = new BetaFileDocumentSource("file_id");
         value.Validate();
     }
 
     [Fact]
     public void BetaBase64PdfSerializationRoundtripWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"));
+        BetaRequestDocumentBlockSource value = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
 
@@ -221,7 +221,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void BetaPlainTextSerializationRoundtripWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaPlainTextSource("data"));
+        BetaRequestDocumentBlockSource value = new BetaPlainTextSource("data");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
 
@@ -231,8 +231,8 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void BetaContentBlockSerializationRoundtripWorks()
     {
-        BetaRequestDocumentBlockSource value = new(
-            new BetaContentBlockSource(new BetaContentBlockSourceContent("string"))
+        BetaRequestDocumentBlockSource value = new BetaContentBlockSource(
+            new BetaContentBlockSourceContent("string")
         );
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
@@ -243,7 +243,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void BetaUrlPdfSerializationRoundtripWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaUrlPdfSource("url"));
+        BetaRequestDocumentBlockSource value = new BetaUrlPdfSource("url");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
 
@@ -253,7 +253,7 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     [Fact]
     public void BetaFileDocumentSerializationRoundtripWorks()
     {
-        BetaRequestDocumentBlockSource value = new(new BetaFileDocumentSource("file_id"));
+        BetaRequestDocumentBlockSource value = new BetaFileDocumentSource("file_id");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
 

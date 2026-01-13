@@ -168,33 +168,29 @@ public class ImageBlockParamSourceTest : TestBase
     [Fact]
     public void Base64ImageValidationWorks()
     {
-        ImageBlockParamSource value = new(
-            new Base64ImageSource()
-            {
-                Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJpeg,
-            }
-        );
+        ImageBlockParamSource value = new Base64ImageSource()
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
         value.Validate();
     }
 
     [Fact]
     public void UrlImageValidationWorks()
     {
-        ImageBlockParamSource value = new(new UrlImageSource("url"));
+        ImageBlockParamSource value = new UrlImageSource("url");
         value.Validate();
     }
 
     [Fact]
     public void Base64ImageSerializationRoundtripWorks()
     {
-        ImageBlockParamSource value = new(
-            new Base64ImageSource()
-            {
-                Data = "U3RhaW5sZXNzIHJvY2tz",
-                MediaType = MediaType.ImageJpeg,
-            }
-        );
+        ImageBlockParamSource value = new Base64ImageSource()
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(element);
 
@@ -204,7 +200,7 @@ public class ImageBlockParamSourceTest : TestBase
     [Fact]
     public void UrlImageSerializationRoundtripWorks()
     {
-        ImageBlockParamSource value = new(new UrlImageSource("url"));
+        ImageBlockParamSource value = new UrlImageSource("url");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ImageBlockParamSource>(element);
 

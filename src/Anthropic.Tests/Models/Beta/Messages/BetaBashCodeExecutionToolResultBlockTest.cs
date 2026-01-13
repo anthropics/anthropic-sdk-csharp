@@ -88,29 +88,27 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaBashCodeExecutionToolResultErrorValidationWorks()
     {
-        Content value = new(new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput));
+        Content value = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput);
         value.Validate();
     }
 
     [Fact]
     public void BetaBashCodeExecutionResultBlockValidationWorks()
     {
-        Content value = new(
-            new BetaBashCodeExecutionResultBlock()
-            {
-                Content = [new("file_id")],
-                ReturnCode = 0,
-                Stderr = "stderr",
-                Stdout = "stdout",
-            }
-        );
+        Content value = new BetaBashCodeExecutionResultBlock()
+        {
+            Content = [new("file_id")],
+            ReturnCode = 0,
+            Stderr = "stderr",
+            Stdout = "stdout",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaBashCodeExecutionToolResultErrorSerializationRoundtripWorks()
     {
-        Content value = new(new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput));
+        Content value = new BetaBashCodeExecutionToolResultError(ErrorCode.InvalidToolInput);
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Content>(element);
 
@@ -120,15 +118,13 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaBashCodeExecutionResultBlockSerializationRoundtripWorks()
     {
-        Content value = new(
-            new BetaBashCodeExecutionResultBlock()
-            {
-                Content = [new("file_id")],
-                ReturnCode = 0,
-                Stderr = "stderr",
-                Stdout = "stdout",
-            }
-        );
+        Content value = new BetaBashCodeExecutionResultBlock()
+        {
+            Content = [new("file_id")],
+            ReturnCode = 0,
+            Stderr = "stderr",
+            Stdout = "stdout",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Content>(element);
 

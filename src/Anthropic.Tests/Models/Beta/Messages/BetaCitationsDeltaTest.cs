@@ -118,100 +118,88 @@ public class CitationTest : TestBase
     [Fact]
     public void BetaCitationCharLocationValidationWorks()
     {
-        Citation value = new(
-            new BetaCitationCharLocation()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "document_title",
-                EndCharIndex = 0,
-                FileID = "file_id",
-                StartCharIndex = 0,
-            }
-        );
+        Citation value = new BetaCitationCharLocation()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndCharIndex = 0,
+            FileID = "file_id",
+            StartCharIndex = 0,
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaCitationPageLocationValidationWorks()
     {
-        Citation value = new(
-            new BetaCitationPageLocation()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "document_title",
-                EndPageNumber = 0,
-                FileID = "file_id",
-                StartPageNumber = 1,
-            }
-        );
+        Citation value = new BetaCitationPageLocation()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndPageNumber = 0,
+            FileID = "file_id",
+            StartPageNumber = 1,
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaCitationContentBlockLocationValidationWorks()
     {
-        Citation value = new(
-            new BetaCitationContentBlockLocation()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "document_title",
-                EndBlockIndex = 0,
-                FileID = "file_id",
-                StartBlockIndex = 0,
-            }
-        );
+        Citation value = new BetaCitationContentBlockLocation()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndBlockIndex = 0,
+            FileID = "file_id",
+            StartBlockIndex = 0,
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaCitationsWebSearchResultLocationValidationWorks()
     {
-        Citation value = new(
-            new BetaCitationsWebSearchResultLocation()
-            {
-                CitedText = "cited_text",
-                EncryptedIndex = "encrypted_index",
-                Title = "title",
-                Url = "url",
-            }
-        );
+        Citation value = new BetaCitationsWebSearchResultLocation()
+        {
+            CitedText = "cited_text",
+            EncryptedIndex = "encrypted_index",
+            Title = "title",
+            Url = "url",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaCitationSearchResultLocationValidationWorks()
     {
-        Citation value = new(
-            new BetaCitationSearchResultLocation()
-            {
-                CitedText = "cited_text",
-                EndBlockIndex = 0,
-                SearchResultIndex = 0,
-                Source = "source",
-                StartBlockIndex = 0,
-                Title = "title",
-            }
-        );
+        Citation value = new BetaCitationSearchResultLocation()
+        {
+            CitedText = "cited_text",
+            EndBlockIndex = 0,
+            SearchResultIndex = 0,
+            Source = "source",
+            StartBlockIndex = 0,
+            Title = "title",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaCitationCharLocationSerializationRoundtripWorks()
     {
-        Citation value = new(
-            new BetaCitationCharLocation()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "document_title",
-                EndCharIndex = 0,
-                FileID = "file_id",
-                StartCharIndex = 0,
-            }
-        );
+        Citation value = new BetaCitationCharLocation()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndCharIndex = 0,
+            FileID = "file_id",
+            StartCharIndex = 0,
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
@@ -221,17 +209,15 @@ public class CitationTest : TestBase
     [Fact]
     public void BetaCitationPageLocationSerializationRoundtripWorks()
     {
-        Citation value = new(
-            new BetaCitationPageLocation()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "document_title",
-                EndPageNumber = 0,
-                FileID = "file_id",
-                StartPageNumber = 1,
-            }
-        );
+        Citation value = new BetaCitationPageLocation()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndPageNumber = 0,
+            FileID = "file_id",
+            StartPageNumber = 1,
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
@@ -241,17 +227,15 @@ public class CitationTest : TestBase
     [Fact]
     public void BetaCitationContentBlockLocationSerializationRoundtripWorks()
     {
-        Citation value = new(
-            new BetaCitationContentBlockLocation()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "document_title",
-                EndBlockIndex = 0,
-                FileID = "file_id",
-                StartBlockIndex = 0,
-            }
-        );
+        Citation value = new BetaCitationContentBlockLocation()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndBlockIndex = 0,
+            FileID = "file_id",
+            StartBlockIndex = 0,
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
@@ -261,15 +245,13 @@ public class CitationTest : TestBase
     [Fact]
     public void BetaCitationsWebSearchResultLocationSerializationRoundtripWorks()
     {
-        Citation value = new(
-            new BetaCitationsWebSearchResultLocation()
-            {
-                CitedText = "cited_text",
-                EncryptedIndex = "encrypted_index",
-                Title = "title",
-                Url = "url",
-            }
-        );
+        Citation value = new BetaCitationsWebSearchResultLocation()
+        {
+            CitedText = "cited_text",
+            EncryptedIndex = "encrypted_index",
+            Title = "title",
+            Url = "url",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Citation>(element);
 
@@ -279,17 +261,15 @@ public class CitationTest : TestBase
     [Fact]
     public void BetaCitationSearchResultLocationSerializationRoundtripWorks()
     {
-        Citation value = new(
-            new BetaCitationSearchResultLocation()
-            {
-                CitedText = "cited_text",
-                EndBlockIndex = 0,
-                SearchResultIndex = 0,
-                Source = "source",
-                StartBlockIndex = 0,
-                Title = "title",
-            }
-        );
+        Citation value = new BetaCitationSearchResultLocation()
+        {
+            CitedText = "cited_text",
+            EndBlockIndex = 0,
+            SearchResultIndex = 0,
+            Source = "source",
+            StartBlockIndex = 0,
+            Title = "title",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Citation>(element);
 

@@ -58,7 +58,7 @@ public class BetaContentBlockSourceContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        BetaContentBlockSourceContent value = new("string");
+        BetaContentBlockSourceContent value = "string";
         value.Validate();
     }
 
@@ -93,7 +93,7 @@ public class BetaContentBlockSourceContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        BetaContentBlockSourceContent value = new("string");
+        BetaContentBlockSourceContent value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(element);
 

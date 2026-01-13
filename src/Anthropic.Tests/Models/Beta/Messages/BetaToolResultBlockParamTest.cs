@@ -214,7 +214,7 @@ public class BetaToolResultBlockParamContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        BetaToolResultBlockParamContent value = new("string");
+        BetaToolResultBlockParamContent value = "string";
         value.Validate();
     }
 
@@ -249,7 +249,7 @@ public class BetaToolResultBlockParamContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        BetaToolResultBlockParamContent value = new("string");
+        BetaToolResultBlockParamContent value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaToolResultBlockParamContent>(element);
 
@@ -293,128 +293,116 @@ public class BlockTest : TestBase
     [Fact]
     public void BetaTextBlockParamValidationWorks()
     {
-        Block value = new(
-            new BetaTextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations =
-                [
-                    new BetaCitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
-        );
+        Block value = new BetaTextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new BetaCitationCharLocationParam()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaImageBlockParamValidationWorks()
     {
-        Block value = new(
-            new BetaImageBlockParam()
+        Block value = new BetaImageBlockParam()
+        {
+            Source = new BetaBase64ImageSource()
             {
-                Source = new BetaBase64ImageSource()
-                {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJpeg,
-                },
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-            }
-        );
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaSearchResultBlockParamValidationWorks()
     {
-        Block value = new(
-            new BetaSearchResultBlockParam()
-            {
-                Content =
-                [
-                    new()
-                    {
-                        Text = "x",
-                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                        Citations =
-                        [
-                            new BetaCitationCharLocationParam()
-                            {
-                                CitedText = "cited_text",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    },
-                ],
-                Source = "source",
-                Title = "title",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations = new() { Enabled = true },
-            }
-        );
+        Block value = new BetaSearchResultBlockParam()
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaRequestDocumentValidationWorks()
     {
-        Block value = new(
-            new BetaRequestDocumentBlock()
-            {
-                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations = new() { Enabled = true },
-                Context = "x",
-                Title = "x",
-            }
-        );
+        Block value = new BetaRequestDocumentBlock()
+        {
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaToolReferenceBlockParamValidationWorks()
     {
-        Block value = new(
-            new BetaToolReferenceBlockParam()
-            {
-                ToolName = "tool_name",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-            }
-        );
+        Block value = new BetaToolReferenceBlockParam()
+        {
+            ToolName = "tool_name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaTextBlockParamSerializationRoundtripWorks()
     {
-        Block value = new(
-            new BetaTextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations =
-                [
-                    new BetaCitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
-        );
+        Block value = new BetaTextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new BetaCitationCharLocationParam()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 
@@ -424,17 +412,15 @@ public class BlockTest : TestBase
     [Fact]
     public void BetaImageBlockParamSerializationRoundtripWorks()
     {
-        Block value = new(
-            new BetaImageBlockParam()
+        Block value = new BetaImageBlockParam()
+        {
+            Source = new BetaBase64ImageSource()
             {
-                Source = new BetaBase64ImageSource()
-                {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJpeg,
-                },
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-            }
-        );
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 
@@ -444,34 +430,32 @@ public class BlockTest : TestBase
     [Fact]
     public void BetaSearchResultBlockParamSerializationRoundtripWorks()
     {
-        Block value = new(
-            new BetaSearchResultBlockParam()
-            {
-                Content =
-                [
-                    new()
-                    {
-                        Text = "x",
-                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                        Citations =
-                        [
-                            new BetaCitationCharLocationParam()
-                            {
-                                CitedText = "cited_text",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    },
-                ],
-                Source = "source",
-                Title = "title",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations = new() { Enabled = true },
-            }
-        );
+        Block value = new BetaSearchResultBlockParam()
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 
@@ -481,16 +465,14 @@ public class BlockTest : TestBase
     [Fact]
     public void BetaRequestDocumentSerializationRoundtripWorks()
     {
-        Block value = new(
-            new BetaRequestDocumentBlock()
-            {
-                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-                Citations = new() { Enabled = true },
-                Context = "x",
-                Title = "x",
-            }
-        );
+        Block value = new BetaRequestDocumentBlock()
+        {
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 
@@ -500,13 +482,11 @@ public class BlockTest : TestBase
     [Fact]
     public void BetaToolReferenceBlockParamSerializationRoundtripWorks()
     {
-        Block value = new(
-            new BetaToolReferenceBlockParam()
-            {
-                ToolName = "tool_name",
-                CacheControl = new() { Ttl = Ttl.Ttl5m },
-            }
-        );
+        Block value = new BetaToolReferenceBlockParam()
+        {
+            ToolName = "tool_name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Block>(element);
 

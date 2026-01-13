@@ -169,112 +169,104 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     [Fact]
     public void TextValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new TextBlock()
-            {
-                Citations =
-                [
-                    new CitationCharLocation()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "document_title",
-                        EndCharIndex = 0,
-                        FileID = "file_id",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "text",
-            }
-        );
+        RawContentBlockStartEventContentBlock value = new TextBlock()
+        {
+            Citations =
+            [
+                new CitationCharLocation()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
+                },
+            ],
+            Text = "text",
+        };
         value.Validate();
     }
 
     [Fact]
     public void ThinkingValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
-        );
+        RawContentBlockStartEventContentBlock value = new ThinkingBlock()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
         value.Validate();
     }
 
     [Fact]
     public void RedactedThinkingValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(new RedactedThinkingBlock("data"));
+        RawContentBlockStartEventContentBlock value = new RedactedThinkingBlock("data");
         value.Validate();
     }
 
     [Fact]
     public void ToolUseValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ToolUseBlock()
+        RawContentBlockStartEventContentBlock value = new ToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = "x",
-            }
-        );
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
         value.Validate();
     }
 
     [Fact]
     public void ServerToolUseValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ServerToolUseBlock()
+        RawContentBlockStartEventContentBlock value = new ServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-            }
-        );
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
         value.Validate();
     }
 
     [Fact]
     public void WebSearchToolResultValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new WebSearchToolResultBlock()
-            {
-                Content = new WebSearchToolResultError(
-                    WebSearchToolResultErrorErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+        RawContentBlockStartEventContentBlock value = new WebSearchToolResultBlock()
+        {
+            Content = new WebSearchToolResultError(
+                WebSearchToolResultErrorErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
         value.Validate();
     }
 
     [Fact]
     public void TextSerializationRoundtripWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new TextBlock()
-            {
-                Citations =
-                [
-                    new CitationCharLocation()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "document_title",
-                        EndCharIndex = 0,
-                        FileID = "file_id",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "text",
-            }
-        );
+        RawContentBlockStartEventContentBlock value = new TextBlock()
+        {
+            Citations =
+            [
+                new CitationCharLocation()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
+                },
+            ],
+            Text = "text",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
             element
@@ -286,9 +278,11 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     [Fact]
     public void ThinkingSerializationRoundtripWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
-        );
+        RawContentBlockStartEventContentBlock value = new ThinkingBlock()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
             element
@@ -300,7 +294,7 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     [Fact]
     public void RedactedThinkingSerializationRoundtripWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(new RedactedThinkingBlock("data"));
+        RawContentBlockStartEventContentBlock value = new RedactedThinkingBlock("data");
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
             element
@@ -312,17 +306,15 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     [Fact]
     public void ToolUseSerializationRoundtripWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ToolUseBlock()
+        RawContentBlockStartEventContentBlock value = new ToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = "x",
-            }
-        );
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
             element
@@ -334,16 +326,14 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     [Fact]
     public void ServerToolUseSerializationRoundtripWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ServerToolUseBlock()
+        RawContentBlockStartEventContentBlock value = new ServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-            }
-        );
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
             element
@@ -355,15 +345,13 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     [Fact]
     public void WebSearchToolResultSerializationRoundtripWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new WebSearchToolResultBlock()
-            {
-                Content = new WebSearchToolResultError(
-                    WebSearchToolResultErrorErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+        RawContentBlockStartEventContentBlock value = new WebSearchToolResultBlock()
+        {
+            Content = new WebSearchToolResultError(
+                WebSearchToolResultErrorErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
             element

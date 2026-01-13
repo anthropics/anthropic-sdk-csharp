@@ -60,7 +60,7 @@ public class BetaMessageParamContentTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        BetaMessageParamContent value = new("string");
+        BetaMessageParamContent value = "string";
         value.Validate();
     }
 
@@ -95,7 +95,7 @@ public class BetaMessageParamContentTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        BetaMessageParamContent value = new("string");
+        BetaMessageParamContent value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(element);
 

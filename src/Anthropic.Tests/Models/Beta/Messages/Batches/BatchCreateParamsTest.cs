@@ -2942,49 +2942,45 @@ public class ContainerTest : TestBase
     [Fact]
     public void BetaContainerParamsValidationWorks()
     {
-        Container value = new(
-            new Messages::BetaContainerParams()
-            {
-                ID = "id",
-                Skills =
-                [
-                    new()
-                    {
-                        SkillID = "x",
-                        Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
-                    },
-                ],
-            }
-        );
+        Container value = new Messages::BetaContainerParams()
+        {
+            ID = "id",
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "x",
+                    Type = Messages::BetaSkillParamsType.Anthropic,
+                    Version = "x",
+                },
+            ],
+        };
         value.Validate();
     }
 
     [Fact]
     public void StringValidationWorks()
     {
-        Container value = new("string");
+        Container value = "string";
         value.Validate();
     }
 
     [Fact]
     public void BetaContainerParamsSerializationRoundtripWorks()
     {
-        Container value = new(
-            new Messages::BetaContainerParams()
-            {
-                ID = "id",
-                Skills =
-                [
-                    new()
-                    {
-                        SkillID = "x",
-                        Type = Messages::BetaSkillParamsType.Anthropic,
-                        Version = "x",
-                    },
-                ],
-            }
-        );
+        Container value = new Messages::BetaContainerParams()
+        {
+            ID = "id",
+            Skills =
+            [
+                new()
+                {
+                    SkillID = "x",
+                    Type = Messages::BetaSkillParamsType.Anthropic,
+                    Version = "x",
+                },
+            ],
+        };
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Container>(element);
 
@@ -2994,7 +2990,7 @@ public class ContainerTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        Container value = new("string");
+        Container value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<Container>(element);
 
@@ -3065,7 +3061,7 @@ public class ParamsSystemTest : TestBase
     [Fact]
     public void StringValidationWorks()
     {
-        ParamsSystem value = new("string");
+        ParamsSystem value = "string";
         value.Validate();
     }
 
@@ -3098,7 +3094,7 @@ public class ParamsSystemTest : TestBase
     [Fact]
     public void StringSerializationRoundtripWorks()
     {
-        ParamsSystem value = new("string");
+        ParamsSystem value = "string";
         string element = JsonSerializer.Serialize(value);
         var deserialized = JsonSerializer.Deserialize<ParamsSystem>(element);
 
