@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -23,8 +24,11 @@ public class ThinkingConfigParamTest : TestBase
     public void EnabledSerializationRoundtripWorks()
     {
         ThinkingConfigParam value = new ThinkingConfigEnabled(1024);
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -33,8 +37,11 @@ public class ThinkingConfigParamTest : TestBase
     public void DisabledSerializationRoundtripWorks()
     {
         ThinkingConfigParam value = new ThinkingConfigDisabled();
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

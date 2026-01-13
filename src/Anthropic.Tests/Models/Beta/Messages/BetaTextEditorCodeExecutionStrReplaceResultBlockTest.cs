@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -52,9 +53,12 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
             OldStart = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(
+                json,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(model, deserialized);
     }
@@ -71,9 +75,12 @@ public class BetaTextEditorCodeExecutionStrReplaceResultBlockTest : TestBase
             OldStart = 0,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(element);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionStrReplaceResultBlock>(
+                element,
+                ModelBase.SerializerOptions
+            );
         Assert.NotNull(deserialized);
 
         List<string> expectedLines = ["string"];

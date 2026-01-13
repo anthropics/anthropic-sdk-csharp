@@ -49,9 +49,12 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
             TotalLines = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(
+                json,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(model, deserialized);
     }
@@ -68,9 +71,12 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
             TotalLines = 0,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(element);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(
+                element,
+                ModelBase.SerializerOptions
+            );
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";

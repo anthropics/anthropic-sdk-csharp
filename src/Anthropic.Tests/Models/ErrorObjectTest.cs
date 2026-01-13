@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models;
 
 namespace Anthropic.Tests.Models;
@@ -72,8 +73,11 @@ public class ErrorObjectTest : TestBase
     public void InvalidRequestErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new InvalidRequestError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -82,8 +86,11 @@ public class ErrorObjectTest : TestBase
     public void AuthenticationErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new AuthenticationError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -92,8 +99,11 @@ public class ErrorObjectTest : TestBase
     public void BillingErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new BillingError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -102,8 +112,11 @@ public class ErrorObjectTest : TestBase
     public void PermissionErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new PermissionError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -112,8 +125,11 @@ public class ErrorObjectTest : TestBase
     public void NotFoundErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new NotFoundError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -122,8 +138,11 @@ public class ErrorObjectTest : TestBase
     public void RateLimitErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new RateLimitError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -132,8 +151,11 @@ public class ErrorObjectTest : TestBase
     public void GatewayTimeoutErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new GatewayTimeoutError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -142,8 +164,11 @@ public class ErrorObjectTest : TestBase
     public void ApiSerializationRoundtripWorks()
     {
         ErrorObject value = new ApiErrorObject("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -152,8 +177,11 @@ public class ErrorObjectTest : TestBase
     public void OverloadedErrorSerializationRoundtripWorks()
     {
         ErrorObject value = new OverloadedError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ErrorObject>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorObject>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

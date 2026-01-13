@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -46,8 +47,11 @@ public class BetaRequestDocumentBlockTest : TestBase
             Title = "x",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -64,8 +68,11 @@ public class BetaRequestDocumentBlockTest : TestBase
             Title = "x",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaRequestDocumentBlockSource expectedSource = new BetaBase64PdfSource(
@@ -212,8 +219,11 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     public void BetaBase64PdfSerializationRoundtripWorks()
     {
         BetaRequestDocumentBlockSource value = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -222,8 +232,11 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     public void BetaPlainTextSerializationRoundtripWorks()
     {
         BetaRequestDocumentBlockSource value = new BetaPlainTextSource("data");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -234,8 +247,11 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
         BetaRequestDocumentBlockSource value = new BetaContentBlockSource(
             new BetaContentBlockSourceContent("string")
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -244,8 +260,11 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     public void BetaUrlPdfSerializationRoundtripWorks()
     {
         BetaRequestDocumentBlockSource value = new BetaUrlPdfSource("url");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -254,8 +273,11 @@ public class BetaRequestDocumentBlockSourceTest : TestBase
     public void BetaFileDocumentSerializationRoundtripWorks()
     {
         BetaRequestDocumentBlockSource value = new BetaFileDocumentSource("file_id");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlockSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

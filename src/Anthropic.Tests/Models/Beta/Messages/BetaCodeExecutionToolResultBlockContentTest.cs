@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -33,9 +34,10 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
         BetaCodeExecutionToolResultBlockContent value = new BetaCodeExecutionToolResultError(
             BetaCodeExecutionToolResultErrorCode.InvalidToolInput
         );
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockContent>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
@@ -51,9 +53,10 @@ public class BetaCodeExecutionToolResultBlockContentTest : TestBase
             Stderr = "stderr",
             Stdout = "stdout",
         };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockContent>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);

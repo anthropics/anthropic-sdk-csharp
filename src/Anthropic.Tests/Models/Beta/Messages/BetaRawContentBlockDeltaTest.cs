@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -56,8 +57,11 @@ public class BetaRawContentBlockDeltaTest : TestBase
     public void TextSerializationRoundtripWorks()
     {
         BetaRawContentBlockDelta value = new BetaTextDelta("text");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -66,8 +70,11 @@ public class BetaRawContentBlockDeltaTest : TestBase
     public void InputJsonSerializationRoundtripWorks()
     {
         BetaRawContentBlockDelta value = new BetaInputJsonDelta("partial_json");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -88,8 +95,11 @@ public class BetaRawContentBlockDeltaTest : TestBase
                 }
             )
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -98,8 +108,11 @@ public class BetaRawContentBlockDeltaTest : TestBase
     public void ThinkingSerializationRoundtripWorks()
     {
         BetaRawContentBlockDelta value = new BetaThinkingDelta("thinking");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -108,8 +121,11 @@ public class BetaRawContentBlockDeltaTest : TestBase
     public void SignatureSerializationRoundtripWorks()
     {
         BetaRawContentBlockDelta value = new BetaSignatureDelta("signature");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDelta>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

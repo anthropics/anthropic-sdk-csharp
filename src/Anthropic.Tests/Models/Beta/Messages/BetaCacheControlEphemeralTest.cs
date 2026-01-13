@@ -24,8 +24,11 @@ public class BetaCacheControlEphemeralTest : TestBase
     {
         var model = new BetaCacheControlEphemeral { Ttl = Ttl.Ttl5m };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCacheControlEphemeral>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCacheControlEphemeral>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -35,8 +38,11 @@ public class BetaCacheControlEphemeralTest : TestBase
     {
         var model = new BetaCacheControlEphemeral { Ttl = Ttl.Ttl5m };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCacheControlEphemeral>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCacheControlEphemeral>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("ephemeral");
