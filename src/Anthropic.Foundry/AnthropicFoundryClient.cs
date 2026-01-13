@@ -8,6 +8,7 @@ namespace Anthropic.Foundry;
 public class AnthropicFoundryClient : AnthropicClient
 {
     private readonly IAnthropicFoundryCredentials _azureCredentials;
+    private readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponseFactory;
 
     /// <summary>
     /// Creates a new instance of the <see cref="AnthropicFoundryClient"/>.
@@ -19,6 +20,9 @@ public class AnthropicFoundryClient : AnthropicClient
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
         BaseUrl = $"https://{azureCredentials.ResourceName}.services.ai.azure.com/anthropic";
+        _withRawResponseFactory = new(() =>
+            new AnthropicFoundryClientWithRawResponse(_azureCredentials, _options)
+        );
     }
 
     private AnthropicFoundryClient(
@@ -29,6 +33,9 @@ public class AnthropicFoundryClient : AnthropicClient
     {
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
+        _withRawResponseFactory = new(() =>
+            new AnthropicFoundryClientWithRawResponse(_azureCredentials, _options)
+        );
     }
 
     [Obsolete("The {nameof(ApiKey)} property is not supported in this configuration.", true)]
@@ -46,19 +53,43 @@ public class AnthropicFoundryClient : AnthropicClient
             );
     }
 
+    public override IAnthropicClientWithRawResponse WithRawResponse =>
+        _withRawResponseFactory.Value;
+
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new AnthropicFoundryClient(_azureCredentials, modifier(_options));
     }
 
-    protected override ValueTask BeforeSend<T>(
-        HttpRequest<T> request,
-        HttpRequestMessage requestMessage,
-        CancellationToken cancellationToken
-    )
+    private class AnthropicFoundryClientWithRawResponse : AnthropicClientWithRawResponse
     {
-        _azureCredentials.Apply(requestMessage);
+        private readonly IAnthropicFoundryCredentials _azureCredentials;
 
-        return default;
+        public AnthropicFoundryClientWithRawResponse(
+            IAnthropicFoundryCredentials azureCredentials,
+            ClientOptions modifier
+        )
+            : base(modifier)
+        {
+            _azureCredentials = azureCredentials;
+        }
+
+        public override IAnthropicClientWithRawResponse WithOptions(
+            Func<ClientOptions, ClientOptions> modifier
+        )
+        {
+            return new AnthropicFoundryClientWithRawResponse(_azureCredentials, modifier(_options));
+        }
+
+        protected override ValueTask BeforeSend<T>(
+            HttpRequest<T> request,
+            HttpRequestMessage requestMessage,
+            CancellationToken cancellationToken
+        )
+        {
+            _azureCredentials.Apply(requestMessage);
+
+            return default;
+        }
     }
 }

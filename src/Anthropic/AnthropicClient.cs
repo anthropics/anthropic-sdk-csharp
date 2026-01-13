@@ -14,7 +14,7 @@ namespace Anthropic;
 /// <inheritdoc/>
 public class AnthropicClient : IAnthropicClient
 {
-    readonly ClientOptions _options;
+    protected readonly ClientOptions _options;
 
     /// <inheritdoc/>
     public HttpClient HttpClient
@@ -52,7 +52,7 @@ public class AnthropicClient : IAnthropicClient
     }
 
     /// <inheritdoc/>
-    public string? ApiKey
+    public virtual string? ApiKey
     {
         get { return this._options.ApiKey; }
         init { this._options.ApiKey = value; }
@@ -68,13 +68,13 @@ public class AnthropicClient : IAnthropicClient
     readonly Lazy<IAnthropicClientWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>
-    public IAnthropicClientWithRawResponse WithRawResponse
+    public virtual IAnthropicClientWithRawResponse WithRawResponse
     {
         get { return _withRawResponse.Value; }
     }
 
     /// <inheritdoc/>
-    public IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new AnthropicClient(modifier(this._options));
     }
@@ -117,7 +117,7 @@ public class AnthropicClient : IAnthropicClient
 }
 
 /// <inheritdoc/>
-public sealed class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
+public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
 {
 #if NET
     static readonly Random Random = Random.Shared;
@@ -182,7 +182,9 @@ public sealed class AnthropicClientWithRawResponse : IAnthropicClientWithRawResp
     }
 
     /// <inheritdoc/>
-    public IAnthropicClientWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    public virtual IAnthropicClientWithRawResponse WithOptions(
+        Func<ClientOptions, ClientOptions> modifier
+    )
     {
         return new AnthropicClientWithRawResponse(modifier(this._options));
     }

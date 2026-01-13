@@ -15,9 +15,9 @@
     <InternalsVisibleTo Include="Anthropic.Tests" />
     <None Include="..\logo.png" Pack="true" PackagePath="\" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-    <PackageReference Include="System.Text.Json" Version="10.0.1" />
+    <PackageReference Include="System.Text.Json" Version="10.0.2" />
     <PackageReference Include="System.Net.ServerSentEvents" Version="10.0.1" />
-    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.1.1" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="10.2.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
