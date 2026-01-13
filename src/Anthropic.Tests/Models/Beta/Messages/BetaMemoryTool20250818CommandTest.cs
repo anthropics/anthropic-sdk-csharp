@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -79,8 +80,11 @@ public class BetaMemoryTool20250818CommandTest : TestBase
             Path = "/memories",
             ViewRange = [1, 10],
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -93,8 +97,11 @@ public class BetaMemoryTool20250818CommandTest : TestBase
             FileText = "Meeting notes:\n- Discussed project timeline\n- Next steps defined\n",
             Path = "/memories/notes.txt",
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -108,8 +115,11 @@ public class BetaMemoryTool20250818CommandTest : TestBase
             OldStr = "Favorite color: blue",
             Path = "/memories/preferences.txt",
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -123,8 +133,11 @@ public class BetaMemoryTool20250818CommandTest : TestBase
             InsertText = "- Review memory tool documentation\n",
             Path = "/memories/todo.txt",
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -135,8 +148,11 @@ public class BetaMemoryTool20250818CommandTest : TestBase
         BetaMemoryTool20250818Command value = new BetaMemoryTool20250818DeleteCommand(
             "/memories/old_file.txt"
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -149,8 +165,11 @@ public class BetaMemoryTool20250818CommandTest : TestBase
             NewPath = "/memories/final.txt",
             OldPath = "/memories/draft.txt",
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818Command>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

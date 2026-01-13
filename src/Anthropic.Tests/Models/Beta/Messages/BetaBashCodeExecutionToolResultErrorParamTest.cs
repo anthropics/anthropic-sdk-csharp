@@ -33,9 +33,10 @@ public class BetaBashCodeExecutionToolResultErrorParamTest : TestBase
             ErrorCode = BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultErrorParam>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -49,9 +50,10 @@ public class BetaBashCodeExecutionToolResultErrorParamTest : TestBase
             ErrorCode = BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultErrorParam>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 

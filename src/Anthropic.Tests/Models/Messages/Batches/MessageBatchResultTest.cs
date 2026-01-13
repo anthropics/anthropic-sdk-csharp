@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Messages.Batches;
@@ -127,8 +128,11 @@ public class MessageBatchResultTest : TestBase
                 },
             }
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -143,8 +147,11 @@ public class MessageBatchResultTest : TestBase
                 RequestID = "request_id",
             }
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -153,8 +160,11 @@ public class MessageBatchResultTest : TestBase
     public void CanceledSerializationRoundtripWorks()
     {
         MessageBatchResult value = new MessageBatchCanceledResult();
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -163,8 +173,11 @@ public class MessageBatchResultTest : TestBase
     public void ExpiredSerializationRoundtripWorks()
     {
         MessageBatchResult value = new MessageBatchExpiredResult();
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages.Batches;
 
 namespace Anthropic.Tests.Models.Messages.Batches;
@@ -22,8 +23,11 @@ public class DeletedMessageBatchTest : TestBase
     {
         var model = new DeletedMessageBatch { ID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<DeletedMessageBatch>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<DeletedMessageBatch>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,8 +37,11 @@ public class DeletedMessageBatchTest : TestBase
     {
         var model = new DeletedMessageBatch { ID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<DeletedMessageBatch>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<DeletedMessageBatch>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF";

@@ -26,8 +26,11 @@ public class WebSearchToolRequestErrorTest : TestBase
     {
         var model = new WebSearchToolRequestError { ErrorCode = ErrorCode.InvalidToolInput };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -37,8 +40,11 @@ public class WebSearchToolRequestErrorTest : TestBase
     {
         var model = new WebSearchToolRequestError { ErrorCode = ErrorCode.InvalidToolInput };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         ApiEnum<string, ErrorCode> expectedErrorCode = ErrorCode.InvalidToolInput;

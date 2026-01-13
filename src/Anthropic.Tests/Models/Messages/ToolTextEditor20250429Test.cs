@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -24,8 +25,11 @@ public class ToolTextEditor20250429Test : TestBase
     {
         var model = new ToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -35,8 +39,11 @@ public class ToolTextEditor20250429Test : TestBase
     {
         var model = new ToolTextEditor20250429 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Skills.Versions;
 
 namespace Anthropic.Tests.Models.Beta.Skills.Versions;
@@ -78,8 +79,11 @@ public class VersionListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<VersionListPageResponse>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<VersionListPageResponse>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -107,8 +111,11 @@ public class VersionListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<VersionListPageResponse>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<VersionListPageResponse>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         List<VersionListResponse> expectedData =

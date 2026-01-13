@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -54,9 +55,12 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(
+                json,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(model, deserialized);
     }
@@ -76,9 +80,12 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(element);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(
+                element,
+                ModelBase.SerializerOptions
+            );
         Assert.NotNull(deserialized);
 
         BetaTextEditorCodeExecutionToolResultBlockParamContent expectedContent =
@@ -256,10 +263,11 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                     BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
 
         Assert.Equal(value, deserialized);
@@ -277,10 +285,11 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 StartLine = 0,
                 TotalLines = 0,
             };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
 
         Assert.Equal(value, deserialized);
@@ -291,10 +300,11 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
     {
         BetaTextEditorCodeExecutionToolResultBlockParamContent value =
             new BetaTextEditorCodeExecutionCreateResultBlockParam(true);
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
 
         Assert.Equal(value, deserialized);
@@ -312,10 +322,11 @@ public class BetaTextEditorCodeExecutionToolResultBlockParamContentTest : TestBa
                 OldLines = 0,
                 OldStart = 0,
             };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParamContent>(
-                element
+                element,
+                ModelBase.SerializerOptions
             );
 
         Assert.Equal(value, deserialized);

@@ -344,8 +344,11 @@ public class MessageCreateParamsSystemTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         Messages::MessageCreateParamsSystem value = "string";
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::MessageCreateParamsSystem>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::MessageCreateParamsSystem>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -373,8 +376,11 @@ public class MessageCreateParamsSystemTest : TestBase
                 },
             ]
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::MessageCreateParamsSystem>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::MessageCreateParamsSystem>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

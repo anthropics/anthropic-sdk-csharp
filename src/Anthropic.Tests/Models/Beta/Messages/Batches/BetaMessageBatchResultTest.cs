@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages.Batches;
 using Anthropic.Models.Messages;
@@ -175,8 +176,11 @@ public class BetaMessageBatchResultTest : TestBase
                 },
             }
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -191,8 +195,11 @@ public class BetaMessageBatchResultTest : TestBase
                 RequestID = "request_id",
             }
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -201,8 +208,11 @@ public class BetaMessageBatchResultTest : TestBase
     public void CanceledSerializationRoundtripWorks()
     {
         BetaMessageBatchResult value = new BetaMessageBatchCanceledResult();
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -211,8 +221,11 @@ public class BetaMessageBatchResultTest : TestBase
     public void ExpiredSerializationRoundtripWorks()
     {
         BetaMessageBatchResult value = new BetaMessageBatchExpiredResult();
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

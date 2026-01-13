@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -24,9 +25,12 @@ public class BetaTextEditorCodeExecutionCreateResultBlockParamTest : TestBase
     {
         var model = new BetaTextEditorCodeExecutionCreateResultBlockParam { IsFileUpdate = true };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlockParam>(
+                json,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(model, deserialized);
     }
@@ -36,9 +40,12 @@ public class BetaTextEditorCodeExecutionCreateResultBlockParamTest : TestBase
     {
         var model = new BetaTextEditorCodeExecutionCreateResultBlockParam { IsFileUpdate = true };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlockParam>(element);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlockParam>(
+                element,
+                ModelBase.SerializerOptions
+            );
         Assert.NotNull(deserialized);
 
         bool expectedIsFileUpdate = true;

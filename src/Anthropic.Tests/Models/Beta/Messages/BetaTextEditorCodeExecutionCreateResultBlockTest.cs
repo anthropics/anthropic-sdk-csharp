@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -24,9 +25,10 @@ public class BetaTextEditorCodeExecutionCreateResultBlockTest : TestBase
     {
         var model = new BetaTextEditorCodeExecutionCreateResultBlock { IsFileUpdate = true };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlock>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -37,9 +39,10 @@ public class BetaTextEditorCodeExecutionCreateResultBlockTest : TestBase
     {
         var model = new BetaTextEditorCodeExecutionCreateResultBlock { IsFileUpdate = true };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionCreateResultBlock>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 

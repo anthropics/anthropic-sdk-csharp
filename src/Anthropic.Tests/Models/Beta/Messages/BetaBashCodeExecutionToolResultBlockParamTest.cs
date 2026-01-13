@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -45,9 +46,10 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParam>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -65,9 +67,10 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParam>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
@@ -198,9 +201,12 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
             new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             );
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(element);
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(
+                element,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(value, deserialized);
     }
@@ -216,9 +222,12 @@ public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
                 Stderr = "stderr",
                 Stdout = "stdout",
             };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(element);
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(
+                element,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(value, deserialized);
     }

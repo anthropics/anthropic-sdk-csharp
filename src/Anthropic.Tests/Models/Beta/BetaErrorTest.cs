@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta;
 
 namespace Anthropic.Tests.Models.Beta;
@@ -72,8 +73,11 @@ public class BetaErrorTest : TestBase
     public void InvalidRequestSerializationRoundtripWorks()
     {
         BetaError value = new BetaInvalidRequestError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -82,8 +86,11 @@ public class BetaErrorTest : TestBase
     public void AuthenticationSerializationRoundtripWorks()
     {
         BetaError value = new BetaAuthenticationError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -92,8 +99,11 @@ public class BetaErrorTest : TestBase
     public void BillingSerializationRoundtripWorks()
     {
         BetaError value = new BetaBillingError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -102,8 +112,11 @@ public class BetaErrorTest : TestBase
     public void PermissionSerializationRoundtripWorks()
     {
         BetaError value = new BetaPermissionError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -112,8 +125,11 @@ public class BetaErrorTest : TestBase
     public void NotFoundSerializationRoundtripWorks()
     {
         BetaError value = new BetaNotFoundError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -122,8 +138,11 @@ public class BetaErrorTest : TestBase
     public void RateLimitSerializationRoundtripWorks()
     {
         BetaError value = new BetaRateLimitError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -132,8 +151,11 @@ public class BetaErrorTest : TestBase
     public void GatewayTimeoutSerializationRoundtripWorks()
     {
         BetaError value = new BetaGatewayTimeoutError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -142,8 +164,11 @@ public class BetaErrorTest : TestBase
     public void ApiSerializationRoundtripWorks()
     {
         BetaError value = new BetaApiError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -152,8 +177,11 @@ public class BetaErrorTest : TestBase
     public void OverloadedSerializationRoundtripWorks()
     {
         BetaError value = new BetaOverloadedError("message");
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

@@ -40,9 +40,12 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamTest : TestBase
             ErrorMessage = "error_message",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultErrorParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultErrorParam>(
+                json,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(model, deserialized);
     }
@@ -56,9 +59,12 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamTest : TestBase
             ErrorMessage = "error_message",
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultErrorParam>(element);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultErrorParam>(
+                element,
+                ModelBase.SerializerOptions
+            );
         Assert.NotNull(deserialized);
 
         ApiEnum<

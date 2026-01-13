@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -41,8 +42,11 @@ public class BetaToolChoiceTest : TestBase
     public void AutoSerializationRoundtripWorks()
     {
         BetaToolChoice value = new BetaToolChoiceAuto() { DisableParallelToolUse = true };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -51,8 +55,11 @@ public class BetaToolChoiceTest : TestBase
     public void AnySerializationRoundtripWorks()
     {
         BetaToolChoice value = new BetaToolChoiceAny() { DisableParallelToolUse = true };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -65,8 +72,11 @@ public class BetaToolChoiceTest : TestBase
             Name = "name",
             DisableParallelToolUse = true,
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -75,8 +85,11 @@ public class BetaToolChoiceTest : TestBase
     public void NoneSerializationRoundtripWorks()
     {
         BetaToolChoice value = new BetaToolChoiceNone();
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolChoice>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 using Messages = Anthropic.Models.Beta.Messages;
 
@@ -242,8 +243,11 @@ public class BetaRawMessageStreamEventTest : TestBase
                 },
             }
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -290,8 +294,11 @@ public class BetaRawMessageStreamEventTest : TestBase
                 ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
             },
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -300,8 +307,11 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void StopSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawMessageStopEvent();
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -329,8 +339,11 @@ public class BetaRawMessageStreamEventTest : TestBase
             },
             Index = 0,
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -343,8 +356,11 @@ public class BetaRawMessageStreamEventTest : TestBase
             Delta = new Messages::BetaTextDelta("text"),
             Index = 0,
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -353,8 +369,11 @@ public class BetaRawMessageStreamEventTest : TestBase
     public void ContentBlockStopSerializationRoundtripWorks()
     {
         Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawContentBlockStopEvent(0);
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -78,8 +79,11 @@ public class RawContentBlockStartEventTest : TestBase
             Index = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -108,8 +112,11 @@ public class RawContentBlockStartEventTest : TestBase
             Index = 0,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         RawContentBlockStartEventContentBlock expectedContentBlock = new TextBlock()
@@ -267,9 +274,10 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
             ],
             Text = "text",
         };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
@@ -283,9 +291,10 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
             Signature = "signature",
             Thinking = "thinking",
         };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
@@ -295,9 +304,10 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     public void RedactedThinkingSerializationRoundtripWorks()
     {
         RawContentBlockStartEventContentBlock value = new RedactedThinkingBlock("data");
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
@@ -315,9 +325,10 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
             },
             Name = "x",
         };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
@@ -334,9 +345,10 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
         };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
@@ -352,9 +364,10 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models;
 using Anthropic.Models.Messages.Batches;
 
@@ -33,8 +34,11 @@ public class MessageBatchErroredResultTest : TestBase
             Error = new() { Error = new InvalidRequestError("message"), RequestID = "request_id" },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -47,8 +51,11 @@ public class MessageBatchErroredResultTest : TestBase
             Error = new() { Error = new InvalidRequestError("message"), RequestID = "request_id" },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         ErrorResponse expectedError = new()

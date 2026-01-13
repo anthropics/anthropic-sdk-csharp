@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -99,8 +100,11 @@ public class ToolUnionTest : TestBase
             Description = "Get the current weather in a given location",
             Type = Type.Custom,
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -109,8 +113,11 @@ public class ToolUnionTest : TestBase
     public void Bash20250124SerializationRoundtripWorks()
     {
         ToolUnion value = new ToolBash20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -119,8 +126,11 @@ public class ToolUnionTest : TestBase
     public void TextEditor20250124SerializationRoundtripWorks()
     {
         ToolUnion value = new ToolTextEditor20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -129,8 +139,11 @@ public class ToolUnionTest : TestBase
     public void TextEditor20250429SerializationRoundtripWorks()
     {
         ToolUnion value = new ToolTextEditor20250429() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -143,8 +156,11 @@ public class ToolUnionTest : TestBase
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -166,8 +182,11 @@ public class ToolUnionTest : TestBase
                 Timezone = "America/New_York",
             },
         };
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(element);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

@@ -37,9 +37,10 @@ public class BetaTextEditorCodeExecutionToolResultErrorTest : TestBase
             ErrorMessage = "error_message",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultError>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -54,9 +55,10 @@ public class BetaTextEditorCodeExecutionToolResultErrorTest : TestBase
             ErrorMessage = "error_message",
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultError>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 

@@ -58,8 +58,11 @@ public class RawMessageDeltaEventTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -80,8 +83,11 @@ public class RawMessageDeltaEventTest : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawMessageDeltaEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         Delta expectedDelta = new()
@@ -143,8 +149,8 @@ public class DeltaTest : TestBase
     {
         var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Delta>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Delta>(json, ModelBase.SerializerOptions);
 
         Assert.Equal(model, deserialized);
     }
@@ -154,8 +160,8 @@ public class DeltaTest : TestBase
     {
         var model = new Delta { StopReason = StopReason.EndTurn, StopSequence = "stop_sequence" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Delta>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Delta>(element, ModelBase.SerializerOptions);
         Assert.NotNull(deserialized);
 
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;

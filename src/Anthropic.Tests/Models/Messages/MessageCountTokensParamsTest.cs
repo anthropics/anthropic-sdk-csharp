@@ -223,9 +223,10 @@ public class MessageCountTokensParamsSystemTest : TestBase
     public void StringSerializationRoundtripWorks()
     {
         Messages::MessageCountTokensParamsSystem value = "string";
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Messages::MessageCountTokensParamsSystem>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
@@ -254,9 +255,10 @@ public class MessageCountTokensParamsSystemTest : TestBase
                 },
             ]
         );
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Messages::MessageCountTokensParamsSystem>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
