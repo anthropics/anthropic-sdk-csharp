@@ -15,8 +15,8 @@ public sealed record class MessageBatchCanceledResult : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -43,7 +43,7 @@ public sealed record class MessageBatchCanceledResult : JsonModel
 
     public MessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
     }
@@ -52,7 +52,7 @@ public sealed record class MessageBatchCanceledResult : JsonModel
     [SetsRequiredMembers]
     MessageBatchCanceledResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

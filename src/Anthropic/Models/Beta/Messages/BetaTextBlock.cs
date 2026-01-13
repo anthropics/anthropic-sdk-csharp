@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -22,21 +23,27 @@ public sealed record class BetaTextBlock : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<List<BetaTextCitation>>(this.RawData, "citations");
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaTextCitation>>("citations");
         }
-        init { JsonModel.Set(this._rawData, "citations", value); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaTextCitation>?>(
+                "citations",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public required string Text
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
-        init { JsonModel.Set(this._rawData, "text", value); }
+        get { return this._rawData.GetNotNullClass<string>("text"); }
+        init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -63,7 +70,7 @@ public sealed record class BetaTextBlock : JsonModel
 
     public BetaTextBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
@@ -72,7 +79,7 @@ public sealed record class BetaTextBlock : JsonModel
     [SetsRequiredMembers]
     BetaTextBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

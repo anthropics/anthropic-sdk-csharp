@@ -14,14 +14,14 @@ public sealed record class BetaImageBlockParam : JsonModel
 {
     public required BetaImageBlockParamSource Source
     {
-        get { return JsonModel.GetNotNullClass<BetaImageBlockParamSource>(this.RawData, "source"); }
-        init { JsonModel.Set(this._rawData, "source", value); }
+        get { return this._rawData.GetNotNullClass<BetaImageBlockParamSource>("source"); }
+        init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -29,14 +29,8 @@ public sealed record class BetaImageBlockParam : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -62,7 +56,7 @@ public sealed record class BetaImageBlockParam : JsonModel
 
     public BetaImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
     }
@@ -71,7 +65,7 @@ public sealed record class BetaImageBlockParam : JsonModel
     [SetsRequiredMembers]
     BetaImageBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

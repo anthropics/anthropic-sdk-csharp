@@ -18,24 +18,21 @@ public sealed record class BetaToolSearchToolResultBlock : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<BetaToolSearchToolResultBlockContent>(
-                this.RawData,
-                "content"
-            );
+            return this._rawData.GetNotNullClass<BetaToolSearchToolResultBlockContent>("content");
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
+        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -66,7 +63,7 @@ public sealed record class BetaToolSearchToolResultBlock : JsonModel
 
     public BetaToolSearchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result\"");
     }
@@ -75,7 +72,7 @@ public sealed record class BetaToolSearchToolResultBlock : JsonModel
     [SetsRequiredMembers]
     BetaToolSearchToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

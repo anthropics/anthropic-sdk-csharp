@@ -17,8 +17,8 @@ public sealed record class BetaModelInfo : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get { return this._rawData.GetNotNullClass<string>("id"); }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -27,8 +27,8 @@ public sealed record class BetaModelInfo : JsonModel
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get { return JsonModel.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
-        init { JsonModel.Set(this._rawData, "created_at", value); }
+        get { return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at"); }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -36,8 +36,8 @@ public sealed record class BetaModelInfo : JsonModel
     /// </summary>
     public required string DisplayName
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "display_name"); }
-        init { JsonModel.Set(this._rawData, "display_name", value); }
+        get { return this._rawData.GetNotNullClass<string>("display_name"); }
+        init { this._rawData.Set("display_name", value); }
     }
 
     /// <summary>
@@ -47,8 +47,8 @@ public sealed record class BetaModelInfo : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -75,7 +75,7 @@ public sealed record class BetaModelInfo : JsonModel
 
     public BetaModelInfo(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
     }
@@ -84,7 +84,7 @@ public sealed record class BetaModelInfo : JsonModel
     [SetsRequiredMembers]
     BetaModelInfo(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

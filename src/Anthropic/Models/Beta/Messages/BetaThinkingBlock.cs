@@ -13,20 +13,20 @@ public sealed record class BetaThinkingBlock : JsonModel
 {
     public required string Signature
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "signature"); }
-        init { JsonModel.Set(this._rawData, "signature", value); }
+        get { return this._rawData.GetNotNullClass<string>("signature"); }
+        init { this._rawData.Set("signature", value); }
     }
 
     public required string Thinking
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "thinking"); }
-        init { JsonModel.Set(this._rawData, "thinking", value); }
+        get { return this._rawData.GetNotNullClass<string>("thinking"); }
+        init { this._rawData.Set("thinking", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -55,7 +55,7 @@ public sealed record class BetaThinkingBlock : JsonModel
 
     public BetaThinkingBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
     }
@@ -64,7 +64,7 @@ public sealed record class BetaThinkingBlock : JsonModel
     [SetsRequiredMembers]
     BetaThinkingBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

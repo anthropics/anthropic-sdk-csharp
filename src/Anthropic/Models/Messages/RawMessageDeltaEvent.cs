@@ -13,14 +13,14 @@ public sealed record class RawMessageDeltaEvent : JsonModel
 {
     public required Delta Delta
     {
-        get { return JsonModel.GetNotNullClass<Delta>(this.RawData, "delta"); }
-        init { JsonModel.Set(this._rawData, "delta", value); }
+        get { return this._rawData.GetNotNullClass<Delta>("delta"); }
+        init { this._rawData.Set("delta", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -42,8 +42,8 @@ public sealed record class RawMessageDeltaEvent : JsonModel
     /// </summary>
     public required MessageDeltaUsage Usage
     {
-        get { return JsonModel.GetNotNullClass<MessageDeltaUsage>(this.RawData, "usage"); }
-        init { JsonModel.Set(this._rawData, "usage", value); }
+        get { return this._rawData.GetNotNullClass<MessageDeltaUsage>("usage"); }
+        init { this._rawData.Set("usage", value); }
     }
 
     /// <inheritdoc/>
@@ -72,7 +72,7 @@ public sealed record class RawMessageDeltaEvent : JsonModel
 
     public RawMessageDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
     }
@@ -81,7 +81,7 @@ public sealed record class RawMessageDeltaEvent : JsonModel
     [SetsRequiredMembers]
     RawMessageDeltaEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -107,20 +107,14 @@ public sealed record class Delta : JsonModel
 {
     public required ApiEnum<string, StopReason>? StopReason
     {
-        get
-        {
-            return JsonModel.GetNullableClass<ApiEnum<string, StopReason>>(
-                this.RawData,
-                "stop_reason"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "stop_reason", value); }
+        get { return this._rawData.GetNullableClass<ApiEnum<string, StopReason>>("stop_reason"); }
+        init { this._rawData.Set("stop_reason", value); }
     }
 
     public required string? StopSequence
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "stop_sequence"); }
-        init { JsonModel.Set(this._rawData, "stop_sequence", value); }
+        get { return this._rawData.GetNullableClass<string>("stop_sequence"); }
+        init { this._rawData.Set("stop_sequence", value); }
     }
 
     /// <inheritdoc/>
@@ -137,14 +131,14 @@ public sealed record class Delta : JsonModel
 
     public Delta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     Delta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

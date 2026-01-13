@@ -21,8 +21,8 @@ public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
     /// </summary>
     public JsonElement Command
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { JsonModel.Set(this._rawData, "command", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("command"); }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
     /// </summary>
     public required string FileText
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "file_text"); }
-        init { JsonModel.Set(this._rawData, "file_text", value); }
+        get { return this._rawData.GetNotNullClass<string>("file_text"); }
+        init { this._rawData.Set("file_text", value); }
     }
 
     /// <summary>
@@ -39,8 +39,8 @@ public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
     /// </summary>
     public required string Path
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "path"); }
-        init { JsonModel.Set(this._rawData, "path", value); }
+        get { return this._rawData.GetNotNullClass<string>("path"); }
+        init { this._rawData.Set("path", value); }
     }
 
     /// <inheritdoc/>
@@ -71,7 +71,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
 
     public BetaMemoryTool20250818CreateCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Command = JsonSerializer.Deserialize<JsonElement>("\"create\"");
     }
@@ -80,7 +80,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
     [SetsRequiredMembers]
     BetaMemoryTool20250818CreateCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

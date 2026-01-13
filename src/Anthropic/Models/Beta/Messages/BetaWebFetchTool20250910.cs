@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -21,23 +22,23 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("name"); }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return JsonModel.GetNullableClass<
-                List<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>>
-            >(this.RawData, "allowed_callers");
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>>
+            >("allowed_callers");
         }
         init
         {
@@ -46,7 +47,9 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<
+                ApiEnum<string, BetaWebFetchTool20250910AllowedCaller>
+            >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
@@ -55,8 +58,14 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// </summary>
     public IReadOnlyList<string>? AllowedDomains
     {
-        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "allowed_domains"); }
-        init { JsonModel.Set(this._rawData, "allowed_domains", value); }
+        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("allowed_domains"); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "allowed_domains",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -64,8 +73,14 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// </summary>
     public IReadOnlyList<string>? BlockedDomains
     {
-        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "blocked_domains"); }
-        init { JsonModel.Set(this._rawData, "blocked_domains", value); }
+        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("blocked_domains"); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "blocked_domains",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -73,14 +88,8 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -88,11 +97,8 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// </summary>
     public BetaCitationsConfigParam? Citations
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
-        }
-        init { JsonModel.Set(this._rawData, "citations", value); }
+        get { return this._rawData.GetNullableClass<BetaCitationsConfigParam>("citations"); }
+        init { this._rawData.Set("citations", value); }
     }
 
     /// <summary>
@@ -101,7 +107,7 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// </summary>
     public bool? DeferLoading
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get { return this._rawData.GetNullableStruct<bool>("defer_loading"); }
         init
         {
             if (value == null)
@@ -109,7 +115,7 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
@@ -119,8 +125,8 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// </summary>
     public long? MaxContentTokens
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "max_content_tokens"); }
-        init { JsonModel.Set(this._rawData, "max_content_tokens", value); }
+        get { return this._rawData.GetNullableStruct<long>("max_content_tokens"); }
+        init { this._rawData.Set("max_content_tokens", value); }
     }
 
     /// <summary>
@@ -128,13 +134,13 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     /// </summary>
     public long? MaxUses
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "max_uses"); }
-        init { JsonModel.Set(this._rawData, "max_uses", value); }
+        get { return this._rawData.GetNullableStruct<long>("max_uses"); }
+        init { this._rawData.Set("max_uses", value); }
     }
 
     public bool? Strict
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get { return this._rawData.GetNullableStruct<bool>("strict"); }
         init
         {
             if (value == null)
@@ -142,7 +148,7 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
@@ -192,7 +198,7 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
 
     public BetaWebFetchTool20250910(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_fetch\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_20250910\"");
@@ -202,7 +208,7 @@ public sealed record class BetaWebFetchTool20250910 : JsonModel
     [SetsRequiredMembers]
     BetaWebFetchTool20250910(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -23,7 +23,7 @@ namespace Anthropic.Models.Beta.Messages;
 /// </summary>
 public sealed record class MessageCountTokensParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    readonly JsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
         get { return this._rawBodyData.Freeze(); }
@@ -84,9 +84,15 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNotNullClass<List<BetaMessageParam>>(this.RawBodyData, "messages");
+            return this._rawBodyData.GetNotNullStruct<ImmutableArray<BetaMessageParam>>("messages");
         }
-        init { JsonModel.Set(this._rawBodyData, "messages", value); }
+        init
+        {
+            this._rawBodyData.Set<ImmutableArray<BetaMessageParam>>(
+                "messages",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -95,14 +101,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public required ApiEnum<string, Messages::Model> Model
     {
-        get
-        {
-            return JsonModel.GetNotNullClass<ApiEnum<string, Messages::Model>>(
-                this.RawBodyData,
-                "model"
-            );
-        }
-        init { JsonModel.Set(this._rawBodyData, "model", value); }
+        get { return this._rawBodyData.GetNotNullClass<ApiEnum<string, Messages::Model>>("model"); }
+        init { this._rawBodyData.Set("model", value); }
     }
 
     /// <summary>
@@ -115,12 +115,11 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaContextManagementConfig>(
-                this.RawBodyData,
+            return this._rawBodyData.GetNullableClass<BetaContextManagementConfig>(
                 "context_management"
             );
         }
-        init { JsonModel.Set(this._rawBodyData, "context_management", value); }
+        init { this._rawBodyData.Set("context_management", value); }
     }
 
     /// <summary>
@@ -130,10 +129,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<BetaRequestMcpServerURLDefinition>>(
-                this.RawBodyData,
-                "mcp_servers"
-            );
+            return this._rawBodyData.GetNullableStruct<
+                ImmutableArray<BetaRequestMcpServerUrlDefinition>
+            >("mcp_servers");
         }
         init
         {
@@ -142,7 +140,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "mcp_servers", value);
+            this._rawBodyData.Set<ImmutableArray<BetaRequestMcpServerUrlDefinition>?>(
+                "mcp_servers",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -152,10 +153,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaOutputConfig>(this.RawBodyData, "output_config");
-        }
+        get { return this._rawBodyData.GetNullableClass<BetaOutputConfig>("output_config"); }
         init
         {
             if (value == null)
@@ -163,7 +161,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "output_config", value);
+            this._rawBodyData.Set("output_config", value);
         }
     }
 
@@ -172,14 +170,8 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaJsonOutputFormat? OutputFormat
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaJsonOutputFormat>(
-                this.RawBodyData,
-                "output_format"
-            );
-        }
-        init { JsonModel.Set(this._rawBodyData, "output_format", value); }
+        get { return this._rawBodyData.GetNullableClass<BetaJsonOutputFormat>("output_format"); }
+        init { this._rawBodyData.Set("output_format", value); }
     }
 
     /// <summary>
@@ -190,13 +182,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public MessageCountTokensParamsSystem? System
     {
-        get
-        {
-            return JsonModel.GetNullableClass<MessageCountTokensParamsSystem>(
-                this.RawBodyData,
-                "system"
-            );
-        }
+        get { return this._rawBodyData.GetNullableClass<MessageCountTokensParamsSystem>("system"); }
         init
         {
             if (value == null)
@@ -204,7 +190,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "system", value);
+            this._rawBodyData.Set("system", value);
         }
     }
 
@@ -220,13 +206,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaThinkingConfigParam? Thinking
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaThinkingConfigParam>(
-                this.RawBodyData,
-                "thinking"
-            );
-        }
+        get { return this._rawBodyData.GetNullableClass<BetaThinkingConfigParam>("thinking"); }
         init
         {
             if (value == null)
@@ -234,7 +214,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "thinking", value);
+            this._rawBodyData.Set("thinking", value);
         }
     }
 
@@ -244,7 +224,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public BetaToolChoice? ToolChoice
     {
-        get { return JsonModel.GetNullableClass<BetaToolChoice>(this.RawBodyData, "tool_choice"); }
+        get { return this._rawBodyData.GetNullableClass<BetaToolChoice>("tool_choice"); }
         init
         {
             if (value == null)
@@ -252,7 +232,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "tool_choice", value);
+            this._rawBodyData.Set("tool_choice", value);
         }
     }
 
@@ -305,7 +285,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     /// </summary>
     public IReadOnlyList<Tool>? Tools
     {
-        get { return JsonModel.GetNullableClass<List<Tool>>(this.RawBodyData, "tools"); }
+        get { return this._rawBodyData.GetNullableStruct<ImmutableArray<Tool>>("tools"); }
         init
         {
             if (value == null)
@@ -313,7 +293,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "tools", value);
+            this._rawBodyData.Set<ImmutableArray<Tool>?>(
+                "tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -324,10 +307,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
-                this.RawHeaderData,
-                "anthropic-beta"
-            );
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
         }
         init
         {
@@ -336,7 +318,10 @@ public sealed record class MessageCountTokensParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -345,7 +330,7 @@ public sealed record class MessageCountTokensParams : ParamsBase
     public MessageCountTokensParams(MessageCountTokensParams messageCountTokensParams)
         : base(messageCountTokensParams)
     {
-        this._rawBodyData = [.. messageCountTokensParams._rawBodyData];
+        this._rawBodyData = new(messageCountTokensParams._rawBodyData);
     }
 
     public MessageCountTokensParams(
@@ -354,9 +339,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
         IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 
 #pragma warning disable CS8618
@@ -367,9 +352,9 @@ public sealed record class MessageCountTokensParams : ParamsBase
         FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 #pragma warning restore CS8618
 
@@ -638,7 +623,7 @@ sealed class MessageCountTokensParamsSystemConverter : JsonConverter<MessageCoun
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
+            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaTextBlockParam>>(
                 element,
                 options
             );

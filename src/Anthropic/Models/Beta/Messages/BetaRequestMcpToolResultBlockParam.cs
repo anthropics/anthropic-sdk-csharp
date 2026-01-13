@@ -20,14 +20,14 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
 {
     public required string ToolUseID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
+        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -35,22 +35,15 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public BetaRequestMcpToolResultBlockParamContent? Content
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaRequestMcpToolResultBlockParamContent>(
-                this.RawData,
+            return this._rawData.GetNullableClass<BetaRequestMcpToolResultBlockParamContent>(
                 "content"
             );
         }
@@ -61,13 +54,13 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "content", value);
+            this._rawData.Set("content", value);
         }
     }
 
     public bool? IsError
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "is_error"); }
+        get { return this._rawData.GetNullableStruct<bool>("is_error"); }
         init
         {
             if (value == null)
@@ -75,7 +68,7 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "is_error", value);
+            this._rawData.Set("is_error", value);
         }
     }
 
@@ -109,7 +102,7 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
 
     public BetaRequestMcpToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
     }
@@ -118,7 +111,7 @@ public sealed record class BetaRequestMcpToolResultBlockParam : JsonModel
     [SetsRequiredMembers]
     BetaRequestMcpToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -364,7 +357,7 @@ sealed class BetaRequestMcpToolResultBlockParamContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlockParam>>(
+            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaTextBlockParam>>(
                 element,
                 options
             );

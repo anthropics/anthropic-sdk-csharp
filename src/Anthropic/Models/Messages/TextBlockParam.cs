@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,14 +14,14 @@ public sealed record class TextBlockParam : JsonModel
 {
     public required string Text
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
-        init { JsonModel.Set(this._rawData, "text", value); }
+        get { return this._rawData.GetNotNullClass<string>("text"); }
+        init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -28,20 +29,23 @@ public sealed record class TextBlockParam : JsonModel
     /// </summary>
     public CacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public IReadOnlyList<TextCitationParam>? Citations
     {
         get
         {
-            return JsonModel.GetNullableClass<List<TextCitationParam>>(this.RawData, "citations");
+            return this._rawData.GetNullableStruct<ImmutableArray<TextCitationParam>>("citations");
         }
-        init { JsonModel.Set(this._rawData, "citations", value); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<TextCitationParam>?>(
+                "citations",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -69,7 +73,7 @@ public sealed record class TextBlockParam : JsonModel
 
     public TextBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
     }
@@ -78,7 +82,7 @@ public sealed record class TextBlockParam : JsonModel
     [SetsRequiredMembers]
     TextBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

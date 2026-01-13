@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,14 +18,20 @@ public sealed record class BetaRequestMcpServerToolConfiguration : JsonModel
 {
     public IReadOnlyList<string>? AllowedTools
     {
-        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "allowed_tools"); }
-        init { JsonModel.Set(this._rawData, "allowed_tools", value); }
+        get { return this._rawData.GetNullableStruct<ImmutableArray<string>>("allowed_tools"); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "allowed_tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public bool? Enabled
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "enabled"); }
-        init { JsonModel.Set(this._rawData, "enabled", value); }
+        get { return this._rawData.GetNullableStruct<bool>("enabled"); }
+        init { this._rawData.Set("enabled", value); }
     }
 
     /// <inheritdoc/>
@@ -43,14 +50,14 @@ public sealed record class BetaRequestMcpServerToolConfiguration : JsonModel
 
     public BetaRequestMcpServerToolConfiguration(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaRequestMcpServerToolConfiguration(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -15,32 +15,32 @@ public sealed record class WebSearchResultBlockParam : JsonModel
 {
     public required string EncryptedContent
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "encrypted_content"); }
-        init { JsonModel.Set(this._rawData, "encrypted_content", value); }
+        get { return this._rawData.GetNotNullClass<string>("encrypted_content"); }
+        init { this._rawData.Set("encrypted_content", value); }
     }
 
     public required string Title
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "title"); }
-        init { JsonModel.Set(this._rawData, "title", value); }
+        get { return this._rawData.GetNotNullClass<string>("title"); }
+        init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     public required string Url
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
-        init { JsonModel.Set(this._rawData, "url", value); }
+        get { return this._rawData.GetNotNullClass<string>("url"); }
+        init { this._rawData.Set("url", value); }
     }
 
     public string? PageAge
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "page_age"); }
-        init { JsonModel.Set(this._rawData, "page_age", value); }
+        get { return this._rawData.GetNullableClass<string>("page_age"); }
+        init { this._rawData.Set("page_age", value); }
     }
 
     /// <inheritdoc/>
@@ -71,7 +71,7 @@ public sealed record class WebSearchResultBlockParam : JsonModel
 
     public WebSearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
     }
@@ -80,7 +80,7 @@ public sealed record class WebSearchResultBlockParam : JsonModel
     [SetsRequiredMembers]
     WebSearchResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

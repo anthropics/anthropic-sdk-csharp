@@ -22,14 +22,14 @@ public sealed record class BetaMcpToolset : JsonModel
     /// </summary>
     public required string McpServerName
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "mcp_server_name"); }
-        init { JsonModel.Set(this._rawData, "mcp_server_name", value); }
+        get { return this._rawData.GetNotNullClass<string>("mcp_server_name"); }
+        init { this._rawData.Set("mcp_server_name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -37,14 +37,8 @@ public sealed record class BetaMcpToolset : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -54,12 +48,17 @@ public sealed record class BetaMcpToolset : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<Dictionary<string, BetaMcpToolConfig>>(
-                this.RawData,
+            return this._rawData.GetNullableClass<FrozenDictionary<string, BetaMcpToolConfig>>(
                 "configs"
             );
         }
-        init { JsonModel.Set(this._rawData, "configs", value); }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, BetaMcpToolConfig>?>(
+                "configs",
+                value == null ? null : FrozenDictionary.ToFrozenDictionary(value)
+            );
+        }
     }
 
     /// <summary>
@@ -67,13 +66,7 @@ public sealed record class BetaMcpToolset : JsonModel
     /// </summary>
     public BetaMcpToolDefaultConfig? DefaultConfig
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaMcpToolDefaultConfig>(
-                this.RawData,
-                "default_config"
-            );
-        }
+        get { return this._rawData.GetNullableClass<BetaMcpToolDefaultConfig>("default_config"); }
         init
         {
             if (value == null)
@@ -81,7 +74,7 @@ public sealed record class BetaMcpToolset : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "default_config", value);
+            this._rawData.Set("default_config", value);
         }
     }
 
@@ -119,7 +112,7 @@ public sealed record class BetaMcpToolset : JsonModel
 
     public BetaMcpToolset(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_toolset\"");
     }
@@ -128,7 +121,7 @@ public sealed record class BetaMcpToolset : JsonModel
     [SetsRequiredMembers]
     BetaMcpToolset(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

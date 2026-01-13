@@ -23,14 +23,14 @@ public sealed record class ThinkingConfigEnabled : JsonModel
     /// </summary>
     public required long BudgetTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "budget_tokens"); }
-        init { JsonModel.Set(this._rawData, "budget_tokens", value); }
+        get { return this._rawData.GetNotNullStruct<long>("budget_tokens"); }
+        init { this._rawData.Set("budget_tokens", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -58,7 +58,7 @@ public sealed record class ThinkingConfigEnabled : JsonModel
 
     public ThinkingConfigEnabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
     }
@@ -67,7 +67,7 @@ public sealed record class ThinkingConfigEnabled : JsonModel
     [SetsRequiredMembers]
     ThinkingConfigEnabled(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

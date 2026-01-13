@@ -13,8 +13,8 @@ public sealed record class BetaWebFetchBlock : JsonModel
 {
     public required BetaDocumentBlock Content
     {
-        get { return JsonModel.GetNotNullClass<BetaDocumentBlock>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullClass<BetaDocumentBlock>("content"); }
+        init { this._rawData.Set("content", value); }
     }
 
     /// <summary>
@@ -22,14 +22,14 @@ public sealed record class BetaWebFetchBlock : JsonModel
     /// </summary>
     public required string? RetrievedAt
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "retrieved_at"); }
-        init { JsonModel.Set(this._rawData, "retrieved_at", value); }
+        get { return this._rawData.GetNullableClass<string>("retrieved_at"); }
+        init { this._rawData.Set("retrieved_at", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -37,8 +37,8 @@ public sealed record class BetaWebFetchBlock : JsonModel
     /// </summary>
     public required string Url
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "url"); }
-        init { JsonModel.Set(this._rawData, "url", value); }
+        get { return this._rawData.GetNotNullClass<string>("url"); }
+        init { this._rawData.Set("url", value); }
     }
 
     /// <inheritdoc/>
@@ -68,7 +68,7 @@ public sealed record class BetaWebFetchBlock : JsonModel
 
     public BetaWebFetchBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
     }
@@ -77,7 +77,7 @@ public sealed record class BetaWebFetchBlock : JsonModel
     [SetsRequiredMembers]
     BetaWebFetchBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

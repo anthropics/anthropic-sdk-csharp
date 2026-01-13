@@ -13,20 +13,20 @@ public sealed record class PlainTextSource : JsonModel
 {
     public required string Data
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
-        init { JsonModel.Set(this._rawData, "data", value); }
+        get { return this._rawData.GetNotNullClass<string>("data"); }
+        init { this._rawData.Set("data", value); }
     }
 
     public JsonElement MediaType
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
-        init { JsonModel.Set(this._rawData, "media_type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("media_type"); }
+        init { this._rawData.Set("media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -59,7 +59,7 @@ public sealed record class PlainTextSource : JsonModel
 
     public PlainTextSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
@@ -69,7 +69,7 @@ public sealed record class PlainTextSource : JsonModel
     [SetsRequiredMembers]
     PlainTextSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

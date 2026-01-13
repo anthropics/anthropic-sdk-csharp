@@ -15,32 +15,26 @@ public sealed record class BetaMcpToolResultBlock : JsonModel
 {
     public required BetaMcpToolResultBlockContent Content
     {
-        get
-        {
-            return JsonModel.GetNotNullClass<BetaMcpToolResultBlockContent>(
-                this.RawData,
-                "content"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get { return this._rawData.GetNotNullClass<BetaMcpToolResultBlockContent>("content"); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required bool IsError
     {
-        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "is_error"); }
-        init { JsonModel.Set(this._rawData, "is_error", value); }
+        get { return this._rawData.GetNotNullStruct<bool>("is_error"); }
+        init { this._rawData.Set("is_error", value); }
     }
 
     public required string ToolUseID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
+        get { return this._rawData.GetNotNullClass<string>("tool_use_id"); }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -70,7 +64,7 @@ public sealed record class BetaMcpToolResultBlock : JsonModel
 
     public BetaMcpToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"mcp_tool_result\"");
     }
@@ -79,7 +73,7 @@ public sealed record class BetaMcpToolResultBlock : JsonModel
     [SetsRequiredMembers]
     BetaMcpToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -315,7 +309,10 @@ sealed class BetaMcpToolResultBlockContentConverter : JsonConverter<BetaMcpToolR
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaTextBlock>>(element, options);
+            var deserialized = JsonSerializer.Deserialize<ImmutableArray<BetaTextBlock>>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 return new(deserialized, element);

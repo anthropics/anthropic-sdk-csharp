@@ -17,7 +17,7 @@ public sealed record class BetaMcpToolDefaultConfig : JsonModel
 {
     public bool? DeferLoading
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get { return this._rawData.GetNullableStruct<bool>("defer_loading"); }
         init
         {
             if (value == null)
@@ -25,13 +25,13 @@ public sealed record class BetaMcpToolDefaultConfig : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
     public bool? Enabled
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "enabled"); }
+        get { return this._rawData.GetNullableStruct<bool>("enabled"); }
         init
         {
             if (value == null)
@@ -39,7 +39,7 @@ public sealed record class BetaMcpToolDefaultConfig : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "enabled", value);
+            this._rawData.Set("enabled", value);
         }
     }
 
@@ -57,14 +57,14 @@ public sealed record class BetaMcpToolDefaultConfig : JsonModel
 
     public BetaMcpToolDefaultConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMcpToolDefaultConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

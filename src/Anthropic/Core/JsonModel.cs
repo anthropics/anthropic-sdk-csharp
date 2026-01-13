@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Core;
 
@@ -11,12 +10,12 @@ namespace Anthropic.Core;
 /// </summary>
 public abstract record class JsonModel : ModelBase
 {
-    private protected FreezableDictionary<string, JsonElement> _rawData = [];
+    private protected JsonDictionary _rawData = new();
 
     protected JsonModel(JsonModel jsonModel)
         : base(jsonModel)
     {
-        this._rawData = [.. jsonModel._rawData];
+        this._rawData = new(jsonModel._rawData);
     }
 
     /// <summary>
@@ -25,109 +24,6 @@ public abstract record class JsonModel : ModelBase
     public IReadOnlyDictionary<string, JsonElement> RawData
     {
         get { return this._rawData.Freeze(); }
-    }
-
-    internal static void Set<T>(IDictionary<string, JsonElement> dictionary, string key, T value)
-    {
-        dictionary[key] = JsonSerializer.SerializeToElement(value, SerializerOptions);
-    }
-
-    internal static T GetNotNullClass<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : class
-    {
-        if (!dictionary.TryGetValue(key, out var element))
-        {
-            throw new AnthropicInvalidDataException($"'{key}' cannot be absent");
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T>(element, SerializerOptions)
-                ?? throw new AnthropicInvalidDataException($"'{key}' cannot be null");
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T GetNotNullStruct<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : struct
-    {
-        if (!dictionary.TryGetValue(key, out var element))
-        {
-            throw new AnthropicInvalidDataException($"'{key}' cannot be absent");
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions)
-                ?? throw new AnthropicInvalidDataException($"'{key}' cannot be null");
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T? GetNullableClass<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : class
-    {
-        if (!dictionary.TryGetValue(key, out var element))
-        {
-            return null;
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions);
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
-    }
-
-    internal static T? GetNullableStruct<T>(
-        IReadOnlyDictionary<string, JsonElement> dictionary,
-        string key
-    )
-        where T : struct
-    {
-        if (!dictionary.TryGetValue(key, out var element))
-        {
-            return null;
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(element, SerializerOptions);
-        }
-        catch (JsonException e)
-        {
-            throw new AnthropicInvalidDataException(
-                $"'{key}' must be of type {typeof(T).FullName}",
-                e
-            );
-        }
     }
 
     public sealed override string ToString() =>

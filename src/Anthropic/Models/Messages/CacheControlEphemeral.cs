@@ -14,8 +14,8 @@ public sealed record class CacheControlEphemeral : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public sealed record class CacheControlEphemeral : JsonModel
     /// </summary>
     public ApiEnum<string, Ttl>? Ttl
     {
-        get { return JsonModel.GetNullableClass<ApiEnum<string, Ttl>>(this.RawData, "ttl"); }
+        get { return this._rawData.GetNullableClass<ApiEnum<string, Ttl>>("ttl"); }
         init
         {
             if (value == null)
@@ -35,7 +35,7 @@ public sealed record class CacheControlEphemeral : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "ttl", value);
+            this._rawData.Set("ttl", value);
         }
     }
 
@@ -64,7 +64,7 @@ public sealed record class CacheControlEphemeral : JsonModel
 
     public CacheControlEphemeral(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"ephemeral\"");
     }
@@ -73,7 +73,7 @@ public sealed record class CacheControlEphemeral : JsonModel
     [SetsRequiredMembers]
     CacheControlEphemeral(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

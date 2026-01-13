@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -21,14 +22,14 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("name"); }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get { return this._rawData.GetNotNullStruct<JsonElement>("type"); }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<
@@ -37,9 +38,9 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<
-                List<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>>
-            >(this.RawData, "allowed_callers");
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>>
+            >("allowed_callers");
         }
         init
         {
@@ -48,7 +49,9 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<
+                ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>
+            >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
@@ -57,14 +60,8 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     /// </summary>
     public BetaCacheControlEphemeral? CacheControl
     {
-        get
-        {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
-        }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        get { return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control"); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -73,7 +70,7 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     /// </summary>
     public bool? DeferLoading
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get { return this._rawData.GetNullableStruct<bool>("defer_loading"); }
         init
         {
             if (value == null)
@@ -81,13 +78,13 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
     public bool? Strict
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get { return this._rawData.GetNullableStruct<bool>("strict"); }
         init
         {
             if (value == null)
@@ -95,7 +92,7 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
@@ -142,7 +139,7 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
 
     public BetaCodeExecutionTool20250825(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
         this.Name = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
         this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250825\"");
@@ -152,7 +149,7 @@ public sealed record class BetaCodeExecutionTool20250825 : JsonModel
     [SetsRequiredMembers]
     BetaCodeExecutionTool20250825(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
