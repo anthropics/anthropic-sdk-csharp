@@ -100,7 +100,7 @@ public sealed record class BetaToolSearchToolSearchResultBlockParam : JsonModel
 
     [SetsRequiredMembers]
     public BetaToolSearchToolSearchResultBlockParam(
-        List<BetaToolReferenceBlockParam> toolReferences
+        IReadOnlyList<BetaToolReferenceBlockParam> toolReferences
     )
         : this()
     {

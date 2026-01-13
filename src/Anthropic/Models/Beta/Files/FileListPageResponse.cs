@@ -116,7 +116,7 @@ public sealed record class FileListPageResponse : JsonModel
     }
 
     [SetsRequiredMembers]
-    public FileListPageResponse(List<FileMetadata> data)
+    public FileListPageResponse(IReadOnlyList<FileMetadata> data)
         : this()
     {
         this.Data = data;

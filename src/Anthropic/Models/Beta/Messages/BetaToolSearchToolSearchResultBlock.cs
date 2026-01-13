@@ -97,7 +97,7 @@ public sealed record class BetaToolSearchToolSearchResultBlock : JsonModel
     }
 
     [SetsRequiredMembers]
-    public BetaToolSearchToolSearchResultBlock(List<BetaToolReferenceBlock> toolReferences)
+    public BetaToolSearchToolSearchResultBlock(IReadOnlyList<BetaToolReferenceBlock> toolReferences)
         : this()
     {
         this.ToolReferences = toolReferences;

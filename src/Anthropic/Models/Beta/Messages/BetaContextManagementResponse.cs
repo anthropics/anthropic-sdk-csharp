@@ -72,7 +72,7 @@ public sealed record class BetaContextManagementResponse : JsonModel
     }
 
     [SetsRequiredMembers]
-    public BetaContextManagementResponse(List<AppliedEdit> appliedEdits)
+    public BetaContextManagementResponse(IReadOnlyList<AppliedEdit> appliedEdits)
         : this()
     {
         this.AppliedEdits = appliedEdits;
