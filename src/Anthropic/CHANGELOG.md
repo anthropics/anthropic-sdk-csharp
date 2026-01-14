@@ -43,7 +43,6 @@ Full Changelog: [Anthropic-v12.1.0...Anthropic-v12.2.0](https://github.com/anthr
 * **internal:** codegen related update ([df7fd3c](https://github.com/anthropics/anthropic-sdk-csharp/commit/df7fd3c77ddbb9f94e0419e6759b24c30e45dffb))
 * **internal:** format ([3af90a7](https://github.com/anthropics/anthropic-sdk-csharp/commit/3af90a7314837e1ff517454abf502b340f4ce86a))
 * **internal:** use better namespace aliases ([16b810a](https://github.com/anthropics/anthropic-sdk-csharp/commit/16b810aa749bbc6d83e15730548183fa2a4d8ea2))
-* **readme:** remove beta warning now that we're in ga ([613b5ce](https://github.com/anthropics/anthropic-sdk-csharp/commit/613b5ce8acc3da8fd563941e20d0717f01a2ca5e))
 
 
 ### Refactors
