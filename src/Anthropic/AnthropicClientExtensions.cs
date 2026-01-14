@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -87,11 +88,45 @@ public static class AnthropicClientExtensions
     ) : IChatClient
     {
         private const int DefaultMaxTokens = 1024;
+        private const string MeaiUserAgentHeaderKey = "User-Agent";
+
+        private static readonly Dictionary<string, JsonElement> s_meaiHeaderData = new()
+        {
+            [MeaiUserAgentHeaderKey] = JsonSerializer.SerializeToElement(
+                CreateMeaiUserAgentValue()
+            ),
+        };
 
         private readonly IAnthropicClient _anthropicClient = anthropicClient;
         private readonly string? _defaultModelId = defaultModelId;
         private readonly int _defaultMaxTokens = defaultMaxTokens ?? DefaultMaxTokens;
         private ChatClientMetadata? _metadata;
+
+        private static string CreateMeaiUserAgentValue()
+        {
+            const string Name = "MEAI";
+
+            if (
+                typeof(IChatClient)
+                    .Assembly.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>()
+                    ?.InformationalVersion
+                is string version
+            )
+            {
+                int pos = version.IndexOf('+');
+                if (pos >= 0)
+                {
+                    version = version.Substring(0, pos);
+                }
+
+                if (version.Length > 0)
+                {
+                    return $"{Name}/{version}";
+                }
+            }
+
+            return Name;
+        }
 
         /// <inheritdoc />
         void IDisposable.Dispose() { }
@@ -905,7 +940,24 @@ public static class AnthropicClientExtensions
                 createParams = createParams with { System = systemMessages };
             }
 
-            return createParams;
+            // Merge the MEAI user-agent header with existing headers
+            return AddMeaiHeaders(createParams);
+        }
+
+        private static MessageCreateParams AddMeaiHeaders(MessageCreateParams createParams)
+        {
+            Dictionary<string, JsonElement> mergedHeaders = new(s_meaiHeaderData);
+
+            foreach (var header in createParams.RawHeaderData)
+            {
+                mergedHeaders[header.Key] = header.Value;
+            }
+
+            return MessageCreateParams.FromRawUnchecked(
+                mergedHeaders,
+                createParams.RawQueryData,
+                createParams.RawBodyData
+            );
         }
 
         private static UsageDetails ToUsageDetails(Usage usage) =>
