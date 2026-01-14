@@ -899,8 +899,10 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Get the current weather for a location",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string", "description": "The city and state" },
-                        "unit": { "type": "string", "description": "Temperature unit" },
+                        "properties": {
+                            "location": { "type": "string", "description": "The city and state" },
+                            "unit": { "type": "string", "description": "Temperature unit" }
+                        },
                         "required": ["location", "unit"]
                     }
                 }]
@@ -992,6 +994,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Gets the current time",
                     "input_schema": {
                         "type": "object",
+                        "properties": {},
                         "required": []
                     }
                 }]
@@ -1444,7 +1447,9 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Get weather",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string", "description": "The location" },
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
                         "required": ["location"]
                     }
                 }]
@@ -1520,7 +1525,9 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Get weather",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string", "description": "The location" },
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
                         "required": ["location"]
                     }
                 }]
@@ -1602,7 +1609,9 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Get weather",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string", "description": "The location" },
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
                         "required": ["location"]
                     }
                 }]
@@ -1675,7 +1684,9 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string" },
+                        "properties": {
+                            "location": { "type": "string" }
+                        },
                         "required": ["location"]
                     }
                 }]
