@@ -9,6 +9,10 @@
     <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
+    <!-- Strong naming -->
+    <AssemblyOriginatorKeyFile>../../Open.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+
     <!-- Documentation-->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!-- Disable missing XML documentation warnings. -->
