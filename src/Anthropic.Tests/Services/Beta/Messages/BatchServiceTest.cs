@@ -67,7 +67,17 @@ public class BatchServiceTest : TestBase
                                 },
                             ],
                             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                            OutputConfig = new() { Effort = Effort.Low },
+                            OutputConfig = new()
+                            {
+                                Effort = Effort.Low,
+                                Format = new()
+                                {
+                                    Schema = new Dictionary<string, JsonElement>()
+                                    {
+                                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                                    },
+                                },
+                            },
                             OutputFormat = new()
                             {
                                 Schema = new Dictionary<string, JsonElement>()

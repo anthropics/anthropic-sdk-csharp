@@ -58,7 +58,17 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -169,7 +179,17 @@ public class MessageCreateParamsTest : TestBase
             },
         ];
         BetaMetadata expectedMetadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" };
-        BetaOutputConfig expectedOutputConfig = new() { Effort = Effort.Low };
+        BetaOutputConfig expectedOutputConfig = new()
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
@@ -461,7 +481,17 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             System = new(
@@ -548,7 +578,17 @@ public class MessageCreateParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             System = new(

@@ -14,25 +14,24 @@ public class BetaServerToolUseBlockTest : TestBase
         var model = new BetaServerToolUseBlock
         {
             ID = "srvtoolu_SQfNkl1n_JR_",
-            Caller = new BetaDirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = Name.WebSearch,
+            Caller = new BetaDirectCaller(),
         };
 
         string expectedID = "srvtoolu_SQfNkl1n_JR_";
-        Caller expectedCaller = new BetaDirectCaller();
         Dictionary<string, JsonElement> expectedInput = new()
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         ApiEnum<string, Name> expectedName = Name.WebSearch;
         JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
+        Caller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, model.ID);
-        Assert.Equal(expectedCaller, model.Caller);
         Assert.Equal(expectedInput.Count, model.Input.Count);
         foreach (var item in expectedInput)
         {
@@ -42,6 +41,7 @@ public class BetaServerToolUseBlockTest : TestBase
         }
         Assert.Equal(expectedName, model.Name);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.Equal(expectedCaller, model.Caller);
     }
 
     [Fact]
@@ -50,12 +50,12 @@ public class BetaServerToolUseBlockTest : TestBase
         var model = new BetaServerToolUseBlock
         {
             ID = "srvtoolu_SQfNkl1n_JR_",
-            Caller = new BetaDirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = Name.WebSearch,
+            Caller = new BetaDirectCaller(),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -73,12 +73,12 @@ public class BetaServerToolUseBlockTest : TestBase
         var model = new BetaServerToolUseBlock
         {
             ID = "srvtoolu_SQfNkl1n_JR_",
-            Caller = new BetaDirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = Name.WebSearch,
+            Caller = new BetaDirectCaller(),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -89,16 +89,15 @@ public class BetaServerToolUseBlockTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "srvtoolu_SQfNkl1n_JR_";
-        Caller expectedCaller = new BetaDirectCaller();
         Dictionary<string, JsonElement> expectedInput = new()
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         ApiEnum<string, Name> expectedName = Name.WebSearch;
         JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
+        Caller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, deserialized.ID);
-        Assert.Equal(expectedCaller, deserialized.Caller);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);
         foreach (var item in expectedInput)
         {
@@ -108,6 +107,7 @@ public class BetaServerToolUseBlockTest : TestBase
         }
         Assert.Equal(expectedName, deserialized.Name);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedCaller, deserialized.Caller);
     }
 
     [Fact]
@@ -116,7 +116,40 @@ public class BetaServerToolUseBlockTest : TestBase
         var model = new BetaServerToolUseBlock
         {
             ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.WebSearch,
             Caller = new BetaDirectCaller(),
+        };
+
+        model.Validate();
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
+    {
+        var model = new BetaServerToolUseBlock
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.WebSearch,
+        };
+
+        Assert.Null(model.Caller);
+        Assert.False(model.RawData.ContainsKey("caller"));
+    }
+
+    [Fact]
+    public void OptionalNonNullablePropertiesUnsetValidation_Works()
+    {
+        var model = new BetaServerToolUseBlock
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -126,42 +159,44 @@ public class BetaServerToolUseBlockTest : TestBase
 
         model.Validate();
     }
-}
 
-public class CallerTest : TestBase
-{
     [Fact]
-    public void BetaDirectValidationWorks()
+    public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        Caller value = new BetaDirectCaller();
-        value.Validate();
+        var model = new BetaServerToolUseBlock
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.WebSearch,
+
+            // Null should be interpreted as omitted for these properties
+            Caller = null,
+        };
+
+        Assert.Null(model.Caller);
+        Assert.False(model.RawData.ContainsKey("caller"));
     }
 
     [Fact]
-    public void BetaServerToolValidationWorks()
+    public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
-        value.Validate();
-    }
+        var model = new BetaServerToolUseBlock
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.WebSearch,
 
-    [Fact]
-    public void BetaDirectSerializationRoundtripWorks()
-    {
-        Caller value = new BetaDirectCaller();
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
+            // Null should be interpreted as omitted for these properties
+            Caller = null,
+        };
 
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaServerToolSerializationRoundtripWorks()
-    {
-        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
+        model.Validate();
     }
 }
 
@@ -228,6 +263,43 @@ public class NameTest : TestBase
             json,
             ModelBase.SerializerOptions
         );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class CallerTest : TestBase
+{
+    [Fact]
+    public void BetaDirectValidationWorks()
+    {
+        Caller value = new BetaDirectCaller();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaServerToolValidationWorks()
+    {
+        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaDirectSerializationRoundtripWorks()
+    {
+        Caller value = new BetaDirectCaller();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaServerToolSerializationRoundtripWorks()
+    {
+        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

@@ -418,8 +418,8 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    /// Configuration options for the model's output. Controls aspects like how much
-    /// effort the model puts into its response.
+    /// Configuration options for the model's output. Controls aspects like output
+    /// format or how much effort the model puts into its response.
     /// </summary>
     public BetaOutputConfig? OutputConfig
     {
@@ -440,8 +440,12 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    ///  A schema to specify Claude's output format in responses.
+    /// Deprecated: Use `output_config.format` instead. See [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+    ///
+    /// <para>A schema to specify Claude's output format in responses. This parameter
+    /// will be removed in a future release.</para>
     /// </summary>
+    [System::Obsolete("deprecated")]
     public BetaJsonOutputFormat? OutputFormat
     {
         get

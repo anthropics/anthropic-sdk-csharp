@@ -42,7 +42,17 @@ public class MessageCountTokensParamsTest : TestBase
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
             ],
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -130,7 +140,17 @@ public class MessageCountTokensParamsTest : TestBase
                 ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
             },
         ];
-        BetaOutputConfig expectedOutputConfig = new() { Effort = Effort.Low };
+        BetaOutputConfig expectedOutputConfig = new()
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
@@ -344,7 +364,17 @@ public class MessageCountTokensParamsTest : TestBase
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
             ],
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             System = new(
                 [
                     new BetaTextBlockParam()
@@ -422,7 +452,17 @@ public class MessageCountTokensParamsTest : TestBase
                     ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
                 },
             ],
-            OutputConfig = new() { Effort = Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             System = new(
                 [
                     new BetaTextBlockParam()

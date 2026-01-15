@@ -73,6 +73,7 @@ public class ErrorCodeTest : TestBase
     [InlineData(ErrorCode.MaxUsesExceeded)]
     [InlineData(ErrorCode.TooManyRequests)]
     [InlineData(ErrorCode.QueryTooLong)]
+    [InlineData(ErrorCode.RequestTooLarge)]
     public void Validation_Works(ErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -98,6 +99,7 @@ public class ErrorCodeTest : TestBase
     [InlineData(ErrorCode.MaxUsesExceeded)]
     [InlineData(ErrorCode.TooManyRequests)]
     [InlineData(ErrorCode.QueryTooLong)]
+    [InlineData(ErrorCode.RequestTooLarge)]
     public void SerializationRoundtrip_Works(ErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

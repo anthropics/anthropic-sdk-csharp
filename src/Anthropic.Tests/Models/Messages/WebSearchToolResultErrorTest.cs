@@ -87,6 +87,7 @@ public class WebSearchToolResultErrorErrorCodeTest : TestBase
     [InlineData(WebSearchToolResultErrorErrorCode.MaxUsesExceeded)]
     [InlineData(WebSearchToolResultErrorErrorCode.TooManyRequests)]
     [InlineData(WebSearchToolResultErrorErrorCode.QueryTooLong)]
+    [InlineData(WebSearchToolResultErrorErrorCode.RequestTooLarge)]
     public void Validation_Works(WebSearchToolResultErrorErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -112,6 +113,7 @@ public class WebSearchToolResultErrorErrorCodeTest : TestBase
     [InlineData(WebSearchToolResultErrorErrorCode.MaxUsesExceeded)]
     [InlineData(WebSearchToolResultErrorErrorCode.TooManyRequests)]
     [InlineData(WebSearchToolResultErrorErrorCode.QueryTooLong)]
+    [InlineData(WebSearchToolResultErrorErrorCode.RequestTooLarge)]
     public void SerializationRoundtrip_Works(WebSearchToolResultErrorErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

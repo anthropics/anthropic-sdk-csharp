@@ -70,7 +70,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -192,7 +202,17 @@ public class BatchCreateParamsTest : TestBase
                         },
                     ],
                     Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                    OutputConfig = new() { Effort = Messages::Effort.Low },
+                    OutputConfig = new()
+                    {
+                        Effort = Messages::Effort.Low,
+                        Format = new()
+                        {
+                            Schema = new Dictionary<string, JsonElement>()
+                            {
+                                { "foo", JsonSerializer.SerializeToElement("bar") },
+                            },
+                        },
+                    },
                     OutputFormat = new()
                     {
                         Schema = new Dictionary<string, JsonElement>()
@@ -335,7 +355,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -469,7 +499,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -606,7 +646,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -742,7 +792,17 @@ public class BatchCreateParamsTest : TestBase
                             },
                         ],
                         Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                        OutputConfig = new() { Effort = Messages::Effort.Low },
+                        OutputConfig = new()
+                        {
+                            Effort = Messages::Effort.Low,
+                            Format = new()
+                            {
+                                Schema = new Dictionary<string, JsonElement>()
+                                {
+                                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                                },
+                            },
+                        },
                         OutputFormat = new()
                         {
                             Schema = new Dictionary<string, JsonElement>()
@@ -876,7 +936,17 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = Messages::Effort.Low },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -988,7 +1058,17 @@ public class RequestTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1108,7 +1188,17 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = Messages::Effort.Low },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -1231,7 +1321,17 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = Messages::Effort.Low },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -1350,7 +1450,17 @@ public class RequestTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1470,7 +1580,17 @@ public class RequestTest : TestBase
                     },
                 ],
                 Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                OutputConfig = new() { Effort = Messages::Effort.Low },
+                OutputConfig = new()
+                {
+                    Effort = Messages::Effort.Low,
+                    Format = new()
+                    {
+                        Schema = new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    },
+                },
                 OutputFormat = new()
                 {
                     Schema = new Dictionary<string, JsonElement>()
@@ -1590,7 +1710,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1705,7 +1835,17 @@ public class ParamsTest : TestBase
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
-        Messages::BetaOutputConfig expectedOutputConfig = new() { Effort = Messages::Effort.Low };
+        Messages::BetaOutputConfig expectedOutputConfig = new()
+        {
+            Effort = Messages::Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         Messages::BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
@@ -1861,7 +2001,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -1980,7 +2130,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -2099,7 +2259,17 @@ public class ParamsTest : TestBase
         {
             UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
         };
-        Messages::BetaOutputConfig expectedOutputConfig = new() { Effort = Messages::Effort.Low };
+        Messages::BetaOutputConfig expectedOutputConfig = new()
+        {
+            Effort = Messages::Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
         Messages::BetaJsonOutputFormat expectedOutputFormat = new()
         {
             Schema = new Dictionary<string, JsonElement>()
@@ -2255,7 +2425,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             OutputFormat = new()
             {
                 Schema = new Dictionary<string, JsonElement>()
@@ -2612,7 +2792,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2699,7 +2889,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2781,7 +2981,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
@@ -2872,7 +3082,17 @@ public class ParamsTest : TestBase
                 },
             ],
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-            OutputConfig = new() { Effort = Messages::Effort.Low },
+            OutputConfig = new()
+            {
+                Effort = Messages::Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
             ServiceTier = ServiceTier.Auto,
             StopSequences = ["string"],
             Stream = true,
