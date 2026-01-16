@@ -555,6 +555,114 @@ public class MessageCountTokensParamsTest : TestBase
 
         Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new MessageCountTokensParams
+        {
+            Messages = [new() { Content = "string", Role = Role.User }],
+            Model = Messages::Model.ClaudeOpus4_5_20251101,
+            ContextManagement = new()
+            {
+                Edits =
+                [
+                    new BetaClearToolUses20250919Edit()
+                    {
+                        ClearAtLeast = new(0),
+                        ClearToolInputs = true,
+                        ExcludeTools = ["string"],
+                        Keep = new(0),
+                        Trigger = new BetaInputTokensTrigger(1),
+                    },
+                ],
+            },
+            McpServers =
+            [
+                new()
+                {
+                    Name = "name",
+                    Url = "url",
+                    AuthorizationToken = "authorization_token",
+                    ToolConfiguration = new() { AllowedTools = ["string"], Enabled = true },
+                },
+            ],
+            OutputConfig = new()
+            {
+                Effort = Effort.Low,
+                Format = new()
+                {
+                    Schema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                },
+            },
+            OutputFormat = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+            System = new(
+                [
+                    new BetaTextBlockParam()
+                    {
+                        Text = "Today's date is 2024-06-01.",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    },
+                ]
+            ),
+            Thinking = new BetaThinkingConfigEnabled(1024),
+            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
+            Tools =
+            [
+                new BetaTool()
+                {
+                    InputSchema = new()
+                    {
+                        Properties = new Dictionary<string, JsonElement>()
+                        {
+                            { "location", JsonSerializer.SerializeToElement("bar") },
+                            { "unit", JsonSerializer.SerializeToElement("bar") },
+                        },
+                        Required = ["location"],
+                    },
+                    Name = "name",
+                    AllowedCallers = [BetaToolAllowedCaller.Direct],
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    DeferLoading = true,
+                    Description = "Get the current weather in a given location",
+                    InputExamples =
+                    [
+                        new Dictionary<string, JsonElement>()
+                        {
+                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                        },
+                    ],
+                    Strict = true,
+                    Type = BetaToolType.Custom,
+                },
+            ],
+            Betas = ["string"],
+        };
+
+        MessageCountTokensParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }
 
 public class MessageCountTokensParamsSystemTest : TestBase

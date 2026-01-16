@@ -84,4 +84,18 @@ public class BatchCancelParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchCancelParams
+        {
+            MessageBatchID = "message_batch_id",
+            Betas = ["string"],
+        };
+
+        BatchCancelParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

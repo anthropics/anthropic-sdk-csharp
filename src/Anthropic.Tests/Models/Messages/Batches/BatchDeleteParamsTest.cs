@@ -27,4 +27,14 @@ public class BatchDeleteParamsTest : TestBase
             url
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchDeleteParams { MessageBatchID = "message_batch_id" };
+
+        BatchDeleteParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

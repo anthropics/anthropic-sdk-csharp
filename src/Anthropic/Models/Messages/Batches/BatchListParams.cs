@@ -13,8 +13,12 @@ namespace Anthropic.Models.Messages.Batches;
 /// returned first.
 ///
 /// <para>Learn more about the Message Batches API in our [user guide](https://docs.claude.com/en/docs/build-with-claude/batch-processing)</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class BatchListParams : ParamsBase
+public record class BatchListParams : ParamsBase
 {
     /// <summary>
     /// ID of the object to use as a cursor for pagination. When provided, returns
@@ -85,8 +89,11 @@ public sealed record class BatchListParams : ParamsBase
 
     public BatchListParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BatchListParams(BatchListParams batchListParams)
         : base(batchListParams) { }
+#pragma warning restore CS8618
 
     public BatchListParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -121,6 +128,26 @@ public sealed record class BatchListParams : ParamsBase
         );
     }
 
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            new Dictionary<string, object?>()
+            {
+                ["HeaderData"] = this._rawHeaderData.Freeze(),
+                ["QueryData"] = this._rawQueryData.Freeze(),
+            },
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(BatchListParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData);
+    }
+
     public override Uri Url(ClientOptions options)
     {
         return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/messages/batches")
@@ -136,5 +163,10 @@ public sealed record class BatchListParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }

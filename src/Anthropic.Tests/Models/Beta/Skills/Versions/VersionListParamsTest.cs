@@ -127,4 +127,20 @@ public class VersionListParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new VersionListParams
+        {
+            SkillID = "skill_id",
+            Limit = 0,
+            Page = "page",
+            Betas = ["string"],
+        };
+
+        VersionListParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

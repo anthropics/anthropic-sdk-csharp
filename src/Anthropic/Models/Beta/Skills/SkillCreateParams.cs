@@ -12,8 +12,12 @@ namespace Anthropic.Models.Beta.Skills;
 
 /// <summary>
 /// Create Skill
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
-public sealed record class SkillCreateParams : ParamsBase
+public record class SkillCreateParams : ParamsBase
 {
     readonly MultipartJsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, MultipartJsonElement> RawBodyData
@@ -87,11 +91,14 @@ public sealed record class SkillCreateParams : ParamsBase
 
     public SkillCreateParams() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public SkillCreateParams(SkillCreateParams skillCreateParams)
         : base(skillCreateParams)
     {
         this._rawBodyData = new(skillCreateParams._rawBodyData);
     }
+#pragma warning restore CS8618
 
     public SkillCreateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
@@ -153,5 +160,10 @@ public sealed record class SkillCreateParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
     }
 }

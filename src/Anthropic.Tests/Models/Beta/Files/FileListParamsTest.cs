@@ -106,4 +106,20 @@ public class FileListParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new FileListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Limit = 1,
+            Betas = ["string"],
+        };
+
+        FileListParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

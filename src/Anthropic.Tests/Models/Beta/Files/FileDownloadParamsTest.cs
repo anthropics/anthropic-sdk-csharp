@@ -73,4 +73,14 @@ public class FileDownloadParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new FileDownloadParams { FileID = "file_id", Betas = ["string"] };
+
+        FileDownloadParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

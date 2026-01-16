@@ -103,4 +103,20 @@ public class ModelListParamsTest : TestBase
 
         Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new ModelListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Limit = 1,
+            Betas = ["string"],
+        };
+
+        ModelListParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

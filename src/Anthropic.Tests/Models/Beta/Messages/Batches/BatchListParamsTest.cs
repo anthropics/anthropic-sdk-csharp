@@ -106,4 +106,20 @@ public class BatchListParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Limit = 1,
+            Betas = ["string"],
+        };
+
+        BatchListParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

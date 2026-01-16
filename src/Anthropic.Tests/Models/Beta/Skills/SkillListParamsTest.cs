@@ -126,4 +126,20 @@ public class SkillListParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new SkillListParams
+        {
+            Limit = 0,
+            Page = "page",
+            Source = "source",
+            Betas = ["string"],
+        };
+
+        SkillListParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

@@ -86,4 +86,19 @@ public class VersionDeleteParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new VersionDeleteParams
+        {
+            SkillID = "skill_id",
+            Version = "version",
+            Betas = ["string"],
+        };
+
+        VersionDeleteParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

@@ -70,4 +70,14 @@ public class ModelRetrieveParamsTest : TestBase
 
         Assert.Equal(["string"], requestMessage.Headers.GetValues("anthropic-beta"));
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new ModelRetrieveParams { ModelID = "model_id", Betas = ["string"] };
+
+        ModelRetrieveParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

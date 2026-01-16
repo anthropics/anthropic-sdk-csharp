@@ -73,4 +73,14 @@ public class FileRetrieveMetadataParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new FileRetrieveMetadataParams { FileID = "file_id", Betas = ["string"] };
+
+        FileRetrieveMetadataParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

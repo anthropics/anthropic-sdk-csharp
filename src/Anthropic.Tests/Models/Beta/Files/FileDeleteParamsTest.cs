@@ -73,4 +73,14 @@ public class FileDeleteParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new FileDeleteParams { FileID = "file_id", Betas = ["string"] };
+
+        FileDeleteParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

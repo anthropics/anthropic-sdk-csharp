@@ -73,4 +73,14 @@ public class SkillDeleteParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new SkillDeleteParams { SkillID = "skill_id", Betas = ["string"] };
+
+        SkillDeleteParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

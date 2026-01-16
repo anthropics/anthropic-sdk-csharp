@@ -27,4 +27,14 @@ public class BatchRetrieveParamsTest : TestBase
             url
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchRetrieveParams { MessageBatchID = "message_batch_id" };
+
+        BatchRetrieveParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

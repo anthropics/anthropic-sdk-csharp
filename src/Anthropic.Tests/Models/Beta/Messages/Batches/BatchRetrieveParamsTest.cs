@@ -84,4 +84,18 @@ public class BatchRetrieveParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchRetrieveParams
+        {
+            MessageBatchID = "message_batch_id",
+            Betas = ["string"],
+        };
+
+        BatchRetrieveParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

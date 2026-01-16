@@ -84,4 +84,18 @@ public class BatchDeleteParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchDeleteParams
+        {
+            MessageBatchID = "message_batch_id",
+            Betas = ["string"],
+        };
+
+        BatchDeleteParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

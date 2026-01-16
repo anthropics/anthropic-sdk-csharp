@@ -73,4 +73,14 @@ public class SkillRetrieveParamsTest : TestBase
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new SkillRetrieveParams { SkillID = "skill_id", Betas = ["string"] };
+
+        SkillRetrieveParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }

@@ -75,4 +75,19 @@ public class BatchListParamsTest : TestBase
             url
         );
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var parameters = new BatchListParams
+        {
+            AfterID = "after_id",
+            BeforeID = "before_id",
+            Limit = 1,
+        };
+
+        BatchListParams copied = new(parameters);
+
+        Assert.Equal(parameters, copied);
+    }
 }
