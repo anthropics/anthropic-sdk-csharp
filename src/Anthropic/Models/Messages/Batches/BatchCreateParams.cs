@@ -336,14 +336,12 @@ public sealed record class Params : JsonModel
     /// <para>Anthropic offers different levels of service for your API requests.
     /// See [service-tiers](https://docs.claude.com/en/api/service-tiers) for details.</para>
     /// </summary>
-    public ApiEnum<string, global::Anthropic.Models.Messages.Batches.ServiceTier>? ServiceTier
+    public ApiEnum<string, ServiceTier>? ServiceTier
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<
-                ApiEnum<string, global::Anthropic.Models.Messages.Batches.ServiceTier>
-            >("service_tier");
+            return this._rawData.GetNullableClass<ApiEnum<string, ServiceTier>>("service_tier");
         }
         init
         {
@@ -701,17 +699,16 @@ class ParamsFromRaw : IFromRawJson<Params>
 /// <para>Anthropic offers different levels of service for your API requests. See
 /// [service-tiers](https://docs.claude.com/en/api/service-tiers) for details.</para>
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Messages.Batches.ServiceTierConverter))]
+[JsonConverter(typeof(ServiceTierConverter))]
 public enum ServiceTier
 {
     Auto,
     StandardOnly,
 }
 
-sealed class ServiceTierConverter
-    : JsonConverter<global::Anthropic.Models.Messages.Batches.ServiceTier>
+sealed class ServiceTierConverter : JsonConverter<ServiceTier>
 {
-    public override global::Anthropic.Models.Messages.Batches.ServiceTier Read(
+    public override ServiceTier Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -719,15 +716,15 @@ sealed class ServiceTierConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "auto" => global::Anthropic.Models.Messages.Batches.ServiceTier.Auto,
-            "standard_only" => global::Anthropic.Models.Messages.Batches.ServiceTier.StandardOnly,
-            _ => (global::Anthropic.Models.Messages.Batches.ServiceTier)(-1),
+            "auto" => ServiceTier.Auto,
+            "standard_only" => ServiceTier.StandardOnly,
+            _ => (ServiceTier)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Messages.Batches.ServiceTier value,
+        ServiceTier value,
         JsonSerializerOptions options
     )
     {
@@ -735,9 +732,8 @@ sealed class ServiceTierConverter
             writer,
             value switch
             {
-                global::Anthropic.Models.Messages.Batches.ServiceTier.Auto => "auto",
-                global::Anthropic.Models.Messages.Batches.ServiceTier.StandardOnly =>
-                    "standard_only",
+                ServiceTier.Auto => "auto",
+                ServiceTier.StandardOnly => "standard_only",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

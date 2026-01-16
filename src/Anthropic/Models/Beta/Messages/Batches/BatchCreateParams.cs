@@ -340,14 +340,12 @@ public sealed record class Params : JsonModel
     /// <summary>
     /// Container identifier for reuse across requests.
     /// </summary>
-    public global::Anthropic.Models.Beta.Messages.Batches.Container? Container
+    public Container? Container
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<global::Anthropic.Models.Beta.Messages.Batches.Container>(
-                "container"
-            );
+            return this._rawData.GetNullableClass<Container>("container");
         }
         init { this._rawData.Set("container", value); }
     }
@@ -832,7 +830,7 @@ class ParamsFromRaw : IFromRawJson<Params>
 /// <summary>
 /// Container identifier for reuse across requests.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Messages.Batches.ContainerConverter))]
+[JsonConverter(typeof(ContainerConverter))]
 public record class Container : ModelBase
 {
     public object? Value { get; } = null;
@@ -985,13 +983,9 @@ public record class Container : ModelBase
         };
     }
 
-    public static implicit operator global::Anthropic.Models.Beta.Messages.Batches.Container(
-        BetaContainerParams value
-    ) => new(value);
+    public static implicit operator Container(BetaContainerParams value) => new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Messages.Batches.Container(
-        string value
-    ) => new(value);
+    public static implicit operator Container(string value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -1012,7 +1006,7 @@ public record class Container : ModelBase
         this.Switch((betaContainerParams) => betaContainerParams.Validate(), (_) => { });
     }
 
-    public virtual bool Equals(global::Anthropic.Models.Beta.Messages.Batches.Container? other)
+    public virtual bool Equals(Container? other)
     {
         return other != null && JsonElement.DeepEquals(this.Json, other.Json);
     }
@@ -1026,10 +1020,9 @@ public record class Container : ModelBase
         JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
-sealed class ContainerConverter
-    : JsonConverter<global::Anthropic.Models.Beta.Messages.Batches.Container?>
+sealed class ContainerConverter : JsonConverter<Container?>
 {
-    public override global::Anthropic.Models.Beta.Messages.Batches.Container? Read(
+    public override Container? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -1068,7 +1061,7 @@ sealed class ContainerConverter
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Messages.Batches.Container? value,
+        Container? value,
         JsonSerializerOptions options
     )
     {

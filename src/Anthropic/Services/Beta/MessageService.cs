@@ -13,12 +13,12 @@ using Anthropic.Services.Beta.Messages;
 namespace Anthropic.Services.Beta;
 
 /// <inheritdoc/>
-public sealed class MessageService : global::Anthropic.Services.Beta.IMessageService
+public sealed class MessageService : IMessageService
 {
-    readonly Lazy<global::Anthropic.Services.Beta.IMessageServiceWithRawResponse> _withRawResponse;
+    readonly Lazy<IMessageServiceWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>
-    public global::Anthropic.Services.Beta.IMessageServiceWithRawResponse WithRawResponse
+    public IMessageServiceWithRawResponse WithRawResponse
     {
         get { return _withRawResponse.Value; }
     }
@@ -26,24 +26,16 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
     readonly IAnthropicClient _client;
 
     /// <inheritdoc/>
-    public global::Anthropic.Services.Beta.IMessageService WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    )
+    public IMessageService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new global::Anthropic.Services.Beta.MessageService(
-            this._client.WithOptions(modifier)
-        );
+        return new MessageService(this._client.WithOptions(modifier));
     }
 
     public MessageService(IAnthropicClient client)
     {
         _client = client;
 
-        _withRawResponse = new(() =>
-            new global::Anthropic.Services.Beta.MessageServiceWithRawResponse(
-                client.WithRawResponse
-            )
-        );
+        _withRawResponse = new(() => new MessageServiceWithRawResponse(client.WithRawResponse));
         _batches = new(() => new BatchService(client));
     }
 
@@ -94,19 +86,14 @@ public sealed class MessageService : global::Anthropic.Services.Beta.IMessageSer
 }
 
 /// <inheritdoc/>
-public sealed class MessageServiceWithRawResponse
-    : global::Anthropic.Services.Beta.IMessageServiceWithRawResponse
+public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawResponse
 {
     readonly IAnthropicClientWithRawResponse _client;
 
     /// <inheritdoc/>
-    public global::Anthropic.Services.Beta.IMessageServiceWithRawResponse WithOptions(
-        Func<ClientOptions, ClientOptions> modifier
-    )
+    public IMessageServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new global::Anthropic.Services.Beta.MessageServiceWithRawResponse(
-            this._client.WithOptions(modifier)
-        );
+        return new MessageServiceWithRawResponse(this._client.WithOptions(modifier));
     }
 
     public MessageServiceWithRawResponse(IAnthropicClientWithRawResponse client)
