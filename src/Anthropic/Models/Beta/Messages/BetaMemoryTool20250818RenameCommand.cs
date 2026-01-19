@@ -21,8 +21,12 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public JsonElement Command
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { JsonModel.Set(this._rawData, "command", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,8 +34,12 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public required string NewPath
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "new_path"); }
-        init { JsonModel.Set(this._rawData, "new_path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("new_path");
+        }
+        init { this._rawData.Set("new_path", value); }
     }
 
     /// <summary>
@@ -39,19 +47,18 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
     /// </summary>
     public required string OldPath
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "old_path"); }
-        init { JsonModel.Set(this._rawData, "old_path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("old_path");
+        }
+        init { this._rawData.Set("old_path", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"rename\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("rename")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -61,7 +68,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
 
     public BetaMemoryTool20250818RenameCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
+        this.Command = JsonSerializer.SerializeToElement("rename");
     }
 
     public BetaMemoryTool20250818RenameCommand(
@@ -71,16 +78,16 @@ public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
 
     public BetaMemoryTool20250818RenameCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
+        this.Command = JsonSerializer.SerializeToElement("rename");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMemoryTool20250818RenameCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

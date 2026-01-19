@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -12,7 +13,7 @@ public class BetaThinkingBlockParamTest : TestBase
 
         string expectedSignature = "signature";
         string expectedThinking = "thinking";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("thinking");
 
         Assert.Equal(expectedSignature, model.Signature);
         Assert.Equal(expectedThinking, model.Thinking);
@@ -24,8 +25,11 @@ public class BetaThinkingBlockParamTest : TestBase
     {
         var model = new BetaThinkingBlockParam { Signature = "signature", Thinking = "thinking" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -35,13 +39,16 @@ public class BetaThinkingBlockParamTest : TestBase
     {
         var model = new BetaThinkingBlockParam { Signature = "signature", Thinking = "thinking" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedSignature = "signature";
         string expectedThinking = "thinking";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("thinking");
 
         Assert.Equal(expectedSignature, deserialized.Signature);
         Assert.Equal(expectedThinking, deserialized.Thinking);

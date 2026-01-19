@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -10,7 +11,7 @@ public class BetaThinkingConfigDisabledTest : TestBase
     {
         var model = new BetaThinkingConfigDisabled { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("disabled");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -20,8 +21,11 @@ public class BetaThinkingConfigDisabledTest : TestBase
     {
         var model = new BetaThinkingConfigDisabled { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -31,11 +35,14 @@ public class BetaThinkingConfigDisabledTest : TestBase
     {
         var model = new BetaThinkingConfigDisabled { };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("disabled");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

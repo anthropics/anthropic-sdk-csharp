@@ -39,11 +39,15 @@ public struct ClientOptions()
     }
 
     /// <summary>
-    /// Whether to validate every response before returning it.
+    /// Whether to validate response bodies before returning them.
     ///
-    /// <para>Defaults to false, which means the shape of the response will not be
-    /// validated upfront. Instead, validation will only occur for the parts of the
-    /// response that are accessed.</para>
+    /// <para>Defaults to false, which means the shape of the response body will not be validated upfront.
+    /// Instead, validation will only occur for the parts of the response body that are accessed.</para>
+    ///
+    /// <para>Note that when set to true, the response body is only validated if the response is
+    /// deserialized. Methods that don't eagerly deserialize the response, such as those on
+    /// <see cref="IAnthropicClient.WithRawResponse"/>, don't perform validation until deserialization
+    /// is triggered.</para>
     /// </summary>
     public bool ResponseValidation { get; set; } = false;
 
@@ -79,7 +83,7 @@ public struct ClientOptions()
     public TimeSpan? Timeout { get; set; }
 
     Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"));
-    public string? APIKey
+    public string? ApiKey
     {
         readonly get { return _apiKey.Value; }
         set { _apiKey = new(() => value); }

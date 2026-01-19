@@ -1,13 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(typeof(RawMessageStreamEventConverter))]
-public record class RawMessageStreamEvent
+public record class RawMessageStreamEvent : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -15,7 +16,13 @@ public record class RawMessageStreamEvent
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -348,7 +355,7 @@ public record class RawMessageStreamEvent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -375,6 +382,9 @@ public record class RawMessageStreamEvent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEvent>

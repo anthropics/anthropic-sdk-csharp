@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -10,7 +11,7 @@ public class ThinkingConfigDisabledTest : TestBase
     {
         var model = new ThinkingConfigDisabled { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("disabled");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -20,8 +21,11 @@ public class ThinkingConfigDisabledTest : TestBase
     {
         var model = new ThinkingConfigDisabled { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -31,11 +35,14 @@ public class ThinkingConfigDisabledTest : TestBase
     {
         var model = new ThinkingConfigDisabled { };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ThinkingConfigDisabled>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("disabled");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -21,22 +22,30 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return JsonModel.GetNullableClass<List<ApiEnum<string, AllowedCaller>>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<ApiEnum<string, AllowedCaller>>>(
                 "allowed_callers"
             );
         }
@@ -47,7 +56,10 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<ApiEnum<string, AllowedCaller>>?>(
+                "allowed_callers",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -58,12 +70,10 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -72,7 +82,11 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
     /// </summary>
     public bool? DeferLoading
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
         init
         {
             if (value == null)
@@ -80,13 +94,17 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
     public bool? Strict
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
         init
         {
             if (value == null)
@@ -94,26 +112,21 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("code_execution")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250522\"")
+                JsonSerializer.SerializeToElement("code_execution_20250522")
             )
         )
         {
@@ -130,8 +143,8 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
 
     public BetaCodeExecutionTool20250522()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250522\"");
+        this.Name = JsonSerializer.SerializeToElement("code_execution");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20250522");
     }
 
     public BetaCodeExecutionTool20250522(
@@ -141,17 +154,17 @@ public sealed record class BetaCodeExecutionTool20250522 : JsonModel
 
     public BetaCodeExecutionTool20250522(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250522\"");
+        this.Name = JsonSerializer.SerializeToElement("code_execution");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20250522");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCodeExecutionTool20250522(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

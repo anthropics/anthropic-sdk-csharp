@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
@@ -14,7 +15,7 @@ namespace Anthropic.Models.Beta.Skills;
 /// </summary>
 public sealed record class SkillCreateParams : ParamsBase
 {
-    readonly FreezableDictionary<string, MultipartJsonElement> _rawBodyData = [];
+    readonly MultipartJsonDictionary _rawBodyData = new();
     public IReadOnlyDictionary<string, MultipartJsonElement> RawBodyData
     {
         get { return this._rawBodyData.Freeze(); }
@@ -30,9 +31,10 @@ public sealed record class SkillCreateParams : ParamsBase
     {
         get
         {
-            return MultipartJsonModel.GetNullableClass<string>(this.RawBodyData, "display_title");
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<string>("display_title");
         }
-        init { MultipartJsonModel.Set(this._rawBodyData, "display_title", value); }
+        init { this._rawBodyData.Set("display_title", value); }
     }
 
     /// <summary>
@@ -45,12 +47,16 @@ public sealed record class SkillCreateParams : ParamsBase
     {
         get
         {
-            return MultipartJsonModel.GetNullableClass<List<BinaryContent>>(
-                this.RawBodyData,
-                "files"
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<BinaryContent>>("files");
+        }
+        init
+        {
+            this._rawBodyData.Set<ImmutableArray<BinaryContent>?>(
+                "files",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
         }
-        init { MultipartJsonModel.Set(this._rawBodyData, "files", value); }
     }
 
     /// <summary>
@@ -60,10 +66,10 @@ public sealed record class SkillCreateParams : ParamsBase
     {
         get
         {
-            return JsonModel.GetNullableClass<List<ApiEnum<string, AnthropicBeta>>>(
-                this.RawHeaderData,
-                "anthropic-beta"
-            );
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
         }
         init
         {
@@ -72,7 +78,10 @@ public sealed record class SkillCreateParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawHeaderData, "anthropic-beta", value);
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -81,7 +90,7 @@ public sealed record class SkillCreateParams : ParamsBase
     public SkillCreateParams(SkillCreateParams skillCreateParams)
         : base(skillCreateParams)
     {
-        this._rawBodyData = [.. skillCreateParams._rawBodyData];
+        this._rawBodyData = new(skillCreateParams._rawBodyData);
     }
 
     public SkillCreateParams(
@@ -90,9 +99,9 @@ public sealed record class SkillCreateParams : ParamsBase
         IReadOnlyDictionary<string, MultipartJsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 
 #pragma warning disable CS8618
@@ -103,9 +112,9 @@ public sealed record class SkillCreateParams : ParamsBase
         FrozenDictionary<string, MultipartJsonElement> rawBodyData
     )
     {
-        this._rawHeaderData = [.. rawHeaderData];
-        this._rawQueryData = [.. rawQueryData];
-        this._rawBodyData = [.. rawBodyData];
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
     }
 #pragma warning restore CS8618
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,8 +20,12 @@ public sealed record class BetaContainer : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -28,8 +33,12 @@ public sealed record class BetaContainer : JsonModel
     /// </summary>
     public required DateTimeOffset ExpiresAt
     {
-        get { return JsonModel.GetNotNullStruct<DateTimeOffset>(this.RawData, "expires_at"); }
-        init { JsonModel.Set(this._rawData, "expires_at", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("expires_at");
+        }
+        init { this._rawData.Set("expires_at", value); }
     }
 
     /// <summary>
@@ -37,8 +46,18 @@ public sealed record class BetaContainer : JsonModel
     /// </summary>
     public required IReadOnlyList<BetaSkill>? Skills
     {
-        get { return JsonModel.GetNullableClass<List<BetaSkill>>(this.RawData, "skills"); }
-        init { JsonModel.Set(this._rawData, "skills", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaSkill>>("skills");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaSkill>?>(
+                "skills",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -59,14 +78,14 @@ public sealed record class BetaContainer : JsonModel
 
     public BetaContainer(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContainer(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

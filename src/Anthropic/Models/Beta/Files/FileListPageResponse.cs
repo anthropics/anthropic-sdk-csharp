@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,8 +16,18 @@ public sealed record class FileListPageResponse : JsonModel
     /// </summary>
     public required IReadOnlyList<FileMetadata> Data
     {
-        get { return JsonModel.GetNotNullClass<List<FileMetadata>>(this.RawData, "data"); }
-        init { JsonModel.Set(this._rawData, "data", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<FileMetadata>>("data");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<FileMetadata>>(
+                "data",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -24,8 +35,12 @@ public sealed record class FileListPageResponse : JsonModel
     /// </summary>
     public string? FirstID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "first_id"); }
-        init { JsonModel.Set(this._rawData, "first_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("first_id");
+        }
+        init { this._rawData.Set("first_id", value); }
     }
 
     /// <summary>
@@ -33,7 +48,11 @@ public sealed record class FileListPageResponse : JsonModel
     /// </summary>
     public bool? HasMore
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "has_more"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("has_more");
+        }
         init
         {
             if (value == null)
@@ -41,7 +60,7 @@ public sealed record class FileListPageResponse : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "has_more", value);
+            this._rawData.Set("has_more", value);
         }
     }
 
@@ -50,8 +69,12 @@ public sealed record class FileListPageResponse : JsonModel
     /// </summary>
     public string? LastID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "last_id"); }
-        init { JsonModel.Set(this._rawData, "last_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("last_id");
+        }
+        init { this._rawData.Set("last_id", value); }
     }
 
     /// <inheritdoc/>
@@ -73,14 +96,14 @@ public sealed record class FileListPageResponse : JsonModel
 
     public FileListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     FileListPageResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -93,7 +116,7 @@ public sealed record class FileListPageResponse : JsonModel
     }
 
     [SetsRequiredMembers]
-    public FileListPageResponse(List<FileMetadata> data)
+    public FileListPageResponse(IReadOnlyList<FileMetadata> data)
         : this()
     {
         this.Data = data;

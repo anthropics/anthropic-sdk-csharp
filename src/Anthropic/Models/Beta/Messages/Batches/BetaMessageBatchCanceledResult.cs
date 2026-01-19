@@ -18,19 +18,18 @@ public sealed record class BetaMessageBatchCanceledResult : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"canceled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("canceled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -38,7 +37,7 @@ public sealed record class BetaMessageBatchCanceledResult : JsonModel
 
     public BetaMessageBatchCanceledResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        this.Type = JsonSerializer.SerializeToElement("canceled");
     }
 
     public BetaMessageBatchCanceledResult(
@@ -48,16 +47,16 @@ public sealed record class BetaMessageBatchCanceledResult : JsonModel
 
     public BetaMessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        this.Type = JsonSerializer.SerializeToElement("canceled");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageBatchCanceledResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -420,7 +420,7 @@ public static class AnthropicBetaClientExtensions
                                 );
                                 break;
 
-                            case BetaInputJSONDelta inputDelta:
+                            case BetaInputJsonDelta inputDelta:
                                 if (
                                     streamingFunctions is not null
                                     && streamingFunctions.TryGetValue(
@@ -429,7 +429,7 @@ public static class AnthropicBetaClientExtensions
                                     )
                                 )
                                 {
-                                    functionData.Arguments.Append(inputDelta.PartialJSON);
+                                    functionData.Arguments.Append(inputDelta.PartialJson);
                                 }
                                 break;
 
@@ -596,7 +596,7 @@ public static class AnthropicBetaClientExtensions
                                 new BetaRequestDocumentBlock()
                                 {
                                     Source = new(
-                                        new BetaBase64PDFSource()
+                                        new BetaBase64PdfSource()
                                         {
                                             Data = dc.Base64Data.ToString(),
                                         }
@@ -628,7 +628,7 @@ public static class AnthropicBetaClientExtensions
                                 new BetaImageBlockParam()
                                 {
                                     Source = new(
-                                        new BetaURLImageSource() { URL = uc.Uri.AbsoluteUri }
+                                        new BetaUrlImageSource() { Url = uc.Uri.AbsoluteUri }
                                     ),
                                 }
                             );
@@ -644,7 +644,7 @@ public static class AnthropicBetaClientExtensions
                                 new BetaRequestDocumentBlock()
                                 {
                                     Source = new(
-                                        new BetaURLPDFSource() { URL = uc.Uri.AbsoluteUri }
+                                        new BetaUrlPdfSource() { Url = uc.Uri.AbsoluteUri }
                                     ),
                                 }
                             );
@@ -742,7 +742,7 @@ public static class AnthropicBetaClientExtensions
                                                 new BetaRequestDocumentBlock()
                                                 {
                                                     Source = new(
-                                                        new BetaBase64PDFSource()
+                                                        new BetaBase64PdfSource()
                                                         {
                                                             Data = dc.Base64Data.ToString(),
                                                         }
@@ -776,9 +776,9 @@ public static class AnthropicBetaClientExtensions
                                                     new BetaImageBlockParam()
                                                     {
                                                         Source = new(
-                                                            new BetaURLImageSource()
+                                                            new BetaUrlImageSource()
                                                             {
-                                                                URL = uc.Uri.AbsoluteUri,
+                                                                Url = uc.Uri.AbsoluteUri,
                                                             }
                                                         ),
                                                     }
@@ -793,9 +793,9 @@ public static class AnthropicBetaClientExtensions
                                                 new BetaRequestDocumentBlock()
                                                 {
                                                     Source = new(
-                                                        new BetaURLPDFSource()
+                                                        new BetaUrlPdfSource()
                                                         {
-                                                            URL = uc.Uri.AbsoluteUri,
+                                                            Url = uc.Uri.AbsoluteUri,
                                                         }
                                                     ),
                                                 }
@@ -927,7 +927,7 @@ public static class AnthropicBetaClientExtensions
                             {
                                 createParams = createParams with
                                 {
-                                    OutputFormat = new BetaJSONOutputFormat()
+                                    OutputFormat = new BetaJsonOutputFormat()
                                     {
                                         Schema = new Dictionary<string, JsonElement>
                                         {
@@ -974,8 +974,8 @@ public static class AnthropicBetaClientExtensions
                 if (options.Tools is { } tools)
                 {
                     List<BetaToolUnion>? createdTools = createParams.Tools?.ToList();
-                    List<BetaRequestMCPServerURLDefinition>? mcpServers =
-                        createParams.MCPServers?.ToList();
+                    List<BetaRequestMcpServerUrlDefinition>? mcpServers =
+                        createParams.McpServers?.ToList();
                     List<BetaSkillParams>? skills = null;
                     foreach (var tool in tools)
                     {
@@ -1082,14 +1082,14 @@ public static class AnthropicBetaClientExtensions
                                         ? new()
                                         {
                                             Name = mcp.Name,
-                                            URL = mcp.ServerAddress,
+                                            Url = mcp.ServerAddress,
                                             ToolConfiguration = new()
                                             {
                                                 AllowedTools = [.. allowedTools],
                                                 Enabled = true,
                                             },
                                         }
-                                        : new() { Name = mcp.Name, URL = mcp.ServerAddress }
+                                        : new() { Name = mcp.Name, Url = mcp.ServerAddress }
                                 );
                                 break;
                         }
@@ -1132,7 +1132,7 @@ public static class AnthropicBetaClientExtensions
 
                     if (mcpServers?.Count > 0)
                     {
-                        createParams = createParams with { MCPServers = mcpServers };
+                        createParams = createParams with { McpServers = mcpServers };
                     }
                 }
 
@@ -1347,7 +1347,7 @@ public static class AnthropicBetaClientExtensions
                         RawRepresentation = toolUse,
                     };
 
-                case BetaMCPToolUseBlock mcpToolUse:
+                case BetaMcpToolUseBlock mcpToolUse:
                     return new McpServerToolCallContent(
                         mcpToolUse.ID,
                         mcpToolUse.Name,
@@ -1361,7 +1361,7 @@ public static class AnthropicBetaClientExtensions
                         RawRepresentation = mcpToolUse,
                     };
 
-                case BetaMCPToolResultBlock mcpToolResult:
+                case BetaMcpToolResultBlock mcpToolResult:
                     return new McpServerToolResultContent(mcpToolResult.ToolUseID)
                     {
                         Output = mcpToolResult.IsError
@@ -1498,7 +1498,7 @@ public static class AnthropicBetaClientExtensions
             if (citation.TryPickCitationsWebSearchResultLocation(out var webSearchLocation))
             {
                 annotation.Url = Uri.TryCreate(
-                    webSearchLocation.URL,
+                    webSearchLocation.Url,
                     UriKind.Absolute,
                     out Uri? url
                 )

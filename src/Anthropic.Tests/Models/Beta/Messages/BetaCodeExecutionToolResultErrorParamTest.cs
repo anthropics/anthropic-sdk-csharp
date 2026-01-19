@@ -16,8 +16,8 @@ public class BetaCodeExecutionToolResultErrorParamTest : TestBase
 
         ApiEnum<string, BetaCodeExecutionToolResultErrorCode> expectedErrorCode =
             BetaCodeExecutionToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "code_execution_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
@@ -32,8 +32,11 @@ public class BetaCodeExecutionToolResultErrorParamTest : TestBase
             ErrorCode = BetaCodeExecutionToolResultErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -46,16 +49,17 @@ public class BetaCodeExecutionToolResultErrorParamTest : TestBase
             ErrorCode = BetaCodeExecutionToolResultErrorCode.InvalidToolInput,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorParam>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaCodeExecutionToolResultErrorCode> expectedErrorCode =
             BetaCodeExecutionToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_tool_result_error\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "code_execution_tool_result_error"
         );
 
         Assert.Equal(expectedErrorCode, deserialized.ErrorCode);

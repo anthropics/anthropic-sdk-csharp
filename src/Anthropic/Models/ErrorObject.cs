@@ -2,12 +2,13 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
 [JsonConverter(typeof(ErrorObjectConverter))]
-public record class ErrorObject
+public record class ErrorObject : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -15,7 +16,13 @@ public record class ErrorObject
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string Message
@@ -96,7 +103,7 @@ public record class ErrorObject
         this._element = element;
     }
 
-    public ErrorObject(APIErrorObject value, JsonElement? element = null)
+    public ErrorObject(ApiErrorObject value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -262,22 +269,22 @@ public record class ErrorObject
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="APIErrorObject"/>.
+    /// type <see cref="ApiErrorObject"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickAPI(out var value)) {
-    ///     // `value` is of type `APIErrorObject`
+    /// if (instance.TryPickApi(out var value)) {
+    ///     // `value` is of type `ApiErrorObject`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickAPI([NotNullWhen(true)] out APIErrorObject? value)
+    public bool TryPickApi([NotNullWhen(true)] out ApiErrorObject? value)
     {
-        value = this.Value as APIErrorObject;
+        value = this.Value as ApiErrorObject;
         return value != null;
     }
 
@@ -323,7 +330,7 @@ public record class ErrorObject
     ///     (NotFoundError value) => {...},
     ///     (RateLimitError value) => {...},
     ///     (GatewayTimeoutError value) => {...},
-    ///     (APIErrorObject value) => {...},
+    ///     (ApiErrorObject value) => {...},
     ///     (OverloadedError value) => {...}
     /// );
     /// </code>
@@ -337,7 +344,7 @@ public record class ErrorObject
         Action<NotFoundError> notFoundError,
         Action<RateLimitError> rateLimitError,
         Action<GatewayTimeoutError> gatewayTimeoutError,
-        Action<APIErrorObject> api,
+        Action<ApiErrorObject> api,
         Action<OverloadedError> overloadedError
     )
     {
@@ -364,7 +371,7 @@ public record class ErrorObject
             case GatewayTimeoutError value:
                 gatewayTimeoutError(value);
                 break;
-            case APIErrorObject value:
+            case ApiErrorObject value:
                 api(value);
                 break;
             case OverloadedError value:
@@ -399,7 +406,7 @@ public record class ErrorObject
     ///     (NotFoundError value) => {...},
     ///     (RateLimitError value) => {...},
     ///     (GatewayTimeoutError value) => {...},
-    ///     (APIErrorObject value) => {...},
+    ///     (ApiErrorObject value) => {...},
     ///     (OverloadedError value) => {...}
     /// );
     /// </code>
@@ -413,7 +420,7 @@ public record class ErrorObject
         Func<NotFoundError, T> notFoundError,
         Func<RateLimitError, T> rateLimitError,
         Func<GatewayTimeoutError, T> gatewayTimeoutError,
-        Func<APIErrorObject, T> api,
+        Func<ApiErrorObject, T> api,
         Func<OverloadedError, T> overloadedError
     )
     {
@@ -426,7 +433,7 @@ public record class ErrorObject
             NotFoundError value => notFoundError(value),
             RateLimitError value => rateLimitError(value),
             GatewayTimeoutError value => gatewayTimeoutError(value),
-            APIErrorObject value => api(value),
+            ApiErrorObject value => api(value),
             OverloadedError value => overloadedError(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ErrorObject"
@@ -448,7 +455,7 @@ public record class ErrorObject
 
     public static implicit operator ErrorObject(GatewayTimeoutError value) => new(value);
 
-    public static implicit operator ErrorObject(APIErrorObject value) => new(value);
+    public static implicit operator ErrorObject(ApiErrorObject value) => new(value);
 
     public static implicit operator ErrorObject(OverloadedError value) => new(value);
 
@@ -462,7 +469,7 @@ public record class ErrorObject
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -492,6 +499,9 @@ public record class ErrorObject
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
@@ -657,7 +667,7 @@ sealed class ErrorObjectConverter : JsonConverter<ErrorObject>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<APIErrorObject>(element, options);
+                    var deserialized = JsonSerializer.Deserialize<ApiErrorObject>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();

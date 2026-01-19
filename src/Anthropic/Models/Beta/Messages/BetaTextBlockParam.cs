@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,14 +14,22 @@ public sealed record class BetaTextBlockParam : JsonModel
 {
     public required string Text
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
-        init { JsonModel.Set(this._rawData, "text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("text");
+        }
+        init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -30,31 +39,35 @@ public sealed record class BetaTextBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public IReadOnlyList<BetaTextCitationParam>? Citations
     {
         get
         {
-            return JsonModel.GetNullableClass<List<BetaTextCitationParam>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaTextCitationParam>>(
                 "citations"
             );
         }
-        init { JsonModel.Set(this._rawData, "citations", value); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaTextCitationParam>?>(
+                "citations",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -67,7 +80,7 @@ public sealed record class BetaTextBlockParam : JsonModel
 
     public BetaTextBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
     public BetaTextBlockParam(BetaTextBlockParam betaTextBlockParam)
@@ -75,16 +88,16 @@ public sealed record class BetaTextBlockParam : JsonModel
 
     public BetaTextBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaTextBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

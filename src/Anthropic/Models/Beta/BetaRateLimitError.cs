@@ -13,14 +13,22 @@ public sealed record class BetaRateLimitError : JsonModel
 {
     public required string Message
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "message"); }
-        init { JsonModel.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class BetaRateLimitError : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"")
+                JsonSerializer.SerializeToElement("rate_limit_error")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class BetaRateLimitError : JsonModel
 
     public BetaRateLimitError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+        this.Type = JsonSerializer.SerializeToElement("rate_limit_error");
     }
 
     public BetaRateLimitError(BetaRateLimitError betaRateLimitError)
@@ -48,16 +56,16 @@ public sealed record class BetaRateLimitError : JsonModel
 
     public BetaRateLimitError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+        this.Type = JsonSerializer.SerializeToElement("rate_limit_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaRateLimitError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

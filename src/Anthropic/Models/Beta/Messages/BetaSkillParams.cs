@@ -20,8 +20,12 @@ public sealed record class BetaSkillParams : JsonModel
     /// </summary>
     public required string SkillID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "skill_id"); }
-        init { JsonModel.Set(this._rawData, "skill_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("skill_id");
+        }
+        init { this._rawData.Set("skill_id", value); }
     }
 
     /// <summary>
@@ -31,12 +35,10 @@ public sealed record class BetaSkillParams : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, BetaSkillParamsType>>(
-                this.RawData,
-                "type"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaSkillParamsType>>("type");
         }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -44,7 +46,11 @@ public sealed record class BetaSkillParams : JsonModel
     /// </summary>
     public string? Version
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "version"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("version");
+        }
         init
         {
             if (value == null)
@@ -52,7 +58,7 @@ public sealed record class BetaSkillParams : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "version", value);
+            this._rawData.Set("version", value);
         }
     }
 
@@ -71,14 +77,14 @@ public sealed record class BetaSkillParams : JsonModel
 
     public BetaSkillParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaSkillParams(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

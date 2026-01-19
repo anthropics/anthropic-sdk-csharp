@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -16,7 +17,7 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 new()
                 {
                     ToolName = "tool_name",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                 },
             ],
         };
@@ -26,11 +27,11 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
             new()
             {
                 ToolName = "tool_name",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             },
         ];
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_search_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_search_result"
         );
 
         Assert.Equal(expectedToolReferences.Count, model.ToolReferences.Count);
@@ -51,14 +52,15 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 new()
                 {
                     ToolName = "tool_name",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                 },
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlockParam>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -74,14 +76,15 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 new()
                 {
                     ToolName = "tool_name",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                 },
             ],
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlockParam>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
@@ -90,11 +93,11 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
             new()
             {
                 ToolName = "tool_name",
-                CacheControl = new() { TTL = TTL.TTL5m },
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
             },
         ];
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_search_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "tool_search_tool_search_result"
         );
 
         Assert.Equal(expectedToolReferences.Count, deserialized.ToolReferences.Count);
@@ -115,7 +118,7 @@ public class BetaToolSearchToolSearchResultBlockParamTest : TestBase
                 new()
                 {
                     ToolName = "tool_name",
-                    CacheControl = new() { TTL = TTL.TTL5m },
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                 },
             ],
         };

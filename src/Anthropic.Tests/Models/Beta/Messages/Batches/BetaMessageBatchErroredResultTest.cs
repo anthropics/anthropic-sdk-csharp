@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Messages.Batches;
 
@@ -23,7 +24,7 @@ public class BetaMessageBatchErroredResultTest : TestBase
             Error = new BetaInvalidRequestError("message"),
             RequestID = "request_id",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("errored");
 
         Assert.Equal(expectedError, model.Error);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -41,8 +42,11 @@ public class BetaMessageBatchErroredResultTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -59,8 +63,11 @@ public class BetaMessageBatchErroredResultTest : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchErroredResult>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaErrorResponse expectedError = new()
@@ -68,7 +75,7 @@ public class BetaMessageBatchErroredResultTest : TestBase
             Error = new BetaInvalidRequestError("message"),
             RequestID = "request_id",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("errored");
 
         Assert.Equal(expectedError, deserialized.Error);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -17,7 +18,7 @@ public class ToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         string expectedID = "id";
@@ -26,8 +27,8 @@ public class ToolUseBlockParamTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedInput.Count, model.Input.Count);
@@ -53,11 +54,14 @@ public class ToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -73,11 +77,14 @@ public class ToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUseBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
@@ -86,8 +93,8 @@ public class ToolUseBlockParamTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedInput.Count, deserialized.Input.Count);
@@ -113,7 +120,7 @@ public class ToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();

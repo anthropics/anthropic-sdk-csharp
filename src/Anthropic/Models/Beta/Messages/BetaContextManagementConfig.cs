@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,7 +20,11 @@ public sealed record class BetaContextManagementConfig : JsonModel
     /// </summary>
     public IReadOnlyList<Edit>? Edits
     {
-        get { return JsonModel.GetNullableClass<List<Edit>>(this.RawData, "edits"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<Edit>>("edits");
+        }
         init
         {
             if (value == null)
@@ -27,7 +32,10 @@ public sealed record class BetaContextManagementConfig : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "edits", value);
+            this._rawData.Set<ImmutableArray<Edit>?>(
+                "edits",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -47,14 +55,14 @@ public sealed record class BetaContextManagementConfig : JsonModel
 
     public BetaContextManagementConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContextManagementConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -76,7 +84,7 @@ class BetaContextManagementConfigFromRaw : IFromRawJson<BetaContextManagementCon
 }
 
 [JsonConverter(typeof(EditConverter))]
-public record class Edit
+public record class Edit : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -84,7 +92,13 @@ public record class Edit
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -247,7 +261,7 @@ public record class Edit
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -268,6 +282,9 @@ public record class Edit
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class EditConverter : JsonConverter<Edit>

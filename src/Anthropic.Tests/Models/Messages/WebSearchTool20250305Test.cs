@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -13,7 +14,7 @@ public class WebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -24,13 +25,11 @@ public class WebSearchTool20250305Test : TestBase
             },
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_20250305\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxUses = 1;
         UserLocation expectedUserLocation = new()
         {
@@ -66,7 +65,7 @@ public class WebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -77,8 +76,11 @@ public class WebSearchTool20250305Test : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -90,7 +92,7 @@ public class WebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -101,17 +103,18 @@ public class WebSearchTool20250305Test : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_20250305\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         long expectedMaxUses = 1;
         UserLocation expectedUserLocation = new()
         {
@@ -147,7 +150,7 @@ public class WebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -239,7 +242,7 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "New York";
         string expectedCountry = "US";
         string expectedRegion = "California";
@@ -263,8 +266,11 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<UserLocation>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -280,11 +286,14 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<UserLocation>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "New York";
         string expectedCountry = "US";
         string expectedRegion = "California";

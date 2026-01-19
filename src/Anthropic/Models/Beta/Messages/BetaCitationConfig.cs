@@ -12,8 +12,12 @@ public sealed record class BetaCitationConfig : JsonModel
 {
     public required bool Enabled
     {
-        get { return JsonModel.GetNotNullStruct<bool>(this.RawData, "enabled"); }
-        init { JsonModel.Set(this._rawData, "enabled", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("enabled");
+        }
+        init { this._rawData.Set("enabled", value); }
     }
 
     /// <inheritdoc/>
@@ -29,14 +33,14 @@ public sealed record class BetaCitationConfig : JsonModel
 
     public BetaCitationConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCitationConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

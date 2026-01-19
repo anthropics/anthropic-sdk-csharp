@@ -29,7 +29,7 @@ public class BetaServerToolUseBlockTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         ApiEnum<string, Name> expectedName = Name.WebSearch;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCaller, model.Caller);
@@ -58,8 +58,11 @@ public class BetaServerToolUseBlockTest : TestBase
             Name = Name.WebSearch,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -78,8 +81,11 @@ public class BetaServerToolUseBlockTest : TestBase
             Name = Name.WebSearch,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "srvtoolu_SQfNkl1n_JR_";
@@ -89,7 +95,7 @@ public class BetaServerToolUseBlockTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         ApiEnum<string, Name> expectedName = Name.WebSearch;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCaller, deserialized.Caller);
@@ -127,23 +133,23 @@ public class CallerTest : TestBase
     [Fact]
     public void BetaDirectValidationWorks()
     {
-        Caller value = new(new BetaDirectCaller());
+        Caller value = new BetaDirectCaller();
         value.Validate();
     }
 
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        Caller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
+        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
         value.Validate();
     }
 
     [Fact]
     public void BetaDirectSerializationRoundtripWorks()
     {
-        Caller value = new(new BetaDirectCaller());
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Caller>(element);
+        Caller value = new BetaDirectCaller();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -151,9 +157,9 @@ public class CallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        Caller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Caller>(element);
+        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -180,7 +186,7 @@ public class NameTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, Name>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -214,7 +220,7 @@ public class NameTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, Name>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,8 +20,12 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -28,8 +33,12 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required BetaContainer? Container
     {
-        get { return JsonModel.GetNullableClass<BetaContainer>(this.RawData, "container"); }
-        init { JsonModel.Set(this._rawData, "container", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaContainer>("container");
+        }
+        init { this._rawData.Set("container", value); }
     }
 
     /// <summary>
@@ -56,8 +65,18 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required IReadOnlyList<BetaContentBlock> Content
     {
-        get { return JsonModel.GetNotNullClass<List<BetaContentBlock>>(this.RawData, "content"); }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaContentBlock>>("content");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaContentBlock>>(
+                "content",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -69,12 +88,12 @@ public sealed record class BetaMessage : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaContextManagementResponse>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaContextManagementResponse>(
                 "context_management"
             );
         }
-        init { JsonModel.Set(this._rawData, "context_management", value); }
+        init { this._rawData.Set("context_management", value); }
     }
 
     /// <summary>
@@ -83,8 +102,12 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required ApiEnum<string, Model> Model
     {
-        get { return JsonModel.GetNotNullClass<ApiEnum<string, Model>>(this.RawData, "model"); }
-        init { JsonModel.Set(this._rawData, "model", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
+        init { this._rawData.Set("model", value); }
     }
 
     /// <summary>
@@ -94,8 +117,12 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public JsonElement Role
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "role"); }
-        init { JsonModel.Set(this._rawData, "role", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("role");
+        }
+        init { this._rawData.Set("role", value); }
     }
 
     /// <summary>
@@ -116,12 +143,10 @@ public sealed record class BetaMessage : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<ApiEnum<string, BetaStopReason>>(
-                this.RawData,
-                "stop_reason"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, BetaStopReason>>("stop_reason");
         }
-        init { JsonModel.Set(this._rawData, "stop_reason", value); }
+        init { this._rawData.Set("stop_reason", value); }
     }
 
     /// <summary>
@@ -132,8 +157,12 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required string? StopSequence
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "stop_sequence"); }
-        init { JsonModel.Set(this._rawData, "stop_sequence", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_sequence");
+        }
+        init { this._rawData.Set("stop_sequence", value); }
     }
 
     /// <summary>
@@ -143,8 +172,12 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -166,8 +199,12 @@ public sealed record class BetaMessage : JsonModel
     /// </summary>
     public required BetaUsage Usage
     {
-        get { return JsonModel.GetNotNullClass<BetaUsage>(this.RawData, "usage"); }
-        init { JsonModel.Set(this._rawData, "usage", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaUsage>("usage");
+        }
+        init { this._rawData.Set("usage", value); }
     }
 
     /// <inheritdoc/>
@@ -181,23 +218,13 @@ public sealed record class BetaMessage : JsonModel
         }
         this.ContextManagement?.Validate();
         this.Model.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Role,
-                JsonSerializer.Deserialize<JsonElement>("\"assistant\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Role, JsonSerializer.SerializeToElement("assistant")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         this.StopReason?.Validate();
         _ = this.StopSequence;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -206,8 +233,8 @@ public sealed record class BetaMessage : JsonModel
 
     public BetaMessage()
     {
-        this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
+        this.Role = JsonSerializer.SerializeToElement("assistant");
+        this.Type = JsonSerializer.SerializeToElement("message");
     }
 
     public BetaMessage(BetaMessage betaMessage)
@@ -215,17 +242,17 @@ public sealed record class BetaMessage : JsonModel
 
     public BetaMessage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Role = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message\"");
+        this.Role = JsonSerializer.SerializeToElement("assistant");
+        this.Type = JsonSerializer.SerializeToElement("message");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -18,24 +18,32 @@ public sealed record class RawContentBlockStartEvent : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<RawContentBlockStartEventContentBlock>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<RawContentBlockStartEventContentBlock>(
                 "content_block"
             );
         }
-        init { JsonModel.Set(this._rawData, "content_block", value); }
+        init { this._rawData.Set("content_block", value); }
     }
 
     public required long Index
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { JsonModel.Set(this._rawData, "index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("index");
+        }
+        init { this._rawData.Set("index", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -46,7 +54,7 @@ public sealed record class RawContentBlockStartEvent : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"")
+                JsonSerializer.SerializeToElement("content_block_start")
             )
         )
         {
@@ -56,7 +64,7 @@ public sealed record class RawContentBlockStartEvent : JsonModel
 
     public RawContentBlockStartEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_start");
     }
 
     public RawContentBlockStartEvent(RawContentBlockStartEvent rawContentBlockStartEvent)
@@ -64,16 +72,16 @@ public sealed record class RawContentBlockStartEvent : JsonModel
 
     public RawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_start\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_start");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RawContentBlockStartEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -95,7 +103,7 @@ class RawContentBlockStartEventFromRaw : IFromRawJson<RawContentBlockStartEvent>
 }
 
 [JsonConverter(typeof(RawContentBlockStartEventContentBlockConverter))]
-public record class RawContentBlockStartEventContentBlock
+public record class RawContentBlockStartEventContentBlock : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -103,7 +111,13 @@ public record class RawContentBlockStartEventContentBlock
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -451,7 +465,7 @@ public record class RawContentBlockStartEventContentBlock
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -478,6 +492,9 @@ public record class RawContentBlockStartEventContentBlock
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class RawContentBlockStartEventContentBlockConverter

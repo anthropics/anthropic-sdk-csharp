@@ -19,7 +19,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -30,8 +30,8 @@ public class BetaServerToolUseBlockParamTest : TestBase
         };
         ApiEnum<string, BetaServerToolUseBlockParamName> expectedName =
             BetaServerToolUseBlockParamName.WebSearch;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaServerToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, model.ID);
@@ -59,12 +59,15 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -80,12 +83,15 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "srvtoolu_SQfNkl1n_JR_";
@@ -95,8 +101,8 @@ public class BetaServerToolUseBlockParamTest : TestBase
         };
         ApiEnum<string, BetaServerToolUseBlockParamName> expectedName =
             BetaServerToolUseBlockParamName.WebSearch;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("server_tool_use");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaServerToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -124,7 +130,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -142,7 +148,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         Assert.Null(model.Caller);
@@ -160,7 +166,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -177,7 +183,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -198,7 +204,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = BetaServerToolUseBlockParamName.WebSearch,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -303,7 +309,7 @@ public class BetaServerToolUseBlockParamNameTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaServerToolUseBlockParamName>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -336,7 +342,7 @@ public class BetaServerToolUseBlockParamNameTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaServerToolUseBlockParamName>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -353,25 +359,26 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaDirectValidationWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new(new BetaDirectCaller());
+        BetaServerToolUseBlockParamCaller value = new BetaDirectCaller();
         value.Validate();
     }
 
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new(
-            new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_")
-        );
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
         value.Validate();
     }
 
     [Fact]
     public void BetaDirectSerializationRoundtripWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new(new BetaDirectCaller());
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(element);
+        BetaServerToolUseBlockParamCaller value = new BetaDirectCaller();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -379,11 +386,12 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new(
-            new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_")
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(element);
 
         Assert.Equal(value, deserialized);
     }

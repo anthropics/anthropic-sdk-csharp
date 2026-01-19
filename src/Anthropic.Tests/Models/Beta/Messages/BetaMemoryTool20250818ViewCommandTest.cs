@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -15,7 +16,7 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
             ViewRange = [1, 10],
         };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"view\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("view");
         string expectedPath = "/memories";
         List<long> expectedViewRange = [1, 10];
 
@@ -38,8 +39,11 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
             ViewRange = [1, 10],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818ViewCommand>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818ViewCommand>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -53,11 +57,14 @@ public class BetaMemoryTool20250818ViewCommandTest : TestBase
             ViewRange = [1, 10],
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818ViewCommand>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818ViewCommand>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"view\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("view");
         string expectedPath = "/memories";
         List<long> expectedViewRange = [1, 10];
 

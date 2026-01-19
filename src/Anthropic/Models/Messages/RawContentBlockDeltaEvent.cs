@@ -15,20 +15,32 @@ public sealed record class RawContentBlockDeltaEvent : JsonModel
 {
     public required RawContentBlockDelta Delta
     {
-        get { return JsonModel.GetNotNullClass<RawContentBlockDelta>(this.RawData, "delta"); }
-        init { JsonModel.Set(this._rawData, "delta", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<RawContentBlockDelta>("delta");
+        }
+        init { this._rawData.Set("delta", value); }
     }
 
     public required long Index
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { JsonModel.Set(this._rawData, "index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("index");
+        }
+        init { this._rawData.Set("index", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -39,7 +51,7 @@ public sealed record class RawContentBlockDeltaEvent : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"")
+                JsonSerializer.SerializeToElement("content_block_delta")
             )
         )
         {
@@ -49,7 +61,7 @@ public sealed record class RawContentBlockDeltaEvent : JsonModel
 
     public RawContentBlockDeltaEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_delta");
     }
 
     public RawContentBlockDeltaEvent(RawContentBlockDeltaEvent rawContentBlockDeltaEvent)
@@ -57,16 +69,16 @@ public sealed record class RawContentBlockDeltaEvent : JsonModel
 
     public RawContentBlockDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RawContentBlockDeltaEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

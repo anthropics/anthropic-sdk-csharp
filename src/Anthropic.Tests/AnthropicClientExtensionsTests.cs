@@ -19,7 +19,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     [Fact]
     public void AsIChatClient_ReturnsValidChatClient()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
+        AnthropicClient client = new() { ApiKey = "test-key" };
         Assert.NotNull(client.AsIChatClient("claude-haiku-4-5"));
     }
 
@@ -36,7 +36,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     [InlineData(int.MinValue)]
     public void AsIChatClient_ThrowsOnNonPositiveDefaultMaxTokens(int defaultMaxTokens)
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
+        AnthropicClient client = new() { ApiKey = "test-key" };
         Assert.Throws<ArgumentOutOfRangeException>(
             "defaultMaxOutputTokens",
             () => client.AsIChatClient(defaultMaxOutputTokens: defaultMaxTokens)
@@ -46,7 +46,7 @@ public class AnthropicClientExtensionsTests : AnthropicClientExtensionsTestsBase
     [Fact]
     public void AsIChatClient_GetService_ReturnsClient()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
+        AnthropicClient client = new() { ApiKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
         Assert.Same(client, chatClient.GetService<AnthropicClient>());

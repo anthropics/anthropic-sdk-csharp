@@ -14,17 +14,15 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var model = new BetaCodeExecutionTool20250522
         {
             AllowedCallers = [AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250522\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250522");
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -47,13 +45,16 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var model = new BetaCodeExecutionTool20250522
         {
             AllowedCallers = [AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -64,21 +65,22 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var model = new BetaCodeExecutionTool20250522
         {
             AllowedCallers = [AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250522>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250522\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250522");
         List<ApiEnum<string, AllowedCaller>> expectedAllowedCallers = [AllowedCaller.Direct];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -101,7 +103,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
         var model = new BetaCodeExecutionTool20250522
         {
             AllowedCallers = [AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -112,7 +114,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaCodeExecutionTool20250522 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaCodeExecutionTool20250522 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         Assert.Null(model.AllowedCallers);
         Assert.False(model.RawData.ContainsKey("allowed_callers"));
@@ -125,7 +127,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaCodeExecutionTool20250522 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaCodeExecutionTool20250522 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }
@@ -135,7 +137,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250522
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -156,7 +158,7 @@ public class BetaCodeExecutionTool20250522Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250522
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -242,7 +244,7 @@ public class AllowedCallerTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, AllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -271,7 +273,7 @@ public class AllowedCallerTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, AllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

@@ -23,26 +23,29 @@ public sealed record class ThinkingConfigEnabled : JsonModel
     /// </summary>
     public required long BudgetTokens
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "budget_tokens"); }
-        init { JsonModel.Set(this._rawData, "budget_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("budget_tokens");
+        }
+        init { this._rawData.Set("budget_tokens", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.BudgetTokens;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"enabled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("enabled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -50,7 +53,7 @@ public sealed record class ThinkingConfigEnabled : JsonModel
 
     public ThinkingConfigEnabled()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
+        this.Type = JsonSerializer.SerializeToElement("enabled");
     }
 
     public ThinkingConfigEnabled(ThinkingConfigEnabled thinkingConfigEnabled)
@@ -58,16 +61,16 @@ public sealed record class ThinkingConfigEnabled : JsonModel
 
     public ThinkingConfigEnabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
+        this.Type = JsonSerializer.SerializeToElement("enabled");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ThinkingConfigEnabled(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

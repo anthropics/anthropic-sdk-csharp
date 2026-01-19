@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -13,20 +14,20 @@ public class BetaWebSearchResultBlockTest : TestBase
             EncryptedContent = "encrypted_content",
             PageAge = "page_age",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         string expectedEncryptedContent = "encrypted_content";
         string expectedPageAge = "page_age";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result");
+        string expectedUrl = "url";
 
         Assert.Equal(expectedEncryptedContent, model.EncryptedContent);
         Assert.Equal(expectedPageAge, model.PageAge);
         Assert.Equal(expectedTitle, model.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedURL, model.URL);
+        Assert.Equal(expectedUrl, model.Url);
     }
 
     [Fact]
@@ -37,11 +38,14 @@ public class BetaWebSearchResultBlockTest : TestBase
             EncryptedContent = "encrypted_content",
             PageAge = "page_age",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchResultBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchResultBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -54,24 +58,27 @@ public class BetaWebSearchResultBlockTest : TestBase
             EncryptedContent = "encrypted_content",
             PageAge = "page_age",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchResultBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchResultBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedEncryptedContent = "encrypted_content";
         string expectedPageAge = "page_age";
         string expectedTitle = "title";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_result");
+        string expectedUrl = "url";
 
         Assert.Equal(expectedEncryptedContent, deserialized.EncryptedContent);
         Assert.Equal(expectedPageAge, deserialized.PageAge);
         Assert.Equal(expectedTitle, deserialized.Title);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedURL, deserialized.URL);
+        Assert.Equal(expectedUrl, deserialized.Url);
     }
 
     [Fact]
@@ -82,7 +89,7 @@ public class BetaWebSearchResultBlockTest : TestBase
             EncryptedContent = "encrypted_content",
             PageAge = "page_age",
             Title = "title",
-            URL = "url",
+            Url = "url",
         };
 
         model.Validate();

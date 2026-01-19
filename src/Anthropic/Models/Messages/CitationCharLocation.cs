@@ -13,44 +13,72 @@ public sealed record class CitationCharLocation : JsonModel
 {
     public required string CitedText
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { JsonModel.Set(this._rawData, "cited_text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("cited_text");
+        }
+        init { this._rawData.Set("cited_text", value); }
     }
 
     public required long DocumentIndex
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "document_index"); }
-        init { JsonModel.Set(this._rawData, "document_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("document_index");
+        }
+        init { this._rawData.Set("document_index", value); }
     }
 
     public required string? DocumentTitle
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "document_title"); }
-        init { JsonModel.Set(this._rawData, "document_title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("document_title");
+        }
+        init { this._rawData.Set("document_title", value); }
     }
 
     public required long EndCharIndex
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "end_char_index"); }
-        init { JsonModel.Set(this._rawData, "end_char_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("end_char_index");
+        }
+        init { this._rawData.Set("end_char_index", value); }
     }
 
     public required string? FileID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "file_id"); }
-        init { JsonModel.Set(this._rawData, "file_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("file_id");
+        }
+        init { this._rawData.Set("file_id", value); }
     }
 
     public required long StartCharIndex
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "start_char_index"); }
-        init { JsonModel.Set(this._rawData, "start_char_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("start_char_index");
+        }
+        init { this._rawData.Set("start_char_index", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -62,12 +90,7 @@ public sealed record class CitationCharLocation : JsonModel
         _ = this.EndCharIndex;
         _ = this.FileID;
         _ = this.StartCharIndex;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"char_location\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("char_location")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -75,7 +98,7 @@ public sealed record class CitationCharLocation : JsonModel
 
     public CitationCharLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        this.Type = JsonSerializer.SerializeToElement("char_location");
     }
 
     public CitationCharLocation(CitationCharLocation citationCharLocation)
@@ -83,16 +106,16 @@ public sealed record class CitationCharLocation : JsonModel
 
     public CitationCharLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        this.Type = JsonSerializer.SerializeToElement("char_location");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     CitationCharLocation(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

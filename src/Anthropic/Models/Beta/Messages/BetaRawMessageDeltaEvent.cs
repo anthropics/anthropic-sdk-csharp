@@ -20,24 +20,32 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaContextManagementResponse>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaContextManagementResponse>(
                 "context_management"
             );
         }
-        init { JsonModel.Set(this._rawData, "context_management", value); }
+        init { this._rawData.Set("context_management", value); }
     }
 
     public required Delta Delta
     {
-        get { return JsonModel.GetNotNullClass<Delta>(this.RawData, "delta"); }
-        init { JsonModel.Set(this._rawData, "delta", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Delta>("delta");
+        }
+        init { this._rawData.Set("delta", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -59,8 +67,12 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
     /// </summary>
     public required BetaMessageDeltaUsage Usage
     {
-        get { return JsonModel.GetNotNullClass<BetaMessageDeltaUsage>(this.RawData, "usage"); }
-        init { JsonModel.Set(this._rawData, "usage", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessageDeltaUsage>("usage");
+        }
+        init { this._rawData.Set("usage", value); }
     }
 
     /// <inheritdoc/>
@@ -68,12 +80,7 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
     {
         this.ContextManagement?.Validate();
         this.Delta.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_delta\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_delta")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -82,7 +89,7 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
 
     public BetaRawMessageDeltaEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("message_delta");
     }
 
     public BetaRawMessageDeltaEvent(BetaRawMessageDeltaEvent betaRawMessageDeltaEvent)
@@ -90,16 +97,16 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
 
     public BetaRawMessageDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("message_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaRawMessageDeltaEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -128,26 +135,32 @@ public sealed record class Delta : JsonModel
     /// </summary>
     public required BetaContainer? Container
     {
-        get { return JsonModel.GetNullableClass<BetaContainer>(this.RawData, "container"); }
-        init { JsonModel.Set(this._rawData, "container", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaContainer>("container");
+        }
+        init { this._rawData.Set("container", value); }
     }
 
     public required ApiEnum<string, BetaStopReason>? StopReason
     {
         get
         {
-            return JsonModel.GetNullableClass<ApiEnum<string, BetaStopReason>>(
-                this.RawData,
-                "stop_reason"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, BetaStopReason>>("stop_reason");
         }
-        init { JsonModel.Set(this._rawData, "stop_reason", value); }
+        init { this._rawData.Set("stop_reason", value); }
     }
 
     public required string? StopSequence
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "stop_sequence"); }
-        init { JsonModel.Set(this._rawData, "stop_sequence", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_sequence");
+        }
+        init { this._rawData.Set("stop_sequence", value); }
     }
 
     /// <inheritdoc/>
@@ -165,14 +178,14 @@ public sealed record class Delta : JsonModel
 
     public Delta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     Delta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

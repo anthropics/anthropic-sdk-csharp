@@ -14,7 +14,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         var model = new BetaToolTextEditor20250728
         {
             AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -27,17 +27,13 @@ public class BetaToolTextEditor20250728Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250728\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250728");
         List<ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolTextEditor20250728AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -81,7 +77,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         var model = new BetaToolTextEditor20250728
         {
             AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -94,8 +90,11 @@ public class BetaToolTextEditor20250728Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -106,7 +105,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         var model = new BetaToolTextEditor20250728
         {
             AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -119,21 +118,20 @@ public class BetaToolTextEditor20250728Test : TestBase
             Strict = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolTextEditor20250728>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"str_replace_based_edit_tool\""
-        );
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_20250728\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text_editor_20250728");
         List<ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolTextEditor20250728AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -177,7 +175,7 @@ public class BetaToolTextEditor20250728Test : TestBase
         var model = new BetaToolTextEditor20250728
         {
             AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -198,7 +196,7 @@ public class BetaToolTextEditor20250728Test : TestBase
     {
         var model = new BetaToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
@@ -217,7 +215,7 @@ public class BetaToolTextEditor20250728Test : TestBase
     {
         var model = new BetaToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
         };
 
@@ -229,7 +227,7 @@ public class BetaToolTextEditor20250728Test : TestBase
     {
         var model = new BetaToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
 
             // Null should be interpreted as omitted for these properties
@@ -254,7 +252,7 @@ public class BetaToolTextEditor20250728Test : TestBase
     {
         var model = new BetaToolTextEditor20250728
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxCharacters = 1,
 
             // Null should be interpreted as omitted for these properties
@@ -377,10 +375,7 @@ public class BetaToolTextEditor20250728AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -407,10 +402,7 @@ public class BetaToolTextEditor20250728AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolTextEditor20250728AllowedCaller>

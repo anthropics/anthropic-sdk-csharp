@@ -18,18 +18,20 @@ public sealed record class BetaRequestDocumentBlock : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<BetaRequestDocumentBlockSource>(
-                this.RawData,
-                "source"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaRequestDocumentBlockSource>("source");
         }
-        init { JsonModel.Set(this._rawData, "source", value); }
+        init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -39,45 +41,47 @@ public sealed record class BetaRequestDocumentBlock : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public BetaCitationsConfigParam? Citations
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCitationsConfigParam>("citations");
         }
-        init { JsonModel.Set(this._rawData, "citations", value); }
+        init { this._rawData.Set("citations", value); }
     }
 
     public string? Context
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "context"); }
-        init { JsonModel.Set(this._rawData, "context", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("context");
+        }
+        init { this._rawData.Set("context", value); }
     }
 
     public string? Title
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
-        init { JsonModel.Set(this._rawData, "title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("title");
+        }
+        init { this._rawData.Set("title", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Source.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"document\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("document")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -89,7 +93,7 @@ public sealed record class BetaRequestDocumentBlock : JsonModel
 
     public BetaRequestDocumentBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        this.Type = JsonSerializer.SerializeToElement("document");
     }
 
     public BetaRequestDocumentBlock(BetaRequestDocumentBlock betaRequestDocumentBlock)
@@ -97,16 +101,16 @@ public sealed record class BetaRequestDocumentBlock : JsonModel
 
     public BetaRequestDocumentBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        this.Type = JsonSerializer.SerializeToElement("document");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaRequestDocumentBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -135,7 +139,7 @@ class BetaRequestDocumentBlockFromRaw : IFromRawJson<BetaRequestDocumentBlock>
 }
 
 [JsonConverter(typeof(BetaRequestDocumentBlockSourceConverter))]
-public record class BetaRequestDocumentBlockSource
+public record class BetaRequestDocumentBlockSource : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -143,7 +147,13 @@ public record class BetaRequestDocumentBlockSource
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string? Data
@@ -151,10 +161,10 @@ public record class BetaRequestDocumentBlockSource
         get
         {
             return Match<string?>(
-                betaBase64PDF: (x) => x.Data,
+                betaBase64Pdf: (x) => x.Data,
                 betaPlainText: (x) => x.Data,
                 betaContentBlock: (_) => null,
-                betaURLPDF: (_) => null,
+                betaUrlPdf: (_) => null,
                 betaFileDocument: (_) => null
             );
         }
@@ -165,10 +175,10 @@ public record class BetaRequestDocumentBlockSource
         get
         {
             return Match<JsonElement?>(
-                betaBase64PDF: (x) => x.MediaType,
+                betaBase64Pdf: (x) => x.MediaType,
                 betaPlainText: (x) => x.MediaType,
                 betaContentBlock: (_) => null,
-                betaURLPDF: (_) => null,
+                betaUrlPdf: (_) => null,
                 betaFileDocument: (_) => null
             );
         }
@@ -179,16 +189,16 @@ public record class BetaRequestDocumentBlockSource
         get
         {
             return Match(
-                betaBase64PDF: (x) => x.Type,
+                betaBase64Pdf: (x) => x.Type,
                 betaPlainText: (x) => x.Type,
                 betaContentBlock: (x) => x.Type,
-                betaURLPDF: (x) => x.Type,
+                betaUrlPdf: (x) => x.Type,
                 betaFileDocument: (x) => x.Type
             );
         }
     }
 
-    public BetaRequestDocumentBlockSource(BetaBase64PDFSource value, JsonElement? element = null)
+    public BetaRequestDocumentBlockSource(BetaBase64PdfSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -206,7 +216,7 @@ public record class BetaRequestDocumentBlockSource
         this._element = element;
     }
 
-    public BetaRequestDocumentBlockSource(BetaURLPDFSource value, JsonElement? element = null)
+    public BetaRequestDocumentBlockSource(BetaUrlPdfSource value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -225,22 +235,22 @@ public record class BetaRequestDocumentBlockSource
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaBase64PDFSource"/>.
+    /// type <see cref="BetaBase64PdfSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaBase64PDF(out var value)) {
-    ///     // `value` is of type `BetaBase64PDFSource`
+    /// if (instance.TryPickBetaBase64Pdf(out var value)) {
+    ///     // `value` is of type `BetaBase64PdfSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaBase64PDF([NotNullWhen(true)] out BetaBase64PDFSource? value)
+    public bool TryPickBetaBase64Pdf([NotNullWhen(true)] out BetaBase64PdfSource? value)
     {
-        value = this.Value as BetaBase64PDFSource;
+        value = this.Value as BetaBase64PdfSource;
         return value != null;
     }
 
@@ -288,22 +298,22 @@ public record class BetaRequestDocumentBlockSource
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaURLPDFSource"/>.
+    /// type <see cref="BetaUrlPdfSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaURLPDF(out var value)) {
-    ///     // `value` is of type `BetaURLPDFSource`
+    /// if (instance.TryPickBetaUrlPdf(out var value)) {
+    ///     // `value` is of type `BetaUrlPdfSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaURLPDF([NotNullWhen(true)] out BetaURLPDFSource? value)
+    public bool TryPickBetaUrlPdf([NotNullWhen(true)] out BetaUrlPdfSource? value)
     {
-        value = this.Value as BetaURLPDFSource;
+        value = this.Value as BetaUrlPdfSource;
         return value != null;
     }
 
@@ -342,27 +352,27 @@ public record class BetaRequestDocumentBlockSource
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaBase64PDFSource value) => {...},
+    ///     (BetaBase64PdfSource value) => {...},
     ///     (BetaPlainTextSource value) => {...},
     ///     (BetaContentBlockSource value) => {...},
-    ///     (BetaURLPDFSource value) => {...},
+    ///     (BetaUrlPdfSource value) => {...},
     ///     (BetaFileDocumentSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaBase64PDFSource> betaBase64PDF,
+        System::Action<BetaBase64PdfSource> betaBase64Pdf,
         System::Action<BetaPlainTextSource> betaPlainText,
         System::Action<BetaContentBlockSource> betaContentBlock,
-        System::Action<BetaURLPDFSource> betaURLPDF,
+        System::Action<BetaUrlPdfSource> betaUrlPdf,
         System::Action<BetaFileDocumentSource> betaFileDocument
     )
     {
         switch (this.Value)
         {
-            case BetaBase64PDFSource value:
-                betaBase64PDF(value);
+            case BetaBase64PdfSource value:
+                betaBase64Pdf(value);
                 break;
             case BetaPlainTextSource value:
                 betaPlainText(value);
@@ -370,8 +380,8 @@ public record class BetaRequestDocumentBlockSource
             case BetaContentBlockSource value:
                 betaContentBlock(value);
                 break;
-            case BetaURLPDFSource value:
-                betaURLPDF(value);
+            case BetaUrlPdfSource value:
+                betaUrlPdf(value);
                 break;
             case BetaFileDocumentSource value:
                 betaFileDocument(value);
@@ -398,29 +408,29 @@ public record class BetaRequestDocumentBlockSource
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaBase64PDFSource value) => {...},
+    ///     (BetaBase64PdfSource value) => {...},
     ///     (BetaPlainTextSource value) => {...},
     ///     (BetaContentBlockSource value) => {...},
-    ///     (BetaURLPDFSource value) => {...},
+    ///     (BetaUrlPdfSource value) => {...},
     ///     (BetaFileDocumentSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaBase64PDFSource, T> betaBase64PDF,
+        System::Func<BetaBase64PdfSource, T> betaBase64Pdf,
         System::Func<BetaPlainTextSource, T> betaPlainText,
         System::Func<BetaContentBlockSource, T> betaContentBlock,
-        System::Func<BetaURLPDFSource, T> betaURLPDF,
+        System::Func<BetaUrlPdfSource, T> betaUrlPdf,
         System::Func<BetaFileDocumentSource, T> betaFileDocument
     )
     {
         return this.Value switch
         {
-            BetaBase64PDFSource value => betaBase64PDF(value),
+            BetaBase64PdfSource value => betaBase64Pdf(value),
             BetaPlainTextSource value => betaPlainText(value),
             BetaContentBlockSource value => betaContentBlock(value),
-            BetaURLPDFSource value => betaURLPDF(value),
+            BetaUrlPdfSource value => betaUrlPdf(value),
             BetaFileDocumentSource value => betaFileDocument(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaRequestDocumentBlockSource"
@@ -428,7 +438,7 @@ public record class BetaRequestDocumentBlockSource
         };
     }
 
-    public static implicit operator BetaRequestDocumentBlockSource(BetaBase64PDFSource value) =>
+    public static implicit operator BetaRequestDocumentBlockSource(BetaBase64PdfSource value) =>
         new(value);
 
     public static implicit operator BetaRequestDocumentBlockSource(BetaPlainTextSource value) =>
@@ -437,7 +447,7 @@ public record class BetaRequestDocumentBlockSource
     public static implicit operator BetaRequestDocumentBlockSource(BetaContentBlockSource value) =>
         new(value);
 
-    public static implicit operator BetaRequestDocumentBlockSource(BetaURLPDFSource value) =>
+    public static implicit operator BetaRequestDocumentBlockSource(BetaUrlPdfSource value) =>
         new(value);
 
     public static implicit operator BetaRequestDocumentBlockSource(BetaFileDocumentSource value) =>
@@ -453,7 +463,7 @@ public record class BetaRequestDocumentBlockSource
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -462,10 +472,10 @@ public record class BetaRequestDocumentBlockSource
             );
         }
         this.Switch(
-            (betaBase64PDF) => betaBase64PDF.Validate(),
+            (betaBase64Pdf) => betaBase64Pdf.Validate(),
             (betaPlainText) => betaPlainText.Validate(),
             (betaContentBlock) => betaContentBlock.Validate(),
-            (betaURLPDF) => betaURLPDF.Validate(),
+            (betaUrlPdf) => betaUrlPdf.Validate(),
             (betaFileDocument) => betaFileDocument.Validate()
         );
     }
@@ -479,6 +489,9 @@ public record class BetaRequestDocumentBlockSource
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequestDocumentBlockSource>
@@ -506,7 +519,7 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaBase64PDFSource>(
+                    var deserialized = JsonSerializer.Deserialize<BetaBase64PdfSource>(
                         element,
                         options
                     );
@@ -572,7 +585,7 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaURLPDFSource>(
+                    var deserialized = JsonSerializer.Deserialize<BetaUrlPdfSource>(
                         element,
                         options
                     );

@@ -17,24 +17,30 @@ public sealed record class WebSearchToolResultBlock : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<WebSearchToolResultBlockContent>(
-                this.RawData,
-                "content"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<WebSearchToolResultBlockContent>("content");
         }
-        init { JsonModel.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { JsonModel.Set(this._rawData, "tool_use_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -45,7 +51,7 @@ public sealed record class WebSearchToolResultBlock : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"")
+                JsonSerializer.SerializeToElement("web_search_tool_result")
             )
         )
         {
@@ -55,7 +61,7 @@ public sealed record class WebSearchToolResultBlock : JsonModel
 
     public WebSearchToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result");
     }
 
     public WebSearchToolResultBlock(WebSearchToolResultBlock webSearchToolResultBlock)
@@ -63,16 +69,16 @@ public sealed record class WebSearchToolResultBlock : JsonModel
 
     public WebSearchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     WebSearchToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
