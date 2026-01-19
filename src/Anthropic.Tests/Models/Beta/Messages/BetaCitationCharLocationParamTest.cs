@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -22,7 +23,7 @@ public class BetaCitationCharLocationParamTest : TestBase
         string expectedDocumentTitle = "x";
         long expectedEndCharIndex = 0;
         long expectedStartCharIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("char_location");
 
         Assert.Equal(expectedCitedText, model.CitedText);
         Assert.Equal(expectedDocumentIndex, model.DocumentIndex);
@@ -44,8 +45,11 @@ public class BetaCitationCharLocationParamTest : TestBase
             StartCharIndex = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocationParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocationParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -62,8 +66,11 @@ public class BetaCitationCharLocationParamTest : TestBase
             StartCharIndex = 0,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocationParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocationParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedCitedText = "cited_text";
@@ -71,7 +78,7 @@ public class BetaCitationCharLocationParamTest : TestBase
         string expectedDocumentTitle = "x";
         long expectedEndCharIndex = 0;
         long expectedStartCharIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("char_location");
 
         Assert.Equal(expectedCitedText, deserialized.CitedText);
         Assert.Equal(expectedDocumentIndex, deserialized.DocumentIndex);

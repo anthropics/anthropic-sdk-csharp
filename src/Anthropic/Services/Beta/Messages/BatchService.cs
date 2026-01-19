@@ -18,17 +18,27 @@ public sealed class BatchService : IBatchService
         request.Headers.Add("anthropic-beta", "message-batches-2024-09-24");
     }
 
+    readonly Lazy<IBatchServiceWithRawResponse> _withRawResponse;
+
+    /// <inheritdoc/>
+    public IBatchServiceWithRawResponse WithRawResponse
+    {
+        get { return _withRawResponse.Value; }
+    }
+
+    readonly IAnthropicClient _client;
+
     /// <inheritdoc/>
     public IBatchService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new BatchService(this._client.WithOptions(modifier));
     }
 
-    readonly IAnthropicClient _client;
-
     public BatchService(IAnthropicClient client)
     {
         _client = client;
+
+        _withRawResponse = new(() => new BatchServiceWithRawResponse(client.WithRawResponse));
     }
 
     /// <inheritdoc/>
@@ -37,22 +47,10 @@ public sealed class BatchService : IBatchService
         CancellationToken cancellationToken = default
     )
     {
-        HttpRequest<BatchCreateParams> request = new()
-        {
-            Method = HttpMethod.Post,
-            Params = parameters,
-        };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            .WithRawResponse.Create(parameters, cancellationToken)
             .ConfigureAwait(false);
-        var betaMessageBatch = await response
-            .Deserialize<BetaMessageBatch>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            betaMessageBatch.Validate();
-        }
-        return betaMessageBatch;
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -61,31 +59,14 @@ public sealed class BatchService : IBatchService
         CancellationToken cancellationToken = default
     )
     {
-        if (parameters.MessageBatchID == null)
-        {
-            throw new AnthropicInvalidDataException("'parameters.MessageBatchID' cannot be null");
-        }
-
-        HttpRequest<BatchRetrieveParams> request = new()
-        {
-            Method = HttpMethod.Get,
-            Params = parameters,
-        };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            .WithRawResponse.Retrieve(parameters, cancellationToken)
             .ConfigureAwait(false);
-        var betaMessageBatch = await response
-            .Deserialize<BetaMessageBatch>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            betaMessageBatch.Validate();
-        }
-        return betaMessageBatch;
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task<BetaMessageBatch> Retrieve(
+    public Task<BetaMessageBatch> Retrieve(
         string messageBatchID,
         BatchRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -93,7 +74,7 @@ public sealed class BatchService : IBatchService
     {
         parameters ??= new();
 
-        return await this.Retrieve(
+        return this.Retrieve(
             parameters with
             {
                 MessageBatchID = messageBatchID,
@@ -103,29 +84,15 @@ public sealed class BatchService : IBatchService
     }
 
     /// <inheritdoc/>
-    public async Task<BatchListPageResponse> List(
+    public async Task<BatchListPage> List(
         BatchListParams? parameters = null,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
-        HttpRequest<BatchListParams> request = new()
-        {
-            Method = HttpMethod.Get,
-            Params = parameters,
-        };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            .WithRawResponse.List(parameters, cancellationToken)
             .ConfigureAwait(false);
-        var page = await response
-            .Deserialize<BatchListPageResponse>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            page.Validate();
-        }
-        return page;
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -134,31 +101,14 @@ public sealed class BatchService : IBatchService
         CancellationToken cancellationToken = default
     )
     {
-        if (parameters.MessageBatchID == null)
-        {
-            throw new AnthropicInvalidDataException("'parameters.MessageBatchID' cannot be null");
-        }
-
-        HttpRequest<BatchDeleteParams> request = new()
-        {
-            Method = HttpMethod.Delete,
-            Params = parameters,
-        };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            .WithRawResponse.Delete(parameters, cancellationToken)
             .ConfigureAwait(false);
-        var betaDeletedMessageBatch = await response
-            .Deserialize<BetaDeletedMessageBatch>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            betaDeletedMessageBatch.Validate();
-        }
-        return betaDeletedMessageBatch;
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task<BetaDeletedMessageBatch> Delete(
+    public Task<BetaDeletedMessageBatch> Delete(
         string messageBatchID,
         BatchDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -166,13 +116,7 @@ public sealed class BatchService : IBatchService
     {
         parameters ??= new();
 
-        return await this.Delete(
-            parameters with
-            {
-                MessageBatchID = messageBatchID,
-            },
-            cancellationToken
-        );
+        return this.Delete(parameters with { MessageBatchID = messageBatchID }, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -181,31 +125,14 @@ public sealed class BatchService : IBatchService
         CancellationToken cancellationToken = default
     )
     {
-        if (parameters.MessageBatchID == null)
-        {
-            throw new AnthropicInvalidDataException("'parameters.MessageBatchID' cannot be null");
-        }
-
-        HttpRequest<BatchCancelParams> request = new()
-        {
-            Method = HttpMethod.Post,
-            Params = parameters,
-        };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            .WithRawResponse.Cancel(parameters, cancellationToken)
             .ConfigureAwait(false);
-        var betaMessageBatch = await response
-            .Deserialize<BetaMessageBatch>(cancellationToken)
-            .ConfigureAwait(false);
-        if (this._client.ResponseValidation)
-        {
-            betaMessageBatch.Validate();
-        }
-        return betaMessageBatch;
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task<BetaMessageBatch> Cancel(
+    public Task<BetaMessageBatch> Cancel(
         string messageBatchID,
         BatchCancelParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -213,13 +140,7 @@ public sealed class BatchService : IBatchService
     {
         parameters ??= new();
 
-        return await this.Cancel(
-            parameters with
-            {
-                MessageBatchID = messageBatchID,
-            },
-            cancellationToken
-        );
+        return this.Cancel(parameters with { MessageBatchID = messageBatchID }, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -228,30 +149,13 @@ public sealed class BatchService : IBatchService
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
-        if (parameters.MessageBatchID == null)
-        {
-            throw new AnthropicInvalidDataException("'parameters.MessageBatchID' cannot be null");
-        }
-
-        HttpRequest<BatchResultsParams> request = new()
-        {
-            Method = HttpMethod.Get,
-            Params = parameters,
-        };
         using var response = await this
-            ._client.Execute(request, cancellationToken)
+            .WithRawResponse.ResultsStreaming(parameters, cancellationToken)
             .ConfigureAwait(false);
         await foreach (
-            var betaMessageBatchIndividualResponse in Sse.Enumerate<BetaMessageBatchIndividualResponse>(
-                response.Message,
-                cancellationToken
-            )
+            var betaMessageBatchIndividualResponse in response.Enumerate(cancellationToken)
         )
         {
-            if (this._client.ResponseValidation)
-            {
-                betaMessageBatchIndividualResponse.Validate();
-            }
             yield return betaMessageBatchIndividualResponse;
         }
     }
@@ -277,5 +181,278 @@ public sealed class BatchService : IBatchService
         {
             yield return item;
         }
+    }
+}
+
+/// <inheritdoc/>
+public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
+{
+    readonly IAnthropicClientWithRawResponse _client;
+
+    /// <inheritdoc/>
+    public IBatchServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new BatchServiceWithRawResponse(this._client.WithOptions(modifier));
+    }
+
+    public BatchServiceWithRawResponse(IAnthropicClientWithRawResponse client)
+    {
+        _client = client;
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BetaMessageBatch>> Create(
+        BatchCreateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        HttpRequest<BatchCreateParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaMessageBatch = await response
+                    .Deserialize<BetaMessageBatch>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaMessageBatch.Validate();
+                }
+                return betaMessageBatch;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BetaMessageBatch>> Retrieve(
+        BatchRetrieveParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.MessageBatchID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.MessageBatchID' cannot be null");
+        }
+
+        HttpRequest<BatchRetrieveParams> request = new()
+        {
+            Method = HttpMethod.Get,
+            Params = parameters,
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaMessageBatch = await response
+                    .Deserialize<BetaMessageBatch>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaMessageBatch.Validate();
+                }
+                return betaMessageBatch;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse<BetaMessageBatch>> Retrieve(
+        string messageBatchID,
+        BatchRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Retrieve(
+            parameters with
+            {
+                MessageBatchID = messageBatchID,
+            },
+            cancellationToken
+        );
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BatchListPage>> List(
+        BatchListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        HttpRequest<BatchListParams> request = new()
+        {
+            Method = HttpMethod.Get,
+            Params = parameters,
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var page = await response
+                    .Deserialize<BatchListPageResponse>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    page.Validate();
+                }
+                return new BatchListPage(this, parameters, page);
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BetaDeletedMessageBatch>> Delete(
+        BatchDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.MessageBatchID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.MessageBatchID' cannot be null");
+        }
+
+        HttpRequest<BatchDeleteParams> request = new()
+        {
+            Method = HttpMethod.Delete,
+            Params = parameters,
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaDeletedMessageBatch = await response
+                    .Deserialize<BetaDeletedMessageBatch>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaDeletedMessageBatch.Validate();
+                }
+                return betaDeletedMessageBatch;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse<BetaDeletedMessageBatch>> Delete(
+        string messageBatchID,
+        BatchDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Delete(parameters with { MessageBatchID = messageBatchID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BetaMessageBatch>> Cancel(
+        BatchCancelParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.MessageBatchID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.MessageBatchID' cannot be null");
+        }
+
+        HttpRequest<BatchCancelParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaMessageBatch = await response
+                    .Deserialize<BetaMessageBatch>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaMessageBatch.Validate();
+                }
+                return betaMessageBatch;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse<BetaMessageBatch>> Cancel(
+        string messageBatchID,
+        BatchCancelParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Cancel(parameters with { MessageBatchID = messageBatchID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<StreamingHttpResponse<BetaMessageBatchIndividualResponse>> ResultsStreaming(
+        BatchResultsParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.MessageBatchID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.MessageBatchID' cannot be null");
+        }
+
+        HttpRequest<BatchResultsParams> request = new()
+        {
+            Method = HttpMethod.Get,
+            Params = parameters,
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+
+        async IAsyncEnumerable<BetaMessageBatchIndividualResponse> Enumerate(
+            [EnumeratorCancellation] CancellationToken token
+        )
+        {
+            await foreach (
+                var betaMessageBatchIndividualResponse in Jsonl.Enumerate<BetaMessageBatchIndividualResponse>(
+                    response.RawMessage,
+                    token
+                )
+            )
+            {
+                if (this._client.ResponseValidation)
+                {
+                    betaMessageBatchIndividualResponse.Validate();
+                }
+                yield return betaMessageBatchIndividualResponse;
+            }
+        }
+        return new(response, Enumerate);
+    }
+
+    /// <inheritdoc/>
+    public Task<StreamingHttpResponse<BetaMessageBatchIndividualResponse>> ResultsStreaming(
+        string messageBatchID,
+        BatchResultsParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.ResultsStreaming(
+            parameters with
+            {
+                MessageBatchID = messageBatchID,
+            },
+            cancellationToken
+        );
     }
 }

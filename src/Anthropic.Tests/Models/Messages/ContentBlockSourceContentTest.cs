@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -8,67 +9,64 @@ public class ContentBlockSourceContentTest : TestBase
     [Fact]
     public void TextBlockParamValidationWorks()
     {
-        ContentBlockSourceContent value = new(
-            new TextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations =
-                [
-                    new CitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
-        );
+        ContentBlockSourceContent value = new TextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new CitationCharLocationParam()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
         value.Validate();
     }
 
     [Fact]
     public void ImageBlockParamValidationWorks()
     {
-        ContentBlockSourceContent value = new(
-            new ImageBlockParam()
+        ContentBlockSourceContent value = new ImageBlockParam()
+        {
+            Source = new Base64ImageSource()
             {
-                Source = new Base64ImageSource()
-                {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
-                },
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
-        );
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         value.Validate();
     }
 
     [Fact]
     public void TextBlockParamSerializationRoundtripWorks()
     {
-        ContentBlockSourceContent value = new(
-            new TextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations =
-                [
-                    new CitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
+        ContentBlockSourceContent value = new TextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new CitationCharLocationParam()
+                {
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(element);
 
         Assert.Equal(value, deserialized);
     }
@@ -76,19 +74,20 @@ public class ContentBlockSourceContentTest : TestBase
     [Fact]
     public void ImageBlockParamSerializationRoundtripWorks()
     {
-        ContentBlockSourceContent value = new(
-            new ImageBlockParam()
+        ContentBlockSourceContent value = new ImageBlockParam()
+        {
+            Source = new Base64ImageSource()
             {
-                Source = new Base64ImageSource()
-                {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
-                },
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSourceContent>(element);
 
         Assert.Equal(value, deserialized);
     }

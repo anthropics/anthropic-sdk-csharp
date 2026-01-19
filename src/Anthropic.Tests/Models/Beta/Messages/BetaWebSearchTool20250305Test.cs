@@ -16,7 +16,7 @@ public class BetaWebSearchTool20250305Test : TestBase
             AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             MaxUses = 1,
             Strict = true,
@@ -29,17 +29,15 @@ public class BetaWebSearchTool20250305Test : TestBase
             },
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_20250305\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
         List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
         [
             BetaWebSearchTool20250305AllowedCaller.Direct,
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
@@ -86,7 +84,7 @@ public class BetaWebSearchTool20250305Test : TestBase
             AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             MaxUses = 1,
             Strict = true,
@@ -99,8 +97,11 @@ public class BetaWebSearchTool20250305Test : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -113,7 +114,7 @@ public class BetaWebSearchTool20250305Test : TestBase
             AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             MaxUses = 1,
             Strict = true,
@@ -126,21 +127,22 @@ public class BetaWebSearchTool20250305Test : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchTool20250305>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_20250305\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_20250305");
         List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>> expectedAllowedCallers =
         [
             BetaWebSearchTool20250305AllowedCaller.Direct,
         ];
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         long expectedMaxUses = 1;
         bool expectedStrict = true;
@@ -187,7 +189,7 @@ public class BetaWebSearchTool20250305Test : TestBase
             AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             MaxUses = 1,
             Strict = true,
@@ -210,7 +212,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -236,7 +238,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -257,7 +259,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -288,7 +290,7 @@ public class BetaWebSearchTool20250305Test : TestBase
         {
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             MaxUses = 1,
             UserLocation = new()
             {
@@ -407,10 +409,7 @@ public class BetaWebSearchTool20250305AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -437,10 +436,7 @@ public class BetaWebSearchTool20250305AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
@@ -463,7 +459,7 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "New York";
         string expectedCountry = "US";
         string expectedRegion = "California";
@@ -487,8 +483,11 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<UserLocation>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -504,11 +503,14 @@ public class UserLocationTest : TestBase
             Timezone = "America/New_York",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<UserLocation>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<UserLocation>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "New York";
         string expectedCountry = "US";
         string expectedRegion = "California";

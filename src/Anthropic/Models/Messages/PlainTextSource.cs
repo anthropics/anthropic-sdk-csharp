@@ -13,20 +13,32 @@ public sealed record class PlainTextSource : JsonModel
 {
     public required string Data
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "data"); }
-        init { JsonModel.Set(this._rawData, "data", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("data");
+        }
+        init { this._rawData.Set("data", value); }
     }
 
     public JsonElement MediaType
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
-        init { JsonModel.Set(this._rawData, "media_type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("media_type");
+        }
+        init { this._rawData.Set("media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -34,15 +46,12 @@ public sealed record class PlainTextSource : JsonModel
     {
         _ = this.Data;
         if (
-            !JsonElement.DeepEquals(
-                this.MediaType,
-                JsonSerializer.Deserialize<JsonElement>("\"text/plain\"")
-            )
+            !JsonElement.DeepEquals(this.MediaType, JsonSerializer.SerializeToElement("text/plain"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -50,8 +59,8 @@ public sealed record class PlainTextSource : JsonModel
 
     public PlainTextSource()
     {
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.MediaType = JsonSerializer.SerializeToElement("text/plain");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
     public PlainTextSource(PlainTextSource plainTextSource)
@@ -59,17 +68,17 @@ public sealed record class PlainTextSource : JsonModel
 
     public PlainTextSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.MediaType = JsonSerializer.SerializeToElement("text/plain");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     PlainTextSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

@@ -22,8 +22,8 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
         string expectedContent = "content";
         ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType> expectedFileType =
             BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_view_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_view_result"
         );
         long expectedNumLines = 0;
         long expectedStartLine = 0;
@@ -49,9 +49,12 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
             TotalLines = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(json);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(
+                json,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(model, deserialized);
     }
@@ -68,16 +71,19 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
             TotalLines = 0,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(element);
+            JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlockParam>(
+                element,
+                ModelBase.SerializerOptions
+            );
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";
         ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType> expectedFileType =
             BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_view_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_view_result"
         );
         long expectedNumLines = 0;
         long expectedStartLine = 0;
@@ -178,7 +184,7 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     [Theory]
     [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text)]
     [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image)]
-    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.PDF)]
+    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Pdf)]
     public void Validation_Works(BetaTextEditorCodeExecutionViewResultBlockParamFileType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -191,10 +197,7 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -203,7 +206,7 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     [Theory]
     [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text)]
     [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image)]
-    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.PDF)]
+    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Pdf)]
     public void SerializationRoundtrip_Works(
         BetaTextEditorCodeExecutionViewResultBlockParamFileType rawValue
     )
@@ -224,10 +227,7 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>

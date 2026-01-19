@@ -27,7 +27,7 @@ public abstract class AnthropicClientExtensionsTestsBase
         return new AnthropicClient
         {
             HttpClient = new(handler) { BaseAddress = new Uri("http://localhost") },
-            APIKey = "test-key",
+            ApiKey = "test-key",
         };
     }
 
@@ -78,7 +78,7 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Fact]
     public void AsIChatClient_GetService_ReturnsMetadata()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
+        AnthropicClient client = new() { ApiKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
         var metadata = chatClient.GetService<ChatClientMetadata>();
@@ -91,7 +91,7 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Fact]
     public void AsIChatClient_GetService_ReturnsSelf()
     {
-        AnthropicClient client = new() { APIKey = "test-key" };
+        AnthropicClient client = new() { ApiKey = "test-key" };
         IChatClient chatClient = CreateChatClient(client, "claude-haiku-4-5");
 
         var self = chatClient.GetService<IChatClient>();
@@ -899,8 +899,10 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Get the current weather for a location",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string", "description": "The city and state" },
-                        "unit": { "type": "string", "description": "Temperature unit" },
+                        "properties": {
+                            "location": { "type": "string", "description": "The city and state" },
+                            "unit": { "type": "string", "description": "Temperature unit" }
+                        },
                         "required": ["location", "unit"]
                     }
                 }]
@@ -992,6 +994,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Gets the current time",
                     "input_schema": {
                         "type": "object",
+                        "properties": {},
                         "required": []
                     }
                 }]
@@ -1444,7 +1447,9 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Get weather",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string", "description": "The location" },
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
                         "required": ["location"]
                     }
                 }]
@@ -1520,7 +1525,9 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Get weather",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string", "description": "The location" },
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
                         "required": ["location"]
                     }
                 }]
@@ -1602,7 +1609,9 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "Get weather",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string", "description": "The location" },
+                        "properties": {
+                            "location": { "type": "string", "description": "The location" }
+                        },
                         "required": ["location"]
                     }
                 }]
@@ -1675,7 +1684,9 @@ public abstract class AnthropicClientExtensionsTestsBase
                     "description": "",
                     "input_schema": {
                         "type": "object",
-                        "location": { "type": "string" },
+                        "properties": {
+                            "location": { "type": "string" }
+                        },
                         "required": ["location"]
                     }
                 }]

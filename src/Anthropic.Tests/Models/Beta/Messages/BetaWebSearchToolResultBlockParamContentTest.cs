@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -14,7 +15,7 @@ public class BetaWebSearchToolResultBlockParamContentTest : TestBase
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                     PageAge = "page_age",
                 },
             ]
@@ -25,8 +26,8 @@ public class BetaWebSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void RequestErrorValidationWorks()
     {
-        BetaWebSearchToolResultBlockParamContent value = new(
-            new BetaWebSearchToolRequestError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
+        BetaWebSearchToolResultBlockParamContent value = new BetaWebSearchToolRequestError(
+            BetaWebSearchToolResultErrorCode.InvalidToolInput
         );
         value.Validate();
     }
@@ -40,14 +41,15 @@ public class BetaWebSearchToolResultBlockParamContentTest : TestBase
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                     PageAge = "page_age",
                 },
             ]
         );
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParamContent>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
@@ -56,12 +58,13 @@ public class BetaWebSearchToolResultBlockParamContentTest : TestBase
     [Fact]
     public void RequestErrorSerializationRoundtripWorks()
     {
-        BetaWebSearchToolResultBlockParamContent value = new(
-            new BetaWebSearchToolRequestError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
+        BetaWebSearchToolResultBlockParamContent value = new BetaWebSearchToolRequestError(
+            BetaWebSearchToolResultErrorCode.InvalidToolInput
         );
-        string element = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParamContent>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);

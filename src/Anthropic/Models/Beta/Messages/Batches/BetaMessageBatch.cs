@@ -19,8 +19,12 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public required string ID
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "id"); }
-        init { JsonModel.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -31,9 +35,10 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableStruct<System::DateTimeOffset>(this.RawData, "archived_at");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
         }
-        init { JsonModel.Set(this._rawData, "archived_at", value); }
+        init { this._rawData.Set("archived_at", value); }
     }
 
     /// <summary>
@@ -44,12 +49,10 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableStruct<System::DateTimeOffset>(
-                this.RawData,
-                "cancel_initiated_at"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("cancel_initiated_at");
         }
-        init { JsonModel.Set(this._rawData, "cancel_initiated_at", value); }
+        init { this._rawData.Set("cancel_initiated_at", value); }
     }
 
     /// <summary>
@@ -60,9 +63,10 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullStruct<System::DateTimeOffset>(this.RawData, "created_at");
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
         }
-        init { JsonModel.Set(this._rawData, "created_at", value); }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -76,9 +80,10 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableStruct<System::DateTimeOffset>(this.RawData, "ended_at");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("ended_at");
         }
-        init { JsonModel.Set(this._rawData, "ended_at", value); }
+        init { this._rawData.Set("ended_at", value); }
     }
 
     /// <summary>
@@ -89,9 +94,10 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullStruct<System::DateTimeOffset>(this.RawData, "expires_at");
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("expires_at");
         }
-        init { JsonModel.Set(this._rawData, "expires_at", value); }
+        init { this._rawData.Set("expires_at", value); }
     }
 
     /// <summary>
@@ -101,12 +107,12 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<ApiEnum<string, ProcessingStatus>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, ProcessingStatus>>(
                 "processing_status"
             );
         }
-        init { JsonModel.Set(this._rawData, "processing_status", value); }
+        init { this._rawData.Set("processing_status", value); }
     }
 
     /// <summary>
@@ -120,12 +126,10 @@ public sealed record class BetaMessageBatch : JsonModel
     {
         get
         {
-            return JsonModel.GetNotNullClass<BetaMessageBatchRequestCounts>(
-                this.RawData,
-                "request_counts"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessageBatchRequestCounts>("request_counts");
         }
-        init { JsonModel.Set(this._rawData, "request_counts", value); }
+        init { this._rawData.Set("request_counts", value); }
     }
 
     /// <summary>
@@ -135,10 +139,14 @@ public sealed record class BetaMessageBatch : JsonModel
     /// <para>Results in the file are not guaranteed to be in the same order as requests.
     /// Use the `custom_id` field to match results to requests.</para>
     /// </summary>
-    public required string? ResultsURL
+    public required string? ResultsUrl
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "results_url"); }
-        init { JsonModel.Set(this._rawData, "results_url", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("results_url");
+        }
+        init { this._rawData.Set("results_url", value); }
     }
 
     /// <summary>
@@ -148,8 +156,12 @@ public sealed record class BetaMessageBatch : JsonModel
     /// </summary>
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -163,13 +175,8 @@ public sealed record class BetaMessageBatch : JsonModel
         _ = this.ExpiresAt;
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
-        _ = this.ResultsURL;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_batch\"")
-            )
-        )
+        _ = this.ResultsUrl;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_batch")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -177,7 +184,7 @@ public sealed record class BetaMessageBatch : JsonModel
 
     public BetaMessageBatch()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch");
     }
 
     public BetaMessageBatch(BetaMessageBatch betaMessageBatch)
@@ -185,16 +192,16 @@ public sealed record class BetaMessageBatch : JsonModel
 
     public BetaMessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageBatch(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

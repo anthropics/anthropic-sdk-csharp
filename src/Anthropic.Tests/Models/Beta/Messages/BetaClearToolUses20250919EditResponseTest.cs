@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -16,9 +17,7 @@ public class BetaClearToolUses20250919EditResponseTest : TestBase
 
         long expectedClearedInputTokens = 0;
         long expectedClearedToolUses = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_tool_uses_20250919\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
 
         Assert.Equal(expectedClearedInputTokens, model.ClearedInputTokens);
         Assert.Equal(expectedClearedToolUses, model.ClearedToolUses);
@@ -34,8 +33,11 @@ public class BetaClearToolUses20250919EditResponseTest : TestBase
             ClearedToolUses = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919EditResponse>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919EditResponse>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -49,17 +51,16 @@ public class BetaClearToolUses20250919EditResponseTest : TestBase
             ClearedToolUses = 0,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919EditResponse>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         long expectedClearedInputTokens = 0;
         long expectedClearedToolUses = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_tool_uses_20250919\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
 
         Assert.Equal(expectedClearedInputTokens, deserialized.ClearedInputTokens);
         Assert.Equal(expectedClearedToolUses, deserialized.ClearedToolUses);

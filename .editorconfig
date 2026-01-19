@@ -25,6 +25,9 @@ dotnet_diagnostic.CA1510.severity = none  # Use ArgumentNullException throw help
 dotnet_diagnostic.IDE0060.severity = none # Caused by resource with no methods and no subresources
 dotnet_diagnostic.IDE1006.severity = none # Some names may not match up with C# conventions
 dotnet_diagnostic.IDE0290.severity = none # Don't prefer primary constructors
+dotnet_diagnostic.IDE0028.severity = none # "Collection initialization can be simplified" is a bit overzealous
+dotnet_diagnostic.IDE0090.severity = none # "Simplify 'new' expression" is a bit overzealous
+dotnet_diagnostic.IDE0059.severity = none # Sometimes we create "unnecessary" variables for clarity
 
 # For .NET Standard 2.0 support
 dotnet_diagnostic.IDE0057.severity = none # Caused by use of `.Substring(...)`

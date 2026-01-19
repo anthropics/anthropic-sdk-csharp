@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -15,7 +16,7 @@ public class BetaMemoryTool20250818StrReplaceCommandTest : TestBase
             Path = "/memories/preferences.txt",
         };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("str_replace");
         string expectedNewStr = "Favorite color: green";
         string expectedOldStr = "Favorite color: blue";
         string expectedPath = "/memories/preferences.txt";
@@ -36,9 +37,10 @@ public class BetaMemoryTool20250818StrReplaceCommandTest : TestBase
             Path = "/memories/preferences.txt",
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818StrReplaceCommand>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -54,13 +56,14 @@ public class BetaMemoryTool20250818StrReplaceCommandTest : TestBase
             Path = "/memories/preferences.txt",
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818StrReplaceCommand>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("str_replace");
         string expectedNewStr = "Favorite color: green";
         string expectedOldStr = "Favorite color: blue";
         string expectedPath = "/memories/preferences.txt";

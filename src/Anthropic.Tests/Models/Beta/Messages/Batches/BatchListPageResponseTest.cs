@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages.Batches;
 
 namespace Anthropic.Tests.Models.Beta.Messages.Batches;
@@ -31,7 +32,7 @@ public class BatchListPageResponseTest : TestBase
                         Processing = 100,
                         Succeeded = 50,
                     },
-                    ResultsURL =
+                    ResultsUrl =
                         "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
                 },
             ],
@@ -59,7 +60,7 @@ public class BatchListPageResponseTest : TestBase
                     Processing = 100,
                     Succeeded = 50,
                 },
-                ResultsURL =
+                ResultsUrl =
                     "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
             },
         ];
@@ -101,7 +102,7 @@ public class BatchListPageResponseTest : TestBase
                         Processing = 100,
                         Succeeded = 50,
                     },
-                    ResultsURL =
+                    ResultsUrl =
                         "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
                 },
             ],
@@ -110,8 +111,11 @@ public class BatchListPageResponseTest : TestBase
             LastID = "last_id",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BatchListPageResponse>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BatchListPageResponse>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -140,7 +144,7 @@ public class BatchListPageResponseTest : TestBase
                         Processing = 100,
                         Succeeded = 50,
                     },
-                    ResultsURL =
+                    ResultsUrl =
                         "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
                 },
             ],
@@ -149,8 +153,11 @@ public class BatchListPageResponseTest : TestBase
             LastID = "last_id",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BatchListPageResponse>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BatchListPageResponse>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         List<BetaMessageBatch> expectedData =
@@ -172,7 +179,7 @@ public class BatchListPageResponseTest : TestBase
                     Processing = 100,
                     Succeeded = 50,
                 },
-                ResultsURL =
+                ResultsUrl =
                     "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
             },
         ];
@@ -214,7 +221,7 @@ public class BatchListPageResponseTest : TestBase
                         Processing = 100,
                         Succeeded = 50,
                     },
-                    ResultsURL =
+                    ResultsUrl =
                         "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
                 },
             ],

@@ -15,44 +15,72 @@ public sealed record class CitationsSearchResultLocation : JsonModel
 {
     public required string CitedText
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { JsonModel.Set(this._rawData, "cited_text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("cited_text");
+        }
+        init { this._rawData.Set("cited_text", value); }
     }
 
     public required long EndBlockIndex
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "end_block_index"); }
-        init { JsonModel.Set(this._rawData, "end_block_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("end_block_index");
+        }
+        init { this._rawData.Set("end_block_index", value); }
     }
 
     public required long SearchResultIndex
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "search_result_index"); }
-        init { JsonModel.Set(this._rawData, "search_result_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("search_result_index");
+        }
+        init { this._rawData.Set("search_result_index", value); }
     }
 
     public required string Source
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "source"); }
-        init { JsonModel.Set(this._rawData, "source", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("source");
+        }
+        init { this._rawData.Set("source", value); }
     }
 
     public required long StartBlockIndex
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "start_block_index"); }
-        init { JsonModel.Set(this._rawData, "start_block_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("start_block_index");
+        }
+        init { this._rawData.Set("start_block_index", value); }
     }
 
     public required string? Title
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawData, "title"); }
-        init { JsonModel.Set(this._rawData, "title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("title");
+        }
+        init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -67,7 +95,7 @@ public sealed record class CitationsSearchResultLocation : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"search_result_location\"")
+                JsonSerializer.SerializeToElement("search_result_location")
             )
         )
         {
@@ -77,7 +105,7 @@ public sealed record class CitationsSearchResultLocation : JsonModel
 
     public CitationsSearchResultLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result_location\"");
+        this.Type = JsonSerializer.SerializeToElement("search_result_location");
     }
 
     public CitationsSearchResultLocation(
@@ -87,16 +115,16 @@ public sealed record class CitationsSearchResultLocation : JsonModel
 
     public CitationsSearchResultLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result_location\"");
+        this.Type = JsonSerializer.SerializeToElement("search_result_location");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     CitationsSearchResultLocation(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

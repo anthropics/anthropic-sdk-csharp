@@ -18,14 +18,22 @@ public sealed record class ToolBash20250124 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -35,24 +43,20 @@ public sealed record class ToolBash20250124 : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.Deserialize<JsonElement>("\"bash\"")))
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("bash")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("bash_20250124")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -61,8 +65,8 @@ public sealed record class ToolBash20250124 : JsonModel
 
     public ToolBash20250124()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("bash");
+        this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
     public ToolBash20250124(ToolBash20250124 toolBash20250124)
@@ -70,17 +74,17 @@ public sealed record class ToolBash20250124 : JsonModel
 
     public ToolBash20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("bash");
+        this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ToolBash20250124(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

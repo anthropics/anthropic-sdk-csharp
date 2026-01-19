@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -12,31 +13,31 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
             RetrievedAt = "retrieved_at",
         };
 
         BetaRequestDocumentBlock expectedContent = new()
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_result");
+        string expectedUrl = "url";
         string expectedRetrievedAt = "retrieved_at";
 
         Assert.Equal(expectedContent, model.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedURL, model.URL);
+        Assert.Equal(expectedUrl, model.Url);
         Assert.Equal(expectedRetrievedAt, model.RetrievedAt);
     }
 
@@ -47,18 +48,21 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
             RetrievedAt = "retrieved_at",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -70,35 +74,38 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
             RetrievedAt = "retrieved_at",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaRequestDocumentBlock expectedContent = new()
         {
-            Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-            CacheControl = new() { TTL = TTL.TTL5m },
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations = new() { Enabled = true },
             Context = "x",
             Title = "x",
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_result\"");
-        string expectedURL = "url";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_result");
+        string expectedUrl = "url";
         string expectedRetrievedAt = "retrieved_at";
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedURL, deserialized.URL);
+        Assert.Equal(expectedUrl, deserialized.Url);
         Assert.Equal(expectedRetrievedAt, deserialized.RetrievedAt);
     }
 
@@ -109,13 +116,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
             RetrievedAt = "retrieved_at",
         };
 
@@ -129,13 +136,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
         };
 
         Assert.Null(model.RetrievedAt);
@@ -149,13 +156,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
         };
 
         model.Validate();
@@ -168,13 +175,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
 
             RetrievedAt = null,
         };
@@ -190,13 +197,13 @@ public class BetaWebFetchBlockParamTest : TestBase
         {
             Content = new()
             {
-                Source = new BetaBase64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
+                Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
                 Citations = new() { Enabled = true },
                 Context = "x",
                 Title = "x",
             },
-            URL = "url",
+            Url = "url",
 
             RetrievedAt = null,
         };

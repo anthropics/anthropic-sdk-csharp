@@ -13,25 +13,28 @@ public sealed record class BetaThinkingTurns : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public required long Value
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "value"); }
-        init { JsonModel.Set(this._rawData, "value", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("value");
+        }
+        init { this._rawData.Set("value", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"thinking_turns\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("thinking_turns")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -40,7 +43,7 @@ public sealed record class BetaThinkingTurns : JsonModel
 
     public BetaThinkingTurns()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_turns\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking_turns");
     }
 
     public BetaThinkingTurns(BetaThinkingTurns betaThinkingTurns)
@@ -48,16 +51,16 @@ public sealed record class BetaThinkingTurns : JsonModel
 
     public BetaThinkingTurns(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking_turns\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking_turns");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaThinkingTurns(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

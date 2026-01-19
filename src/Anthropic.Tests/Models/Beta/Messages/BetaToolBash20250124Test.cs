@@ -14,7 +14,7 @@ public class BetaToolBash20250124Test : TestBase
         var model = new BetaToolBash20250124
         {
             AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -26,13 +26,13 @@ public class BetaToolBash20250124Test : TestBase
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_20250124");
         List<ApiEnum<string, BetaToolBash20250124AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolBash20250124AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -74,7 +74,7 @@ public class BetaToolBash20250124Test : TestBase
         var model = new BetaToolBash20250124
         {
             AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -86,8 +86,11 @@ public class BetaToolBash20250124Test : TestBase
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -98,7 +101,7 @@ public class BetaToolBash20250124Test : TestBase
         var model = new BetaToolBash20250124
         {
             AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -110,17 +113,20 @@ public class BetaToolBash20250124Test : TestBase
             Strict = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolBash20250124>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_20250124");
         List<ApiEnum<string, BetaToolBash20250124AllowedCaller>> expectedAllowedCallers =
         [
             BetaToolBash20250124AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         List<Dictionary<string, JsonElement>> expectedInputExamples =
         [
@@ -162,7 +168,7 @@ public class BetaToolBash20250124Test : TestBase
         var model = new BetaToolBash20250124
         {
             AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             InputExamples =
             [
@@ -180,7 +186,7 @@ public class BetaToolBash20250124Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaToolBash20250124 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaToolBash20250124 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         Assert.Null(model.AllowedCallers);
         Assert.False(model.RawData.ContainsKey("allowed_callers"));
@@ -195,7 +201,7 @@ public class BetaToolBash20250124Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaToolBash20250124 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaToolBash20250124 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }
@@ -205,7 +211,7 @@ public class BetaToolBash20250124Test : TestBase
     {
         var model = new BetaToolBash20250124
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -229,7 +235,7 @@ public class BetaToolBash20250124Test : TestBase
     {
         var model = new BetaToolBash20250124
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -344,7 +350,7 @@ public class BetaToolBash20250124AllowedCallerTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolBash20250124AllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -372,7 +378,7 @@ public class BetaToolBash20250124AllowedCallerTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolBash20250124AllowedCaller>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

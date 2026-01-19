@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -26,7 +27,7 @@ public class BetaToolUseBlockTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         BetaToolUseBlockCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, model.ID);
@@ -56,8 +57,11 @@ public class BetaToolUseBlockTest : TestBase
             Caller = new BetaDirectCaller(),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -76,8 +80,11 @@ public class BetaToolUseBlockTest : TestBase
             Caller = new BetaDirectCaller(),
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
@@ -86,7 +93,7 @@ public class BetaToolUseBlockTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
         BetaToolUseBlockCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -197,23 +204,26 @@ public class BetaToolUseBlockCallerTest : TestBase
     [Fact]
     public void BetaDirectValidationWorks()
     {
-        BetaToolUseBlockCaller value = new(new BetaDirectCaller());
+        BetaToolUseBlockCaller value = new BetaDirectCaller();
         value.Validate();
     }
 
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        BetaToolUseBlockCaller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
+        BetaToolUseBlockCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
         value.Validate();
     }
 
     [Fact]
     public void BetaDirectSerializationRoundtripWorks()
     {
-        BetaToolUseBlockCaller value = new(new BetaDirectCaller());
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockCaller>(element);
+        BetaToolUseBlockCaller value = new BetaDirectCaller();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -221,9 +231,12 @@ public class BetaToolUseBlockCallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        BetaToolUseBlockCaller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
-        string element = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockCaller>(element);
+        BetaToolUseBlockCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

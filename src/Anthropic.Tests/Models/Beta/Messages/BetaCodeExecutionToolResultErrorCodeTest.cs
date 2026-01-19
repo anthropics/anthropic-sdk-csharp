@@ -24,10 +24,7 @@ public class BetaCodeExecutionToolResultErrorCodeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionToolResultErrorCode>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -56,10 +53,7 @@ public class BetaCodeExecutionToolResultErrorCodeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionToolResultErrorCode>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionToolResultErrorCode>

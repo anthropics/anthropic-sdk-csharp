@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -14,7 +15,7 @@ public class BetaMemoryTool20250818CreateCommandTest : TestBase
             Path = "/memories/notes.txt",
         };
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"create\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("create");
         string expectedFileText =
             "Meeting notes:\n- Discussed project timeline\n- Next steps defined\n";
         string expectedPath = "/memories/notes.txt";
@@ -33,8 +34,11 @@ public class BetaMemoryTool20250818CreateCommandTest : TestBase
             Path = "/memories/notes.txt",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818CreateCommand>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818CreateCommand>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -48,11 +52,14 @@ public class BetaMemoryTool20250818CreateCommandTest : TestBase
             Path = "/memories/notes.txt",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818CreateCommand>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMemoryTool20250818CreateCommand>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedCommand = JsonSerializer.Deserialize<JsonElement>("\"create\"");
+        JsonElement expectedCommand = JsonSerializer.SerializeToElement("create");
         string expectedFileText =
             "Meeting notes:\n- Discussed project timeline\n- Next steps defined\n";
         string expectedPath = "/memories/notes.txt";

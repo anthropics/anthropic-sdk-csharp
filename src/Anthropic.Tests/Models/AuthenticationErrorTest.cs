@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models;
 
 namespace Anthropic.Tests.Models;
@@ -11,9 +12,7 @@ public class AuthenticationErrorTest : TestBase
         var model = new AuthenticationError { Message = "message" };
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"authentication_error\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("authentication_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -24,8 +23,11 @@ public class AuthenticationErrorTest : TestBase
     {
         var model = new AuthenticationError { Message = "message" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<AuthenticationError>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<AuthenticationError>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -35,14 +37,15 @@ public class AuthenticationErrorTest : TestBase
     {
         var model = new AuthenticationError { Message = "message" };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<AuthenticationError>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<AuthenticationError>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"authentication_error\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("authentication_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

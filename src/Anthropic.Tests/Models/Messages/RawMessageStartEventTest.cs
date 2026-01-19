@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -32,7 +33,7 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -74,7 +75,7 @@ public class RawMessageStartEventTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -88,7 +89,7 @@ public class RawMessageStartEventTest : TestBase
                 ServiceTier = UsageServiceTier.Standard,
             },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -121,7 +122,7 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -141,8 +142,11 @@ public class RawMessageStartEventTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -174,7 +178,7 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -194,8 +198,11 @@ public class RawMessageStartEventTest : TestBase
             },
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawMessageStartEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         Message expectedMessage = new()
@@ -220,7 +227,7 @@ public class RawMessageStartEventTest : TestBase
                     Text = "Hi! My name is Claude.",
                 },
             ],
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -234,7 +241,7 @@ public class RawMessageStartEventTest : TestBase
                 ServiceTier = UsageServiceTier.Standard,
             },
         };
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message_start");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -267,7 +274,7 @@ public class RawMessageStartEventTest : TestBase
                         Text = "Hi! My name is Claude.",
                     },
                 ],
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()

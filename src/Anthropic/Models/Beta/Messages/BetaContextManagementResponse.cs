@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,8 +20,18 @@ public sealed record class BetaContextManagementResponse : JsonModel
     /// </summary>
     public required IReadOnlyList<AppliedEdit> AppliedEdits
     {
-        get { return JsonModel.GetNotNullClass<List<AppliedEdit>>(this.RawData, "applied_edits"); }
-        init { JsonModel.Set(this._rawData, "applied_edits", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<AppliedEdit>>("applied_edits");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<AppliedEdit>>(
+                "applied_edits",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -41,14 +52,14 @@ public sealed record class BetaContextManagementResponse : JsonModel
 
     public BetaContextManagementResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContextManagementResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -61,7 +72,7 @@ public sealed record class BetaContextManagementResponse : JsonModel
     }
 
     [SetsRequiredMembers]
-    public BetaContextManagementResponse(List<AppliedEdit> appliedEdits)
+    public BetaContextManagementResponse(IReadOnlyList<AppliedEdit> appliedEdits)
         : this()
     {
         this.AppliedEdits = appliedEdits;
@@ -77,7 +88,7 @@ class BetaContextManagementResponseFromRaw : IFromRawJson<BetaContextManagementR
 }
 
 [JsonConverter(typeof(AppliedEditConverter))]
-public record class AppliedEdit
+public record class AppliedEdit : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -85,7 +96,13 @@ public record class AppliedEdit
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public long ClearedInputTokens
@@ -272,7 +289,7 @@ public record class AppliedEdit
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -297,6 +314,9 @@ public record class AppliedEdit
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class AppliedEditConverter : JsonConverter<AppliedEdit>

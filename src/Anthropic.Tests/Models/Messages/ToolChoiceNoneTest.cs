@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -10,7 +11,7 @@ public class ToolChoiceNoneTest : TestBase
     {
         var model = new ToolChoiceNone { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("none");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -20,8 +21,11 @@ public class ToolChoiceNoneTest : TestBase
     {
         var model = new ToolChoiceNone { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -31,11 +35,14 @@ public class ToolChoiceNoneTest : TestBase
     {
         var model = new ToolChoiceNone { };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolChoiceNone>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("none");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

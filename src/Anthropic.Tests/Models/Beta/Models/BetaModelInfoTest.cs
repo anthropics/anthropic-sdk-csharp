@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Models;
 
 namespace Anthropic.Tests.Models.Beta.Models;
@@ -19,7 +20,7 @@ public class BetaModelInfoTest : TestBase
         string expectedID = "claude-sonnet-4-20250514";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z");
         string expectedDisplayName = "Claude Sonnet 4";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("model");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
@@ -37,8 +38,11 @@ public class BetaModelInfoTest : TestBase
             DisplayName = "Claude Sonnet 4",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaModelInfo>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaModelInfo>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -53,14 +57,17 @@ public class BetaModelInfoTest : TestBase
             DisplayName = "Claude Sonnet 4",
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaModelInfo>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaModelInfo>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "claude-sonnet-4-20250514";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2025-02-19T00:00:00Z");
         string expectedDisplayName = "Claude Sonnet 4";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("model");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);

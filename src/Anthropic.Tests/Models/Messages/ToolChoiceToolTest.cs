@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -11,7 +12,7 @@ public class ToolChoiceToolTest : TestBase
         var model = new ToolChoiceTool { Name = "name", DisableParallelToolUse = true };
 
         string expectedName = "name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool");
         bool expectedDisableParallelToolUse = true;
 
         Assert.Equal(expectedName, model.Name);
@@ -24,8 +25,11 @@ public class ToolChoiceToolTest : TestBase
     {
         var model = new ToolChoiceTool { Name = "name", DisableParallelToolUse = true };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -35,12 +39,15 @@ public class ToolChoiceToolTest : TestBase
     {
         var model = new ToolChoiceTool { Name = "name", DisableParallelToolUse = true };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolChoiceTool>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedName = "name";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool");
         bool expectedDisableParallelToolUse = true;
 
         Assert.Equal(expectedName, deserialized.Name);

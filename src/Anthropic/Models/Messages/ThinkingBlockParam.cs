@@ -13,20 +13,32 @@ public sealed record class ThinkingBlockParam : JsonModel
 {
     public required string Signature
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "signature"); }
-        init { JsonModel.Set(this._rawData, "signature", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("signature");
+        }
+        init { this._rawData.Set("signature", value); }
     }
 
     public required string Thinking
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "thinking"); }
-        init { JsonModel.Set(this._rawData, "thinking", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("thinking");
+        }
+        init { this._rawData.Set("thinking", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -34,12 +46,7 @@ public sealed record class ThinkingBlockParam : JsonModel
     {
         _ = this.Signature;
         _ = this.Thinking;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"thinking\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("thinking")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -47,7 +54,7 @@ public sealed record class ThinkingBlockParam : JsonModel
 
     public ThinkingBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking");
     }
 
     public ThinkingBlockParam(ThinkingBlockParam thinkingBlockParam)
@@ -55,16 +62,16 @@ public sealed record class ThinkingBlockParam : JsonModel
 
     public ThinkingBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ThinkingBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

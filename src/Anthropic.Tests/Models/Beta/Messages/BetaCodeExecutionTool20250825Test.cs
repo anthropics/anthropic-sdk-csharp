@@ -14,20 +14,18 @@ public class BetaCodeExecutionTool20250825Test : TestBase
         var model = new BetaCodeExecutionTool20250825
         {
             AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250825\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250825");
         List<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>> expectedAllowedCallers =
         [
             BetaCodeExecutionTool20250825AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -50,13 +48,16 @@ public class BetaCodeExecutionTool20250825Test : TestBase
         var model = new BetaCodeExecutionTool20250825
         {
             AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -67,24 +68,25 @@ public class BetaCodeExecutionTool20250825Test : TestBase
         var model = new BetaCodeExecutionTool20250825
         {
             AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionTool20250825>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"code_execution_20250825\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("code_execution");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20250825");
         List<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>> expectedAllowedCallers =
         [
             BetaCodeExecutionTool20250825AllowedCaller.Direct,
         ];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -107,7 +109,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
         var model = new BetaCodeExecutionTool20250825
         {
             AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -118,7 +120,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaCodeExecutionTool20250825 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaCodeExecutionTool20250825 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         Assert.Null(model.AllowedCallers);
         Assert.False(model.RawData.ContainsKey("allowed_callers"));
@@ -131,7 +133,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaCodeExecutionTool20250825 { CacheControl = new() { TTL = TTL.TTL5m } };
+        var model = new BetaCodeExecutionTool20250825 { CacheControl = new() { Ttl = Ttl.Ttl5m } };
 
         model.Validate();
     }
@@ -141,7 +143,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -162,7 +164,7 @@ public class BetaCodeExecutionTool20250825Test : TestBase
     {
         var model = new BetaCodeExecutionTool20250825
         {
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -249,10 +251,7 @@ public class BetaCodeExecutionTool20250825AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -279,10 +278,7 @@ public class BetaCodeExecutionTool20250825AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>

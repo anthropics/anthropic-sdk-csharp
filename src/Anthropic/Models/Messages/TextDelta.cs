@@ -13,26 +13,29 @@ public sealed record class TextDelta : JsonModel
 {
     public required string Text
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "text"); }
-        init { JsonModel.Set(this._rawData, "text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("text");
+        }
+        init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"text_delta\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text_delta")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -40,7 +43,7 @@ public sealed record class TextDelta : JsonModel
 
     public TextDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("text_delta");
     }
 
     public TextDelta(TextDelta textDelta)
@@ -48,16 +51,16 @@ public sealed record class TextDelta : JsonModel
 
     public TextDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("text_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     TextDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

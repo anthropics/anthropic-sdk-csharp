@@ -16,8 +16,12 @@ public sealed record class ToolChoiceAuto : JsonModel
 {
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -28,7 +32,11 @@ public sealed record class ToolChoiceAuto : JsonModel
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("disable_parallel_tool_use");
+        }
         init
         {
             if (value == null)
@@ -36,14 +44,14 @@ public sealed record class ToolChoiceAuto : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "disable_parallel_tool_use", value);
+            this._rawData.Set("disable_parallel_tool_use", value);
         }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"auto\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("auto")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -52,7 +60,7 @@ public sealed record class ToolChoiceAuto : JsonModel
 
     public ToolChoiceAuto()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
+        this.Type = JsonSerializer.SerializeToElement("auto");
     }
 
     public ToolChoiceAuto(ToolChoiceAuto toolChoiceAuto)
@@ -60,16 +68,16 @@ public sealed record class ToolChoiceAuto : JsonModel
 
     public ToolChoiceAuto(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
+        this.Type = JsonSerializer.SerializeToElement("auto");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ToolChoiceAuto(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

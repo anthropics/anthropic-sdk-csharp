@@ -15,14 +15,22 @@ public sealed record class RawContentBlockStopEvent : JsonModel
 {
     public required long Index
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { JsonModel.Set(this._rawData, "index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("index");
+        }
+        init { this._rawData.Set("index", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -32,7 +40,7 @@ public sealed record class RawContentBlockStopEvent : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"")
+                JsonSerializer.SerializeToElement("content_block_stop")
             )
         )
         {
@@ -42,7 +50,7 @@ public sealed record class RawContentBlockStopEvent : JsonModel
 
     public RawContentBlockStopEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_stop");
     }
 
     public RawContentBlockStopEvent(RawContentBlockStopEvent rawContentBlockStopEvent)
@@ -50,16 +58,16 @@ public sealed record class RawContentBlockStopEvent : JsonModel
 
     public RawContentBlockStopEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_stop");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RawContentBlockStopEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

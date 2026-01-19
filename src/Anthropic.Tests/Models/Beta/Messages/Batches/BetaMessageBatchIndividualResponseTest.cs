@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages.Batches;
 using Anthropic.Models.Messages;
 using Messages = Anthropic.Models.Beta.Messages;
@@ -60,7 +61,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -128,7 +129,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -204,7 +205,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -225,8 +226,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
             ),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchIndividualResponse>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchIndividualResponse>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -283,7 +287,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -304,8 +308,11 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
             ),
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchIndividualResponse>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageBatchIndividualResponse>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedCustomID = "my-custom-id-1";
@@ -355,7 +362,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                     ]
                 ),
-                Model = Model.ClaudeOpus4_5_20251101,
+                Model = Model.ClaudeSonnet4_5_20250929,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -431,7 +438,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Model = Model.ClaudeOpus4_5_20251101,
+                    Model = Model.ClaudeSonnet4_5_20250929,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()

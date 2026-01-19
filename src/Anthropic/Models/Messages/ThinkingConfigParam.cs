@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
@@ -17,7 +18,7 @@ namespace Anthropic.Models.Messages;
 /// for details.</para>
 /// </summary>
 [JsonConverter(typeof(ThinkingConfigParamConverter))]
-public record class ThinkingConfigParam
+public record class ThinkingConfigParam : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -25,7 +26,13 @@ public record class ThinkingConfigParam
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -182,7 +189,7 @@ public record class ThinkingConfigParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -202,6 +209,9 @@ public record class ThinkingConfigParam
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -12,7 +13,7 @@ public class TextBlockParamTest : TestBase
         var model = new TextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new CitationCharLocationParam()
@@ -27,8 +28,8 @@ public class TextBlockParamTest : TestBase
         };
 
         string expectedText = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<TextCitationParam> expectedCitations =
         [
             new CitationCharLocationParam()
@@ -58,7 +59,7 @@ public class TextBlockParamTest : TestBase
         var model = new TextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new CitationCharLocationParam()
@@ -72,8 +73,11 @@ public class TextBlockParamTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -84,7 +88,7 @@ public class TextBlockParamTest : TestBase
         var model = new TextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new CitationCharLocationParam()
@@ -98,13 +102,16 @@ public class TextBlockParamTest : TestBase
             ],
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TextBlockParam>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedText = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"text\"");
-        CacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         List<TextCitationParam> expectedCitations =
         [
             new CitationCharLocationParam()
@@ -134,7 +141,7 @@ public class TextBlockParamTest : TestBase
         var model = new TextBlockParam
         {
             Text = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Citations =
             [
                 new CitationCharLocationParam()

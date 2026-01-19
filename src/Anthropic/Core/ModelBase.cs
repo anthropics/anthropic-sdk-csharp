@@ -5,13 +5,14 @@ using Anthropic.Models.Messages;
 using Batches = Anthropic.Models.Messages.Batches;
 using Files = Anthropic.Models.Beta.Files;
 using Messages = Anthropic.Models.Beta.Messages;
+using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
 
 namespace Anthropic.Core;
 
 /// <summary>
 /// The base class for all API objects with properties.
 ///
-/// <para>API objects such as enums and unions do not inherit from this class.</para>
+/// <para>API objects such as enums do not inherit from this class.</para>
 /// </summary>
 public abstract record class ModelBase
 {
@@ -24,8 +25,9 @@ public abstract record class ModelBase
     {
         Converters =
         {
+            new FrozenDictionaryConverterFactory(),
             new ApiEnumConverter<string, MediaType>(),
-            new ApiEnumConverter<string, TTL>(),
+            new ApiEnumConverter<string, Ttl>(),
             new ApiEnumConverter<string, Role>(),
             new ApiEnumConverter<string, Model>(),
             new ApiEnumConverter<string, StopReason>(),
@@ -43,7 +45,7 @@ public abstract record class ModelBase
                 string,
                 Messages::BetaBashCodeExecutionToolResultErrorParamErrorCode
             >(),
-            new ApiEnumConverter<string, Messages::TTL>(),
+            new ApiEnumConverter<string, Messages::Ttl>(),
             new ApiEnumConverter<string, Messages::AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionTool20250825AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaCodeExecutionToolResultErrorCode>(),
@@ -91,19 +93,13 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::BetaWebSearchTool20250305AllowedCaller>(),
             new ApiEnumConverter<string, Messages::BetaWebSearchToolResultErrorCode>(),
             new ApiEnumConverter<string, Messages::ServiceTier>(),
-            new ApiEnumConverter<
-                string,
-                global::Anthropic.Models.Beta.Messages.Batches.ProcessingStatus
-            >(),
-            new ApiEnumConverter<
-                string,
-                global::Anthropic.Models.Beta.Messages.Batches.ServiceTier
-            >(),
+            new ApiEnumConverter<string, MessagesBatches::ProcessingStatus>(),
+            new ApiEnumConverter<string, MessagesBatches::ServiceTier>(),
             new ApiEnumConverter<string, Files::Type>(),
         },
     };
 
-    private protected static readonly JsonSerializerOptions ToStringSerializerOptions = new(
+    internal static readonly JsonSerializerOptions ToStringSerializerOptions = new(
         SerializerOptions
     )
     {

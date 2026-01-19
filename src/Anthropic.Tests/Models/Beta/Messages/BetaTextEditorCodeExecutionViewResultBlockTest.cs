@@ -24,8 +24,8 @@ public class BetaTextEditorCodeExecutionViewResultBlockTest : TestBase
         long expectedNumLines = 0;
         long expectedStartLine = 0;
         long expectedTotalLines = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_view_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_view_result"
         );
 
         Assert.Equal(expectedContent, model.Content);
@@ -48,9 +48,10 @@ public class BetaTextEditorCodeExecutionViewResultBlockTest : TestBase
             TotalLines = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlock>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -68,9 +69,10 @@ public class BetaTextEditorCodeExecutionViewResultBlockTest : TestBase
             TotalLines = 0,
         };
 
-        string element = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaTextEditorCodeExecutionViewResultBlock>(
-            element
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
@@ -79,8 +81,8 @@ public class BetaTextEditorCodeExecutionViewResultBlockTest : TestBase
         long expectedNumLines = 0;
         long expectedStartLine = 0;
         long expectedTotalLines = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_view_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_view_result"
         );
 
         Assert.Equal(expectedContent, deserialized.Content);
@@ -112,7 +114,7 @@ public class FileTypeTest : TestBase
     [Theory]
     [InlineData(FileType.Text)]
     [InlineData(FileType.Image)]
-    [InlineData(FileType.PDF)]
+    [InlineData(FileType.Pdf)]
     public void Validation_Works(FileType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -124,7 +126,7 @@ public class FileTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
 
@@ -135,7 +137,7 @@ public class FileTypeTest : TestBase
     [Theory]
     [InlineData(FileType.Text)]
     [InlineData(FileType.Image)]
-    [InlineData(FileType.PDF)]
+    [InlineData(FileType.Pdf)]
     public void SerializationRoundtrip_Works(FileType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -154,7 +156,7 @@ public class FileTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

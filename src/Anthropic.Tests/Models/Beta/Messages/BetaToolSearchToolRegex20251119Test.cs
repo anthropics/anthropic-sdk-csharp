@@ -15,20 +15,18 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
             AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_regex\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("tool_search_tool_regex");
         ApiEnum<string, BetaToolSearchToolRegex20251119Type> expectedType =
             BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119;
         List<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
         > expectedAllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -52,13 +50,16 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
             AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -70,24 +71,25 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
             AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolRegex20251119>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedName = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_regex\""
-        );
+        JsonElement expectedName = JsonSerializer.SerializeToElement("tool_search_tool_regex");
         ApiEnum<string, BetaToolSearchToolRegex20251119Type> expectedType =
             BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119;
         List<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
         > expectedAllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct];
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         bool expectedDeferLoading = true;
         bool expectedStrict = true;
 
@@ -111,7 +113,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
             AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             DeferLoading = true,
             Strict = true,
         };
@@ -125,7 +127,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var model = new BetaToolSearchToolRegex20251119
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         Assert.Null(model.AllowedCallers);
@@ -142,7 +144,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var model = new BetaToolSearchToolRegex20251119
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -154,7 +156,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var model = new BetaToolSearchToolRegex20251119
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -176,7 +178,7 @@ public class BetaToolSearchToolRegex20251119Test : TestBase
         var model = new BetaToolSearchToolRegex20251119
         {
             Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             AllowedCallers = null,
@@ -267,10 +269,7 @@ public class BetaToolSearchToolRegex20251119TypeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119Type>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -297,10 +296,7 @@ public class BetaToolSearchToolRegex20251119TypeTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119Type>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119Type>
@@ -327,10 +323,7 @@ public class BetaToolSearchToolRegex20251119AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
@@ -357,10 +350,7 @@ public class BetaToolSearchToolRegex20251119AllowedCallerTest : TestBase
     {
         var value = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>
-        >(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolRegex20251119AllowedCaller>

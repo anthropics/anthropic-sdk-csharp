@@ -16,9 +16,7 @@ public class BetaWebFetchToolResultErrorBlockTest : TestBase
 
         ApiEnum<string, BetaWebFetchToolResultErrorCode> expectedErrorCode =
             BetaWebFetchToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_fetch_tool_result_error\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_tool_result_error");
 
         Assert.Equal(expectedErrorCode, model.ErrorCode);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -32,8 +30,11 @@ public class BetaWebFetchToolResultErrorBlockTest : TestBase
             ErrorCode = BetaWebFetchToolResultErrorCode.InvalidToolInput,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -46,15 +47,16 @@ public class BetaWebFetchToolResultErrorBlockTest : TestBase
             ErrorCode = BetaWebFetchToolResultErrorCode.InvalidToolInput,
         };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         ApiEnum<string, BetaWebFetchToolResultErrorCode> expectedErrorCode =
             BetaWebFetchToolResultErrorCode.InvalidToolInput;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_fetch_tool_result_error\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_tool_result_error");
 
         Assert.Equal(expectedErrorCode, deserialized.ErrorCode);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));

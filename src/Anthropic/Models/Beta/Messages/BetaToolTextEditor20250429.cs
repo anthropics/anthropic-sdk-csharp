@@ -1,6 +1,8 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -21,23 +23,32 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaToolTextEditor20250429AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return JsonModel.GetNullableClass<
-                List<ApiEnum<string, BetaToolTextEditor20250429AllowedCaller>>
-            >(this.RawData, "allowed_callers");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaToolTextEditor20250429AllowedCaller>>
+            >("allowed_callers");
         }
         init
         {
@@ -46,7 +57,9 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<
+                ApiEnum<string, BetaToolTextEditor20250429AllowedCaller>
+            >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
@@ -57,12 +70,10 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -71,7 +82,11 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
     /// </summary>
     public bool? DeferLoading
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
         init
         {
             if (value == null)
@@ -79,18 +94,18 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
-    public IReadOnlyList<Dictionary<string, JsonElement>>? InputExamples
+    public IReadOnlyList<IReadOnlyDictionary<string, JsonElement>>? InputExamples
     {
         get
         {
-            return JsonModel.GetNullableClass<List<Dictionary<string, JsonElement>>>(
-                this.RawData,
-                "input_examples"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<FrozenDictionary<string, JsonElement>>
+            >("input_examples");
         }
         init
         {
@@ -99,13 +114,27 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "input_examples", value);
+            this._rawData.Set<ImmutableArray<FrozenDictionary<string, JsonElement>>?>(
+                "input_examples",
+                value == null
+                    ? null
+                    : ImmutableArray.ToImmutableArray(
+                        Enumerable.Select(
+                            value,
+                            (item) => FrozenDictionary.ToFrozenDictionary(item)
+                        )
+                    )
+            );
         }
     }
 
     public bool? Strict
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
         init
         {
             if (value == null)
@@ -113,7 +142,7 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
@@ -123,7 +152,7 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"str_replace_based_edit_tool\"")
+                JsonSerializer.SerializeToElement("str_replace_based_edit_tool")
             )
         )
         {
@@ -132,7 +161,7 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250429\"")
+                JsonSerializer.SerializeToElement("text_editor_20250429")
             )
         )
         {
@@ -150,8 +179,8 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
 
     public BetaToolTextEditor20250429()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_based_edit_tool\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250429\"");
+        this.Name = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        this.Type = JsonSerializer.SerializeToElement("text_editor_20250429");
     }
 
     public BetaToolTextEditor20250429(BetaToolTextEditor20250429 betaToolTextEditor20250429)
@@ -159,17 +188,17 @@ public sealed record class BetaToolTextEditor20250429 : JsonModel
 
     public BetaToolTextEditor20250429(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"str_replace_based_edit_tool\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_editor_20250429\"");
+        this.Name = JsonSerializer.SerializeToElement("str_replace_based_edit_tool");
+        this.Type = JsonSerializer.SerializeToElement("text_editor_20250429");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolTextEditor20250429(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

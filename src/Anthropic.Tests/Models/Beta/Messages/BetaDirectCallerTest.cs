@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -10,7 +11,7 @@ public class BetaDirectCallerTest : TestBase
     {
         var model = new BetaDirectCaller { };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -20,8 +21,11 @@ public class BetaDirectCallerTest : TestBase
     {
         var model = new BetaDirectCaller { };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -31,11 +35,14 @@ public class BetaDirectCallerTest : TestBase
     {
         var model = new BetaDirectCaller { };
 
-        string element = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(element);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }

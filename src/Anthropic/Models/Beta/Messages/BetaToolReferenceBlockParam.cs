@@ -18,14 +18,22 @@ public sealed record class BetaToolReferenceBlockParam : JsonModel
 {
     public required string ToolName
     {
-        get { return JsonModel.GetNotNullClass<string>(this.RawData, "tool_name"); }
-        init { JsonModel.Set(this._rawData, "tool_name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_name");
+        }
+        init { this._rawData.Set("tool_name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -35,24 +43,17 @@ public sealed record class BetaToolReferenceBlockParam : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ToolName;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("tool_reference")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -61,7 +62,7 @@ public sealed record class BetaToolReferenceBlockParam : JsonModel
 
     public BetaToolReferenceBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_reference");
     }
 
     public BetaToolReferenceBlockParam(BetaToolReferenceBlockParam betaToolReferenceBlockParam)
@@ -69,16 +70,16 @@ public sealed record class BetaToolReferenceBlockParam : JsonModel
 
     public BetaToolReferenceBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_reference\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_reference");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolReferenceBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

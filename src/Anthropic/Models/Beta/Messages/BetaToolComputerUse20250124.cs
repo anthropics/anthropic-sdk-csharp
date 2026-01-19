@@ -1,6 +1,8 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -19,8 +21,12 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
     /// </summary>
     public required long DisplayHeightPx
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "display_height_px"); }
-        init { JsonModel.Set(this._rawData, "display_height_px", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("display_height_px");
+        }
+        init { this._rawData.Set("display_height_px", value); }
     }
 
     /// <summary>
@@ -28,8 +34,12 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
     /// </summary>
     public required long DisplayWidthPx
     {
-        get { return JsonModel.GetNotNullStruct<long>(this.RawData, "display_width_px"); }
-        init { JsonModel.Set(this._rawData, "display_width_px", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("display_width_px");
+        }
+        init { this._rawData.Set("display_width_px", value); }
     }
 
     /// <summary>
@@ -39,23 +49,32 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
     /// </summary>
     public JsonElement Name
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { JsonModel.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return JsonModel.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { JsonModel.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaToolComputerUse20250124AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return JsonModel.GetNullableClass<
-                List<ApiEnum<string, BetaToolComputerUse20250124AllowedCaller>>
-            >(this.RawData, "allowed_callers");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaToolComputerUse20250124AllowedCaller>>
+            >("allowed_callers");
         }
         init
         {
@@ -64,7 +83,9 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<
+                ApiEnum<string, BetaToolComputerUse20250124AllowedCaller>
+            >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
@@ -75,12 +96,10 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
     {
         get
         {
-            return JsonModel.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { JsonModel.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -89,7 +108,11 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
     /// </summary>
     public bool? DeferLoading
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
         init
         {
             if (value == null)
@@ -97,7 +120,7 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
@@ -106,18 +129,22 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
     /// </summary>
     public long? DisplayNumber
     {
-        get { return JsonModel.GetNullableStruct<long>(this.RawData, "display_number"); }
-        init { JsonModel.Set(this._rawData, "display_number", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("display_number");
+        }
+        init { this._rawData.Set("display_number", value); }
     }
 
-    public IReadOnlyList<Dictionary<string, JsonElement>>? InputExamples
+    public IReadOnlyList<IReadOnlyDictionary<string, JsonElement>>? InputExamples
     {
         get
         {
-            return JsonModel.GetNullableClass<List<Dictionary<string, JsonElement>>>(
-                this.RawData,
-                "input_examples"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<FrozenDictionary<string, JsonElement>>
+            >("input_examples");
         }
         init
         {
@@ -126,13 +153,27 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "input_examples", value);
+            this._rawData.Set<ImmutableArray<FrozenDictionary<string, JsonElement>>?>(
+                "input_examples",
+                value == null
+                    ? null
+                    : ImmutableArray.ToImmutableArray(
+                        Enumerable.Select(
+                            value,
+                            (item) => FrozenDictionary.ToFrozenDictionary(item)
+                        )
+                    )
+            );
         }
     }
 
     public bool? Strict
     {
-        get { return JsonModel.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
         init
         {
             if (value == null)
@@ -140,7 +181,7 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
                 return;
             }
 
-            JsonModel.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
@@ -149,19 +190,14 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
     {
         _ = this.DisplayHeightPx;
         _ = this.DisplayWidthPx;
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"computer\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("computer")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"computer_20250124\"")
+                JsonSerializer.SerializeToElement("computer_20250124")
             )
         )
         {
@@ -180,8 +216,8 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
 
     public BetaToolComputerUse20250124()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"computer_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("computer");
+        this.Type = JsonSerializer.SerializeToElement("computer_20250124");
     }
 
     public BetaToolComputerUse20250124(BetaToolComputerUse20250124 betaToolComputerUse20250124)
@@ -189,17 +225,17 @@ public sealed record class BetaToolComputerUse20250124 : JsonModel
 
     public BetaToolComputerUse20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"computer\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"computer_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("computer");
+        this.Type = JsonSerializer.SerializeToElement("computer_20250124");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolComputerUse20250124(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 

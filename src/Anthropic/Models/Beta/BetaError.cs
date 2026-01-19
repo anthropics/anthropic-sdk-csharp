@@ -2,12 +2,13 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
 [JsonConverter(typeof(BetaErrorConverter))]
-public record class BetaError
+public record class BetaError : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -15,7 +16,13 @@ public record class BetaError
 
     public JsonElement Json
     {
-        get { return this._element ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string Message
@@ -96,7 +103,7 @@ public record class BetaError
         this._element = element;
     }
 
-    public BetaError(BetaAPIError value, JsonElement? element = null)
+    public BetaError(BetaApiError value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -262,22 +269,22 @@ public record class BetaError
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaAPIError"/>.
+    /// type <see cref="BetaApiError"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickAPI(out var value)) {
-    ///     // `value` is of type `BetaAPIError`
+    /// if (instance.TryPickApi(out var value)) {
+    ///     // `value` is of type `BetaApiError`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickAPI([NotNullWhen(true)] out BetaAPIError? value)
+    public bool TryPickApi([NotNullWhen(true)] out BetaApiError? value)
     {
-        value = this.Value as BetaAPIError;
+        value = this.Value as BetaApiError;
         return value != null;
     }
 
@@ -323,7 +330,7 @@ public record class BetaError
     ///     (BetaNotFoundError value) => {...},
     ///     (BetaRateLimitError value) => {...},
     ///     (BetaGatewayTimeoutError value) => {...},
-    ///     (BetaAPIError value) => {...},
+    ///     (BetaApiError value) => {...},
     ///     (BetaOverloadedError value) => {...}
     /// );
     /// </code>
@@ -337,7 +344,7 @@ public record class BetaError
         Action<BetaNotFoundError> notFound,
         Action<BetaRateLimitError> rateLimit,
         Action<BetaGatewayTimeoutError> gatewayTimeout,
-        Action<BetaAPIError> api,
+        Action<BetaApiError> api,
         Action<BetaOverloadedError> overloaded
     )
     {
@@ -364,7 +371,7 @@ public record class BetaError
             case BetaGatewayTimeoutError value:
                 gatewayTimeout(value);
                 break;
-            case BetaAPIError value:
+            case BetaApiError value:
                 api(value);
                 break;
             case BetaOverloadedError value:
@@ -399,7 +406,7 @@ public record class BetaError
     ///     (BetaNotFoundError value) => {...},
     ///     (BetaRateLimitError value) => {...},
     ///     (BetaGatewayTimeoutError value) => {...},
-    ///     (BetaAPIError value) => {...},
+    ///     (BetaApiError value) => {...},
     ///     (BetaOverloadedError value) => {...}
     /// );
     /// </code>
@@ -413,7 +420,7 @@ public record class BetaError
         Func<BetaNotFoundError, T> notFound,
         Func<BetaRateLimitError, T> rateLimit,
         Func<BetaGatewayTimeoutError, T> gatewayTimeout,
-        Func<BetaAPIError, T> api,
+        Func<BetaApiError, T> api,
         Func<BetaOverloadedError, T> overloaded
     )
     {
@@ -426,7 +433,7 @@ public record class BetaError
             BetaNotFoundError value => notFound(value),
             BetaRateLimitError value => rateLimit(value),
             BetaGatewayTimeoutError value => gatewayTimeout(value),
-            BetaAPIError value => api(value),
+            BetaApiError value => api(value),
             BetaOverloadedError value => overloaded(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaError"
@@ -448,7 +455,7 @@ public record class BetaError
 
     public static implicit operator BetaError(BetaGatewayTimeoutError value) => new(value);
 
-    public static implicit operator BetaError(BetaAPIError value) => new(value);
+    public static implicit operator BetaError(BetaApiError value) => new(value);
 
     public static implicit operator BetaError(BetaOverloadedError value) => new(value);
 
@@ -462,7 +469,7 @@ public record class BetaError
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -490,6 +497,9 @@ public record class BetaError
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaErrorConverter : JsonConverter<BetaError>
@@ -664,7 +674,7 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaAPIError>(element, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaApiError>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
