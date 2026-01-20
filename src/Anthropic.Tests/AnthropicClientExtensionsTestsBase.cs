@@ -3659,7 +3659,7 @@ public abstract class AnthropicClientExtensionsTestsBase
             data: {"type":"content_block_stop","index":0}
 
             event: message_delta
-            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":2}}
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"input_tokens":15,"output_tokens":2}}
 
             event: message_stop
             data: {"type":"message_stop"}
@@ -3689,8 +3689,77 @@ public abstract class AnthropicClientExtensionsTestsBase
             .SelectMany(u => u.Contents.OfType<UsageContent>())
             .FirstOrDefault();
         Assert.NotNull(usageContent);
+
         Assert.Equal(15, usageContent.Details.InputTokenCount);
         Assert.Equal(2, usageContent.Details.OutputTokenCount);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponseAsync_UsageFromDeltaOverridesStartEvent()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: """
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":8,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":8}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"input_tokens":8,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":12}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "hello",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        Assert.NotEmpty(updates);
+        var usageUpdates = updates.Where(u => u.Contents.Any(c => c is UsageContent)).ToList();
+        Assert.NotEmpty(usageUpdates);
+
+        var usageContent = usageUpdates
+            .SelectMany(u => u.Contents.OfType<UsageContent>())
+            .FirstOrDefault();
+        Assert.NotNull(usageContent);
+
+        Assert.Equal(8, usageContent.Details.InputTokenCount);
+        Assert.Equal(12, usageContent.Details.OutputTokenCount);
+        Assert.Equal(20, usageContent.Details.TotalTokenCount);
     }
 
     [Fact]

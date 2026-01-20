@@ -320,15 +320,9 @@ public static class AnthropicBetaClientExtensions
                         finishReason = ToFinishReason(rawMessageDelta.Delta.StopReason);
                         if (rawMessageDelta.Usage is { } deltaUsage)
                         {
-                            UsageDetails current = ToUsageDetails(deltaUsage);
-                            if (usageDetails is null)
-                            {
-                                usageDetails = current;
-                            }
-                            else
-                            {
-                                usageDetails.Add(current);
-                            }
+                            // https://platform.claude.com/docs/en/build-with-claude/streaming
+                            // "The token counts shown in the usage field of the message_delta event are cumulative."
+                            usageDetails = ToUsageDetails(deltaUsage);
                         }
                         break;
 
