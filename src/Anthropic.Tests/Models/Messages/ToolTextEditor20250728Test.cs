@@ -120,4 +120,18 @@ public class ToolTextEditor20250728Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolTextEditor20250728
+        {
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxCharacters = 1,
+        };
+
+        ToolTextEditor20250728 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -96,8 +96,11 @@ public sealed record class BetaRequestDocumentBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("document");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaRequestDocumentBlock(BetaRequestDocumentBlock betaRequestDocumentBlock)
         : base(betaRequestDocumentBlock) { }
+#pragma warning restore CS8618
 
     public BetaRequestDocumentBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

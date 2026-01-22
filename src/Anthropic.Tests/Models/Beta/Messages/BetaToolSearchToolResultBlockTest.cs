@@ -102,6 +102,24 @@ public class BetaToolSearchToolResultBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaToolSearchToolResultBlock
+        {
+            Content = new BetaToolSearchToolResultError()
+            {
+                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+
+        BetaToolSearchToolResultBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaToolSearchToolResultBlockContentTest : TestBase

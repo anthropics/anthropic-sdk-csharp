@@ -96,4 +96,14 @@ public class CitationsConfigParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationsConfigParam { Enabled = true };
+
+        CitationsConfigParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -48,8 +48,11 @@ public sealed record class BetaRawMessageStartEvent : JsonModel
         this.Type = JsonSerializer.SerializeToElement("message_start");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaRawMessageStartEvent(BetaRawMessageStartEvent betaRawMessageStartEvent)
         : base(betaRawMessageStartEvent) { }
+#pragma warning restore CS8618
 
     public BetaRawMessageStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -48,8 +48,11 @@ public sealed record class NotFoundError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("not_found_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public NotFoundError(NotFoundError notFoundError)
         : base(notFoundError) { }
+#pragma warning restore CS8618
 
     public NotFoundError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

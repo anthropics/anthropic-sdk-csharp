@@ -110,4 +110,22 @@ public class CitationsSearchResultLocationTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationsSearchResultLocation
+        {
+            CitedText = "cited_text",
+            EndBlockIndex = 0,
+            SearchResultIndex = 0,
+            Source = "source",
+            StartBlockIndex = 0,
+            Title = "title",
+        };
+
+        CitationsSearchResultLocation copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

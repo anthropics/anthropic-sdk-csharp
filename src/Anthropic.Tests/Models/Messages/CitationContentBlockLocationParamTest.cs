@@ -102,4 +102,21 @@ public class CitationContentBlockLocationParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationContentBlockLocationParam
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndBlockIndex = 0,
+            StartBlockIndex = 0,
+        };
+
+        CitationContentBlockLocationParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

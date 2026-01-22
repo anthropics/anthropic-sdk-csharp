@@ -332,6 +332,29 @@ public class BetaMemoryTool20250818Test : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMemoryTool20250818
+        {
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+
+        BetaMemoryTool20250818 copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaMemoryTool20250818AllowedCallerTest : TestBase

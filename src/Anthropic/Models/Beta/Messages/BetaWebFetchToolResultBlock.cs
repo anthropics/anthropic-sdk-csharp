@@ -65,8 +65,11 @@ public sealed record class BetaWebFetchToolResultBlock : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaWebFetchToolResultBlock(BetaWebFetchToolResultBlock betaWebFetchToolResultBlock)
         : base(betaWebFetchToolResultBlock) { }
+#pragma warning restore CS8618
 
     public BetaWebFetchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {

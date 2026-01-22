@@ -174,6 +174,23 @@ public class BetaRequestDocumentBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaRequestDocumentBlock
+        {
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
+
+        BetaRequestDocumentBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaRequestDocumentBlockSourceTest : TestBase

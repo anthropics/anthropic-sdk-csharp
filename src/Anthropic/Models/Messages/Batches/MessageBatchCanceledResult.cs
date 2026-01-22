@@ -37,8 +37,11 @@ public sealed record class MessageBatchCanceledResult : JsonModel
         this.Type = JsonSerializer.SerializeToElement("canceled");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public MessageBatchCanceledResult(MessageBatchCanceledResult messageBatchCanceledResult)
         : base(messageBatchCanceledResult) { }
+#pragma warning restore CS8618
 
     public MessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {

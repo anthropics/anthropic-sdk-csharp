@@ -169,6 +169,35 @@ public class BetaRawContentBlockStartEventTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaRawContentBlockStartEvent
+        {
+            ContentBlock = new BetaTextBlock()
+            {
+                Citations =
+                [
+                    new BetaCitationCharLocation()
+                    {
+                        CitedText = "cited_text",
+                        DocumentIndex = 0,
+                        DocumentTitle = "document_title",
+                        EndCharIndex = 0,
+                        FileID = "file_id",
+                        StartCharIndex = 0,
+                    },
+                ],
+                Text = "text",
+            },
+            Index = 0,
+        };
+
+        BetaRawContentBlockStartEvent copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class ContentBlockTest : TestBase

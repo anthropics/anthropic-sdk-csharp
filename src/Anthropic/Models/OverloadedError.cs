@@ -51,8 +51,11 @@ public sealed record class OverloadedError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("overloaded_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public OverloadedError(OverloadedError overloadedError)
         : base(overloadedError) { }
+#pragma warning restore CS8618
 
     public OverloadedError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -57,8 +57,11 @@ public sealed record class BetaErrorResponse : JsonModel
         this.Type = JsonSerializer.SerializeToElement("error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaErrorResponse(BetaErrorResponse betaErrorResponse)
         : base(betaErrorResponse) { }
+#pragma warning restore CS8618
 
     public BetaErrorResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

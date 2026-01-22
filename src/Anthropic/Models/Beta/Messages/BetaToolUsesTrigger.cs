@@ -46,8 +46,11 @@ public sealed record class BetaToolUsesTrigger : JsonModel
         this.Type = JsonSerializer.SerializeToElement("tool_uses");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaToolUsesTrigger(BetaToolUsesTrigger betaToolUsesTrigger)
         : base(betaToolUsesTrigger) { }
+#pragma warning restore CS8618
 
     public BetaToolUsesTrigger(IReadOnlyDictionary<string, JsonElement> rawData)
     {

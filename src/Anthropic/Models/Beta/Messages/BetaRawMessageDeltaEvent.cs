@@ -92,8 +92,11 @@ public sealed record class BetaRawMessageDeltaEvent : JsonModel
         this.Type = JsonSerializer.SerializeToElement("message_delta");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaRawMessageDeltaEvent(BetaRawMessageDeltaEvent betaRawMessageDeltaEvent)
         : base(betaRawMessageDeltaEvent) { }
+#pragma warning restore CS8618
 
     public BetaRawMessageDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -173,8 +176,11 @@ public sealed record class Delta : JsonModel
 
     public Delta() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Delta(Delta delta)
         : base(delta) { }
+#pragma warning restore CS8618
 
     public Delta(IReadOnlyDictionary<string, JsonElement> rawData)
     {

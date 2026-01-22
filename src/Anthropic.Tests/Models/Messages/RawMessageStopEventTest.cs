@@ -54,4 +54,14 @@ public class RawMessageStopEventTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new RawMessageStopEvent { };
+
+        RawMessageStopEvent copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

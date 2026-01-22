@@ -61,8 +61,11 @@ public sealed record class BetaImageBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("image");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaImageBlockParam(BetaImageBlockParam betaImageBlockParam)
         : base(betaImageBlockParam) { }
+#pragma warning restore CS8618
 
     public BetaImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

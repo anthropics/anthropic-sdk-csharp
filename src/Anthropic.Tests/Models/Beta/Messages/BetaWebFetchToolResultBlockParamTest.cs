@@ -162,6 +162,23 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaWebFetchToolResultBlockParam
+        {
+            Content = new BetaWebFetchToolResultErrorBlockParam(
+                BetaWebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        BetaWebFetchToolResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaWebFetchToolResultBlockParamContentTest : TestBase

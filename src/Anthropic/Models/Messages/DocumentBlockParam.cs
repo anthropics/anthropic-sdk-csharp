@@ -94,8 +94,11 @@ public sealed record class DocumentBlockParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("document");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public DocumentBlockParam(DocumentBlockParam documentBlockParam)
         : base(documentBlockParam) { }
+#pragma warning restore CS8618
 
     public DocumentBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

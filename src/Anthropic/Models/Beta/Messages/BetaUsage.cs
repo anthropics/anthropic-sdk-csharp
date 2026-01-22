@@ -119,8 +119,11 @@ public sealed record class BetaUsage : JsonModel
 
     public BetaUsage() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaUsage(BetaUsage betaUsage)
         : base(betaUsage) { }
+#pragma warning restore CS8618
 
     public BetaUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {

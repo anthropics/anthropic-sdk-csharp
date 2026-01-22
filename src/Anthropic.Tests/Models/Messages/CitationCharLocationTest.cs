@@ -110,4 +110,22 @@ public class CitationCharLocationTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new CitationCharLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndCharIndex = 0,
+            FileID = "file_id",
+            StartCharIndex = 0,
+        };
+
+        CitationCharLocation copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

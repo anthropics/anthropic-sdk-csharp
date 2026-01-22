@@ -117,6 +117,25 @@ public class UsageTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new Usage
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 2051,
+            CacheReadInputTokens = 2051,
+            InputTokens = 2095,
+            OutputTokens = 503,
+            ServerToolUse = new(0),
+            ServiceTier = UsageServiceTier.Standard,
+        };
+
+        Usage copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class UsageServiceTierTest : TestBase

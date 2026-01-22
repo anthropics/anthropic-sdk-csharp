@@ -54,4 +54,14 @@ public class BetaAllThinkingTurnsTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaAllThinkingTurns { };
+
+        BetaAllThinkingTurns copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

@@ -110,4 +110,22 @@ public class BetaCitationCharLocationTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaCitationCharLocation
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "document_title",
+            EndCharIndex = 0,
+            FileID = "file_id",
+            StartCharIndex = 0,
+        };
+
+        BetaCitationCharLocation copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

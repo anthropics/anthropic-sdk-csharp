@@ -54,8 +54,11 @@ public sealed record class WebSearchToolRequestError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public WebSearchToolRequestError(WebSearchToolRequestError webSearchToolRequestError)
         : base(webSearchToolRequestError) { }
+#pragma warning restore CS8618
 
     public WebSearchToolRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

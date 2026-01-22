@@ -58,4 +58,14 @@ public class BetaOverloadedErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaOverloadedError { Message = "message" };
+
+        BetaOverloadedError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

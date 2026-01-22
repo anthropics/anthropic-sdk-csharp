@@ -57,8 +57,11 @@ public sealed record class ErrorResponse : JsonModel
         this.Type = JsonSerializer.SerializeToElement("error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ErrorResponse(ErrorResponse errorResponse)
         : base(errorResponse) { }
+#pragma warning restore CS8618
 
     public ErrorResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {

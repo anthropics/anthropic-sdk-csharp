@@ -59,6 +59,16 @@ public class BetaMessageParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaMessageParam { Content = "string", Role = Role.User };
+
+        BetaMessageParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaMessageParamContentTest : TestBase

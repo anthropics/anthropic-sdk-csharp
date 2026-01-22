@@ -77,6 +77,19 @@ public class WebSearchToolResultErrorTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new WebSearchToolResultError
+        {
+            ErrorCode = WebSearchToolResultErrorErrorCode.InvalidToolInput,
+        };
+
+        WebSearchToolResultError copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class WebSearchToolResultErrorErrorCodeTest : TestBase

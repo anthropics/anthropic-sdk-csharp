@@ -46,8 +46,11 @@ public sealed record class BillingError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("billing_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BillingError(BillingError billingError)
         : base(billingError) { }
+#pragma warning restore CS8618
 
     public BillingError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -108,4 +108,14 @@ public class ToolChoiceToolTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolChoiceTool { Name = "name", DisableParallelToolUse = true };
+
+        ToolChoiceTool copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

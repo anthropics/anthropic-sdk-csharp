@@ -35,8 +35,11 @@ public sealed record class RawMessageStopEvent : JsonModel
         this.Type = JsonSerializer.SerializeToElement("message_stop");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public RawMessageStopEvent(RawMessageStopEvent rawMessageStopEvent)
         : base(rawMessageStopEvent) { }
+#pragma warning restore CS8618
 
     public RawMessageStopEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {

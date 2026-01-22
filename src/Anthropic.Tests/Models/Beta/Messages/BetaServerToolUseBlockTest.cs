@@ -198,6 +198,25 @@ public class BetaServerToolUseBlockTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaServerToolUseBlock
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.WebSearch,
+            Caller = new BetaDirectCaller(),
+        };
+
+        BetaServerToolUseBlock copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class NameTest : TestBase

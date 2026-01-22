@@ -80,6 +80,21 @@ public class BetaSkillTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaSkill
+        {
+            SkillID = "x",
+            Type = Type.Anthropic,
+            Version = "x",
+        };
+
+        BetaSkill copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class TypeTest : TestBase

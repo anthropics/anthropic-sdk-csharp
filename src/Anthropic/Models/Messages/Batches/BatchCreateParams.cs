@@ -203,8 +203,11 @@ public sealed record class Request : JsonModel
 
     public Request() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Request(Request request)
         : base(request) { }
+#pragma warning restore CS8618
 
     public Request(IReadOnlyDictionary<string, JsonElement> rawData)
     {
@@ -696,8 +699,11 @@ public sealed record class Params : JsonModel
 
     public Params() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public Params(Params params_)
         : base(params_) { }
+#pragma warning restore CS8618
 
     public Params(IReadOnlyDictionary<string, JsonElement> rawData)
     {

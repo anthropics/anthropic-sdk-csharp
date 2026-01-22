@@ -35,8 +35,11 @@ public sealed record class ThinkingConfigDisabled : JsonModel
         this.Type = JsonSerializer.SerializeToElement("disabled");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ThinkingConfigDisabled(ThinkingConfigDisabled thinkingConfigDisabled)
         : base(thinkingConfigDisabled) { }
+#pragma warning restore CS8618
 
     public ThinkingConfigDisabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {

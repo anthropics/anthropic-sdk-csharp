@@ -187,8 +187,11 @@ public sealed record class BetaMessageBatch : JsonModel
         this.Type = JsonSerializer.SerializeToElement("message_batch");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaMessageBatch(BetaMessageBatch betaMessageBatch)
         : base(betaMessageBatch) { }
+#pragma warning restore CS8618
 
     public BetaMessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {

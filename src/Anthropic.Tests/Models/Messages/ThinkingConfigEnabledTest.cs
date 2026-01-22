@@ -58,4 +58,14 @@ public class ThinkingConfigEnabledTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ThinkingConfigEnabled { BudgetTokens = 1024 };
+
+        ThinkingConfigEnabled copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

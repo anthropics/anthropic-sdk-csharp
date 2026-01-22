@@ -214,6 +214,22 @@ public class ToolResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolResultBlockParam
+        {
+            ToolUseID = "tool_use_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "string",
+            IsError = true,
+        };
+
+        ToolResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class ToolResultBlockParamContentTest : TestBase

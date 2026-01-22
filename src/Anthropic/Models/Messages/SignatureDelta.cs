@@ -48,8 +48,11 @@ public sealed record class SignatureDelta : JsonModel
         this.Type = JsonSerializer.SerializeToElement("signature_delta");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public SignatureDelta(SignatureDelta signatureDelta)
         : base(signatureDelta) { }
+#pragma warning restore CS8618
 
     public SignatureDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -69,8 +69,11 @@ public sealed record class ToolBash20250124 : JsonModel
         this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public ToolBash20250124(ToolBash20250124 toolBash20250124)
         : base(toolBash20250124) { }
+#pragma warning restore CS8618
 
     public ToolBash20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {

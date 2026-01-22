@@ -177,6 +177,23 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaTextEditorCodeExecutionViewResultBlockParam
+        {
+            Content = "content",
+            FileType = BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text,
+            NumLines = 0,
+            StartLine = 0,
+            TotalLines = 0,
+        };
+
+        BetaTextEditorCodeExecutionViewResultBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestBase

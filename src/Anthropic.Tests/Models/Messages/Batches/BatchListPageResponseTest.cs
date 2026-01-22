@@ -232,4 +232,42 @@ public class BatchListPageResponseTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BatchListPageResponse
+        {
+            Data =
+            [
+                new()
+                {
+                    ID = "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF",
+                    ArchivedAt = DateTimeOffset.Parse("2024-08-20T18:37:24.100435Z"),
+                    CancelInitiatedAt = DateTimeOffset.Parse("2024-08-20T18:37:24.100435Z"),
+                    CreatedAt = DateTimeOffset.Parse("2024-08-20T18:37:24.100435Z"),
+                    EndedAt = DateTimeOffset.Parse("2024-08-20T18:37:24.100435Z"),
+                    ExpiresAt = DateTimeOffset.Parse("2024-08-20T18:37:24.100435Z"),
+                    ProcessingStatus = ProcessingStatus.InProgress,
+                    RequestCounts = new()
+                    {
+                        Canceled = 10,
+                        Errored = 30,
+                        Expired = 10,
+                        Processing = 100,
+                        Succeeded = 50,
+                    },
+                    ResultsUrl =
+                        "https://api.anthropic.com/v1/messages/batches/msgbatch_013Zva2CMHLNnXjNJJKqJ2EF/results",
+                },
+            ],
+            FirstID = "first_id",
+            HasMore = true,
+            LastID = "last_id",
+        };
+
+        BatchListPageResponse copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

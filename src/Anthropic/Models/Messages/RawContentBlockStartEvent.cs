@@ -67,8 +67,11 @@ public sealed record class RawContentBlockStartEvent : JsonModel
         this.Type = JsonSerializer.SerializeToElement("content_block_start");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public RawContentBlockStartEvent(RawContentBlockStartEvent rawContentBlockStartEvent)
         : base(rawContentBlockStartEvent) { }
+#pragma warning restore CS8618
 
     public RawContentBlockStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {

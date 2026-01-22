@@ -89,10 +89,13 @@ public sealed record class BetaCitationsWebSearchResultLocation : JsonModel
         this.Type = JsonSerializer.SerializeToElement("web_search_result_location");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCitationsWebSearchResultLocation(
         BetaCitationsWebSearchResultLocation betaCitationsWebSearchResultLocation
     )
         : base(betaCitationsWebSearchResultLocation) { }
+#pragma warning restore CS8618
 
     public BetaCitationsWebSearchResultLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {

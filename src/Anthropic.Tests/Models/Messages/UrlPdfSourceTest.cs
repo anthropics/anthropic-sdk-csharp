@@ -58,4 +58,14 @@ public class UrlPdfSourceTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new UrlPdfSource { Url = "url" };
+
+        UrlPdfSource copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }

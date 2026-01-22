@@ -137,10 +137,13 @@ public sealed record class BetaClearToolUses20250919Edit : JsonModel
         this.Type = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaClearToolUses20250919Edit(
         BetaClearToolUses20250919Edit betaClearToolUses20250919Edit
     )
         : base(betaClearToolUses20250919Edit) { }
+#pragma warning restore CS8618
 
     public BetaClearToolUses20250919Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {

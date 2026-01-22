@@ -51,8 +51,11 @@ public sealed record class BetaAuthenticationError : JsonModel
         this.Type = JsonSerializer.SerializeToElement("authentication_error");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaAuthenticationError(BetaAuthenticationError betaAuthenticationError)
         : base(betaAuthenticationError) { }
+#pragma warning restore CS8618
 
     public BetaAuthenticationError(IReadOnlyDictionary<string, JsonElement> rawData)
     {

@@ -48,8 +48,11 @@ public sealed record class BetaOutputConfig : JsonModel
 
     public BetaOutputConfig() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaOutputConfig(BetaOutputConfig betaOutputConfig)
         : base(betaOutputConfig) { }
+#pragma warning restore CS8618
 
     public BetaOutputConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {

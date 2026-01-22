@@ -36,10 +36,13 @@ public sealed record class BetaCountTokensContextManagementResponse : JsonModel
 
     public BetaCountTokensContextManagementResponse() { }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public BetaCountTokensContextManagementResponse(
         BetaCountTokensContextManagementResponse betaCountTokensContextManagementResponse
     )
         : base(betaCountTokensContextManagementResponse) { }
+#pragma warning restore CS8618
 
     public BetaCountTokensContextManagementResponse(
         IReadOnlyDictionary<string, JsonElement> rawData

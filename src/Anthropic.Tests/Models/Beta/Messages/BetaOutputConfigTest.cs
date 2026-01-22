@@ -150,6 +150,26 @@ public class BetaOutputConfigTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new BetaOutputConfig
+        {
+            Effort = Effort.Low,
+            Format = new()
+            {
+                Schema = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            },
+        };
+
+        BetaOutputConfig copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
 
 public class EffortTest : TestBase

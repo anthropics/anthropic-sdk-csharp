@@ -100,10 +100,13 @@ public sealed record class CitationContentBlockLocationParam : JsonModel
         this.Type = JsonSerializer.SerializeToElement("content_block_location");
     }
 
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
     public CitationContentBlockLocationParam(
         CitationContentBlockLocationParam citationContentBlockLocationParam
     )
         : base(citationContentBlockLocationParam) { }
+#pragma warning restore CS8618
 
     public CitationContentBlockLocationParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {

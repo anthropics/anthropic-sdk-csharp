@@ -195,4 +195,23 @@ public class ToolUseBlockParamTest : TestBase
 
         model.Validate();
     }
+
+    [Fact]
+    public void CopyConstructor_Works()
+    {
+        var model = new ToolUseBlockParam
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+
+        ToolUseBlockParam copied = new(model);
+
+        Assert.Equal(model, copied);
+    }
 }
