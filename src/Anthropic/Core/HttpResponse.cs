@@ -39,6 +39,20 @@ public class HttpResponse : IDisposable
         [NotNullWhen(true)] out IEnumerable<string>? values
     ) => RawMessage.Headers.TryGetValues(name, out values);
 
+    public sealed override string ToString() => this.RawMessage.ToString();
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not global::Anthropic.Core.HttpResponse other)
+        {
+            return false;
+        }
+
+        return this.RawMessage.Equals(other.RawMessage);
+    }
+
+    public override int GetHashCode() => this.RawMessage.GetHashCode();
+
     public async Task<T> Deserialize<T>(Threading::CancellationToken cancellationToken = default)
     {
         using var cts = Threading::CancellationTokenSource.CreateLinkedTokenSource(
