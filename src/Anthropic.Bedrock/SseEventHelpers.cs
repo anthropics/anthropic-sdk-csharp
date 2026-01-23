@@ -51,14 +51,17 @@ internal static class SseEventHelpers
         */
 
         Span<byte> preamble = stackalloc byte[12];
-        var preambleRead = source.Read(preamble);
-        if (preambleRead != 12 || !Crc32ChecksumValidation(preamble[..8], preamble[8..]))
+        try
         {
-            if (preambleRead == 0) // this is the good case when previous message was read and we attempt to read the next one but read returns 0
-            {
-                return (null, false);
-            }
+            source.ReadExactly(preamble); // we cannot use Async methods here as they require Memory<byte> which lives on the heap
+        }
+        catch (EndOfStreamException) // exceptions for control flow are bad but its how this works. Only catch it here as at every other occasion its not expected.
+        {
+            return (null, false);
+        }
 
+        if (!Crc32ChecksumValidation(preamble[..8], preamble[8..]))
+        {
             throw new InvalidDataException(
                 $"The preamble at position {source.Position} is invalid"
             );
