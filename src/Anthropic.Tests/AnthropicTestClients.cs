@@ -43,7 +43,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
                         new AnthropicClient() { BaseUrl = DataServiceUrl, ApiKey = ApiKey },
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Anthropic))
-                            .Select(f => f.TestData)
+                            .SelectMany(f => f.TestData)
                             .ToArray(),
                     ]
                 )
@@ -62,7 +62,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
                         },
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Foundry))
-                            .Select(f => f.TestData)
+                            .SelectMany(f => f.TestData)
                             .ToArray(),
                     ]
                 )
@@ -85,7 +85,7 @@ public class AnthropicTestClientsAttribute : DataAttribute
                         },
                         .. testData
                             .Where(e => e.TestSupport.HasFlag(TestSupportTypes.Bedrock))
-                            .Select(f => f.TestData)
+                            .SelectMany(f => f.TestData)
                             .ToArray(),
                     ]
                 )

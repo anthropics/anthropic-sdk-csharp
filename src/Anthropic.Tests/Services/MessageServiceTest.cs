@@ -49,7 +49,7 @@ public class MessageServiceTest
     }
 
     [Theory]
-    [AnthropicTestClients]
+    [AnthropicTestClients(TestSupportTypes.All & ~TestSupportTypes.Bedrock)]
     [AnthropicTestData(TestSupportTypes.Anthropic, "Claude3_7SonnetLatest")]
     [AnthropicTestData(TestSupportTypes.Foundry, "claude-sonnet-4-5")]
     public async Task CountTokens_Works(IAnthropicClient client, string modelName)
