@@ -1,5 +1,6 @@
 #if !NET
 using System.Buffers;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// Contains Shims for .Net 9 available methods to compile on an NetStandard2.0 target.
@@ -17,31 +18,19 @@ internal static class StreamExtensions
         );
     }
 
-    /// <summary>
-    /// Reads bytes from the current stream and advances the position within the stream until the <paramref name="buffer"/> is filled.
-    /// </summary>
-    /// <param name="buffer">A region of memory. When this method returns, the contents of this region are replaced by the bytes read from the current stream.</param>
-    /// <exception cref="EndOfStreamException">
-    /// The end of the stream is reached before filling the <paramref name="buffer"/>.
-    /// </exception>
-    /// <remarks>
-    /// When <paramref name="buffer"/> is empty, this read operation will be completed without waiting for available data in the stream.
-    /// </remarks>
-    public static void ReadExactly(this Stream stream, Span<byte> buffer) =>
-        _ = stream.ReadAtLeastCore(buffer, buffer.Length, throwOnEndOfStream: true);
+    public static ValueTask<int> ReadExactlyAsync(this Stream stream, Memory<byte> buffer, CancellationToken cancellationToken = default)
+    {
+        ValueTask<int> vt = stream.ReadAtLeastAsyncCore(buffer, buffer.Length, throwOnEndOfStream: true, cancellationToken);
 
-    // No argument checking is done here. It is up to the caller.
-    private static int ReadAtLeastCore(
-        this Stream stream,
-        Span<byte> buffer,
-        int minimumBytes,
-        bool throwOnEndOfStream
-    )
+        return vt;
+    }
+
+    private static async ValueTask<int> ReadAtLeastAsyncCore(this Stream stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream, CancellationToken cancellationToken)
     {
         int totalRead = 0;
         while (totalRead < minimumBytes)
         {
-            int read = stream.Read(buffer.Slice(totalRead));
+            int read = await stream.ReadAsync(buffer.Slice(totalRead), cancellationToken).ConfigureAwait(false);
             if (read == 0)
             {
                 if (throwOnEndOfStream)
@@ -58,23 +47,28 @@ internal static class StreamExtensions
         return totalRead;
     }
 
-    public static int Read(this Stream stream, Span<byte> buffer)
+    public static ValueTask<int> ReadAsync(this Stream stream, Memory<byte> buffer, CancellationToken cancellationToken = default)
     {
-        byte[] sharedBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length);
-        try
+        if (MemoryMarshal.TryGetArray(buffer, out ArraySegment<byte> array))
         {
-            int numRead = stream.Read(sharedBuffer, 0, buffer.Length);
-            if ((uint)numRead > (uint)buffer.Length)
-            {
-                throw new IOException("The provided stream is too long");
-            }
-
-            new ReadOnlySpan<byte>(sharedBuffer, 0, numRead).CopyTo(buffer);
-            return numRead;
+            return new ValueTask<int>(stream.ReadAsync(array.Array!, array.Offset, array.Count, cancellationToken));
         }
-        finally
+
+        byte[] sharedBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length);
+        return FinishReadAsync(stream.ReadAsync(sharedBuffer, 0, buffer.Length, cancellationToken), sharedBuffer, buffer);
+
+        static async ValueTask<int> FinishReadAsync(Task<int> readTask, byte[] localBuffer, Memory<byte> localDestination)
         {
-            ArrayPool<byte>.Shared.Return(sharedBuffer);
+            try
+            {
+                int result = await readTask.ConfigureAwait(false);
+                new ReadOnlySpan<byte>(localBuffer, 0, result).CopyTo(localDestination.Span);
+                return result;
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(localBuffer);
+            }
         }
     }
 }

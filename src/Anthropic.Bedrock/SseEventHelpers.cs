@@ -17,7 +17,7 @@ namespace Anthropic.Bedrock;
 /// </remarks>
 internal static class SseEventHelpers
 {
-    private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };  
+    private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };
 
     public static async Task<(string? Data, bool readData)> ReadStreamMessage(
         Stream source,
@@ -32,17 +32,17 @@ internal static class SseEventHelpers
         | 4 byte            | 4byte               | 4byte       |                                 |
         */
 
-        Span<byte> preamble = stackalloc byte[12];
+        Memory<byte> preamble = new byte[12];
         try
         {
-            source.ReadExactly(preamble); // we cannot use Async methods here as they require Memory<byte> which lives on the heap
+            await source.ReadExactlyAsync(preamble, cancellationToken).ConfigureAwait(false);
         }
         catch (EndOfStreamException) // exceptions for control flow are bad but its how this works. Only catch it here as at every other occasion its not expected.
         {
             return (null, false);
         }
 
-        if (!Crc32ChecksumValidation(preamble[..8], preamble[8..]))
+        if (!Crc32ChecksumValidation(preamble[..8].Span, preamble[8..].Span))
         {
             throw new InvalidDataException(
                 $"The preamble at position {source.Position} is invalid"
@@ -50,8 +50,8 @@ internal static class SseEventHelpers
         }
 
         if (
-            !BinaryPrimitives.TryReadInt32BigEndian(preamble[0..4], out var totalLength)
-            || !BinaryPrimitives.TryReadInt32BigEndian(preamble[4..8], out var headerLength)
+            !BinaryPrimitives.TryReadInt32BigEndian(preamble[0..4].Span, out var totalLength)
+            || !BinaryPrimitives.TryReadInt32BigEndian(preamble[4..8].Span, out var headerLength)
             || totalLength <= 0
             || headerLength <= 0
         )
@@ -60,21 +60,19 @@ internal static class SseEventHelpers
         }
 
         // we dont care about headers so skip them
-        Span<byte> header =
-            headerLength < 1024 ? stackalloc byte[headerLength] : new byte[headerLength];
-        source.ReadExactly(header);
+        Memory<byte> header = new byte[headerLength];
+        await source.ReadExactlyAsync(header, cancellationToken).ConfigureAwait(false);
 
         // total length is without the preamble (8bytes) + preamble crc (4bytes) + headers but do not take the message crc (4 bytes)
         var messageLength = totalLength - 12 - headerLength - 4;
-        var bodyData = ArrayPool<byte>.Shared.Rent(messageLength);
-        try
+        using (var bodyData = MemoryPool<byte>.Shared.Rent(messageLength))
         {
-            Memory<byte> messageSpan = bodyData.AsMemory()[0..messageLength];
-            source.ReadExactly(messageSpan.Span); // read the message part
+            Memory<byte> messageSpan = bodyData.Memory[0..messageLength];
+            await source.ReadExactlyAsync(messageSpan, cancellationToken).ConfigureAwait(false); // read the message part
 
-            Span<byte> messageCrc = stackalloc byte[4];
-            source.ReadExactly(messageCrc); // advance 4 bytes for EOM crc sum
-            if (!Crc32ChecksumValidation([.. preamble, .. header, .. messageSpan.Span], messageCrc))
+            Memory<byte> messageCrc = new byte[4];
+            await source.ReadExactlyAsync(messageCrc, cancellationToken).ConfigureAwait(false); // advance 4 bytes for EOM crc sum
+            if (!Crc32ChecksumValidation([.. preamble.Span, .. header.Span, .. messageSpan.Span], messageCrc.Span))
             {
                 throw new InvalidDataException(
                     "The calculated crc checksum for the message content does not match the provided value from the server."
@@ -83,10 +81,6 @@ internal static class SseEventHelpers
             var result = await Parse(new ReadOnlySequence<byte>(messageSpan), cancellationToken)
                 .ConfigureAwait(false);
             return (result, true);
-        } // do not catch the EndOfStream exception here as its still unexpected to happen here and should bubble up
-        finally
-        {
-            ArrayPool<byte>.Shared.Return(bodyData);
         }
     }
 
