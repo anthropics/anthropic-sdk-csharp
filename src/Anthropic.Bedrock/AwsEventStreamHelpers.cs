@@ -1,7 +1,6 @@
 using System.Buffers;
 using System.Buffers.Binary;
 using System.IO.Pipelines;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -15,7 +14,7 @@ namespace Anthropic.Bedrock;
 /// <remarks>
 /// Reference: https://docs.aws.amazon.com/lexv2/latest/dg/event-stream-encoding.html
 /// </remarks>
-internal static class SseEventHelpers
+internal static class AwsEventStreamHelpers
 {
     private static readonly JsonSerializerOptions? _jsonOptions = new() { WriteIndented = false };
 

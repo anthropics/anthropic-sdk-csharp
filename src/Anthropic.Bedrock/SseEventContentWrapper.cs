@@ -69,7 +69,7 @@ internal class SseEventContentWrapper : HttpContent
             CancellationToken cancellationToken = default
         )
         {
-            var (data, success) = await SseEventHelpers
+            var (data, success) = await AwsEventStreamHelpers
                 .ReadStreamMessage(_sourceStream, cancellationToken)
                 .ConfigureAwait(false);
             if (!success)
@@ -89,7 +89,7 @@ internal class SseEventContentWrapper : HttpContent
             CancellationToken cancellationToken
         )
         {
-            var (data, success) = await SseEventHelpers
+            var (data, success) = await AwsEventStreamHelpers
                 .ReadStreamMessage(_sourceStream, cancellationToken)
                 .ConfigureAwait(false);
             if (!success)
