@@ -36,7 +36,7 @@ internal static class AwsEventStreamHelpers
         {
             await source.ReadExactlyAsync(preamble, cancellationToken).ConfigureAwait(false);
         }
-        catch (EndOfStreamException) // exceptions for control flow are bad but its how this works. Only catch it here as at every other occasion its not expected.
+        catch (EndOfStreamException) // exceptions for control flow are bad but its how this works. Only catch it here as at every other occasion it's not expected.
         {
             return (null, false);
         }
@@ -58,7 +58,7 @@ internal static class AwsEventStreamHelpers
             throw new InvalidDataException($"The preamble lengths are invalid");
         }
 
-        // we dont care about headers so skip them
+        // we don't care about headers so skip them
         Memory<byte> header = new byte[headerLength];
         await source.ReadExactlyAsync(header, cancellationToken).ConfigureAwait(false);
 
@@ -71,7 +71,12 @@ internal static class AwsEventStreamHelpers
 
             Memory<byte> messageCrc = new byte[4];
             await source.ReadExactlyAsync(messageCrc, cancellationToken).ConfigureAwait(false); // advance 4 bytes for EOM crc sum
-            if (!Crc32ChecksumValidation([.. preamble.Span, .. header.Span, .. messageSpan.Span], messageCrc.Span))
+            if (
+                !Crc32ChecksumValidation(
+                    [.. preamble.Span, .. header.Span, .. messageSpan.Span],
+                    messageCrc.Span
+                )
+            )
             {
                 throw new InvalidDataException(
                     "The calculated crc checksum for the message content does not match the provided value from the server."
@@ -115,7 +120,8 @@ internal static class AwsEventStreamHelpers
             return null;
         }
 
-        return $"event:{parsedEvent["type"]}\ndata:{parsedEvent.ToJsonString(_jsonOptions)}\n\n"; // add double linebreaks at the end to force the StreamReader to emit an empty line for parsing.
+        // add double linebreaks at the end to force the StreamReader to emit an empty line for parsing.
+        return $"event:{parsedEvent["type"]}\ndata:{parsedEvent.ToJsonString(_jsonOptions)}\n\n";
     }
 
     private static bool Crc32ChecksumValidation(

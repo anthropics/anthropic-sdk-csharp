@@ -18,19 +18,36 @@ internal static class StreamExtensions
         );
     }
 
-    public static ValueTask<int> ReadExactlyAsync(this Stream stream, Memory<byte> buffer, CancellationToken cancellationToken = default)
+    public static ValueTask<int> ReadExactlyAsync(
+        this Stream stream,
+        Memory<byte> buffer,
+        CancellationToken cancellationToken = default
+    )
     {
-        ValueTask<int> vt = stream.ReadAtLeastAsyncCore(buffer, buffer.Length, throwOnEndOfStream: true, cancellationToken);
+        ValueTask<int> vt = stream.ReadAtLeastAsyncCore(
+            buffer,
+            buffer.Length,
+            throwOnEndOfStream: true,
+            cancellationToken
+        );
 
         return vt;
     }
 
-    private static async ValueTask<int> ReadAtLeastAsyncCore(this Stream stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream, CancellationToken cancellationToken)
+    private static async ValueTask<int> ReadAtLeastAsyncCore(
+        this Stream stream,
+        Memory<byte> buffer,
+        int minimumBytes,
+        bool throwOnEndOfStream,
+        CancellationToken cancellationToken
+    )
     {
         int totalRead = 0;
         while (totalRead < minimumBytes)
         {
-            int read = await stream.ReadAsync(buffer.Slice(totalRead), cancellationToken).ConfigureAwait(false);
+            int read = await stream
+                .ReadAsync(buffer.Slice(totalRead), cancellationToken)
+                .ConfigureAwait(false);
             if (read == 0)
             {
                 if (throwOnEndOfStream)
@@ -47,17 +64,31 @@ internal static class StreamExtensions
         return totalRead;
     }
 
-    public static ValueTask<int> ReadAsync(this Stream stream, Memory<byte> buffer, CancellationToken cancellationToken = default)
+    public static ValueTask<int> ReadAsync(
+        this Stream stream,
+        Memory<byte> buffer,
+        CancellationToken cancellationToken = default
+    )
     {
         if (MemoryMarshal.TryGetArray(buffer, out ArraySegment<byte> array))
         {
-            return new ValueTask<int>(stream.ReadAsync(array.Array!, array.Offset, array.Count, cancellationToken));
+            return new ValueTask<int>(
+                stream.ReadAsync(array.Array!, array.Offset, array.Count, cancellationToken)
+            );
         }
 
         byte[] sharedBuffer = ArrayPool<byte>.Shared.Rent(buffer.Length);
-        return FinishReadAsync(stream.ReadAsync(sharedBuffer, 0, buffer.Length, cancellationToken), sharedBuffer, buffer);
+        return FinishReadAsync(
+            stream.ReadAsync(sharedBuffer, 0, buffer.Length, cancellationToken),
+            sharedBuffer,
+            buffer
+        );
 
-        static async ValueTask<int> FinishReadAsync(Task<int> readTask, byte[] localBuffer, Memory<byte> localDestination)
+        static async ValueTask<int> FinishReadAsync(
+            Task<int> readTask,
+            byte[] localBuffer,
+            Memory<byte> localDestination
+        )
         {
             try
             {
