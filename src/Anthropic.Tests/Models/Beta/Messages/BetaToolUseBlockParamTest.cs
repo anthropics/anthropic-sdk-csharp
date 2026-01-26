@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -17,7 +18,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -27,8 +28,8 @@ public class BetaToolUseBlockParamTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, model.ID);
@@ -56,12 +57,15 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -77,12 +81,15 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParam>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
@@ -91,8 +98,8 @@ public class BetaToolUseBlockParamTest : TestBase
             { "foo", JsonSerializer.SerializeToElement("bar") },
         };
         string expectedName = "x";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"tool_use\"");
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaToolUseBlockParamCaller expectedCaller = new BetaDirectCaller();
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -120,7 +127,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
 
@@ -138,7 +145,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         Assert.Null(model.Caller);
@@ -156,7 +163,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -173,7 +180,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -194,7 +201,7 @@ public class BetaToolUseBlockParamTest : TestBase
                 { "foo", JsonSerializer.SerializeToElement("bar") },
             },
             Name = "x",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
             Caller = null,
@@ -281,35 +288,41 @@ public class BetaToolUseBlockParamTest : TestBase
 public class BetaToolUseBlockParamCallerTest : TestBase
 {
     [Fact]
-    public void beta_directValidation_Works()
+    public void BetaDirectValidationWorks()
     {
-        BetaToolUseBlockParamCaller value = new(new BetaDirectCaller());
+        BetaToolUseBlockParamCaller value = new BetaDirectCaller();
         value.Validate();
     }
 
     [Fact]
-    public void beta_server_toolValidation_Works()
+    public void BetaServerToolValidationWorks()
     {
-        BetaToolUseBlockParamCaller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
+        BetaToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
         value.Validate();
     }
 
     [Fact]
-    public void beta_directSerializationRoundtrip_Works()
+    public void BetaDirectSerializationRoundtripWorks()
     {
-        BetaToolUseBlockParamCaller value = new(new BetaDirectCaller());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParamCaller>(json);
+        BetaToolUseBlockParamCaller value = new BetaDirectCaller();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParamCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_server_toolSerializationRoundtrip_Works()
+    public void BetaServerToolSerializationRoundtripWorks()
     {
-        BetaToolUseBlockParamCaller value = new(new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParamCaller>(json);
+        BetaToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParamCaller>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

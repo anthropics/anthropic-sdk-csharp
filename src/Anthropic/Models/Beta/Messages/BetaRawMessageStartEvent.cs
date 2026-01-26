@@ -8,31 +8,36 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawMessageStartEvent, BetaRawMessageStartEventFromRaw>))]
-public sealed record class BetaRawMessageStartEvent : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaRawMessageStartEvent, BetaRawMessageStartEventFromRaw>)
+)]
+public sealed record class BetaRawMessageStartEvent : JsonModel
 {
     public required BetaMessage Message
     {
-        get { return ModelBase.GetNotNullClass<BetaMessage>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessage>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Message.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_start\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_start")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -40,7 +45,7 @@ public sealed record class BetaRawMessageStartEvent : ModelBase
 
     public BetaRawMessageStartEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        this.Type = JsonSerializer.SerializeToElement("message_start");
     }
 
     public BetaRawMessageStartEvent(BetaRawMessageStartEvent betaRawMessageStartEvent)
@@ -48,16 +53,16 @@ public sealed record class BetaRawMessageStartEvent : ModelBase
 
     public BetaRawMessageStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        this.Type = JsonSerializer.SerializeToElement("message_start");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaRawMessageStartEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +82,7 @@ public sealed record class BetaRawMessageStartEvent : ModelBase
     }
 }
 
-class BetaRawMessageStartEventFromRaw : IFromRaw<BetaRawMessageStartEvent>
+class BetaRawMessageStartEventFromRaw : IFromRawJson<BetaRawMessageStartEvent>
 {
     /// <inheritdoc/>
     public BetaRawMessageStartEvent FromRawUnchecked(

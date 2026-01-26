@@ -25,7 +25,7 @@ public class BatchServiceTest
                         {
                             MaxTokens = 1024,
                             Messages = [new() { Content = "Hello, world", Role = Role.User }],
-                            Model = Messages::Model.ClaudeOpus4_5_20251101,
+                            Model = Messages::Model.ClaudeSonnet4_5_20250929,
                             Container = new BetaContainerParams()
                             {
                                 ID = "id",
@@ -53,12 +53,12 @@ public class BatchServiceTest
                                     },
                                 ],
                             },
-                            MCPServers =
+                            McpServers =
                             [
                                 new()
                                 {
                                     Name = "name",
-                                    URL = "url",
+                                    Url = "url",
                                     AuthorizationToken = "authorization_token",
                                     ToolConfiguration = new()
                                     {
@@ -84,7 +84,7 @@ public class BatchServiceTest
                                     new BetaTextBlockParam()
                                     {
                                         Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new() { TTL = TTL.TTL5m },
+                                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                                         Citations =
                                         [
                                             new BetaCitationCharLocationParam()
@@ -120,7 +120,7 @@ public class BatchServiceTest
                                     },
                                     Name = "name",
                                     AllowedCallers = [BetaToolAllowedCaller.Direct],
-                                    CacheControl = new() { TTL = TTL.TTL5m },
+                                    CacheControl = new() { Ttl = Ttl.Ttl5m },
                                     DeferLoading = true,
                                     Description = "Get the current weather in a given location",
                                     InputExamples =
@@ -139,7 +139,8 @@ public class BatchServiceTest
                         },
                     },
                 ],
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         betaMessageBatch.Validate();
     }
@@ -148,7 +149,11 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Retrieve_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve("message_batch_id");
+        var betaMessageBatch = await client.Beta.Messages.Batches.Retrieve(
+            "message_batch_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         betaMessageBatch.Validate();
     }
 
@@ -156,7 +161,10 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task List_Works(IAnthropicClient client)
     {
-        var page = await client.Beta.Messages.Batches.List();
+        var page = await client.Beta.Messages.Batches.List(
+            new(),
+            TestContext.Current.CancellationToken
+        );
         page.Validate();
     }
 
@@ -164,7 +172,11 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Delete_Works(IAnthropicClient client)
     {
-        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete("message_batch_id");
+        var betaDeletedMessageBatch = await client.Beta.Messages.Batches.Delete(
+            "message_batch_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         betaDeletedMessageBatch.Validate();
     }
 
@@ -172,7 +184,11 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task Cancel_Works(IAnthropicClient client)
     {
-        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel("message_batch_id");
+        var betaMessageBatch = await client.Beta.Messages.Batches.Cancel(
+            "message_batch_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         betaMessageBatch.Validate();
     }
 
@@ -180,7 +196,11 @@ public class BatchServiceTest
     [AnthropicTestClients]
     public async Task ResultsStreaming_Works(IAnthropicClient client)
     {
-        var stream = client.Beta.Messages.Batches.ResultsStreaming("message_batch_id");
+        var stream = client.Beta.Messages.Batches.ResultsStreaming(
+            "message_batch_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
 
         await foreach (var betaMessageBatchIndividualResponse in stream)
         {

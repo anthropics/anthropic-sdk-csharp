@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 using Messages = Anthropic.Models.Beta.Messages;
 
@@ -8,84 +9,45 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaRawMessageStreamEventTest : TestBase
 {
     [Fact]
-    public void startValidation_Works()
+    public void StartValidationWorks()
     {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawMessageStartEvent(
-                new Messages::BetaMessage()
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawMessageStartEvent(
+            new Messages::BetaMessage()
+            {
+                ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
                 {
-                    ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
-                    Container = new()
-                    {
-                        ID = "id",
-                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Skills =
-                        [
-                            new()
-                            {
-                                SkillID = "x",
-                                Type = Messages::Type.Anthropic,
-                                Version = "x",
-                            },
-                        ],
-                    },
-                    Content =
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
                     [
-                        new Messages::BetaTextBlock()
+                        new()
                         {
-                            Citations =
-                            [
-                                new Messages::BetaCitationCharLocation()
-                                {
-                                    CitedText = "cited_text",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
-                                    EndCharIndex = 0,
-                                    FileID = "file_id",
-                                    StartCharIndex = 0,
-                                },
-                            ],
-                            Text = "Hi! My name is Claude.",
+                            SkillID = "x",
+                            Type = Messages::Type.Anthropic,
+                            Version = "x",
                         },
                     ],
-                    ContextManagement = new(
-                        [
-                            new Messages::BetaClearToolUses20250919EditResponse()
-                            {
-                                ClearedInputTokens = 0,
-                                ClearedToolUses = 0,
-                            },
-                        ]
-                    ),
-                    Model = Model.ClaudeOpus4_5_20251101,
-                    StopReason = Messages::BetaStopReason.EndTurn,
-                    StopSequence = null,
-                    Usage = new()
+                },
+                Content =
+                [
+                    new Messages::BetaTextBlock()
                     {
-                        CacheCreation = new()
-                        {
-                            Ephemeral1hInputTokens = 0,
-                            Ephemeral5mInputTokens = 0,
-                        },
-                        CacheCreationInputTokens = 2051,
-                        CacheReadInputTokens = 2051,
-                        InputTokens = 2095,
-                        OutputTokens = 503,
-                        ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
-                        ServiceTier = Messages::BetaUsageServiceTier.Standard,
+                        Citations =
+                        [
+                            new Messages::BetaCitationCharLocation()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "document_title",
+                                EndCharIndex = 0,
+                                FileID = "file_id",
+                                StartCharIndex = 0,
+                            },
+                        ],
+                        Text = "Hi! My name is Claude.",
                     },
-                }
-            )
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void deltaValidation_Works()
-    {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawMessageDeltaEvent()
-            {
+                ],
                 ContextManagement = new(
                     [
                         new Messages::BetaClearToolUses20250919EditResponse()
@@ -95,32 +57,22 @@ public class BetaRawMessageStreamEventTest : TestBase
                         },
                     ]
                 ),
-                Delta = new()
-                {
-                    Container = new()
-                    {
-                        ID = "id",
-                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Skills =
-                        [
-                            new()
-                            {
-                                SkillID = "x",
-                                Type = Messages::Type.Anthropic,
-                                Version = "x",
-                            },
-                        ],
-                    },
-                    StopReason = Messages::BetaStopReason.EndTurn,
-                    StopSequence = "stop_sequence",
-                },
+                Model = Model.ClaudeSonnet4_5_20250929,
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = null,
                 Usage = new()
                 {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
                     InputTokens = 2095,
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+                    ServiceTier = Messages::BetaUsageServiceTier.Standard,
                 },
             }
         );
@@ -128,144 +80,141 @@ public class BetaRawMessageStreamEventTest : TestBase
     }
 
     [Fact]
-    public void stopValidation_Works()
+    public void DeltaValidationWorks()
     {
-        Messages::BetaRawMessageStreamEvent value = new(new Messages::BetaRawMessageStopEvent());
-        value.Validate();
-    }
-
-    [Fact]
-    public void content_block_startValidation_Works()
-    {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawContentBlockStartEvent()
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawMessageDeltaEvent()
+        {
+            ContextManagement = new(
+                [
+                    new Messages::BetaClearToolUses20250919EditResponse()
+                    {
+                        ClearedInputTokens = 0,
+                        ClearedToolUses = 0,
+                    },
+                ]
+            ),
+            Delta = new()
             {
-                ContentBlock = new Messages::BetaTextBlock()
+                Container = new()
                 {
-                    Citations =
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
                     [
-                        new Messages::BetaCitationCharLocation()
+                        new()
                         {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "document_title",
-                            EndCharIndex = 0,
-                            FileID = "file_id",
-                            StartCharIndex = 0,
+                            SkillID = "x",
+                            Type = Messages::Type.Anthropic,
+                            Version = "x",
                         },
                     ],
-                    Text = "text",
                 },
-                Index = 0,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void content_block_deltaValidation_Works()
-    {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawContentBlockDeltaEvent()
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
+            Usage = new()
             {
-                Delta = new Messages::BetaTextDelta("text"),
-                Index = 0,
-            }
-        );
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                InputTokens = 2095,
+                OutputTokens = 503,
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+            },
+        };
         value.Validate();
     }
 
     [Fact]
-    public void content_block_stopValidation_Works()
+    public void StopValidationWorks()
     {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawContentBlockStopEvent(0)
-        );
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawMessageStopEvent();
         value.Validate();
     }
 
     [Fact]
-    public void startSerializationRoundtrip_Works()
+    public void ContentBlockStartValidationWorks()
     {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawMessageStartEvent(
-                new Messages::BetaMessage()
-                {
-                    ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
-                    Container = new()
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawContentBlockStartEvent()
+        {
+            ContentBlock = new Messages::BetaTextBlock()
+            {
+                Citations =
+                [
+                    new Messages::BetaCitationCharLocation()
                     {
-                        ID = "id",
-                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Skills =
+                        CitedText = "cited_text",
+                        DocumentIndex = 0,
+                        DocumentTitle = "document_title",
+                        EndCharIndex = 0,
+                        FileID = "file_id",
+                        StartCharIndex = 0,
+                    },
+                ],
+                Text = "text",
+            },
+            Index = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ContentBlockDeltaValidationWorks()
+    {
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawContentBlockDeltaEvent()
+        {
+            Delta = new Messages::BetaTextDelta("text"),
+            Index = 0,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ContentBlockStopValidationWorks()
+    {
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawContentBlockStopEvent(0);
+        value.Validate();
+    }
+
+    [Fact]
+    public void StartSerializationRoundtripWorks()
+    {
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawMessageStartEvent(
+            new Messages::BetaMessage()
+            {
+                ID = "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+                Container = new()
+                {
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
+                    [
+                        new()
+                        {
+                            SkillID = "x",
+                            Type = Messages::Type.Anthropic,
+                            Version = "x",
+                        },
+                    ],
+                },
+                Content =
+                [
+                    new Messages::BetaTextBlock()
+                    {
+                        Citations =
                         [
-                            new()
+                            new Messages::BetaCitationCharLocation()
                             {
-                                SkillID = "x",
-                                Type = Messages::Type.Anthropic,
-                                Version = "x",
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "document_title",
+                                EndCharIndex = 0,
+                                FileID = "file_id",
+                                StartCharIndex = 0,
                             },
                         ],
+                        Text = "Hi! My name is Claude.",
                     },
-                    Content =
-                    [
-                        new Messages::BetaTextBlock()
-                        {
-                            Citations =
-                            [
-                                new Messages::BetaCitationCharLocation()
-                                {
-                                    CitedText = "cited_text",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "document_title",
-                                    EndCharIndex = 0,
-                                    FileID = "file_id",
-                                    StartCharIndex = 0,
-                                },
-                            ],
-                            Text = "Hi! My name is Claude.",
-                        },
-                    ],
-                    ContextManagement = new(
-                        [
-                            new Messages::BetaClearToolUses20250919EditResponse()
-                            {
-                                ClearedInputTokens = 0,
-                                ClearedToolUses = 0,
-                            },
-                        ]
-                    ),
-                    Model = Model.ClaudeOpus4_5_20251101,
-                    StopReason = Messages::BetaStopReason.EndTurn,
-                    StopSequence = null,
-                    Usage = new()
-                    {
-                        CacheCreation = new()
-                        {
-                            Ephemeral1hInputTokens = 0,
-                            Ephemeral5mInputTokens = 0,
-                        },
-                        CacheCreationInputTokens = 2051,
-                        CacheReadInputTokens = 2051,
-                        InputTokens = 2095,
-                        OutputTokens = 503,
-                        ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
-                        ServiceTier = Messages::BetaUsageServiceTier.Standard,
-                    },
-                }
-            )
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void deltaSerializationRoundtrip_Works()
-    {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawMessageDeltaEvent()
-            {
+                ],
                 ContextManagement = new(
                     [
                         new Messages::BetaClearToolUses20250919EditResponse()
@@ -275,106 +224,156 @@ public class BetaRawMessageStreamEventTest : TestBase
                         },
                     ]
                 ),
-                Delta = new()
-                {
-                    Container = new()
-                    {
-                        ID = "id",
-                        ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Skills =
-                        [
-                            new()
-                            {
-                                SkillID = "x",
-                                Type = Messages::Type.Anthropic,
-                                Version = "x",
-                            },
-                        ],
-                    },
-                    StopReason = Messages::BetaStopReason.EndTurn,
-                    StopSequence = "stop_sequence",
-                },
+                Model = Model.ClaudeSonnet4_5_20250929,
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = null,
                 Usage = new()
                 {
+                    CacheCreation = new()
+                    {
+                        Ephemeral1hInputTokens = 0,
+                        Ephemeral5mInputTokens = 0,
+                    },
                     CacheCreationInputTokens = 2051,
                     CacheReadInputTokens = 2051,
                     InputTokens = 2095,
                     OutputTokens = 503,
                     ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+                    ServiceTier = Messages::BetaUsageServiceTier.Standard,
                 },
             }
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void stopSerializationRoundtrip_Works()
+    public void DeltaSerializationRoundtripWorks()
     {
-        Messages::BetaRawMessageStreamEvent value = new(new Messages::BetaRawMessageStopEvent());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void content_block_startSerializationRoundtrip_Works()
-    {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawContentBlockStartEvent()
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawMessageDeltaEvent()
+        {
+            ContextManagement = new(
+                [
+                    new Messages::BetaClearToolUses20250919EditResponse()
+                    {
+                        ClearedInputTokens = 0,
+                        ClearedToolUses = 0,
+                    },
+                ]
+            ),
+            Delta = new()
             {
-                ContentBlock = new Messages::BetaTextBlock()
+                Container = new()
                 {
-                    Citations =
+                    ID = "id",
+                    ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    Skills =
                     [
-                        new Messages::BetaCitationCharLocation()
+                        new()
                         {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "document_title",
-                            EndCharIndex = 0,
-                            FileID = "file_id",
-                            StartCharIndex = 0,
+                            SkillID = "x",
+                            Type = Messages::Type.Anthropic,
+                            Version = "x",
                         },
                     ],
-                    Text = "text",
                 },
-                Index = 0,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void content_block_deltaSerializationRoundtrip_Works()
-    {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawContentBlockDeltaEvent()
+                StopReason = Messages::BetaStopReason.EndTurn,
+                StopSequence = "stop_sequence",
+            },
+            Usage = new()
             {
-                Delta = new Messages::BetaTextDelta("text"),
-                Index = 0,
-            }
+                CacheCreationInputTokens = 2051,
+                CacheReadInputTokens = 2051,
+                InputTokens = 2095,
+                OutputTokens = 503,
+                ServerToolUse = new() { WebFetchRequests = 2, WebSearchRequests = 0 },
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void content_block_stopSerializationRoundtrip_Works()
+    public void StopSerializationRoundtripWorks()
     {
-        Messages::BetaRawMessageStreamEvent value = new(
-            new Messages::BetaRawContentBlockStopEvent(0)
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawMessageStopEvent();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ContentBlockStartSerializationRoundtripWorks()
+    {
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawContentBlockStartEvent()
+        {
+            ContentBlock = new Messages::BetaTextBlock()
+            {
+                Citations =
+                [
+                    new Messages::BetaCitationCharLocation()
+                    {
+                        CitedText = "cited_text",
+                        DocumentIndex = 0,
+                        DocumentTitle = "document_title",
+                        EndCharIndex = 0,
+                        FileID = "file_id",
+                        StartCharIndex = 0,
+                    },
+                ],
+                Text = "text",
+            },
+            Index = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ContentBlockDeltaSerializationRoundtripWorks()
+    {
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawContentBlockDeltaEvent()
+        {
+            Delta = new Messages::BetaTextDelta("text"),
+            Index = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ContentBlockStopSerializationRoundtripWorks()
+    {
+        Messages::BetaRawMessageStreamEvent value = new Messages::BetaRawContentBlockStopEvent(0);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaRawMessageStreamEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

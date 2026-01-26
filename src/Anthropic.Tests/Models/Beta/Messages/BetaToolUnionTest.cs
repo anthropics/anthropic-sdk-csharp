@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -7,841 +8,823 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaToolUnionTest : TestBase
 {
     [Fact]
-    public void beta_toolValidation_Works()
+    public void BetaToolValidationWorks()
     {
-        BetaToolUnion value = new(
-            new BetaTool()
+        BetaToolUnion value = new BetaTool()
+        {
+            InputSchema = new()
             {
-                InputSchema = new()
+                Properties = new Dictionary<string, JsonElement>()
                 {
-                    Properties = new Dictionary<string, JsonElement>()
-                    {
-                        { "location", JsonSerializer.SerializeToElement("bar") },
-                        { "unit", JsonSerializer.SerializeToElement("bar") },
-                    },
-                    Required = ["location"],
+                    { "location", JsonSerializer.SerializeToElement("bar") },
+                    { "unit", JsonSerializer.SerializeToElement("bar") },
                 },
-                Name = "name",
-                AllowedCallers = [BetaToolAllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Description = "Get the current weather in a given location",
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-                Type = BetaToolType.Custom,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void bash_20241022Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolBash20241022()
-            {
-                AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void bash_20250124Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolBash20250124()
-            {
-                AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void code_execution_tool_20250522Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaCodeExecutionTool20250522()
-            {
-                AllowedCallers = [AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void code_execution_tool_20250825Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaCodeExecutionTool20250825()
-            {
-                AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void computer_use_20241022Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolComputerUse20241022()
-            {
-                DisplayHeightPx = 1,
-                DisplayWidthPx = 1,
-                AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                DisplayNumber = 0,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void memory_tool_20250818Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaMemoryTool20250818()
-            {
-                AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void computer_use_20250124Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolComputerUse20250124()
-            {
-                DisplayHeightPx = 1,
-                DisplayWidthPx = 1,
-                AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                DisplayNumber = 0,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void text_editor_20241022Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolTextEditor20241022()
-            {
-                AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void computer_use_20251124Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolComputerUse20251124()
-            {
-                DisplayHeightPx = 1,
-                DisplayWidthPx = 1,
-                AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                DisplayNumber = 0,
-                EnableZoom = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void text_editor_20250124Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolTextEditor20250124()
-            {
-                AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void text_editor_20250429Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolTextEditor20250429()
-            {
-                AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void text_editor_20250728Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolTextEditor20250728()
-            {
-                AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                MaxCharacters = 1,
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void web_search_tool_20250305Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaWebSearchTool20250305()
-            {
-                AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
-                AllowedDomains = ["string"],
-                BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                MaxUses = 1,
-                Strict = true,
-                UserLocation = new()
+                Required = ["location"],
+            },
+            Name = "name",
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Description = "Get the current weather in a given location",
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
                 {
-                    City = "New York",
-                    Country = "US",
-                    Region = "California",
-                    Timezone = "America/New_York",
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
-            }
-        );
+            ],
+            Strict = true,
+            Type = BetaToolType.Custom,
+        };
         value.Validate();
     }
 
     [Fact]
-    public void web_fetch_tool_20250910Validation_Works()
+    public void Bash20241022ValidationWorks()
     {
-        BetaToolUnion value = new(
-            new BetaWebFetchTool20250910()
-            {
-                AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
-                AllowedDomains = ["string"],
-                BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations = new() { Enabled = true },
-                DeferLoading = true,
-                MaxContentTokens = 1,
-                MaxUses = 1,
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void search_tool_bm25_20251119Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolSearchToolBm25_20251119()
-            {
-                Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-                AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void search_tool_regex_20251119Validation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolSearchToolRegex20251119()
-            {
-                Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-                AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Strict = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void mcp_toolsetValidation_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaMCPToolset()
-            {
-                MCPServerName = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Configs = new Dictionary<string, BetaMCPToolConfig>()
+        BetaToolUnion value = new BetaToolBash20241022()
+        {
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
                 {
-                    {
-                        "foo",
-                        new() { DeferLoading = true, Enabled = true }
-                    },
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
-                DefaultConfig = new() { DeferLoading = true, Enabled = true },
-            }
-        );
+            ],
+            Strict = true,
+        };
         value.Validate();
     }
 
     [Fact]
-    public void beta_toolSerializationRoundtrip_Works()
+    public void Bash20250124ValidationWorks()
     {
-        BetaToolUnion value = new(
-            new BetaTool()
-            {
-                InputSchema = new()
+        BetaToolUnion value = new BetaToolBash20250124()
+        {
+            AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
                 {
-                    Properties = new Dictionary<string, JsonElement>()
-                    {
-                        { "location", JsonSerializer.SerializeToElement("bar") },
-                        { "unit", JsonSerializer.SerializeToElement("bar") },
-                    },
-                    Required = ["location"],
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
-                Name = "name",
-                AllowedCallers = [BetaToolAllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Description = "Get the current weather in a given location",
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-                Type = BetaToolType.Custom,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
+            ],
+            Strict = true,
+        };
+        value.Validate();
     }
 
     [Fact]
-    public void bash_20241022SerializationRoundtrip_Works()
+    public void CodeExecutionTool20250522ValidationWorks()
     {
-        BetaToolUnion value = new(
-            new BetaToolBash20241022()
-            {
-                AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
+        BetaToolUnion value = new BetaCodeExecutionTool20250522()
+        {
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        value.Validate();
     }
 
     [Fact]
-    public void bash_20250124SerializationRoundtrip_Works()
+    public void CodeExecutionTool20250825ValidationWorks()
     {
-        BetaToolUnion value = new(
-            new BetaToolBash20250124()
-            {
-                AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
+        BetaToolUnion value = new BetaCodeExecutionTool20250825()
+        {
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        value.Validate();
     }
 
     [Fact]
-    public void code_execution_tool_20250522SerializationRoundtrip_Works()
+    public void ComputerUse20241022ValidationWorks()
     {
-        BetaToolUnion value = new(
-            new BetaCodeExecutionTool20250522()
-            {
-                AllowedCallers = [AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void code_execution_tool_20250825SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaCodeExecutionTool20250825()
-            {
-                AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void computer_use_20241022SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolComputerUse20241022()
-            {
-                DisplayHeightPx = 1,
-                DisplayWidthPx = 1,
-                AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                DisplayNumber = 0,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void memory_tool_20250818SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaMemoryTool20250818()
-            {
-                AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void computer_use_20250124SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolComputerUse20250124()
-            {
-                DisplayHeightPx = 1,
-                DisplayWidthPx = 1,
-                AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                DisplayNumber = 0,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void text_editor_20241022SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolTextEditor20241022()
-            {
-                AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void computer_use_20251124SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolComputerUse20251124()
-            {
-                DisplayHeightPx = 1,
-                DisplayWidthPx = 1,
-                AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                DisplayNumber = 0,
-                EnableZoom = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void text_editor_20250124SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolTextEditor20250124()
-            {
-                AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void text_editor_20250429SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolTextEditor20250429()
-            {
-                AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void text_editor_20250728SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolTextEditor20250728()
-            {
-                AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                InputExamples =
-                [
-                    new Dictionary<string, JsonElement>()
-                    {
-                        { "foo", JsonSerializer.SerializeToElement("bar") },
-                    },
-                ],
-                MaxCharacters = 1,
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void web_search_tool_20250305SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaWebSearchTool20250305()
-            {
-                AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
-                AllowedDomains = ["string"],
-                BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                MaxUses = 1,
-                Strict = true,
-                UserLocation = new()
+        BetaToolUnion value = new BetaToolComputerUse20241022()
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
                 {
-                    City = "New York",
-                    Country = "US",
-                    Region = "California",
-                    Timezone = "America/New_York",
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
+            ],
+            Strict = true,
+        };
+        value.Validate();
     }
 
     [Fact]
-    public void web_fetch_tool_20250910SerializationRoundtrip_Works()
+    public void MemoryTool20250818ValidationWorks()
     {
-        BetaToolUnion value = new(
-            new BetaWebFetchTool20250910()
-            {
-                AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
-                AllowedDomains = ["string"],
-                BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations = new() { Enabled = true },
-                DeferLoading = true,
-                MaxContentTokens = 1,
-                MaxUses = 1,
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void search_tool_bm25_20251119SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolSearchToolBm25_20251119()
-            {
-                Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
-                AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void search_tool_regex_20251119SerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaToolSearchToolRegex20251119()
-            {
-                Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
-                AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                DeferLoading = true,
-                Strict = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void mcp_toolsetSerializationRoundtrip_Works()
-    {
-        BetaToolUnion value = new(
-            new BetaMCPToolset()
-            {
-                MCPServerName = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Configs = new Dictionary<string, BetaMCPToolConfig>()
+        BetaToolUnion value = new BetaMemoryTool20250818()
+        {
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
                 {
-                    {
-                        "foo",
-                        new() { DeferLoading = true, Enabled = true }
-                    },
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
                 },
-                DefaultConfig = new() { DeferLoading = true, Enabled = true },
-            }
+            ],
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ComputerUse20250124ValidationWorks()
+    {
+        BetaToolUnion value = new BetaToolComputerUse20250124()
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void TextEditor20241022ValidationWorks()
+    {
+        BetaToolUnion value = new BetaToolTextEditor20241022()
+        {
+            AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ComputerUse20251124ValidationWorks()
+    {
+        BetaToolUnion value = new BetaToolComputerUse20251124()
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            EnableZoom = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void TextEditor20250124ValidationWorks()
+    {
+        BetaToolUnion value = new BetaToolTextEditor20250124()
+        {
+            AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void TextEditor20250429ValidationWorks()
+    {
+        BetaToolUnion value = new BetaToolTextEditor20250429()
+        {
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void TextEditor20250728ValidationWorks()
+    {
+        BetaToolUnion value = new BetaToolTextEditor20250728()
+        {
+            AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            MaxCharacters = 1,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebSearchTool20250305ValidationWorks()
+    {
+        BetaToolUnion value = new BetaWebSearchTool20250305()
+        {
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebFetchTool20250910ValidationWorks()
+    {
+        BetaToolUnion value = new BetaWebFetchTool20250910()
+        {
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SearchToolBm25_20251119ValidationWorks()
+    {
+        BetaToolUnion value = new BetaToolSearchToolBm25_20251119()
+        {
+            Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void SearchToolRegex20251119ValidationWorks()
+    {
+        BetaToolUnion value = new BetaToolSearchToolRegex20251119()
+        {
+            Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
+            AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void McpToolsetValidationWorks()
+    {
+        BetaToolUnion value = new BetaMcpToolset()
+        {
+            McpServerName = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Configs = new Dictionary<string, BetaMcpToolConfig>()
+            {
+                {
+                    "foo",
+                    new() { DeferLoading = true, Enabled = true }
+                },
+            },
+            DefaultConfig = new() { DeferLoading = true, Enabled = true },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaToolSerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaTool()
+        {
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "location", JsonSerializer.SerializeToElement("bar") },
+                    { "unit", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["location"],
+            },
+            Name = "name",
+            AllowedCallers = [BetaToolAllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Description = "Get the current weather in a given location",
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+            Type = BetaToolType.Custom,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void Bash20241022SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolBash20241022()
+        {
+            AllowedCallers = [BetaToolBash20241022AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void Bash20250124SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolBash20250124()
+        {
+            AllowedCallers = [BetaToolBash20250124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void CodeExecutionTool20250522SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaCodeExecutionTool20250522()
+        {
+            AllowedCallers = [AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void CodeExecutionTool20250825SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaCodeExecutionTool20250825()
+        {
+            AllowedCallers = [BetaCodeExecutionTool20250825AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ComputerUse20241022SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolComputerUse20241022()
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [BetaToolComputerUse20241022AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void MemoryTool20250818SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaMemoryTool20250818()
+        {
+            AllowedCallers = [BetaMemoryTool20250818AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ComputerUse20250124SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolComputerUse20250124()
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [BetaToolComputerUse20250124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextEditor20241022SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolTextEditor20241022()
+        {
+            AllowedCallers = [BetaToolTextEditor20241022AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ComputerUse20251124SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolComputerUse20251124()
+        {
+            DisplayHeightPx = 1,
+            DisplayWidthPx = 1,
+            AllowedCallers = [BetaToolComputerUse20251124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            DisplayNumber = 0,
+            EnableZoom = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextEditor20250124SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolTextEditor20250124()
+        {
+            AllowedCallers = [BetaToolTextEditor20250124AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextEditor20250429SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolTextEditor20250429()
+        {
+            AllowedCallers = [BetaToolTextEditor20250429AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextEditor20250728SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolTextEditor20250728()
+        {
+            AllowedCallers = [BetaToolTextEditor20250728AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            InputExamples =
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ],
+            MaxCharacters = 1,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebSearchTool20250305SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaWebSearchTool20250305()
+        {
+            AllowedCallers = [BetaWebSearchTool20250305AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            MaxUses = 1,
+            Strict = true,
+            UserLocation = new()
+            {
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebFetchTool20250910SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaWebFetchTool20250910()
+        {
+            AllowedCallers = [BetaWebFetchTool20250910AllowedCaller.Direct],
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            DeferLoading = true,
+            MaxContentTokens = 1,
+            MaxUses = 1,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SearchToolBm25_20251119SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolSearchToolBm25_20251119()
+        {
+            Type = BetaToolSearchToolBm25_20251119Type.ToolSearchToolBm25_20251119,
+            AllowedCallers = [BetaToolSearchToolBm25_20251119AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SearchToolRegex20251119SerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaToolSearchToolRegex20251119()
+        {
+            Type = BetaToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
+            AllowedCallers = [BetaToolSearchToolRegex20251119AllowedCaller.Direct],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            DeferLoading = true,
+            Strict = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void McpToolsetSerializationRoundtripWorks()
+    {
+        BetaToolUnion value = new BetaMcpToolset()
+        {
+            McpServerName = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Configs = new Dictionary<string, BetaMcpToolConfig>()
+            {
+                {
+                    "foo",
+                    new() { DeferLoading = true, Enabled = true }
+                },
+            },
+            DefaultConfig = new() { DeferLoading = true, Enabled = true },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

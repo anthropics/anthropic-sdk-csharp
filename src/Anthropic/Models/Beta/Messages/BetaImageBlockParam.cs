@@ -9,19 +9,27 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaImageBlockParam, BetaImageBlockParamFromRaw>))]
-public sealed record class BetaImageBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaImageBlockParam, BetaImageBlockParamFromRaw>))]
+public sealed record class BetaImageBlockParam : JsonModel
 {
     public required BetaImageBlockParamSource Source
     {
-        get { return ModelBase.GetNotNullClass<BetaImageBlockParamSource>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaImageBlockParamSource>("source");
+        }
+        init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -31,21 +39,17 @@ public sealed record class BetaImageBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Source.Validate();
-        if (
-            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"image\""))
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("image")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -54,7 +58,7 @@ public sealed record class BetaImageBlockParam : ModelBase
 
     public BetaImageBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        this.Type = JsonSerializer.SerializeToElement("image");
     }
 
     public BetaImageBlockParam(BetaImageBlockParam betaImageBlockParam)
@@ -62,16 +66,16 @@ public sealed record class BetaImageBlockParam : ModelBase
 
     public BetaImageBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"image\"");
+        this.Type = JsonSerializer.SerializeToElement("image");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaImageBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -91,7 +95,7 @@ public sealed record class BetaImageBlockParam : ModelBase
     }
 }
 
-class BetaImageBlockParamFromRaw : IFromRaw<BetaImageBlockParam>
+class BetaImageBlockParamFromRaw : IFromRawJson<BetaImageBlockParam>
 {
     /// <inheritdoc/>
     public BetaImageBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -99,15 +103,21 @@ class BetaImageBlockParamFromRaw : IFromRaw<BetaImageBlockParam>
 }
 
 [JsonConverter(typeof(BetaImageBlockParamSourceConverter))]
-public record class BetaImageBlockParamSource
+public record class BetaImageBlockParamSource : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -116,33 +126,33 @@ public record class BetaImageBlockParamSource
         {
             return Match(
                 betaBase64Image: (x) => x.Type,
-                betaURLImage: (x) => x.Type,
+                betaUrlImage: (x) => x.Type,
                 betaFileImage: (x) => x.Type
             );
         }
     }
 
-    public BetaImageBlockParamSource(BetaBase64ImageSource value, JsonElement? json = null)
+    public BetaImageBlockParamSource(BetaBase64ImageSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaImageBlockParamSource(BetaURLImageSource value, JsonElement? json = null)
+    public BetaImageBlockParamSource(BetaUrlImageSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaImageBlockParamSource(BetaFileImageSource value, JsonElement? json = null)
+    public BetaImageBlockParamSource(BetaFileImageSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaImageBlockParamSource(JsonElement json)
+    public BetaImageBlockParamSource(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -168,22 +178,22 @@ public record class BetaImageBlockParamSource
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaURLImageSource"/>.
+    /// type <see cref="BetaUrlImageSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaURLImage(out var value)) {
-    ///     // `value` is of type `BetaURLImageSource`
+    /// if (instance.TryPickBetaUrlImage(out var value)) {
+    ///     // `value` is of type `BetaUrlImageSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaURLImage([NotNullWhen(true)] out BetaURLImageSource? value)
+    public bool TryPickBetaUrlImage([NotNullWhen(true)] out BetaUrlImageSource? value)
     {
-        value = this.Value as BetaURLImageSource;
+        value = this.Value as BetaUrlImageSource;
         return value != null;
     }
 
@@ -223,7 +233,7 @@ public record class BetaImageBlockParamSource
     /// <code>
     /// instance.Switch(
     ///     (BetaBase64ImageSource value) => {...},
-    ///     (BetaURLImageSource value) => {...},
+    ///     (BetaUrlImageSource value) => {...},
     ///     (BetaFileImageSource value) => {...}
     /// );
     /// </code>
@@ -231,7 +241,7 @@ public record class BetaImageBlockParamSource
     /// </summary>
     public void Switch(
         System::Action<BetaBase64ImageSource> betaBase64Image,
-        System::Action<BetaURLImageSource> betaURLImage,
+        System::Action<BetaUrlImageSource> betaUrlImage,
         System::Action<BetaFileImageSource> betaFileImage
     )
     {
@@ -240,8 +250,8 @@ public record class BetaImageBlockParamSource
             case BetaBase64ImageSource value:
                 betaBase64Image(value);
                 break;
-            case BetaURLImageSource value:
-                betaURLImage(value);
+            case BetaUrlImageSource value:
+                betaUrlImage(value);
                 break;
             case BetaFileImageSource value:
                 betaFileImage(value);
@@ -269,7 +279,7 @@ public record class BetaImageBlockParamSource
     /// <code>
     /// var result = instance.Match(
     ///     (BetaBase64ImageSource value) => {...},
-    ///     (BetaURLImageSource value) => {...},
+    ///     (BetaUrlImageSource value) => {...},
     ///     (BetaFileImageSource value) => {...}
     /// );
     /// </code>
@@ -277,14 +287,14 @@ public record class BetaImageBlockParamSource
     /// </summary>
     public T Match<T>(
         System::Func<BetaBase64ImageSource, T> betaBase64Image,
-        System::Func<BetaURLImageSource, T> betaURLImage,
+        System::Func<BetaUrlImageSource, T> betaUrlImage,
         System::Func<BetaFileImageSource, T> betaFileImage
     )
     {
         return this.Value switch
         {
             BetaBase64ImageSource value => betaBase64Image(value),
-            BetaURLImageSource value => betaURLImage(value),
+            BetaUrlImageSource value => betaUrlImage(value),
             BetaFileImageSource value => betaFileImage(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaImageBlockParamSource"
@@ -295,7 +305,7 @@ public record class BetaImageBlockParamSource
     public static implicit operator BetaImageBlockParamSource(BetaBase64ImageSource value) =>
         new(value);
 
-    public static implicit operator BetaImageBlockParamSource(BetaURLImageSource value) =>
+    public static implicit operator BetaImageBlockParamSource(BetaUrlImageSource value) =>
         new(value);
 
     public static implicit operator BetaImageBlockParamSource(BetaFileImageSource value) =>
@@ -311,7 +321,7 @@ public record class BetaImageBlockParamSource
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -321,7 +331,7 @@ public record class BetaImageBlockParamSource
         }
         this.Switch(
             (betaBase64Image) => betaBase64Image.Validate(),
-            (betaURLImage) => betaURLImage.Validate(),
+            (betaUrlImage) => betaUrlImage.Validate(),
             (betaFileImage) => betaFileImage.Validate()
         );
     }
@@ -335,6 +345,9 @@ public record class BetaImageBlockParamSource
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockParamSource>
@@ -345,11 +358,11 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -363,13 +376,13 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -378,20 +391,20 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "url":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaURLImageSource>(
-                        json,
+                    var deserialized = JsonSerializer.Deserialize<BetaUrlImageSource>(
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -400,20 +413,20 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "file":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaFileImageSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -422,11 +435,11 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaImageBlockParamSource(json);
+                return new BetaImageBlockParamSource(element);
             }
         }
     }

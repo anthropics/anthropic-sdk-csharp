@@ -9,20 +9,28 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<RedactedThinkingBlockParam, RedactedThinkingBlockParamFromRaw>)
+    typeof(JsonModelConverter<RedactedThinkingBlockParam, RedactedThinkingBlockParamFromRaw>)
 )]
-public sealed record class RedactedThinkingBlockParam : ModelBase
+public sealed record class RedactedThinkingBlockParam : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("data");
+        }
+        init { this._rawData.Set("data", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -32,7 +40,7 @@ public sealed record class RedactedThinkingBlockParam : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"")
+                JsonSerializer.SerializeToElement("redacted_thinking")
             )
         )
         {
@@ -42,7 +50,7 @@ public sealed record class RedactedThinkingBlockParam : ModelBase
 
     public RedactedThinkingBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
     public RedactedThinkingBlockParam(RedactedThinkingBlockParam redactedThinkingBlockParam)
@@ -50,16 +58,16 @@ public sealed record class RedactedThinkingBlockParam : ModelBase
 
     public RedactedThinkingBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RedactedThinkingBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -79,7 +87,7 @@ public sealed record class RedactedThinkingBlockParam : ModelBase
     }
 }
 
-class RedactedThinkingBlockParamFromRaw : IFromRaw<RedactedThinkingBlockParam>
+class RedactedThinkingBlockParamFromRaw : IFromRawJson<RedactedThinkingBlockParam>
 {
     /// <inheritdoc/>
     public RedactedThinkingBlockParam FromRawUnchecked(

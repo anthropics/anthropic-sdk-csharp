@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<RateLimitError, RateLimitErrorFromRaw>))]
-public sealed record class RateLimitError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<RateLimitError, RateLimitErrorFromRaw>))]
+public sealed record class RateLimitError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class RateLimitError : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"")
+                JsonSerializer.SerializeToElement("rate_limit_error")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class RateLimitError : ModelBase
 
     public RateLimitError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+        this.Type = JsonSerializer.SerializeToElement("rate_limit_error");
     }
 
     public RateLimitError(RateLimitError rateLimitError)
@@ -48,16 +56,16 @@ public sealed record class RateLimitError : ModelBase
 
     public RateLimitError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"rate_limit_error\"");
+        this.Type = JsonSerializer.SerializeToElement("rate_limit_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RateLimitError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -75,7 +83,7 @@ public sealed record class RateLimitError : ModelBase
     }
 }
 
-class RateLimitErrorFromRaw : IFromRaw<RateLimitError>
+class RateLimitErrorFromRaw : IFromRawJson<RateLimitError>
 {
     /// <inheritdoc/>
     public RateLimitError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

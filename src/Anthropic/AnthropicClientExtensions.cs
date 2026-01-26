@@ -111,7 +111,11 @@ public static class AnthropicClientExtensions
 
             if (serviceType == typeof(ChatClientMetadata))
             {
-                return _metadata ??= new("anthropic", _anthropicClient.BaseUrl, _defaultModelId);
+                return _metadata ??= new(
+                    "anthropic",
+                    new Uri(_anthropicClient.BaseUrl),
+                    _defaultModelId
+                );
             }
 
             if (serviceType.IsInstanceOfType(_anthropicClient))
@@ -238,15 +242,9 @@ public static class AnthropicClientExtensions
                         finishReason = ToFinishReason(rawMessageDelta.Delta.StopReason);
                         if (rawMessageDelta.Usage is { } deltaUsage)
                         {
-                            UsageDetails current = ToUsageDetails(deltaUsage);
-                            if (usageDetails is null)
-                            {
-                                usageDetails = current;
-                            }
-                            else
-                            {
-                                usageDetails.Add(current);
-                            }
+                            // https://platform.claude.com/docs/en/build-with-claude/streaming
+                            // "The token counts shown in the usage field of the message_delta event are cumulative."
+                            usageDetails = ToUsageDetails(deltaUsage);
                         }
                         break;
 
@@ -302,7 +300,7 @@ public static class AnthropicClientExtensions
                                 );
                                 break;
 
-                            case InputJSONDelta inputDelta:
+                            case InputJsonDelta inputDelta:
                                 if (
                                     streamingFunctions is not null
                                     && streamingFunctions.TryGetValue(
@@ -311,7 +309,7 @@ public static class AnthropicClientExtensions
                                     )
                                 )
                                 {
-                                    functionData.Arguments.Append(inputDelta.PartialJSON);
+                                    functionData.Arguments.Append(inputDelta.PartialJson);
                                 }
                                 break;
 
@@ -495,7 +493,7 @@ public static class AnthropicClientExtensions
                                     new DocumentBlockParam()
                                     {
                                         Source = new(
-                                            new Base64PDFSource()
+                                            new Base64PdfSource()
                                             {
                                                 Data = dc.Base64Data.ToString(),
                                             }
@@ -529,7 +527,7 @@ public static class AnthropicClientExtensions
                                     new ImageBlockParam()
                                     {
                                         Source = new(
-                                            new URLImageSource() { URL = uc.Uri.AbsoluteUri }
+                                            new UrlImageSource() { Url = uc.Uri.AbsoluteUri }
                                         ),
                                     },
                                     uc
@@ -548,7 +546,7 @@ public static class AnthropicClientExtensions
                                     new DocumentBlockParam()
                                     {
                                         Source = new(
-                                            new URLPDFSource() { URL = uc.Uri.AbsoluteUri }
+                                            new UrlPdfSource() { Url = uc.Uri.AbsoluteUri }
                                         ),
                                     },
                                     uc
@@ -642,7 +640,7 @@ public static class AnthropicClientExtensions
                                                 new DocumentBlockParam()
                                                 {
                                                     Source = new(
-                                                        new Base64PDFSource()
+                                                        new Base64PdfSource()
                                                         {
                                                             Data = dc.Base64Data.ToString(),
                                                         }
@@ -676,9 +674,9 @@ public static class AnthropicClientExtensions
                                                     new ImageBlockParam()
                                                     {
                                                         Source = new(
-                                                            new URLImageSource()
+                                                            new UrlImageSource()
                                                             {
-                                                                URL = uc.Uri.AbsoluteUri,
+                                                                Url = uc.Uri.AbsoluteUri,
                                                             }
                                                         ),
                                                     }
@@ -693,9 +691,9 @@ public static class AnthropicClientExtensions
                                                 new DocumentBlockParam()
                                                 {
                                                     Source = new(
-                                                        new URLPDFSource()
+                                                        new UrlPdfSource()
                                                         {
-                                                            URL = uc.Uri.AbsoluteUri,
+                                                            Url = uc.Uri.AbsoluteUri,
                                                         }
                                                     ),
                                                 }
@@ -1009,6 +1007,8 @@ public static class AnthropicClientExtensions
                     inputTokens
                 ),
 
+                CachedInputTokenCount = cacheReadInputTokens,
+
                 OutputTokenCount = outputTokens,
             };
 
@@ -1021,12 +1021,6 @@ public static class AnthropicClientExtensions
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
-            }
-
-            if (cacheReadInputTokens is > 0)
-            {
-                (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheReadInputTokens)] =
-                    cacheReadInputTokens.Value;
             }
 
             if (serverToolUsage?.WebSearchRequests is > 0)
@@ -1117,7 +1111,7 @@ public static class AnthropicClientExtensions
             if (citation.TryPickCitationsWebSearchResultLocation(out var webSearchLocation))
             {
                 annotation.Url = Uri.TryCreate(
-                    webSearchLocation.URL,
+                    webSearchLocation.Url,
                     UriKind.Absolute,
                     out Uri? url
                 )

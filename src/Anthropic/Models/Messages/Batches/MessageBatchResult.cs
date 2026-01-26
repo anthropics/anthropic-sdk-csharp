@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
@@ -14,15 +15,21 @@ namespace Anthropic.Models.Messages.Batches;
 /// cancellation or expiration.</para>
 /// </summary>
 [JsonConverter(typeof(MessageBatchResultConverter))]
-public record class MessageBatchResult
+public record class MessageBatchResult : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -38,33 +45,33 @@ public record class MessageBatchResult
         }
     }
 
-    public MessageBatchResult(MessageBatchSucceededResult value, JsonElement? json = null)
+    public MessageBatchResult(MessageBatchSucceededResult value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageBatchResult(MessageBatchErroredResult value, JsonElement? json = null)
+    public MessageBatchResult(MessageBatchErroredResult value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageBatchResult(MessageBatchCanceledResult value, JsonElement? json = null)
+    public MessageBatchResult(MessageBatchCanceledResult value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageBatchResult(MessageBatchExpiredResult value, JsonElement? json = null)
+    public MessageBatchResult(MessageBatchExpiredResult value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public MessageBatchResult(JsonElement json)
+    public MessageBatchResult(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -265,7 +272,7 @@ public record class MessageBatchResult
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -290,6 +297,9 @@ public record class MessageBatchResult
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
@@ -300,11 +310,11 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -318,13 +328,13 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchSucceededResult>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -333,20 +343,20 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "errored":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchErroredResult>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -355,20 +365,20 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "canceled":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchCanceledResult>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -377,20 +387,20 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "expired":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<MessageBatchExpiredResult>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -399,11 +409,11 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new MessageBatchResult(json);
+                return new MessageBatchResult(element);
             }
         }
     }

@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Skills;
 
-[JsonConverter(typeof(ModelConverter<SkillCreateResponse, SkillCreateResponseFromRaw>))]
-public sealed record class SkillCreateResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<SkillCreateResponse, SkillCreateResponseFromRaw>))]
+public sealed record class SkillCreateResponse : JsonModel
 {
     /// <summary>
     /// Unique identifier for the skill.
@@ -17,8 +17,12 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -26,8 +30,12 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string CreatedAt
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("created_at");
+        }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -38,8 +46,12 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string? DisplayTitle
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "display_title"); }
-        init { ModelBase.Set(this._rawData, "display_title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("display_title");
+        }
+        init { this._rawData.Set("display_title", value); }
     }
 
     /// <summary>
@@ -49,8 +61,12 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string? LatestVersion
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "latest_version"); }
-        init { ModelBase.Set(this._rawData, "latest_version", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("latest_version");
+        }
+        init { this._rawData.Set("latest_version", value); }
     }
 
     /// <summary>
@@ -61,8 +77,12 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string Source
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("source");
+        }
+        init { this._rawData.Set("source", value); }
     }
 
     /// <summary>
@@ -72,8 +92,12 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string Type
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -81,8 +105,12 @@ public sealed record class SkillCreateResponse : ModelBase
     /// </summary>
     public required string UpdatedAt
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "updated_at"); }
-        init { ModelBase.Set(this._rawData, "updated_at", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("updated_at");
+        }
+        init { this._rawData.Set("updated_at", value); }
     }
 
     /// <inheritdoc/>
@@ -104,14 +132,14 @@ public sealed record class SkillCreateResponse : ModelBase
 
     public SkillCreateResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     SkillCreateResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -124,7 +152,7 @@ public sealed record class SkillCreateResponse : ModelBase
     }
 }
 
-class SkillCreateResponseFromRaw : IFromRaw<SkillCreateResponse>
+class SkillCreateResponseFromRaw : IFromRawJson<SkillCreateResponse>
 {
     /// <inheritdoc/>
     public SkillCreateResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

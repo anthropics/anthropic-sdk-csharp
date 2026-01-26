@@ -9,13 +9,17 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaServerToolUseBlock, BetaServerToolUseBlockFromRaw>))]
-public sealed record class BetaServerToolUseBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaServerToolUseBlock, BetaServerToolUseBlockFromRaw>))]
+public sealed record class BetaServerToolUseBlock : JsonModel
 {
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -23,32 +27,48 @@ public sealed record class BetaServerToolUseBlock : ModelBase
     /// </summary>
     public required Caller Caller
     {
-        get { return ModelBase.GetNotNullClass<Caller>(this.RawData, "caller"); }
-        init { ModelBase.Set(this._rawData, "caller", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Caller>("caller");
+        }
+        init { this._rawData.Set("caller", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            return ModelBase.GetNotNullClass<Dictionary<string, JsonElement>>(
-                this.RawData,
-                "input"
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("input");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>>(
+                "input",
+                FrozenDictionary.ToFrozenDictionary(value)
             );
         }
-        init { ModelBase.Set(this._rawData, "input", value); }
     }
 
     public required ApiEnum<string, Name> Name
     {
-        get { return ModelBase.GetNotNullClass<ApiEnum<string, Name>>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Name>>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -59,10 +79,7 @@ public sealed record class BetaServerToolUseBlock : ModelBase
         _ = this.Input;
         this.Name.Validate();
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("server_tool_use"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -71,7 +88,7 @@ public sealed record class BetaServerToolUseBlock : ModelBase
 
     public BetaServerToolUseBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
     public BetaServerToolUseBlock(BetaServerToolUseBlock betaServerToolUseBlock)
@@ -79,16 +96,16 @@ public sealed record class BetaServerToolUseBlock : ModelBase
 
     public BetaServerToolUseBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaServerToolUseBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -101,7 +118,7 @@ public sealed record class BetaServerToolUseBlock : ModelBase
     }
 }
 
-class BetaServerToolUseBlockFromRaw : IFromRaw<BetaServerToolUseBlock>
+class BetaServerToolUseBlockFromRaw : IFromRawJson<BetaServerToolUseBlock>
 {
     /// <inheritdoc/>
     public BetaServerToolUseBlock FromRawUnchecked(
@@ -113,15 +130,21 @@ class BetaServerToolUseBlockFromRaw : IFromRaw<BetaServerToolUseBlock>
 /// Tool invocation directly from the model.
 /// </summary>
 [JsonConverter(typeof(CallerConverter))]
-public record class Caller
+public record class Caller : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -129,21 +152,21 @@ public record class Caller
         get { return Match(betaDirect: (x) => x.Type, betaServerTool: (x) => x.Type); }
     }
 
-    public Caller(BetaDirectCaller value, JsonElement? json = null)
+    public Caller(BetaDirectCaller value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Caller(BetaServerToolCaller value, JsonElement? json = null)
+    public Caller(BetaServerToolCaller value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Caller(JsonElement json)
+    public Caller(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -276,7 +299,7 @@ public record class Caller
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -297,6 +320,9 @@ public record class Caller
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class CallerConverter : JsonConverter<Caller>
@@ -307,11 +333,11 @@ sealed class CallerConverter : JsonConverter<Caller>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -324,11 +350,14 @@ sealed class CallerConverter : JsonConverter<Caller>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaDirectCaller>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -337,20 +366,20 @@ sealed class CallerConverter : JsonConverter<Caller>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "code_execution_20250825":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaServerToolCaller>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -359,11 +388,11 @@ sealed class CallerConverter : JsonConverter<Caller>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Caller(json);
+                return new Caller(element);
             }
         }
     }

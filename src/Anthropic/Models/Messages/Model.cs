@@ -9,7 +9,7 @@ namespace Anthropic.Models.Messages;
 /// The model that will complete your prompt.\n\nSee [models](https://docs.anthropic.com/en/docs/models-overview)
 /// for additional details and options.
 /// </summary>
-[JsonConverter(typeof(ModelConverter1))]
+[JsonConverter(typeof(ModelConverter))]
 public enum Model
 {
     /// <summary>
@@ -41,11 +41,17 @@ public enum Model
     /// <summary>
     /// Fastest and most compact model for near-instant responsiveness
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     Claude3_5HaikuLatest,
 
     /// <summary>
     /// Our fastest model
     /// </summary>
+    [System::Obsolete(
+        "Will reach end-of-life on February 19th, 2026. Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
+    )]
     Claude3_5Haiku20241022,
 
     /// <summary>
@@ -125,7 +131,7 @@ public enum Model
     Claude_3_Haiku_20240307,
 }
 
-sealed class ModelConverter1 : JsonConverter<Model>
+sealed class ModelConverter : JsonConverter<Model>
 {
     public override Model Read(
         ref Utf8JsonReader reader,

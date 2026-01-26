@@ -9,41 +9,61 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         CitationsWebSearchResultLocation,
         CitationsWebSearchResultLocationFromRaw
     >)
 )]
-public sealed record class CitationsWebSearchResultLocation : ModelBase
+public sealed record class CitationsWebSearchResultLocation : JsonModel
 {
     public required string CitedText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { ModelBase.Set(this._rawData, "cited_text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("cited_text");
+        }
+        init { this._rawData.Set("cited_text", value); }
     }
 
     public required string EncryptedIndex
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "encrypted_index"); }
-        init { ModelBase.Set(this._rawData, "encrypted_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("encrypted_index");
+        }
+        init { this._rawData.Set("encrypted_index", value); }
     }
 
     public required string? Title
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("title");
+        }
+        init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
-    public required string URL
+    public required string Url
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("url");
+        }
+        init { this._rawData.Set("url", value); }
     }
 
     /// <inheritdoc/>
@@ -55,18 +75,18 @@ public sealed record class CitationsWebSearchResultLocation : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"")
+                JsonSerializer.SerializeToElement("web_search_result_location")
             )
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        _ = this.URL;
+        _ = this.Url;
     }
 
     public CitationsWebSearchResultLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_result_location");
     }
 
     public CitationsWebSearchResultLocation(
@@ -76,16 +96,16 @@ public sealed record class CitationsWebSearchResultLocation : ModelBase
 
     public CitationsWebSearchResultLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result_location\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_result_location");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     CitationsWebSearchResultLocation(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -98,7 +118,7 @@ public sealed record class CitationsWebSearchResultLocation : ModelBase
     }
 }
 
-class CitationsWebSearchResultLocationFromRaw : IFromRaw<CitationsWebSearchResultLocation>
+class CitationsWebSearchResultLocationFromRaw : IFromRawJson<CitationsWebSearchResultLocation>
 {
     /// <inheritdoc/>
     public CitationsWebSearchResultLocation FromRawUnchecked(

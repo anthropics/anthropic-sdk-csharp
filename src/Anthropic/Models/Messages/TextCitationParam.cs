@@ -1,21 +1,28 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(typeof(TextCitationParamConverter))]
-public record class TextCitationParam
+public record class TextCitationParam : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string CitedText
@@ -116,39 +123,42 @@ public record class TextCitationParam
         }
     }
 
-    public TextCitationParam(CitationCharLocationParam value, JsonElement? json = null)
+    public TextCitationParam(CitationCharLocationParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public TextCitationParam(CitationPageLocationParam value, JsonElement? json = null)
+    public TextCitationParam(CitationPageLocationParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public TextCitationParam(CitationContentBlockLocationParam value, JsonElement? json = null)
+    public TextCitationParam(CitationContentBlockLocationParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public TextCitationParam(CitationWebSearchResultLocationParam value, JsonElement? json = null)
+    public TextCitationParam(
+        CitationWebSearchResultLocationParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public TextCitationParam(CitationSearchResultLocationParam value, JsonElement? json = null)
+    public TextCitationParam(CitationSearchResultLocationParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public TextCitationParam(JsonElement json)
+    public TextCitationParam(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -391,7 +401,7 @@ public record class TextCitationParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -417,6 +427,9 @@ public record class TextCitationParam
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
@@ -427,11 +440,11 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -445,13 +458,13 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationCharLocationParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -460,20 +473,20 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "page_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationPageLocationParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -482,7 +495,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_location":
             {
@@ -490,13 +503,13 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<CitationContentBlockLocationParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -505,7 +518,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_result_location":
             {
@@ -513,13 +526,13 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<CitationWebSearchResultLocationParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -528,7 +541,7 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "search_result_location":
             {
@@ -536,13 +549,13 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<CitationSearchResultLocationParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -551,11 +564,11 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new TextCitationParam(json);
+                return new TextCitationParam(element);
             }
         }
     }

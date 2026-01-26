@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,47 +10,69 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaBashCodeExecutionResultBlock,
         BetaBashCodeExecutionResultBlockFromRaw
     >)
 )]
-public sealed record class BetaBashCodeExecutionResultBlock : ModelBase
+public sealed record class BetaBashCodeExecutionResultBlock : JsonModel
 {
     public required IReadOnlyList<BetaBashCodeExecutionOutputBlock> Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<List<BetaBashCodeExecutionOutputBlock>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaBashCodeExecutionOutputBlock>>(
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaBashCodeExecutionOutputBlock>>(
+                "content",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public required long ReturnCode
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "return_code"); }
-        init { ModelBase.Set(this._rawData, "return_code", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("return_code");
+        }
+        init { this._rawData.Set("return_code", value); }
     }
 
     public required string Stderr
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "stderr"); }
-        init { ModelBase.Set(this._rawData, "stderr", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("stderr");
+        }
+        init { this._rawData.Set("stderr", value); }
     }
 
     public required string Stdout
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "stdout"); }
-        init { ModelBase.Set(this._rawData, "stdout", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("stdout");
+        }
+        init { this._rawData.Set("stdout", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -65,7 +88,7 @@ public sealed record class BetaBashCodeExecutionResultBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_result\"")
+                JsonSerializer.SerializeToElement("bash_code_execution_result")
             )
         )
         {
@@ -75,7 +98,7 @@ public sealed record class BetaBashCodeExecutionResultBlock : ModelBase
 
     public BetaBashCodeExecutionResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_result\"");
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_result");
     }
 
     public BetaBashCodeExecutionResultBlock(
@@ -85,16 +108,16 @@ public sealed record class BetaBashCodeExecutionResultBlock : ModelBase
 
     public BetaBashCodeExecutionResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_code_execution_result\"");
+        this.Type = JsonSerializer.SerializeToElement("bash_code_execution_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaBashCodeExecutionResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -107,7 +130,7 @@ public sealed record class BetaBashCodeExecutionResultBlock : ModelBase
     }
 }
 
-class BetaBashCodeExecutionResultBlockFromRaw : IFromRaw<BetaBashCodeExecutionResultBlock>
+class BetaBashCodeExecutionResultBlockFromRaw : IFromRawJson<BetaBashCodeExecutionResultBlock>
 {
     /// <inheritdoc/>
     public BetaBashCodeExecutionResultBlock FromRawUnchecked(

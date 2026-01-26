@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -7,13 +8,23 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BatchListPageResponse, BatchListPageResponseFromRaw>))]
-public sealed record class BatchListPageResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BatchListPageResponse, BatchListPageResponseFromRaw>))]
+public sealed record class BatchListPageResponse : JsonModel
 {
     public required IReadOnlyList<MessageBatch> Data
     {
-        get { return ModelBase.GetNotNullClass<List<MessageBatch>>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<MessageBatch>>("data");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<MessageBatch>>(
+                "data",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -21,8 +32,12 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required string? FirstID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "first_id"); }
-        init { ModelBase.Set(this._rawData, "first_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("first_id");
+        }
+        init { this._rawData.Set("first_id", value); }
     }
 
     /// <summary>
@@ -30,8 +45,12 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required bool HasMore
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "has_more"); }
-        init { ModelBase.Set(this._rawData, "has_more", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("has_more");
+        }
+        init { this._rawData.Set("has_more", value); }
     }
 
     /// <summary>
@@ -39,8 +58,12 @@ public sealed record class BatchListPageResponse : ModelBase
     /// </summary>
     public required string? LastID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "last_id"); }
-        init { ModelBase.Set(this._rawData, "last_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("last_id");
+        }
+        init { this._rawData.Set("last_id", value); }
     }
 
     /// <inheritdoc/>
@@ -62,14 +85,14 @@ public sealed record class BatchListPageResponse : ModelBase
 
     public BatchListPageResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BatchListPageResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -82,7 +105,7 @@ public sealed record class BatchListPageResponse : ModelBase
     }
 }
 
-class BatchListPageResponseFromRaw : IFromRaw<BatchListPageResponse>
+class BatchListPageResponseFromRaw : IFromRawJson<BatchListPageResponse>
 {
     /// <inheritdoc/>
     public BatchListPageResponse FromRawUnchecked(

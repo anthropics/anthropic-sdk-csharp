@@ -8,31 +8,34 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaBillingError, BetaBillingErrorFromRaw>))]
-public sealed record class BetaBillingError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaBillingError, BetaBillingErrorFromRaw>))]
+public sealed record class BetaBillingError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"billing_error\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("billing_error")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -40,7 +43,7 @@ public sealed record class BetaBillingError : ModelBase
 
     public BetaBillingError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
+        this.Type = JsonSerializer.SerializeToElement("billing_error");
     }
 
     public BetaBillingError(BetaBillingError betaBillingError)
@@ -48,16 +51,16 @@ public sealed record class BetaBillingError : ModelBase
 
     public BetaBillingError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"billing_error\"");
+        this.Type = JsonSerializer.SerializeToElement("billing_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaBillingError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +80,7 @@ public sealed record class BetaBillingError : ModelBase
     }
 }
 
-class BetaBillingErrorFromRaw : IFromRaw<BetaBillingError>
+class BetaBillingErrorFromRaw : IFromRawJson<BetaBillingError>
 {
     /// <inheritdoc/>
     public BetaBillingError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

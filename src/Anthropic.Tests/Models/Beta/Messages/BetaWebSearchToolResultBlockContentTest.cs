@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -6,25 +7,25 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaWebSearchToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void errorValidation_Works()
+    public void ErrorValidationWorks()
     {
-        BetaWebSearchToolResultBlockContent value = new(
-            new BetaWebSearchToolResultError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
+        BetaWebSearchToolResultBlockContent value = new BetaWebSearchToolResultError(
+            BetaWebSearchToolResultErrorCode.InvalidToolInput
         );
         value.Validate();
     }
 
     [Fact]
-    public void BetaWebSearchResultBlocksValidation_Works()
+    public void BetaWebSearchResultBlocksValidationWorks()
     {
         BetaWebSearchToolResultBlockContent value = new(
             [
-                new()
+                new BetaWebSearchResultBlock()
                 {
                     EncryptedContent = "encrypted_content",
                     PageAge = "page_age",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                 },
             ]
         );
@@ -32,33 +33,39 @@ public class BetaWebSearchToolResultBlockContentTest : TestBase
     }
 
     [Fact]
-    public void errorSerializationRoundtrip_Works()
+    public void ErrorSerializationRoundtripWorks()
     {
-        BetaWebSearchToolResultBlockContent value = new(
-            new BetaWebSearchToolResultError(BetaWebSearchToolResultErrorCode.InvalidToolInput)
+        BetaWebSearchToolResultBlockContent value = new BetaWebSearchToolResultError(
+            BetaWebSearchToolResultErrorCode.InvalidToolInput
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void BetaWebSearchResultBlocksSerializationRoundtrip_Works()
+    public void BetaWebSearchResultBlocksSerializationRoundtripWorks()
     {
         BetaWebSearchToolResultBlockContent value = new(
             [
-                new()
+                new BetaWebSearchResultBlock()
                 {
                     EncryptedContent = "encrypted_content",
                     PageAge = "page_age",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                 },
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

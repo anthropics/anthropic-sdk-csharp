@@ -3,44 +3,51 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(typeof(WebSearchToolResultBlockParamContentConverter))]
-public record class WebSearchToolResultBlockParamContent
+public record class WebSearchToolResultBlockParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public WebSearchToolResultBlockParamContent(
         IReadOnlyList<WebSearchResultBlockParam> value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
     public WebSearchToolResultBlockParamContent(
         WebSearchToolRequestError value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public WebSearchToolResultBlockParamContent(JsonElement json)
+    public WebSearchToolResultBlockParamContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -112,7 +119,7 @@ public record class WebSearchToolResultBlockParamContent
     {
         switch (this.Value)
         {
-            case List<WebSearchResultBlockParam> value:
+            case IReadOnlyList<WebSearchResultBlockParam> value:
                 webSearchToolResultBlockItem(value);
                 break;
             case WebSearchToolRequestError value:
@@ -179,7 +186,7 @@ public record class WebSearchToolResultBlockParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -199,6 +206,9 @@ public record class WebSearchToolResultBlockParamContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class WebSearchToolResultBlockParamContentConverter
@@ -210,14 +220,17 @@ sealed class WebSearchToolResultBlockParamContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(json, options);
+            var deserialized = JsonSerializer.Deserialize<WebSearchToolRequestError>(
+                element,
+                options
+            );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -228,12 +241,12 @@ sealed class WebSearchToolResultBlockParamContentConverter
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<WebSearchResultBlockParam>>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -241,7 +254,7 @@ sealed class WebSearchToolResultBlockParamContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

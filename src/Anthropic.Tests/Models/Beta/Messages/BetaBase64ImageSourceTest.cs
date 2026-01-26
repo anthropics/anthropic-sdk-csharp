@@ -13,12 +13,12 @@ public class BetaBase64ImageSourceTest : TestBase
         var model = new BetaBase64ImageSource
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
-        ApiEnum<string, MediaType> expectedMediaType = MediaType.ImageJPEG;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        ApiEnum<string, MediaType> expectedMediaType = MediaType.ImageJpeg;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
 
         Assert.Equal(expectedData, model.Data);
         Assert.Equal(expectedMediaType, model.MediaType);
@@ -31,11 +31,14 @@ public class BetaBase64ImageSourceTest : TestBase
         var model = new BetaBase64ImageSource
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -46,16 +49,19 @@ public class BetaBase64ImageSourceTest : TestBase
         var model = new BetaBase64ImageSource
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaBase64ImageSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
-        ApiEnum<string, MediaType> expectedMediaType = MediaType.ImageJPEG;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"base64\"");
+        ApiEnum<string, MediaType> expectedMediaType = MediaType.ImageJpeg;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
 
         Assert.Equal(expectedData, deserialized.Data);
         Assert.Equal(expectedMediaType, deserialized.MediaType);
@@ -68,7 +74,7 @@ public class BetaBase64ImageSourceTest : TestBase
         var model = new BetaBase64ImageSource
         {
             Data = "U3RhaW5sZXNzIHJvY2tz",
-            MediaType = MediaType.ImageJPEG,
+            MediaType = MediaType.ImageJpeg,
         };
 
         model.Validate();
@@ -78,9 +84,9 @@ public class BetaBase64ImageSourceTest : TestBase
 public class MediaTypeTest : TestBase
 {
     [Theory]
-    [InlineData(MediaType.ImageJPEG)]
-    [InlineData(MediaType.ImagePNG)]
-    [InlineData(MediaType.ImageGIF)]
+    [InlineData(MediaType.ImageJpeg)]
+    [InlineData(MediaType.ImagePng)]
+    [InlineData(MediaType.ImageGif)]
     [InlineData(MediaType.ImageWebP)]
     public void Validation_Works(MediaType rawValue)
     {
@@ -93,16 +99,18 @@ public class MediaTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(MediaType.ImageJPEG)]
-    [InlineData(MediaType.ImagePNG)]
-    [InlineData(MediaType.ImageGIF)]
+    [InlineData(MediaType.ImageJpeg)]
+    [InlineData(MediaType.ImagePng)]
+    [InlineData(MediaType.ImageGif)]
     [InlineData(MediaType.ImageWebP)]
     public void SerializationRoundtrip_Works(MediaType rawValue)
     {
@@ -122,7 +130,7 @@ public class MediaTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

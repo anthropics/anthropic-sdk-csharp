@@ -9,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<FileMetadata, FileMetadataFromRaw>))]
-public sealed record class FileMetadata : ModelBase
+[JsonConverter(typeof(JsonModelConverter<FileMetadata, FileMetadataFromRaw>))]
+public sealed record class FileMetadata : JsonModel
 {
     /// <summary>
     /// Unique object identifier.
@@ -19,8 +19,12 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -28,8 +32,12 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get { return ModelBase.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
+        }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -37,8 +45,12 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string Filename
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "filename"); }
-        init { ModelBase.Set(this._rawData, "filename", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("filename");
+        }
+        init { this._rawData.Set("filename", value); }
     }
 
     /// <summary>
@@ -46,8 +58,12 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required string MimeType
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "mime_type"); }
-        init { ModelBase.Set(this._rawData, "mime_type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("mime_type");
+        }
+        init { this._rawData.Set("mime_type", value); }
     }
 
     /// <summary>
@@ -55,8 +71,12 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public required long SizeBytes
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "size_bytes"); }
-        init { ModelBase.Set(this._rawData, "size_bytes", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("size_bytes");
+        }
+        init { this._rawData.Set("size_bytes", value); }
     }
 
     /// <summary>
@@ -66,8 +86,12 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -75,7 +99,11 @@ public sealed record class FileMetadata : ModelBase
     /// </summary>
     public bool? Downloadable
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "downloadable"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("downloadable");
+        }
         init
         {
             if (value == null)
@@ -83,7 +111,7 @@ public sealed record class FileMetadata : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "downloadable", value);
+            this._rawData.Set("downloadable", value);
         }
     }
 
@@ -95,7 +123,7 @@ public sealed record class FileMetadata : ModelBase
         _ = this.Filename;
         _ = this.MimeType;
         _ = this.SizeBytes;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"file\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("file")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -104,7 +132,7 @@ public sealed record class FileMetadata : ModelBase
 
     public FileMetadata()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        this.Type = JsonSerializer.SerializeToElement("file");
     }
 
     public FileMetadata(FileMetadata fileMetadata)
@@ -112,16 +140,16 @@ public sealed record class FileMetadata : ModelBase
 
     public FileMetadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"file\"");
+        this.Type = JsonSerializer.SerializeToElement("file");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     FileMetadata(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -132,7 +160,7 @@ public sealed record class FileMetadata : ModelBase
     }
 }
 
-class FileMetadataFromRaw : IFromRaw<FileMetadata>
+class FileMetadataFromRaw : IFromRawJson<FileMetadata>
 {
     /// <inheritdoc/>
     public FileMetadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

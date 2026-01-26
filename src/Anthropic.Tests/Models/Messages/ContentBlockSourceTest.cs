@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -11,7 +12,7 @@ public class ContentBlockSourceTest : TestBase
         var model = new ContentBlockSource { Content = "string" };
 
         Content expectedContent = "string";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -22,8 +23,11 @@ public class ContentBlockSourceTest : TestBase
     {
         var model = new ContentBlockSource { Content = "string" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSource>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSource>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,12 +37,15 @@ public class ContentBlockSourceTest : TestBase
     {
         var model = new ContentBlockSource { Content = "string" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockSource>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         Content expectedContent = "string";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -56,73 +63,83 @@ public class ContentBlockSourceTest : TestBase
 public class ContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
-        Content value = new("string");
+        Content value = "string";
         value.Validate();
     }
 
     [Fact]
-    public void block_sourceValidation_Works()
+    public void BlockSourceValidationWorks()
     {
         Content value = new(
             [
-                new TextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new CitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new ContentBlockSourceContent(
+                    new TextBlockParam()
+                    {
+                        Text = "x",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         value.Validate();
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
-        Content value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        Content value = "string";
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Content>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void block_sourceSerializationRoundtrip_Works()
+    public void BlockSourceSerializationRoundtripWorks()
     {
         Content value = new(
             [
-                new TextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new CitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new ContentBlockSourceContent(
+                    new TextBlockParam()
+                    {
+                        Text = "x",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new CitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Content>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

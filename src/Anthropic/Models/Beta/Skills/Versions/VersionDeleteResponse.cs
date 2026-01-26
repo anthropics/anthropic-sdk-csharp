@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
-[JsonConverter(typeof(ModelConverter<VersionDeleteResponse, VersionDeleteResponseFromRaw>))]
-public sealed record class VersionDeleteResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<VersionDeleteResponse, VersionDeleteResponseFromRaw>))]
+public sealed record class VersionDeleteResponse : JsonModel
 {
     /// <summary>
     /// Version identifier for the skill.
@@ -17,8 +17,12 @@ public sealed record class VersionDeleteResponse : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -28,8 +32,12 @@ public sealed record class VersionDeleteResponse : ModelBase
     /// </summary>
     public required string Type
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -46,14 +54,14 @@ public sealed record class VersionDeleteResponse : ModelBase
 
     public VersionDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     VersionDeleteResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -66,7 +74,7 @@ public sealed record class VersionDeleteResponse : ModelBase
     }
 }
 
-class VersionDeleteResponseFromRaw : IFromRaw<VersionDeleteResponse>
+class VersionDeleteResponseFromRaw : IFromRawJson<VersionDeleteResponse>
 {
     /// <inheritdoc/>
     public VersionDeleteResponse FromRawUnchecked(

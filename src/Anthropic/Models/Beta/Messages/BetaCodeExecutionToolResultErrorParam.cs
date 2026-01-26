@@ -9,29 +9,33 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaCodeExecutionToolResultErrorParam,
         BetaCodeExecutionToolResultErrorParamFromRaw
     >)
 )]
-public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
+public sealed record class BetaCodeExecutionToolResultErrorParam : JsonModel
 {
     public required ApiEnum<string, BetaCodeExecutionToolResultErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, BetaCodeExecutionToolResultErrorCode>>(
-                this.RawData,
-                "error_code"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<
+                ApiEnum<string, BetaCodeExecutionToolResultErrorCode>
+            >("error_code");
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -41,7 +45,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"")
+                JsonSerializer.SerializeToElement("code_execution_tool_result_error")
             )
         )
         {
@@ -51,7 +55,7 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
 
     public BetaCodeExecutionToolResultErrorParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_tool_result_error");
     }
 
     public BetaCodeExecutionToolResultErrorParam(
@@ -61,16 +65,16 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
 
     public BetaCodeExecutionToolResultErrorParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_tool_result_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCodeExecutionToolResultErrorParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -92,7 +96,8 @@ public sealed record class BetaCodeExecutionToolResultErrorParam : ModelBase
     }
 }
 
-class BetaCodeExecutionToolResultErrorParamFromRaw : IFromRaw<BetaCodeExecutionToolResultErrorParam>
+class BetaCodeExecutionToolResultErrorParamFromRaw
+    : IFromRawJson<BetaCodeExecutionToolResultErrorParam>
 {
     /// <inheritdoc/>
     public BetaCodeExecutionToolResultErrorParam FromRawUnchecked(

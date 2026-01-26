@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,16 +11,20 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaContextManagementConfig, BetaContextManagementConfigFromRaw>)
+    typeof(JsonModelConverter<BetaContextManagementConfig, BetaContextManagementConfigFromRaw>)
 )]
-public sealed record class BetaContextManagementConfig : ModelBase
+public sealed record class BetaContextManagementConfig : JsonModel
 {
     /// <summary>
     /// List of context management edits to apply
     /// </summary>
     public IReadOnlyList<Edit>? Edits
     {
-        get { return ModelBase.GetNullableClass<List<Edit>>(this.RawData, "edits"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<Edit>>("edits");
+        }
         init
         {
             if (value == null)
@@ -27,7 +32,10 @@ public sealed record class BetaContextManagementConfig : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "edits", value);
+            this._rawData.Set<ImmutableArray<Edit>?>(
+                "edits",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -47,14 +55,14 @@ public sealed record class BetaContextManagementConfig : ModelBase
 
     public BetaContextManagementConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContextManagementConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -67,7 +75,7 @@ public sealed record class BetaContextManagementConfig : ModelBase
     }
 }
 
-class BetaContextManagementConfigFromRaw : IFromRaw<BetaContextManagementConfig>
+class BetaContextManagementConfigFromRaw : IFromRawJson<BetaContextManagementConfig>
 {
     /// <inheritdoc/>
     public BetaContextManagementConfig FromRawUnchecked(
@@ -76,15 +84,21 @@ class BetaContextManagementConfigFromRaw : IFromRaw<BetaContextManagementConfig>
 }
 
 [JsonConverter(typeof(EditConverter))]
-public record class Edit
+public record class Edit : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -98,21 +112,21 @@ public record class Edit
         }
     }
 
-    public Edit(BetaClearToolUses20250919Edit value, JsonElement? json = null)
+    public Edit(BetaClearToolUses20250919Edit value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Edit(BetaClearThinking20251015Edit value, JsonElement? json = null)
+    public Edit(BetaClearThinking20251015Edit value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Edit(JsonElement json)
+    public Edit(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -247,7 +261,7 @@ public record class Edit
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -268,6 +282,9 @@ public record class Edit
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class EditConverter : JsonConverter<Edit>
@@ -278,11 +295,11 @@ sealed class EditConverter : JsonConverter<Edit>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -296,13 +313,13 @@ sealed class EditConverter : JsonConverter<Edit>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -311,20 +328,20 @@ sealed class EditConverter : JsonConverter<Edit>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "clear_thinking_20251015":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaClearThinking20251015Edit>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -333,11 +350,11 @@ sealed class EditConverter : JsonConverter<Edit>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Edit(json);
+                return new Edit(element);
             }
         }
     }

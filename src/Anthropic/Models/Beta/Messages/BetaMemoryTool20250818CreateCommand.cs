@@ -9,20 +9,24 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818CreateCommand,
         BetaMemoryTool20250818CreateCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
+public sealed record class BetaMemoryTool20250818CreateCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,8 +34,12 @@ public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
     /// </summary>
     public required string FileText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_text"); }
-        init { ModelBase.Set(this._rawData, "file_text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("file_text");
+        }
+        init { this._rawData.Set("file_text", value); }
     }
 
     /// <summary>
@@ -39,19 +47,18 @@ public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
-        init { ModelBase.Set(this._rawData, "path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("path");
+        }
+        init { this._rawData.Set("path", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"create\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("create")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -61,7 +68,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
 
     public BetaMemoryTool20250818CreateCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"create\"");
+        this.Command = JsonSerializer.SerializeToElement("create");
     }
 
     public BetaMemoryTool20250818CreateCommand(
@@ -71,16 +78,16 @@ public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
 
     public BetaMemoryTool20250818CreateCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"create\"");
+        this.Command = JsonSerializer.SerializeToElement("create");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMemoryTool20250818CreateCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -93,7 +100,7 @@ public sealed record class BetaMemoryTool20250818CreateCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818CreateCommandFromRaw : IFromRaw<BetaMemoryTool20250818CreateCommand>
+class BetaMemoryTool20250818CreateCommandFromRaw : IFromRawJson<BetaMemoryTool20250818CreateCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818CreateCommand FromRawUnchecked(

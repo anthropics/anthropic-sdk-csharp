@@ -10,12 +10,12 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaTextEditorCodeExecutionToolResultErrorParam,
         BetaTextEditorCodeExecutionToolResultErrorParamFromRaw
     >)
 )]
-public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : ModelBase
+public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : JsonModel
 {
     public required ApiEnum<
         string,
@@ -24,23 +24,32 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
     {
         get
         {
-            return ModelBase.GetNotNullClass<
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<
                 ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
-            >(this.RawData, "error_code");
+            >("error_code");
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public string? ErrorMessage
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "error_message"); }
-        init { ModelBase.Set(this._rawData, "error_message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("error_message");
+        }
+        init { this._rawData.Set("error_message", value); }
     }
 
     /// <inheritdoc/>
@@ -50,9 +59,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>(
-                    "\"text_editor_code_execution_tool_result_error\""
-                )
+                JsonSerializer.SerializeToElement("text_editor_code_execution_tool_result_error")
             )
         )
         {
@@ -63,8 +70,8 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
 
     public BetaTextEditorCodeExecutionToolResultErrorParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_tool_result_error\""
+        this.Type = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_tool_result_error"
         );
     }
 
@@ -77,10 +84,10 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_tool_result_error\""
+        this.Type = JsonSerializer.SerializeToElement(
+            "text_editor_code_execution_tool_result_error"
         );
     }
 
@@ -88,7 +95,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionToolResultErrorParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -111,7 +118,7 @@ public sealed record class BetaTextEditorCodeExecutionToolResultErrorParam : Mod
 }
 
 class BetaTextEditorCodeExecutionToolResultErrorParamFromRaw
-    : IFromRaw<BetaTextEditorCodeExecutionToolResultErrorParam>
+    : IFromRawJson<BetaTextEditorCodeExecutionToolResultErrorParam>
 {
     /// <inheritdoc/>
     public BetaTextEditorCodeExecutionToolResultErrorParam FromRawUnchecked(

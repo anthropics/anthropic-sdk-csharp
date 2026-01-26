@@ -24,8 +24,11 @@ public class BetaMessageParamTest : TestBase
     {
         var model = new BetaMessageParam { Content = "string", Role = Role.User };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -35,8 +38,11 @@ public class BetaMessageParamTest : TestBase
     {
         var model = new BetaMessageParam { Content = "string", Role = Role.User };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageParam>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaMessageParamContent expectedContent = "string";
@@ -58,73 +64,83 @@ public class BetaMessageParamTest : TestBase
 public class BetaMessageParamContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
-        BetaMessageParamContent value = new("string");
+        BetaMessageParamContent value = "string";
         value.Validate();
     }
 
     [Fact]
-    public void BetaContentBlockParamsValidation_Works()
+    public void BetaContentBlockParamsValidationWorks()
     {
         BetaMessageParamContent value = new(
             [
-                new BetaTextBlockParam()
-                {
-                    Text = "What is a quaternion?",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new BetaContentBlockParam(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "What is a quaternion?",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         value.Validate();
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
-        BetaMessageParamContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(json);
+        BetaMessageParamContent value = "string";
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void BetaContentBlockParamsSerializationRoundtrip_Works()
+    public void BetaContentBlockParamsSerializationRoundtripWorks()
     {
         BetaMessageParamContent value = new(
             [
-                new BetaTextBlockParam()
-                {
-                    Text = "What is a quaternion?",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new BetaContentBlockParam(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "What is a quaternion?",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(json);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaMessageParamContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -146,9 +162,11 @@ public class RoleTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, Role>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
@@ -173,7 +191,7 @@ public class RoleTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, Role>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

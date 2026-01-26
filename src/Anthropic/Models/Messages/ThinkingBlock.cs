@@ -8,25 +8,37 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingBlock, ThinkingBlockFromRaw>))]
-public sealed record class ThinkingBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ThinkingBlock, ThinkingBlockFromRaw>))]
+public sealed record class ThinkingBlock : JsonModel
 {
     public required string Signature
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "signature"); }
-        init { ModelBase.Set(this._rawData, "signature", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("signature");
+        }
+        init { this._rawData.Set("signature", value); }
     }
 
     public required string Thinking
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "thinking"); }
-        init { ModelBase.Set(this._rawData, "thinking", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("thinking");
+        }
+        init { this._rawData.Set("thinking", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -34,12 +46,7 @@ public sealed record class ThinkingBlock : ModelBase
     {
         _ = this.Signature;
         _ = this.Thinking;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"thinking\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("thinking")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -47,7 +54,7 @@ public sealed record class ThinkingBlock : ModelBase
 
     public ThinkingBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking");
     }
 
     public ThinkingBlock(ThinkingBlock thinkingBlock)
@@ -55,16 +62,16 @@ public sealed record class ThinkingBlock : ModelBase
 
     public ThinkingBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("thinking");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ThinkingBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -75,7 +82,7 @@ public sealed record class ThinkingBlock : ModelBase
     }
 }
 
-class ThinkingBlockFromRaw : IFromRaw<ThinkingBlock>
+class ThinkingBlockFromRaw : IFromRawJson<ThinkingBlock>
 {
     /// <inheritdoc/>
     public ThinkingBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

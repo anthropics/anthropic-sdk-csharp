@@ -11,13 +11,17 @@ namespace Anthropic.Models.Messages;
 /// <summary>
 /// The model will automatically decide whether to use tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<ToolChoiceAuto, ToolChoiceAutoFromRaw>))]
-public sealed record class ToolChoiceAuto : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ToolChoiceAuto, ToolChoiceAutoFromRaw>))]
+public sealed record class ToolChoiceAuto : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -28,7 +32,11 @@ public sealed record class ToolChoiceAuto : ModelBase
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("disable_parallel_tool_use");
+        }
         init
         {
             if (value == null)
@@ -36,14 +44,14 @@ public sealed record class ToolChoiceAuto : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "disable_parallel_tool_use", value);
+            this._rawData.Set("disable_parallel_tool_use", value);
         }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"auto\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("auto")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -52,7 +60,7 @@ public sealed record class ToolChoiceAuto : ModelBase
 
     public ToolChoiceAuto()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
+        this.Type = JsonSerializer.SerializeToElement("auto");
     }
 
     public ToolChoiceAuto(ToolChoiceAuto toolChoiceAuto)
@@ -60,16 +68,16 @@ public sealed record class ToolChoiceAuto : ModelBase
 
     public ToolChoiceAuto(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"auto\"");
+        this.Type = JsonSerializer.SerializeToElement("auto");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ToolChoiceAuto(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -80,7 +88,7 @@ public sealed record class ToolChoiceAuto : ModelBase
     }
 }
 
-class ToolChoiceAutoFromRaw : IFromRaw<ToolChoiceAuto>
+class ToolChoiceAutoFromRaw : IFromRawJson<ToolChoiceAuto>
 {
     /// <inheritdoc/>
     public ToolChoiceAuto FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -8,24 +8,23 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ThinkingConfigDisabled, ThinkingConfigDisabledFromRaw>))]
-public sealed record class ThinkingConfigDisabled : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ThinkingConfigDisabled, ThinkingConfigDisabledFromRaw>))]
+public sealed record class ThinkingConfigDisabled : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"disabled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("disabled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -33,7 +32,7 @@ public sealed record class ThinkingConfigDisabled : ModelBase
 
     public ThinkingConfigDisabled()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        this.Type = JsonSerializer.SerializeToElement("disabled");
     }
 
     public ThinkingConfigDisabled(ThinkingConfigDisabled thinkingConfigDisabled)
@@ -41,16 +40,16 @@ public sealed record class ThinkingConfigDisabled : ModelBase
 
     public ThinkingConfigDisabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        this.Type = JsonSerializer.SerializeToElement("disabled");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ThinkingConfigDisabled(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -63,7 +62,7 @@ public sealed record class ThinkingConfigDisabled : ModelBase
     }
 }
 
-class ThinkingConfigDisabledFromRaw : IFromRaw<ThinkingConfigDisabled>
+class ThinkingConfigDisabledFromRaw : IFromRawJson<ThinkingConfigDisabled>
 {
     /// <inheritdoc/>
     public ThinkingConfigDisabled FromRawUnchecked(

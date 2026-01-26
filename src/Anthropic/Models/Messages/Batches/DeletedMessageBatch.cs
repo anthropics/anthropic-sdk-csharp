@@ -8,16 +8,20 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<DeletedMessageBatch, DeletedMessageBatchFromRaw>))]
-public sealed record class DeletedMessageBatch : ModelBase
+[JsonConverter(typeof(JsonModelConverter<DeletedMessageBatch, DeletedMessageBatchFromRaw>))]
+public sealed record class DeletedMessageBatch : JsonModel
 {
     /// <summary>
     /// ID of the Message Batch.
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -27,8 +31,12 @@ public sealed record class DeletedMessageBatch : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -38,7 +46,7 @@ public sealed record class DeletedMessageBatch : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"")
+                JsonSerializer.SerializeToElement("message_batch_deleted")
             )
         )
         {
@@ -48,7 +56,7 @@ public sealed record class DeletedMessageBatch : ModelBase
 
     public DeletedMessageBatch()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
     public DeletedMessageBatch(DeletedMessageBatch deletedMessageBatch)
@@ -56,16 +64,16 @@ public sealed record class DeletedMessageBatch : ModelBase
 
     public DeletedMessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     DeletedMessageBatch(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -85,7 +93,7 @@ public sealed record class DeletedMessageBatch : ModelBase
     }
 }
 
-class DeletedMessageBatchFromRaw : IFromRaw<DeletedMessageBatch>
+class DeletedMessageBatchFromRaw : IFromRawJson<DeletedMessageBatch>
 {
     /// <inheritdoc/>
     public DeletedMessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

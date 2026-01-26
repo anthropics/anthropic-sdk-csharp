@@ -9,20 +9,24 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818StrReplaceCommand,
         BetaMemoryTool20250818StrReplaceCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818StrReplaceCommand : ModelBase
+public sealed record class BetaMemoryTool20250818StrReplaceCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,8 +34,12 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand : ModelBase
     /// </summary>
     public required string NewStr
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "new_str"); }
-        init { ModelBase.Set(this._rawData, "new_str", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("new_str");
+        }
+        init { this._rawData.Set("new_str", value); }
     }
 
     /// <summary>
@@ -39,8 +47,12 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand : ModelBase
     /// </summary>
     public required string OldStr
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "old_str"); }
-        init { ModelBase.Set(this._rawData, "old_str", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("old_str");
+        }
+        init { this._rawData.Set("old_str", value); }
     }
 
     /// <summary>
@@ -48,19 +60,18 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
-        init { ModelBase.Set(this._rawData, "path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("path");
+        }
+        init { this._rawData.Set("path", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"str_replace\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("str_replace")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -71,7 +82,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand : ModelBase
 
     public BetaMemoryTool20250818StrReplaceCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
+        this.Command = JsonSerializer.SerializeToElement("str_replace");
     }
 
     public BetaMemoryTool20250818StrReplaceCommand(
@@ -81,16 +92,16 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand : ModelBase
 
     public BetaMemoryTool20250818StrReplaceCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"str_replace\"");
+        this.Command = JsonSerializer.SerializeToElement("str_replace");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMemoryTool20250818StrReplaceCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -104,7 +115,7 @@ public sealed record class BetaMemoryTool20250818StrReplaceCommand : ModelBase
 }
 
 class BetaMemoryTool20250818StrReplaceCommandFromRaw
-    : IFromRaw<BetaMemoryTool20250818StrReplaceCommand>
+    : IFromRawJson<BetaMemoryTool20250818StrReplaceCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818StrReplaceCommand FromRawUnchecked(

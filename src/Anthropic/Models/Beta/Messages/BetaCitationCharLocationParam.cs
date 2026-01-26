@@ -9,44 +9,68 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaCitationCharLocationParam, BetaCitationCharLocationParamFromRaw>)
+    typeof(JsonModelConverter<BetaCitationCharLocationParam, BetaCitationCharLocationParamFromRaw>)
 )]
-public sealed record class BetaCitationCharLocationParam : ModelBase
+public sealed record class BetaCitationCharLocationParam : JsonModel
 {
     public required string CitedText
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "cited_text"); }
-        init { ModelBase.Set(this._rawData, "cited_text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("cited_text");
+        }
+        init { this._rawData.Set("cited_text", value); }
     }
 
     public required long DocumentIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "document_index"); }
-        init { ModelBase.Set(this._rawData, "document_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("document_index");
+        }
+        init { this._rawData.Set("document_index", value); }
     }
 
     public required string? DocumentTitle
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "document_title"); }
-        init { ModelBase.Set(this._rawData, "document_title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("document_title");
+        }
+        init { this._rawData.Set("document_title", value); }
     }
 
     public required long EndCharIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "end_char_index"); }
-        init { ModelBase.Set(this._rawData, "end_char_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("end_char_index");
+        }
+        init { this._rawData.Set("end_char_index", value); }
     }
 
     public required long StartCharIndex
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "start_char_index"); }
-        init { ModelBase.Set(this._rawData, "start_char_index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("start_char_index");
+        }
+        init { this._rawData.Set("start_char_index", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -57,12 +81,7 @@ public sealed record class BetaCitationCharLocationParam : ModelBase
         _ = this.DocumentTitle;
         _ = this.EndCharIndex;
         _ = this.StartCharIndex;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"char_location\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("char_location")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -70,7 +89,7 @@ public sealed record class BetaCitationCharLocationParam : ModelBase
 
     public BetaCitationCharLocationParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        this.Type = JsonSerializer.SerializeToElement("char_location");
     }
 
     public BetaCitationCharLocationParam(
@@ -80,16 +99,16 @@ public sealed record class BetaCitationCharLocationParam : ModelBase
 
     public BetaCitationCharLocationParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"char_location\"");
+        this.Type = JsonSerializer.SerializeToElement("char_location");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCitationCharLocationParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -102,7 +121,7 @@ public sealed record class BetaCitationCharLocationParam : ModelBase
     }
 }
 
-class BetaCitationCharLocationParamFromRaw : IFromRaw<BetaCitationCharLocationParam>
+class BetaCitationCharLocationParamFromRaw : IFromRawJson<BetaCitationCharLocationParam>
 {
     /// <inheritdoc/>
     public BetaCitationCharLocationParam FromRawUnchecked(

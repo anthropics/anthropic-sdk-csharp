@@ -9,20 +9,24 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818DeleteCommand,
         BetaMemoryTool20250818DeleteCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
+public sealed record class BetaMemoryTool20250818DeleteCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,19 +34,18 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
-        init { ModelBase.Set(this._rawData, "path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("path");
+        }
+        init { this._rawData.Set("path", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"delete\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("delete")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -51,7 +54,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
 
     public BetaMemoryTool20250818DeleteCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"delete\"");
+        this.Command = JsonSerializer.SerializeToElement("delete");
     }
 
     public BetaMemoryTool20250818DeleteCommand(
@@ -61,16 +64,16 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
 
     public BetaMemoryTool20250818DeleteCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"delete\"");
+        this.Command = JsonSerializer.SerializeToElement("delete");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMemoryTool20250818DeleteCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -90,7 +93,7 @@ public sealed record class BetaMemoryTool20250818DeleteCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818DeleteCommandFromRaw : IFromRaw<BetaMemoryTool20250818DeleteCommand>
+class BetaMemoryTool20250818DeleteCommandFromRaw : IFromRawJson<BetaMemoryTool20250818DeleteCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818DeleteCommand FromRawUnchecked(

@@ -10,19 +10,27 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageParam, BetaMessageParamFromRaw>))]
-public sealed record class BetaMessageParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaMessageParam, BetaMessageParamFromRaw>))]
+public sealed record class BetaMessageParam : JsonModel
 {
     public required BetaMessageParamContent Content
     {
-        get { return ModelBase.GetNotNullClass<BetaMessageParamContent>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessageParamContent>("content");
+        }
+        init { this._rawData.Set("content", value); }
     }
 
     public required ApiEnum<string, Role> Role
     {
-        get { return ModelBase.GetNotNullClass<ApiEnum<string, Role>>(this.RawData, "role"); }
-        init { ModelBase.Set(this._rawData, "role", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role");
+        }
+        init { this._rawData.Set("role", value); }
     }
 
     /// <inheritdoc/>
@@ -39,14 +47,14 @@ public sealed record class BetaMessageParam : ModelBase
 
     public BetaMessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -59,7 +67,7 @@ public sealed record class BetaMessageParam : ModelBase
     }
 }
 
-class BetaMessageParamFromRaw : IFromRaw<BetaMessageParam>
+class BetaMessageParamFromRaw : IFromRawJson<BetaMessageParam>
 {
     /// <inheritdoc/>
     public BetaMessageParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -67,35 +75,41 @@ class BetaMessageParamFromRaw : IFromRaw<BetaMessageParam>
 }
 
 [JsonConverter(typeof(BetaMessageParamContentConverter))]
-public record class BetaMessageParamContent
+public record class BetaMessageParamContent : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
-    public BetaMessageParamContent(string value, JsonElement? json = null)
+    public BetaMessageParamContent(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaMessageParamContent(
         IReadOnlyList<BetaContentBlockParam> value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaMessageParamContent(JsonElement json)
+    public BetaMessageParamContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -172,7 +186,7 @@ public record class BetaMessageParamContent
             case string value:
                 @string(value);
                 break;
-            case List<BetaContentBlockParam> value:
+            case IReadOnlyList<BetaContentBlockParam> value:
                 betaContentBlockParams(value);
                 break;
             default:
@@ -233,7 +247,7 @@ public record class BetaMessageParamContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -252,6 +266,9 @@ public record class BetaMessageParamContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamContent>
@@ -262,13 +279,13 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -279,12 +296,12 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<BetaContentBlockParam>>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -292,7 +309,7 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

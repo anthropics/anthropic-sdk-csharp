@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -18,9 +19,7 @@ public class BetaClearToolUses20250919EditTest : TestBase
             Trigger = new BetaInputTokensTrigger(1),
         };
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_tool_uses_20250919\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
         BetaInputTokensClearAtLeast expectedClearAtLeast = new(0);
         ClearToolInputs expectedClearToolInputs = true;
         List<string> expectedExcludeTools = ["string"];
@@ -52,8 +51,11 @@ public class BetaClearToolUses20250919EditTest : TestBase
             Trigger = new BetaInputTokensTrigger(1),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -70,13 +72,14 @@ public class BetaClearToolUses20250919EditTest : TestBase
             Trigger = new BetaInputTokensTrigger(1),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaClearToolUses20250919Edit>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"clear_tool_uses_20250919\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
         BetaInputTokensClearAtLeast expectedClearAtLeast = new(0);
         ClearToolInputs expectedClearToolInputs = true;
         List<string> expectedExcludeTools = ["string"];
@@ -247,35 +250,41 @@ public class BetaClearToolUses20250919EditTest : TestBase
 public class ClearToolInputsTest : TestBase
 {
     [Fact]
-    public void boolValidation_Works()
+    public void BoolValidationWorks()
     {
-        ClearToolInputs value = new(true);
+        ClearToolInputs value = true;
         value.Validate();
     }
 
     [Fact]
-    public void stringsValidation_Works()
+    public void StringsValidationWorks()
     {
         ClearToolInputs value = new(["string"]);
         value.Validate();
     }
 
     [Fact]
-    public void boolSerializationRoundtrip_Works()
+    public void BoolSerializationRoundtripWorks()
     {
-        ClearToolInputs value = new(true);
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(json);
+        ClearToolInputs value = true;
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void stringsSerializationRoundtrip_Works()
+    public void StringsSerializationRoundtripWorks()
     {
         ClearToolInputs value = new(["string"]);
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(json);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ClearToolInputs>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -284,35 +293,41 @@ public class ClearToolInputsTest : TestBase
 public class TriggerTest : TestBase
 {
     [Fact]
-    public void beta_input_tokensValidation_Works()
+    public void BetaInputTokensValidationWorks()
     {
-        Trigger value = new(new BetaInputTokensTrigger(1));
+        Trigger value = new BetaInputTokensTrigger(1);
         value.Validate();
     }
 
     [Fact]
-    public void beta_tool_usesValidation_Works()
+    public void BetaToolUsesValidationWorks()
     {
-        Trigger value = new(new BetaToolUsesTrigger(1));
+        Trigger value = new BetaToolUsesTrigger(1);
         value.Validate();
     }
 
     [Fact]
-    public void beta_input_tokensSerializationRoundtrip_Works()
+    public void BetaInputTokensSerializationRoundtripWorks()
     {
-        Trigger value = new(new BetaInputTokensTrigger(1));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Trigger>(json);
+        Trigger value = new BetaInputTokensTrigger(1);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Trigger>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_usesSerializationRoundtrip_Works()
+    public void BetaToolUsesSerializationRoundtripWorks()
     {
-        Trigger value = new(new BetaToolUsesTrigger(1));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<Trigger>(json);
+        Trigger value = new BetaToolUsesTrigger(1);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Trigger>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

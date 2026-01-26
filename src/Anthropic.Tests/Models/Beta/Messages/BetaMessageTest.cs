@@ -57,7 +57,7 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -115,12 +115,11 @@ public class BetaMessageTest : TestBase
                 },
             ]
         );
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_5_20251101;
-        JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
+        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
+        JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
-        string expectedStopSequence = null;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message");
         Messages::BetaUsage expectedUsage = new()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -143,7 +142,7 @@ public class BetaMessageTest : TestBase
         Assert.Equal(expectedModel, model.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, model.Role));
         Assert.Equal(expectedStopReason, model.StopReason);
-        Assert.Equal(expectedStopSequence, model.StopSequence);
+        Assert.Null(model.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUsage, model.Usage);
     }
@@ -196,7 +195,7 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -211,8 +210,11 @@ public class BetaMessageTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaMessage>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaMessage>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -265,7 +267,7 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -280,8 +282,11 @@ public class BetaMessageTest : TestBase
             },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Messages::BetaMessage>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Messages::BetaMessage>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "msg_013Zva2CMHLNnXjNJJKqJ2EF";
@@ -327,12 +332,11 @@ public class BetaMessageTest : TestBase
                 },
             ]
         );
-        ApiEnum<string, Model> expectedModel = Model.ClaudeOpus4_5_20251101;
-        JsonElement expectedRole = JsonSerializer.Deserialize<JsonElement>("\"assistant\"");
+        ApiEnum<string, Model> expectedModel = Model.ClaudeSonnet4_5_20250929;
+        JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
         ApiEnum<string, Messages::BetaStopReason> expectedStopReason =
             Messages::BetaStopReason.EndTurn;
-        string expectedStopSequence = null;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"message\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("message");
         Messages::BetaUsage expectedUsage = new()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -355,7 +359,7 @@ public class BetaMessageTest : TestBase
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, deserialized.Role));
         Assert.Equal(expectedStopReason, deserialized.StopReason);
-        Assert.Equal(expectedStopSequence, deserialized.StopSequence);
+        Assert.Null(deserialized.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUsage, deserialized.Usage);
     }
@@ -408,7 +412,7 @@ public class BetaMessageTest : TestBase
                     },
                 ]
             ),
-            Model = Model.ClaudeOpus4_5_20251101,
+            Model = Model.ClaudeSonnet4_5_20250929,
             StopReason = Messages::BetaStopReason.EndTurn,
             StopSequence = null,
             Usage = new()

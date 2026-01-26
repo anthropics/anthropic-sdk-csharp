@@ -8,25 +8,37 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<PlainTextSource, PlainTextSourceFromRaw>))]
-public sealed record class PlainTextSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<PlainTextSource, PlainTextSourceFromRaw>))]
+public sealed record class PlainTextSource : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("data");
+        }
+        init { this._rawData.Set("data", value); }
     }
 
     public JsonElement MediaType
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "media_type"); }
-        init { ModelBase.Set(this._rawData, "media_type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("media_type");
+        }
+        init { this._rawData.Set("media_type", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -34,15 +46,12 @@ public sealed record class PlainTextSource : ModelBase
     {
         _ = this.Data;
         if (
-            !JsonElement.DeepEquals(
-                this.MediaType,
-                JsonSerializer.Deserialize<JsonElement>("\"text/plain\"")
-            )
+            !JsonElement.DeepEquals(this.MediaType, JsonSerializer.SerializeToElement("text/plain"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -50,8 +59,8 @@ public sealed record class PlainTextSource : ModelBase
 
     public PlainTextSource()
     {
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.MediaType = JsonSerializer.SerializeToElement("text/plain");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
     public PlainTextSource(PlainTextSource plainTextSource)
@@ -59,17 +68,17 @@ public sealed record class PlainTextSource : ModelBase
 
     public PlainTextSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.MediaType = JsonSerializer.Deserialize<JsonElement>("\"text/plain\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.MediaType = JsonSerializer.SerializeToElement("text/plain");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     PlainTextSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -87,7 +96,7 @@ public sealed record class PlainTextSource : ModelBase
     }
 }
 
-class PlainTextSourceFromRaw : IFromRaw<PlainTextSource>
+class PlainTextSourceFromRaw : IFromRawJson<PlainTextSource>
 {
     /// <inheritdoc/>
     public PlainTextSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

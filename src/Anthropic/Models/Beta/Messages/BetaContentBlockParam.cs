@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
@@ -10,15 +11,21 @@ namespace Anthropic.Models.Beta.Messages;
 /// Regular text content.
 /// </summary>
 [JsonConverter(typeof(BetaContentBlockParamConverter))]
-public record class BetaContentBlockParam
+public record class BetaContentBlockParam : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -42,7 +49,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (x) => x.Type,
                 toolSearchToolResult: (x) => x.Type,
                 mcpToolUse: (x) => x.Type,
-                requestMCPToolResult: (x) => x.Type,
+                requestMcpToolResult: (x) => x.Type,
                 containerUpload: (x) => x.Type
             );
         }
@@ -69,7 +76,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (x) => x.CacheControl,
                 toolSearchToolResult: (x) => x.CacheControl,
                 mcpToolUse: (x) => x.CacheControl,
-                requestMCPToolResult: (x) => x.CacheControl,
+                requestMcpToolResult: (x) => x.CacheControl,
                 containerUpload: (x) => x.CacheControl
             );
         }
@@ -96,7 +103,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (_) => null,
                 toolSearchToolResult: (_) => null,
                 mcpToolUse: (_) => null,
-                requestMCPToolResult: (_) => null,
+                requestMcpToolResult: (_) => null,
                 containerUpload: (_) => null
             );
         }
@@ -123,7 +130,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (_) => null,
                 toolSearchToolResult: (_) => null,
                 mcpToolUse: (x) => x.ID,
-                requestMCPToolResult: (_) => null,
+                requestMcpToolResult: (_) => null,
                 containerUpload: (_) => null
             );
         }
@@ -150,7 +157,7 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (x) => x.ToolUseID,
                 toolSearchToolResult: (x) => x.ToolUseID,
                 mcpToolUse: (_) => null,
-                requestMCPToolResult: (x) => x.ToolUseID,
+                requestMcpToolResult: (x) => x.ToolUseID,
                 containerUpload: (_) => null
             );
         }
@@ -177,132 +184,144 @@ public record class BetaContentBlockParam
                 textEditorCodeExecutionToolResult: (_) => null,
                 toolSearchToolResult: (_) => null,
                 mcpToolUse: (_) => null,
-                requestMCPToolResult: (x) => x.IsError,
+                requestMcpToolResult: (x) => x.IsError,
                 containerUpload: (_) => null
             );
         }
     }
 
-    public BetaContentBlockParam(BetaTextBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaTextBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaImageBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaImageBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaRequestDocumentBlock value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaRequestDocumentBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaSearchResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaSearchResultBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaThinkingBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaThinkingBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaRedactedThinkingBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaRedactedThinkingBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaToolUseBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaToolUseBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaToolResultBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaServerToolUseBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaServerToolUseBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaWebSearchToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(
+        BetaWebSearchToolResultBlockParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaWebFetchToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(
+        BetaWebFetchToolResultBlockParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaContentBlockParam(
         BetaCodeExecutionToolResultBlockParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaContentBlockParam(
         BetaBashCodeExecutionToolResultBlockParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaContentBlockParam(
         BetaTextEditorCodeExecutionToolResultBlockParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaToolSearchToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(
+        BetaToolSearchToolResultBlockParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaMCPToolUseBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaMcpToolUseBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaRequestMCPToolResultBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(
+        BetaRequestMcpToolResultBlockParam value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(BetaContainerUploadBlockParam value, JsonElement? json = null)
+    public BetaContentBlockParam(BetaContainerUploadBlockParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaContentBlockParam(JsonElement json)
+    public BetaContentBlockParam(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -636,45 +655,45 @@ public record class BetaContentBlockParam
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaMCPToolUseBlockParam"/>.
+    /// type <see cref="BetaMcpToolUseBlockParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickMCPToolUse(out var value)) {
-    ///     // `value` is of type `BetaMCPToolUseBlockParam`
+    /// if (instance.TryPickMcpToolUse(out var value)) {
+    ///     // `value` is of type `BetaMcpToolUseBlockParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickMCPToolUse([NotNullWhen(true)] out BetaMCPToolUseBlockParam? value)
+    public bool TryPickMcpToolUse([NotNullWhen(true)] out BetaMcpToolUseBlockParam? value)
     {
-        value = this.Value as BetaMCPToolUseBlockParam;
+        value = this.Value as BetaMcpToolUseBlockParam;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaRequestMCPToolResultBlockParam"/>.
+    /// type <see cref="BetaRequestMcpToolResultBlockParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickRequestMCPToolResult(out var value)) {
-    ///     // `value` is of type `BetaRequestMCPToolResultBlockParam`
+    /// if (instance.TryPickRequestMcpToolResult(out var value)) {
+    ///     // `value` is of type `BetaRequestMcpToolResultBlockParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickRequestMCPToolResult(
-        [NotNullWhen(true)] out BetaRequestMCPToolResultBlockParam? value
+    public bool TryPickRequestMcpToolResult(
+        [NotNullWhen(true)] out BetaRequestMcpToolResultBlockParam? value
     )
     {
-        value = this.Value as BetaRequestMCPToolResultBlockParam;
+        value = this.Value as BetaRequestMcpToolResultBlockParam;
         return value != null;
     }
 
@@ -728,8 +747,8 @@ public record class BetaContentBlockParam
     ///     (BetaBashCodeExecutionToolResultBlockParam value) => {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) => {...},
     ///     (BetaToolSearchToolResultBlockParam value) => {...},
-    ///     (BetaMCPToolUseBlockParam value) => {...},
-    ///     (BetaRequestMCPToolResultBlockParam value) => {...},
+    ///     (BetaMcpToolUseBlockParam value) => {...},
+    ///     (BetaRequestMcpToolResultBlockParam value) => {...},
     ///     (BetaContainerUploadBlockParam value) => {...}
     /// );
     /// </code>
@@ -751,8 +770,8 @@ public record class BetaContentBlockParam
         System::Action<BetaBashCodeExecutionToolResultBlockParam> bashCodeExecutionToolResult,
         System::Action<BetaTextEditorCodeExecutionToolResultBlockParam> textEditorCodeExecutionToolResult,
         System::Action<BetaToolSearchToolResultBlockParam> toolSearchToolResult,
-        System::Action<BetaMCPToolUseBlockParam> mcpToolUse,
-        System::Action<BetaRequestMCPToolResultBlockParam> requestMCPToolResult,
+        System::Action<BetaMcpToolUseBlockParam> mcpToolUse,
+        System::Action<BetaRequestMcpToolResultBlockParam> requestMcpToolResult,
         System::Action<BetaContainerUploadBlockParam> containerUpload
     )
     {
@@ -803,11 +822,11 @@ public record class BetaContentBlockParam
             case BetaToolSearchToolResultBlockParam value:
                 toolSearchToolResult(value);
                 break;
-            case BetaMCPToolUseBlockParam value:
+            case BetaMcpToolUseBlockParam value:
                 mcpToolUse(value);
                 break;
-            case BetaRequestMCPToolResultBlockParam value:
-                requestMCPToolResult(value);
+            case BetaRequestMcpToolResultBlockParam value:
+                requestMcpToolResult(value);
                 break;
             case BetaContainerUploadBlockParam value:
                 containerUpload(value);
@@ -849,8 +868,8 @@ public record class BetaContentBlockParam
     ///     (BetaBashCodeExecutionToolResultBlockParam value) => {...},
     ///     (BetaTextEditorCodeExecutionToolResultBlockParam value) => {...},
     ///     (BetaToolSearchToolResultBlockParam value) => {...},
-    ///     (BetaMCPToolUseBlockParam value) => {...},
-    ///     (BetaRequestMCPToolResultBlockParam value) => {...},
+    ///     (BetaMcpToolUseBlockParam value) => {...},
+    ///     (BetaRequestMcpToolResultBlockParam value) => {...},
     ///     (BetaContainerUploadBlockParam value) => {...}
     /// );
     /// </code>
@@ -875,8 +894,8 @@ public record class BetaContentBlockParam
             T
         > textEditorCodeExecutionToolResult,
         System::Func<BetaToolSearchToolResultBlockParam, T> toolSearchToolResult,
-        System::Func<BetaMCPToolUseBlockParam, T> mcpToolUse,
-        System::Func<BetaRequestMCPToolResultBlockParam, T> requestMCPToolResult,
+        System::Func<BetaMcpToolUseBlockParam, T> mcpToolUse,
+        System::Func<BetaRequestMcpToolResultBlockParam, T> requestMcpToolResult,
         System::Func<BetaContainerUploadBlockParam, T> containerUpload
     )
     {
@@ -898,8 +917,8 @@ public record class BetaContentBlockParam
             BetaTextEditorCodeExecutionToolResultBlockParam value =>
                 textEditorCodeExecutionToolResult(value),
             BetaToolSearchToolResultBlockParam value => toolSearchToolResult(value),
-            BetaMCPToolUseBlockParam value => mcpToolUse(value),
-            BetaRequestMCPToolResultBlockParam value => requestMCPToolResult(value),
+            BetaMcpToolUseBlockParam value => mcpToolUse(value),
+            BetaRequestMcpToolResultBlockParam value => requestMcpToolResult(value),
             BetaContainerUploadBlockParam value => containerUpload(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaContentBlockParam"
@@ -955,11 +974,11 @@ public record class BetaContentBlockParam
         BetaToolSearchToolResultBlockParam value
     ) => new(value);
 
-    public static implicit operator BetaContentBlockParam(BetaMCPToolUseBlockParam value) =>
+    public static implicit operator BetaContentBlockParam(BetaMcpToolUseBlockParam value) =>
         new(value);
 
     public static implicit operator BetaContentBlockParam(
-        BetaRequestMCPToolResultBlockParam value
+        BetaRequestMcpToolResultBlockParam value
     ) => new(value);
 
     public static implicit operator BetaContentBlockParam(BetaContainerUploadBlockParam value) =>
@@ -975,7 +994,7 @@ public record class BetaContentBlockParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -1000,7 +1019,7 @@ public record class BetaContentBlockParam
             (textEditorCodeExecutionToolResult) => textEditorCodeExecutionToolResult.Validate(),
             (toolSearchToolResult) => toolSearchToolResult.Validate(),
             (mcpToolUse) => mcpToolUse.Validate(),
-            (requestMCPToolResult) => requestMCPToolResult.Validate(),
+            (requestMcpToolResult) => requestMcpToolResult.Validate(),
             (containerUpload) => containerUpload.Validate()
         );
     }
@@ -1014,6 +1033,9 @@ public record class BetaContentBlockParam
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockParam>
@@ -1024,11 +1046,11 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -1042,13 +1064,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaTextBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1057,20 +1079,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "image":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaImageBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1079,20 +1101,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "document":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRequestDocumentBlock>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1101,20 +1123,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "search_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaSearchResultBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1123,20 +1145,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "thinking":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1145,20 +1167,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "redacted_thinking":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRedactedThinkingBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1167,20 +1189,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_use":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1189,20 +1211,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaToolResultBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1211,20 +1233,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "server_tool_use":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1233,7 +1255,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_tool_result":
             {
@@ -1241,13 +1263,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1256,20 +1278,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_fetch_tool_result":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1278,7 +1300,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "code_execution_tool_result":
             {
@@ -1286,13 +1308,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1301,7 +1323,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "bash_code_execution_tool_result":
             {
@@ -1309,13 +1331,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1324,7 +1346,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "text_editor_code_execution_tool_result":
             {
@@ -1332,13 +1354,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaTextEditorCodeExecutionToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1347,7 +1369,7 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "tool_search_tool_result":
             {
@@ -1355,13 +1377,13 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1370,20 +1392,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "mcp_tool_use":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaMCPToolUseBlockParam>(
-                        json,
+                    var deserialized = JsonSerializer.Deserialize<BetaMcpToolUseBlockParam>(
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1392,21 +1414,21 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "mcp_tool_result":
             {
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaRequestMCPToolResultBlockParam>(
-                            json,
+                        JsonSerializer.Deserialize<BetaRequestMcpToolResultBlockParam>(
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1415,20 +1437,20 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "container_upload":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaContainerUploadBlockParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -1437,11 +1459,11 @@ sealed class BetaContentBlockParamConverter : JsonConverter<BetaContentBlockPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaContentBlockParam(json);
+                return new BetaContentBlockParam(element);
             }
         }
     }

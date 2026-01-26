@@ -1,21 +1,28 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaRawMessageStreamEventConverter))]
-public record class BetaRawMessageStreamEvent
+public record class BetaRawMessageStreamEvent : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -48,45 +55,54 @@ public record class BetaRawMessageStreamEvent
         }
     }
 
-    public BetaRawMessageStreamEvent(BetaRawMessageStartEvent value, JsonElement? json = null)
+    public BetaRawMessageStreamEvent(BetaRawMessageStartEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value, JsonElement? json = null)
+    public BetaRawMessageStreamEvent(BetaRawMessageDeltaEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawMessageStopEvent value, JsonElement? json = null)
+    public BetaRawMessageStreamEvent(BetaRawMessageStopEvent value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawContentBlockStartEvent value, JsonElement? json = null)
+    public BetaRawMessageStreamEvent(
+        BetaRawContentBlockStartEvent value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawContentBlockDeltaEvent value, JsonElement? json = null)
+    public BetaRawMessageStreamEvent(
+        BetaRawContentBlockDeltaEvent value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawMessageStreamEvent(BetaRawContentBlockStopEvent value, JsonElement? json = null)
+    public BetaRawMessageStreamEvent(
+        BetaRawContentBlockStopEvent value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaRawMessageStreamEvent(JsonElement json)
+    public BetaRawMessageStreamEvent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -357,7 +373,7 @@ public record class BetaRawMessageStreamEvent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -384,6 +400,9 @@ public record class BetaRawMessageStreamEvent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageStreamEvent>
@@ -394,11 +413,11 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -412,13 +431,13 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawMessageStartEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -427,20 +446,20 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "message_delta":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawMessageDeltaEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -449,20 +468,20 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "message_stop":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawMessageStopEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -471,20 +490,20 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_start":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStartEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -493,20 +512,20 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_delta":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockDeltaEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -515,20 +534,20 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_stop":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRawContentBlockStopEvent>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -537,11 +556,11 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaRawMessageStreamEvent(json);
+                return new BetaRawMessageStreamEvent(element);
             }
         }
     }

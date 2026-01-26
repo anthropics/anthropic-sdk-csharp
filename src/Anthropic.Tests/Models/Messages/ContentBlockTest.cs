@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -7,195 +8,193 @@ namespace Anthropic.Tests.Models.Messages;
 public class ContentBlockTest : TestBase
 {
     [Fact]
-    public void textValidation_Works()
+    public void TextValidationWorks()
     {
-        ContentBlock value = new(
-            new TextBlock()
-            {
-                Citations =
-                [
-                    new CitationCharLocation()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "document_title",
-                        EndCharIndex = 0,
-                        FileID = "file_id",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "text",
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void thinkingValidation_Works()
-    {
-        ContentBlock value = new(
-            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void redacted_thinkingValidation_Works()
-    {
-        ContentBlock value = new(new RedactedThinkingBlock("data"));
-        value.Validate();
-    }
-
-    [Fact]
-    public void tool_useValidation_Works()
-    {
-        ContentBlock value = new(
-            new ToolUseBlock()
-            {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
+        ContentBlock value = new TextBlock()
+        {
+            Citations =
+            [
+                new CitationCharLocation()
                 {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
                 },
-                Name = "x",
-            }
-        );
+            ],
+            Text = "text",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void server_tool_useValidation_Works()
+    public void ThinkingValidationWorks()
     {
-        ContentBlock value = new(
-            new ServerToolUseBlock()
-            {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-            }
-        );
+        ContentBlock value = new ThinkingBlock() { Signature = "signature", Thinking = "thinking" };
         value.Validate();
     }
 
     [Fact]
-    public void web_search_tool_resultValidation_Works()
+    public void RedactedThinkingValidationWorks()
     {
-        ContentBlock value = new(
-            new WebSearchToolResultBlock()
-            {
-                Content = new WebSearchToolResultError(
-                    WebSearchToolResultErrorErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+        ContentBlock value = new RedactedThinkingBlock("data");
         value.Validate();
     }
 
     [Fact]
-    public void textSerializationRoundtrip_Works()
+    public void ToolUseValidationWorks()
     {
-        ContentBlock value = new(
-            new TextBlock()
+        ContentBlock value = new ToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                Citations =
-                [
-                    new CitationCharLocation()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "document_title",
-                        EndCharIndex = 0,
-                        FileID = "file_id",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "text",
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
-
-        Assert.Equal(value, deserialized);
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+        value.Validate();
     }
 
     [Fact]
-    public void thinkingSerializationRoundtrip_Works()
+    public void ServerToolUseValidationWorks()
     {
-        ContentBlock value = new(
-            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void redacted_thinkingSerializationRoundtrip_Works()
-    {
-        ContentBlock value = new(new RedactedThinkingBlock("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void tool_useSerializationRoundtrip_Works()
-    {
-        ContentBlock value = new(
-            new ToolUseBlock()
+        ContentBlock value = new ServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebSearchToolResultValidationWorks()
+    {
+        ContentBlock value = new WebSearchToolResultBlock()
+        {
+            Content = new WebSearchToolResultError(
+                WebSearchToolResultErrorErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void TextSerializationRoundtripWorks()
+    {
+        ContentBlock value = new TextBlock()
+        {
+            Citations =
+            [
+                new CitationCharLocation()
                 {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
                 },
-                Name = "x",
-            }
+            ],
+            Text = "text",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void server_tool_useSerializationRoundtrip_Works()
+    public void ThinkingSerializationRoundtripWorks()
     {
-        ContentBlock value = new(
-            new ServerToolUseBlock()
-            {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-            }
+        ContentBlock value = new ThinkingBlock() { Signature = "signature", Thinking = "thinking" };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void web_search_tool_resultSerializationRoundtrip_Works()
+    public void RedactedThinkingSerializationRoundtripWorks()
     {
-        ContentBlock value = new(
-            new WebSearchToolResultBlock()
-            {
-                Content = new WebSearchToolResultError(
-                    WebSearchToolResultErrorErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
+        ContentBlock value = new RedactedThinkingBlock("data");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlock>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ToolUseSerializationRoundtripWorks()
+    {
+        ContentBlock value = new ToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ServerToolUseSerializationRoundtripWorks()
+    {
+        ContentBlock value = new ServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebSearchToolResultSerializationRoundtripWorks()
+    {
+        ContentBlock value = new WebSearchToolResultBlock()
+        {
+            Content = new WebSearchToolResultError(
+                WebSearchToolResultErrorErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

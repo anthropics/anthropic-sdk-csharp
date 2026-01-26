@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,19 +9,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<TextBlockParam, TextBlockParamFromRaw>))]
-public sealed record class TextBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<TextBlockParam, TextBlockParamFromRaw>))]
+public sealed record class TextBlockParam : JsonModel
 {
     public required string Text
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
-        init { ModelBase.Set(this._rawData, "text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("text");
+        }
+        init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -30,25 +39,33 @@ public sealed record class TextBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public IReadOnlyList<TextCitationParam>? Citations
     {
         get
         {
-            return ModelBase.GetNullableClass<List<TextCitationParam>>(this.RawData, "citations");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<TextCitationParam>>("citations");
         }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<TextCitationParam>?>(
+                "citations",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -61,7 +78,7 @@ public sealed record class TextBlockParam : ModelBase
 
     public TextBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
     public TextBlockParam(TextBlockParam textBlockParam)
@@ -69,16 +86,16 @@ public sealed record class TextBlockParam : ModelBase
 
     public TextBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     TextBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -96,7 +113,7 @@ public sealed record class TextBlockParam : ModelBase
     }
 }
 
-class TextBlockParamFromRaw : IFromRaw<TextBlockParam>
+class TextBlockParamFromRaw : IFromRawJson<TextBlockParam>
 {
     /// <inheritdoc/>
     public TextBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

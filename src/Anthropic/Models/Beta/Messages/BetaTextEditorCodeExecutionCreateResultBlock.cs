@@ -9,23 +9,31 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaTextEditorCodeExecutionCreateResultBlock,
         BetaTextEditorCodeExecutionCreateResultBlockFromRaw
     >)
 )]
-public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelBase
+public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : JsonModel
 {
     public required bool IsFileUpdate
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "is_file_update"); }
-        init { ModelBase.Set(this._rawData, "is_file_update", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("is_file_update");
+        }
+        init { this._rawData.Set("is_file_update", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -35,9 +43,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelB
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>(
-                    "\"text_editor_code_execution_create_result\""
-                )
+                JsonSerializer.SerializeToElement("text_editor_code_execution_create_result")
             )
         )
         {
@@ -47,9 +53,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelB
 
     public BetaTextEditorCodeExecutionCreateResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_create_result\""
-        );
+        this.Type = JsonSerializer.SerializeToElement("text_editor_code_execution_create_result");
     }
 
     public BetaTextEditorCodeExecutionCreateResultBlock(
@@ -61,18 +65,16 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelB
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>(
-            "\"text_editor_code_execution_create_result\""
-        );
+        this.Type = JsonSerializer.SerializeToElement("text_editor_code_execution_create_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaTextEditorCodeExecutionCreateResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -93,7 +95,7 @@ public sealed record class BetaTextEditorCodeExecutionCreateResultBlock : ModelB
 }
 
 class BetaTextEditorCodeExecutionCreateResultBlockFromRaw
-    : IFromRaw<BetaTextEditorCodeExecutionCreateResultBlock>
+    : IFromRawJson<BetaTextEditorCodeExecutionCreateResultBlock>
 {
     /// <inheritdoc/>
     public BetaTextEditorCodeExecutionCreateResultBlock FromRawUnchecked(

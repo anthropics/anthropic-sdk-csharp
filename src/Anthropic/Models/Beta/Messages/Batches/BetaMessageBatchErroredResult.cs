@@ -9,32 +9,35 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages.Batches;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaMessageBatchErroredResult, BetaMessageBatchErroredResultFromRaw>)
+    typeof(JsonModelConverter<BetaMessageBatchErroredResult, BetaMessageBatchErroredResultFromRaw>)
 )]
-public sealed record class BetaMessageBatchErroredResult : ModelBase
+public sealed record class BetaMessageBatchErroredResult : JsonModel
 {
     public required BetaErrorResponse Error
     {
-        get { return ModelBase.GetNotNullClass<BetaErrorResponse>(this.RawData, "error"); }
-        init { ModelBase.Set(this._rawData, "error", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaErrorResponse>("error");
+        }
+        init { this._rawData.Set("error", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Error.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"errored\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("errored")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -42,7 +45,7 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
 
     public BetaMessageBatchErroredResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        this.Type = JsonSerializer.SerializeToElement("errored");
     }
 
     public BetaMessageBatchErroredResult(
@@ -52,16 +55,16 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
 
     public BetaMessageBatchErroredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"errored\"");
+        this.Type = JsonSerializer.SerializeToElement("errored");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageBatchErroredResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -81,7 +84,7 @@ public sealed record class BetaMessageBatchErroredResult : ModelBase
     }
 }
 
-class BetaMessageBatchErroredResultFromRaw : IFromRaw<BetaMessageBatchErroredResult>
+class BetaMessageBatchErroredResultFromRaw : IFromRawJson<BetaMessageBatchErroredResult>
 {
     /// <inheritdoc/>
     public BetaMessageBatchErroredResult FromRawUnchecked(

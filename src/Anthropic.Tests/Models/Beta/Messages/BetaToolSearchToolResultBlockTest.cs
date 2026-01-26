@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -24,9 +25,7 @@ public class BetaToolSearchToolResultBlockTest : TestBase
             ErrorMessage = "error_message",
         };
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -46,8 +45,11 @@ public class BetaToolSearchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -65,8 +67,11 @@ public class BetaToolSearchToolResultBlockTest : TestBase
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaToolSearchToolResultBlockContent expectedContent = new BetaToolSearchToolResultError()
@@ -75,9 +80,7 @@ public class BetaToolSearchToolResultBlockTest : TestBase
             ErrorMessage = "error_message",
         };
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -104,51 +107,53 @@ public class BetaToolSearchToolResultBlockTest : TestBase
 public class BetaToolSearchToolResultBlockContentTest : TestBase
 {
     [Fact]
-    public void beta_tool_search_tool_result_errorValidation_Works()
+    public void BetaToolSearchToolResultErrorValidationWorks()
     {
-        BetaToolSearchToolResultBlockContent value = new(
-            new BetaToolSearchToolResultError()
-            {
-                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
-                ErrorMessage = "error_message",
-            }
+        BetaToolSearchToolResultBlockContent value = new BetaToolSearchToolResultError()
+        {
+            ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaToolSearchToolSearchResultBlockValidationWorks()
+    {
+        BetaToolSearchToolResultBlockContent value = new BetaToolSearchToolSearchResultBlock(
+            [new("tool_name")]
         );
         value.Validate();
     }
 
     [Fact]
-    public void beta_tool_search_tool_search_result_blockValidation_Works()
+    public void BetaToolSearchToolResultErrorSerializationRoundtripWorks()
     {
-        BetaToolSearchToolResultBlockContent value = new(
-            new BetaToolSearchToolSearchResultBlock([new("tool_name")])
+        BetaToolSearchToolResultBlockContent value = new BetaToolSearchToolResultError()
+        {
+            ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+            ErrorMessage = "error_message",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(
+            element,
+            ModelBase.SerializerOptions
         );
-        value.Validate();
-    }
-
-    [Fact]
-    public void beta_tool_search_tool_result_errorSerializationRoundtrip_Works()
-    {
-        BetaToolSearchToolResultBlockContent value = new(
-            new BetaToolSearchToolResultError()
-            {
-                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
-                ErrorMessage = "error_message",
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_search_tool_search_result_blockSerializationRoundtrip_Works()
+    public void BetaToolSearchToolSearchResultBlockSerializationRoundtripWorks()
     {
-        BetaToolSearchToolResultBlockContent value = new(
-            new BetaToolSearchToolSearchResultBlock([new("tool_name")])
+        BetaToolSearchToolResultBlockContent value = new BetaToolSearchToolSearchResultBlock(
+            [new("tool_name")]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(json);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

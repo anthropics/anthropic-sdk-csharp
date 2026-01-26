@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageTokensCount, BetaMessageTokensCountFromRaw>))]
-public sealed record class BetaMessageTokensCount : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaMessageTokensCount, BetaMessageTokensCountFromRaw>))]
+public sealed record class BetaMessageTokensCount : JsonModel
 {
     /// <summary>
     /// Information about context management applied to the message.
@@ -17,12 +17,12 @@ public sealed record class BetaMessageTokensCount : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCountTokensContextManagementResponse>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCountTokensContextManagementResponse>(
                 "context_management"
             );
         }
-        init { ModelBase.Set(this._rawData, "context_management", value); }
+        init { this._rawData.Set("context_management", value); }
     }
 
     /// <summary>
@@ -31,8 +31,12 @@ public sealed record class BetaMessageTokensCount : ModelBase
     /// </summary>
     public required long InputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
-        init { ModelBase.Set(this._rawData, "input_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("input_tokens");
+        }
+        init { this._rawData.Set("input_tokens", value); }
     }
 
     /// <inheritdoc/>
@@ -49,14 +53,14 @@ public sealed record class BetaMessageTokensCount : ModelBase
 
     public BetaMessageTokensCount(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageTokensCount(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -69,7 +73,7 @@ public sealed record class BetaMessageTokensCount : ModelBase
     }
 }
 
-class BetaMessageTokensCountFromRaw : IFromRaw<BetaMessageTokensCount>
+class BetaMessageTokensCountFromRaw : IFromRawJson<BetaMessageTokensCount>
 {
     /// <inheritdoc/>
     public BetaMessageTokensCount FromRawUnchecked(

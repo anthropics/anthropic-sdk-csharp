@@ -9,25 +9,29 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolRequestError, WebSearchToolRequestErrorFromRaw>))]
-public sealed record class WebSearchToolRequestError : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<WebSearchToolRequestError, WebSearchToolRequestErrorFromRaw>)
+)]
+public sealed record class WebSearchToolRequestError : JsonModel
 {
     public required ApiEnum<string, ErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, ErrorCode>>(
-                this.RawData,
-                "error_code"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, ErrorCode>>("error_code");
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -37,7 +41,7 @@ public sealed record class WebSearchToolRequestError : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"")
+                JsonSerializer.SerializeToElement("web_search_tool_result_error")
             )
         )
         {
@@ -47,7 +51,7 @@ public sealed record class WebSearchToolRequestError : ModelBase
 
     public WebSearchToolRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
     public WebSearchToolRequestError(WebSearchToolRequestError webSearchToolRequestError)
@@ -55,16 +59,16 @@ public sealed record class WebSearchToolRequestError : ModelBase
 
     public WebSearchToolRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     WebSearchToolRequestError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -84,7 +88,7 @@ public sealed record class WebSearchToolRequestError : ModelBase
     }
 }
 
-class WebSearchToolRequestErrorFromRaw : IFromRaw<WebSearchToolRequestError>
+class WebSearchToolRequestErrorFromRaw : IFromRawJson<WebSearchToolRequestError>
 {
     /// <inheritdoc/>
     public WebSearchToolRequestError FromRawUnchecked(

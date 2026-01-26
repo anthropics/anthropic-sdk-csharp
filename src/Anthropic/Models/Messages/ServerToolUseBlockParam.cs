@@ -8,37 +8,53 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ServerToolUseBlockParam, ServerToolUseBlockParamFromRaw>))]
-public sealed record class ServerToolUseBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ServerToolUseBlockParam, ServerToolUseBlockParamFromRaw>))]
+public sealed record class ServerToolUseBlockParam : JsonModel
 {
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     public required IReadOnlyDictionary<string, JsonElement> Input
     {
         get
         {
-            return ModelBase.GetNotNullClass<Dictionary<string, JsonElement>>(
-                this.RawData,
-                "input"
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<FrozenDictionary<string, JsonElement>>("input");
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>>(
+                "input",
+                FrozenDictionary.ToFrozenDictionary(value)
             );
         }
-        init { ModelBase.Set(this._rawData, "input", value); }
     }
 
     public JsonElement Name
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -48,9 +64,10 @@ public sealed record class ServerToolUseBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -58,20 +75,12 @@ public sealed record class ServerToolUseBlockParam : ModelBase
     {
         _ = this.ID;
         _ = this.Input;
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("web_search")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("server_tool_use"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -81,8 +90,8 @@ public sealed record class ServerToolUseBlockParam : ModelBase
 
     public ServerToolUseBlockParam()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Name = JsonSerializer.SerializeToElement("web_search");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
     public ServerToolUseBlockParam(ServerToolUseBlockParam serverToolUseBlockParam)
@@ -90,17 +99,17 @@ public sealed record class ServerToolUseBlockParam : ModelBase
 
     public ServerToolUseBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"server_tool_use\"");
+        this.Name = JsonSerializer.SerializeToElement("web_search");
+        this.Type = JsonSerializer.SerializeToElement("server_tool_use");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ServerToolUseBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -113,7 +122,7 @@ public sealed record class ServerToolUseBlockParam : ModelBase
     }
 }
 
-class ServerToolUseBlockParamFromRaw : IFromRaw<ServerToolUseBlockParam>
+class ServerToolUseBlockParamFromRaw : IFromRawJson<ServerToolUseBlockParam>
 {
     /// <inheritdoc/>
     public ServerToolUseBlockParam FromRawUnchecked(

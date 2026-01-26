@@ -8,24 +8,23 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRawMessageStopEvent, BetaRawMessageStopEventFromRaw>))]
-public sealed record class BetaRawMessageStopEvent : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaRawMessageStopEvent, BetaRawMessageStopEventFromRaw>))]
+public sealed record class BetaRawMessageStopEvent : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_stop\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_stop")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -33,7 +32,7 @@ public sealed record class BetaRawMessageStopEvent : ModelBase
 
     public BetaRawMessageStopEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("message_stop");
     }
 
     public BetaRawMessageStopEvent(BetaRawMessageStopEvent betaRawMessageStopEvent)
@@ -41,16 +40,16 @@ public sealed record class BetaRawMessageStopEvent : ModelBase
 
     public BetaRawMessageStopEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("message_stop");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaRawMessageStopEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -63,7 +62,7 @@ public sealed record class BetaRawMessageStopEvent : ModelBase
     }
 }
 
-class BetaRawMessageStopEventFromRaw : IFromRaw<BetaRawMessageStopEvent>
+class BetaRawMessageStopEventFromRaw : IFromRawJson<BetaRawMessageStopEvent>
 {
     /// <inheritdoc/>
     public BetaRawMessageStopEvent FromRawUnchecked(

@@ -8,31 +8,34 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<TextDelta, TextDeltaFromRaw>))]
-public sealed record class TextDelta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<TextDelta, TextDeltaFromRaw>))]
+public sealed record class TextDelta : JsonModel
 {
     public required string Text
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
-        init { ModelBase.Set(this._rawData, "text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("text");
+        }
+        init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Text;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"text_delta\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text_delta")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -40,7 +43,7 @@ public sealed record class TextDelta : ModelBase
 
     public TextDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("text_delta");
     }
 
     public TextDelta(TextDelta textDelta)
@@ -48,16 +51,16 @@ public sealed record class TextDelta : ModelBase
 
     public TextDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("text_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     TextDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -75,7 +78,7 @@ public sealed record class TextDelta : ModelBase
     }
 }
 
-class TextDeltaFromRaw : IFromRaw<TextDelta>
+class TextDeltaFromRaw : IFromRawJson<TextDelta>
 {
     /// <inheritdoc/>
     public TextDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

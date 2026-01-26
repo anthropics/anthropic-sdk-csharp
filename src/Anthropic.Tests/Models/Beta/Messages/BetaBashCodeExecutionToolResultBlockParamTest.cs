@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -14,7 +15,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaBashCodeExecutionToolResultBlockParamContent expectedContent =
@@ -22,10 +23,10 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_tool_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "bash_code_execution_tool_result"
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -42,12 +43,13 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParam>(
-            json
+            json,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(model, deserialized);
@@ -62,12 +64,13 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParam>(
-            json
+            element,
+            ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
@@ -76,10 +79,10 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_tool_result\""
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "bash_code_execution_tool_result"
         );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -96,7 +99,7 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -168,61 +171,63 @@ public class BetaBashCodeExecutionToolResultBlockParamTest : TestBase
 public class BetaBashCodeExecutionToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void beta_bash_code_execution_tool_result_error_paramValidation_Works()
+    public void BetaBashCodeExecutionToolResultErrorParamValidationWorks()
     {
-        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+        BetaBashCodeExecutionToolResultBlockParamContent value =
             new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
-            )
-        );
+            );
         value.Validate();
     }
 
     [Fact]
-    public void beta_bash_code_execution_result_block_paramValidation_Works()
+    public void BetaBashCodeExecutionResultBlockParamValidationWorks()
     {
-        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+        BetaBashCodeExecutionToolResultBlockParamContent value =
             new BetaBashCodeExecutionResultBlockParam()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,
                 Stderr = "stderr",
                 Stdout = "stdout",
-            }
-        );
+            };
         value.Validate();
     }
 
     [Fact]
-    public void beta_bash_code_execution_tool_result_error_paramSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionToolResultErrorParamSerializationRoundtripWorks()
     {
-        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+        BetaBashCodeExecutionToolResultBlockParamContent value =
             new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
-            )
-        );
-        string json = JsonSerializer.Serialize(value);
+            );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(json);
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(
+                element,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_bash_code_execution_result_block_paramSerializationRoundtrip_Works()
+    public void BetaBashCodeExecutionResultBlockParamSerializationRoundtripWorks()
     {
-        BetaBashCodeExecutionToolResultBlockParamContent value = new(
+        BetaBashCodeExecutionToolResultBlockParamContent value =
             new BetaBashCodeExecutionResultBlockParam()
             {
                 Content = [new("file_id")],
                 ReturnCode = 0,
                 Stderr = "stderr",
                 Stdout = "stdout",
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
+            };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
-            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(json);
+            JsonSerializer.Deserialize<BetaBashCodeExecutionToolResultBlockParamContent>(
+                element,
+                ModelBase.SerializerOptions
+            );
 
         Assert.Equal(value, deserialized);
     }

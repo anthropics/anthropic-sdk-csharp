@@ -8,31 +8,39 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<WebSearchToolResultBlock, WebSearchToolResultBlockFromRaw>))]
-public sealed record class WebSearchToolResultBlock : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<WebSearchToolResultBlock, WebSearchToolResultBlockFromRaw>)
+)]
+public sealed record class WebSearchToolResultBlock : JsonModel
 {
     public required WebSearchToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<WebSearchToolResultBlockContent>(
-                this.RawData,
-                "content"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<WebSearchToolResultBlockContent>("content");
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -43,7 +51,7 @@ public sealed record class WebSearchToolResultBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"")
+                JsonSerializer.SerializeToElement("web_search_tool_result")
             )
         )
         {
@@ -53,7 +61,7 @@ public sealed record class WebSearchToolResultBlock : ModelBase
 
     public WebSearchToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result");
     }
 
     public WebSearchToolResultBlock(WebSearchToolResultBlock webSearchToolResultBlock)
@@ -61,16 +69,16 @@ public sealed record class WebSearchToolResultBlock : ModelBase
 
     public WebSearchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     WebSearchToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -83,7 +91,7 @@ public sealed record class WebSearchToolResultBlock : ModelBase
     }
 }
 
-class WebSearchToolResultBlockFromRaw : IFromRaw<WebSearchToolResultBlock>
+class WebSearchToolResultBlockFromRaw : IFromRawJson<WebSearchToolResultBlock>
 {
     /// <inheritdoc/>
     public WebSearchToolResultBlock FromRawUnchecked(

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -6,73 +7,81 @@ namespace Anthropic.Tests.Models.Messages;
 public class ToolChoiceTest : TestBase
 {
     [Fact]
-    public void autoValidation_Works()
+    public void AutoValidationWorks()
     {
-        ToolChoice value = new(new ToolChoiceAuto() { DisableParallelToolUse = true });
+        ToolChoice value = new ToolChoiceAuto() { DisableParallelToolUse = true };
         value.Validate();
     }
 
     [Fact]
-    public void anyValidation_Works()
+    public void AnyValidationWorks()
     {
-        ToolChoice value = new(new ToolChoiceAny() { DisableParallelToolUse = true });
+        ToolChoice value = new ToolChoiceAny() { DisableParallelToolUse = true };
         value.Validate();
     }
 
     [Fact]
-    public void toolValidation_Works()
+    public void ToolValidationWorks()
     {
-        ToolChoice value = new(
-            new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
+        ToolChoice value = new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true };
+        value.Validate();
+    }
+
+    [Fact]
+    public void NoneValidationWorks()
+    {
+        ToolChoice value = new ToolChoiceNone();
+        value.Validate();
+    }
+
+    [Fact]
+    public void AutoSerializationRoundtripWorks()
+    {
+        ToolChoice value = new ToolChoiceAuto() { DisableParallelToolUse = true };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolChoice>(
+            element,
+            ModelBase.SerializerOptions
         );
-        value.Validate();
-    }
-
-    [Fact]
-    public void noneValidation_Works()
-    {
-        ToolChoice value = new(new ToolChoiceNone());
-        value.Validate();
-    }
-
-    [Fact]
-    public void autoSerializationRoundtrip_Works()
-    {
-        ToolChoice value = new(new ToolChoiceAuto() { DisableParallelToolUse = true });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolChoice>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void anySerializationRoundtrip_Works()
+    public void AnySerializationRoundtripWorks()
     {
-        ToolChoice value = new(new ToolChoiceAny() { DisableParallelToolUse = true });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolChoice>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void toolSerializationRoundtrip_Works()
-    {
-        ToolChoice value = new(
-            new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true }
+        ToolChoice value = new ToolChoiceAny() { DisableParallelToolUse = true };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolChoice>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolChoice>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void noneSerializationRoundtrip_Works()
+    public void ToolSerializationRoundtripWorks()
     {
-        ToolChoice value = new(new ToolChoiceNone());
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolChoice>(json);
+        ToolChoice value = new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolChoice>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void NoneSerializationRoundtripWorks()
+    {
+        ToolChoice value = new ToolChoiceNone();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolChoice>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

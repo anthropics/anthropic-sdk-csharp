@@ -2,20 +2,27 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
 [JsonConverter(typeof(BetaErrorConverter))]
-public record class BetaError
+public record class BetaError : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string Message
@@ -54,63 +61,63 @@ public record class BetaError
         }
     }
 
-    public BetaError(BetaInvalidRequestError value, JsonElement? json = null)
+    public BetaError(BetaInvalidRequestError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(BetaAuthenticationError value, JsonElement? json = null)
+    public BetaError(BetaAuthenticationError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(BetaBillingError value, JsonElement? json = null)
+    public BetaError(BetaBillingError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(BetaPermissionError value, JsonElement? json = null)
+    public BetaError(BetaPermissionError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(BetaNotFoundError value, JsonElement? json = null)
+    public BetaError(BetaNotFoundError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(BetaRateLimitError value, JsonElement? json = null)
+    public BetaError(BetaRateLimitError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(BetaGatewayTimeoutError value, JsonElement? json = null)
+    public BetaError(BetaGatewayTimeoutError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(BetaAPIError value, JsonElement? json = null)
+    public BetaError(BetaApiError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(BetaOverloadedError value, JsonElement? json = null)
+    public BetaError(BetaOverloadedError value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaError(JsonElement json)
+    public BetaError(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -262,22 +269,22 @@ public record class BetaError
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaAPIError"/>.
+    /// type <see cref="BetaApiError"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickAPI(out var value)) {
-    ///     // `value` is of type `BetaAPIError`
+    /// if (instance.TryPickApi(out var value)) {
+    ///     // `value` is of type `BetaApiError`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickAPI([NotNullWhen(true)] out BetaAPIError? value)
+    public bool TryPickApi([NotNullWhen(true)] out BetaApiError? value)
     {
-        value = this.Value as BetaAPIError;
+        value = this.Value as BetaApiError;
         return value != null;
     }
 
@@ -323,7 +330,7 @@ public record class BetaError
     ///     (BetaNotFoundError value) => {...},
     ///     (BetaRateLimitError value) => {...},
     ///     (BetaGatewayTimeoutError value) => {...},
-    ///     (BetaAPIError value) => {...},
+    ///     (BetaApiError value) => {...},
     ///     (BetaOverloadedError value) => {...}
     /// );
     /// </code>
@@ -337,7 +344,7 @@ public record class BetaError
         Action<BetaNotFoundError> notFound,
         Action<BetaRateLimitError> rateLimit,
         Action<BetaGatewayTimeoutError> gatewayTimeout,
-        Action<BetaAPIError> api,
+        Action<BetaApiError> api,
         Action<BetaOverloadedError> overloaded
     )
     {
@@ -364,7 +371,7 @@ public record class BetaError
             case BetaGatewayTimeoutError value:
                 gatewayTimeout(value);
                 break;
-            case BetaAPIError value:
+            case BetaApiError value:
                 api(value);
                 break;
             case BetaOverloadedError value:
@@ -399,7 +406,7 @@ public record class BetaError
     ///     (BetaNotFoundError value) => {...},
     ///     (BetaRateLimitError value) => {...},
     ///     (BetaGatewayTimeoutError value) => {...},
-    ///     (BetaAPIError value) => {...},
+    ///     (BetaApiError value) => {...},
     ///     (BetaOverloadedError value) => {...}
     /// );
     /// </code>
@@ -413,7 +420,7 @@ public record class BetaError
         Func<BetaNotFoundError, T> notFound,
         Func<BetaRateLimitError, T> rateLimit,
         Func<BetaGatewayTimeoutError, T> gatewayTimeout,
-        Func<BetaAPIError, T> api,
+        Func<BetaApiError, T> api,
         Func<BetaOverloadedError, T> overloaded
     )
     {
@@ -426,7 +433,7 @@ public record class BetaError
             BetaNotFoundError value => notFound(value),
             BetaRateLimitError value => rateLimit(value),
             BetaGatewayTimeoutError value => gatewayTimeout(value),
-            BetaAPIError value => api(value),
+            BetaApiError value => api(value),
             BetaOverloadedError value => overloaded(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaError"
@@ -448,7 +455,7 @@ public record class BetaError
 
     public static implicit operator BetaError(BetaGatewayTimeoutError value) => new(value);
 
-    public static implicit operator BetaError(BetaAPIError value) => new(value);
+    public static implicit operator BetaError(BetaApiError value) => new(value);
 
     public static implicit operator BetaError(BetaOverloadedError value) => new(value);
 
@@ -462,7 +469,7 @@ public record class BetaError
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -490,6 +497,9 @@ public record class BetaError
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaErrorConverter : JsonConverter<BetaError>
@@ -500,11 +510,11 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -518,13 +528,13 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaInvalidRequestError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -532,20 +542,20 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "authentication_error":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaAuthenticationError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -553,17 +563,20 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "billing_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaBillingError>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaBillingError>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -571,20 +584,20 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "permission_error":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaPermissionError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -592,17 +605,20 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "not_found_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaNotFoundError>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaNotFoundError>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -610,20 +626,20 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "rate_limit_error":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaRateLimitError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -631,20 +647,20 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "timeout_error":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaGatewayTimeoutError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -652,17 +668,17 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "api_error":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaAPIError>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<BetaApiError>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -670,20 +686,20 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "overloaded_error":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaOverloadedError>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -691,11 +707,11 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaError(json);
+                return new BetaError(element);
             }
         }
     }

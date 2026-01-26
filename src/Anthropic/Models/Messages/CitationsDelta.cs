@@ -9,19 +9,27 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<CitationsDelta, CitationsDeltaFromRaw>))]
-public sealed record class CitationsDelta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<CitationsDelta, CitationsDeltaFromRaw>))]
+public sealed record class CitationsDelta : JsonModel
 {
     public required Citation Citation
     {
-        get { return ModelBase.GetNotNullClass<Citation>(this.RawData, "citation"); }
-        init { ModelBase.Set(this._rawData, "citation", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Citation>("citation");
+        }
+        init { this._rawData.Set("citation", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -29,10 +37,7 @@ public sealed record class CitationsDelta : ModelBase
     {
         this.Citation.Validate();
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("citations_delta"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -41,7 +46,7 @@ public sealed record class CitationsDelta : ModelBase
 
     public CitationsDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("citations_delta");
     }
 
     public CitationsDelta(CitationsDelta citationsDelta)
@@ -49,16 +54,16 @@ public sealed record class CitationsDelta : ModelBase
 
     public CitationsDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"citations_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("citations_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     CitationsDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -76,7 +81,7 @@ public sealed record class CitationsDelta : ModelBase
     }
 }
 
-class CitationsDeltaFromRaw : IFromRaw<CitationsDelta>
+class CitationsDeltaFromRaw : IFromRawJson<CitationsDelta>
 {
     /// <inheritdoc/>
     public CitationsDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -84,15 +89,21 @@ class CitationsDeltaFromRaw : IFromRaw<CitationsDelta>
 }
 
 [JsonConverter(typeof(CitationConverter))]
-public record class Citation
+public record class Citation : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string CitedText
@@ -207,39 +218,39 @@ public record class Citation
         }
     }
 
-    public Citation(CitationCharLocation value, JsonElement? json = null)
+    public Citation(CitationCharLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(CitationPageLocation value, JsonElement? json = null)
+    public Citation(CitationPageLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(CitationContentBlockLocation value, JsonElement? json = null)
+    public Citation(CitationContentBlockLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(CitationsWebSearchResultLocation value, JsonElement? json = null)
+    public Citation(CitationsWebSearchResultLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(CitationsSearchResultLocation value, JsonElement? json = null)
+    public Citation(CitationsSearchResultLocation value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Citation(JsonElement json)
+    public Citation(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -473,7 +484,7 @@ public record class Citation
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -497,6 +508,9 @@ public record class Citation
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class CitationConverter : JsonConverter<Citation>
@@ -507,11 +521,11 @@ sealed class CitationConverter : JsonConverter<Citation>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -525,13 +539,13 @@ sealed class CitationConverter : JsonConverter<Citation>
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationCharLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -540,20 +554,20 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "page_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationPageLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -562,20 +576,20 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationContentBlockLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -584,20 +598,20 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_result_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationsWebSearchResultLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -606,20 +620,20 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "search_result_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<CitationsSearchResultLocation>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -628,11 +642,11 @@ sealed class CitationConverter : JsonConverter<Citation>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Citation(json);
+                return new Citation(element);
             }
         }
     }

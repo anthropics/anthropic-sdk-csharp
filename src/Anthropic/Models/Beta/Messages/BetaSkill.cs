@@ -12,16 +12,20 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// A skill that was loaded in a container (response model).
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaSkill, BetaSkillFromRaw>))]
-public sealed record class BetaSkill : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaSkill, BetaSkillFromRaw>))]
+public sealed record class BetaSkill : JsonModel
 {
     /// <summary>
     /// Skill ID
     /// </summary>
     public required string SkillID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "skill_id"); }
-        init { ModelBase.Set(this._rawData, "skill_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("skill_id");
+        }
+        init { this._rawData.Set("skill_id", value); }
     }
 
     /// <summary>
@@ -31,11 +35,12 @@ public sealed record class BetaSkill : ModelBase
     {
         get
         {
-            return ModelBase.GetNotNullClass<
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<
                 ApiEnum<string, global::Anthropic.Models.Beta.Messages.Type>
-            >(this.RawData, "type");
+            >("type");
         }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -43,8 +48,12 @@ public sealed record class BetaSkill : ModelBase
     /// </summary>
     public required string Version
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "version"); }
-        init { ModelBase.Set(this._rawData, "version", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("version");
+        }
+        init { this._rawData.Set("version", value); }
     }
 
     /// <inheritdoc/>
@@ -62,14 +71,14 @@ public sealed record class BetaSkill : ModelBase
 
     public BetaSkill(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaSkill(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -80,7 +89,7 @@ public sealed record class BetaSkill : ModelBase
     }
 }
 
-class BetaSkillFromRaw : IFromRaw<BetaSkill>
+class BetaSkillFromRaw : IFromRawJson<BetaSkill>
 {
     /// <inheritdoc/>
     public BetaSkill FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

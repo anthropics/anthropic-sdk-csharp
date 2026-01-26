@@ -11,19 +11,23 @@ namespace Anthropic.Models.Messages;
 /// <summary>
 /// The model will not be allowed to use tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<ToolChoiceNone, ToolChoiceNoneFromRaw>))]
-public sealed record class ToolChoiceNone : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ToolChoiceNone, ToolChoiceNoneFromRaw>))]
+public sealed record class ToolChoiceNone : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"none\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("none")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -31,7 +35,7 @@ public sealed record class ToolChoiceNone : ModelBase
 
     public ToolChoiceNone()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        this.Type = JsonSerializer.SerializeToElement("none");
     }
 
     public ToolChoiceNone(ToolChoiceNone toolChoiceNone)
@@ -39,16 +43,16 @@ public sealed record class ToolChoiceNone : ModelBase
 
     public ToolChoiceNone(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"none\"");
+        this.Type = JsonSerializer.SerializeToElement("none");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ToolChoiceNone(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -59,7 +63,7 @@ public sealed record class ToolChoiceNone : ModelBase
     }
 }
 
-class ToolChoiceNoneFromRaw : IFromRaw<ToolChoiceNone>
+class ToolChoiceNoneFromRaw : IFromRawJson<ToolChoiceNone>
 {
     /// <inheritdoc/>
     public ToolChoiceNone FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

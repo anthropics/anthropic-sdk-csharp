@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,8 +9,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaTextBlock, BetaTextBlockFromRaw>))]
-public sealed record class BetaTextBlock : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaTextBlock, BetaTextBlockFromRaw>))]
+public sealed record class BetaTextBlock : JsonModel
 {
     /// <summary>
     /// Citations supporting the text block.
@@ -22,21 +23,36 @@ public sealed record class BetaTextBlock : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<BetaTextCitation>>(this.RawData, "citations");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaTextCitation>>("citations");
         }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaTextCitation>?>(
+                "citations",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public required string Text
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "text"); }
-        init { ModelBase.Set(this._rawData, "text", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("text");
+        }
+        init { this._rawData.Set("text", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -47,7 +63,7 @@ public sealed record class BetaTextBlock : ModelBase
             item.Validate();
         }
         _ = this.Text;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"text\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -55,7 +71,7 @@ public sealed record class BetaTextBlock : ModelBase
 
     public BetaTextBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
     public BetaTextBlock(BetaTextBlock betaTextBlock)
@@ -63,16 +79,16 @@ public sealed record class BetaTextBlock : ModelBase
 
     public BetaTextBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"text\"");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaTextBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -83,7 +99,7 @@ public sealed record class BetaTextBlock : ModelBase
     }
 }
 
-class BetaTextBlockFromRaw : IFromRaw<BetaTextBlock>
+class BetaTextBlockFromRaw : IFromRawJson<BetaTextBlock>
 {
     /// <inheritdoc/>
     public BetaTextBlock FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

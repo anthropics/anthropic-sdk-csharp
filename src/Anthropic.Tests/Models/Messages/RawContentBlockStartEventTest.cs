@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -47,9 +48,7 @@ public class RawContentBlockStartEventTest : TestBase
             Text = "text",
         };
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_start\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_start");
 
         Assert.Equal(expectedContentBlock, model.ContentBlock);
         Assert.Equal(expectedIndex, model.Index);
@@ -80,8 +79,11 @@ public class RawContentBlockStartEventTest : TestBase
             Index = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -110,8 +112,11 @@ public class RawContentBlockStartEventTest : TestBase
             Index = 0,
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         RawContentBlockStartEventContentBlock expectedContentBlock = new TextBlock()
@@ -131,9 +136,7 @@ public class RawContentBlockStartEventTest : TestBase
             Text = "text",
         };
         long expectedIndex = 0;
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"content_block_start\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_block_start");
 
         Assert.Equal(expectedContentBlock, deserialized.ContentBlock);
         Assert.Equal(expectedIndex, deserialized.Index);
@@ -171,195 +174,201 @@ public class RawContentBlockStartEventTest : TestBase
 public class RawContentBlockStartEventContentBlockTest : TestBase
 {
     [Fact]
-    public void textValidation_Works()
+    public void TextValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new TextBlock()
-            {
-                Citations =
-                [
-                    new CitationCharLocation()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "document_title",
-                        EndCharIndex = 0,
-                        FileID = "file_id",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "text",
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void thinkingValidation_Works()
-    {
-        RawContentBlockStartEventContentBlock value = new(
-            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void redacted_thinkingValidation_Works()
-    {
-        RawContentBlockStartEventContentBlock value = new(new RedactedThinkingBlock("data"));
-        value.Validate();
-    }
-
-    [Fact]
-    public void tool_useValidation_Works()
-    {
-        RawContentBlockStartEventContentBlock value = new(
-            new ToolUseBlock()
-            {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
+        RawContentBlockStartEventContentBlock value = new TextBlock()
+        {
+            Citations =
+            [
+                new CitationCharLocation()
                 {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
                 },
-                Name = "x",
-            }
-        );
+            ],
+            Text = "text",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void server_tool_useValidation_Works()
+    public void ThinkingValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ServerToolUseBlock()
-            {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-            }
-        );
+        RawContentBlockStartEventContentBlock value = new ThinkingBlock()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void web_search_tool_resultValidation_Works()
+    public void RedactedThinkingValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new WebSearchToolResultBlock()
-            {
-                Content = new WebSearchToolResultError(
-                    WebSearchToolResultErrorErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
-        );
+        RawContentBlockStartEventContentBlock value = new RedactedThinkingBlock("data");
         value.Validate();
     }
 
     [Fact]
-    public void textSerializationRoundtrip_Works()
+    public void ToolUseValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new TextBlock()
+        RawContentBlockStartEventContentBlock value = new ToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                Citations =
-                [
-                    new CitationCharLocation()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "document_title",
-                        EndCharIndex = 0,
-                        FileID = "file_id",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "text",
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(json);
-
-        Assert.Equal(value, deserialized);
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+        value.Validate();
     }
 
     [Fact]
-    public void thinkingSerializationRoundtrip_Works()
+    public void ServerToolUseValidationWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ThinkingBlock() { Signature = "signature", Thinking = "thinking" }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void redacted_thinkingSerializationRoundtrip_Works()
-    {
-        RawContentBlockStartEventContentBlock value = new(new RedactedThinkingBlock("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void tool_useSerializationRoundtrip_Works()
-    {
-        RawContentBlockStartEventContentBlock value = new(
-            new ToolUseBlock()
+        RawContentBlockStartEventContentBlock value = new ServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
             {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebSearchToolResultValidationWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new WebSearchToolResultBlock()
+        {
+            Content = new WebSearchToolResultError(
+                WebSearchToolResultErrorErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void TextSerializationRoundtripWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new TextBlock()
+        {
+            Citations =
+            [
+                new CitationCharLocation()
                 {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "document_title",
+                    EndCharIndex = 0,
+                    FileID = "file_id",
+                    StartCharIndex = 0,
                 },
-                Name = "x",
-            }
+            ],
+            Text = "text",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void server_tool_useSerializationRoundtrip_Works()
+    public void ThinkingSerializationRoundtripWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new ServerToolUseBlock()
-            {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-            }
+        RawContentBlockStartEventContentBlock value = new ThinkingBlock()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void web_search_tool_resultSerializationRoundtrip_Works()
+    public void RedactedThinkingSerializationRoundtripWorks()
     {
-        RawContentBlockStartEventContentBlock value = new(
-            new WebSearchToolResultBlock()
-            {
-                Content = new WebSearchToolResultError(
-                    WebSearchToolResultErrorErrorCode.InvalidToolInput
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            }
+        RawContentBlockStartEventContentBlock value = new RedactedThinkingBlock("data");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ToolUseSerializationRoundtripWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new ToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ServerToolUseSerializationRoundtripWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new ServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebSearchToolResultSerializationRoundtripWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new WebSearchToolResultBlock()
+        {
+            Content = new WebSearchToolResultError(
+                WebSearchToolResultErrorErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<RawContentBlockStartEventContentBlock>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

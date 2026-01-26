@@ -9,35 +9,43 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaCodeExecutionToolResultBlock,
         BetaCodeExecutionToolResultBlockFromRaw
     >)
 )]
-public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
+public sealed record class BetaCodeExecutionToolResultBlock : JsonModel
 {
     public required BetaCodeExecutionToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaCodeExecutionToolResultBlockContent>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaCodeExecutionToolResultBlockContent>(
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -48,7 +56,7 @@ public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result\"")
+                JsonSerializer.SerializeToElement("code_execution_tool_result")
             )
         )
         {
@@ -58,7 +66,7 @@ public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
 
     public BetaCodeExecutionToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_tool_result");
     }
 
     public BetaCodeExecutionToolResultBlock(
@@ -68,16 +76,16 @@ public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
 
     public BetaCodeExecutionToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCodeExecutionToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -90,7 +98,7 @@ public sealed record class BetaCodeExecutionToolResultBlock : ModelBase
     }
 }
 
-class BetaCodeExecutionToolResultBlockFromRaw : IFromRaw<BetaCodeExecutionToolResultBlock>
+class BetaCodeExecutionToolResultBlockFromRaw : IFromRawJson<BetaCodeExecutionToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaCodeExecutionToolResultBlock FromRawUnchecked(

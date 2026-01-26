@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -6,176 +7,171 @@ namespace Anthropic.Tests.Models.Messages;
 public class TextCitationParamTest : TestBase
 {
     [Fact]
-    public void citation_char_locationValidation_Works()
+    public void CitationCharLocationValidationWorks()
     {
-        TextCitationParam value = new(
-            new CitationCharLocationParam()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "x",
-                EndCharIndex = 0,
-                StartCharIndex = 0,
-            }
-        );
+        TextCitationParam value = new CitationCharLocationParam()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndCharIndex = 0,
+            StartCharIndex = 0,
+        };
         value.Validate();
     }
 
     [Fact]
-    public void citation_page_locationValidation_Works()
+    public void CitationPageLocationValidationWorks()
     {
-        TextCitationParam value = new(
-            new CitationPageLocationParam()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "x",
-                EndPageNumber = 0,
-                StartPageNumber = 1,
-            }
-        );
+        TextCitationParam value = new CitationPageLocationParam()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndPageNumber = 0,
+            StartPageNumber = 1,
+        };
         value.Validate();
     }
 
     [Fact]
-    public void citation_content_block_locationValidation_Works()
+    public void CitationContentBlockLocationValidationWorks()
     {
-        TextCitationParam value = new(
-            new CitationContentBlockLocationParam()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "x",
-                EndBlockIndex = 0,
-                StartBlockIndex = 0,
-            }
-        );
+        TextCitationParam value = new CitationContentBlockLocationParam()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndBlockIndex = 0,
+            StartBlockIndex = 0,
+        };
         value.Validate();
     }
 
     [Fact]
-    public void citation_web_search_result_locationValidation_Works()
+    public void CitationWebSearchResultLocationValidationWorks()
     {
-        TextCitationParam value = new(
-            new CitationWebSearchResultLocationParam()
-            {
-                CitedText = "cited_text",
-                EncryptedIndex = "encrypted_index",
-                Title = "x",
-                URL = "x",
-            }
-        );
+        TextCitationParam value = new CitationWebSearchResultLocationParam()
+        {
+            CitedText = "cited_text",
+            EncryptedIndex = "encrypted_index",
+            Title = "x",
+            Url = "x",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void citation_search_result_locationValidation_Works()
+    public void CitationSearchResultLocationValidationWorks()
     {
-        TextCitationParam value = new(
-            new CitationSearchResultLocationParam()
-            {
-                CitedText = "cited_text",
-                EndBlockIndex = 0,
-                SearchResultIndex = 0,
-                Source = "source",
-                StartBlockIndex = 0,
-                Title = "title",
-            }
-        );
+        TextCitationParam value = new CitationSearchResultLocationParam()
+        {
+            CitedText = "cited_text",
+            EndBlockIndex = 0,
+            SearchResultIndex = 0,
+            Source = "source",
+            StartBlockIndex = 0,
+            Title = "title",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void citation_char_locationSerializationRoundtrip_Works()
+    public void CitationCharLocationSerializationRoundtripWorks()
     {
-        TextCitationParam value = new(
-            new CitationCharLocationParam()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "x",
-                EndCharIndex = 0,
-                StartCharIndex = 0,
-            }
+        TextCitationParam value = new CitationCharLocationParam()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndCharIndex = 0,
+            StartCharIndex = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_page_locationSerializationRoundtrip_Works()
+    public void CitationPageLocationSerializationRoundtripWorks()
     {
-        TextCitationParam value = new(
-            new CitationPageLocationParam()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "x",
-                EndPageNumber = 0,
-                StartPageNumber = 1,
-            }
+        TextCitationParam value = new CitationPageLocationParam()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndPageNumber = 0,
+            StartPageNumber = 1,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_content_block_locationSerializationRoundtrip_Works()
+    public void CitationContentBlockLocationSerializationRoundtripWorks()
     {
-        TextCitationParam value = new(
-            new CitationContentBlockLocationParam()
-            {
-                CitedText = "cited_text",
-                DocumentIndex = 0,
-                DocumentTitle = "x",
-                EndBlockIndex = 0,
-                StartBlockIndex = 0,
-            }
+        TextCitationParam value = new CitationContentBlockLocationParam()
+        {
+            CitedText = "cited_text",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndBlockIndex = 0,
+            StartBlockIndex = 0,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_web_search_result_locationSerializationRoundtrip_Works()
+    public void CitationWebSearchResultLocationSerializationRoundtripWorks()
     {
-        TextCitationParam value = new(
-            new CitationWebSearchResultLocationParam()
-            {
-                CitedText = "cited_text",
-                EncryptedIndex = "encrypted_index",
-                Title = "x",
-                URL = "x",
-            }
+        TextCitationParam value = new CitationWebSearchResultLocationParam()
+        {
+            CitedText = "cited_text",
+            EncryptedIndex = "encrypted_index",
+            Title = "x",
+            Url = "x",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void citation_search_result_locationSerializationRoundtrip_Works()
+    public void CitationSearchResultLocationSerializationRoundtripWorks()
     {
-        TextCitationParam value = new(
-            new CitationSearchResultLocationParam()
-            {
-                CitedText = "cited_text",
-                EndBlockIndex = 0,
-                SearchResultIndex = 0,
-                Source = "source",
-                StartBlockIndex = 0,
-                Title = "title",
-            }
+        TextCitationParam value = new CitationSearchResultLocationParam()
+        {
+            CitedText = "cited_text",
+            EndBlockIndex = 0,
+            SearchResultIndex = 0,
+            Source = "source",
+            StartBlockIndex = 0,
+            Title = "title",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<TextCitationParam>(json);
 
         Assert.Equal(value, deserialized);
     }

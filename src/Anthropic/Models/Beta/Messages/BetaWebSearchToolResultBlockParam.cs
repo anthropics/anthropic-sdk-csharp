@@ -9,35 +9,43 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaWebSearchToolResultBlockParam,
         BetaWebSearchToolResultBlockParamFromRaw
     >)
 )]
-public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
+public sealed record class BetaWebSearchToolResultBlockParam : JsonModel
 {
     public required BetaWebSearchToolResultBlockParamContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaWebSearchToolResultBlockParamContent>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaWebSearchToolResultBlockParamContent>(
                 "content"
             );
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -47,12 +55,10 @@ public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
@@ -63,7 +69,7 @@ public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"")
+                JsonSerializer.SerializeToElement("web_search_tool_result")
             )
         )
         {
@@ -74,7 +80,7 @@ public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
 
     public BetaWebSearchToolResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result");
     }
 
     public BetaWebSearchToolResultBlockParam(
@@ -84,16 +90,16 @@ public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
 
     public BetaWebSearchToolResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaWebSearchToolResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -106,7 +112,7 @@ public sealed record class BetaWebSearchToolResultBlockParam : ModelBase
     }
 }
 
-class BetaWebSearchToolResultBlockParamFromRaw : IFromRaw<BetaWebSearchToolResultBlockParam>
+class BetaWebSearchToolResultBlockParamFromRaw : IFromRawJson<BetaWebSearchToolResultBlockParam>
 {
     /// <inheritdoc/>
     public BetaWebSearchToolResultBlockParam FromRawUnchecked(

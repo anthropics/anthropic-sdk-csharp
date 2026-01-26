@@ -8,31 +8,34 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageStartEvent, RawMessageStartEventFromRaw>))]
-public sealed record class RawMessageStartEvent : ModelBase
+[JsonConverter(typeof(JsonModelConverter<RawMessageStartEvent, RawMessageStartEventFromRaw>))]
+public sealed record class RawMessageStartEvent : JsonModel
 {
     public required Message Message
     {
-        get { return ModelBase.GetNotNullClass<Message>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Message>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Message.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_start\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_start")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -40,7 +43,7 @@ public sealed record class RawMessageStartEvent : ModelBase
 
     public RawMessageStartEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        this.Type = JsonSerializer.SerializeToElement("message_start");
     }
 
     public RawMessageStartEvent(RawMessageStartEvent rawMessageStartEvent)
@@ -48,16 +51,16 @@ public sealed record class RawMessageStartEvent : ModelBase
 
     public RawMessageStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_start\"");
+        this.Type = JsonSerializer.SerializeToElement("message_start");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RawMessageStartEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +80,7 @@ public sealed record class RawMessageStartEvent : ModelBase
     }
 }
 
-class RawMessageStartEventFromRaw : IFromRaw<RawMessageStartEvent>
+class RawMessageStartEventFromRaw : IFromRawJson<RawMessageStartEvent>
 {
     /// <inheritdoc/>
     public RawMessageStartEvent FromRawUnchecked(

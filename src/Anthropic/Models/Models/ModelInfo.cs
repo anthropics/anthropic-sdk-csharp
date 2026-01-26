@@ -9,16 +9,20 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Models;
 
-[JsonConverter(typeof(ModelConverter<ModelInfo, ModelInfoFromRaw>))]
-public sealed record class ModelInfo : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ModelInfo, ModelInfoFromRaw>))]
+public sealed record class ModelInfo : JsonModel
 {
     /// <summary>
     /// Unique model identifier.
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -27,8 +31,12 @@ public sealed record class ModelInfo : ModelBase
     /// </summary>
     public required DateTimeOffset CreatedAt
     {
-        get { return ModelBase.GetNotNullStruct<DateTimeOffset>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
+        }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -36,8 +44,12 @@ public sealed record class ModelInfo : ModelBase
     /// </summary>
     public required string DisplayName
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "display_name"); }
-        init { ModelBase.Set(this._rawData, "display_name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("display_name");
+        }
+        init { this._rawData.Set("display_name", value); }
     }
 
     /// <summary>
@@ -47,8 +59,12 @@ public sealed record class ModelInfo : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -57,9 +73,7 @@ public sealed record class ModelInfo : ModelBase
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
-        if (
-            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"model\""))
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("model")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -67,7 +81,7 @@ public sealed record class ModelInfo : ModelBase
 
     public ModelInfo()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+        this.Type = JsonSerializer.SerializeToElement("model");
     }
 
     public ModelInfo(ModelInfo modelInfo)
@@ -75,16 +89,16 @@ public sealed record class ModelInfo : ModelBase
 
     public ModelInfo(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"model\"");
+        this.Type = JsonSerializer.SerializeToElement("model");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ModelInfo(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -95,7 +109,7 @@ public sealed record class ModelInfo : ModelBase
     }
 }
 
-class ModelInfoFromRaw : IFromRaw<ModelInfo>
+class ModelInfoFromRaw : IFromRawJson<ModelInfo>
 {
     /// <inheritdoc/>
     public ModelInfo FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

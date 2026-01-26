@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -21,9 +22,7 @@ public class BetaBashCodeExecutionResultBlockParamTest : TestBase
         long expectedReturnCode = 0;
         string expectedStderr = "stderr";
         string expectedStdout = "stdout";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_code_execution_result");
 
         Assert.Equal(expectedContent.Count, model.Content.Count);
         for (int i = 0; i < expectedContent.Count; i++)
@@ -47,8 +46,11 @@ public class BetaBashCodeExecutionResultBlockParamTest : TestBase
             Stdout = "stdout",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -64,17 +66,18 @@ public class BetaBashCodeExecutionResultBlockParamTest : TestBase
             Stdout = "stdout",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaBashCodeExecutionResultBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         List<BetaBashCodeExecutionOutputBlockParam> expectedContent = [new("file_id")];
         long expectedReturnCode = 0;
         string expectedStderr = "stderr";
         string expectedStdout = "stdout";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"bash_code_execution_result\""
-        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("bash_code_execution_result");
 
         Assert.Equal(expectedContent.Count, deserialized.Content.Count);
         for (int i = 0; i < expectedContent.Count; i++)

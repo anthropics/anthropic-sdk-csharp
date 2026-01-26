@@ -9,20 +9,28 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaCodeExecutionOutputBlock, BetaCodeExecutionOutputBlockFromRaw>)
+    typeof(JsonModelConverter<BetaCodeExecutionOutputBlock, BetaCodeExecutionOutputBlockFromRaw>)
 )]
-public sealed record class BetaCodeExecutionOutputBlock : ModelBase
+public sealed record class BetaCodeExecutionOutputBlock : JsonModel
 {
     public required string FileID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("file_id");
+        }
+        init { this._rawData.Set("file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -32,7 +40,7 @@ public sealed record class BetaCodeExecutionOutputBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_output\"")
+                JsonSerializer.SerializeToElement("code_execution_output")
             )
         )
         {
@@ -42,7 +50,7 @@ public sealed record class BetaCodeExecutionOutputBlock : ModelBase
 
     public BetaCodeExecutionOutputBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_output\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_output");
     }
 
     public BetaCodeExecutionOutputBlock(BetaCodeExecutionOutputBlock betaCodeExecutionOutputBlock)
@@ -50,16 +58,16 @@ public sealed record class BetaCodeExecutionOutputBlock : ModelBase
 
     public BetaCodeExecutionOutputBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_output\"");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_output");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCodeExecutionOutputBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -79,7 +87,7 @@ public sealed record class BetaCodeExecutionOutputBlock : ModelBase
     }
 }
 
-class BetaCodeExecutionOutputBlockFromRaw : IFromRaw<BetaCodeExecutionOutputBlock>
+class BetaCodeExecutionOutputBlockFromRaw : IFromRawJson<BetaCodeExecutionOutputBlock>
 {
     /// <inheritdoc/>
     public BetaCodeExecutionOutputBlock FromRawUnchecked(

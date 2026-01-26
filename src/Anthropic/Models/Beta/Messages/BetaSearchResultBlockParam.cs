@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,32 +10,54 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaSearchResultBlockParam, BetaSearchResultBlockParamFromRaw>)
+    typeof(JsonModelConverter<BetaSearchResultBlockParam, BetaSearchResultBlockParamFromRaw>)
 )]
-public sealed record class BetaSearchResultBlockParam : ModelBase
+public sealed record class BetaSearchResultBlockParam : JsonModel
 {
     public required IReadOnlyList<BetaTextBlockParam> Content
     {
-        get { return ModelBase.GetNotNullClass<List<BetaTextBlockParam>>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<BetaTextBlockParam>>("content");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaTextBlockParam>>(
+                "content",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public required string Source
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("source");
+        }
+        init { this._rawData.Set("source", value); }
     }
 
     public required string Title
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("title");
+        }
+        init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -44,19 +67,18 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public BetaCitationsConfigParam? Citations
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCitationsConfigParam>(this.RawData, "citations");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCitationsConfigParam>("citations");
         }
         init
         {
@@ -65,7 +87,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "citations", value);
+            this._rawData.Set("citations", value);
         }
     }
 
@@ -78,12 +100,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
         }
         _ = this.Source;
         _ = this.Title;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"search_result\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("search_result")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -93,7 +110,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
 
     public BetaSearchResultBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("search_result");
     }
 
     public BetaSearchResultBlockParam(BetaSearchResultBlockParam betaSearchResultBlockParam)
@@ -101,16 +118,16 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
 
     public BetaSearchResultBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("search_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaSearchResultBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -123,7 +140,7 @@ public sealed record class BetaSearchResultBlockParam : ModelBase
     }
 }
 
-class BetaSearchResultBlockParamFromRaw : IFromRaw<BetaSearchResultBlockParam>
+class BetaSearchResultBlockParamFromRaw : IFromRawJson<BetaSearchResultBlockParam>
 {
     /// <inheritdoc/>
     public BetaSearchResultBlockParam FromRawUnchecked(

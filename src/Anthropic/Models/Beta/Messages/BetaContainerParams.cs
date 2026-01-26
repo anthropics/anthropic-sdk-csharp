@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,16 +11,20 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Container parameters with skills to be loaded.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainerParams, BetaContainerParamsFromRaw>))]
-public sealed record class BetaContainerParams : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaContainerParams, BetaContainerParamsFromRaw>))]
+public sealed record class BetaContainerParams : JsonModel
 {
     /// <summary>
     /// Container id
     /// </summary>
     public string? ID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -27,8 +32,18 @@ public sealed record class BetaContainerParams : ModelBase
     /// </summary>
     public IReadOnlyList<BetaSkillParams>? Skills
     {
-        get { return ModelBase.GetNullableClass<List<BetaSkillParams>>(this.RawData, "skills"); }
-        init { ModelBase.Set(this._rawData, "skills", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<BetaSkillParams>>("skills");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<BetaSkillParams>?>(
+                "skills",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -48,14 +63,14 @@ public sealed record class BetaContainerParams : ModelBase
 
     public BetaContainerParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContainerParams(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -68,7 +83,7 @@ public sealed record class BetaContainerParams : ModelBase
     }
 }
 
-class BetaContainerParamsFromRaw : IFromRaw<BetaContainerParams>
+class BetaContainerParamsFromRaw : IFromRawJson<BetaContainerParams>
 {
     /// <inheritdoc/>
     public BetaContainerParams FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -11,7 +12,7 @@ public class BetaContentBlockSourceTest : TestBase
         var model = new BetaContentBlockSource { Content = "string" };
 
         BetaContentBlockSourceContent expectedContent = "string";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, model.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -22,8 +23,11 @@ public class BetaContentBlockSourceTest : TestBase
     {
         var model = new BetaContentBlockSource { Content = "string" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -33,12 +37,15 @@ public class BetaContentBlockSourceTest : TestBase
     {
         var model = new BetaContentBlockSource { Content = "string" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSource>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaContentBlockSourceContent expectedContent = "string";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content");
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -56,73 +63,83 @@ public class BetaContentBlockSourceTest : TestBase
 public class BetaContentBlockSourceContentTest : TestBase
 {
     [Fact]
-    public void stringValidation_Works()
+    public void StringValidationWorks()
     {
-        BetaContentBlockSourceContent value = new("string");
+        BetaContentBlockSourceContent value = "string";
         value.Validate();
     }
 
     [Fact]
-    public void beta_content_block_sourceValidation_Works()
+    public void BetaContentBlockSourceValidationWorks()
     {
         BetaContentBlockSourceContent value = new(
             [
-                new BetaTextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new MessageBetaContentBlockSourceContent(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "x",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
         value.Validate();
     }
 
     [Fact]
-    public void stringSerializationRoundtrip_Works()
+    public void StringSerializationRoundtripWorks()
     {
-        BetaContentBlockSourceContent value = new("string");
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(json);
+        BetaContentBlockSourceContent value = "string";
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_content_block_sourceSerializationRoundtrip_Works()
+    public void BetaContentBlockSourceSerializationRoundtripWorks()
     {
         BetaContentBlockSourceContent value = new(
             [
-                new BetaTextBlockParam()
-                {
-                    Text = "x",
-                    CacheControl = new() { TTL = TTL.TTL5m },
-                    Citations =
-                    [
-                        new BetaCitationCharLocationParam()
-                        {
-                            CitedText = "cited_text",
-                            DocumentIndex = 0,
-                            DocumentTitle = "x",
-                            EndCharIndex = 0,
-                            StartCharIndex = 0,
-                        },
-                    ],
-                },
+                new MessageBetaContentBlockSourceContent(
+                    new BetaTextBlockParam()
+                    {
+                        Text = "x",
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                        Citations =
+                        [
+                            new BetaCitationCharLocationParam()
+                            {
+                                CitedText = "cited_text",
+                                DocumentIndex = 0,
+                                DocumentTitle = "x",
+                                EndCharIndex = 0,
+                                StartCharIndex = 0,
+                            },
+                        ],
+                    }
+                ),
             ]
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(json);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaContentBlockSourceContent>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

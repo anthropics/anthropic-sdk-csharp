@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<InvalidRequestError, InvalidRequestErrorFromRaw>))]
-public sealed record class InvalidRequestError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<InvalidRequestError, InvalidRequestErrorFromRaw>))]
+public sealed record class InvalidRequestError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class InvalidRequestError : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"")
+                JsonSerializer.SerializeToElement("invalid_request_error")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class InvalidRequestError : ModelBase
 
     public InvalidRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
     public InvalidRequestError(InvalidRequestError invalidRequestError)
@@ -48,16 +56,16 @@ public sealed record class InvalidRequestError : ModelBase
 
     public InvalidRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     InvalidRequestError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +85,7 @@ public sealed record class InvalidRequestError : ModelBase
     }
 }
 
-class InvalidRequestErrorFromRaw : IFromRaw<InvalidRequestError>
+class InvalidRequestErrorFromRaw : IFromRawJson<InvalidRequestError>
 {
     /// <inheritdoc/>
     public InvalidRequestError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -9,9 +9,9 @@ public class BetaWebFetchToolResultErrorCodeTest : TestBase
 {
     [Theory]
     [InlineData(BetaWebFetchToolResultErrorCode.InvalidToolInput)]
-    [InlineData(BetaWebFetchToolResultErrorCode.URLTooLong)]
-    [InlineData(BetaWebFetchToolResultErrorCode.URLNotAllowed)]
-    [InlineData(BetaWebFetchToolResultErrorCode.URLNotAccessible)]
+    [InlineData(BetaWebFetchToolResultErrorCode.UrlTooLong)]
+    [InlineData(BetaWebFetchToolResultErrorCode.UrlNotAllowed)]
+    [InlineData(BetaWebFetchToolResultErrorCode.UrlNotAccessible)]
     [InlineData(BetaWebFetchToolResultErrorCode.UnsupportedContentType)]
     [InlineData(BetaWebFetchToolResultErrorCode.TooManyRequests)]
     [InlineData(BetaWebFetchToolResultErrorCode.MaxUsesExceeded)]
@@ -27,17 +27,19 @@ public class BetaWebFetchToolResultErrorCodeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
     [InlineData(BetaWebFetchToolResultErrorCode.InvalidToolInput)]
-    [InlineData(BetaWebFetchToolResultErrorCode.URLTooLong)]
-    [InlineData(BetaWebFetchToolResultErrorCode.URLNotAllowed)]
-    [InlineData(BetaWebFetchToolResultErrorCode.URLNotAccessible)]
+    [InlineData(BetaWebFetchToolResultErrorCode.UrlTooLong)]
+    [InlineData(BetaWebFetchToolResultErrorCode.UrlNotAllowed)]
+    [InlineData(BetaWebFetchToolResultErrorCode.UrlNotAccessible)]
     [InlineData(BetaWebFetchToolResultErrorCode.UnsupportedContentType)]
     [InlineData(BetaWebFetchToolResultErrorCode.TooManyRequests)]
     [InlineData(BetaWebFetchToolResultErrorCode.MaxUsesExceeded)]
@@ -59,7 +61,7 @@ public class BetaWebFetchToolResultErrorCodeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);

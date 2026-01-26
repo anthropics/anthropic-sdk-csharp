@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,17 +11,27 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaContextManagementResponse, BetaContextManagementResponseFromRaw>)
+    typeof(JsonModelConverter<BetaContextManagementResponse, BetaContextManagementResponseFromRaw>)
 )]
-public sealed record class BetaContextManagementResponse : ModelBase
+public sealed record class BetaContextManagementResponse : JsonModel
 {
     /// <summary>
     /// List of context management edits that were applied.
     /// </summary>
     public required IReadOnlyList<AppliedEdit> AppliedEdits
     {
-        get { return ModelBase.GetNotNullClass<List<AppliedEdit>>(this.RawData, "applied_edits"); }
-        init { ModelBase.Set(this._rawData, "applied_edits", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<AppliedEdit>>("applied_edits");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<AppliedEdit>>(
+                "applied_edits",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
@@ -41,14 +52,14 @@ public sealed record class BetaContextManagementResponse : ModelBase
 
     public BetaContextManagementResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContextManagementResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -61,14 +72,14 @@ public sealed record class BetaContextManagementResponse : ModelBase
     }
 
     [SetsRequiredMembers]
-    public BetaContextManagementResponse(List<AppliedEdit> appliedEdits)
+    public BetaContextManagementResponse(IReadOnlyList<AppliedEdit> appliedEdits)
         : this()
     {
         this.AppliedEdits = appliedEdits;
     }
 }
 
-class BetaContextManagementResponseFromRaw : IFromRaw<BetaContextManagementResponse>
+class BetaContextManagementResponseFromRaw : IFromRawJson<BetaContextManagementResponse>
 {
     /// <inheritdoc/>
     public BetaContextManagementResponse FromRawUnchecked(
@@ -77,15 +88,21 @@ class BetaContextManagementResponseFromRaw : IFromRaw<BetaContextManagementRespo
 }
 
 [JsonConverter(typeof(AppliedEditConverter))]
-public record class AppliedEdit
+public record class AppliedEdit : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public long ClearedInputTokens
@@ -110,21 +127,21 @@ public record class AppliedEdit
         }
     }
 
-    public AppliedEdit(BetaClearToolUses20250919EditResponse value, JsonElement? json = null)
+    public AppliedEdit(BetaClearToolUses20250919EditResponse value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public AppliedEdit(BetaClearThinking20251015EditResponse value, JsonElement? json = null)
+    public AppliedEdit(BetaClearThinking20251015EditResponse value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public AppliedEdit(JsonElement json)
+    public AppliedEdit(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -272,7 +289,7 @@ public record class AppliedEdit
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -297,6 +314,9 @@ public record class AppliedEdit
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
@@ -307,11 +327,11 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -326,13 +346,13 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaClearToolUses20250919EditResponse>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -341,7 +361,7 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "clear_thinking_20251015":
             {
@@ -349,13 +369,13 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaClearThinking20251015EditResponse>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -364,11 +384,11 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new AppliedEdit(json);
+                return new AppliedEdit(element);
             }
         }
     }

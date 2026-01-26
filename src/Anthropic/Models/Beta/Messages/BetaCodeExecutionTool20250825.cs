@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,9 +11,9 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaCodeExecutionTool20250825, BetaCodeExecutionTool20250825FromRaw>)
+    typeof(JsonModelConverter<BetaCodeExecutionTool20250825, BetaCodeExecutionTool20250825FromRaw>)
 )]
-public sealed record class BetaCodeExecutionTool20250825 : ModelBase
+public sealed record class BetaCodeExecutionTool20250825 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -21,14 +22,22 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<
@@ -37,9 +46,10 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<
-                List<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>>
-            >(this.RawData, "allowed_callers");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>>
+            >("allowed_callers");
         }
         init
         {
@@ -48,7 +58,9 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<
+                ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>
+            >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
@@ -59,12 +71,10 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -73,7 +83,11 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
     /// </summary>
     public bool? DeferLoading
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
         init
         {
             if (value == null)
@@ -81,13 +95,17 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
     public bool? Strict
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
         init
         {
             if (value == null)
@@ -95,26 +113,21 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("code_execution")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250825\"")
+                JsonSerializer.SerializeToElement("code_execution_20250825")
             )
         )
         {
@@ -131,8 +144,8 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
 
     public BetaCodeExecutionTool20250825()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250825\"");
+        this.Name = JsonSerializer.SerializeToElement("code_execution");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20250825");
     }
 
     public BetaCodeExecutionTool20250825(
@@ -142,17 +155,17 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
 
     public BetaCodeExecutionTool20250825(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"code_execution\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"code_execution_20250825\"");
+        this.Name = JsonSerializer.SerializeToElement("code_execution");
+        this.Type = JsonSerializer.SerializeToElement("code_execution_20250825");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCodeExecutionTool20250825(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -165,7 +178,7 @@ public sealed record class BetaCodeExecutionTool20250825 : ModelBase
     }
 }
 
-class BetaCodeExecutionTool20250825FromRaw : IFromRaw<BetaCodeExecutionTool20250825>
+class BetaCodeExecutionTool20250825FromRaw : IFromRawJson<BetaCodeExecutionTool20250825>
 {
     /// <inheritdoc/>
     public BetaCodeExecutionTool20250825 FromRawUnchecked(

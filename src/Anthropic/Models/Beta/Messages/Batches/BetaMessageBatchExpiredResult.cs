@@ -9,25 +9,24 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages.Batches;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaMessageBatchExpiredResult, BetaMessageBatchExpiredResultFromRaw>)
+    typeof(JsonModelConverter<BetaMessageBatchExpiredResult, BetaMessageBatchExpiredResultFromRaw>)
 )]
-public sealed record class BetaMessageBatchExpiredResult : ModelBase
+public sealed record class BetaMessageBatchExpiredResult : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"expired\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("expired")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -35,7 +34,7 @@ public sealed record class BetaMessageBatchExpiredResult : ModelBase
 
     public BetaMessageBatchExpiredResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        this.Type = JsonSerializer.SerializeToElement("expired");
     }
 
     public BetaMessageBatchExpiredResult(
@@ -45,16 +44,16 @@ public sealed record class BetaMessageBatchExpiredResult : ModelBase
 
     public BetaMessageBatchExpiredResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"expired\"");
+        this.Type = JsonSerializer.SerializeToElement("expired");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageBatchExpiredResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -67,7 +66,7 @@ public sealed record class BetaMessageBatchExpiredResult : ModelBase
     }
 }
 
-class BetaMessageBatchExpiredResultFromRaw : IFromRaw<BetaMessageBatchExpiredResult>
+class BetaMessageBatchExpiredResultFromRaw : IFromRawJson<BetaMessageBatchExpiredResult>
 {
     /// <inheritdoc/>
     public BetaMessageBatchExpiredResult FromRawUnchecked(

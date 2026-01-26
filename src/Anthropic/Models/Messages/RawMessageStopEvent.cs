@@ -8,24 +8,23 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageStopEvent, RawMessageStopEventFromRaw>))]
-public sealed record class RawMessageStopEvent : ModelBase
+[JsonConverter(typeof(JsonModelConverter<RawMessageStopEvent, RawMessageStopEventFromRaw>))]
+public sealed record class RawMessageStopEvent : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_stop\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_stop")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -33,7 +32,7 @@ public sealed record class RawMessageStopEvent : ModelBase
 
     public RawMessageStopEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("message_stop");
     }
 
     public RawMessageStopEvent(RawMessageStopEvent rawMessageStopEvent)
@@ -41,16 +40,16 @@ public sealed record class RawMessageStopEvent : ModelBase
 
     public RawMessageStopEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("message_stop");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RawMessageStopEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -63,7 +62,7 @@ public sealed record class RawMessageStopEvent : ModelBase
     }
 }
 
-class RawMessageStopEventFromRaw : IFromRaw<RawMessageStopEvent>
+class RawMessageStopEventFromRaw : IFromRawJson<RawMessageStopEvent>
 {
     /// <inheritdoc/>
     public RawMessageStopEvent FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

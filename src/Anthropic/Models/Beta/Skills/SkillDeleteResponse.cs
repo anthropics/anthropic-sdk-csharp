@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Skills;
 
-[JsonConverter(typeof(ModelConverter<SkillDeleteResponse, SkillDeleteResponseFromRaw>))]
-public sealed record class SkillDeleteResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<SkillDeleteResponse, SkillDeleteResponseFromRaw>))]
+public sealed record class SkillDeleteResponse : JsonModel
 {
     /// <summary>
     /// Unique identifier for the skill.
@@ -17,8 +17,12 @@ public sealed record class SkillDeleteResponse : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -28,8 +32,12 @@ public sealed record class SkillDeleteResponse : ModelBase
     /// </summary>
     public required string Type
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -46,14 +54,14 @@ public sealed record class SkillDeleteResponse : ModelBase
 
     public SkillDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     SkillDeleteResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -66,7 +74,7 @@ public sealed record class SkillDeleteResponse : ModelBase
     }
 }
 
-class SkillDeleteResponseFromRaw : IFromRaw<SkillDeleteResponse>
+class SkillDeleteResponseFromRaw : IFromRawJson<SkillDeleteResponse>
 {
     /// <inheritdoc/>
     public SkillDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

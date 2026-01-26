@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,8 +10,10 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebSearchTool20250305, BetaWebSearchTool20250305FromRaw>))]
-public sealed record class BetaWebSearchTool20250305 : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaWebSearchTool20250305, BetaWebSearchTool20250305FromRaw>)
+)]
+public sealed record class BetaWebSearchTool20250305 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -19,23 +22,32 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyList<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>>? AllowedCallers
     {
         get
         {
-            return ModelBase.GetNullableClass<
-                List<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>>
-            >(this.RawData, "allowed_callers");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>>
+            >("allowed_callers");
         }
         init
         {
@@ -44,7 +56,9 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "allowed_callers", value);
+            this._rawData.Set<ImmutableArray<
+                ApiEnum<string, BetaWebSearchTool20250305AllowedCaller>
+            >?>("allowed_callers", value == null ? null : ImmutableArray.ToImmutableArray(value));
         }
     }
 
@@ -54,8 +68,18 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     /// </summary>
     public IReadOnlyList<string>? AllowedDomains
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "allowed_domains"); }
-        init { ModelBase.Set(this._rawData, "allowed_domains", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("allowed_domains");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "allowed_domains",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -63,8 +87,18 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     /// </summary>
     public IReadOnlyList<string>? BlockedDomains
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "blocked_domains"); }
-        init { ModelBase.Set(this._rawData, "blocked_domains", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("blocked_domains");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "blocked_domains",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <summary>
@@ -74,12 +108,10 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaCacheControlEphemeral>(
-                this.RawData,
-                "cache_control"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -88,7 +120,11 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     /// </summary>
     public bool? DeferLoading
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "defer_loading"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("defer_loading");
+        }
         init
         {
             if (value == null)
@@ -96,7 +132,7 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "defer_loading", value);
+            this._rawData.Set("defer_loading", value);
         }
     }
 
@@ -105,13 +141,21 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     /// </summary>
     public long? MaxUses
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "max_uses"); }
-        init { ModelBase.Set(this._rawData, "max_uses", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("max_uses");
+        }
+        init { this._rawData.Set("max_uses", value); }
     }
 
     public bool? Strict
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "strict"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("strict");
+        }
         init
         {
             if (value == null)
@@ -119,7 +163,7 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "strict", value);
+            this._rawData.Set("strict", value);
         }
     }
 
@@ -128,26 +172,25 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     /// </summary>
     public UserLocation? UserLocation
     {
-        get { return ModelBase.GetNullableClass<UserLocation>(this.RawData, "user_location"); }
-        init { ModelBase.Set(this._rawData, "user_location", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<UserLocation>("user_location");
+        }
+        init { this._rawData.Set("user_location", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Name,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("web_search")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"")
+                JsonSerializer.SerializeToElement("web_search_20250305")
             )
         )
         {
@@ -168,8 +211,8 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
 
     public BetaWebSearchTool20250305()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"");
+        this.Name = JsonSerializer.SerializeToElement("web_search");
+        this.Type = JsonSerializer.SerializeToElement("web_search_20250305");
     }
 
     public BetaWebSearchTool20250305(BetaWebSearchTool20250305 betaWebSearchTool20250305)
@@ -177,17 +220,17 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
 
     public BetaWebSearchTool20250305(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"web_search\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_20250305\"");
+        this.Name = JsonSerializer.SerializeToElement("web_search");
+        this.Type = JsonSerializer.SerializeToElement("web_search_20250305");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaWebSearchTool20250305(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -200,7 +243,7 @@ public sealed record class BetaWebSearchTool20250305 : ModelBase
     }
 }
 
-class BetaWebSearchTool20250305FromRaw : IFromRaw<BetaWebSearchTool20250305>
+class BetaWebSearchTool20250305FromRaw : IFromRawJson<BetaWebSearchTool20250305>
 {
     /// <inheritdoc/>
     public BetaWebSearchTool20250305 FromRawUnchecked(
@@ -258,13 +301,17 @@ sealed class BetaWebSearchTool20250305AllowedCallerConverter
 /// <summary>
 /// Parameters for the user's location. Used to provide more relevant search results.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<UserLocation, UserLocationFromRaw>))]
-public sealed record class UserLocation : ModelBase
+[JsonConverter(typeof(JsonModelConverter<UserLocation, UserLocationFromRaw>))]
+public sealed record class UserLocation : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -272,8 +319,12 @@ public sealed record class UserLocation : ModelBase
     /// </summary>
     public string? City
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "city"); }
-        init { ModelBase.Set(this._rawData, "city", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("city");
+        }
+        init { this._rawData.Set("city", value); }
     }
 
     /// <summary>
@@ -282,8 +333,12 @@ public sealed record class UserLocation : ModelBase
     /// </summary>
     public string? Country
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "country"); }
-        init { ModelBase.Set(this._rawData, "country", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("country");
+        }
+        init { this._rawData.Set("country", value); }
     }
 
     /// <summary>
@@ -291,8 +346,12 @@ public sealed record class UserLocation : ModelBase
     /// </summary>
     public string? Region
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "region"); }
-        init { ModelBase.Set(this._rawData, "region", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("region");
+        }
+        init { this._rawData.Set("region", value); }
     }
 
     /// <summary>
@@ -300,19 +359,18 @@ public sealed record class UserLocation : ModelBase
     /// </summary>
     public string? Timezone
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "timezone"); }
-        init { ModelBase.Set(this._rawData, "timezone", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("timezone");
+        }
+        init { this._rawData.Set("timezone", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"approximate\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("approximate")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -324,7 +382,7 @@ public sealed record class UserLocation : ModelBase
 
     public UserLocation()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        this.Type = JsonSerializer.SerializeToElement("approximate");
     }
 
     public UserLocation(UserLocation userLocation)
@@ -332,16 +390,16 @@ public sealed record class UserLocation : ModelBase
 
     public UserLocation(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"approximate\"");
+        this.Type = JsonSerializer.SerializeToElement("approximate");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     UserLocation(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -352,7 +410,7 @@ public sealed record class UserLocation : ModelBase
     }
 }
 
-class UserLocationFromRaw : IFromRaw<UserLocation>
+class UserLocationFromRaw : IFromRawJson<UserLocation>
 {
     /// <inheritdoc/>
     public UserLocation FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

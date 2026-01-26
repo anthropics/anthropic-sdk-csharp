@@ -9,25 +9,24 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaThinkingConfigDisabled, BetaThinkingConfigDisabledFromRaw>)
+    typeof(JsonModelConverter<BetaThinkingConfigDisabled, BetaThinkingConfigDisabledFromRaw>)
 )]
-public sealed record class BetaThinkingConfigDisabled : ModelBase
+public sealed record class BetaThinkingConfigDisabled : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"disabled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("disabled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -35,7 +34,7 @@ public sealed record class BetaThinkingConfigDisabled : ModelBase
 
     public BetaThinkingConfigDisabled()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        this.Type = JsonSerializer.SerializeToElement("disabled");
     }
 
     public BetaThinkingConfigDisabled(BetaThinkingConfigDisabled betaThinkingConfigDisabled)
@@ -43,16 +42,16 @@ public sealed record class BetaThinkingConfigDisabled : ModelBase
 
     public BetaThinkingConfigDisabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"disabled\"");
+        this.Type = JsonSerializer.SerializeToElement("disabled");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaThinkingConfigDisabled(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -65,7 +64,7 @@ public sealed record class BetaThinkingConfigDisabled : ModelBase
     }
 }
 
-class BetaThinkingConfigDisabledFromRaw : IFromRaw<BetaThinkingConfigDisabled>
+class BetaThinkingConfigDisabledFromRaw : IFromRawJson<BetaThinkingConfigDisabled>
 {
     /// <inheritdoc/>
     public BetaThinkingConfigDisabled FromRawUnchecked(

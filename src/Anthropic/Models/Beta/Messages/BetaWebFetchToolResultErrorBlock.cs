@@ -9,29 +9,33 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaWebFetchToolResultErrorBlock,
         BetaWebFetchToolResultErrorBlockFromRaw
     >)
 )]
-public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
+public sealed record class BetaWebFetchToolResultErrorBlock : JsonModel
 {
     public required ApiEnum<string, BetaWebFetchToolResultErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, BetaWebFetchToolResultErrorCode>>(
                 "error_code"
             );
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -41,7 +45,7 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result_error\"")
+                JsonSerializer.SerializeToElement("web_fetch_tool_result_error")
             )
         )
         {
@@ -51,7 +55,7 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
 
     public BetaWebFetchToolResultErrorBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result_error");
     }
 
     public BetaWebFetchToolResultErrorBlock(
@@ -61,16 +65,16 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
 
     public BetaWebFetchToolResultErrorBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaWebFetchToolResultErrorBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -92,7 +96,7 @@ public sealed record class BetaWebFetchToolResultErrorBlock : ModelBase
     }
 }
 
-class BetaWebFetchToolResultErrorBlockFromRaw : IFromRaw<BetaWebFetchToolResultErrorBlock>
+class BetaWebFetchToolResultErrorBlockFromRaw : IFromRawJson<BetaWebFetchToolResultErrorBlock>
 {
     /// <inheritdoc/>
     public BetaWebFetchToolResultErrorBlock FromRawUnchecked(

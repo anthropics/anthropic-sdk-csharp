@@ -11,22 +11,30 @@ namespace Anthropic.Models.Messages;
 /// <summary>
 /// The model will use the specified tool with `tool_choice.name`.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<ToolChoiceTool, ToolChoiceToolFromRaw>))]
-public sealed record class ToolChoiceTool : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ToolChoiceTool, ToolChoiceToolFromRaw>))]
+public sealed record class ToolChoiceTool : JsonModel
 {
     /// <summary>
     /// The name of the tool to use.
     /// </summary>
     public required string Name
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -37,7 +45,11 @@ public sealed record class ToolChoiceTool : ModelBase
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("disable_parallel_tool_use");
+        }
         init
         {
             if (value == null)
@@ -45,7 +57,7 @@ public sealed record class ToolChoiceTool : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "disable_parallel_tool_use", value);
+            this._rawData.Set("disable_parallel_tool_use", value);
         }
     }
 
@@ -53,7 +65,7 @@ public sealed record class ToolChoiceTool : ModelBase
     public override void Validate()
     {
         _ = this.Name;
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"tool\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("tool")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -62,7 +74,7 @@ public sealed record class ToolChoiceTool : ModelBase
 
     public ToolChoiceTool()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
+        this.Type = JsonSerializer.SerializeToElement("tool");
     }
 
     public ToolChoiceTool(ToolChoiceTool toolChoiceTool)
@@ -70,16 +82,16 @@ public sealed record class ToolChoiceTool : ModelBase
 
     public ToolChoiceTool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool\"");
+        this.Type = JsonSerializer.SerializeToElement("tool");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ToolChoiceTool(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -97,7 +109,7 @@ public sealed record class ToolChoiceTool : ModelBase
     }
 }
 
-class ToolChoiceToolFromRaw : IFromRaw<ToolChoiceTool>
+class ToolChoiceToolFromRaw : IFromRawJson<ToolChoiceTool>
 {
     /// <inheritdoc/>
     public ToolChoiceTool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

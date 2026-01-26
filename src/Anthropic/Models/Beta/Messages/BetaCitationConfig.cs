@@ -7,13 +7,17 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaCitationConfig, BetaCitationConfigFromRaw>))]
-public sealed record class BetaCitationConfig : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaCitationConfig, BetaCitationConfigFromRaw>))]
+public sealed record class BetaCitationConfig : JsonModel
 {
     public required bool Enabled
     {
-        get { return ModelBase.GetNotNullStruct<bool>(this.RawData, "enabled"); }
-        init { ModelBase.Set(this._rawData, "enabled", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<bool>("enabled");
+        }
+        init { this._rawData.Set("enabled", value); }
     }
 
     /// <inheritdoc/>
@@ -29,14 +33,14 @@ public sealed record class BetaCitationConfig : ModelBase
 
     public BetaCitationConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCitationConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -56,7 +60,7 @@ public sealed record class BetaCitationConfig : ModelBase
     }
 }
 
-class BetaCitationConfigFromRaw : IFromRaw<BetaCitationConfig>
+class BetaCitationConfigFromRaw : IFromRawJson<BetaCitationConfig>
 {
     /// <inheritdoc/>
     public BetaCitationConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

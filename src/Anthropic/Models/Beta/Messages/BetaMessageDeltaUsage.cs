@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaMessageDeltaUsage, BetaMessageDeltaUsageFromRaw>))]
-public sealed record class BetaMessageDeltaUsage : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaMessageDeltaUsage, BetaMessageDeltaUsageFromRaw>))]
+public sealed record class BetaMessageDeltaUsage : JsonModel
 {
     /// <summary>
     /// The cumulative number of input tokens used to create the cache entry.
@@ -17,9 +17,10 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableStruct<long>(this.RawData, "cache_creation_input_tokens");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("cache_creation_input_tokens");
         }
-        init { ModelBase.Set(this._rawData, "cache_creation_input_tokens", value); }
+        init { this._rawData.Set("cache_creation_input_tokens", value); }
     }
 
     /// <summary>
@@ -27,8 +28,12 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
     /// </summary>
     public required long? CacheReadInputTokens
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "cache_read_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "cache_read_input_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("cache_read_input_tokens");
+        }
+        init { this._rawData.Set("cache_read_input_tokens", value); }
     }
 
     /// <summary>
@@ -36,8 +41,12 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
     /// </summary>
     public required long? InputTokens
     {
-        get { return ModelBase.GetNullableStruct<long>(this.RawData, "input_tokens"); }
-        init { ModelBase.Set(this._rawData, "input_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("input_tokens");
+        }
+        init { this._rawData.Set("input_tokens", value); }
     }
 
     /// <summary>
@@ -45,8 +54,12 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
     /// </summary>
     public required long OutputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "output_tokens"); }
-        init { ModelBase.Set(this._rawData, "output_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("output_tokens");
+        }
+        init { this._rawData.Set("output_tokens", value); }
     }
 
     /// <summary>
@@ -56,9 +69,10 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<BetaServerToolUsage>(this.RawData, "server_tool_use");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaServerToolUsage>("server_tool_use");
         }
-        init { ModelBase.Set(this._rawData, "server_tool_use", value); }
+        init { this._rawData.Set("server_tool_use", value); }
     }
 
     /// <inheritdoc/>
@@ -78,14 +92,14 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
 
     public BetaMessageDeltaUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageDeltaUsage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -98,7 +112,7 @@ public sealed record class BetaMessageDeltaUsage : ModelBase
     }
 }
 
-class BetaMessageDeltaUsageFromRaw : IFromRaw<BetaMessageDeltaUsage>
+class BetaMessageDeltaUsageFromRaw : IFromRawJson<BetaMessageDeltaUsage>
 {
     /// <inheritdoc/>
     public BetaMessageDeltaUsage FromRawUnchecked(

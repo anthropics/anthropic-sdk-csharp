@@ -1,21 +1,28 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaCodeExecutionToolResultBlockContentConverter))]
-public record class BetaCodeExecutionToolResultBlockContent
+public record class BetaCodeExecutionToolResultBlockContent : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -25,25 +32,25 @@ public record class BetaCodeExecutionToolResultBlockContent
 
     public BetaCodeExecutionToolResultBlockContent(
         BetaCodeExecutionToolResultError value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaCodeExecutionToolResultBlockContent(
         BetaCodeExecutionResultBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaCodeExecutionToolResultBlockContent(JsonElement json)
+    public BetaCodeExecutionToolResultBlockContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -182,7 +189,7 @@ public record class BetaCodeExecutionToolResultBlockContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -202,6 +209,9 @@ public record class BetaCodeExecutionToolResultBlockContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaCodeExecutionToolResultBlockContentConverter
@@ -213,17 +223,17 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultError>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -234,13 +244,13 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionResultBlock>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -248,7 +258,7 @@ sealed class BetaCodeExecutionToolResultBlockContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

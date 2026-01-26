@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawMessageDeltaEvent, RawMessageDeltaEventFromRaw>))]
-public sealed record class RawMessageDeltaEvent : ModelBase
+[JsonConverter(typeof(JsonModelConverter<RawMessageDeltaEvent, RawMessageDeltaEventFromRaw>))]
+public sealed record class RawMessageDeltaEvent : JsonModel
 {
     public required Delta Delta
     {
-        get { return ModelBase.GetNotNullClass<Delta>(this.RawData, "delta"); }
-        init { ModelBase.Set(this._rawData, "delta", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Delta>("delta");
+        }
+        init { this._rawData.Set("delta", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -42,20 +50,19 @@ public sealed record class RawMessageDeltaEvent : ModelBase
     /// </summary>
     public required MessageDeltaUsage Usage
     {
-        get { return ModelBase.GetNotNullClass<MessageDeltaUsage>(this.RawData, "usage"); }
-        init { ModelBase.Set(this._rawData, "usage", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<MessageDeltaUsage>("usage");
+        }
+        init { this._rawData.Set("usage", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Delta.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_delta\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_delta")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -64,7 +71,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase
 
     public RawMessageDeltaEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("message_delta");
     }
 
     public RawMessageDeltaEvent(RawMessageDeltaEvent rawMessageDeltaEvent)
@@ -72,16 +79,16 @@ public sealed record class RawMessageDeltaEvent : ModelBase
 
     public RawMessageDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("message_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RawMessageDeltaEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -94,7 +101,7 @@ public sealed record class RawMessageDeltaEvent : ModelBase
     }
 }
 
-class RawMessageDeltaEventFromRaw : IFromRaw<RawMessageDeltaEvent>
+class RawMessageDeltaEventFromRaw : IFromRawJson<RawMessageDeltaEvent>
 {
     /// <inheritdoc/>
     public RawMessageDeltaEvent FromRawUnchecked(
@@ -102,25 +109,27 @@ class RawMessageDeltaEventFromRaw : IFromRaw<RawMessageDeltaEvent>
     ) => RawMessageDeltaEvent.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(ModelConverter<Delta, DeltaFromRaw>))]
-public sealed record class Delta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Delta, DeltaFromRaw>))]
+public sealed record class Delta : JsonModel
 {
     public required ApiEnum<string, StopReason>? StopReason
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, StopReason>>(
-                this.RawData,
-                "stop_reason"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, StopReason>>("stop_reason");
         }
-        init { ModelBase.Set(this._rawData, "stop_reason", value); }
+        init { this._rawData.Set("stop_reason", value); }
     }
 
     public required string? StopSequence
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "stop_sequence"); }
-        init { ModelBase.Set(this._rawData, "stop_sequence", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("stop_sequence");
+        }
+        init { this._rawData.Set("stop_sequence", value); }
     }
 
     /// <inheritdoc/>
@@ -137,14 +146,14 @@ public sealed record class Delta : ModelBase
 
     public Delta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     Delta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -155,7 +164,7 @@ public sealed record class Delta : ModelBase
     }
 }
 
-class DeltaFromRaw : IFromRaw<Delta>
+class DeltaFromRaw : IFromRawJson<Delta>
 {
     /// <inheritdoc/>
     public Delta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

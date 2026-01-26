@@ -12,9 +12,12 @@ namespace Anthropic.Models.Messages.Batches;
 /// response as a whole.
 /// </summary>
 [JsonConverter(
-    typeof(ModelConverter<MessageBatchIndividualResponse, MessageBatchIndividualResponseFromRaw>)
+    typeof(JsonModelConverter<
+        MessageBatchIndividualResponse,
+        MessageBatchIndividualResponseFromRaw
+    >)
 )]
-public sealed record class MessageBatchIndividualResponse : ModelBase
+public sealed record class MessageBatchIndividualResponse : JsonModel
 {
     /// <summary>
     /// Developer-provided ID created for each request in a Message Batch. Useful
@@ -24,8 +27,12 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
     /// </summary>
     public required string CustomID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "custom_id"); }
-        init { ModelBase.Set(this._rawData, "custom_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("custom_id");
+        }
+        init { this._rawData.Set("custom_id", value); }
     }
 
     /// <summary>
@@ -37,8 +44,12 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
     /// </summary>
     public required MessageBatchResult Result
     {
-        get { return ModelBase.GetNotNullClass<MessageBatchResult>(this.RawData, "result"); }
-        init { ModelBase.Set(this._rawData, "result", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<MessageBatchResult>("result");
+        }
+        init { this._rawData.Set("result", value); }
     }
 
     /// <inheritdoc/>
@@ -57,14 +68,14 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
 
     public MessageBatchIndividualResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageBatchIndividualResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +88,7 @@ public sealed record class MessageBatchIndividualResponse : ModelBase
     }
 }
 
-class MessageBatchIndividualResponseFromRaw : IFromRaw<MessageBatchIndividualResponse>
+class MessageBatchIndividualResponseFromRaw : IFromRawJson<MessageBatchIndividualResponse>
 {
     /// <inheritdoc/>
     public MessageBatchIndividualResponse FromRawUnchecked(

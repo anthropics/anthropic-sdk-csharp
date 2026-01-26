@@ -7,16 +7,20 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ServerToolUsage, ServerToolUsageFromRaw>))]
-public sealed record class ServerToolUsage : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ServerToolUsage, ServerToolUsageFromRaw>))]
+public sealed record class ServerToolUsage : JsonModel
 {
     /// <summary>
     /// The number of web search tool requests.
     /// </summary>
     public required long WebSearchRequests
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "web_search_requests"); }
-        init { ModelBase.Set(this._rawData, "web_search_requests", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("web_search_requests");
+        }
+        init { this._rawData.Set("web_search_requests", value); }
     }
 
     /// <inheritdoc/>
@@ -32,14 +36,14 @@ public sealed record class ServerToolUsage : ModelBase
 
     public ServerToolUsage(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ServerToolUsage(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -57,7 +61,7 @@ public sealed record class ServerToolUsage : ModelBase
     }
 }
 
-class ServerToolUsageFromRaw : IFromRaw<ServerToolUsage>
+class ServerToolUsageFromRaw : IFromRawJson<ServerToolUsage>
 {
     /// <inheritdoc/>
     public ServerToolUsage FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

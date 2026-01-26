@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,20 +10,24 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818ViewCommand,
         BetaMemoryTool20250818ViewCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
+public sealed record class BetaMemoryTool20250818ViewCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,8 +35,12 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
     /// </summary>
     public required string Path
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "path"); }
-        init { ModelBase.Set(this._rawData, "path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("path");
+        }
+        init { this._rawData.Set("path", value); }
     }
 
     /// <summary>
@@ -39,7 +48,11 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
     /// </summary>
     public IReadOnlyList<long>? ViewRange
     {
-        get { return ModelBase.GetNullableClass<List<long>>(this.RawData, "view_range"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<long>>("view_range");
+        }
         init
         {
             if (value == null)
@@ -47,19 +60,17 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "view_range", value);
+            this._rawData.Set<ImmutableArray<long>?>(
+                "view_range",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"view\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("view")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -69,7 +80,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
 
     public BetaMemoryTool20250818ViewCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"view\"");
+        this.Command = JsonSerializer.SerializeToElement("view");
     }
 
     public BetaMemoryTool20250818ViewCommand(
@@ -79,16 +90,16 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
 
     public BetaMemoryTool20250818ViewCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"view\"");
+        this.Command = JsonSerializer.SerializeToElement("view");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMemoryTool20250818ViewCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -108,7 +119,7 @@ public sealed record class BetaMemoryTool20250818ViewCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818ViewCommandFromRaw : IFromRaw<BetaMemoryTool20250818ViewCommand>
+class BetaMemoryTool20250818ViewCommandFromRaw : IFromRawJson<BetaMemoryTool20250818ViewCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818ViewCommand FromRawUnchecked(

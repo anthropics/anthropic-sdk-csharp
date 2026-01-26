@@ -11,13 +11,17 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// The model will use any available tools.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaToolChoiceAny, BetaToolChoiceAnyFromRaw>))]
-public sealed record class BetaToolChoiceAny : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaToolChoiceAny, BetaToolChoiceAnyFromRaw>))]
+public sealed record class BetaToolChoiceAny : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -28,7 +32,11 @@ public sealed record class BetaToolChoiceAny : ModelBase
     /// </summary>
     public bool? DisableParallelToolUse
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawData, "disable_parallel_tool_use"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<bool>("disable_parallel_tool_use");
+        }
         init
         {
             if (value == null)
@@ -36,14 +44,14 @@ public sealed record class BetaToolChoiceAny : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "disable_parallel_tool_use", value);
+            this._rawData.Set("disable_parallel_tool_use", value);
         }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"any\"")))
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("any")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -52,7 +60,7 @@ public sealed record class BetaToolChoiceAny : ModelBase
 
     public BetaToolChoiceAny()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"any\"");
+        this.Type = JsonSerializer.SerializeToElement("any");
     }
 
     public BetaToolChoiceAny(BetaToolChoiceAny betaToolChoiceAny)
@@ -60,16 +68,16 @@ public sealed record class BetaToolChoiceAny : ModelBase
 
     public BetaToolChoiceAny(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"any\"");
+        this.Type = JsonSerializer.SerializeToElement("any");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolChoiceAny(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -82,7 +90,7 @@ public sealed record class BetaToolChoiceAny : ModelBase
     }
 }
 
-class BetaToolChoiceAnyFromRaw : IFromRaw<BetaToolChoiceAny>
+class BetaToolChoiceAnyFromRaw : IFromRawJson<BetaToolChoiceAny>
 {
     /// <inheritdoc/>
     public BetaToolChoiceAny FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

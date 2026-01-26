@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta;
 
 namespace Anthropic.Tests.Models.Beta;
@@ -6,154 +7,181 @@ namespace Anthropic.Tests.Models.Beta;
 public class BetaErrorTest : TestBase
 {
     [Fact]
-    public void invalid_requestValidation_Works()
+    public void InvalidRequestValidationWorks()
     {
-        BetaError value = new(new BetaInvalidRequestError("message"));
+        BetaError value = new BetaInvalidRequestError("message");
         value.Validate();
     }
 
     [Fact]
-    public void authenticationValidation_Works()
+    public void AuthenticationValidationWorks()
     {
-        BetaError value = new(new BetaAuthenticationError("message"));
+        BetaError value = new BetaAuthenticationError("message");
         value.Validate();
     }
 
     [Fact]
-    public void billingValidation_Works()
+    public void BillingValidationWorks()
     {
-        BetaError value = new(new BetaBillingError("message"));
+        BetaError value = new BetaBillingError("message");
         value.Validate();
     }
 
     [Fact]
-    public void permissionValidation_Works()
+    public void PermissionValidationWorks()
     {
-        BetaError value = new(new BetaPermissionError("message"));
+        BetaError value = new BetaPermissionError("message");
         value.Validate();
     }
 
     [Fact]
-    public void not_foundValidation_Works()
+    public void NotFoundValidationWorks()
     {
-        BetaError value = new(new BetaNotFoundError("message"));
+        BetaError value = new BetaNotFoundError("message");
         value.Validate();
     }
 
     [Fact]
-    public void rate_limitValidation_Works()
+    public void RateLimitValidationWorks()
     {
-        BetaError value = new(new BetaRateLimitError("message"));
+        BetaError value = new BetaRateLimitError("message");
         value.Validate();
     }
 
     [Fact]
-    public void gateway_timeoutValidation_Works()
+    public void GatewayTimeoutValidationWorks()
     {
-        BetaError value = new(new BetaGatewayTimeoutError("message"));
+        BetaError value = new BetaGatewayTimeoutError("message");
         value.Validate();
     }
 
     [Fact]
-    public void apiValidation_Works()
+    public void ApiValidationWorks()
     {
-        BetaError value = new(new BetaAPIError("message"));
+        BetaError value = new BetaApiError("message");
         value.Validate();
     }
 
     [Fact]
-    public void overloadedValidation_Works()
+    public void OverloadedValidationWorks()
     {
-        BetaError value = new(new BetaOverloadedError("message"));
+        BetaError value = new BetaOverloadedError("message");
         value.Validate();
     }
 
     [Fact]
-    public void invalid_requestSerializationRoundtrip_Works()
+    public void InvalidRequestSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaInvalidRequestError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaInvalidRequestError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void authenticationSerializationRoundtrip_Works()
+    public void AuthenticationSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaAuthenticationError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaAuthenticationError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void billingSerializationRoundtrip_Works()
+    public void BillingSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaBillingError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaBillingError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void permissionSerializationRoundtrip_Works()
+    public void PermissionSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaPermissionError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaPermissionError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void not_foundSerializationRoundtrip_Works()
+    public void NotFoundSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaNotFoundError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaNotFoundError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void rate_limitSerializationRoundtrip_Works()
+    public void RateLimitSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaRateLimitError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaRateLimitError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void gateway_timeoutSerializationRoundtrip_Works()
+    public void GatewayTimeoutSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaGatewayTimeoutError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaGatewayTimeoutError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void apiSerializationRoundtrip_Works()
+    public void ApiSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaAPIError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaApiError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void overloadedSerializationRoundtrip_Works()
+    public void OverloadedSerializationRoundtripWorks()
     {
-        BetaError value = new(new BetaOverloadedError("message"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<BetaError>(json);
+        BetaError value = new BetaOverloadedError("message");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaError>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

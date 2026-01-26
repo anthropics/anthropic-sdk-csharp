@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -7,187 +8,185 @@ namespace Anthropic.Tests.Models.Messages;
 public class ToolUnionTest : TestBase
 {
     [Fact]
-    public void toolValidation_Works()
+    public void ToolValidationWorks()
     {
-        ToolUnion value = new(
-            new Tool()
+        ToolUnion value = new Tool()
+        {
+            InputSchema = new()
             {
-                InputSchema = new()
+                Properties = new Dictionary<string, JsonElement>()
                 {
-                    Properties = new Dictionary<string, JsonElement>()
-                    {
-                        { "location", JsonSerializer.SerializeToElement("bar") },
-                        { "unit", JsonSerializer.SerializeToElement("bar") },
-                    },
-                    Required = ["location"],
+                    { "location", JsonSerializer.SerializeToElement("bar") },
+                    { "unit", JsonSerializer.SerializeToElement("bar") },
                 },
-                Name = "name",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Description = "Get the current weather in a given location",
-                Type = Type.Custom,
-            }
-        );
+                Required = ["location"],
+            },
+            Name = "name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Description = "Get the current weather in a given location",
+            Type = Type.Custom,
+        };
         value.Validate();
     }
 
     [Fact]
-    public void bash_20250124Validation_Works()
+    public void Bash20250124ValidationWorks()
     {
-        ToolUnion value = new(new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } });
+        ToolUnion value = new ToolBash20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
         value.Validate();
     }
 
     [Fact]
-    public void text_editor_20250124Validation_Works()
+    public void TextEditor20250124ValidationWorks()
     {
-        ToolUnion value = new(
-            new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
-        );
+        ToolUnion value = new ToolTextEditor20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
         value.Validate();
     }
 
     [Fact]
-    public void text_editor_20250429Validation_Works()
+    public void TextEditor20250429ValidationWorks()
     {
-        ToolUnion value = new(
-            new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
-        );
+        ToolUnion value = new ToolTextEditor20250429() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
         value.Validate();
     }
 
     [Fact]
-    public void text_editor_20250728Validation_Works()
+    public void TextEditor20250728ValidationWorks()
     {
-        ToolUnion value = new(
-            new ToolTextEditor20250728()
+        ToolUnion value = new ToolTextEditor20250728()
+        {
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxCharacters = 1,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebSearchTool20250305ValidationWorks()
+    {
+        ToolUnion value = new WebSearchTool20250305()
+        {
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxUses = 1,
+            UserLocation = new()
             {
-                CacheControl = new() { TTL = TTL.TTL5m },
-                MaxCharacters = 1,
-            }
-        );
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
         value.Validate();
     }
 
     [Fact]
-    public void web_search_tool_20250305Validation_Works()
+    public void ToolSerializationRoundtripWorks()
     {
-        ToolUnion value = new(
-            new WebSearchTool20250305()
+        ToolUnion value = new Tool()
+        {
+            InputSchema = new()
             {
-                AllowedDomains = ["string"],
-                BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                MaxUses = 1,
-                UserLocation = new()
+                Properties = new Dictionary<string, JsonElement>()
                 {
-                    City = "New York",
-                    Country = "US",
-                    Region = "California",
-                    Timezone = "America/New_York",
+                    { "location", JsonSerializer.SerializeToElement("bar") },
+                    { "unit", JsonSerializer.SerializeToElement("bar") },
                 },
-            }
+                Required = ["location"],
+            },
+            Name = "name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Description = "Get the current weather in a given location",
+            Type = Type.Custom,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
         );
-        value.Validate();
+
+        Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void toolSerializationRoundtrip_Works()
+    public void Bash20250124SerializationRoundtripWorks()
     {
-        ToolUnion value = new(
-            new Tool()
+        ToolUnion value = new ToolBash20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextEditor20250124SerializationRoundtripWorks()
+    {
+        ToolUnion value = new ToolTextEditor20250124() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextEditor20250429SerializationRoundtripWorks()
+    {
+        ToolUnion value = new ToolTextEditor20250429() { CacheControl = new() { Ttl = Ttl.Ttl5m } };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void TextEditor20250728SerializationRoundtripWorks()
+    {
+        ToolUnion value = new ToolTextEditor20250728()
+        {
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxCharacters = 1,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebSearchTool20250305SerializationRoundtripWorks()
+    {
+        ToolUnion value = new WebSearchTool20250305()
+        {
+            AllowedDomains = ["string"],
+            BlockedDomains = ["string"],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            MaxUses = 1,
+            UserLocation = new()
             {
-                InputSchema = new()
-                {
-                    Properties = new Dictionary<string, JsonElement>()
-                    {
-                        { "location", JsonSerializer.SerializeToElement("bar") },
-                        { "unit", JsonSerializer.SerializeToElement("bar") },
-                    },
-                    Required = ["location"],
-                },
-                Name = "name",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Description = "Get the current weather in a given location",
-                Type = Type.Custom,
-            }
+                City = "New York",
+                Country = "US",
+                Region = "California",
+                Timezone = "America/New_York",
+            },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ToolUnion>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void bash_20250124SerializationRoundtrip_Works()
-    {
-        ToolUnion value = new(new ToolBash20250124() { CacheControl = new() { TTL = TTL.TTL5m } });
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void text_editor_20250124SerializationRoundtrip_Works()
-    {
-        ToolUnion value = new(
-            new ToolTextEditor20250124() { CacheControl = new() { TTL = TTL.TTL5m } }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void text_editor_20250429SerializationRoundtrip_Works()
-    {
-        ToolUnion value = new(
-            new ToolTextEditor20250429() { CacheControl = new() { TTL = TTL.TTL5m } }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void text_editor_20250728SerializationRoundtrip_Works()
-    {
-        ToolUnion value = new(
-            new ToolTextEditor20250728()
-            {
-                CacheControl = new() { TTL = TTL.TTL5m },
-                MaxCharacters = 1,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void web_search_tool_20250305SerializationRoundtrip_Works()
-    {
-        ToolUnion value = new(
-            new WebSearchTool20250305()
-            {
-                AllowedDomains = ["string"],
-                BlockedDomains = ["string"],
-                CacheControl = new() { TTL = TTL.TTL5m },
-                MaxUses = 1,
-                UserLocation = new()
-                {
-                    City = "New York",
-                    Country = "US",
-                    Region = "California",
-                    Timezone = "America/New_York",
-                },
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ToolUnion>(json);
 
         Assert.Equal(value, deserialized);
     }

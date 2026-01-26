@@ -1,21 +1,28 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(typeof(BetaTextCitationParamConverter))]
-public record class BetaTextCitationParam
+public record class BetaTextCitationParam : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string CitedText
@@ -116,48 +123,48 @@ public record class BetaTextCitationParam
         }
     }
 
-    public BetaTextCitationParam(BetaCitationCharLocationParam value, JsonElement? json = null)
+    public BetaTextCitationParam(BetaCitationCharLocationParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaTextCitationParam(BetaCitationPageLocationParam value, JsonElement? json = null)
+    public BetaTextCitationParam(BetaCitationPageLocationParam value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaTextCitationParam(
         BetaCitationContentBlockLocationParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaTextCitationParam(
         BetaCitationWebSearchResultLocationParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaTextCitationParam(
         BetaCitationSearchResultLocationParam value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaTextCitationParam(JsonElement json)
+    public BetaTextCitationParam(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -405,7 +412,7 @@ public record class BetaTextCitationParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -431,6 +438,9 @@ public record class BetaTextCitationParam
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationParam>
@@ -441,11 +451,11 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -459,13 +469,13 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationCharLocationParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -474,20 +484,20 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "page_location":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaCitationPageLocationParam>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -496,7 +506,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content_block_location":
             {
@@ -504,13 +514,13 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaCitationContentBlockLocationParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -519,7 +529,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "web_search_result_location":
             {
@@ -527,13 +537,13 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaCitationWebSearchResultLocationParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -542,7 +552,7 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "search_result_location":
             {
@@ -550,13 +560,13 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaCitationSearchResultLocationParam>(
-                            json,
+                            element,
                             options
                         );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -565,11 +575,11 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaTextCitationParam(json);
+                return new BetaTextCitationParam(element);
             }
         }
     }

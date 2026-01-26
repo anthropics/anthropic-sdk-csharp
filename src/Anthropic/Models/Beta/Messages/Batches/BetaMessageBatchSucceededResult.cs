@@ -9,32 +9,38 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages.Batches;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaMessageBatchSucceededResult, BetaMessageBatchSucceededResultFromRaw>)
+    typeof(JsonModelConverter<
+        BetaMessageBatchSucceededResult,
+        BetaMessageBatchSucceededResultFromRaw
+    >)
 )]
-public sealed record class BetaMessageBatchSucceededResult : ModelBase
+public sealed record class BetaMessageBatchSucceededResult : JsonModel
 {
     public required BetaMessage Message
     {
-        get { return ModelBase.GetNotNullClass<BetaMessage>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaMessage>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Message.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"succeeded\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("succeeded")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -42,7 +48,7 @@ public sealed record class BetaMessageBatchSucceededResult : ModelBase
 
     public BetaMessageBatchSucceededResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        this.Type = JsonSerializer.SerializeToElement("succeeded");
     }
 
     public BetaMessageBatchSucceededResult(
@@ -52,16 +58,16 @@ public sealed record class BetaMessageBatchSucceededResult : ModelBase
 
     public BetaMessageBatchSucceededResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"succeeded\"");
+        this.Type = JsonSerializer.SerializeToElement("succeeded");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMessageBatchSucceededResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -81,7 +87,7 @@ public sealed record class BetaMessageBatchSucceededResult : ModelBase
     }
 }
 
-class BetaMessageBatchSucceededResultFromRaw : IFromRaw<BetaMessageBatchSucceededResult>
+class BetaMessageBatchSucceededResultFromRaw : IFromRawJson<BetaMessageBatchSucceededResult>
 {
     /// <inheritdoc/>
     public BetaMessageBatchSucceededResult FromRawUnchecked(

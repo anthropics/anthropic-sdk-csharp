@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,8 +10,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Tool, ToolFromRaw>))]
-public sealed record class Tool : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Tool, ToolFromRaw>))]
+public sealed record class Tool : JsonModel
 {
     /// <summary>
     /// [JSON schema](https://json-schema.org/draft/2020-12) for this tool's input.
@@ -20,8 +21,12 @@ public sealed record class Tool : ModelBase
     /// </summary>
     public required InputSchema InputSchema
     {
-        get { return ModelBase.GetNotNullClass<InputSchema>(this.RawData, "input_schema"); }
-        init { ModelBase.Set(this._rawData, "input_schema", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<InputSchema>("input_schema");
+        }
+        init { this._rawData.Set("input_schema", value); }
     }
 
     /// <summary>
@@ -31,8 +36,12 @@ public sealed record class Tool : ModelBase
     /// </summary>
     public required string Name
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     /// <summary>
@@ -42,9 +51,10 @@ public sealed record class Tool : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <summary>
@@ -57,7 +67,11 @@ public sealed record class Tool : ModelBase
     /// </summary>
     public string? Description
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "description"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("description");
+        }
         init
         {
             if (value == null)
@@ -65,7 +79,7 @@ public sealed record class Tool : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "description", value);
+            this._rawData.Set("description", value);
         }
     }
 
@@ -73,11 +87,12 @@ public sealed record class Tool : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<
                 ApiEnum<string, global::Anthropic.Models.Messages.Type>
-            >(this.RawData, "type");
+            >("type");
         }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -97,14 +112,14 @@ public sealed record class Tool : ModelBase
 
     public Tool(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     Tool(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -115,7 +130,7 @@ public sealed record class Tool : ModelBase
     }
 }
 
-class ToolFromRaw : IFromRaw<Tool>
+class ToolFromRaw : IFromRawJson<Tool>
 {
     /// <inheritdoc/>
     public Tool FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -128,42 +143,57 @@ class ToolFromRaw : IFromRaw<Tool>
 /// <para>This defines the shape of the `input` that your tool accepts and that the
 /// model will produce.</para>
 /// </summary>
-[JsonConverter(typeof(ModelConverter<InputSchema, InputSchemaFromRaw>))]
-public sealed record class InputSchema : ModelBase
+[JsonConverter(typeof(JsonModelConverter<InputSchema, InputSchemaFromRaw>))]
+public sealed record class InputSchema : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     public IReadOnlyDictionary<string, JsonElement>? Properties
     {
         get
         {
-            return ModelBase.GetNullableClass<Dictionary<string, JsonElement>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<FrozenDictionary<string, JsonElement>>(
                 "properties"
             );
         }
-        init { ModelBase.Set(this._rawData, "properties", value); }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>?>(
+                "properties",
+                value == null ? null : FrozenDictionary.ToFrozenDictionary(value)
+            );
+        }
     }
 
     public IReadOnlyList<string>? Required
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "required"); }
-        init { ModelBase.Set(this._rawData, "required", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<ImmutableArray<string>>("required");
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<string>?>(
+                "required",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"object\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("object")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -173,7 +203,7 @@ public sealed record class InputSchema : ModelBase
 
     public InputSchema()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        this.Type = JsonSerializer.SerializeToElement("object");
     }
 
     public InputSchema(InputSchema inputSchema)
@@ -181,16 +211,16 @@ public sealed record class InputSchema : ModelBase
 
     public InputSchema(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"object\"");
+        this.Type = JsonSerializer.SerializeToElement("object");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     InputSchema(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -201,7 +231,7 @@ public sealed record class InputSchema : ModelBase
     }
 }
 
-class InputSchemaFromRaw : IFromRaw<InputSchema>
+class InputSchemaFromRaw : IFromRawJson<InputSchema>
 {
     /// <inheritdoc/>
     public InputSchema FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

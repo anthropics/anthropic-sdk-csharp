@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<OverloadedError, OverloadedErrorFromRaw>))]
-public sealed record class OverloadedError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<OverloadedError, OverloadedErrorFromRaw>))]
+public sealed record class OverloadedError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class OverloadedError : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"")
+                JsonSerializer.SerializeToElement("overloaded_error")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class OverloadedError : ModelBase
 
     public OverloadedError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"");
+        this.Type = JsonSerializer.SerializeToElement("overloaded_error");
     }
 
     public OverloadedError(OverloadedError overloadedError)
@@ -48,16 +56,16 @@ public sealed record class OverloadedError : ModelBase
 
     public OverloadedError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"overloaded_error\"");
+        this.Type = JsonSerializer.SerializeToElement("overloaded_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     OverloadedError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -75,7 +83,7 @@ public sealed record class OverloadedError : ModelBase
     }
 }
 
-class OverloadedErrorFromRaw : IFromRaw<OverloadedError>
+class OverloadedErrorFromRaw : IFromRawJson<OverloadedError>
 {
     /// <inheritdoc/>
     public OverloadedError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

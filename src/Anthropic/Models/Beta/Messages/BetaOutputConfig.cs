@@ -9,16 +9,20 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaOutputConfig, BetaOutputConfigFromRaw>))]
-public sealed record class BetaOutputConfig : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaOutputConfig, BetaOutputConfigFromRaw>))]
+public sealed record class BetaOutputConfig : JsonModel
 {
     /// <summary>
     /// All possible effort levels.
     /// </summary>
     public ApiEnum<string, Effort>? Effort
     {
-        get { return ModelBase.GetNullableClass<ApiEnum<string, Effort>>(this.RawData, "effort"); }
-        init { ModelBase.Set(this._rawData, "effort", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<ApiEnum<string, Effort>>("effort");
+        }
+        init { this._rawData.Set("effort", value); }
     }
 
     /// <inheritdoc/>
@@ -34,14 +38,14 @@ public sealed record class BetaOutputConfig : ModelBase
 
     public BetaOutputConfig(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaOutputConfig(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -54,7 +58,7 @@ public sealed record class BetaOutputConfig : ModelBase
     }
 }
 
-class BetaOutputConfigFromRaw : IFromRaw<BetaOutputConfig>
+class BetaOutputConfigFromRaw : IFromRawJson<BetaOutputConfig>
 {
     /// <inheritdoc/>
     public BetaOutputConfig FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

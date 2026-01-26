@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<Metadata, MetadataFromRaw>))]
-public sealed record class Metadata : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Metadata, MetadataFromRaw>))]
+public sealed record class Metadata : JsonModel
 {
     /// <summary>
     /// An external identifier for the user who is associated with the request.
@@ -19,8 +19,12 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public string? UserID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "user_id"); }
-        init { ModelBase.Set(this._rawData, "user_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("user_id");
+        }
+        init { this._rawData.Set("user_id", value); }
     }
 
     /// <inheritdoc/>
@@ -36,14 +40,14 @@ public sealed record class Metadata : ModelBase
 
     public Metadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     Metadata(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -54,7 +58,7 @@ public sealed record class Metadata : ModelBase
     }
 }
 
-class MetadataFromRaw : IFromRaw<Metadata>
+class MetadataFromRaw : IFromRawJson<Metadata>
 {
     /// <inheritdoc/>
     public Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

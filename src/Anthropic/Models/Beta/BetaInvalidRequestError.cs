@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaInvalidRequestError, BetaInvalidRequestErrorFromRaw>))]
-public sealed record class BetaInvalidRequestError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaInvalidRequestError, BetaInvalidRequestErrorFromRaw>))]
+public sealed record class BetaInvalidRequestError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class BetaInvalidRequestError : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"")
+                JsonSerializer.SerializeToElement("invalid_request_error")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class BetaInvalidRequestError : ModelBase
 
     public BetaInvalidRequestError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
     public BetaInvalidRequestError(BetaInvalidRequestError betaInvalidRequestError)
@@ -48,16 +56,16 @@ public sealed record class BetaInvalidRequestError : ModelBase
 
     public BetaInvalidRequestError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"invalid_request_error\"");
+        this.Type = JsonSerializer.SerializeToElement("invalid_request_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaInvalidRequestError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +85,7 @@ public sealed record class BetaInvalidRequestError : ModelBase
     }
 }
 
-class BetaInvalidRequestErrorFromRaw : IFromRaw<BetaInvalidRequestError>
+class BetaInvalidRequestErrorFromRaw : IFromRawJson<BetaInvalidRequestError>
 {
     /// <inheritdoc/>
     public BetaInvalidRequestError FromRawUnchecked(

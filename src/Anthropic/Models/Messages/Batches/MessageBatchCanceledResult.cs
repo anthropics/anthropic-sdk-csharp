@@ -9,25 +9,24 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Messages.Batches;
 
 [JsonConverter(
-    typeof(ModelConverter<MessageBatchCanceledResult, MessageBatchCanceledResultFromRaw>)
+    typeof(JsonModelConverter<MessageBatchCanceledResult, MessageBatchCanceledResultFromRaw>)
 )]
-public sealed record class MessageBatchCanceledResult : ModelBase
+public sealed record class MessageBatchCanceledResult : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"canceled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("canceled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -35,7 +34,7 @@ public sealed record class MessageBatchCanceledResult : ModelBase
 
     public MessageBatchCanceledResult()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        this.Type = JsonSerializer.SerializeToElement("canceled");
     }
 
     public MessageBatchCanceledResult(MessageBatchCanceledResult messageBatchCanceledResult)
@@ -43,16 +42,16 @@ public sealed record class MessageBatchCanceledResult : ModelBase
 
     public MessageBatchCanceledResult(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"canceled\"");
+        this.Type = JsonSerializer.SerializeToElement("canceled");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageBatchCanceledResult(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -65,7 +64,7 @@ public sealed record class MessageBatchCanceledResult : ModelBase
     }
 }
 
-class MessageBatchCanceledResultFromRaw : IFromRaw<MessageBatchCanceledResult>
+class MessageBatchCanceledResultFromRaw : IFromRawJson<MessageBatchCanceledResult>
 {
     /// <inheritdoc/>
     public MessageBatchCanceledResult FromRawUnchecked(

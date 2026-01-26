@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<SignatureDelta, SignatureDeltaFromRaw>))]
-public sealed record class SignatureDelta : ModelBase
+[JsonConverter(typeof(JsonModelConverter<SignatureDelta, SignatureDeltaFromRaw>))]
+public sealed record class SignatureDelta : JsonModel
 {
     public required string Signature
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "signature"); }
-        init { ModelBase.Set(this._rawData, "signature", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("signature");
+        }
+        init { this._rawData.Set("signature", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -28,10 +36,7 @@ public sealed record class SignatureDelta : ModelBase
     {
         _ = this.Signature;
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("signature_delta"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -40,7 +45,7 @@ public sealed record class SignatureDelta : ModelBase
 
     public SignatureDelta()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("signature_delta");
     }
 
     public SignatureDelta(SignatureDelta signatureDelta)
@@ -48,16 +53,16 @@ public sealed record class SignatureDelta : ModelBase
 
     public SignatureDelta(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"signature_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("signature_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     SignatureDelta(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -75,7 +80,7 @@ public sealed record class SignatureDelta : ModelBase
     }
 }
 
-class SignatureDeltaFromRaw : IFromRaw<SignatureDelta>
+class SignatureDeltaFromRaw : IFromRawJson<SignatureDelta>
 {
     /// <inheritdoc/>
     public SignatureDelta FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -9,16 +9,20 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Files;
 
-[JsonConverter(typeof(ModelConverter<DeletedFile, DeletedFileFromRaw>))]
-public sealed record class DeletedFile : ModelBase
+[JsonConverter(typeof(JsonModelConverter<DeletedFile, DeletedFileFromRaw>))]
+public sealed record class DeletedFile : JsonModel
 {
     /// <summary>
     /// ID of the deleted file.
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -30,9 +34,10 @@ public sealed record class DeletedFile : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<
                 ApiEnum<string, global::Anthropic.Models.Beta.Files.Type>
-            >(this.RawData, "type");
+            >("type");
         }
         init
         {
@@ -41,7 +46,7 @@ public sealed record class DeletedFile : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "type", value);
+            this._rawData.Set("type", value);
         }
     }
 
@@ -59,14 +64,14 @@ public sealed record class DeletedFile : ModelBase
 
     public DeletedFile(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     DeletedFile(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -84,7 +89,7 @@ public sealed record class DeletedFile : ModelBase
     }
 }
 
-class DeletedFileFromRaw : IFromRaw<DeletedFile>
+class DeletedFileFromRaw : IFromRawJson<DeletedFile>
 {
     /// <inheritdoc/>
     public DeletedFile FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

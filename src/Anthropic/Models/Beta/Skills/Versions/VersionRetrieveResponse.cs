@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Beta.Skills.Versions;
 
-[JsonConverter(typeof(ModelConverter<VersionRetrieveResponse, VersionRetrieveResponseFromRaw>))]
-public sealed record class VersionRetrieveResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<VersionRetrieveResponse, VersionRetrieveResponseFromRaw>))]
+public sealed record class VersionRetrieveResponse : JsonModel
 {
     /// <summary>
     /// Unique identifier for the skill version.
@@ -17,8 +17,12 @@ public sealed record class VersionRetrieveResponse : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -26,8 +30,12 @@ public sealed record class VersionRetrieveResponse : ModelBase
     /// </summary>
     public required string CreatedAt
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "created_at"); }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("created_at");
+        }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -37,8 +45,12 @@ public sealed record class VersionRetrieveResponse : ModelBase
     /// </summary>
     public required string Description
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "description"); }
-        init { ModelBase.Set(this._rawData, "description", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("description");
+        }
+        init { this._rawData.Set("description", value); }
     }
 
     /// <summary>
@@ -48,8 +60,12 @@ public sealed record class VersionRetrieveResponse : ModelBase
     /// </summary>
     public required string Directory
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "directory"); }
-        init { ModelBase.Set(this._rawData, "directory", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("directory");
+        }
+        init { this._rawData.Set("directory", value); }
     }
 
     /// <summary>
@@ -59,8 +75,12 @@ public sealed record class VersionRetrieveResponse : ModelBase
     /// </summary>
     public required string Name
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     /// <summary>
@@ -68,8 +88,12 @@ public sealed record class VersionRetrieveResponse : ModelBase
     /// </summary>
     public required string SkillID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "skill_id"); }
-        init { ModelBase.Set(this._rawData, "skill_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("skill_id");
+        }
+        init { this._rawData.Set("skill_id", value); }
     }
 
     /// <summary>
@@ -79,8 +103,12 @@ public sealed record class VersionRetrieveResponse : ModelBase
     /// </summary>
     public required string Type
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -90,8 +118,12 @@ public sealed record class VersionRetrieveResponse : ModelBase
     /// </summary>
     public required string Version
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "version"); }
-        init { ModelBase.Set(this._rawData, "version", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("version");
+        }
+        init { this._rawData.Set("version", value); }
     }
 
     /// <inheritdoc/>
@@ -114,14 +146,14 @@ public sealed record class VersionRetrieveResponse : ModelBase
 
     public VersionRetrieveResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     VersionRetrieveResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -134,7 +166,7 @@ public sealed record class VersionRetrieveResponse : ModelBase
     }
 }
 
-class VersionRetrieveResponseFromRaw : IFromRaw<VersionRetrieveResponse>
+class VersionRetrieveResponseFromRaw : IFromRawJson<VersionRetrieveResponse>
 {
     /// <inheritdoc/>
     public VersionRetrieveResponse FromRawUnchecked(

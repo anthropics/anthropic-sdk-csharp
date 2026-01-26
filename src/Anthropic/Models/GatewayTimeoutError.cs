@@ -8,31 +8,34 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<GatewayTimeoutError, GatewayTimeoutErrorFromRaw>))]
-public sealed record class GatewayTimeoutError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<GatewayTimeoutError, GatewayTimeoutErrorFromRaw>))]
+public sealed record class GatewayTimeoutError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Message;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("timeout_error")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -40,7 +43,7 @@ public sealed record class GatewayTimeoutError : ModelBase
 
     public GatewayTimeoutError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
+        this.Type = JsonSerializer.SerializeToElement("timeout_error");
     }
 
     public GatewayTimeoutError(GatewayTimeoutError gatewayTimeoutError)
@@ -48,16 +51,16 @@ public sealed record class GatewayTimeoutError : ModelBase
 
     public GatewayTimeoutError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"timeout_error\"");
+        this.Type = JsonSerializer.SerializeToElement("timeout_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     GatewayTimeoutError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +80,7 @@ public sealed record class GatewayTimeoutError : ModelBase
     }
 }
 
-class GatewayTimeoutErrorFromRaw : IFromRaw<GatewayTimeoutError>
+class GatewayTimeoutErrorFromRaw : IFromRawJson<GatewayTimeoutError>
 {
     /// <inheritdoc/>
     public GatewayTimeoutError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

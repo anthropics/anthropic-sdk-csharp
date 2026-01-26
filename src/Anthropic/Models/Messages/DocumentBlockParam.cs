@@ -9,19 +9,27 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<DocumentBlockParam, DocumentBlockParamFromRaw>))]
-public sealed record class DocumentBlockParam : ModelBase
+[JsonConverter(typeof(JsonModelConverter<DocumentBlockParam, DocumentBlockParamFromRaw>))]
+public sealed record class DocumentBlockParam : JsonModel
 {
     public required Source Source
     {
-        get { return ModelBase.GetNotNullClass<Source>(this.RawData, "source"); }
-        init { ModelBase.Set(this._rawData, "source", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Source>("source");
+        }
+        init { this._rawData.Set("source", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -31,39 +39,47 @@ public sealed record class DocumentBlockParam : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     public CitationsConfigParam? Citations
     {
-        get { return ModelBase.GetNullableClass<CitationsConfigParam>(this.RawData, "citations"); }
-        init { ModelBase.Set(this._rawData, "citations", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CitationsConfigParam>("citations");
+        }
+        init { this._rawData.Set("citations", value); }
     }
 
     public string? Context
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "context"); }
-        init { ModelBase.Set(this._rawData, "context", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("context");
+        }
+        init { this._rawData.Set("context", value); }
     }
 
     public string? Title
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("title");
+        }
+        init { this._rawData.Set("title", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Source.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"document\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("document")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -75,7 +91,7 @@ public sealed record class DocumentBlockParam : ModelBase
 
     public DocumentBlockParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        this.Type = JsonSerializer.SerializeToElement("document");
     }
 
     public DocumentBlockParam(DocumentBlockParam documentBlockParam)
@@ -83,16 +99,16 @@ public sealed record class DocumentBlockParam : ModelBase
 
     public DocumentBlockParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"document\"");
+        this.Type = JsonSerializer.SerializeToElement("document");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     DocumentBlockParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -112,7 +128,7 @@ public sealed record class DocumentBlockParam : ModelBase
     }
 }
 
-class DocumentBlockParamFromRaw : IFromRaw<DocumentBlockParam>
+class DocumentBlockParamFromRaw : IFromRawJson<DocumentBlockParam>
 {
     /// <inheritdoc/>
     public DocumentBlockParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -120,15 +136,21 @@ class DocumentBlockParamFromRaw : IFromRaw<DocumentBlockParam>
 }
 
 [JsonConverter(typeof(SourceConverter))]
-public record class Source
+public record class Source : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public string? Data
@@ -136,10 +158,10 @@ public record class Source
         get
         {
             return Match<string?>(
-                base64PDF: (x) => x.Data,
+                base64Pdf: (x) => x.Data,
                 plainText: (x) => x.Data,
                 contentBlock: (_) => null,
-                urlPDF: (_) => null
+                urlPdf: (_) => null
             );
         }
     }
@@ -149,10 +171,10 @@ public record class Source
         get
         {
             return Match<JsonElement?>(
-                base64PDF: (x) => x.MediaType,
+                base64Pdf: (x) => x.MediaType,
                 plainText: (x) => x.MediaType,
                 contentBlock: (_) => null,
-                urlPDF: (_) => null
+                urlPdf: (_) => null
             );
         }
     }
@@ -162,61 +184,61 @@ public record class Source
         get
         {
             return Match(
-                base64PDF: (x) => x.Type,
+                base64Pdf: (x) => x.Type,
                 plainText: (x) => x.Type,
                 contentBlock: (x) => x.Type,
-                urlPDF: (x) => x.Type
+                urlPdf: (x) => x.Type
             );
         }
     }
 
-    public Source(Base64PDFSource value, JsonElement? json = null)
+    public Source(Base64PdfSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(PlainTextSource value, JsonElement? json = null)
+    public Source(PlainTextSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(ContentBlockSource value, JsonElement? json = null)
+    public Source(ContentBlockSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(URLPDFSource value, JsonElement? json = null)
+    public Source(UrlPdfSource value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Source(JsonElement json)
+    public Source(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="Base64PDFSource"/>.
+    /// type <see cref="Base64PdfSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBase64PDF(out var value)) {
-    ///     // `value` is of type `Base64PDFSource`
+    /// if (instance.TryPickBase64Pdf(out var value)) {
+    ///     // `value` is of type `Base64PdfSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBase64PDF([NotNullWhen(true)] out Base64PDFSource? value)
+    public bool TryPickBase64Pdf([NotNullWhen(true)] out Base64PdfSource? value)
     {
-        value = this.Value as Base64PDFSource;
+        value = this.Value as Base64PdfSource;
         return value != null;
     }
 
@@ -264,22 +286,22 @@ public record class Source
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="URLPDFSource"/>.
+    /// type <see cref="UrlPdfSource"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickURLPDF(out var value)) {
-    ///     // `value` is of type `URLPDFSource`
+    /// if (instance.TryPickUrlPdf(out var value)) {
+    ///     // `value` is of type `UrlPdfSource`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickURLPDF([NotNullWhen(true)] out URLPDFSource? value)
+    public bool TryPickUrlPdf([NotNullWhen(true)] out UrlPdfSource? value)
     {
-        value = this.Value as URLPDFSource;
+        value = this.Value as UrlPdfSource;
         return value != null;
     }
 
@@ -297,25 +319,25 @@ public record class Source
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (Base64PDFSource value) => {...},
+    ///     (Base64PdfSource value) => {...},
     ///     (PlainTextSource value) => {...},
     ///     (ContentBlockSource value) => {...},
-    ///     (URLPDFSource value) => {...}
+    ///     (UrlPdfSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<Base64PDFSource> base64PDF,
+        System::Action<Base64PdfSource> base64Pdf,
         System::Action<PlainTextSource> plainText,
         System::Action<ContentBlockSource> contentBlock,
-        System::Action<URLPDFSource> urlPDF
+        System::Action<UrlPdfSource> urlPdf
     )
     {
         switch (this.Value)
         {
-            case Base64PDFSource value:
-                base64PDF(value);
+            case Base64PdfSource value:
+                base64Pdf(value);
                 break;
             case PlainTextSource value:
                 plainText(value);
@@ -323,8 +345,8 @@ public record class Source
             case ContentBlockSource value:
                 contentBlock(value);
                 break;
-            case URLPDFSource value:
-                urlPDF(value);
+            case UrlPdfSource value:
+                urlPdf(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException("Data did not match any variant of Source");
@@ -346,40 +368,40 @@ public record class Source
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (Base64PDFSource value) => {...},
+    ///     (Base64PdfSource value) => {...},
     ///     (PlainTextSource value) => {...},
     ///     (ContentBlockSource value) => {...},
-    ///     (URLPDFSource value) => {...}
+    ///     (UrlPdfSource value) => {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<Base64PDFSource, T> base64PDF,
+        System::Func<Base64PdfSource, T> base64Pdf,
         System::Func<PlainTextSource, T> plainText,
         System::Func<ContentBlockSource, T> contentBlock,
-        System::Func<URLPDFSource, T> urlPDF
+        System::Func<UrlPdfSource, T> urlPdf
     )
     {
         return this.Value switch
         {
-            Base64PDFSource value => base64PDF(value),
+            Base64PdfSource value => base64Pdf(value),
             PlainTextSource value => plainText(value),
             ContentBlockSource value => contentBlock(value),
-            URLPDFSource value => urlPDF(value),
+            UrlPdfSource value => urlPdf(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of Source"
             ),
         };
     }
 
-    public static implicit operator Source(Base64PDFSource value) => new(value);
+    public static implicit operator Source(Base64PdfSource value) => new(value);
 
     public static implicit operator Source(PlainTextSource value) => new(value);
 
     public static implicit operator Source(ContentBlockSource value) => new(value);
 
-    public static implicit operator Source(URLPDFSource value) => new(value);
+    public static implicit operator Source(UrlPdfSource value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -391,17 +413,17 @@ public record class Source
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException("Data did not match any variant of Source");
         }
         this.Switch(
-            (base64PDF) => base64PDF.Validate(),
+            (base64Pdf) => base64Pdf.Validate(),
             (plainText) => plainText.Validate(),
             (contentBlock) => contentBlock.Validate(),
-            (urlPDF) => urlPDF.Validate()
+            (urlPdf) => urlPdf.Validate()
         );
     }
 
@@ -414,6 +436,9 @@ public record class Source
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class SourceConverter : JsonConverter<Source>
@@ -424,11 +449,11 @@ sealed class SourceConverter : JsonConverter<Source>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -441,11 +466,14 @@ sealed class SourceConverter : JsonConverter<Source>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<Base64PDFSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<Base64PdfSource>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -454,17 +482,20 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "text":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<PlainTextSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<PlainTextSource>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -473,20 +504,20 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "content":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<ContentBlockSource>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -495,17 +526,17 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "url":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<URLPDFSource>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<UrlPdfSource>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -514,11 +545,11 @@ sealed class SourceConverter : JsonConverter<Source>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new Source(json);
+                return new Source(element);
             }
         }
     }

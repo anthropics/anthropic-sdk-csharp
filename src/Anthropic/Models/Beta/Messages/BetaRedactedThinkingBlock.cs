@@ -8,19 +8,29 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaRedactedThinkingBlock, BetaRedactedThinkingBlockFromRaw>))]
-public sealed record class BetaRedactedThinkingBlock : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaRedactedThinkingBlock, BetaRedactedThinkingBlockFromRaw>)
+)]
+public sealed record class BetaRedactedThinkingBlock : JsonModel
 {
     public required string Data
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "data"); }
-        init { ModelBase.Set(this._rawData, "data", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("data");
+        }
+        init { this._rawData.Set("data", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +40,7 @@ public sealed record class BetaRedactedThinkingBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"")
+                JsonSerializer.SerializeToElement("redacted_thinking")
             )
         )
         {
@@ -40,7 +50,7 @@ public sealed record class BetaRedactedThinkingBlock : ModelBase
 
     public BetaRedactedThinkingBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
     public BetaRedactedThinkingBlock(BetaRedactedThinkingBlock betaRedactedThinkingBlock)
@@ -48,16 +58,16 @@ public sealed record class BetaRedactedThinkingBlock : ModelBase
 
     public BetaRedactedThinkingBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"redacted_thinking\"");
+        this.Type = JsonSerializer.SerializeToElement("redacted_thinking");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaRedactedThinkingBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +87,7 @@ public sealed record class BetaRedactedThinkingBlock : ModelBase
     }
 }
 
-class BetaRedactedThinkingBlockFromRaw : IFromRaw<BetaRedactedThinkingBlock>
+class BetaRedactedThinkingBlockFromRaw : IFromRawJson<BetaRedactedThinkingBlock>
 {
     /// <inheritdoc/>
     public BetaRedactedThinkingBlock FromRawUnchecked(

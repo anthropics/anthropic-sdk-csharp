@@ -8,8 +8,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ToolBash20250124, ToolBash20250124FromRaw>))]
-public sealed record class ToolBash20250124 : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ToolBash20250124, ToolBash20250124FromRaw>))]
+public sealed record class ToolBash20250124 : JsonModel
 {
     /// <summary>
     /// Name of the tool.
@@ -18,14 +18,22 @@ public sealed record class ToolBash20250124 : ModelBase
     /// </summary>
     public JsonElement Name
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "name"); }
-        init { ModelBase.Set(this._rawData, "name", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("name");
+        }
+        init { this._rawData.Set("name", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -35,24 +43,20 @@ public sealed record class ToolBash20250124 : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableClass<CacheControlEphemeral>(this.RawData, "cache_control");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<CacheControlEphemeral>("cache_control");
         }
-        init { ModelBase.Set(this._rawData, "cache_control", value); }
+        init { this._rawData.Set("cache_control", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.Deserialize<JsonElement>("\"bash\"")))
+        if (!JsonElement.DeepEquals(this.Name, JsonSerializer.SerializeToElement("bash")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("bash_20250124")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -61,8 +65,8 @@ public sealed record class ToolBash20250124 : ModelBase
 
     public ToolBash20250124()
     {
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("bash");
+        this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
     public ToolBash20250124(ToolBash20250124 toolBash20250124)
@@ -70,17 +74,17 @@ public sealed record class ToolBash20250124 : ModelBase
 
     public ToolBash20250124(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Name = JsonSerializer.Deserialize<JsonElement>("\"bash\"");
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"bash_20250124\"");
+        this.Name = JsonSerializer.SerializeToElement("bash");
+        this.Type = JsonSerializer.SerializeToElement("bash_20250124");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ToolBash20250124(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -93,7 +97,7 @@ public sealed record class ToolBash20250124 : ModelBase
     }
 }
 
-class ToolBash20250124FromRaw : IFromRaw<ToolBash20250124>
+class ToolBash20250124FromRaw : IFromRawJson<ToolBash20250124>
 {
     /// <inheritdoc/>
     public ToolBash20250124 FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

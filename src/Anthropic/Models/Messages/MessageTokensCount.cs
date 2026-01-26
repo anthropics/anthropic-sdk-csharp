@@ -7,8 +7,8 @@ using Anthropic.Core;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<MessageTokensCount, MessageTokensCountFromRaw>))]
-public sealed record class MessageTokensCount : ModelBase
+[JsonConverter(typeof(JsonModelConverter<MessageTokensCount, MessageTokensCountFromRaw>))]
+public sealed record class MessageTokensCount : JsonModel
 {
     /// <summary>
     /// The total number of tokens across the provided list of messages, system prompt,
@@ -16,8 +16,12 @@ public sealed record class MessageTokensCount : ModelBase
     /// </summary>
     public required long InputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "input_tokens"); }
-        init { ModelBase.Set(this._rawData, "input_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("input_tokens");
+        }
+        init { this._rawData.Set("input_tokens", value); }
     }
 
     /// <inheritdoc/>
@@ -33,14 +37,14 @@ public sealed record class MessageTokensCount : ModelBase
 
     public MessageTokensCount(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageTokensCount(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -60,7 +64,7 @@ public sealed record class MessageTokensCount : ModelBase
     }
 }
 
-class MessageTokensCountFromRaw : IFromRaw<MessageTokensCount>
+class MessageTokensCountFromRaw : IFromRawJson<MessageTokensCount>
 {
     /// <inheritdoc/>
     public MessageTokensCount FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

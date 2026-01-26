@@ -9,8 +9,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<MessageBatch, MessageBatchFromRaw>))]
-public sealed record class MessageBatch : ModelBase
+[JsonConverter(typeof(JsonModelConverter<MessageBatch, MessageBatchFromRaw>))]
+public sealed record class MessageBatch : JsonModel
 {
     /// <summary>
     /// Unique object identifier.
@@ -19,8 +19,12 @@ public sealed record class MessageBatch : ModelBase
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -31,9 +35,10 @@ public sealed record class MessageBatch : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableStruct<System::DateTimeOffset>(this.RawData, "archived_at");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
         }
-        init { ModelBase.Set(this._rawData, "archived_at", value); }
+        init { this._rawData.Set("archived_at", value); }
     }
 
     /// <summary>
@@ -44,12 +49,10 @@ public sealed record class MessageBatch : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableStruct<System::DateTimeOffset>(
-                this.RawData,
-                "cancel_initiated_at"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("cancel_initiated_at");
         }
-        init { ModelBase.Set(this._rawData, "cancel_initiated_at", value); }
+        init { this._rawData.Set("cancel_initiated_at", value); }
     }
 
     /// <summary>
@@ -60,9 +63,10 @@ public sealed record class MessageBatch : ModelBase
     {
         get
         {
-            return ModelBase.GetNotNullStruct<System::DateTimeOffset>(this.RawData, "created_at");
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
         }
-        init { ModelBase.Set(this._rawData, "created_at", value); }
+        init { this._rawData.Set("created_at", value); }
     }
 
     /// <summary>
@@ -76,9 +80,10 @@ public sealed record class MessageBatch : ModelBase
     {
         get
         {
-            return ModelBase.GetNullableStruct<System::DateTimeOffset>(this.RawData, "ended_at");
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<System::DateTimeOffset>("ended_at");
         }
-        init { ModelBase.Set(this._rawData, "ended_at", value); }
+        init { this._rawData.Set("ended_at", value); }
     }
 
     /// <summary>
@@ -89,9 +94,10 @@ public sealed record class MessageBatch : ModelBase
     {
         get
         {
-            return ModelBase.GetNotNullStruct<System::DateTimeOffset>(this.RawData, "expires_at");
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("expires_at");
         }
-        init { ModelBase.Set(this._rawData, "expires_at", value); }
+        init { this._rawData.Set("expires_at", value); }
     }
 
     /// <summary>
@@ -101,12 +107,12 @@ public sealed record class MessageBatch : ModelBase
     {
         get
         {
-            return ModelBase.GetNotNullClass<ApiEnum<string, ProcessingStatus>>(
-                this.RawData,
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, ProcessingStatus>>(
                 "processing_status"
             );
         }
-        init { ModelBase.Set(this._rawData, "processing_status", value); }
+        init { this._rawData.Set("processing_status", value); }
     }
 
     /// <summary>
@@ -120,12 +126,10 @@ public sealed record class MessageBatch : ModelBase
     {
         get
         {
-            return ModelBase.GetNotNullClass<MessageBatchRequestCounts>(
-                this.RawData,
-                "request_counts"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<MessageBatchRequestCounts>("request_counts");
         }
-        init { ModelBase.Set(this._rawData, "request_counts", value); }
+        init { this._rawData.Set("request_counts", value); }
     }
 
     /// <summary>
@@ -135,10 +139,14 @@ public sealed record class MessageBatch : ModelBase
     /// <para>Results in the file are not guaranteed to be in the same order as requests.
     /// Use the `custom_id` field to match results to requests.</para>
     /// </summary>
-    public required string? ResultsURL
+    public required string? ResultsUrl
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "results_url"); }
-        init { ModelBase.Set(this._rawData, "results_url", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("results_url");
+        }
+        init { this._rawData.Set("results_url", value); }
     }
 
     /// <summary>
@@ -148,8 +156,12 @@ public sealed record class MessageBatch : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -163,13 +175,8 @@ public sealed record class MessageBatch : ModelBase
         _ = this.ExpiresAt;
         this.ProcessingStatus.Validate();
         this.RequestCounts.Validate();
-        _ = this.ResultsURL;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_batch\"")
-            )
-        )
+        _ = this.ResultsUrl;
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("message_batch")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -177,7 +184,7 @@ public sealed record class MessageBatch : ModelBase
 
     public MessageBatch()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch");
     }
 
     public MessageBatch(MessageBatch messageBatch)
@@ -185,16 +192,16 @@ public sealed record class MessageBatch : ModelBase
 
     public MessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     MessageBatch(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -205,7 +212,7 @@ public sealed record class MessageBatch : ModelBase
     }
 }
 
-class MessageBatchFromRaw : IFromRaw<MessageBatch>
+class MessageBatchFromRaw : IFromRawJson<MessageBatch>
 {
     /// <inheritdoc/>
     public MessageBatch FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

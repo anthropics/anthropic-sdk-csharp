@@ -8,8 +8,10 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaThinkingConfigEnabled, BetaThinkingConfigEnabledFromRaw>))]
-public sealed record class BetaThinkingConfigEnabled : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaThinkingConfigEnabled, BetaThinkingConfigEnabledFromRaw>)
+)]
+public sealed record class BetaThinkingConfigEnabled : JsonModel
 {
     /// <summary>
     /// Determines how many tokens Claude can use for its internal reasoning process.
@@ -23,26 +25,29 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
     /// </summary>
     public required long BudgetTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "budget_tokens"); }
-        init { ModelBase.Set(this._rawData, "budget_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("budget_tokens");
+        }
+        init { this._rawData.Set("budget_tokens", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.BudgetTokens;
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"enabled\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("enabled")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -50,7 +55,7 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
 
     public BetaThinkingConfigEnabled()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
+        this.Type = JsonSerializer.SerializeToElement("enabled");
     }
 
     public BetaThinkingConfigEnabled(BetaThinkingConfigEnabled betaThinkingConfigEnabled)
@@ -58,16 +63,16 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
 
     public BetaThinkingConfigEnabled(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"enabled\"");
+        this.Type = JsonSerializer.SerializeToElement("enabled");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaThinkingConfigEnabled(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -87,7 +92,7 @@ public sealed record class BetaThinkingConfigEnabled : ModelBase
     }
 }
 
-class BetaThinkingConfigEnabledFromRaw : IFromRaw<BetaThinkingConfigEnabled>
+class BetaThinkingConfigEnabledFromRaw : IFromRawJson<BetaThinkingConfigEnabled>
 {
     /// <inheritdoc/>
     public BetaThinkingConfigEnabled FromRawUnchecked(

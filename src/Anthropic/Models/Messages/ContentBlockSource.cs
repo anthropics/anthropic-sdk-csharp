@@ -10,31 +10,34 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<ContentBlockSource, ContentBlockSourceFromRaw>))]
-public sealed record class ContentBlockSource : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ContentBlockSource, ContentBlockSourceFromRaw>))]
+public sealed record class ContentBlockSource : JsonModel
 {
     public required Content Content
     {
-        get { return ModelBase.GetNotNullClass<Content>(this.RawData, "content"); }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<Content>("content");
+        }
+        init { this._rawData.Set("content", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
         this.Content.Validate();
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("content")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -42,7 +45,7 @@ public sealed record class ContentBlockSource : ModelBase
 
     public ContentBlockSource()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = JsonSerializer.SerializeToElement("content");
     }
 
     public ContentBlockSource(ContentBlockSource contentBlockSource)
@@ -50,16 +53,16 @@ public sealed record class ContentBlockSource : ModelBase
 
     public ContentBlockSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content\"");
+        this.Type = JsonSerializer.SerializeToElement("content");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ContentBlockSource(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -79,7 +82,7 @@ public sealed record class ContentBlockSource : ModelBase
     }
 }
 
-class ContentBlockSourceFromRaw : IFromRaw<ContentBlockSource>
+class ContentBlockSourceFromRaw : IFromRawJson<ContentBlockSource>
 {
     /// <inheritdoc/>
     public ContentBlockSource FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -87,32 +90,38 @@ class ContentBlockSourceFromRaw : IFromRaw<ContentBlockSource>
 }
 
 [JsonConverter(typeof(ContentConverter))]
-public record class Content
+public record class Content : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
-    public Content(string value, JsonElement? json = null)
+    public Content(string value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Content(IReadOnlyList<ContentBlockSourceContent> value, JsonElement? json = null)
+    public Content(IReadOnlyList<ContentBlockSourceContent> value, JsonElement? element = null)
     {
         this.Value = ImmutableArray.ToImmutableArray(value);
-        this._json = json;
+        this._element = element;
     }
 
-    public Content(JsonElement json)
+    public Content(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -189,7 +198,7 @@ public record class Content
             case string value:
                 @string(value);
                 break;
-            case List<ContentBlockSourceContent> value:
+            case IReadOnlyList<ContentBlockSourceContent> value:
                 contentBlockSourceContent(value);
                 break;
             default:
@@ -250,7 +259,7 @@ public record class Content
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -267,6 +276,9 @@ public record class Content
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ContentConverter : JsonConverter<Content>
@@ -277,13 +289,13 @@ sealed class ContentConverter : JsonConverter<Content>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(json, options);
+            var deserialized = JsonSerializer.Deserialize<string>(element, options);
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -294,12 +306,12 @@ sealed class ContentConverter : JsonConverter<Content>
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<ContentBlockSourceContent>>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -307,7 +319,7 @@ sealed class ContentConverter : JsonConverter<Content>
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)

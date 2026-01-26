@@ -1,21 +1,28 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(typeof(RawContentBlockDeltaConverter))]
-public record class RawContentBlockDelta
+public record class RawContentBlockDelta : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -24,7 +31,7 @@ public record class RawContentBlockDelta
         {
             return Match(
                 text: (x) => x.Type,
-                inputJSON: (x) => x.Type,
+                inputJson: (x) => x.Type,
                 citations: (x) => x.Type,
                 thinking: (x) => x.Type,
                 signature: (x) => x.Type
@@ -32,39 +39,39 @@ public record class RawContentBlockDelta
         }
     }
 
-    public RawContentBlockDelta(TextDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(TextDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(InputJSONDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(InputJsonDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(CitationsDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(CitationsDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(ThinkingDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(ThinkingDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(SignatureDelta value, JsonElement? json = null)
+    public RawContentBlockDelta(SignatureDelta value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public RawContentBlockDelta(JsonElement json)
+    public RawContentBlockDelta(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -90,22 +97,22 @@ public record class RawContentBlockDelta
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="InputJSONDelta"/>.
+    /// type <see cref="InputJsonDelta"/>.
     ///
     /// <para>Consider using <see cref="Switch"> or <see cref="Match"> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickInputJSON(out var value)) {
-    ///     // `value` is of type `InputJSONDelta`
+    /// if (instance.TryPickInputJson(out var value)) {
+    ///     // `value` is of type `InputJsonDelta`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickInputJSON([NotNullWhen(true)] out InputJSONDelta? value)
+    public bool TryPickInputJson([NotNullWhen(true)] out InputJsonDelta? value)
     {
-        value = this.Value as InputJSONDelta;
+        value = this.Value as InputJsonDelta;
         return value != null;
     }
 
@@ -187,7 +194,7 @@ public record class RawContentBlockDelta
     /// <code>
     /// instance.Switch(
     ///     (TextDelta value) => {...},
-    ///     (InputJSONDelta value) => {...},
+    ///     (InputJsonDelta value) => {...},
     ///     (CitationsDelta value) => {...},
     ///     (ThinkingDelta value) => {...},
     ///     (SignatureDelta value) => {...}
@@ -197,7 +204,7 @@ public record class RawContentBlockDelta
     /// </summary>
     public void Switch(
         System::Action<TextDelta> text,
-        System::Action<InputJSONDelta> inputJSON,
+        System::Action<InputJsonDelta> inputJson,
         System::Action<CitationsDelta> citations,
         System::Action<ThinkingDelta> thinking,
         System::Action<SignatureDelta> signature
@@ -208,8 +215,8 @@ public record class RawContentBlockDelta
             case TextDelta value:
                 text(value);
                 break;
-            case InputJSONDelta value:
-                inputJSON(value);
+            case InputJsonDelta value:
+                inputJson(value);
                 break;
             case CitationsDelta value:
                 citations(value);
@@ -243,7 +250,7 @@ public record class RawContentBlockDelta
     /// <code>
     /// var result = instance.Match(
     ///     (TextDelta value) => {...},
-    ///     (InputJSONDelta value) => {...},
+    ///     (InputJsonDelta value) => {...},
     ///     (CitationsDelta value) => {...},
     ///     (ThinkingDelta value) => {...},
     ///     (SignatureDelta value) => {...}
@@ -253,7 +260,7 @@ public record class RawContentBlockDelta
     /// </summary>
     public T Match<T>(
         System::Func<TextDelta, T> text,
-        System::Func<InputJSONDelta, T> inputJSON,
+        System::Func<InputJsonDelta, T> inputJson,
         System::Func<CitationsDelta, T> citations,
         System::Func<ThinkingDelta, T> thinking,
         System::Func<SignatureDelta, T> signature
@@ -262,7 +269,7 @@ public record class RawContentBlockDelta
         return this.Value switch
         {
             TextDelta value => text(value),
-            InputJSONDelta value => inputJSON(value),
+            InputJsonDelta value => inputJson(value),
             CitationsDelta value => citations(value),
             ThinkingDelta value => thinking(value),
             SignatureDelta value => signature(value),
@@ -274,7 +281,7 @@ public record class RawContentBlockDelta
 
     public static implicit operator RawContentBlockDelta(TextDelta value) => new(value);
 
-    public static implicit operator RawContentBlockDelta(InputJSONDelta value) => new(value);
+    public static implicit operator RawContentBlockDelta(InputJsonDelta value) => new(value);
 
     public static implicit operator RawContentBlockDelta(CitationsDelta value) => new(value);
 
@@ -292,7 +299,7 @@ public record class RawContentBlockDelta
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -302,7 +309,7 @@ public record class RawContentBlockDelta
         }
         this.Switch(
             (text) => text.Validate(),
-            (inputJSON) => inputJSON.Validate(),
+            (inputJson) => inputJson.Validate(),
             (citations) => citations.Validate(),
             (thinking) => thinking.Validate(),
             (signature) => signature.Validate()
@@ -318,6 +325,9 @@ public record class RawContentBlockDelta
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
@@ -328,11 +338,11 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -345,11 +355,11 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<TextDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<TextDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -358,17 +368,17 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "input_json_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<InputJSONDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<InputJsonDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -377,17 +387,17 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "citations_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<CitationsDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<CitationsDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -396,17 +406,17 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "thinking_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<ThinkingDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -415,17 +425,17 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "signature_delta":
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<SignatureDelta>(json, options);
+                    var deserialized = JsonSerializer.Deserialize<SignatureDelta>(element, options);
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -434,11 +444,11 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new RawContentBlockDelta(json);
+                return new RawContentBlockDelta(element);
             }
         }
     }

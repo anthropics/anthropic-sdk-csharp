@@ -10,32 +10,38 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaToolSearchToolResultBlock, BetaToolSearchToolResultBlockFromRaw>)
+    typeof(JsonModelConverter<BetaToolSearchToolResultBlock, BetaToolSearchToolResultBlockFromRaw>)
 )]
-public sealed record class BetaToolSearchToolResultBlock : ModelBase
+public sealed record class BetaToolSearchToolResultBlock : JsonModel
 {
     public required BetaToolSearchToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaToolSearchToolResultBlockContent>(
-                this.RawData,
-                "content"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaToolSearchToolResultBlockContent>("content");
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -46,7 +52,7 @@ public sealed record class BetaToolSearchToolResultBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result\"")
+                JsonSerializer.SerializeToElement("tool_search_tool_result")
             )
         )
         {
@@ -56,7 +62,7 @@ public sealed record class BetaToolSearchToolResultBlock : ModelBase
 
     public BetaToolSearchToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result");
     }
 
     public BetaToolSearchToolResultBlock(
@@ -66,16 +72,16 @@ public sealed record class BetaToolSearchToolResultBlock : ModelBase
 
     public BetaToolSearchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolSearchToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -88,7 +94,7 @@ public sealed record class BetaToolSearchToolResultBlock : ModelBase
     }
 }
 
-class BetaToolSearchToolResultBlockFromRaw : IFromRaw<BetaToolSearchToolResultBlock>
+class BetaToolSearchToolResultBlockFromRaw : IFromRawJson<BetaToolSearchToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaToolSearchToolResultBlock FromRawUnchecked(
@@ -97,15 +103,21 @@ class BetaToolSearchToolResultBlockFromRaw : IFromRaw<BetaToolSearchToolResultBl
 }
 
 [JsonConverter(typeof(BetaToolSearchToolResultBlockContentConverter))]
-public record class BetaToolSearchToolResultBlockContent
+public record class BetaToolSearchToolResultBlockContent : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -121,25 +133,25 @@ public record class BetaToolSearchToolResultBlockContent
 
     public BetaToolSearchToolResultBlockContent(
         BetaToolSearchToolResultError value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
     public BetaToolSearchToolResultBlockContent(
         BetaToolSearchToolSearchResultBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaToolSearchToolResultBlockContent(JsonElement json)
+    public BetaToolSearchToolResultBlockContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -282,7 +294,7 @@ public record class BetaToolSearchToolResultBlockContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -305,6 +317,9 @@ public record class BetaToolSearchToolResultBlockContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaToolSearchToolResultBlockContentConverter
@@ -316,17 +331,17 @@ sealed class BetaToolSearchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultError>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -337,13 +352,13 @@ sealed class BetaToolSearchToolResultBlockContentConverter
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolSearchResultBlock>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -351,7 +366,7 @@ sealed class BetaToolSearchToolResultBlockContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

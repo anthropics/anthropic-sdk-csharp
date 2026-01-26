@@ -9,20 +9,24 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaMemoryTool20250818RenameCommand,
         BetaMemoryTool20250818RenameCommandFromRaw
     >)
 )]
-public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
+public sealed record class BetaMemoryTool20250818RenameCommand : JsonModel
 {
     /// <summary>
     /// Command type identifier
     /// </summary>
     public JsonElement Command
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "command"); }
-        init { ModelBase.Set(this._rawData, "command", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("command");
+        }
+        init { this._rawData.Set("command", value); }
     }
 
     /// <summary>
@@ -30,8 +34,12 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     /// </summary>
     public required string NewPath
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "new_path"); }
-        init { ModelBase.Set(this._rawData, "new_path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("new_path");
+        }
+        init { this._rawData.Set("new_path", value); }
     }
 
     /// <summary>
@@ -39,19 +47,18 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     /// </summary>
     public required string OldPath
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "old_path"); }
-        init { ModelBase.Set(this._rawData, "old_path", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("old_path");
+        }
+        init { this._rawData.Set("old_path", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Command,
-                JsonSerializer.Deserialize<JsonElement>("\"rename\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Command, JsonSerializer.SerializeToElement("rename")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -61,7 +68,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
 
     public BetaMemoryTool20250818RenameCommand()
     {
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
+        this.Command = JsonSerializer.SerializeToElement("rename");
     }
 
     public BetaMemoryTool20250818RenameCommand(
@@ -71,16 +78,16 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
 
     public BetaMemoryTool20250818RenameCommand(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Command = JsonSerializer.Deserialize<JsonElement>("\"rename\"");
+        this.Command = JsonSerializer.SerializeToElement("rename");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaMemoryTool20250818RenameCommand(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -93,7 +100,7 @@ public sealed record class BetaMemoryTool20250818RenameCommand : ModelBase
     }
 }
 
-class BetaMemoryTool20250818RenameCommandFromRaw : IFromRaw<BetaMemoryTool20250818RenameCommand>
+class BetaMemoryTool20250818RenameCommandFromRaw : IFromRawJson<BetaMemoryTool20250818RenameCommand>
 {
     /// <inheritdoc/>
     public BetaMemoryTool20250818RenameCommand FromRawUnchecked(

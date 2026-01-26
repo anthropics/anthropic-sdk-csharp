@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<AuthenticationError, AuthenticationErrorFromRaw>))]
-public sealed record class AuthenticationError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<AuthenticationError, AuthenticationErrorFromRaw>))]
+public sealed record class AuthenticationError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class AuthenticationError : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"")
+                JsonSerializer.SerializeToElement("authentication_error")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class AuthenticationError : ModelBase
 
     public AuthenticationError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
+        this.Type = JsonSerializer.SerializeToElement("authentication_error");
     }
 
     public AuthenticationError(AuthenticationError authenticationError)
@@ -48,16 +56,16 @@ public sealed record class AuthenticationError : ModelBase
 
     public AuthenticationError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"authentication_error\"");
+        this.Type = JsonSerializer.SerializeToElement("authentication_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     AuthenticationError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +85,7 @@ public sealed record class AuthenticationError : ModelBase
     }
 }
 
-class AuthenticationErrorFromRaw : IFromRaw<AuthenticationError>
+class AuthenticationErrorFromRaw : IFromRawJson<AuthenticationError>
 {
     /// <inheritdoc/>
     public AuthenticationError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

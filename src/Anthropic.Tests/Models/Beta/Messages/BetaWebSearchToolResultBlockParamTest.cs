@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -12,35 +13,33 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
-                        URL = "url",
+                        Url = "url",
                         PageAge = "page_age",
                     },
                 ]
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaWebSearchToolResultBlockParamContent expectedContent = new(
             [
-                new()
+                new BetaWebSearchResultBlockParam()
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                     PageAge = "page_age",
                 },
             ]
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result\""
-        );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -55,21 +54,24 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
-                        URL = "url",
+                        Url = "url",
                         PageAge = "page_age",
                     },
                 ]
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -81,39 +83,40 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
-                        URL = "url",
+                        Url = "url",
                         PageAge = "page_age",
                     },
                 ]
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaWebSearchToolResultBlockParamContent expectedContent = new(
             [
-                new()
+                new BetaWebSearchResultBlockParam()
                 {
                     EncryptedContent = "encrypted_content",
                     Title = "title",
-                    URL = "url",
+                    Url = "url",
                     PageAge = "page_age",
                 },
             ]
         );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"web_search_tool_result\""
-        );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -128,17 +131,17 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
-                        URL = "url",
+                        Url = "url",
                         PageAge = "page_age",
                     },
                 ]
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -151,11 +154,11 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
-                        URL = "url",
+                        Url = "url",
                         PageAge = "page_age",
                     },
                 ]
@@ -174,11 +177,11 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
-                        URL = "url",
+                        Url = "url",
                         PageAge = "page_age",
                     },
                 ]
@@ -196,11 +199,11 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
-                        URL = "url",
+                        Url = "url",
                         PageAge = "page_age",
                     },
                 ]
@@ -221,11 +224,11 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
         {
             Content = new(
                 [
-                    new()
+                    new BetaWebSearchResultBlockParam()
                     {
                         EncryptedContent = "encrypted_content",
                         Title = "title",
-                        URL = "url",
+                        Url = "url",
                         PageAge = "page_age",
                     },
                 ]

@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
@@ -17,15 +18,21 @@ namespace Anthropic.Models.Beta.Messages;
 /// for details.</para>
 /// </summary>
 [JsonConverter(typeof(BetaThinkingConfigParamConverter))]
-public record class BetaThinkingConfigParam
+public record class BetaThinkingConfigParam : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -33,21 +40,21 @@ public record class BetaThinkingConfigParam
         get { return Match(enabled: (x) => x.Type, disabled: (x) => x.Type); }
     }
 
-    public BetaThinkingConfigParam(BetaThinkingConfigEnabled value, JsonElement? json = null)
+    public BetaThinkingConfigParam(BetaThinkingConfigEnabled value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaThinkingConfigParam(BetaThinkingConfigDisabled value, JsonElement? json = null)
+    public BetaThinkingConfigParam(BetaThinkingConfigDisabled value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaThinkingConfigParam(JsonElement json)
+    public BetaThinkingConfigParam(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -184,7 +191,7 @@ public record class BetaThinkingConfigParam
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -204,6 +211,9 @@ public record class BetaThinkingConfigParam
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfigParam>
@@ -214,11 +224,11 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         string? type;
         try
         {
-            type = json.GetProperty("type").GetString();
+            type = element.GetProperty("type").GetString();
         }
         catch
         {
@@ -232,13 +242,13 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigEnabled>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -247,20 +257,20 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             case "disabled":
             {
                 try
                 {
                     var deserialized = JsonSerializer.Deserialize<BetaThinkingConfigDisabled>(
-                        json,
+                        element,
                         options
                     );
                     if (deserialized != null)
                     {
                         deserialized.Validate();
-                        return new(deserialized, json);
+                        return new(deserialized, element);
                     }
                 }
                 catch (System::Exception e)
@@ -269,11 +279,11 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
                     // ignore
                 }
 
-                return new(json);
+                return new(element);
             }
             default:
             {
-                return new BetaThinkingConfigParam(json);
+                return new BetaThinkingConfigParam(element);
             }
         }
     }

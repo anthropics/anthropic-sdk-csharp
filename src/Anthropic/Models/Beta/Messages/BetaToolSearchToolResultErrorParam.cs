@@ -10,28 +10,33 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaToolSearchToolResultErrorParam,
         BetaToolSearchToolResultErrorParamFromRaw
     >)
 )]
-public sealed record class BetaToolSearchToolResultErrorParam : ModelBase
+public sealed record class BetaToolSearchToolResultErrorParam : JsonModel
 {
     public required ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode> ErrorCode
     {
         get
         {
-            return ModelBase.GetNotNullClass<
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<
                 ApiEnum<string, BetaToolSearchToolResultErrorParamErrorCode>
-            >(this.RawData, "error_code");
+            >("error_code");
         }
-        init { ModelBase.Set(this._rawData, "error_code", value); }
+        init { this._rawData.Set("error_code", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -41,7 +46,7 @@ public sealed record class BetaToolSearchToolResultErrorParam : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result_error\"")
+                JsonSerializer.SerializeToElement("tool_search_tool_result_error")
             )
         )
         {
@@ -51,7 +56,7 @@ public sealed record class BetaToolSearchToolResultErrorParam : ModelBase
 
     public BetaToolSearchToolResultErrorParam()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result_error");
     }
 
     public BetaToolSearchToolResultErrorParam(
@@ -61,16 +66,16 @@ public sealed record class BetaToolSearchToolResultErrorParam : ModelBase
 
     public BetaToolSearchToolResultErrorParam(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"tool_search_tool_result_error\"");
+        this.Type = JsonSerializer.SerializeToElement("tool_search_tool_result_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaToolSearchToolResultErrorParam(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -92,7 +97,7 @@ public sealed record class BetaToolSearchToolResultErrorParam : ModelBase
     }
 }
 
-class BetaToolSearchToolResultErrorParamFromRaw : IFromRaw<BetaToolSearchToolResultErrorParam>
+class BetaToolSearchToolResultErrorParamFromRaw : IFromRawJson<BetaToolSearchToolResultErrorParam>
 {
     /// <inheritdoc/>
     public BetaToolSearchToolResultErrorParam FromRawUnchecked(

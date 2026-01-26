@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<PermissionError, PermissionErrorFromRaw>))]
-public sealed record class PermissionError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<PermissionError, PermissionErrorFromRaw>))]
+public sealed record class PermissionError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +38,7 @@ public sealed record class PermissionError : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"permission_error\"")
+                JsonSerializer.SerializeToElement("permission_error")
             )
         )
         {
@@ -40,7 +48,7 @@ public sealed record class PermissionError : ModelBase
 
     public PermissionError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
+        this.Type = JsonSerializer.SerializeToElement("permission_error");
     }
 
     public PermissionError(PermissionError permissionError)
@@ -48,16 +56,16 @@ public sealed record class PermissionError : ModelBase
 
     public PermissionError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"permission_error\"");
+        this.Type = JsonSerializer.SerializeToElement("permission_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     PermissionError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -75,7 +83,7 @@ public sealed record class PermissionError : ModelBase
     }
 }
 
-class PermissionErrorFromRaw : IFromRaw<PermissionError>
+class PermissionErrorFromRaw : IFromRawJson<PermissionError>
 {
     /// <inheritdoc/>
     public PermissionError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

@@ -1,21 +1,28 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 using System = System;
 
 namespace Anthropic.Models.Messages;
 
 [JsonConverter(typeof(ToolUnionConverter))]
-public record class ToolUnion
+public record class ToolUnion : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public CacheControlEphemeral? CacheControl
@@ -33,45 +40,45 @@ public record class ToolUnion
         }
     }
 
-    public ToolUnion(Tool value, JsonElement? json = null)
+    public ToolUnion(Tool value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolUnion(ToolBash20250124 value, JsonElement? json = null)
+    public ToolUnion(ToolBash20250124 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolUnion(ToolTextEditor20250124 value, JsonElement? json = null)
+    public ToolUnion(ToolTextEditor20250124 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolUnion(ToolTextEditor20250429 value, JsonElement? json = null)
+    public ToolUnion(ToolTextEditor20250429 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolUnion(ToolTextEditor20250728 value, JsonElement? json = null)
+    public ToolUnion(ToolTextEditor20250728 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolUnion(WebSearchTool20250305 value, JsonElement? json = null)
+    public ToolUnion(WebSearchTool20250305 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public ToolUnion(JsonElement json)
+    public ToolUnion(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -330,7 +337,7 @@ public record class ToolUnion
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -355,6 +362,9 @@ public record class ToolUnion
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class ToolUnionConverter : JsonConverter<ToolUnion>
@@ -365,14 +375,14 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Tool>(json, options);
+            var deserialized = JsonSerializer.Deserialize<Tool>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -382,11 +392,11 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(json, options);
+            var deserialized = JsonSerializer.Deserialize<ToolBash20250124>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -396,11 +406,11 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250124>(json, options);
+            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250124>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -410,11 +420,11 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(json, options);
+            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250429>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -424,11 +434,11 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(json, options);
+            var deserialized = JsonSerializer.Deserialize<ToolTextEditor20250728>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -438,11 +448,11 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(json, options);
+            var deserialized = JsonSerializer.Deserialize<WebSearchTool20250305>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -450,7 +460,7 @@ sealed class ToolUnionConverter : JsonConverter<ToolUnion>
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

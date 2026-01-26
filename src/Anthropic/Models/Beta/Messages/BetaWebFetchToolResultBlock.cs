@@ -10,32 +10,38 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaWebFetchToolResultBlock, BetaWebFetchToolResultBlockFromRaw>)
+    typeof(JsonModelConverter<BetaWebFetchToolResultBlock, BetaWebFetchToolResultBlockFromRaw>)
 )]
-public sealed record class BetaWebFetchToolResultBlock : ModelBase
+public sealed record class BetaWebFetchToolResultBlock : JsonModel
 {
     public required BetaWebFetchToolResultBlockContent Content
     {
         get
         {
-            return ModelBase.GetNotNullClass<BetaWebFetchToolResultBlockContent>(
-                this.RawData,
-                "content"
-            );
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaWebFetchToolResultBlockContent>("content");
         }
-        init { ModelBase.Set(this._rawData, "content", value); }
+        init { this._rawData.Set("content", value); }
     }
 
     public required string ToolUseID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "tool_use_id"); }
-        init { ModelBase.Set(this._rawData, "tool_use_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("tool_use_id");
+        }
+        init { this._rawData.Set("tool_use_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -46,7 +52,7 @@ public sealed record class BetaWebFetchToolResultBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result\"")
+                JsonSerializer.SerializeToElement("web_fetch_tool_result")
             )
         )
         {
@@ -56,7 +62,7 @@ public sealed record class BetaWebFetchToolResultBlock : ModelBase
 
     public BetaWebFetchToolResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result");
     }
 
     public BetaWebFetchToolResultBlock(BetaWebFetchToolResultBlock betaWebFetchToolResultBlock)
@@ -64,16 +70,16 @@ public sealed record class BetaWebFetchToolResultBlock : ModelBase
 
     public BetaWebFetchToolResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_fetch_tool_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_fetch_tool_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaWebFetchToolResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -86,7 +92,7 @@ public sealed record class BetaWebFetchToolResultBlock : ModelBase
     }
 }
 
-class BetaWebFetchToolResultBlockFromRaw : IFromRaw<BetaWebFetchToolResultBlock>
+class BetaWebFetchToolResultBlockFromRaw : IFromRawJson<BetaWebFetchToolResultBlock>
 {
     /// <inheritdoc/>
     public BetaWebFetchToolResultBlock FromRawUnchecked(
@@ -95,15 +101,21 @@ class BetaWebFetchToolResultBlockFromRaw : IFromRaw<BetaWebFetchToolResultBlock>
 }
 
 [JsonConverter(typeof(BetaWebFetchToolResultBlockContentConverter))]
-public record class BetaWebFetchToolResultBlockContent
+public record class BetaWebFetchToolResultBlockContent : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement Type
@@ -119,22 +131,22 @@ public record class BetaWebFetchToolResultBlockContent
 
     public BetaWebFetchToolResultBlockContent(
         BetaWebFetchToolResultErrorBlock value,
-        JsonElement? json = null
+        JsonElement? element = null
     )
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value, JsonElement? json = null)
+    public BetaWebFetchToolResultBlockContent(BetaWebFetchBlock value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public BetaWebFetchToolResultBlockContent(JsonElement json)
+    public BetaWebFetchToolResultBlockContent(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -274,7 +286,7 @@ public record class BetaWebFetchToolResultBlockContent
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -297,6 +309,9 @@ public record class BetaWebFetchToolResultBlockContent
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class BetaWebFetchToolResultBlockContentConverter
@@ -308,17 +323,17 @@ sealed class BetaWebFetchToolResultBlockContentConverter
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
             var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultErrorBlock>(
-                json,
+                element,
                 options
             );
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -328,11 +343,11 @@ sealed class BetaWebFetchToolResultBlockContentConverter
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaWebFetchBlock>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -340,7 +355,7 @@ sealed class BetaWebFetchToolResultBlockContentConverter
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(

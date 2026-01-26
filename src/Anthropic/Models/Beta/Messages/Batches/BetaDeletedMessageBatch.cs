@@ -8,16 +8,20 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
-[JsonConverter(typeof(ModelConverter<BetaDeletedMessageBatch, BetaDeletedMessageBatchFromRaw>))]
-public sealed record class BetaDeletedMessageBatch : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaDeletedMessageBatch, BetaDeletedMessageBatchFromRaw>))]
+public sealed record class BetaDeletedMessageBatch : JsonModel
 {
     /// <summary>
     /// ID of the Message Batch.
     /// </summary>
     public required string ID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "id"); }
-        init { ModelBase.Set(this._rawData, "id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("id");
+        }
+        init { this._rawData.Set("id", value); }
     }
 
     /// <summary>
@@ -27,8 +31,12 @@ public sealed record class BetaDeletedMessageBatch : ModelBase
     /// </summary>
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -38,7 +46,7 @@ public sealed record class BetaDeletedMessageBatch : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"")
+                JsonSerializer.SerializeToElement("message_batch_deleted")
             )
         )
         {
@@ -48,7 +56,7 @@ public sealed record class BetaDeletedMessageBatch : ModelBase
 
     public BetaDeletedMessageBatch()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
     public BetaDeletedMessageBatch(BetaDeletedMessageBatch betaDeletedMessageBatch)
@@ -56,16 +64,16 @@ public sealed record class BetaDeletedMessageBatch : ModelBase
 
     public BetaDeletedMessageBatch(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"message_batch_deleted\"");
+        this.Type = JsonSerializer.SerializeToElement("message_batch_deleted");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaDeletedMessageBatch(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -85,7 +93,7 @@ public sealed record class BetaDeletedMessageBatch : ModelBase
     }
 }
 
-class BetaDeletedMessageBatchFromRaw : IFromRaw<BetaDeletedMessageBatch>
+class BetaDeletedMessageBatchFromRaw : IFromRawJson<BetaDeletedMessageBatch>
 {
     /// <inheritdoc/>
     public BetaDeletedMessageBatch FromRawUnchecked(

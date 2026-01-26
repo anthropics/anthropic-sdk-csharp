@@ -8,37 +8,59 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(ModelConverter<BetaWebSearchResultBlock, BetaWebSearchResultBlockFromRaw>))]
-public sealed record class BetaWebSearchResultBlock : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaWebSearchResultBlock, BetaWebSearchResultBlockFromRaw>)
+)]
+public sealed record class BetaWebSearchResultBlock : JsonModel
 {
     public required string EncryptedContent
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "encrypted_content"); }
-        init { ModelBase.Set(this._rawData, "encrypted_content", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("encrypted_content");
+        }
+        init { this._rawData.Set("encrypted_content", value); }
     }
 
     public required string? PageAge
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "page_age"); }
-        init { ModelBase.Set(this._rawData, "page_age", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("page_age");
+        }
+        init { this._rawData.Set("page_age", value); }
     }
 
     public required string Title
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "title"); }
-        init { ModelBase.Set(this._rawData, "title", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("title");
+        }
+        init { this._rawData.Set("title", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
-    public required string URL
+    public required string Url
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "url"); }
-        init { ModelBase.Set(this._rawData, "url", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("url");
+        }
+        init { this._rawData.Set("url", value); }
     }
 
     /// <inheritdoc/>
@@ -50,18 +72,18 @@ public sealed record class BetaWebSearchResultBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"")
+                JsonSerializer.SerializeToElement("web_search_result")
             )
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        _ = this.URL;
+        _ = this.Url;
     }
 
     public BetaWebSearchResultBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_result");
     }
 
     public BetaWebSearchResultBlock(BetaWebSearchResultBlock betaWebSearchResultBlock)
@@ -69,16 +91,16 @@ public sealed record class BetaWebSearchResultBlock : ModelBase
 
     public BetaWebSearchResultBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"web_search_result\"");
+        this.Type = JsonSerializer.SerializeToElement("web_search_result");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaWebSearchResultBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -91,7 +113,7 @@ public sealed record class BetaWebSearchResultBlock : ModelBase
     }
 }
 
-class BetaWebSearchResultBlockFromRaw : IFromRaw<BetaWebSearchResultBlock>
+class BetaWebSearchResultBlockFromRaw : IFromRawJson<BetaWebSearchResultBlock>
 {
     /// <inheritdoc/>
     public BetaWebSearchResultBlock FromRawUnchecked(

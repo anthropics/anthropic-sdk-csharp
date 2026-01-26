@@ -8,19 +8,27 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
-[JsonConverter(typeof(ModelConverter<BetaNotFoundError, BetaNotFoundErrorFromRaw>))]
-public sealed record class BetaNotFoundError : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaNotFoundError, BetaNotFoundErrorFromRaw>))]
+public sealed record class BetaNotFoundError : JsonModel
 {
     public required string Message
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "message"); }
-        init { ModelBase.Set(this._rawData, "message", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("message");
+        }
+        init { this._rawData.Set("message", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -28,10 +36,7 @@ public sealed record class BetaNotFoundError : ModelBase
     {
         _ = this.Message;
         if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"")
-            )
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("not_found_error"))
         )
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -40,7 +45,7 @@ public sealed record class BetaNotFoundError : ModelBase
 
     public BetaNotFoundError()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
+        this.Type = JsonSerializer.SerializeToElement("not_found_error");
     }
 
     public BetaNotFoundError(BetaNotFoundError betaNotFoundError)
@@ -48,16 +53,16 @@ public sealed record class BetaNotFoundError : ModelBase
 
     public BetaNotFoundError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"not_found_error\"");
+        this.Type = JsonSerializer.SerializeToElement("not_found_error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaNotFoundError(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +82,7 @@ public sealed record class BetaNotFoundError : ModelBase
     }
 }
 
-class BetaNotFoundErrorFromRaw : IFromRaw<BetaNotFoundError>
+class BetaNotFoundErrorFromRaw : IFromRawJson<BetaNotFoundError>
 {
     /// <inheritdoc/>
     public BetaNotFoundError FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

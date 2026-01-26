@@ -11,19 +11,29 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Response model for a file uploaded to the container.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaContainerUploadBlock, BetaContainerUploadBlockFromRaw>))]
-public sealed record class BetaContainerUploadBlock : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<BetaContainerUploadBlock, BetaContainerUploadBlockFromRaw>)
+)]
+public sealed record class BetaContainerUploadBlock : JsonModel
 {
     public required string FileID
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawData, "file_id"); }
-        init { ModelBase.Set(this._rawData, "file_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("file_id");
+        }
+        init { this._rawData.Set("file_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -33,7 +43,7 @@ public sealed record class BetaContainerUploadBlock : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"container_upload\"")
+                JsonSerializer.SerializeToElement("container_upload")
             )
         )
         {
@@ -43,7 +53,7 @@ public sealed record class BetaContainerUploadBlock : ModelBase
 
     public BetaContainerUploadBlock()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        this.Type = JsonSerializer.SerializeToElement("container_upload");
     }
 
     public BetaContainerUploadBlock(BetaContainerUploadBlock betaContainerUploadBlock)
@@ -51,16 +61,16 @@ public sealed record class BetaContainerUploadBlock : ModelBase
 
     public BetaContainerUploadBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"container_upload\"");
+        this.Type = JsonSerializer.SerializeToElement("container_upload");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaContainerUploadBlock(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -80,7 +90,7 @@ public sealed record class BetaContainerUploadBlock : ModelBase
     }
 }
 
-class BetaContainerUploadBlockFromRaw : IFromRaw<BetaContainerUploadBlock>
+class BetaContainerUploadBlockFromRaw : IFromRawJson<BetaContainerUploadBlock>
 {
     /// <inheritdoc/>
     public BetaContainerUploadBlock FromRawUnchecked(

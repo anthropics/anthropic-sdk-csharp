@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Models.Messages;
@@ -7,393 +8,395 @@ namespace Anthropic.Tests.Models.Messages;
 public class ContentBlockParamTest : TestBase
 {
     [Fact]
-    public void textValidation_Works()
+    public void TextValidationWorks()
     {
-        ContentBlockParam value = new(
-            new TextBlockParam()
-            {
-                Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations =
-                [
-                    new CitationCharLocationParam()
-                    {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
-                    },
-                ],
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void imageValidation_Works()
-    {
-        ContentBlockParam value = new(
-            new ImageBlockParam()
-            {
-                Source = new Base64ImageSource()
+        ContentBlockParam value = new TextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new CitationCharLocationParam()
                 {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
-        );
+            ],
+        };
         value.Validate();
     }
 
     [Fact]
-    public void documentValidation_Works()
+    public void ImageValidationWorks()
     {
-        ContentBlockParam value = new(
-            new DocumentBlockParam()
+        ContentBlockParam value = new ImageBlockParam()
+        {
+            Source = new Base64ImageSource()
             {
-                Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations = new() { Enabled = true },
-                Context = "x",
-                Title = "x",
-            }
-        );
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
         value.Validate();
     }
 
     [Fact]
-    public void search_resultValidation_Works()
+    public void DocumentValidationWorks()
     {
-        ContentBlockParam value = new(
-            new SearchResultBlockParam()
-            {
-                Content =
-                [
-                    new()
-                    {
-                        Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
-                        Citations =
-                        [
-                            new CitationCharLocationParam()
-                            {
-                                CitedText = "cited_text",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    },
-                ],
-                Source = "source",
-                Title = "title",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations = new() { Enabled = true },
-            }
-        );
+        ContentBlockParam value = new DocumentBlockParam()
+        {
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void thinkingValidation_Works()
+    public void SearchResultValidationWorks()
     {
-        ContentBlockParam value = new(
-            new ThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void redacted_thinkingValidation_Works()
-    {
-        ContentBlockParam value = new(new RedactedThinkingBlockParam("data"));
-        value.Validate();
-    }
-
-    [Fact]
-    public void tool_useValidation_Works()
-    {
-        ContentBlockParam value = new(
-            new ToolUseBlockParam()
-            {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
+        ContentBlockParam value = new SearchResultBlockParam()
+        {
+            Content =
+            [
+                new()
                 {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void tool_resultValidation_Works()
-    {
-        ContentBlockParam value = new(
-            new ToolResultBlockParam()
-            {
-                ToolUseID = "tool_use_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Content = "string",
-                IsError = true,
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void server_tool_useValidation_Works()
-    {
-        ContentBlockParam value = new(
-            new ServerToolUseBlockParam()
-            {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
-        );
-        value.Validate();
-    }
-
-    [Fact]
-    public void web_search_tool_resultValidation_Works()
-    {
-        ContentBlockParam value = new(
-            new WebSearchToolResultBlockParam()
-            {
-                Content = new(
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
                     [
-                        new()
+                        new CitationCharLocationParam()
                         {
-                            EncryptedContent = "encrypted_content",
-                            Title = "title",
-                            URL = "url",
-                            PageAge = "page_age",
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
                         },
-                    ]
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
-        );
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        };
         value.Validate();
     }
 
     [Fact]
-    public void textSerializationRoundtrip_Works()
+    public void ThinkingValidationWorks()
     {
-        ContentBlockParam value = new(
-            new TextBlockParam()
+        ContentBlockParam value = new ThinkingBlockParam()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void RedactedThinkingValidationWorks()
+    {
+        ContentBlockParam value = new RedactedThinkingBlockParam("data");
+        value.Validate();
+    }
+
+    [Fact]
+    public void ToolUseValidationWorks()
+    {
+        ContentBlockParam value = new ToolUseBlockParam()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
             {
-                Text = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations =
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ToolResultValidationWorks()
+    {
+        ContentBlockParam value = new ToolResultBlockParam()
+        {
+            ToolUseID = "tool_use_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "string",
+            IsError = true,
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ServerToolUseValidationWorks()
+    {
+        ContentBlockParam value = new ServerToolUseBlockParam()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void WebSearchToolResultValidationWorks()
+    {
+        ContentBlockParam value = new WebSearchToolResultBlockParam()
+        {
+            Content = new(
                 [
-                    new CitationCharLocationParam()
+                    new WebSearchResultBlockParam()
                     {
-                        CitedText = "cited_text",
-                        DocumentIndex = 0,
-                        DocumentTitle = "x",
-                        EndCharIndex = 0,
-                        StartCharIndex = 0,
+                        EncryptedContent = "encrypted_content",
+                        Title = "title",
+                        Url = "url",
+                        PageAge = "page_age",
                     },
-                ],
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
-
-        Assert.Equal(value, deserialized);
+                ]
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        value.Validate();
     }
 
     [Fact]
-    public void imageSerializationRoundtrip_Works()
+    public void TextSerializationRoundtripWorks()
     {
-        ContentBlockParam value = new(
-            new ImageBlockParam()
-            {
-                Source = new Base64ImageSource()
+        ContentBlockParam value = new TextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new CitationCharLocationParam()
                 {
-                    Data = "U3RhaW5sZXNzIHJvY2tz",
-                    MediaType = MediaType.ImageJPEG,
+                    CitedText = "cited_text",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
                 },
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
+            ],
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void documentSerializationRoundtrip_Works()
+    public void ImageSerializationRoundtripWorks()
     {
-        ContentBlockParam value = new(
-            new DocumentBlockParam()
+        ContentBlockParam value = new ImageBlockParam()
+        {
+            Source = new Base64ImageSource()
             {
-                Source = new Base64PDFSource("U3RhaW5sZXNzIHJvY2tz"),
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations = new() { Enabled = true },
-                Context = "x",
-                Title = "x",
-            }
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void search_resultSerializationRoundtrip_Works()
+    public void DocumentSerializationRoundtripWorks()
     {
-        ContentBlockParam value = new(
-            new SearchResultBlockParam()
-            {
-                Content =
-                [
-                    new()
-                    {
-                        Text = "x",
-                        CacheControl = new() { TTL = TTL.TTL5m },
-                        Citations =
-                        [
-                            new CitationCharLocationParam()
-                            {
-                                CitedText = "cited_text",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    },
-                ],
-                Source = "source",
-                Title = "title",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Citations = new() { Enabled = true },
-            }
+        ContentBlockParam value = new DocumentBlockParam()
+        {
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void thinkingSerializationRoundtrip_Works()
+    public void SearchResultSerializationRoundtripWorks()
     {
-        ContentBlockParam value = new(
-            new ThinkingBlockParam() { Signature = "signature", Thinking = "thinking" }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void redacted_thinkingSerializationRoundtrip_Works()
-    {
-        ContentBlockParam value = new(new RedactedThinkingBlockParam("data"));
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void tool_useSerializationRoundtrip_Works()
-    {
-        ContentBlockParam value = new(
-            new ToolUseBlockParam()
-            {
-                ID = "id",
-                Input = new Dictionary<string, JsonElement>()
+        ContentBlockParam value = new SearchResultBlockParam()
+        {
+            Content =
+            [
+                new()
                 {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                Name = "x",
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void tool_resultSerializationRoundtrip_Works()
-    {
-        ContentBlockParam value = new(
-            new ToolResultBlockParam()
-            {
-                ToolUseID = "tool_use_id",
-                CacheControl = new() { TTL = TTL.TTL5m },
-                Content = "string",
-                IsError = true,
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void server_tool_useSerializationRoundtrip_Works()
-    {
-        ContentBlockParam value = new(
-            new ServerToolUseBlockParam()
-            {
-                ID = "srvtoolu_SQfNkl1n_JR_",
-                Input = new Dictionary<string, JsonElement>()
-                {
-                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                },
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void web_search_tool_resultSerializationRoundtrip_Works()
-    {
-        ContentBlockParam value = new(
-            new WebSearchToolResultBlockParam()
-            {
-                Content = new(
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
                     [
-                        new()
+                        new CitationCharLocationParam()
                         {
-                            EncryptedContent = "encrypted_content",
-                            Title = "title",
-                            URL = "url",
-                            PageAge = "page_age",
+                            CitedText = "cited_text",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
                         },
-                    ]
-                ),
-                ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-                CacheControl = new() { TTL = TTL.TTL5m },
-            }
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
         );
-        string json = JsonSerializer.Serialize(value);
-        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(json);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ThinkingSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new ThinkingBlockParam()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void RedactedThinkingSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new RedactedThinkingBlockParam("data");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ToolUseSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new ToolUseBlockParam()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ToolResultSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new ToolResultBlockParam()
+        {
+            ToolUseID = "tool_use_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "string",
+            IsError = true,
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ServerToolUseSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new ServerToolUseBlockParam()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WebSearchToolResultSerializationRoundtripWorks()
+    {
+        ContentBlockParam value = new WebSearchToolResultBlockParam()
+        {
+            Content = new(
+                [
+                    new WebSearchResultBlockParam()
+                    {
+                        EncryptedContent = "encrypted_content",
+                        Title = "title",
+                        Url = "url",
+                        PageAge = "page_age",
+                    },
+                ]
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ContentBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

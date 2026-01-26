@@ -8,20 +8,24 @@ using Anthropic.Core;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<
+    typeof(JsonModelConverter<
         BetaCountTokensContextManagementResponse,
         BetaCountTokensContextManagementResponseFromRaw
     >)
 )]
-public sealed record class BetaCountTokensContextManagementResponse : ModelBase
+public sealed record class BetaCountTokensContextManagementResponse : JsonModel
 {
     /// <summary>
     /// The original token count before context management was applied
     /// </summary>
     public required long OriginalInputTokens
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "original_input_tokens"); }
-        init { ModelBase.Set(this._rawData, "original_input_tokens", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("original_input_tokens");
+        }
+        init { this._rawData.Set("original_input_tokens", value); }
     }
 
     /// <inheritdoc/>
@@ -41,14 +45,14 @@ public sealed record class BetaCountTokensContextManagementResponse : ModelBase
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaCountTokensContextManagementResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -69,7 +73,7 @@ public sealed record class BetaCountTokensContextManagementResponse : ModelBase
 }
 
 class BetaCountTokensContextManagementResponseFromRaw
-    : IFromRaw<BetaCountTokensContextManagementResponse>
+    : IFromRawJson<BetaCountTokensContextManagementResponse>
 {
     /// <inheritdoc/>
     public BetaCountTokensContextManagementResponse FromRawUnchecked(

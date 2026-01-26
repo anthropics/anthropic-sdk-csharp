@@ -23,29 +23,31 @@ public struct ClientOptions()
     /// </summary>
     public HttpClient HttpClient { get; set; } = new();
 
-    Lazy<Uri> _baseUrl = new(() =>
-        new Uri(
-            Environment.GetEnvironmentVariable("ANTHROPIC_BASE_URL") ?? "https://api.anthropic.com"
-        )
+    Lazy<string> _baseUrl = new(() =>
+        Environment.GetEnvironmentVariable("ANTHROPIC_BASE_URL") ?? EnvironmentUrl.Production
     );
 
     /// <summary>
     /// The base URL to use for every request.
     ///
-    /// <para>Defaults to the production environment: https://api.anthropic.com</para>
+    /// <para>Defaults to the production environment: <see cref="EnvironmentUrl.Production"/></para>
     /// </summary>
-    public Uri BaseUrl
+    public string BaseUrl
     {
         readonly get { return _baseUrl.Value; }
         set { _baseUrl = new(() => value); }
     }
 
     /// <summary>
-    /// Whether to validate every response before returning it.
+    /// Whether to validate response bodies before returning them.
     ///
-    /// <para>Defaults to false, which means the shape of the response will not be
-    /// validated upfront. Instead, validation will only occur for the parts of the
-    /// response that are accessed.</para>
+    /// <para>Defaults to false, which means the shape of the response body will not be validated upfront.
+    /// Instead, validation will only occur for the parts of the response body that are accessed.</para>
+    ///
+    /// <para>Note that when set to true, the response body is only validated if the response is
+    /// deserialized. Methods that don't eagerly deserialize the response, such as those on
+    /// <see cref="IAnthropicClient.WithRawResponse"/>, don't perform validation until deserialization
+    /// is triggered.</para>
     /// </summary>
     public bool ResponseValidation { get; set; } = false;
 
@@ -81,7 +83,7 @@ public struct ClientOptions()
     public TimeSpan? Timeout { get; set; }
 
     Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"));
-    public string? APIKey
+    public string? ApiKey
     {
         readonly get { return _apiKey.Value; }
         set { _apiKey = new(() => value); }

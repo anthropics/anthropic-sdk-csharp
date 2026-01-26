@@ -8,19 +8,29 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(ModelConverter<RawContentBlockStopEvent, RawContentBlockStopEventFromRaw>))]
-public sealed record class RawContentBlockStopEvent : ModelBase
+[JsonConverter(
+    typeof(JsonModelConverter<RawContentBlockStopEvent, RawContentBlockStopEventFromRaw>)
+)]
+public sealed record class RawContentBlockStopEvent : JsonModel
 {
     public required long Index
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { ModelBase.Set(this._rawData, "index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("index");
+        }
+        init { this._rawData.Set("index", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -30,7 +40,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"")
+                JsonSerializer.SerializeToElement("content_block_stop")
             )
         )
         {
@@ -40,7 +50,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase
 
     public RawContentBlockStopEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_stop");
     }
 
     public RawContentBlockStopEvent(RawContentBlockStopEvent rawContentBlockStopEvent)
@@ -48,16 +58,16 @@ public sealed record class RawContentBlockStopEvent : ModelBase
 
     public RawContentBlockStopEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_stop\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_stop");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     RawContentBlockStopEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -77,7 +87,7 @@ public sealed record class RawContentBlockStopEvent : ModelBase
     }
 }
 
-class RawContentBlockStopEventFromRaw : IFromRaw<RawContentBlockStopEvent>
+class RawContentBlockStopEventFromRaw : IFromRawJson<RawContentBlockStopEvent>
 {
     /// <inheritdoc/>
     public RawContentBlockStopEvent FromRawUnchecked(

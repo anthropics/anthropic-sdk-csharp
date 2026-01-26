@@ -8,25 +8,37 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models;
 
-[JsonConverter(typeof(ModelConverter<ErrorResponse, ErrorResponseFromRaw>))]
-public sealed record class ErrorResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ErrorResponse, ErrorResponseFromRaw>))]
+public sealed record class ErrorResponse : JsonModel
 {
     public required ErrorObject Error
     {
-        get { return ModelBase.GetNotNullClass<ErrorObject>(this.RawData, "error"); }
-        init { ModelBase.Set(this._rawData, "error", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ErrorObject>("error");
+        }
+        init { this._rawData.Set("error", value); }
     }
 
     public required string? RequestID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "request_id"); }
-        init { ModelBase.Set(this._rawData, "request_id", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("request_id");
+        }
+        init { this._rawData.Set("request_id", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -34,9 +46,7 @@ public sealed record class ErrorResponse : ModelBase
     {
         this.Error.Validate();
         _ = this.RequestID;
-        if (
-            !JsonElement.DeepEquals(this.Type, JsonSerializer.Deserialize<JsonElement>("\"error\""))
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("error")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -44,7 +54,7 @@ public sealed record class ErrorResponse : ModelBase
 
     public ErrorResponse()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+        this.Type = JsonSerializer.SerializeToElement("error");
     }
 
     public ErrorResponse(ErrorResponse errorResponse)
@@ -52,16 +62,16 @@ public sealed record class ErrorResponse : ModelBase
 
     public ErrorResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"error\"");
+        this.Type = JsonSerializer.SerializeToElement("error");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ErrorResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -72,7 +82,7 @@ public sealed record class ErrorResponse : ModelBase
     }
 }
 
-class ErrorResponseFromRaw : IFromRaw<ErrorResponse>
+class ErrorResponseFromRaw : IFromRawJson<ErrorResponse>
 {
     /// <inheritdoc/>
     public ErrorResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

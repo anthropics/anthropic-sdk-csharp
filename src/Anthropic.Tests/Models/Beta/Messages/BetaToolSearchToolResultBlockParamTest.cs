@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -14,7 +15,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         BetaToolSearchToolResultBlockParamContent expectedContent =
@@ -22,10 +23,8 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_result\""
-        );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
@@ -42,11 +41,14 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(json);
+        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -60,11 +62,14 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(json);
+        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         BetaToolSearchToolResultBlockParamContent expectedContent =
@@ -72,10 +77,8 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             );
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
-        JsonElement expectedType = JsonSerializer.Deserialize<JsonElement>(
-            "\"tool_search_tool_result\""
-        );
-        BetaCacheControlEphemeral expectedCacheControl = new() { TTL = TTL.TTL5m };
+        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
+        BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
@@ -92,7 +95,7 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
                 BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
             ),
             ToolUseID = "srvtoolu_SQfNkl1n_JR_",
-            CacheControl = new() { TTL = TTL.TTL5m },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
         model.Validate();
@@ -164,66 +167,62 @@ public class BetaToolSearchToolResultBlockParamTest : TestBase
 public class BetaToolSearchToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void beta_tool_search_tool_result_error_paramValidation_Works()
+    public void BetaToolSearchToolResultErrorParamValidationWorks()
     {
-        BetaToolSearchToolResultBlockParamContent value = new(
-            new BetaToolSearchToolResultErrorParam(
-                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
-            )
+        BetaToolSearchToolResultBlockParamContent value = new BetaToolSearchToolResultErrorParam(
+            BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
         );
         value.Validate();
     }
 
     [Fact]
-    public void beta_tool_search_tool_search_result_block_paramValidation_Works()
+    public void BetaToolSearchToolSearchResultBlockParamValidationWorks()
     {
-        BetaToolSearchToolResultBlockParamContent value = new(
+        BetaToolSearchToolResultBlockParamContent value =
             new BetaToolSearchToolSearchResultBlockParam(
                 [
                     new()
                     {
                         ToolName = "tool_name",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                     },
                 ]
-            )
-        );
+            );
         value.Validate();
     }
 
     [Fact]
-    public void beta_tool_search_tool_result_error_paramSerializationRoundtrip_Works()
+    public void BetaToolSearchToolResultErrorParamSerializationRoundtripWorks()
     {
-        BetaToolSearchToolResultBlockParamContent value = new(
-            new BetaToolSearchToolResultErrorParam(
-                BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
-            )
+        BetaToolSearchToolResultBlockParamContent value = new BetaToolSearchToolResultErrorParam(
+            BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput
         );
-        string json = JsonSerializer.Serialize(value);
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
-            json
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void beta_tool_search_tool_search_result_block_paramSerializationRoundtrip_Works()
+    public void BetaToolSearchToolSearchResultBlockParamSerializationRoundtripWorks()
     {
-        BetaToolSearchToolResultBlockParamContent value = new(
+        BetaToolSearchToolResultBlockParamContent value =
             new BetaToolSearchToolSearchResultBlockParam(
                 [
                     new()
                     {
                         ToolName = "tool_name",
-                        CacheControl = new() { TTL = TTL.TTL5m },
+                        CacheControl = new() { Ttl = Ttl.Ttl5m },
                     },
                 ]
-            )
-        );
-        string json = JsonSerializer.Serialize(value);
+            );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaToolSearchToolResultBlockParamContent>(
-            json
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);

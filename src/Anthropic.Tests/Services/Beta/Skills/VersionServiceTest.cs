@@ -9,7 +9,11 @@ public class VersionServiceTest
     [AnthropicTestClients]
     public async Task Create_Works(IAnthropicClient client)
     {
-        var version = await client.Beta.Skills.Versions.Create("skill_id");
+        var version = await client.Beta.Skills.Versions.Create(
+            "skill_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         version.Validate();
     }
 
@@ -19,7 +23,8 @@ public class VersionServiceTest
     {
         var version = await client.Beta.Skills.Versions.Retrieve(
             "version",
-            new() { SkillID = "skill_id" }
+            new() { SkillID = "skill_id" },
+            TestContext.Current.CancellationToken
         );
         version.Validate();
     }
@@ -28,7 +33,11 @@ public class VersionServiceTest
     [AnthropicTestClients]
     public async Task List_Works(IAnthropicClient client)
     {
-        var page = await client.Beta.Skills.Versions.List("skill_id");
+        var page = await client.Beta.Skills.Versions.List(
+            "skill_id",
+            new(),
+            TestContext.Current.CancellationToken
+        );
         page.Validate();
     }
 
@@ -38,7 +47,8 @@ public class VersionServiceTest
     {
         var version = await client.Beta.Skills.Versions.Delete(
             "version",
-            new() { SkillID = "skill_id" }
+            new() { SkillID = "skill_id" },
+            TestContext.Current.CancellationToken
         );
         version.Validate();
     }

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models.Beta.Messages;
 
 namespace Anthropic.Tests.Models.Beta.Messages;
@@ -6,62 +7,58 @@ namespace Anthropic.Tests.Models.Beta.Messages;
 public class BetaCodeExecutionToolResultBlockParamContentTest : TestBase
 {
     [Fact]
-    public void error_paramValidation_Works()
+    public void ErrorParamValidationWorks()
     {
-        BetaCodeExecutionToolResultBlockParamContent value = new(
+        BetaCodeExecutionToolResultBlockParamContent value =
             new BetaCodeExecutionToolResultErrorParam(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
-            )
-        );
+            );
         value.Validate();
     }
 
     [Fact]
-    public void result_block_paramValidation_Works()
+    public void ResultBlockParamValidationWorks()
     {
-        BetaCodeExecutionToolResultBlockParamContent value = new(
-            new BetaCodeExecutionResultBlockParam()
-            {
-                Content = [new("file_id")],
-                ReturnCode = 0,
-                Stderr = "stderr",
-                Stdout = "stdout",
-            }
-        );
+        BetaCodeExecutionToolResultBlockParamContent value = new BetaCodeExecutionResultBlockParam()
+        {
+            Content = [new("file_id")],
+            ReturnCode = 0,
+            Stderr = "stderr",
+            Stdout = "stdout",
+        };
         value.Validate();
     }
 
     [Fact]
-    public void error_paramSerializationRoundtrip_Works()
+    public void ErrorParamSerializationRoundtripWorks()
     {
-        BetaCodeExecutionToolResultBlockParamContent value = new(
+        BetaCodeExecutionToolResultBlockParamContent value =
             new BetaCodeExecutionToolResultErrorParam(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
-            )
-        );
-        string json = JsonSerializer.Serialize(value);
+            );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParamContent>(
-            json
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
-    public void result_block_paramSerializationRoundtrip_Works()
+    public void ResultBlockParamSerializationRoundtripWorks()
     {
-        BetaCodeExecutionToolResultBlockParamContent value = new(
-            new BetaCodeExecutionResultBlockParam()
-            {
-                Content = [new("file_id")],
-                ReturnCode = 0,
-                Stderr = "stderr",
-                Stdout = "stdout",
-            }
-        );
-        string json = JsonSerializer.Serialize(value);
+        BetaCodeExecutionToolResultBlockParamContent value = new BetaCodeExecutionResultBlockParam()
+        {
+            Content = [new("file_id")],
+            ReturnCode = 0,
+            Stderr = "stderr",
+            Stdout = "stdout",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultBlockParamContent>(
-            json
+            element,
+            ModelBase.SerializerOptions
         );
 
         Assert.Equal(value, deserialized);

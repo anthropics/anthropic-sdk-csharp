@@ -9,26 +9,38 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaRawContentBlockDeltaEvent, BetaRawContentBlockDeltaEventFromRaw>)
+    typeof(JsonModelConverter<BetaRawContentBlockDeltaEvent, BetaRawContentBlockDeltaEventFromRaw>)
 )]
-public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
+public sealed record class BetaRawContentBlockDeltaEvent : JsonModel
 {
     public required BetaRawContentBlockDelta Delta
     {
-        get { return ModelBase.GetNotNullClass<BetaRawContentBlockDelta>(this.RawData, "delta"); }
-        init { ModelBase.Set(this._rawData, "delta", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaRawContentBlockDelta>("delta");
+        }
+        init { this._rawData.Set("delta", value); }
     }
 
     public required long Index
     {
-        get { return ModelBase.GetNotNullStruct<long>(this.RawData, "index"); }
-        init { ModelBase.Set(this._rawData, "index", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<long>("index");
+        }
+        init { this._rawData.Set("index", value); }
     }
 
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
@@ -39,7 +51,7 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"")
+                JsonSerializer.SerializeToElement("content_block_delta")
             )
         )
         {
@@ -49,7 +61,7 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
 
     public BetaRawContentBlockDeltaEvent()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_delta");
     }
 
     public BetaRawContentBlockDeltaEvent(
@@ -59,16 +71,16 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
 
     public BetaRawContentBlockDeltaEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"content_block_delta\"");
+        this.Type = JsonSerializer.SerializeToElement("content_block_delta");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaRawContentBlockDeltaEvent(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -81,7 +93,7 @@ public sealed record class BetaRawContentBlockDeltaEvent : ModelBase
     }
 }
 
-class BetaRawContentBlockDeltaEventFromRaw : IFromRaw<BetaRawContentBlockDeltaEvent>
+class BetaRawContentBlockDeltaEventFromRaw : IFromRawJson<BetaRawContentBlockDeltaEvent>
 {
     /// <inheritdoc/>
     public BetaRawContentBlockDeltaEvent FromRawUnchecked(

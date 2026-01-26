@@ -10,14 +10,18 @@ using System = System;
 namespace Anthropic.Models.Beta.Messages;
 
 [JsonConverter(
-    typeof(ModelConverter<BetaClearThinking20251015Edit, BetaClearThinking20251015EditFromRaw>)
+    typeof(JsonModelConverter<BetaClearThinking20251015Edit, BetaClearThinking20251015EditFromRaw>)
 )]
-public sealed record class BetaClearThinking20251015Edit : ModelBase
+public sealed record class BetaClearThinking20251015Edit : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <summary>
@@ -26,7 +30,11 @@ public sealed record class BetaClearThinking20251015Edit : ModelBase
     /// </summary>
     public Keep? Keep
     {
-        get { return ModelBase.GetNullableClass<Keep>(this.RawData, "keep"); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<Keep>("keep");
+        }
         init
         {
             if (value == null)
@@ -34,7 +42,7 @@ public sealed record class BetaClearThinking20251015Edit : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "keep", value);
+            this._rawData.Set("keep", value);
         }
     }
 
@@ -44,7 +52,7 @@ public sealed record class BetaClearThinking20251015Edit : ModelBase
         if (
             !JsonElement.DeepEquals(
                 this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"")
+                JsonSerializer.SerializeToElement("clear_thinking_20251015")
             )
         )
         {
@@ -55,7 +63,7 @@ public sealed record class BetaClearThinking20251015Edit : ModelBase
 
     public BetaClearThinking20251015Edit()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
     public BetaClearThinking20251015Edit(
@@ -65,16 +73,16 @@ public sealed record class BetaClearThinking20251015Edit : ModelBase
 
     public BetaClearThinking20251015Edit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"clear_thinking_20251015\"");
+        this.Type = JsonSerializer.SerializeToElement("clear_thinking_20251015");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaClearThinking20251015Edit(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -87,7 +95,7 @@ public sealed record class BetaClearThinking20251015Edit : ModelBase
     }
 }
 
-class BetaClearThinking20251015EditFromRaw : IFromRaw<BetaClearThinking20251015Edit>
+class BetaClearThinking20251015EditFromRaw : IFromRawJson<BetaClearThinking20251015Edit>
 {
     /// <inheritdoc/>
     public BetaClearThinking20251015Edit FromRawUnchecked(
@@ -100,15 +108,21 @@ class BetaClearThinking20251015EditFromRaw : IFromRaw<BetaClearThinking20251015E
 /// will have their thinking blocks removed.
 /// </summary>
 [JsonConverter(typeof(KeepConverter))]
-public record class Keep
+public record class Keep : ModelBase
 {
     public object? Value { get; } = null;
 
-    JsonElement? _json = null;
+    JsonElement? _element = null;
 
     public JsonElement Json
     {
-        get { return this._json ??= JsonSerializer.SerializeToElement(this.Value); }
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
     }
 
     public JsonElement? Type
@@ -123,27 +137,27 @@ public record class Keep
         }
     }
 
-    public Keep(BetaThinkingTurns value, JsonElement? json = null)
+    public Keep(BetaThinkingTurns value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Keep(BetaAllThinkingTurns value, JsonElement? json = null)
+    public Keep(BetaAllThinkingTurns value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Keep(UnionMember2 value, JsonElement? json = null)
+    public Keep(UnionMember2 value, JsonElement? element = null)
     {
         this.Value = value;
-        this._json = json;
+        this._element = element;
     }
 
-    public Keep(JsonElement json)
+    public Keep(JsonElement element)
     {
-        this._json = json;
+        this._element = element;
     }
 
     /// <summary>
@@ -305,7 +319,7 @@ public record class Keep
     /// Thrown when the instance does not pass validation.
     /// </exception>
     /// </summary>
-    public void Validate()
+    public override void Validate()
     {
         if (this.Value == null)
         {
@@ -327,6 +341,9 @@ public record class Keep
     {
         return 0;
     }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(this._element, ModelBase.ToStringSerializerOptions);
 }
 
 sealed class KeepConverter : JsonConverter<Keep>
@@ -337,14 +354,14 @@ sealed class KeepConverter : JsonConverter<Keep>
         JsonSerializerOptions options
     )
     {
-        var json = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<UnionMember2>(json, options);
+            var deserialized = JsonSerializer.Deserialize<UnionMember2>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -354,11 +371,11 @@ sealed class KeepConverter : JsonConverter<Keep>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaThinkingTurns>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaThinkingTurns>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -368,11 +385,11 @@ sealed class KeepConverter : JsonConverter<Keep>
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(json, options);
+            var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(element, options);
             if (deserialized != null)
             {
                 deserialized.Validate();
-                return new(deserialized, json);
+                return new(deserialized, element);
             }
         }
         catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
@@ -380,7 +397,7 @@ sealed class KeepConverter : JsonConverter<Keep>
             // ignore
         }
 
-        return new(json);
+        return new(element);
     }
 
     public override void Write(Utf8JsonWriter writer, Keep value, JsonSerializerOptions options)
@@ -389,19 +406,19 @@ sealed class KeepConverter : JsonConverter<Keep>
     }
 }
 
-[JsonConverter(typeof(Converter))]
+[JsonConverter(typeof(UnionMember2Converter))]
 public record class UnionMember2
 {
-    public JsonElement Json { get; private init; }
+    public JsonElement Element { get; private init; }
 
     public UnionMember2()
     {
-        Json = JsonSerializer.Deserialize<JsonElement>("\"all\"");
+        Element = JsonSerializer.SerializeToElement("all");
     }
 
-    UnionMember2(JsonElement json)
+    internal UnionMember2(JsonElement element)
     {
-        Json = json;
+        Element = element;
     }
 
     /// <summary>
@@ -433,27 +450,27 @@ public record class UnionMember2
             return false;
         }
 
-        return JsonElement.DeepEquals(this.Json, other.Json);
+        return JsonElement.DeepEquals(this.Element, other.Element);
+    }
+}
+
+class UnionMember2Converter : JsonConverter<UnionMember2>
+{
+    public override UnionMember2? Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return new(JsonSerializer.Deserialize<JsonElement>(ref reader, options));
     }
 
-    class Converter : JsonConverter<UnionMember2>
+    public override void Write(
+        Utf8JsonWriter writer,
+        UnionMember2 value,
+        JsonSerializerOptions options
+    )
     {
-        public override UnionMember2? Read(
-            ref Utf8JsonReader reader,
-            System::Type typeToConvert,
-            JsonSerializerOptions options
-        )
-        {
-            return new(JsonSerializer.Deserialize<JsonElement>(ref reader, options));
-        }
-
-        public override void Write(
-            Utf8JsonWriter writer,
-            UnionMember2 value,
-            JsonSerializerOptions options
-        )
-        {
-            JsonSerializer.Serialize(writer, value.Json, options);
-        }
+        JsonSerializer.Serialize(writer, value.Element, options);
     }
 }

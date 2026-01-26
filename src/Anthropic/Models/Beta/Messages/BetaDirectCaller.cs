@@ -11,24 +11,23 @@ namespace Anthropic.Models.Beta.Messages;
 /// <summary>
 /// Tool invocation directly from the model.
 /// </summary>
-[JsonConverter(typeof(ModelConverter<BetaDirectCaller, BetaDirectCallerFromRaw>))]
-public sealed record class BetaDirectCaller : ModelBase
+[JsonConverter(typeof(JsonModelConverter<BetaDirectCaller, BetaDirectCallerFromRaw>))]
+public sealed record class BetaDirectCaller : JsonModel
 {
     public JsonElement Type
     {
-        get { return ModelBase.GetNotNullStruct<JsonElement>(this.RawData, "type"); }
-        init { ModelBase.Set(this._rawData, "type", value); }
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
     }
 
     /// <inheritdoc/>
     public override void Validate()
     {
-        if (
-            !JsonElement.DeepEquals(
-                this.Type,
-                JsonSerializer.Deserialize<JsonElement>("\"direct\"")
-            )
-        )
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("direct")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
@@ -36,7 +35,7 @@ public sealed record class BetaDirectCaller : ModelBase
 
     public BetaDirectCaller()
     {
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
+        this.Type = JsonSerializer.SerializeToElement("direct");
     }
 
     public BetaDirectCaller(BetaDirectCaller betaDirectCaller)
@@ -44,16 +43,16 @@ public sealed record class BetaDirectCaller : ModelBase
 
     public BetaDirectCaller(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
 
-        this.Type = JsonSerializer.Deserialize<JsonElement>("\"direct\"");
+        this.Type = JsonSerializer.SerializeToElement("direct");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     BetaDirectCaller(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._rawData = [.. rawData];
+        this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
@@ -66,7 +65,7 @@ public sealed record class BetaDirectCaller : ModelBase
     }
 }
 
-class BetaDirectCallerFromRaw : IFromRaw<BetaDirectCaller>
+class BetaDirectCallerFromRaw : IFromRawJson<BetaDirectCaller>
 {
     /// <inheritdoc/>
     public BetaDirectCaller FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
